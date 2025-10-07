@@ -1,2 +1,37 @@
-main {
+:root {
+  --navy: #0B1E2D;        /* background */
+  --navy-dark: #0A1723;   /* darker surfaces */
+  --gold: #D4AF37;        /* accents */
+  --green: #10B981;       /* emerald highlights */
+  --text: #f3f4f6;        /* light text */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--navy);
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, 'Helvetica Neue', Arial;
+}
+
+.screen {
+  min-height: 100vh;
+  padding: 24px;
+  padding-bottom: 88px; /* leave space for bottom nav */
+}
+
+h1 {
+  margin: 0 0 8px;
+  color: var(--gold);
+}
+
+a {
+  color: inherit;
 }

@@ -1,9 +1,10 @@
-import './App.css'
+import BottomNav from "./components/BottomNav";
 
 export default function App() {
   return (
-    <main>
-      React ⚛️ + Vite ⚡ + Replit
-    </main>
-  )
+    <div style={{ color: "white", padding: 20 }}>
+      <h1>BottomNav test 🧪</h1>
+      <BottomNav />
+    </div>
+  );
 }
