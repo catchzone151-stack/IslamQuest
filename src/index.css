@@ -1,0 +1,40 @@
+/* Islam Quest global styles */
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Base font + colours */
+body {
+  font-family: "Poppins", "Nunito", system-ui, sans-serif;
+  background: linear-gradient(180deg, #a2e8f2 0%, #ffffff 100%);
+  color: #222;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Make sure our root fills the page */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Utility: simple fade-in for pages */
+.screen {
+  animation: fadeIn 0.35s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scrollbar clean for mobile */
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
