@@ -1,11 +1,17 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// ✅ Replit-compatible Vite config
 export default defineConfig({
   plugins: [react()],
   server: {
-    host: "0.0.0.0", // allow external access
-    port: 5000, // Replit’s open port
+    host: "0.0.0.0",
+    port: 5000,
+    strictPort: true,
+    hmr: {
+      clientPort: 443,
+      host: process.env.REPL_SLUG 
+        ? `${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co` 
+        : "localhost"
+    }
   },
 });
