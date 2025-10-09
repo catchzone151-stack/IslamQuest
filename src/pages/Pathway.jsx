@@ -19,6 +19,15 @@ export default function Pathway() {
     );
   }
 
+  if (!pathData.data || !pathData.data.lessons) {
+    return (
+      <div className="p-6 text-center">
+        <h2 className="text-xl font-bold">{pathData.title}</h2>
+        <p className="mt-4">Coming soon, in shā' Allāh! 🌙</p>
+      </div>
+    );
+  }
+
   return (
     <div className="pathway-page p-6 text-center">
       <h1 className="text-2xl font-bold mb-2">{pathData.title}</h1>

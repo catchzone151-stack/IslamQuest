@@ -395,7 +395,7 @@ export default function Home() {
               key={p.id}
               onClick={() =>
                 !p.locked
-                  ? navigate(`/pathway/aqeedah-pillars`)
+                  ? navigate(`/pathway/${p.id}`)
                   : alert(`${p.title} coming soon!`)
               }
               style={{

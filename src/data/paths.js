@@ -1,9 +1,9 @@
 import aqeedahData from "./paths/aqeedah_pillars.json";
 
 const unlocked = [
-  { id: 1, title: "Names of Allah", progress: 0.35 },
+  { id: "names-of-allah", title: "Names of Allah", progress: 0.35 },
   {
-    id: 2,
+    id: "aqeedah-pillars",
     title: "Six Pillars of Belief",
     progress: 0.2,
     lessons: aqeedahData.lessons.length,
@@ -11,20 +11,21 @@ const unlocked = [
     certificate: aqeedahData.certificate_title,
     data: aqeedahData,
   },
-  { id: 3, title: "Stories of Prophets", progress: 0.1 },
-  { id: 4, title: "Life of Muhammad ﷺ", progress: 0 },
-  { id: 5, title: "Ten Promised Paradise", progress: 0 },
-  { id: 6, title: "Four Greatest Women", progress: 0 },
+  { id: "stories-of-prophets", title: "Stories of Prophets", progress: 0.1 },
+  { id: "life-of-muhammad", title: "Life of Muhammad ﷺ", progress: 0 },
+  { id: "ten-promised-paradise", title: "Ten Promised Paradise", progress: 0 },
+  { id: "four-greatest-women", title: "Four Greatest Women", progress: 0 },
 ];
 const locked = [
-  { id: 7, title: "Minor Signs" },
-  { id: 8, title: "Major Signs" },
-  { id: 9, title: "The Grave" },
-  { id: 10, title: "Day of Judgement" },
-  { id: 11, title: "Hellfire" },
-  { id: 12, title: "Paradise" },
+  { id: "minor-signs", title: "Minor Signs" },
+  { id: "major-signs", title: "Major Signs" },
+  { id: "the-grave", title: "The Grave" },
+  { id: "day-of-judgement", title: "Day of Judgement" },
+  { id: "hellfire", title: "Hellfire" },
+  { id: "paradise", title: "Paradise" },
 ];
 const learningPaths = [
   ...unlocked.map((p) => ({ ...p, locked: false })),
   ...locked.map((p) => ({ ...p, locked: true })),
 ];
+export const pathways = learningPaths;
