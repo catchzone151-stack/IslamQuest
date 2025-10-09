@@ -1,55 +1,36 @@
-// Simple localStorage-backed state for XP, coins, streak, and progress
-const KEY = "islamquest_store";
+import { useState, useEffect } from "react";
 
-export const getStore = () => {
-  try {
-    const raw = localStorage.getItem(KEY);
-    return raw
-      ? JSON.parse(raw)
-      : {
-          xp: 120,
-          coins: 45,
-          streak: 3,
-          progress: {},
-          lastUpdated: Date.now(),
-        };
-  } catch {
-    return {
-      xp: 0,
-      coins: 0,
-      streak: 0,
-      progress: {},
-      lastUpdated: Date.now(),
-    };
-  }
-};
+// Simple global store for XP, coins, and streak — will later sync with Supabase
+export function useGameStore() {
+  const [xp, setXp] = useState(0);
+  const [coins, setCoins] = useState(0);
+  const [streak, setStreak] = useState(1);
 
-export const setStore = (data) => {
-  try {
-    localStorage.setItem(KEY, JSON.stringify(data));
-  } catch (e) {
-    console.error("Store save error", e);
-  }
-};
+  // Load from localStorage on mount
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem("islamQuestStore") || "{}");
+    if (saved.xp) setXp(saved.xp);
+    if (saved.coins) setCoins(saved.coins);
+    if (saved.streak) setStreak(saved.streak);
+  }, []);
 
-// Utility to update XP or coins easily
-export const addXP = (amount) => {
-  const s = getStore();
-  s.xp += amount;
-  setStore(s);
-  return s;
-};
+  // Auto-save whenever values change
+  useEffect(() => {
+    localStorage.setItem(
+      "islamQuestStore",
+      JSON.stringify({ xp, coins, streak }),
+    );
+  }, [xp, coins, streak]);
 
-export const addCoins = (amount) => {
-  const s = getStore();
-  s.coins += amount;
-  setStore(s);
-  return s;
-};
+  const addXp = (amount) => setXp((x) => Math.min(1000, x + amount));
+  const addCoins = (amount) => setCoins((c) => c + amount);
+  const incrementStreak = () => setStreak((s) => s + 1);
+  const resetAll = () => {
+    setXp(0);
+    setCoins(0);
+    setStreak(1);
+    localStorage.removeItem("islamQuestStore");
+  };
 
-export const incrementStreak = () => {
-  const s = getStore();
-  s.streak += 1;
-  setStore(s);
-  return s;
-};
+  return { xp, coins, streak, addXp, addCoins, incrementStreak, resetAll };
+}

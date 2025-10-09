@@ -1,0 +1,337 @@
+{
+  "path_id": "aqeedah-pillars",
+  "path_title": "Six Pillars of Belief",
+  "free_lessons": 2,
+  "est_total_minutes": 45,
+  "certificate_title": "Aqeedah Foundations — Six Pillars of Belief",
+  "lessons": [
+    {
+      "id": 1,
+      "title": "What is Īmān? Overview of the 6 Pillars",
+      "paragraphs": [
+        "Īmān (faith) stands on six core pillars. If one pillar is denied, the whole structure falls. These pillars guide how a Muslim believes about Allah, unseen creation, revelation, guidance, the Afterlife, and decree.",
+        "You’ll meet each pillar simply and clearly, then test yourself with short quizzes designed to make you think."
+      ],
+      "refs": [
+        "Overview adapted from traditional explanations of the pillars of Īmān."
+      ],
+      "quiz": [
+        {
+          "type": "mcq",
+          "q": "How many pillars form the foundation of Īmān?",
+          "options": ["Five", "Six", "Seven", "Three"],
+          "answerIndex": 1
+        },
+        {
+          "type": "mcq",
+          "q": "Denying one pillar of Īmān means…",
+          "options": [
+            "Faith is weakened but valid",
+            "Only that pillar needs review",
+            "The structure of Īmān collapses",
+            "It has no effect"
+          ],
+          "answerIndex": 2
+        },
+        {
+          "type": "fill",
+          "q": "Īmān means ______ in what Allah has informed and commanded.",
+          "answer": "belief"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Pillar 1 — Belief in Allah",
+      "paragraphs": [
+        "Belief in Allah includes His Oneness in Lordship, worship, and His Names and Attributes. He has no partner in creating, sustaining, and governing; none share His right to be worshipped.",
+        "We affirm what Allah affirmed for Himself without distorting or denying."
+      ],
+      "refs": ["General tawḥīd themes"],
+      "quiz": [
+        {
+          "type": "mcq",
+          "q": "Belief in Allah includes which of the following?",
+          "options": [
+            "Oneness in Lordship, worship, and Names & Attributes",
+            "Only believing Allah exists",
+            "Believing saints share His power",
+            "Worshipping through intermediaries"
+          ],
+          "answerIndex": 0
+        },
+        {
+          "type": "mcq",
+          "q": "Which is closest to the meaning of tawḥīd?",
+          "options": [
+            "Uniting people under one leader",
+            "Affirming Allah’s absolute Oneness",
+            "Avoiding disputes",
+            "Believing only in the Afterlife"
+          ],
+          "answerIndex": 1
+        },
+        {
+          "type": "fill",
+          "q": "We affirm Allah’s Names and ______ as He affirmed them.",
+          "answer": "Attributes"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Pillar 2 — Belief in the Angels",
+      "paragraphs": [
+        "Angels are honoured servants created by Allah. They never disobey and carry out commands: delivering revelation, recording deeds, guarding, managing tasks such as rain, and bearing the Throne.",
+        "They are part of the unseen; we believe what Allah informed about them."
+      ],
+      "refs": ["Qur’an 69:17; 35:1; 21:26–27; 13:11"],
+      "quiz": [
+        {
+          "type": "mcq",
+          "q": "Which statement best describes angels?",
+          "options": [
+            "Independent beings who can oppose Allah",
+            "Honoured servants who obey and carry out commands",
+            "Souls of righteous humans",
+            "Mythical symbols with no real existence"
+          ],
+          "answerIndex": 1
+        },
+        {
+          "type": "match",
+          "pairs": [
+            ["Jibrīl", "Carries revelation"],
+            ["Mīkā’īl", "Entrusted with provision (e.g., rain)"],
+            ["Israfil", "Blows the Horn"]
+          ]
+        },
+        {
+          "type": "fill",
+          "q": "The angels who record deeds are called noble ______.",
+          "answer": "scribes"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Pillar 3 — Belief in the Revealed Books",
+      "paragraphs": [
+        "We believe in all scriptures Allah revealed to His messengers — those named to us and those unnamed. The Qur’an is Allah’s speech and is believed in with detailed submission.",
+        "Denying any scripture revealed by Allah is disbelief."
+      ],
+      "refs": ["Qur’an 4:163"],
+      "quiz": [
+        {
+          "type": "mcq",
+          "q": "Belief in the Books means:",
+          "options": [
+            "Only believing in the book sent to one’s own nation",
+            "Affirming all revealed scriptures, named and unnamed",
+            "Accepting the Qur’an but doubting earlier scriptures",
+            "Treating all religious books as human-only writings"
+          ],
+          "answerIndex": 1
+        },
+        {
+          "type": "mcq",
+          "q": "Which is a named scripture mentioned in the Qur’an?",
+          "options": ["Zabūr", "Tripitaka", "Vedas", "Analects"],
+          "answerIndex": 0
+        },
+        {
+          "type": "fill",
+          "q": "The Qur’an is the speech of ______.",
+          "answer": "Allah"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Pillar 4 — Belief in the Messengers",
+      "paragraphs": [
+        "We believe that all prophets and messengers sent by Allah are true, from the first to the last. They conveyed the message faithfully.",
+        "Disbelieving in one messenger is rejecting them all."
+      ],
+      "refs": ["Qur’an 4:150–152; 6:83–86"],
+      "quiz": [
+        {
+          "type": "mcq",
+          "q": "What happens if someone believes in some messengers but rejects others?",
+          "options": [
+            "They still have complete faith",
+            "They are impartial",
+            "They have rejected the message as a whole",
+            "It doesn’t matter as long as they do good deeds"
+          ],
+          "answerIndex": 2
+        },
+        {
+          "type": "mcq",
+          "q": "The messengers’ primary role was to:",
+          "options": [
+            "Control destiny",
+            "Convey Allah’s guidance to their nations",
+            "Guarantee paradise to followers",
+            "Create new laws without revelation"
+          ],
+          "answerIndex": 1
+        },
+        {
+          "type": "fill",
+          "q": "We believe in all messengers from the ______ to the ______.",
+          "answer": "first,last"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Pillar 5 — Belief in the Last Day",
+      "paragraphs": [
+        "Belief in the Last Day includes everything that occurs after death: the grave and its questioning, resurrection, gathering, reckoning, the balance, the bridge, and the final abode in Paradise or Hell.",
+        "We accept what is authentically reported about these matters."
+      ],
+      "refs": ["Last Day topics summarized from classical sources"],
+      "quiz": [
+        {
+          "type": "mcq",
+          "q": "Which of the following belongs to belief in the Last Day?",
+          "options": [
+            "Only believing time repeats forever",
+            "Resurrection, reckoning, and final reward or punishment",
+            "Denial of any life after death",
+            "That deeds are never weighed"
+          ],
+          "answerIndex": 1
+        },
+        {
+          "type": "fill",
+          "q": "The scale upon which deeds are weighed is called the ______.",
+          "answer": "Mizān"
+        },
+        {
+          "type": "mcq",
+          "q": "Yawm al-Qiyāmah literally refers to:",
+          "options": [
+            "The first day on earth",
+            "The Day of Resurrection",
+            "A festival day",
+            "A yearly commemoration"
+          ],
+          "answerIndex": 1
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Pillar 6 — Belief in Pre-Decree (al-Qadar)",
+      "paragraphs": [
+        "Everything that occurs — ease or hardship, life or death — is by Allah’s decree. Nothing happens by chance.",
+        "Four levels: Allah’s knowledge, His writing in the Preserved Tablet, His will, and His creation/bringing into existence."
+      ],
+      "refs": ["Qur’an 57:22; 54:49"],
+      "quiz": [
+        {
+          "type": "mcq",
+          "q": "Which set lists the four levels of belief in Qadar?",
+          "options": [
+            "Creation, angels, books, messengers",
+            "Knowledge, Writing, Will, Creation",
+            "Prayer, charity, fasting, pilgrimage",
+            "Wealth, health, luck, fate"
+          ],
+          "answerIndex": 1
+        },
+        {
+          "type": "mcq",
+          "q": "“No calamity befalls except it was written…” points to which level most clearly?",
+          "options": ["Will", "Writing", "Creation", "Knowledge only"],
+          "answerIndex": 1
+        },
+        {
+          "type": "fill",
+          "q": "Nothing occurs without Allah’s ______ and Will.",
+          "answer": "decree"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "How the Pillars Connect",
+      "paragraphs": [
+        "The pillars interlink: belief in Allah grounds belief in the unseen world (angels) and revelation (books) delivered by messengers; these teachings prepare a person for the Last Day; all unfolds under Allah’s decree.",
+        "Seeing the connections strengthens certainty and practice."
+      ],
+      "refs": [],
+      "quiz": [
+        {
+          "type": "mcq",
+          "q": "Which best shows the link between pillars?",
+          "options": [
+            "Books explain what angels revealed to messengers by Allah’s command",
+            "Messengers worship angels, then teach people",
+            "Books decide Allah’s decree",
+            "Angels judge everyone on the Last Day independently"
+          ],
+          "answerIndex": 0
+        },
+        {
+          "type": "match",
+          "pairs": [
+            ["Books", "Revealed guidance"],
+            ["Messengers", "Convey guidance"],
+            ["Last Day", "Outcome of deeds"]
+          ]
+        },
+        {
+          "type": "fill",
+          "q": "Understanding connections between pillars strengthens our ______.",
+          "answer": "faith"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Final Review & Certificate",
+      "paragraphs": [
+        "Final quick check of the six pillars. Pass this and you’ll complete the pathway. Your progress ring will animate from 98% to 100% and your certificate will unlock."
+      ],
+      "refs": ["Wrap-up checkpoint"],
+      "quiz": [
+        {
+          "type": "mcq",
+          "q": "Choose the correct complete list of the six pillars:",
+          "options": [
+            "Allah, Angels, Books, Messengers, Last Day, Pre-Decree",
+            "Allah, Prophets, Charity, Prayer, Hajj, Fasting",
+            "Allah, Angels, Saints, Imams, Last Day, Qadar",
+            "Allah, Books, Cities, Nations, Afterlife, Fate"
+          ],
+          "answerIndex": 0
+        },
+        {
+          "type": "mcq",
+          "q": "Which statement is most accurate about the Books?",
+          "options": [
+            "We believe only in the Qur’an",
+            "We believe in all Allah’s revealed scriptures, named and unnamed",
+            "Earlier scriptures are human only",
+            "Only the Zabūr remains relevant"
+          ],
+          "answerIndex": 1
+        },
+        {
+          "type": "mcq",
+          "q": "Qadar means:",
+          "options": [
+            "Everything happens by Allah’s knowledge, writing, will and creation",
+            "Only that good events are from Allah",
+            "Humans have no deeds",
+            "Random chance controls outcomes"
+          ],
+          "answerIndex": 0
+        }
+      ]
+    }
+  ]
+}

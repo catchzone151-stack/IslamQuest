@@ -1,85 +1,52 @@
-import { useEffect, useState } from "react";
-import { useSession } from "@supabase/auth-helpers-react";
-import { supabase } from "../lib/supabase";
+import ScreenContainer from "../components/ScreenContainer";
 
 export default function Profile() {
-  const session = useSession();
-  const [profile, setProfile] = useState(null);
-
-  useEffect(() => {
-    async function loadProfile() {
-      if (!session) return;
-
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", session.user.id)
-        .single();
-
-      if (error) {
-        console.error("Error loading profile:", error.message);
-      } else {
-        setProfile(data);
-      }
-    }
-
-    loadProfile();
-  }, [session]);
-
-  async function handleLogout() {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      console.error("Error logging out:", error.message);
-    } else {
-      window.location.href = "/login"; // redirect to login after logout
-    }
-  }
-
-  if (!session) {
-    return (
-      <div className="screen">
-        <h1>Profile</h1>
-        <p>
-          Please <a href="/login">login</a> to view your profile.
-        </p>
-      </div>
-    );
-  }
-
   return (
-    <div className="screen">
-      <h1>Profile</h1>
-      {profile ? (
-        <>
-          <p>
-            <b>User ID:</b> {profile.id}
-          </p>
-          <p>
-            <b>Username:</b> {profile.username || "Not set yet"}
-          </p>
-          <p>
-            <b>Created:</b> {new Date(profile.created_at).toLocaleString()}
-          </p>
+    <ScreenContainer>
+      <div style={{ textAlign: "center", marginTop: 40 }}>
+        <h1
+          style={{
+            fontSize: "1.8rem",
+            fontWeight: 800,
+            margin: 0,
+            background: "linear-gradient(90deg, #FFD700, #FFA500, #FFD700)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundSize: "200%",
+            animation: "shimmer 8s linear infinite",
+          }}
+        >
+          My Profile
+        </h1>
+        <p style={{ opacity: 0.9, marginTop: 8 }}>
+          View your XP, streaks, and achievements 🏅
+        </p>
 
-          <button
-            onClick={handleLogout}
-            style={{
-              marginTop: "20px",
-              padding: "10px 16px",
-              background: "var(--green)",
-              border: "none",
-              borderRadius: "8px",
-              color: "#fff",
-              fontWeight: "bold",
-              cursor: "pointer",
-            }}
-          >
-            Log Out
-          </button>
-        </>
-      ) : (
-        <p>Loading profile...</p>
-      )}
-    </div>
+        <div
+          style={{
+            marginTop: 20,
+            background:
+              "linear-gradient(145deg, rgba(0,255,209,0.15), rgba(255,215,0,0.1))",
+            border: "1px solid rgba(255,255,255,0.1)",
+            borderRadius: 16,
+            padding: 20,
+            boxShadow: "0 0 15px rgba(0,255,209,0.25)",
+          }}
+        >
+          <p style={{ opacity: 0.8 }}>
+            Profile dashboard coming soon, in shā’ Allāh 🌙
+          </p>
+        </div>
+      </div>
+
+      <style>
+        {`
+          @keyframes shimmer {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+          }
+        `}
+      </style>
+    </ScreenContainer>
   );
 }

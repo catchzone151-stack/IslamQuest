@@ -1,45 +1,88 @@
-console.log("✅ App loaded");
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 
-// Pages (ensure these files exist; stubs are fine for now)
+// ✅ Safe imports – comment out if page not yet built
 import Home from "./pages/Home";
-import PathPage from "./pages/PathPage"; // shows a single learning path’s lessons
-import Challenge from "./pages/Challenge"; // daily challenge page
-import Friends from "./pages/Friends"; // friends list / leaderboards
-import Profile from "./pages/Profile"; // profile + login entry point
-import Revise from "./pages/Revise"; // NEW: rename old Learn.jsx -> Revise.jsx
+import Revise from "./pages/Revise";
+import Challenge from "./pages/Challenge";
+import Friends from "./pages/Friends";
+import Profile from "./pages/Profile";
 
-// Global UI
+// 🆕 Added: import for Pathway page
+import Pathway from "./pages/Pathway";
+
 import BottomNav from "./components/BottomNav";
+import ScreenWrapper from "./components/ScreenWrapper";
 
 export default function App() {
   return (
-    <>
+    <div
+      style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
+    >
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route
+          path="/"
+          element={
+            <ScreenWrapper>
+              <Home />
+            </ScreenWrapper>
+          }
+        />
+        <Route
+          path="/revise"
+          element={
+            <ScreenWrapper>
+              <Revise />
+            </ScreenWrapper>
+          }
+        />
+        <Route
+          path="/challenge"
+          element={
+            <ScreenWrapper>
+              <Challenge />
+            </ScreenWrapper>
+          }
+        />
+        <Route
+          path="/friends"
+          element={
+            <ScreenWrapper>
+              <Friends />
+            </ScreenWrapper>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ScreenWrapper>
+              <Profile />
+            </ScreenWrapper>
+          }
+        />
 
-        {/* Revise hub + specific path */}
-        <Route path="/revise" element={<Revise />} />
-        <Route path="/revise/:id" element={<PathPage />} />
+        {/* 🆕 NEW PATHWAY ROUTE */}
+        <Route
+          path="/pathway/:id"
+          element={
+            <ScreenWrapper>
+              <Pathway />
+            </ScreenWrapper>
+          }
+        />
 
-        {/* Daily challenge */}
-        <Route path="/challenge" element={<Challenge />} />
-
-        {/* Social */}
-        <Route path="/friends" element={<Friends />} />
-
-        {/* Profile */}
-        <Route path="/profile" element={<Profile />} />
-
-        {/* Back-compat redirects (optional): if you had /learn or /daily-challenge before */}
-        {/* You can remove these once you’ve updated old links */}
-        {/* <Route path="/learn" element={<Revise />} />
-        <Route path="/learn/:id" element={<PathPage />} />
-        <Route path="/daily-challenge" element={<Challenge />} /> */}
+        {/* fallback if unknown path */}
+        <Route
+          path="*"
+          element={
+            <ScreenWrapper>
+              <Home />
+            </ScreenWrapper>
+          }
+        />
       </Routes>
 
-      {/* Persistent bottom navigation on all pages */}
       <BottomNav />
-    </>
+    </div>
   );
 }
