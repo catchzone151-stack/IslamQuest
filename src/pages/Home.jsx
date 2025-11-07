@@ -210,7 +210,7 @@ export default function Home() {
             justifyContent: "flex-end",
             gap: 12,
           }}
-
+        >
           {/* Coins (CLEAN DISPLAY) */}
           <div
             style={{

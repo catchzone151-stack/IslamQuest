@@ -55,6 +55,3 @@ export const useTitleStore = create(
     }
   )
 );
-
-// Auto-evaluate titles on startup
-useTitleStore.getState().evaluateTitle();
