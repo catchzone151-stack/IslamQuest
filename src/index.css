@@ -10,10 +10,11 @@
 /* Base font + colours */
 body {
   font-family: "Poppins", "Nunito", system-ui, sans-serif;
-  background: linear-gradient(180deg, #a2e8f2 0%, #ffffff 100%);
-  color: #222;
+  background: #081a2b; /* clean dark navy like desktop preview */
+  color: #fff;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  margin: 0;
 }
 
 /* Make sure our root fills the page */
@@ -37,4 +38,286 @@ body {
 ::-webkit-scrollbar {
   width: 0;
   height: 0;
+}
+/* === Islam Quest Pathway Page Styling === */
+
+.pathway-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  color: #033b45;
+  padding: 1.2rem;
+  overflow-y: auto;
+}
+
+/* Header */
+.pathway-header {
+  position: relative;
+  text-align: center;
+  padding: 1.5rem 0 2rem;
+}
+
+.pathway-header h1 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #046b80;
+  margin-bottom: 0.4rem;
+}
+
+.pathway-header img {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.8rem;
+  width: clamp(60px, 15vw, 85px);
+  height: auto;
+  object-fit: contain;
+}
+
+.progress-ring {
+  width: clamp(55px, 12vw, 75px);
+  height: clamp(55px, 12vw, 75px);
+  background: #b3f1e7;
+  color: #046b80;
+  font-weight: 700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.3rem auto 0;
+}
+
+.progress-ring p {
+  font-size: 0.75rem;
+  color: #555;
+  text-align: center;
+  margin-top: 0.3rem;
+}
+
+/* Lesson Cards */
+.lesson-list {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.lesson-card {
+  background: #fff;
+  border-radius: 1rem;
+  padding: 1rem;
+  border: 1px solid #c9f3ef;
+}
+
+.lesson-card:hover {
+  transform: scale(1.02);
+}
+
+.lesson-card.locked {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.lesson-card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #046b80;
+  margin-bottom: 0.2rem;
+}
+
+.lesson-card p {
+  font-size: 0.85rem;
+  color: #333;
+  line-height: 1.4;
+}
+
+/* Footer */
+.pathway-footer {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #555;
+  padding: 1rem 0 0.5rem;
+  border-top: 1px solid #e3f7f9;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .pathway-page {
+    padding: 1rem;
+  }
+  .pathway-header h1 {
+    font-size: 1.3rem;
+  }
+  .lesson-card h3 {
+    font-size: 0.95rem;
+  }
+}
+/* === Islam Quest Pathway Page Styling === */
+
+.pathway-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  max-width: 480px;
+  margin: 0 auto;
+  text-align: center;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+.pathway-header {
+  position: relative;
+  width: 100%;
+}
+
+.pathway-header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.pathway-header img {
+  position: absolute;
+  right: 0.5rem;
+  top: 0;
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.progress-ring {
+  background: #def7e5;
+  color: #16a34a;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5rem auto;
+  font-weight: 600;
+}
+
+.lesson-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.lesson-card {
+  background: #fff;
+  border-radius: 1rem;
+  padding: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.lesson-card:hover {
+  transform: scale(1.03);
+}
+
+.lesson-card.locked {
+  opacity: 0.6;
+}
+
+.lesson-card h3 {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.lesson-card p {
+  color: #555;
+  font-size: 0.85rem;
+}
+
+.pathway-footer {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 1rem;
+}
+/* --- Lesson & Pathway Styling --- */
+.pathway-page {
+  padding: 1.5rem;
+  text-align: center;
+  background: #e8faff;
+  min-height: 100vh;
+}
+
+.pathway-header h1 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #004b5c;
+  margin-bottom: 0.5rem;
+}
+
+.pathway-header img {
+  width: 90px;
+  height: 90px;
+  margin: 0.5rem auto;
+  display: block;
+}
+
+.progress-ring {
+  background: #dff8f2;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  line-height: 70px;
+  margin: 0.5rem auto;
+  color: #047857;
+  font-weight: bold;
+}
+
+.lesson-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.lesson-card {
+  background: white;
+  padding: 1rem;
+  border-radius: 15px;
+  text-align: left;
+  transition: transform 0.2s;
+}
+
+.lesson-card:hover {
+  transform: scale(1.02);
+}
+
+.lesson-card.locked {
+  opacity: 0.6;
+}
+
+.lesson-card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.lesson-card p {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.4rem;
+}
+
+.pathway-footer {
+  margin-top: 2rem;
+  font-size: 0.85rem;
+  color: #555;
+}
+.pathway-page {
+  max-width: 480px;
+  margin: 0 auto;
+  border-radius: 12px;
 }

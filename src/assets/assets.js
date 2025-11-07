@@ -37,26 +37,6 @@ import avatar_rabbit from "./avatars/avatar_rabbit.webp";
 import avatar_robot from "./avatars/avatar_robot.webp";
 import avatar_unicorn from "./avatars/avatar_unicorn.webp";
 
-// ============ BADGES ============
-import badge_book from "./badges/badge_book.webp";
-import badge_coin from "./badges/badge_coin.webp";
-import badge_crown from "./badges/badge_crown.webp";
-import badge_diamond from "./badges/badge_diamond.webp";
-import badge_globe from "./badges/badge_globe.webp";
-import badge_handshake from "./badges/badge_handshake.webp";
-import badge_hourglass from "./badges/badge_hourglass.webp";
-import badge_lantern from "./badges/badge_lantern.webp";
-import badge_laurel from "./badges/badge_laurel.webp";
-import badge_medal from "./badges/badge_medal.webp";
-import badge_puzzle from "./badges/badge_puzzle.webp";
-import badge_ribbon from "./badges/badge_ribbon.webp";
-import badge_scroll from "./badges/badge_scroll.webp";
-import badge_shield from "./badges/badge_shield.webp";
-import badge_star from "./badges/badge_star.webp";
-import badge_target from "./badges/badge_target.webp";
-import badge_torch from "./badges/badge_torch.webp";
-import badge_trophy from "./badges/badge_trophy.webp";
-
 // ============ CERTIFICATES ============
 import certificate_allahs_names from "./certificates/certificate_allahs_names.webp";
 import certificate_four_greatest_women from "./certificates/certificate_four_greatest_women.webp";
@@ -109,26 +89,6 @@ const assets = {
     avatar_rabbit,
     avatar_robot,
     avatar_unicorn,
-  },
-  badges: {
-    badge_book,
-    badge_coin,
-    badge_crown,
-    badge_diamond,
-    badge_globe,
-    badge_handshake,
-    badge_hourglass,
-    badge_lantern,
-    badge_laurel,
-    badge_medal,
-    badge_puzzle,
-    badge_ribbon,
-    badge_scroll,
-    badge_shield,
-    badge_star,
-    badge_target,
-    badge_torch,
-    badge_trophy,
   },
   certificates: {
     certificate_allahs_names,

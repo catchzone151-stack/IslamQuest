@@ -1,4 +1,4 @@
-import aqeedahData from "./paths/aqeedah_pillars.json";
+import aqeedahData from "../paths/aqeedah.jsx";
 
 const unlocked = [
   { id: "names-of-allah", title: "Names of Allah", progress: 0.35 },

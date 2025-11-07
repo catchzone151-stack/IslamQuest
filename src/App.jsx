@@ -1,88 +1,157 @@
+// src/App.jsx
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-// ✅ Safe imports – comment out if page not yet built
+// ✅ Import main pages
 import Home from "./pages/Home";
-import Revise from "./pages/Revise";
-import Challenge from "./pages/Challenge";
-import Friends from "./pages/Friends";
-import Profile from "./pages/Profile";
+import Pathway from "./pages/Pathway.jsx";
+import Lesson from "./pages/Lesson.jsx";
+import Challenge from "./pages/Challenge.jsx";
+import DailyChallenge from "./pages/DailyChallenge.jsx";
+import Friends from "./pages/Friends.jsx";
+import Profile from "./pages/Profile.jsx";
+import Revise from "./pages/Revise.jsx";
+import Login from "./pages/Login.jsx";
+import Aqeedah from "./paths/aqeedah.jsx";
+import QuizScreen from "./screens/QuizScreen.jsx";
+import CertificateScreen from "./screens/CertificateScreen.jsx";
 
-// 🆕 Added: import for Pathway page
-import Pathway from "./pages/Pathway";
+// ✅ Components & stores
+import BottomNav from "./components/BottomNav.jsx";
+import { useUserStore } from "./store/useUserStore";
 
-import BottomNav from "./components/BottomNav";
-import ScreenWrapper from "./components/ScreenWrapper";
+// ✅ Onboarding screens
+import BismillahScreen from "./onboarding/BismillahScreen.jsx";
+import SalaamScreen from "./onboarding/SalaamScreen.jsx";
+import NameScreen from "./onboarding/NameScreen.jsx";
+import AvatarScreen from "./onboarding/AvatarScreen.jsx";
 
-export default function App() {
+// ✅ Optional: temporary placeholder for future quiz
+function PlaceholderQuizPage() {
   return (
     <div
-      style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
+      style={{
+        minHeight: "100vh",
+        background:
+          "radial-gradient(circle at 20% 20%, rgba(10,15,30,1) 0%, rgba(3,6,20,1) 70%)",
+        color: "white",
+        padding: "16px",
+      }}
     >
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <ScreenWrapper>
-              <Home />
-            </ScreenWrapper>
-          }
-        />
-        <Route
-          path="/revise"
-          element={
-            <ScreenWrapper>
-              <Revise />
-            </ScreenWrapper>
-          }
-        />
-        <Route
-          path="/challenge"
-          element={
-            <ScreenWrapper>
-              <Challenge />
-            </ScreenWrapper>
-          }
-        />
-        <Route
-          path="/friends"
-          element={
-            <ScreenWrapper>
-              <Friends />
-            </ScreenWrapper>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ScreenWrapper>
-              <Profile />
-            </ScreenWrapper>
-          }
-        />
+      <div
+        style={{
+          fontSize: "0.8rem",
+          color: "#8b8b8b",
+          fontWeight: 500,
+          textTransform: "uppercase",
+          letterSpacing: "0.05em",
+          marginBottom: "8px",
+        }}
+      >
+        Quiz (Coming Soon)
+      </div>
 
-        {/* 🆕 NEW PATHWAY ROUTE */}
-        <Route
-          path="/pathway/:id"
-          element={
-            <ScreenWrapper>
-              <Pathway />
-            </ScreenWrapper>
-          }
-        />
+      <div
+        style={{
+          fontSize: "1rem",
+          fontWeight: 600,
+          lineHeight: 1.4,
+          background:
+            "linear-gradient(90deg, #fff 0%, #fff6d2 40%, #ffd98a 100%)",
+          WebkitBackgroundClip: "text",
+          color: "transparent",
+          marginBottom: "12px",
+        }}
+      >
+        You'll answer questions from this lesson for XP and coins.
+      </div>
 
-        {/* fallback if unknown path */}
-        <Route
-          path="*"
-          element={
-            <ScreenWrapper>
-              <Home />
-            </ScreenWrapper>
-          }
-        />
-      </Routes>
-
-      <BottomNav />
+      <div style={{ color: "#cfcfcf", fontSize: "0.9rem", lineHeight: 1.5 }}>
+        You tapped “Take Quiz 🎯”. This will become a scored quiz in shā’ Allāh.
+      </div>
     </div>
+  );
+}
+
+export default function App() {
+  const { hasOnboarded, isHydrated } = useUserStore();
+
+  // ✅ Wait until Zustand store is rehydrated (prevents onboarding redirect)
+  if (!isHydrated) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          background: "radial-gradient(circle at 20% 20%, #0a0f1e, #030614)",
+          color: "white",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <p>Loading your progress… 🌙</p>
+      </div>
+    );
+  }
+
+  return (
+    <BrowserRouter>
+      <div
+        style={{
+          background:
+            "radial-gradient(circle at 20% 20%, rgba(10,15,30,1) 0%, rgba(3,6,20,1) 70%)",
+          minHeight: "100vh",
+          color: "white",
+          paddingBottom: "90px", // space for BottomNav
+        }}
+      >
+        <Routes>
+          {!hasOnboarded ? (
+            <>
+              {/* ✅ ONBOARDING FLOW */}
+              <Route
+                path="/onboarding/bismillah"
+                element={<BismillahScreen />}
+              />
+              <Route path="/onboarding/salaam" element={<SalaamScreen />} />
+              <Route path="/onboarding/name" element={<NameScreen />} />
+              <Route path="/onboarding/avatar" element={<AvatarScreen />} />
+              {/* Fallback — always go to Bismillah if not onboarded */}
+              <Route path="*" element={<BismillahScreen />} />
+            </>
+          ) : (
+            <>
+              {/* ✅ MAIN APP ROUTES */}
+              <Route path="/" element={<Home />} />
+              <Route path="/aqeedah" element={<Aqeedah />} />
+              <Route path="/path/:pathId" element={<Pathway />} />
+              <Route
+                path="/path/:pathId/lesson/:lessonId"
+                element={<Lesson />}
+              />
+              <Route
+                path="/path/:pathId/quiz/:lessonId"
+                element={<QuizScreen />}
+              />
+              <Route
+                path="/path/:pathId/certificate"
+                element={<CertificateScreen />}
+              />
+              <Route path="/challenge" element={<Challenge />} />
+              <Route path="/daily" element={<DailyChallenge />} />
+              <Route path="/friends" element={<Friends />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/revise" element={<Revise />} />
+              <Route path="/login" element={<Login />} />
+              {/* fallback */}
+              <Route path="*" element={<Home />} />
+            </>
+          )}
+        </Routes>
+      </div>
+
+      {/* ✅ Persistent bottom navigation */}
+      {hasOnboarded && <BottomNav />}
+    </BrowserRouter>
   );
 }

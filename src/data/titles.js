@@ -1,0 +1,73 @@
+// src/data/titles.js
+export const titles = [
+  {
+    id: 1,
+    name: "Student of Knowledge",
+    requirement: "Complete your first lesson.",
+    color: "#f5e6c6",
+    cssClass: "title-tier-1",
+  },
+  {
+    id: 2,
+    name: "Seeker of Light",
+    requirement: "Complete three unique lessons.",
+    color: "linear-gradient(90deg, #FFD700, #FFA500)",
+    cssClass: "title-tier-2",
+  },
+  {
+    id: 3,
+    name: "Path Walker",
+    requirement: "Complete your first learning path.",
+    color: "#00a86b",
+    cssClass: "title-tier-3",
+  },
+  {
+    id: 4,
+    name: "Dedicated Learner",
+    requirement: "Study for seven days in a row.",
+    color: "#0066ff",
+    cssClass: "title-tier-4",
+  },
+  {
+    id: 5,
+    name: "Reflector",
+    requirement: "Write five reflections on lessons.",
+    color: "linear-gradient(90deg, #c0b3ff, #e6e0ff)",
+    cssClass: "title-tier-5",
+  },
+  {
+    id: 6,
+    name: "Path Finisher",
+    requirement: "Complete three full learning paths.",
+    color: "#b22222",
+    cssClass: "title-tier-6",
+  },
+  {
+    id: 7,
+    name: "Knowledge Seeker",
+    requirement: "Study for thirty days in a row.",
+    color: "linear-gradient(90deg, #FFD700, #FF8C00)",
+    cssClass: "title-tier-7",
+  },
+  {
+    id: 8,
+    name: "Student of Wisdom",
+    requirement: "Reflect on fifteen lessons.",
+    color: "linear-gradient(90deg, #e0ffff, #b0e0e6)",
+    cssClass: "title-tier-8",
+  },
+  {
+    id: 9,
+    name: "Scholar of Insight",
+    requirement: "Complete all beginner and intermediate paths.",
+    color: "linear-gradient(90deg, #008080, #d4af37)",
+    cssClass: "title-tier-9",
+  },
+  {
+    id: 10,
+    name: "Bearer of Knowledge",
+    requirement: "Complete every path and reflection.",
+    color: "#00ffff",
+    cssClass: "title-tier-10",
+  },
+];
