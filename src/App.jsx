@@ -12,7 +12,6 @@ import Friends from "./pages/Friends.jsx";
 import Profile from "./pages/Profile.jsx";
 import Revise from "./pages/Revise.jsx";
 import Login from "./pages/Login.jsx";
-import Aqeedah from "./paths/aqeedah.jsx";
 import QuizScreen from "./screens/QuizScreen.jsx";
 import CertificateScreen from "./screens/CertificateScreen.jsx";
 
@@ -123,7 +122,6 @@ export default function App() {
             <>
               {/* ✅ MAIN APP ROUTES */}
               <Route path="/" element={<Home />} />
-              <Route path="/aqeedah" element={<Aqeedah />} />
               <Route path="/path/:pathId" element={<Pathway />} />
               <Route
                 path="/path/:pathId/lesson/:lessonId"
