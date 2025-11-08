@@ -25,8 +25,11 @@ Preferred communication style: Simple, everyday language.
 
 **State Management**: 
 - Local state management using React hooks (useState, useEffect)
-- Custom global store hook (`useGameStore`) for game mechanics (XP, coins, streak)
+- Zustand stores for global state (`progressStore`, `userStore`, `titleStore`)
 - LocalStorage persistence for offline-first user progress
+  - Progress store key: `islamQuestProgress_v2` 
+  - User store key: `iq-user-v2`
+  - Version suffixes prevent old cached data from overriding new content
 - Future migration planned to Supabase for cloud sync
 
 ### Styling Architecture
@@ -44,14 +47,26 @@ Preferred communication style: Simple, everyday language.
 
 ### Data Architecture
 
-**Content Structure**: JSON-based lesson/quiz system
-- Learning paths stored as JSON files in `/src/data/paths/`
-- Each path contains lessons with paragraphs, references, and quizzes
-- Quiz types: Multiple choice (MCQ) and fill-in-the-blank
+**Content Structure**: Learning paths defined in progressStore
+- 14 learning paths total:
+  1. Names of Allah (10 lessons)
+  2. Foundations of Islam (12 lessons)
+  3. Stories of Prophets (8 lessons)
+  4. Life of Muhammad ﷺ (10 lessons)
+  5. Wives of the Prophet ﷺ (6 lessons)
+  6. Ten Promised Jannah (10 lessons)
+  7. Four Greatest Women (8 lessons)
+  8. Stories of the Companions (10 lessons)
+  9. Angels and Jinns (10 lessons)
+  10. The End Times (10 lessons)
+  11. The Grave (8 lessons)
+  12. Day of Judgement (10 lessons)
+  13. Hellfire (6 lessons)
+  14. Paradise (6 lessons)
+- All paths unlocked for launch (status: "available")
 - Progress tracking per path with completion percentages
 
 **Progression Model**:
-- Free lessons available (configurable per path)
 - XP and coin rewards for completing lessons
 - Streak system to encourage daily engagement
 - Certificate awards upon path completion

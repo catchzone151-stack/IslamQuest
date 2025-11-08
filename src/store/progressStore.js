@@ -2,7 +2,7 @@
 import { create } from "zustand";
 import { useTitleStore } from "./useTitleStore";
 
-const STORAGE_KEY = "islamQuestProgress";
+const STORAGE_KEY = "islamQuestProgress_v2";
 
 export const useProgressStore = create((set, get) => ({
   // 🪙 User progression base stats

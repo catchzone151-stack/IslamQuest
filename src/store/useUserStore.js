@@ -23,7 +23,7 @@ export const useUserStore = create(
       _setHydrated: () => set({ isHydrated: true }),
     }),
     {
-      name: "iq-user", // localStorage key
+      name: "iq-user-v2", // localStorage key
       storage: createJSONStorage(() => localStorage),
       // when the store rehydrates from storage, flip isHydrated to true
       onRehydrateStorage: () => (state, error) => {
