@@ -1,19 +1,18 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import namesOfAllahLessons from "../data/lessons/namesOfAllahLessons";
-import namesOfAllahLessonsFull from "../data/lessons/namesOfAllahLessonsFull";
+import { getLessonsForPath } from "../data/lessonLoader";
 import lionMascot from "../assets/mascots/mascot_zayd_teaching.webp";
 
 export default function Lesson() {
   const { pathId, lessonId } = useParams();
   const navigate = useNavigate();
 
-  // Match by title instead of ID — ensures correct lesson opens
-  const shortLesson = namesOfAllahLessons.find(
+  // Get lessons for the current path
+  const pathLessons = getLessonsForPath(pathId);
+  
+  // Find the lesson by ID
+  const lesson = pathLessons.find(
     (l) => l.id === parseInt(lessonId, 10)
-  );
-  const lesson = namesOfAllahLessonsFull.find(
-    (l) => l.title === shortLesson?.title
   );
 
   function handleBack() {

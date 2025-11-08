@@ -4,6 +4,20 @@
 
 Islam Quest is a gamified Islamic learning platform built as a mobile-first web application. It provides an interactive educational experience where users progress through learning paths covering Islamic beliefs, stories of prophets, and foundational knowledge. The app features a mascot (Zayd), achievement systems, customizable avatars, and quiz-based assessments to reinforce learning.
 
+## Recent Changes
+
+### November 8, 2025 - Dynamic Lesson System Implementation
+- **Problem Fixed**: Lessons were hardcoded to only show "Names of Allah" content regardless of which learning path was selected
+- **Solution Implemented**:
+  - Created centralized lesson data loader (`src/data/lessonLoader.js`) that maps pathId to correct lesson data
+  - Created lesson data files for all 14 learning paths (previously only path 1 had content)
+  - Updated `Pathway.jsx` to dynamically load lessons based on pathId
+  - Updated `Lesson.jsx` to dynamically fetch correct lesson content based on pathId
+- **Files Created**: 
+  - `src/data/lessonLoader.js` (central routing)
+  - 13 new lesson data files for paths 2-14 in `src/data/lessons/`
+- **Result**: All 14 learning paths now display correct, unique lesson content without "lesson not found" errors
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.

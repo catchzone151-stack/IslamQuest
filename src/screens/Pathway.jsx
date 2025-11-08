@@ -3,9 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useProgressStore } from "../store/progressStore";
 import { useUserStore } from "../store/useUserStore";
 
-// Lesson data
-import namesOfAllahLessonsFull from "../data/lessons/namesOfAllahLessonsFull.js";
-
+// Lesson data loader
+import { getLessonsForPath } from "../data/lessonLoader.js";
 
 // Mascot (book / study)
 import ZaydStudy from "../assets/mascots/mascot_zayd_reading.webp";
@@ -25,8 +24,7 @@ export default function Pathway() {
   );
 
   const baseLessons = useMemo(() => {
-    if (numericPathId === 1) return namesOfAllahLessonsFull;
-    return [];
+    return getLessonsForPath(numericPathId);
   }, [numericPathId]);
 
   // Fallback if path/lessons not wired yet
