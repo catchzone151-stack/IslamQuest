@@ -1,0 +1,47 @@
+[
+  {
+    "lessonId": 1,
+    "questions": [
+      {
+        "question": "What does the name 'Allah' mean?",
+        "options": [
+          "The One True God",
+          "The Most Merciful",
+          "The Provider",
+          "The Creator"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "Which of these is NOT a meaning of 'Allah'?",
+        "options": [
+          "The Only Deity Worthy of Worship",
+          "The Source of Peace",
+          "The Son of Adam",
+          "The Eternal One"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How often should we remember the name of Allah?",
+        "options": [
+          "Only on Fridays",
+          "Once a day",
+          "Often, in every action",
+          "Only in Ramadan"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Why do Muslims start actions saying 'Bismillah'?",
+        "options": [
+          "To ask for blessings and guidance",
+          "Because it is tradition only",
+          "To earn money",
+          "To impress others"
+        ],
+        "answer": 0
+      }
+    ]
+  }
+]

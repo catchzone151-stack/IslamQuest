@@ -13,7 +13,6 @@ import Profile from "./pages/Profile.jsx";
 import Revise from "./pages/Revise.jsx";
 import Login from "./pages/Login.jsx";
 import QuizScreen from "./screens/QuizScreen.jsx";
-import CertificateScreen from "./screens/CertificateScreen.jsx";
 
 // ✅ Components & stores
 import BottomNav from "./components/BottomNav.jsx";
@@ -131,10 +130,7 @@ export default function App() {
                 path="/path/:pathId/quiz/:lessonId"
                 element={<QuizScreen />}
               />
-              <Route
-                path="/path/:pathId/certificate"
-                element={<CertificateScreen />}
-              />
+
               <Route path="/challenge" element={<Challenge />} />
               <Route path="/daily" element={<DailyChallenge />} />
               <Route path="/friends" element={<Friends />} />

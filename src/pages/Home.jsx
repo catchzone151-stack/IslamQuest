@@ -102,9 +102,9 @@ export default function Home() {
    * Order aligns with your 14 paths in progressStore.
    */
   const gradients = [
-    "linear-gradient(145deg, #004e92, #000428)", // Names of Allah
+    "linear-gradient(145deg, #e8c87e, #d4a74f)", // Names of Allah
     "linear-gradient(145deg, #2a5298, #1e3c72)", // Foundations of Islam
-    "linear-gradient(145deg, #009fff, #ec2f4b)", // Stories of Prophets
+    "linear-gradient(145deg, #ff758c, #ff7eb3)", // Stories of Prophets
     "linear-gradient(145deg, #00a859, #004d26)", // Life of Muhammad ﷺ
     "linear-gradient(145deg, #cc6600, #663300)", // Wives of the Prophet ﷺ
     "linear-gradient(145deg, #d91e36, #60001a)", // Ten Promised Jannah
@@ -453,8 +453,7 @@ export default function Home() {
                     style={{
                       width: `${percent}%`,
                       height: "100%",
-                      background:
-                        "linear-gradient(90deg, #ffd85a, #ffb700)",
+                      background: "linear-gradient(90deg, #ffd85a, #ffb700)",
                       transition: "width 0.3s ease",
                     }}
                   />

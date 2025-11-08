@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "title": "The Name Allah (الله)",
+    "lockedUntil": null,
+    "requiresPurchase": false
+  },
+  {
+    "id": 2,
+    "title": "The Name Ar-Rahman (الرحمن)",
+    "lockedUntil": 1,
+    "requiresPurchase": false
+  },
+  {
+    "id": 3,
+    "title": "The Name Ar-Raheem (الرحيم)",
+    "lockedUntil": 2,
+    "requiresPurchase": false
+  }
+]
