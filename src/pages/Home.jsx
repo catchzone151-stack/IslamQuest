@@ -1,28 +1,21 @@
 /**
- * IslamQuest — Home Screen (Premium Polished Build, Phase 1 Final Integration)
+ * IslamQuest — Home Screen (Premium Polished Build, Updated for 14 Paths)
  * ---------------------------------------------------------------------------
  * This file preserves your full visual design, styling, layout, glow,
  * animations, header, mascot, Daily Quest card, carousel, dev slider,
  * etc. Nothing in the look/feel is removed.
  *
- * Updates in this version:
+ * Changes in this version:
  *
- * 1) Paths now come from progressStore.js (dynamic), not hardcoded arrays.
- *    - paths[i].status === "available"  -> clickable, shows progress bar
- *    - paths[i].status === "coming_soon" -> non-clickable, shows "Coming soon, in shā’ Allāh"
- *
- * 2) English path titles are used (from the updated store you just installed).
- *    We still preserve "Prophet Muhammad ﷺ" with ﷺ.
- *
- * 3) XP / Coins / Streak are now display-only. No tap-to-increase.
- *    You asked for them to stay static (no dev cheating on click).
- *
- * 4) Daily Quest button now uses updateStreak() from the store instead of incrementStreak().
- *
- * 5) Bottom spacing fix is kept.
- *
- * IMPORTANT:
- * - You must have the updated progressStore.js (English titles version).
+ * 1) Uses `paths` from progressStore.js (14 unlocked learning paths).
+ * 2) All paths are clickable (status: "available" assumed for launch).
+ * 3) Each path card has its own gradient background (on-theme).
+ * 4) Progress bar:
+ *    - Gradient gold fill
+ *    - Uses `p.progress` from store (0–1)
+ *    - Shows `completedLessons / totalLessons Lessons`
+ *    - Soft gold pulse glow when full (progress >= 1).
+ * 5) Daily Quest uses triggerDailyStudy() from store.
  */
 
 import { useState, useEffect, useRef } from "react";
@@ -44,7 +37,6 @@ export default function Home() {
   const navigate = useNavigate();
   const { name } = useUserStore();
 
-
   // Horizontal scroll ref for the learning path cards
   const carouselRef = useRef(null);
 
@@ -56,8 +48,8 @@ export default function Home() {
     xp,
     coins,
     streak,
-    updateStreak,
-    paths, // dynamic list of 12 paths from progressStore.js
+    paths, // dynamic list from progressStore.js
+    triggerDailyStudy, // daily streak handler
   } = useProgressStore();
 
   /**
@@ -98,25 +90,33 @@ export default function Home() {
 
   /**
    * On click of a path card:
-   * - If available, navigate to lesson route
-   * - If coming soon, show alert
-   *
-   * NOTE:
-   * You already had special-case routing for "Six Pillars of Belief"
-   * going to /path/aqeedah-pillars. We keep that logic.
+   * - All paths are unlocked/available for launch
+   * - Navigate to /pathway/:id
    */
   const handlePathClick = (p) => {
-    if (p.status === "available") {
-      // match your previous special routing
-      if (p.title === "Six Pillars of Belief") {
-        navigate("/path/aqeedah-pillars");
-      } else {
-        navigate(`/pathway/${p.id}`);
-      }
-    } else {
-      alert(`${p.title} — Coming soon, in shā’ Allāh!`);
-    }
+    navigate(`/pathway/${p.id}`);
   };
+
+  /**
+   * Card gradients — one per learning path (index-based)
+   * Order aligns with your 14 paths in progressStore.
+   */
+  const gradients = [
+    "linear-gradient(145deg, #004e92, #000428)", // Names of Allah
+    "linear-gradient(145deg, #2a5298, #1e3c72)", // Foundations of Islam
+    "linear-gradient(145deg, #009fff, #ec2f4b)", // Stories of Prophets
+    "linear-gradient(145deg, #00a859, #004d26)", // Life of Muhammad ﷺ
+    "linear-gradient(145deg, #cc6600, #663300)", // Wives of the Prophet ﷺ
+    "linear-gradient(145deg, #d91e36, #60001a)", // Ten Promised Jannah
+    "linear-gradient(145deg, #9c27b0, #3e0069)", // Four Greatest Women
+    "linear-gradient(145deg, #26c6da, #004d66)", // Stories of the Companions
+    "linear-gradient(145deg, #ff9800, #7a3600)", // Angels and Jinns
+    "linear-gradient(145deg, #607d8b, #1a252f)", // The End Times
+    "linear-gradient(145deg, #6a11cb, #2575fc)", // The Grave
+    "linear-gradient(145deg, #2e8b57, #0d2614)", // Day of Judgement
+    "linear-gradient(145deg, #b31217, #240b36)", // Hellfire
+    "linear-gradient(145deg, #f7971e, #ffd200)", // Paradise
+  ];
 
   return (
     <div
@@ -126,10 +126,8 @@ export default function Home() {
         background: "linear-gradient(to bottom, #081426, #0e2340)",
         color: "white",
         padding: 16,
-
         // bottom safe space above nav
         paddingBottom: "calc(env(safe-area-inset-bottom) + 30px)",
-
         overflowX: "hidden",
       }}
     >
@@ -147,7 +145,7 @@ export default function Home() {
           columnGap: 8,
         }}
       >
-        {/* Left cluster: Streak + XP (CLEAN, numbers below) */}
+        {/* Left cluster: Streak + XP */}
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           {[
             { icon: ui_streak, label: "Streak", value: streak },
@@ -164,10 +162,8 @@ export default function Home() {
             >
               <img
                 src={icon}
-                alt="Stat Icon"
-                style={{
-                  width: 40,
-                }}
+                alt={i === 0 ? "Streak" : "XP"}
+                style={{ width: 40 }}
               />
               <span
                 style={{
@@ -175,10 +171,8 @@ export default function Home() {
                   fontSize: "0.72rem",
                   fontWeight: 600,
                   color: "#ffd85a",
-                  
                 }}
               >
-
                 {typeof value === "number" ? value.toLocaleString() : value}
               </span>
             </div>
@@ -201,7 +195,6 @@ export default function Home() {
           />
         </div>
 
-
         {/* Right cluster: Coins + Shield */}
         <div
           style={{
@@ -211,7 +204,7 @@ export default function Home() {
             gap: 12,
           }}
         >
-          {/* Coins (CLEAN DISPLAY) */}
+          {/* Coins */}
           <div
             style={{
               display: "flex",
@@ -219,13 +212,7 @@ export default function Home() {
               alignItems: "center",
             }}
           >
-            <img
-              src={ui_coin}
-              alt="Coins"
-              style={{
-                width: 40,
-              }}
-            />
+            <img src={ui_coin} alt="Coins" style={{ width: 40 }} />
             <span
               style={{
                 marginTop: 4,
@@ -263,18 +250,18 @@ export default function Home() {
                 cursor: "pointer",
                 transition: "transform 0.15s ease",
               }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.transform = "scale(1.07)")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.transform = "scale(1)")
-              }
-              onMouseDown={(e) =>
-                (e.currentTarget.style.transform = "scale(0.92)")
-              }
-              onMouseUp={(e) =>
-                (e.currentTarget.style.transform = "scale(1.07)")
-              }
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.07)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+              }}
+              onMouseDown={(e) => {
+                e.currentTarget.style.transform = "scale(0.92)";
+              }}
+              onMouseUp={(e) => {
+                e.currentTarget.style.transform = "scale(1.07)";
+              }}
             />
             <span
               style={{
@@ -316,14 +303,11 @@ export default function Home() {
         }}
       >
         As-salāmu ʿalaykum, {name || "Explorer"} 👋
-
       </p>
 
       {/*
        * ===============================================================
        * DAILY QUEST CARD
-       * (includes ZaydChallenge bounce)
-       * We changed incrementStreak() -> updateStreak() from the store.
        * ===============================================================
        */}
       <div
@@ -346,9 +330,9 @@ export default function Home() {
 
           <button
             onClick={() => {
-              // update streak using the store
-              updateStreak();
-              // go to the challenge screen you already have
+              // update streak + XP bonus in store
+              triggerDailyStudy();
+              // go to the challenge screen
               navigate("/challenge");
             }}
             style={{
@@ -361,8 +345,12 @@ export default function Home() {
               cursor: "pointer",
               transition: "all 0.2s",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "#ffdd33")}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "gold")}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "#ffdd33";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "gold";
+            }}
           >
             Let’s Go!
           </button>
@@ -386,18 +374,6 @@ export default function Home() {
       {/*
        * ===============================================================
        * LEARNING PATHS CAROUSEL
-       * This now uses `paths` from the store instead of hardcoded arrays.
-       *
-       * paths[i] format (from the store you installed):
-       * {
-       *    id: number,
-       *    title: "Names of Allah" | ...,
-       *    progress: 0.35,
-       *    status: "available" | "coming_soon"
-       * }
-       *
-       * - available     -> blue gradient card, clickable, shows progress bar
-       * - coming_soon   -> dark card, not clickable, shows "Coming soon, in shā’ Allāh"
        * ===============================================================
        */}
       <div style={{ position: "relative", padding: "0 0 12px" }}>
@@ -411,102 +387,111 @@ export default function Home() {
             scrollBehavior: "smooth",
           }}
         >
-          {paths.map((p) => (
-            <div
-              key={p.id}
-              onClick={() => handlePathClick(p)}
-              style={{
-                minWidth: 160,
-                height: 230,
-                background:
-                  p.status === "available"
-                    ? "linear-gradient(145deg, #006d9c, #00a0c8)"
-                    : "linear-gradient(145deg, #1a1a1a, #2a2a2a)",
-                borderRadius: 18,
-                position: "relative",
-                color: "#fff",
-                textAlign: "center",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                cursor: p.status === "available" ? "pointer" : "default",
-                transition: "transform 0.2s",
-              }}
-              onMouseEnter={(e) => {
-                if (p.status === "available") {
-                  e.currentTarget.style.transform = "scale(1.05)";
-                }
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "scale(1)";
-              }}
-            >
-              {/* Title of the path */}
-              <h3
+          {paths.map((p, index) => {
+            const gradient =
+              gradients[index] || gradients[index % gradients.length];
+            const progress = typeof p.progress === "number" ? p.progress : 0;
+            const percent = Math.min(100, Math.max(0, progress * 100));
+            const completed = p.completedLessons || 0;
+            const total = p.totalLessons || 0;
+            const isFull = total > 0 && completed >= total;
+
+            return (
+              <div
+                key={p.id}
+                onClick={() => handlePathClick(p)}
                 style={{
-                  margin: "10px 0 4px",
-                  fontSize: "1.05rem",
+                  minWidth: 160,
+                  height: 230,
+                  background: gradient,
+                  borderRadius: 18,
+                  position: "relative",
+                  color: "#fff",
+                  textAlign: "center",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  cursor: "pointer",
+                  transition: "transform 0.2s",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "scale(1.05)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "scale(1)";
                 }}
               >
-                {p.title}
-              </h3>
+                {/* Title of the path */}
+                <h3
+                  style={{
+                    margin: "10px 0 4px",
+                    fontSize: "1.05rem",
+                  }}
+                >
+                  {p.title}
+                </h3>
 
-              {/* If unlocked/available, show progress bar. Else show coming soon text. */}
-              {p.status === "available" ? (
+                {/* Gradient Progress Bar */}
                 <div
                   style={{
-                    height: 8,
-                    width: "60%",
+                    height: 10,
+                    width: "65%",
                     background: "#0a1a2f",
                     borderRadius: 10,
                     overflow: "hidden",
-                    marginTop: 4,
+                    marginTop: 6,
+                    boxShadow: isFull
+                      ? "0 0 16px rgba(255,215,0,0.6)"
+                      : "inset 0 0 4px rgba(255,255,255,0.3)",
+                    animation: isFull
+                      ? "barPulse 3s ease-in-out infinite"
+                      : "none",
                   }}
                 >
                   <div
                     style={{
-                      width: `${p.progress * 100}%`,
+                      width: `${percent}%`,
                       height: "100%",
-                      background: "gold",
+                      background:
+                        "linear-gradient(90deg, #ffd85a, #ffb700)",
+                      transition: "width 0.3s ease",
                     }}
                   />
                 </div>
-              ) : (
-                <p
+
+                {/* Lesson Counter */}
+                <div
                   style={{
-                    fontSize: "0.8rem",
-                    color: "#bbb",
-                    marginTop: 6,
-                    animation: "soonGlow 2.8s infinite ease-in-out",
-                    textAlign: "center",
-                    padding: "0 8px",
-                    lineHeight: 1.3,
+                    fontSize: "0.75rem",
+                    color: "#e8e8e8",
+                    marginTop: 4,
+                    fontWeight: 600,
                   }}
                 >
-                  Coming soon, in shā’ Allāh
-                </p>
-              )}
+                  {completed} / {total} Lessons
+                </div>
 
-              {/* Paw print badge, pulsing */}
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: 18,
-                  width: 38,
-                  height: 38,
-                  borderRadius: "50%",
-                  background: "rgba(255,215,0,0.3)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  animation: "pawPulse 2.2s infinite ease-in-out",
-                }}
-              >
-                <span style={{ fontSize: 22 }}>🐾</span>
+                {/* Paw print badge, pulsing */}
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: 18,
+                    width: 38,
+                    height: 38,
+                    borderRadius: "50%",
+                    background: "rgba(255,215,0,0.3)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    animation: "pawPulse 2.2s infinite ease-in-out",
+                  }}
+                >
+                  <span style={{ fontSize: 22 }}>🐾</span>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -545,8 +530,6 @@ export default function Home() {
       {/*
        * ===============================================================
        * DEV SLIDER / TEST NAV CONTROL
-       * You said to keep this "visible for QA during development".
-       * We keep it exactly.
        * ===============================================================
        */}
       <div
@@ -600,7 +583,6 @@ export default function Home() {
       {/*
        * ===============================================================
        * INLINE CSS (keyframes, shimmer, pulses, glow)
-       * All exactly preserved from your premium polished build.
        * ===============================================================
        */}
       <style>{`
@@ -611,6 +593,15 @@ export default function Home() {
           color: gold;
         }
 
+        .page-transition {
+          animation: fadeSlideIn 520ms cubic-bezier(.16,.84,.44,1) both;
+        }
+
+        @keyframes fadeSlideIn {
+          from { opacity: 0; transform: translateY(12px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
         @keyframes bounceYSmooth {
           0% { transform: translateY(0) scale(1); }
           25% { transform: translateY(-12px) scale(1.02); }
@@ -619,18 +610,32 @@ export default function Home() {
           100% { transform: translateY(0) scale(1); }
         }
 
-        .page-transition {
-          animation: fadeSlideIn 520ms cubic-bezier(.16,.84,.44,1) both;
+        @keyframes pawPulse {
+          0% { transform: scale(1); opacity: 0.9; }
+          50% { transform: scale(1.15); opacity: 1; }
+          100% { transform: scale(1); opacity: 0.9; }
         }
-        @keyframes fadeSlideIn {
-          from { opacity: 0; transform: translateY(12px); }
-          to { opacity: 1; transform: translateY(0); }
+
+        @keyframes barPulse {
+          0% { box-shadow: 0 0 10px rgba(255,215,0,0.3); }
+          50% { box-shadow: 0 0 22px rgba(255,215,0,0.8); }
+          100% { box-shadow: 0 0 10px rgba(255,215,0,0.3); }
+        }
+
+        @keyframes shieldGlow {
+          0% { box-shadow: 0 0 14px rgba(255,215,0,0.6); }
+          100% { box-shadow: 0 0 24px rgba(255,215,0,0.9); }
         }
 
         ::-webkit-scrollbar { height: 6px; }
-        ::-webkit-scrollbar-thumb { background: rgba(255,215,0,0.6); border-radius: 3px; }
-        ::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
-        /* FORCE SHARP TEXT ON MOBILE */
+        ::-webkit-scrollbar-thumb {
+          background: rgba(255,215,0,0.6);
+          border-radius: 3px;
+        }
+        ::-webkit-scrollbar-track {
+          background: rgba(255,255,255,0.05);
+        }
+
         html, body, * {
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
@@ -641,7 +646,6 @@ export default function Home() {
           image-rendering: -webkit-optimize-contrast;
           backface-visibility: hidden;
         }
-
       `}</style>
     </div>
   );

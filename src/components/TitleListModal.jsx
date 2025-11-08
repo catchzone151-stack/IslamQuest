@@ -9,6 +9,19 @@ export default function TitleListModal({ isOpen, onClose }) {
 
   if (!isOpen) return null;
 
+  const tierColours = {
+    1: "#f5e6c6",
+    2: "#ffd700",
+    3: "#00a86b",
+    4: "#0066ff",
+    5: "#b0c3ff",
+    6: "#b22222",
+    7: "#ffbf00",
+    8: "#e0ffff",
+    9: "#00b080",
+    10: "#ffffff",
+  };
+
   return (
     <div className="title-modal-backdrop" onClick={onClose}>
       <div
@@ -39,6 +52,8 @@ export default function TitleListModal({ isOpen, onClose }) {
         <div className="title-list">
           {titles.map((t) => {
             const unlocked = t.id <= currentTier;
+            const textColour = tierColours[t.id] || "#ffffff";
+
             return (
               <div
                 key={t.id}
@@ -61,7 +76,10 @@ export default function TitleListModal({ isOpen, onClose }) {
                   className="title-name"
                   style={{
                     fontWeight: 600,
-                    color: unlocked ? "gold" : "#ccc",
+                    color: textColour,
+                    textShadow: unlocked
+                      ? "0 0 6px rgba(255,255,255,0.4)"
+                      : "none",
                   }}
                 >
                   {t.name}
@@ -73,7 +91,7 @@ export default function TitleListModal({ isOpen, onClose }) {
                   className="title-req"
                   style={{
                     fontSize: "0.85rem",
-                    color: "white",
+                    color: "#ffffff",
                     marginTop: 4,
                   }}
                 >

@@ -2,61 +2,53 @@
 import { create } from "zustand";
 import { useTitleStore } from "./useTitleStore";
 
-
 const STORAGE_KEY = "islamQuestProgress";
-const SIX_PILLARS_PATH_TITLE = "Six Pillars of Belief";
-const SIX_PILLARS_TOTAL_LESSONS = 6;
 
 export const useProgressStore = create((set, get) => ({
+  // 🪙 User progression base stats
   xp: 0,
   coins: 0,
-
-  // ✅ Streak system
   streak: 0,
   lastStudyDate: null,
-  freezeTokens: 1, // max 1 token
-
-  // ✅ XP multiplier % (0/10/20/30/50)
+  freezeTokens: 1,
   xpMultiplier: 0,
-
   level: 1,
   lastLogin: null,
   avatar: "default",
   displayName: "Student of Knowledge",
-
-  // ✅ Removed badges entirely
   certificates: [],
   lessonStates: {},
 
-  // ✅ Paths (for lesson progress)
+  // 🌙 Learning Paths (all unlocked for launch)
   paths: [
-    { id: 1, title: "Names of Allah", progress: 0.35, status: "available" },
-    { id: 2, title: SIX_PILLARS_PATH_TITLE, progress: 0.2, status: "available" },
-    { id: 3, title: "Stories of Prophets", progress: 0.1, status: "available" },
-    { id: 4, title: "Life of Muhammad ﷺ", progress: 0.08, status: "available" },
-    { id: 5, title: "Ten Promised Paradise", progress: 0, status: "available" },
-    { id: 6, title: "Four Greatest Women", progress: 0, status: "available" },
-    { id: 7, title: "Minor Signs", progress: 0, status: "coming_soon" },
-    { id: 8, title: "Major Signs", progress: 0, status: "coming_soon" },
-    { id: 9, title: "The Grave", progress: 0, status: "coming_soon" },
-    { id: 10, title: "Day of Judgement", progress: 0, status: "coming_soon" },
-    { id: 11, title: "Hellfire", progress: 0, status: "coming_soon" },
-    { id: 12, title: "Paradise", progress: 0, status: "coming_soon" },
+    { id: 1, title: "Names of Allah", progress: 0.35, totalLessons: 10, completedLessons: 3, status: "available" },
+    { id: 2, title: "Foundations of Islam", progress: 0.1, totalLessons: 12, completedLessons: 1, status: "available" },
+    { id: 3, title: "Stories of Prophets", progress: 0.08, totalLessons: 8, completedLessons: 1, status: "available" },
+    { id: 4, title: "Life of Muhammad ﷺ", progress: 0.05, totalLessons: 10, completedLessons: 0, status: "available" },
+    { id: 5, title: "Wives of the Prophet ﷺ", progress: 0, totalLessons: 6, completedLessons: 0, status: "available" },
+    { id: 6, title: "Ten Promised Jannah", progress: 0, totalLessons: 10, completedLessons: 0, status: "available" },
+    { id: 7, title: "Four Greatest Women", progress: 0, totalLessons: 8, completedLessons: 0, status: "available" },
+    { id: 8, title: "Stories of the Companions", progress: 0, totalLessons: 10, completedLessons: 0, status: "available" },
+    { id: 9, title: "Angels and Jinns", progress: 0, totalLessons: 10, completedLessons: 0, status: "available" },
+    { id: 10, title: "The End Times", progress: 0, totalLessons: 10, completedLessons: 0, status: "available" },
+    { id: 11, title: "The Grave", progress: 0, totalLessons: 8, completedLessons: 0, status: "available" },
+    { id: 12, title: "Day of Judgement", progress: 0, totalLessons: 10, completedLessons: 0, status: "available" },
+    { id: 13, title: "Hellfire", progress: 0, totalLessons: 6, completedLessons: 0, status: "available" },
+    { id: 14, title: "Paradise", progress: 0, totalLessons: 6, completedLessons: 0, status: "available" },
   ],
 
-  // ✅ Save to localStorage
+  // 🧠 Save and load progress
   saveProgress: () => {
     const data = get();
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   },
 
-  // ✅ Load from localStorage
   loadProgress: () => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) set(JSON.parse(saved));
   },
 
-  // ✅ Duolingo-style daily streak
+  // 🌙 Daily Streak Logic
   triggerDailyStudy: () => {
     const today = new Date().toDateString();
     const { lastStudyDate, streak, freezeTokens } = get();
@@ -84,7 +76,7 @@ export const useProgressStore = create((set, get) => ({
     get().saveProgress();
   },
 
-  // ✅ XP multiplier calculation
+  // ⭐ XP multiplier by streak
   calculateXPMultiplier: () => {
     const streak = get().streak;
     let bonus = 0;
@@ -95,7 +87,7 @@ export const useProgressStore = create((set, get) => ({
     set({ xpMultiplier: bonus });
   },
 
-  // ✅ XP handling
+  // 🪙 XP and Coins
   addXP: (amount) => {
     const { xp, xpMultiplier } = get();
     const bonus = Math.round((amount * xpMultiplier) / 100);
@@ -106,13 +98,12 @@ export const useProgressStore = create((set, get) => ({
     get().saveProgress();
   },
 
-  // ✅ Coins handling
   addCoins: (amount) => {
     set((s) => ({ coins: s.coins + amount }));
     get().saveProgress();
   },
 
-  // ✅ Certificates
+  // 🏆 Certificates
   earnCertificate: (id, title) => {
     const { certificates } = get();
     if (!certificates.some((c) => c.id === id)) {
@@ -126,30 +117,32 @@ export const useProgressStore = create((set, get) => ({
     }
   },
 
-  // ✅ Update path progress
-  setPathProgress: (pathId, ratio) => {
+  // 📘 Set and update lesson progress
+  setPathProgress: (pathId, completedLessons, totalLessons) => {
     const { paths } = get();
+    const ratio = totalLessons > 0 ? completedLessons / totalLessons : 0;
     const updated = paths.map((p) =>
-      p.id === pathId ? { ...p, progress: ratio } : p
+      p.id === pathId
+        ? {
+            ...p,
+            completedLessons,
+            totalLessons,
+            progress: ratio,
+          }
+        : p
     );
     set({ paths: updated });
     get().saveProgress();
   },
 
-  // ✅ Full lesson reward logic (no badges)
-  applyQuizResults: (
-    payload,
-    pathId,
-    lessonId,
-    totalLessons = SIX_PILLARS_TOTAL_LESSONS
-  ) => {
+  // ✅ Record quiz completion and update path progress
+  applyQuizResults: (payload, pathId, lessonId) => {
     if (!payload) return;
     const { xp, coins } = payload;
     if (xp) get().addXP(xp);
     if (coins) get().addCoins(coins);
-    
 
-    // Update lesson states
+    // mark lesson as passed
     set((state) => {
       const lessonStates = { ...(state.lessonStates || {}) };
       const pathState = { ...(lessonStates[pathId] || {}) };
@@ -158,20 +151,20 @@ export const useProgressStore = create((set, get) => ({
       return { lessonStates };
     });
 
-    // Update progress
+    // count completed
+    const path = get().paths.find((x) => x.id === pathId);
     const passedCount = Object.values(get().lessonStates[pathId] || {}).filter(
       (x) => x.passed
     ).length;
-    const ratio = Math.min(1, passedCount / totalLessons);
 
-    const progressPathId = (
-      get().paths.find((x) => x.title === SIX_PILLARS_PATH_TITLE) || {}
-    ).id;
-    if (progressPathId) get().setPathProgress(progressPathId, ratio);
+    const ratio =
+      path && path.totalLessons > 0
+        ? Math.min(1, passedCount / path.totalLessons)
+        : 0;
 
-    // Auto-award certificate if completed
-    if (ratio === 1)
-      get().earnCertificate(pathId, "Completed: " + SIX_PILLARS_PATH_TITLE);
+    get().setPathProgress(pathId, passedCount, path ? path.totalLessons : 0);
+
+    if (ratio === 1) get().earnCertificate(pathId, "Completed: " + path.title);
 
     get().saveProgress();
   },
