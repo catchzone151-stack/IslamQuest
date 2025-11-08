@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // ✅ Import main pages
 import Home from "./pages/Home";
-import Pathway from "./pages/Pathway.jsx";
+import Pathway from "./screens/Pathway.jsx";
 import Lesson from "./pages/Lesson.jsx";
 import Challenge from "./pages/Challenge.jsx";
 import DailyChallenge from "./pages/DailyChallenge.jsx";
@@ -122,14 +122,8 @@ export default function App() {
               {/* ✅ MAIN APP ROUTES */}
               <Route path="/" element={<Home />} />
               <Route path="/path/:pathId" element={<Pathway />} />
-              <Route
-                path="/path/:pathId/lesson/:lessonId"
-                element={<Lesson />}
-              />
-              <Route
-                path="/path/:pathId/quiz/:lessonId"
-                element={<QuizScreen />}
-              />
+              <Route path="/path/:pathId/lesson/:lessonId" element={<Lesson />} />
+              <Route path="/path/:pathId/quiz/:lessonId" element={<QuizScreen />} />
 
               <Route path="/challenge" element={<Challenge />} />
               <Route path="/daily" element={<DailyChallenge />} />
@@ -137,6 +131,7 @@ export default function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/revise" element={<Revise />} />
               <Route path="/login" element={<Login />} />
+
               {/* fallback */}
               <Route path="*" element={<Home />} />
             </>

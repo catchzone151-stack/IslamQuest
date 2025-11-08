@@ -94,7 +94,8 @@ export default function Home() {
    * - Navigate to /pathway/:id
    */
   const handlePathClick = (p) => {
-    navigate(`/pathway/${p.id}`);
+    navigate(`/path/${p.id}`);
+
   };
 
   /**

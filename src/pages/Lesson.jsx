@@ -1,22 +1,24 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import namesOfAllahLessons from "../data/lessons/namesOfAllahLessons";
+import namesOfAllahLessonsFull from "../data/lessons/namesOfAllahLessonsFull";
 import lionMascot from "../assets/mascots/mascot_zayd_teaching.webp";
 
 export default function Lesson() {
   const { pathId, lessonId } = useParams();
   const navigate = useNavigate();
-  const index = parseInt(lessonId, 10);
 
-  // Retrieve correct lesson from the correct path
-  const lessons = [];
-  const lesson = lessons[index];
+  // Match by title instead of ID — ensures correct lesson opens
+  const shortLesson = namesOfAllahLessons.find(
+    (l) => l.id === parseInt(lessonId, 10)
+  );
+  const lesson = namesOfAllahLessonsFull.find(
+    (l) => l.title === shortLesson?.title
+  );
 
   function handleBack() {
-    if (pathId) {
-      navigate(`/path/${pathId}`);
-    } else {
-      navigate(-1);
-    }
+    if (pathId) navigate(`/path/${pathId}`);
+    else navigate(-1);
   }
 
   if (!lesson) {
@@ -50,7 +52,6 @@ export default function Lesson() {
           style={{
             fontSize: "1rem",
             fontWeight: 600,
-            lineHeight: 1.3,
             background:
               "linear-gradient(90deg,#fff 0%,#fff6d2 40%,#ffd88a 100%)",
             WebkitBackgroundClip: "text",
@@ -70,14 +71,14 @@ export default function Lesson() {
         background:
           "radial-gradient(circle at 20% 20%, #1a2337 0%, #000814 70%)",
         color: "white",
-        padding: "16px",
-        paddingBottom: "80px",
+        padding: "20px",
+        paddingBottom: "40px",
         maxWidth: "480px",
         margin: "0 auto",
         position: "relative",
       }}
     >
-      {/* Top-right mascot */}
+      {/* Mascot top-right */}
       <img
         src={lionMascot}
         alt="Zayd teaching"
@@ -94,105 +95,85 @@ export default function Lesson() {
         }}
       />
 
-      {/* Header */}
-      <button
-        onClick={handleBack}
-        style={{
-          background: "rgba(255,255,255,0.07)",
-          border: "1px solid rgba(255,255,255,0.18)",
-          color: "white",
-          fontSize: "0.8rem",
-          borderRadius: "10px",
-          padding: "8px 10px",
-          marginBottom: "12px",
-          lineHeight: 1,
-        }}
-      >
-        ← Back
-      </button>
-
+      {/* Arabic name */}
       <div
         style={{
-          fontSize: "1rem",
+          fontSize: "1.9rem",
+          fontWeight: 700,
+          color: "#ffe99a",
+          textAlign: "center",
+          textShadow: "0 0 12px rgba(255,215,0,0.4)",
+          marginTop: "40px",
+          marginBottom: "8px",
+        }}
+      >
+        {lesson.arabic}
+      </div>
+
+      {/* English title */}
+      <div
+        style={{
+          fontSize: "1.2rem",
           fontWeight: 600,
-          background: "linear-gradient(90deg,#fff 0%,#fff6d2 40%,#ffd88a 100%)",
-          WebkitBackgroundClip: "text",
-          color: "transparent",
-          marginBottom: "6px",
+          textAlign: "center",
+          color: "white",
+          marginBottom: "4px",
         }}
       >
-        {lesson.title || "Untitled Lesson"}
+        {lesson.title}
       </div>
 
+      {/* Meaning */}
       <div
         style={{
-          fontSize: "0.8rem",
-          color: "#cfcfcf",
-          lineHeight: 1.4,
-          marginBottom: "12px",
+          fontSize: "0.9rem",
+          color: "#ffd85a",
+          textAlign: "center",
+          marginBottom: "16px",
         }}
       >
-        {lesson.summary}
+        {lesson.meaning}
       </div>
 
-      {/* Lesson content */}
+      {/* Description */}
       <div
         style={{
-          borderRadius: "16px",
-          border: "1px solid rgba(255,255,255,0.15)",
-          background:
-            "linear-gradient(160deg, rgba(255,255,255,0.03) 0%, rgba(54,89,130,0.15) 60%)",
+          fontSize: "0.9rem",
+          color: "#d0d4e4",
+          lineHeight: 1.6,
+          background: "rgba(255,255,255,0.03)",
+          border: "1px solid rgba(255,255,255,0.1)",
+          borderRadius: "14px",
           padding: "16px",
           marginBottom: "16px",
         }}
       >
-        {lesson.sections?.map((section, sIdx) => (
-          <div
-            key={sIdx}
-            style={{
-              marginBottom: "20px",
-              borderBottom:
-                sIdx === lesson.sections.length - 1
-                  ? "none"
-                  : "1px solid rgba(255,255,255,0.08)",
-              paddingBottom: "12px",
-            }}
-          >
-            <div
-              style={{
-                fontSize: "0.85rem",
-                fontWeight: 600,
-                background:
-                  "linear-gradient(90deg,#fff 0%,#fff6d2 40%,#ffd88a 100%)",
-                WebkitBackgroundClip: "text",
-                color: "transparent",
-                marginBottom: "6px",
-              }}
-            >
-              {section.heading}
-            </div>
-
-            <div
-              style={{
-                fontSize: "0.8rem",
-                color: "#cfcfcf",
-                lineHeight: 1.5,
-                whiteSpace: "pre-line",
-              }}
-            >
-              {section.text?.join("\n\n")}
-            </div>
-          </div>
+        {lesson.description?.map((para, i) => (
+          <p key={i} style={{ marginBottom: "12px" }}>
+            {para}
+          </p>
         ))}
       </div>
 
-      {/* Footer buttons */}
+      {/* Reflection */}
+      <div
+        style={{
+          fontWeight: 700,
+          color: "#ffd85a",
+          textAlign: "center",
+          marginBottom: "20px",
+        }}
+      >
+        {lesson.reflection}
+      </div>
+
+      {/* Back + Quiz buttons */}
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
           gap: "12px",
-          flexWrap: "wrap",
+          marginTop: "8px",
         }}
       >
         <button
@@ -209,7 +190,7 @@ export default function Lesson() {
             fontWeight: 500,
           }}
         >
-          Back
+          ← Back
         </button>
 
         <button
@@ -224,10 +205,10 @@ export default function Lesson() {
             fontSize: "0.8rem",
             fontWeight: 600,
             boxShadow:
-              "0 20px 40px rgba(0,0,0,0.8), 0 0 60px rgba(255,235,167,0.4) inset",
+              "0 12px 25px rgba(0,0,0,0.7), 0 0 30px rgba(255,235,167,0.4) inset",
           }}
         >
-          Take Quiz 🎯
+          Test My Knowledge 🌟
         </button>
       </div>
     </div>
