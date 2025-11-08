@@ -1,13 +1,8 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-// DATA IMPORT
-import aqeedahData from "../paths/aqeedah.jsx";
-
 // MAP WHICH PATH USES WHICH DATA
-const PATH_MAP = {
-  "aqeedah-pillars": aqeedahData,
-};
+const PATH_MAP = {};
 
 export default function Pathway() {
   const { pathId } = useParams();
@@ -265,7 +260,7 @@ export default function Pathway() {
                 }}
               >
                 {lesson.summary ||
-                  "Learn core aqeedah foundations every Muslim must know."}
+                  "Learn Islamic knowledge every Muslim must know."}
               </div>
             </button>
           ))}

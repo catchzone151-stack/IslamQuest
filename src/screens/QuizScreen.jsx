@@ -14,14 +14,6 @@ import {
   buildProgressPayload,
 } from "../engine/quizEngine.js";
 
-import { meta as aqMeta } from "../data/questions/aqeedah-pillars/index.js";
-import { questions as l0 } from "../data/questions/aqeedah-pillars/lesson-0.js";
-import { questions as l1 } from "../data/questions/aqeedah-pillars/lesson-1.js";
-import { questions as l2 } from "../data/questions/aqeedah-pillars/lesson-2.js";
-import { questions as l3 } from "../data/questions/aqeedah-pillars/lesson-3.js";
-import { questions as l4 } from "../data/questions/aqeedah-pillars/lesson-4.js";
-import { questions as l5 } from "../data/questions/aqeedah-pillars/lesson-5.js";
-
 import { useProgressStore } from "../store/progressStore.js";
 
 import mascotDefault from "../assets/mascots/mascot_zayd_default.webp";
@@ -33,7 +25,7 @@ const GOLD = "#fbbf24";
 const NAVY = "#0b1220";
 const SLATE = "#0f172a";
 
-const LESSON_MAP = { 0: l0, 1: l1, 2: l2, 3: l3, 4: l4, 5: l5 };
+const LESSON_MAP = {};
 const congratsLines = [
   "MashaAllah! Perfect score 🎉",
   "Alhamdulillah — you nailed it!",
@@ -43,9 +35,9 @@ const congratsLines = [
 
 export default function QuizScreen() {
   const navigate = useNavigate();
-  const { pathId = "aqeedah-pillars", lessonId = "0" } = useParams();
+  const { pathId, lessonId = "0" } = useParams();
   const lessonKey = String(lessonId);
-  const questions = LESSON_MAP[lessonKey] || l0;
+  const questions = LESSON_MAP[lessonKey] || [];
 
   const applyQuizResults = useProgressStore((s) => s.applyQuizResults);
   const earnCertificate = useProgressStore((s) => s.earnCertificate);
@@ -92,7 +84,7 @@ export default function QuizScreen() {
 
       // Auto award certificate on final lesson
       if (lessonKey === "5") {
-        earnCertificate(pathId, "Completed: Six Pillars of Belief");
+        earnCertificate(pathId, "Completed: " + pathId);
       }
 
       setShowRewards(true);
@@ -137,7 +129,7 @@ export default function QuizScreen() {
   return (
     <div style={page}>
       <header style={header}>
-        <h1 style={title}>{aqMeta?.title || "Six Pillars of Faith"}</h1>
+        <h1 style={title}>Quiz</h1>
         <img
           src={
             !finished

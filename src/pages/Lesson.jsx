@@ -1,6 +1,5 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import aqeedahData from "../paths/aqeedah.jsx";
 import lionMascot from "../assets/mascots/mascot_zayd_teaching.webp";
 
 export default function Lesson() {
@@ -9,7 +8,7 @@ export default function Lesson() {
   const index = parseInt(lessonId, 10);
 
   // Retrieve correct lesson from the correct path
-  const lessons = aqeedahData.lessons || [];
+  const lessons = [];
   const lesson = lessons[index];
 
   function handleBack() {

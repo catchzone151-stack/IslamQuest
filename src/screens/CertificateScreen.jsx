@@ -17,9 +17,7 @@ export default function CertificateScreen() {
   });
 
   // Map pathId → certificate image (more added later)
-  const certImages = {
-    "aqeedah-pillars": certSixPillars,
-  };
+  const certImages = {};
 
   const certificateImage = certImages[pathId] || certSixPillars;
 
