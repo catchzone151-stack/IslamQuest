@@ -65,8 +65,8 @@ export default function Profile() {
               src={avatar || "/default-avatar.png"}
               alt="Avatar"
               style={{
-                width: 100,
-                height: 100,
+                width: "clamp(75px, 20vw, 90px)",
+                height: "clamp(75px, 20vw, 90px)",
                 borderRadius: "50%",
                 border: "3px solid #FFD700",
                 objectFit: "cover",

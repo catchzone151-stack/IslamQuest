@@ -86,7 +86,7 @@ export default function Challenge() {
           src={ZaydChallenge}
           alt="Zayd Challenge"
           style={{
-            width: 96,
+            width: "clamp(70px, 18vw, 85px)",
             height: "auto",
             animation: "bounceY 1.6s ease-in-out infinite",
             transformOrigin: "50% 90%",

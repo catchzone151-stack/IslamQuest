@@ -32,7 +32,7 @@ export default function SalaamScreen() {
         <img
           src={zayd}
           alt="Zayd mascot"
-          style={{ marginTop: 28, width: 160, height: "auto", objectFit: "contain" }}
+          style={{ marginTop: 28, width: "clamp(100px, 25vw, 120px)", height: "auto", objectFit: "contain" }}
         />
 
         <button

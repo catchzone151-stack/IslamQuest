@@ -89,8 +89,8 @@ export default function EditAvatarModal({ isOpen, onClose, currentAvatar, onSave
                 key={src}
                 onClick={() => setSelected(src)}
                 style={{
-                  width: 80,
-                  height: 80,
+                  width: "clamp(65px, 16vw, 75px)",
+                  height: "clamp(65px, 16vw, 75px)",
                   borderRadius: "50%",
                   border: selected === src ? "3px solid #FFD700" : "2px solid transparent",
                   background: "#0E1625",
