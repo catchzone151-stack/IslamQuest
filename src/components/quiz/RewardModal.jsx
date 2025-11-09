@@ -86,7 +86,7 @@ const RewardModal = ({
                 stiffness: 100,
                 delay: 0.2
               }}
-              className="relative inline-block mb-4"
+              className="relative mb-4 flex justify-center"
             >
               <div className="absolute inset-0 bg-[#FFD700] rounded-full blur-2xl opacity-60 scale-150" />
               <img
@@ -129,7 +129,7 @@ const RewardModal = ({
                 delay: 0.4,
                 damping: 12
               }}
-              className="inline-flex items-baseline gap-1 px-4 py-1.5 mb-3 rounded-full bg-gradient-to-r from-[#D4AF37]/20 to-[#FFD700]/20 border border-[#D4AF37]/50"
+              className="flex items-baseline justify-center gap-1 px-4 py-1.5 mb-3 rounded-full bg-gradient-to-r from-[#D4AF37]/20 to-[#FFD700]/20 border border-[#D4AF37]/50 mx-auto"
             >
               <motion.span 
                 className="font-black text-white"
