@@ -3,10 +3,10 @@ import ScreenContainer from "../components/ScreenContainer";
 export default function Revise() {
   return (
     <ScreenContainer>
-      <div style={{ textAlign: "center", marginTop: 40 }}>
+      <div style={{ textAlign: "center", marginTop: "clamp(20px, 6vw, 40px)" }}>
         <h1
           style={{
-            fontSize: "1.8rem",
+            fontSize: "clamp(1.3rem, 5vw, 1.8rem)",
             fontWeight: 800,
             margin: 0,
             background: "linear-gradient(90deg, #FFD700, #FFA500, #FFD700)",

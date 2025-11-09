@@ -28,14 +28,14 @@ export default function Profile() {
       <div
         style={{
           textAlign: "center",
-          padding: "40px 20px 100px",
+          padding: "clamp(20px, 6vw, 40px) 20px 100px",
           color: "white",
         }}
       >
         {/* === Header === */}
         <h1
           style={{
-            fontSize: "1.8rem",
+            fontSize: "clamp(1.3rem, 5vw, 1.8rem)",
             fontWeight: 800,
             margin: 0,
             background: "linear-gradient(90deg, #FFD700, #FFA500, #FFD700)",

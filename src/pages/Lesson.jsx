@@ -97,12 +97,12 @@ export default function Lesson() {
       {/* Arabic name */}
       <div
         style={{
-          fontSize: "1.9rem",
+          fontSize: "clamp(1.4rem, 5vw, 1.9rem)",
           fontWeight: 700,
           color: "#ffe99a",
           textAlign: "center",
           textShadow: "0 0 12px rgba(255,215,0,0.4)",
-          marginTop: "40px",
+          marginTop: "clamp(20px, 6vw, 40px)",
           marginBottom: "8px",
         }}
       >
@@ -112,7 +112,7 @@ export default function Lesson() {
       {/* English title */}
       <div
         style={{
-          fontSize: "1.2rem",
+          fontSize: "clamp(1rem, 3vw, 1.2rem)",
           fontWeight: 600,
           textAlign: "center",
           color: "white",

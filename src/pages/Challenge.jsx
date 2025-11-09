@@ -15,7 +15,7 @@ export default function Challenge() {
       <div style={{ textAlign: "center", marginTop: 10, marginBottom: 6 }}>
         <h1
           style={{
-            fontSize: "1.8rem",
+            fontSize: "clamp(1.3rem, 5vw, 1.8rem)",
             fontWeight: 800,
             margin: 0,
             background: "linear-gradient(90deg, #FFD700, #FFA500, #FFD700)",
