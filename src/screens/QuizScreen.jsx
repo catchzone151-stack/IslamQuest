@@ -1,13 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { getQuizForLesson, calculateResults } from '../data/quizEngine';
-import { mascotQuizStates } from '../data/mascotQuizStates';
-import { useProgressStore } from '../store/progressStore';
-import { useTitleStore } from '../store/useTitleStore';
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { getQuizForLesson, calculateResults } from "../data/quizEngine";
+import { mascotQuizStates } from "../data/mascotQuizStates";
+import { useProgressStore } from "../store/progressStore";
+import { useTitleStore } from "../store/useTitleStore";
 
-import QuizHeader from '../components/quiz/QuizHeader';
-import QuestionCard from '../components/quiz/QuestionCard';
-import RewardModal from '../components/quiz/RewardModal';
+import QuizHeader from "../components/quiz/QuizHeader";
+import QuestionCard from "../components/quiz/QuestionCard";
+import RewardModal from "../components/quiz/RewardModal";
+
+const shuffleQuestion = (q) => {
+  const order = q.options.map((_, i) => i);
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  const options = order.map((i) => q.options[i]);
+  const correctIndex = order.indexOf(q.correctIndex);
+  return { ...q, options, correctIndex };
+};
 
 const QuizScreen = () => {
   const { pathId, lessonId } = useParams();
@@ -16,71 +27,76 @@ const QuizScreen = () => {
   const [quizData, setQuizData] = useState([]);
   const [currentQ, setCurrentQ] = useState(0);
   const [selected, setSelected] = useState(null);
-  const [score, setScore] = useState(0);
   const [answers, setAnswers] = useState([]);
-  const [showResults, setShowResults] = useState(false);
-  const [mascotMood, setMascotMood] = useState('start');
-  const [xpEarned, setXpEarned] = useState(0);
-  const [coinsEarned, setCoinsEarned] = useState(0);
+  const [isQuizDone, setIsQuizDone] = useState(false);
+  const [mascotMood, setMascotMood] = useState("start");
+  const [results, setResults] = useState(null);
 
-  const updateXPandCoins = useProgressStore((state) => state.updateXPandCoins);
-  const evaluateTitle = useTitleStore((state) => state.evaluateTitle);
+  const addXP = useProgressStore((s) => s.addXP || (() => {}));
+  const addCoins = useProgressStore((s) => s.addCoins || (() => {}));
+  const evaluateTitle = useTitleStore((s) => s.evaluateTitle);
 
   useEffect(() => {
-    const quiz = getQuizForLesson(lessonId);
-    if (quiz) {
-      setQuizData(quiz);
-    } else {
-      setQuizData([]);
-    }
+    const raw = getQuizForLesson(lessonId) || [];
+    const prepared = raw.map(shuffleQuestion);
+    setQuizData(prepared);
+    setCurrentQ(0);
+    setSelected(null);
+    setAnswers([]);
+    setIsQuizDone(false);
+    setResults(null);
+    setMascotMood("start");
   }, [lessonId]);
 
-  const handleAnswer = (selectedIndex) => {
-    const currentQuestion = quizData[currentQ];
-    const isCorrect = selectedIndex === currentQuestion.correctIndex;
+  const handleSelect = (index) => {
+    if (selected !== null || isQuizDone) return;
+    const q = quizData[currentQ];
+    if (!q) return;
 
-    setAnswers((prev) => [
-      ...prev,
-      { questionId: currentQuestion.id, correct: isCorrect },
-    ]);
+    const isCorrect = index === q.correctIndex;
+    const updatedAnswers = [
+      ...answers,
+      { questionId: q.id, correct: isCorrect },
+    ];
 
-    if (isCorrect) {
-      setScore((prev) => prev + 1);
-      setMascotMood('correct');
-    } else {
-      setMascotMood('incorrect');
-    }
+    setSelected(index);
+    setAnswers(updatedAnswers);
+    setMascotMood(isCorrect ? "correct" : "incorrect");
 
-    setSelected(selectedIndex);
+    setTimeout(() => {
+      const isLast = currentQ === quizData.length - 1;
+      if (isLast) {
+        finishQuiz(updatedAnswers);
+      } else {
+        setCurrentQ((prev) => prev + 1);
+        setSelected(null);
+        setMascotMood("thinking");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }, 900);
   };
 
-  const handleNext = () => {
-    if (currentQ < quizData.length - 1) {
-      setCurrentQ((prev) => prev + 1);
-      setSelected(null);
-      setMascotMood('thinking');
-    } else {
-      finishQuiz();
-    }
-  };
-
-  const finishQuiz = () => {
-    const results = calculateResults(answers);
-    setXpEarned(results.xp);
-    setCoinsEarned(results.coins);
-    setShowResults(true);
-    updateXPandCoins(results.xp, results.coins);
+  const finishQuiz = (finalAnswers) => {
+    const res = calculateResults(finalAnswers);
+    setResults(res);
+    addXP(res.xp);
+    addCoins(res.coins);
     evaluateTitle();
-    setMascotMood(results.passed ? 'pass' : 'fail');
+    setIsQuizDone(true);
+    setMascotMood(res.passed ? "pass" : "fail");
   };
 
   const handleRetry = () => {
+    const raw = getQuizForLesson(lessonId) || [];
+    const prepared = raw.map(shuffleQuestion);
+    setQuizData(prepared);
     setCurrentQ(0);
     setSelected(null);
-    setScore(0);
     setAnswers([]);
-    setShowResults(false);
-    setMascotMood('start');
+    setIsQuizDone(false);
+    setResults(null);
+    setMascotMood("start");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleContinue = () => {
@@ -92,7 +108,7 @@ const QuizScreen = () => {
       <div className="flex flex-col items-center justify-center h-screen text-center text-white">
         <p>No quiz data found for this lesson.</p>
         <button
-          className="mt-4 px-4 py-2 bg-gold-500 text-black rounded-xl"
+          className="mt-4 px-4 py-2 bg-[#F4C542] text-black rounded-xl"
           onClick={() => navigate(-1)}
         >
           Go Back
@@ -101,34 +117,47 @@ const QuizScreen = () => {
     );
   }
 
+  const progress =
+    ((isQuizDone ? quizData.length : currentQ + 1) / quizData.length) * 100;
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0A0F1E] to-[#030614] text-white flex flex-col">
       <QuizHeader
         currentQ={currentQ}
         totalQ={quizData.length}
         mascotMood={mascotMood}
+        isQuizDone={isQuizDone}
       />
 
-      {!showResults ? (
-        <QuestionCard
-          question={quizData[currentQ]}
-          currentQ={currentQ}
-          totalQ={quizData.length}
-          selected={selected}
-          onSelect={handleAnswer}
-          onNext={handleNext}
+      <div className="h-2 bg-gray-800 w-full">
+        <div
+          className="h-2 bg-[#F4C542] transition-all duration-500"
+          style={{ width: `${progress}%` }}
         />
-      ) : (
-        <RewardModal
-          score={score}
-          totalQ={quizData.length}
-          xpEarned={xpEarned}
-          coinsEarned={coinsEarned}
-          mascotMood={mascotMood}
-          onRetry={handleRetry}
-          onContinue={handleContinue}
-        />
-      )}
+      </div>
+
+      <div className="flex-1 flex items-center justify-center px-4 py-6">
+        {!isQuizDone ? (
+          <QuestionCard
+            question={quizData[currentQ]}
+            currentQ={currentQ}
+            totalQ={quizData.length}
+            selected={selected}
+            onSelect={handleSelect}
+          />
+        ) : (
+          <RewardModal
+            score={results.correct}
+            totalQ={results.total}
+            xp={results.xp}
+            coins={results.coins}
+            passed={results.passed}
+            mascotImg={mascotQuizStates[mascotMood]}
+            onRetry={handleRetry}
+            onContinue={handleContinue}
+          />
+        )}
+      </div>
     </div>
   );
 };

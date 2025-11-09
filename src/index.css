@@ -321,3 +321,13 @@ body {
   margin: 0 auto;
   border-radius: 12px;
 }
+/* 🛡️ Prevent mascots from filling the screen */
+img[src*="mascot_zayd_"] {
+  width: 120px !important;
+  height: auto !important;
+  max-width: 150px !important;
+  max-height: 150px !important;
+  object-fit: contain !important;
+  display: block;
+  margin: 0 auto;
+}

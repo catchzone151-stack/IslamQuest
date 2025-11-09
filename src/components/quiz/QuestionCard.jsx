@@ -1,52 +1,97 @@
-import React from 'react';
+import React from "react";
 
 const QuestionCard = ({
   question,
   selected,
   onSelect,
-  onNext,
   currentQ,
   totalQ,
 }) => {
   if (!question) return null;
 
-  const handleSelect = (index) => {
-    if (selected === null) onSelect(index);
+  const wrapper = {
+    width: "100%",
+    maxWidth: "600px",
+    margin: "0 auto",
+    textAlign: "center",
+    color: "#ffffff",
+  };
+
+  const questionMeta = {
+    fontSize: "16px",
+    color: "#F4C542",
+    marginBottom: "4px",
+  };
+
+  const questionStyle = {
+    fontSize: "20px",
+    fontWeight: 600,
+    marginBottom: "24px",
+    lineHeight: 1.5,
+  };
+
+  const optionList = {
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+  };
+
+  const baseOption = {
+    padding: "12px 14px",
+    borderRadius: "10px",
+    border: "2px solid #F4C542",
+    background: "rgba(5,10,20,0.96)",
+    color: "#ffffff",
+    fontSize: "15px",
+    fontWeight: 500,
+    textAlign: "left",
+    cursor: "pointer",
+    transition: "all 0.25s ease",
   };
 
   return (
-    <div className="flex flex-col flex-grow justify-center items-center text-center px-4 py-6">
-      <h3 className="text-xl font-semibold mb-6">{question.text}</h3>
+    <div style={wrapper}>
+      <h2 style={questionMeta}>
+        Question {currentQ + 1} of {totalQ}
+      </h2>
 
-      <div className="w-full max-w-md space-y-3">
+      <h3 style={questionStyle}>{question.text}</h3>
+
+      <div style={optionList}>
         {question.options.map((option, index) => {
-          let bgColor = 'bg-[#101828] text-white';
+          const isSelected = selected === index;
+          let style = { ...baseOption };
+
           if (selected !== null) {
-            if (index === question.correctIndex) bgColor = 'bg-green-600';
-            else if (index === selected) bgColor = 'bg-red-600';
+            const isCorrectIndex = question.correctIndex;
+
+            if (index === isCorrectIndex) {
+              style.background = "#16a34a";
+              style.borderColor = "#16a34a";
+            } else if (isSelected && index !== isCorrectIndex) {
+              style.background = "#dc2626";
+              style.borderColor = "#dc2626";
+            } else {
+              style.opacity = 0.5;
+              style.borderColor = "#4b5563";
+              style.color = "#9ca3af";
+            }
           }
 
           return (
             <button
               key={index}
-              className={`w-full py-3 rounded-xl font-medium transition-all duration-200 ${bgColor}`}
-              onClick={() => handleSelect(index)}
+              onClick={() => {
+                if (selected === null) onSelect(index);
+              }}
               disabled={selected !== null}
+              style={style}
             >
               {option}
             </button>
           );
         })}
       </div>
-
-      {selected !== null && (
-        <button
-          className="mt-6 px-6 py-3 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black rounded-xl font-semibold"
-          onClick={onNext}
-        >
-          {currentQ + 1 === totalQ ? 'See Results' : 'Next Question'}
-        </button>
-      )}
     </div>
   );
 };
