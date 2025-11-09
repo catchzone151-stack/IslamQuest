@@ -14,6 +14,8 @@ const RewardModal = ({
   onContinue,
 }) => {
   const isPerfect = score === totalQ;
+  
+  // Force version update - v2.0
 
   const confettiColors = ["#D4AF37", "#F4C542", "#10B981", "#3B82F6", "#EC4899"];
   
