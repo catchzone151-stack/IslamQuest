@@ -75,17 +75,16 @@ const RewardModal = ({
             maskComposite: 'exclude'
           }} />
           
-          <div className="relative px-5 py-8 text-center">
-            {/* Floating mascot at top */}
+          <div className="relative px-5 py-8 text-center flex flex-col items-center">
+            {/* Mascot drops in from top, then stays static */}
             <motion.div
-              animate={{ 
-                y: [0, -10, 0],
-                rotate: [0, 5, -5, 0]
-              }}
+              initial={{ y: -200, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
               transition={{ 
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut"
+                type: "spring",
+                damping: 15,
+                stiffness: 100,
+                delay: 0.2
               }}
               className="relative inline-block mb-4"
             >
@@ -98,7 +97,7 @@ const RewardModal = ({
               />
             </motion.div>
 
-            {/* MaashaAllah heading */}
+            {/* MaashaAllah heading - centered */}
             <motion.div
               initial={{ scale: 0, rotateZ: -180 }}
               animate={{ scale: 1, rotateZ: 0 }}
@@ -107,7 +106,7 @@ const RewardModal = ({
                 delay: 0.3,
                 damping: 15
               }}
-              className="mb-3"
+              className="mb-3 w-full text-center"
             >
               <h2 
                 className="font-black mb-1 bg-gradient-to-r from-[#FFD700] via-[#F4C542] to-[#FFD700] bg-clip-text text-transparent"
@@ -121,7 +120,7 @@ const RewardModal = ({
               </h2>
             </motion.div>
 
-            {/* Score badge - floating */}
+            {/* Score badge - centered */}
             <motion.div
               initial={{ scale: 0, rotate: 360 }}
               animate={{ scale: 1, rotate: 0 }}
@@ -143,12 +142,12 @@ const RewardModal = ({
               <span className="font-bold text-[#D4AF37]" style={{ fontSize: "clamp(1rem, 4vw, 1.3rem)" }}>/{totalQ}</span>
             </motion.div>
 
-            {/* Compliment text */}
+            {/* Compliment text - centered */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="text-gray-300 font-medium mb-5 px-2"
+              className="text-gray-300 font-medium mb-5 px-2 text-center w-full"
               style={{ fontSize: "clamp(0.9rem, 3vw, 1.1rem)" }}
             >
               {passed
@@ -163,7 +162,7 @@ const RewardModal = ({
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.6, type: "spring", damping: 15 }}
-              className="relative mb-6"
+              className="relative mb-6 w-full flex justify-center"
             >
               {/* Glowing background for rewards */}
               <div className="absolute inset-0 bg-gradient-to-r from-[#D4AF37]/30 via-[#FFD700]/40 to-[#F4C542]/30 blur-2xl rounded-full" />
@@ -171,24 +170,21 @@ const RewardModal = ({
               <div className="relative flex items-center justify-center gap-3 sm:gap-4">
                 {/* XP Box */}
                 <motion.div
-                  whileHover={{ scale: 1.1, y: -5 }}
-                  animate={{ 
-                    y: [0, -8, 0],
-                  }}
-                  transition={{ 
-                    y: { duration: 2, repeat: Infinity, ease: "easeInOut" }
-                  }}
+                  initial={{ x: -50, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 0.6, type: "spring", damping: 15 }}
+                  whileHover={{ scale: 1.05, y: -3 }}
                   className="relative group"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37] to-[#FFD700] rounded-2xl blur-xl opacity-70 group-hover:opacity-100 transition-all" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37] to-[#FFD700] rounded-2xl blur-lg opacity-70 group-hover:opacity-100 transition-all" />
                   <div className="relative bg-gradient-to-br from-[#1a2332] to-[#0B1E2D] rounded-2xl p-3 sm:p-4 border-2 border-[#D4AF37] shadow-[0_0_30px_rgba(212,175,55,0.6)]">
                     <img 
                       src={xpIcon} 
                       alt="XP" 
-                      style={{ width: "clamp(28px, 7vw, 36px)", height: "clamp(28px, 7vw, 36px)" }}
+                      style={{ width: "clamp(24px, 6vw, 32px)", height: "clamp(24px, 6vw, 32px)" }}
                       className="mx-auto mb-1 drop-shadow-[0_0_10px_rgba(255,215,0,0.8)]"
                     />
-                    <div className="font-black text-[#FFD700] text-center" style={{ fontSize: "clamp(1.1rem, 4vw, 1.4rem)" }}>
+                    <div className="font-black text-[#FFD700] text-center" style={{ fontSize: "clamp(0.9rem, 3.5vw, 1.1rem)" }}>
                       +{xp}
                     </div>
                     <div className="text-xs text-[#D4AF37] font-bold text-center tracking-wider">XP</div>
@@ -197,24 +193,21 @@ const RewardModal = ({
 
                 {/* Coins Box */}
                 <motion.div
-                  whileHover={{ scale: 1.1, y: -5 }}
-                  animate={{ 
-                    y: [0, -8, 0],
-                  }}
-                  transition={{ 
-                    y: { duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.3 }
-                  }}
+                  initial={{ x: 50, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 0.6, type: "spring", damping: 15 }}
+                  whileHover={{ scale: 1.05, y: -3 }}
                   className="relative group"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#F4C542] to-[#FFD700] rounded-2xl blur-xl opacity-70 group-hover:opacity-100 transition-all" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#F4C542] to-[#FFD700] rounded-2xl blur-lg opacity-70 group-hover:opacity-100 transition-all" />
                   <div className="relative bg-gradient-to-br from-[#1a2332] to-[#0B1E2D] rounded-2xl p-3 sm:p-4 border-2 border-[#F4C542] shadow-[0_0_30px_rgba(244,197,66,0.6)]">
                     <img 
                       src={coinIcon} 
                       alt="Coins" 
-                      style={{ width: "clamp(28px, 7vw, 36px)", height: "clamp(28px, 7vw, 36px)" }}
+                      style={{ width: "clamp(24px, 6vw, 32px)", height: "clamp(24px, 6vw, 32px)" }}
                       className="mx-auto mb-1 drop-shadow-[0_0_10px_rgba(244,197,66,0.8)]"
                     />
-                    <div className="font-black text-[#FFD700] text-center" style={{ fontSize: "clamp(1.1rem, 4vw, 1.4rem)" }}>
+                    <div className="font-black text-[#FFD700] text-center" style={{ fontSize: "clamp(0.9rem, 3.5vw, 1.1rem)" }}>
                       +{coins}
                     </div>
                     <div className="text-xs text-[#F4C542] font-bold text-center tracking-wider">COINS</div>
@@ -223,24 +216,25 @@ const RewardModal = ({
               </div>
             </motion.div>
 
-            {/* Perfect score bonus message */}
+            {/* Perfect score bonus message - centered */}
             {passed && isPerfect && (
               <motion.p
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.9 }}
-                className="text-[#10B981] font-bold mb-5"
+                className="text-[#10B981] font-bold mb-5 text-center w-full"
                 style={{ fontSize: "clamp(0.85rem, 2.8vw, 1rem)" }}
               >
                 ✨ May Allah increase your knowledge ✨
               </motion.p>
             )}
 
-            {/* Action button - vibrant and dynamic */}
+            {/* Action button - vibrant and dynamic - centered */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7 }}
+              className="w-full"
             >
               {passed ? (
                 <motion.button
