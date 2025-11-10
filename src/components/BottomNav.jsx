@@ -21,10 +21,10 @@ export default function BottomNav() {
       className="bottom-nav"
       style={{
         position: "fixed",
-        bottom: 0,
+        bottom: -1,
         left: 0,
         right: 0,
-        height: `${NAV_HEIGHT}px`,
+        height: `${NAV_HEIGHT + 1}px`,
         background: "#0e2340",
         borderTop: "none",
         boxShadow: "none",
