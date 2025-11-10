@@ -126,8 +126,7 @@ export default function Home() {
         background: "linear-gradient(to bottom, #081426, #0e2340)",
         color: "white",
         padding: 16,
-        // ✅ Fix: ensure content never hides behind BottomNav
-        paddingBottom: "calc(env(safe-area-inset-bottom) + 120px)",
+        paddingBottom: 100,
         overflowX: "hidden",
         overflowY: "visible",
         position: "relative",
