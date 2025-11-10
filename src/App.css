@@ -10,8 +10,24 @@
   box-sizing: border-box;
 }
 
-html,
-body,
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background: #0e2340;
+  overscroll-behavior: none;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background: #0e2340;
+  overscroll-behavior: none;
+}
+
 #root {
   height: 100%;
   margin: 0;
