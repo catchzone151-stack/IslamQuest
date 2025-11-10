@@ -7,7 +7,7 @@ import { useTitleStore } from "../store/useTitleStore";
 
 import QuizHeader from "../components/quiz/QuizHeader";
 import QuestionCard from "../components/quiz/QuestionCard";
-import RewardModal from "../components/quiz/RewardModal_v2";
+import RewardModal from "../components/quiz/RewardModal";
 
 const shuffleQuestion = (q) => {
   const order = q.options.map((_, i) => i);

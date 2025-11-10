@@ -186,7 +186,7 @@ export default function Home() {
             src={Zayd}
             alt="Zayd Mascot"
             style={{
-              width: "clamp(60px, 15vw, 75px)",
+              width: 85,
               height: "auto",
               display: "block",
               margin: "0 auto",
@@ -362,7 +362,7 @@ export default function Home() {
           src={ZaydChallenge}
           alt="Zayd Challenge"
           style={{
-            width: "clamp(55px, 12vw, 70px)",
+            width: 80,
             height: "auto",
             marginLeft: 10,
             animation:
@@ -402,8 +402,8 @@ export default function Home() {
                 key={p.id}
                 onClick={() => handlePathClick(p)}
                 style={{
-                  minWidth: "clamp(140px, 35vw, 160px)",
-                  height: "clamp(180px, 45vw, 200px)",
+                  minWidth: 160,
+                  height: 230,
                   background: gradient,
                   borderRadius: 18,
                   position: "relative",

@@ -67,8 +67,8 @@ export default function AvatarScreen() {
             whileHover={{ scale: 1.05, filter: "brightness(1.1)" }}
             whileTap={{ scale: 0.95 }}
             style={{
-              width: "clamp(70px, 18vw, 80px)",
-              height: "clamp(70px, 18vw, 80px)",
+              width: 90,
+              height: 90,
               borderRadius: "50%",
               padding: 0,
               border:
