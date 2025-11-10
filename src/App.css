@@ -1,6 +1,6 @@
 :root {
-  --navy: #0B1E2D;        /* background */
-  --navy-dark: #0A1723;   /* darker surfaces */
+  --navy: #0e2340;        /* background */
+  --navy-dark: #0e2340;   /* darker surfaces */
   --gold: #D4AF37;        /* accents */
   --green: #10B981;       /* emerald highlights */
   --text: #f3f4f6;        /* light text */
@@ -17,7 +17,7 @@ body,
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  background: var(--navy);
+  background: #0e2340;
 }
 
 /* 👇 KEY: this globally prevents content going under the fixed nav */
@@ -35,7 +35,7 @@ body {
   padding: clamp(12px, 3vw, 24px);
   max-width: 100%;
   overflow-x: hidden;
-  background: var(--navy);
+  background: #0e2340;
 }
 
 /* Headings */
