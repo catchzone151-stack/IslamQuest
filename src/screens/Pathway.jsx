@@ -6,8 +6,9 @@ import { useUserStore } from "../store/useUserStore";
 // Lesson data loader
 import { getLessonsForPath } from "../data/lessonLoader.js";
 
-// Mascot (book / study)
+// Mascots
 import ZaydStudy from "../assets/mascots/mascot_zayd_reading.webp";
+import ZaydTeaching from "../assets/mascots/mascot_zayd_teaching.webp";
 
 export default function Pathway() {
   const { pathId } = useParams();
@@ -155,8 +156,8 @@ export default function Pathway() {
         }}
       >
         <img
-          src={ZaydStudy}
-          alt="Zayd studying"
+          src={numericPathId === 2 ? ZaydTeaching : ZaydStudy}
+          alt="Zayd mascot"
           style={{
             width: 70,
             height: "auto",
@@ -177,7 +178,9 @@ export default function Pathway() {
             whiteSpace: "normal",
           }}
         >
-          As Salaam Alikum Wa Rahmatullah, We find the name... 🌙
+          {numericPathId === 2 
+            ? "Let's strengthen your faith together 💪"
+            : "As Salaam Alikum Wa Rahmatullah, We find the name... 🌙"}
         </div>
       </div>
 
@@ -231,12 +234,11 @@ export default function Pathway() {
                   style={{
                     position: "absolute",
                     top: top - 40,
-                    left: "50%",
-                    transform: "translateX(-50%)",
+                    left: "calc(50% - 80px)",
                     color: "#D4AF37",
                     fontSize: "0.95rem",
                     fontWeight: 700,
-                    textAlign: "center",
+                    textAlign: "left",
                     letterSpacing: "0.5px",
                     textTransform: "uppercase",
                     textShadow: "0 0 10px rgba(212,175,55,0.5)",
@@ -336,10 +338,12 @@ export default function Pathway() {
                   {shortenTitleEnglish(lesson.title)}
                 </div>
 
-                {/* NEW: English meaning line */}
-                <div style={{ fontSize: "0.75rem", color: "#ccc" }}>
-                  {lesson.meaning}
-                </div>
+                {/* NEW: English meaning line (hidden for Foundations path) */}
+                {numericPathId !== 2 && lesson.meaning && (
+                  <div style={{ fontSize: "0.75rem", color: "#ccc" }}>
+                    {lesson.meaning}
+                  </div>
+                )}
 
                 {lesson.isCompleted && (
                   <div style={{ fontSize: "0.7rem", color: "#7cffc4" }}>
