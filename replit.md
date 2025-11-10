@@ -6,6 +6,25 @@ Islam Quest is a gamified Islamic learning platform built as a mobile-first web 
 
 ## Recent Changes
 
+### November 10, 2025 - Foundations of Islam Path Completion
+- **Work Completed**: Fully restructured and enhanced the "Foundations of Islam" learning path (Path 2) with production-ready content
+- **Content Improvements**:
+  - Restructured all 17 lessons to match Names of Allah schema with arabic name, meaning, description array, evidence, reflection
+  - Converted lesson content from single strings to exactly 4 paragraphs each (80-100 words per paragraph, 320-400 total per lesson)
+  - Added authentic Islamic evidence to all 17 lessons with Arabic text, English translation, and source citation (Qur'an/Sahih Hadith)
+  - Created 17 matching quizzes with 4 questions each, randomized options
+  - Added thoughtful reflection questions to each lesson for deeper understanding
+- **Technical Updates**:
+  - Updated `Lesson.jsx` to render new evidence blocks with Arabic + English text display
+  - Added path-specific conditional display: hides "meaning" subtitle for Foundations path (pathId 2) while preserving it for Names of Allah
+  - Fixed quizId fields to be numeric (1-17) for consistency with quiz engine routing via lessonId
+  - Maintained backward compatibility with Names of Allah path (no regressions)
+- **Files Modified**: 
+  - `src/data/lessons/foundationsLessons.js` (complete restructure of 17 lessons)
+  - `src/pages/Lesson.jsx` (evidence rendering + conditional display logic)
+  - Pre-existing: `src/data/quizzes/foundations.json` (17 quizzes already created)
+- **Quality Assurance**: All 68 paragraphs (17 lessons × 4) verified at 80-100 words. Architect-approved as production-ready.
+
 ### November 8, 2025 - Dynamic Lesson System Implementation
 - **Problem Fixed**: Lessons were hardcoded to only show "Names of Allah" content regardless of which learning path was selected
 - **Solution Implemented**:
