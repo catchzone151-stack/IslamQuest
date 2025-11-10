@@ -10,6 +10,7 @@ import { getLessonsForPath } from "../data/lessonLoader.js";
 import ZaydStudy from "../assets/mascots/mascot_zayd_reading.webp";
 import ZaydTeaching from "../assets/mascots/mascot_zayd_teaching.webp";
 import ZaydLantern from "../assets/mascots/mascot_zayd_lantern.webp";
+import ZaydBook from "../assets/mascots/mascot_zayd_book.webp";
 
 export default function Pathway() {
   const { pathId } = useParams();
@@ -160,6 +161,7 @@ export default function Pathway() {
           src={
             numericPathId === 2 ? ZaydTeaching :
             numericPathId === 3 ? ZaydLantern :
+            numericPathId === 4 ? ZaydBook :
             ZaydStudy
           }
           alt="Zayd mascot"
@@ -187,6 +189,8 @@ export default function Pathway() {
             ? "Let's strengthen your faith together 💪"
             : numericPathId === 3
             ? "Let's journey through the lives of the Prophets 🌙"
+            : numericPathId === 4
+            ? "Let's follow the footsteps of the Prophet ﷺ 🌙"
             : "As Salaam Alikum Wa Rahmatullah, We find the name... 🌙"}
         </div>
       </div>
@@ -225,7 +229,7 @@ export default function Pathway() {
           const isActive = i === activeIndex;
           const top = FIRST_NODE_TOP + i * NODE_SPACING;
 
-          // Section headers for Foundations of Islam (pathId 2) and Stories of Prophets (pathId 3)
+          // Section headers for Foundations of Islam (pathId 2), Stories of Prophets (pathId 3), and Prophet's Life (pathId 4)
           let sectionHeaders = {};
           if (numericPathId === 2) {
             sectionHeaders = {
@@ -239,8 +243,14 @@ export default function Pathway() {
               18: "Prophets of Bani Isra'il",
               42: "Prophets Before 'Īsā"
             };
+          } else if (numericPathId === 4) {
+            sectionHeaders = {
+              13: "Makkah Period",
+              41: "Madinah Period",
+              71: "Final Years"
+            };
           }
-          const showSectionHeader = (numericPathId === 2 || numericPathId === 3) && sectionHeaders[lesson.id];
+          const showSectionHeader = (numericPathId === 2 || numericPathId === 3 || numericPathId === 4) && sectionHeaders[lesson.id];
 
           return (
             <React.Fragment key={lesson.id}>
@@ -354,8 +364,8 @@ export default function Pathway() {
                   {shortenTitleEnglish(lesson.title)}
                 </div>
 
-                {/* NEW: English meaning line (hidden for Foundations and Prophets paths) */}
-                {numericPathId !== 2 && numericPathId !== 3 && lesson.meaning && (
+                {/* NEW: English meaning line (hidden for Foundations, Prophets, and Prophet's Life paths) */}
+                {numericPathId !== 2 && numericPathId !== 3 && numericPathId !== 4 && lesson.meaning && (
                   <div style={{ fontSize: "0.75rem", color: "#ccc" }}>
                     {lesson.meaning}
                   </div>
