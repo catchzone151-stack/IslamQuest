@@ -19,7 +19,9 @@ Preferred communication style: Simple, everyday language.
 - **Animation**: Built-in CSS keyframes (e.g., fadeIn) for page transitions.
 
 ### Data Architecture
-- **Content Structure**: 14 predefined learning paths, each with lessons and quizzes. Content includes paths like "Names of Allah," "Foundations of Islam," "Stories of Prophets," and "Life of Muhammad ﷺ." All paths are "available" by default and leverage Qur'an and Sahih Hadith as primary sources.
+- **Content Structure**: 14 complete learning paths (Paths 1-14), each with lessons and quizzes. Content includes "Names of Allah," "Foundations of Islam," "Stories of Prophets," "Life of Muhammad ﷺ," "Understanding Hellfire," and "The Beauty of Paradise." All paths are "available" by default and leverage exclusively Qur'an and Sahih Hadith (Bukhari, Muslim, Abu Dawud, Tirmidhi) as primary sources.
+- **Content Standards**: All lessons follow strict formatting: 3 paragraphs (18-28 words each, targeting ~23), Arabic evidence with English translation, source citations, and "Key Lesson Learned" sections. Age 10+ appropriate language throughout. Quizzes have 4 MCQs per lesson with balanced answer indices.
+- **Recent Completion (November 2025)**: Paths 13 (Understanding Hellfire - 19 lessons, 76 quiz questions) and 14 (The Beauty of Paradise - 20 lessons, 80 quiz questions) completed with full content, evidence, and assessments.
 - **Progression Model**: XP and coin rewards for lesson completion, streak system for daily engagement, and certificates for path completion.
 - **Asset Management**: Centralized `assets.js` system for optimized WebP images (mascots, avatars, badges).
 
