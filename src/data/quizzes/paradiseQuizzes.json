@@ -1,0 +1,902 @@
+[
+  {
+    "lessonId": 1,
+    "questions": [
+      {
+        "question": "What is Paradise (Jannah)?",
+        "options": [
+          "A temporary reward for good deeds",
+          "A symbolic concept of peace",
+          "The eternal home Allah prepared for believers who do righteous deeds",
+          "A state of mind achieved through meditation"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "According to hadith, what has no eye seen, no ear heard, and no mind conceived?",
+        "options": [
+          "The Day of Judgment",
+          "The beauty and bliss of Paradise",
+          "The punishment of Hellfire",
+          "The creation of angels"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How can we enter Paradise according to the Prophet ﷺ?",
+        "options": [
+          "By our deeds alone",
+          "By being born into a Muslim family",
+          "By Allah's mercy combined with sincere faith and good actions",
+          "By simply believing without actions"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "According to Qur'an 3:133, how wide is Paradise?",
+        "options": [
+          "As wide as the Earth",
+          "As wide as the heavens and earth",
+          "As wide as the seven seas",
+          "Unlimited and unmeasurable"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 2,
+    "questions": [
+      {
+        "question": "What is the most common name for Paradise in the Qur'an?",
+        "options": [
+          "Jannah",
+          "Firdaws",
+          "Dar As-Salām",
+          "Jannat 'Adn"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "What does the name 'Dar As-Salām' mean?",
+        "options": [
+          "The Gardens of Eternity",
+          "The Abode of Peace",
+          "The Gardens of Delight",
+          "The Highest Paradise"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Which name refers to the highest Paradise?",
+        "options": [
+          "Jannat An-Na'eem",
+          "Dar As-Salām",
+          "Jannat Al-Firdaws",
+          "Jannat Al-Ma'wā"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Why does Allah use many different names for Paradise?",
+        "options": [
+          "To make the Qur'an more poetic",
+          "To help us understand and desire Paradise's countless blessings",
+          "To confuse disbelievers",
+          "To test our memorization"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 3,
+    "questions": [
+      {
+        "question": "When was Paradise created?",
+        "options": [
+          "Before creating humanity",
+          "After the Day of Judgment begins",
+          "During Adam's time on Earth",
+          "It will be created in the future"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "What is Paradise's soil made of?",
+        "options": [
+          "Regular earth",
+          "Golden sand",
+          "Musk (the finest fragrance)",
+          "White pearls"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What are the buildings in Paradise made of?",
+        "options": [
+          "Stone and marble",
+          "Bricks of gold and silver with musk mortar",
+          "Pure light",
+          "Crystal and glass"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "When did the Prophet ﷺ see Paradise?",
+        "options": [
+          "In a dream",
+          "During the Battle of Badr",
+          "During his Night Journey (Isra and Mi'raj)",
+          "He never saw it in this life"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 4,
+    "questions": [
+      {
+        "question": "How many gates does Paradise have?",
+        "options": [
+          "Seven gates",
+          "Eight gates",
+          "Twelve gates",
+          "Countless gates"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What is the name of the gate specifically for those who fasted frequently?",
+        "options": [
+          "Bāb As-Salāt",
+          "Bāb Al-Jihād",
+          "Ar-Rayyān",
+          "Bāb As-Sadaqah"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How wide are Paradise's gates?",
+        "options": [
+          "As wide as a large door",
+          "So wide the distance between two sides equals the distance between Mecca and Busra",
+          "Ten meters wide",
+          "As wide as a city street"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Who will be called from all eight gates of Paradise?",
+        "options": [
+          "All prophets",
+          "All martyrs",
+          "Exceptional people like Abu Bakr who excelled in every type of worship",
+          "Everyone who enters Paradise"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 5,
+    "questions": [
+      {
+        "question": "What is the key to entering Paradise?",
+        "options": [
+          "Being wealthy and giving charity",
+          "Saying 'Lā ilāha illā Allāh' with sincere belief and righteous actions",
+          "Being born into a Muslim family",
+          "Memorizing the entire Qur'an"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What are the 'teeth' of the key to Paradise?",
+        "options": [
+          "The five pillars of Islam",
+          "The actions that demonstrate true belief",
+          "The six articles of faith",
+          "The 99 names of Allah"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Is saying 'Lā ilāha illā Allāh' alone enough to enter Paradise?",
+        "options": [
+          "Yes, the words alone are sufficient",
+          "No, it must be combined with sincere belief and righteous actions",
+          "Only if said before death",
+          "Only if said in Arabic"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What happens to good deeds done without faith in Allah?",
+        "options": [
+          "They are stored for the afterlife",
+          "They are worthless",
+          "They reduce punishment in Hell",
+          "They help in this world only"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 6,
+    "questions": [
+      {
+        "question": "What will the person with the lowest rank in Paradise receive?",
+        "options": [
+          "A small house and garden",
+          "A kingdom ten times the size of Earth",
+          "The same as everyone else",
+          "Only spiritual blessings"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "According to hadith, how far will the lowest person in Paradise see his kingdom?",
+        "options": [
+          "One hundred years' distance",
+          "A thousand years' distance",
+          "As far as the eye can see",
+          "Ten thousand years' distance"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What will Allah tell the person with the lowest rank?",
+        "options": [
+          "That he barely made it to Paradise",
+          "That he has the same as what he sees and ten times more",
+          "That he must work harder in Paradise",
+          "That he will move to higher levels later"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What does the lowest rank in Paradise teach us?",
+        "options": [
+          "That Paradise has levels of inequality",
+          "That we should aim for the minimum requirements",
+          "That even the weakest believers receive unimaginable blessings from Allah's generosity",
+          "That some people barely deserve Paradise"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 7,
+    "questions": [
+      {
+        "question": "What is the highest level of Paradise called?",
+        "options": [
+          "Jannat 'Adn",
+          "Dar As-Salām",
+          "Jannat Al-Firdaws",
+          "Jannat An-Na'eem"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Where is Firdaws located?",
+        "options": [
+          "At the entrance of Paradise",
+          "Directly beneath Allah's Throne",
+          "In the middle levels of Paradise",
+          "At the edge of Paradise"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What flows from Firdaws?",
+        "options": [
+          "The winds of Paradise",
+          "The light of Paradise",
+          "The four main rivers of Paradise",
+          "The fragrance of Paradise"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did the Prophet ﷺ teach us to ask for when asking Allah for Paradise?",
+        "options": [
+          "Any level of Paradise",
+          "The middle level",
+          "The easiest path to Paradise",
+          "Al-Firdaws Al-A'lā (the highest Firdaws)"
+        ],
+        "answer": 3
+      }
+    ]
+  },
+  {
+    "lessonId": 8,
+    "questions": [
+      {
+        "question": "What types of rivers flow in Paradise?",
+        "options": [
+          "Only water rivers",
+          "Water, milk, wine (non-intoxicating), and honey",
+          "Water and milk only",
+          "Seven different types of fruit juices"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What is special about the wine in Paradise's rivers?",
+        "options": [
+          "It is forbidden like worldly wine",
+          "It is the same as worldly wine",
+          "It is delightful and does not intoxicate or cause harm",
+          "It tastes like honey"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What is the name of the Prophet Muhammad's ﷺ special river?",
+        "options": [
+          "Al-Firdaws",
+          "As-Salām",
+          "Al-Kawthar",
+          "An-Na'eem"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "According to Qur'an 47:15, what quality does the milk in Paradise's rivers have?",
+        "options": [
+          "It glows with light",
+          "It never changes in taste",
+          "It is sweeter than honey",
+          "It flows upward"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 9,
+    "questions": [
+      {
+        "question": "What are Paradise's palaces built from?",
+        "options": [
+          "Pure light",
+          "Crystal and glass",
+          "Bricks of gold and silver with musk mortar",
+          "White marble and pearls"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How will people in lower Paradise see the palaces of higher levels?",
+        "options": [
+          "They won't be able to see them",
+          "Through special mirrors",
+          "Shining like stars in the sky",
+          "Only during special occasions"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "According to hadith, what earns a palace in Paradise?",
+        "options": [
+          "Praying tahajjud every night",
+          "Building a mosque for Allah",
+          "Fasting every Monday and Thursday",
+          "Memorizing the Qur'an"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What is special about some palaces in Paradise?",
+        "options": [
+          "They can fly",
+          "They are invisible to others",
+          "They are so transparent people can see through them",
+          "They change colors constantly"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 10,
+    "questions": [
+      {
+        "question": "What will the people of Paradise wear?",
+        "options": [
+          "Simple white robes",
+          "The finest silk and brocade adorned with gold and pearls",
+          "Whatever they wore in worldly life",
+          "Transparent garments"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What will happen to clothes in Paradise?",
+        "options": [
+          "They need to be washed regularly",
+          "They will never tear, wear out, or become dirty",
+          "They must be changed daily",
+          "They fade over time"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What will everyone's sweat smell like in Paradise?",
+        "options": [
+          "Fresh flowers",
+          "Like ocean breeze",
+          "Musk (the finest perfume)",
+          "There will be no sweat"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "According to Qur'an 76:21, what color garments will people wear?",
+        "options": [
+          "White silk",
+          "Golden brocade",
+          "Green garments of fine silk and brocade",
+          "Rainbow-colored robes"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 11,
+    "questions": [
+      {
+        "question": "What will people eat in Paradise?",
+        "options": [
+          "Only fruits and vegetables",
+          "Whatever they desire instantly without effort",
+          "Simple bread and water",
+          "They won't need to eat"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What happens to waste from food in Paradise?",
+        "options": [
+          "It disappears magically",
+          "It leaves as pleasant-smelling sweat like musk",
+          "There is no waste at all",
+          "Angels remove it"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "According to Qur'an 56:21, what type of meat will be available?",
+        "options": [
+          "Only lamb",
+          "Fish from Paradise's rivers",
+          "Meat of fowl, from whatever they desire",
+          "Meat is not served in Paradise"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What negative effects does Paradise's food have?",
+        "options": [
+          "It can make people temporarily sick",
+          "It causes weight gain",
+          "It has no negative effects at all",
+          "It makes people sleepy"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 12,
+    "questions": [
+      {
+        "question": "Who will believers enjoy companionship with in Paradise?",
+        "options": [
+          "Only their immediate family",
+          "The prophets, the truthful, the martyrs, and the righteous",
+          "Only people from their own time period",
+          "They will be alone in their palaces"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What will Allah remove from people's hearts in Paradise?",
+        "options": [
+          "All memories of worldly life",
+          "All grudges and ill feelings",
+          "The desire for companionship",
+          "Knowledge of their past sins"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "According to Qur'an 15:47, how will believers sit in Paradise?",
+        "options": [
+          "Each person alone",
+          "In large crowds without organization",
+          "As brothers on thrones facing each other",
+          "In circles around the prophets"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Will there be any negative emotions in Paradise?",
+        "options": [
+          "Yes, occasional sadness",
+          "Only jealousy of higher levels",
+          "No, there will be no arguments, jealousy, or hatred",
+          "Minor conflicts but quickly resolved"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 13,
+    "questions": [
+      {
+        "question": "What will happen to believing families in Paradise?",
+        "options": [
+          "They will be separated by their deeds",
+          "They will be reunited at the highest level achieved by any member",
+          "Only spouses will be together",
+          "Children will be separate from parents"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "According to Qur'an 52:21, who will be joined with believers in Paradise?",
+        "options": [
+          "All their relatives regardless of faith",
+          "Their descendants who followed them in faith",
+          "Only their parents",
+          "Only their children"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Can disbelieving family members enter Paradise?",
+        "options": [
+          "Yes, if believers pray for them enough",
+          "Yes, after a long time in Hellfire",
+          "No, only those who died with faith can reunite",
+          "Yes, if they were kind people"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What should motivate us regarding family reunions in Paradise?",
+        "options": [
+          "To worry about our family constantly",
+          "To judge our family members",
+          "To guide our families toward faith and righteousness",
+          "To abandon family members who don't practice"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 14,
+    "questions": [
+      {
+        "question": "What are Hoor al-'Ayn?",
+        "options": [
+          "Angels who serve in Paradise",
+          "Spouses of perfect beauty and character created for Paradise",
+          "Special fruits in Paradise",
+          "Guardians of Paradise's gates"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How are the Hoor al-'Ayn described?",
+        "options": [
+          "As ordinary people",
+          "As having large, beautiful eyes and radiant faces",
+          "As invisible spirits",
+          "As angels in human form"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Will Paradise have perfect relationships?",
+        "options": [
+          "No, there will be minor disagreements",
+          "Only between spouses",
+          "Yes, relationships bring only joy without worldly problems",
+          "Relationships are not important in Paradise"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "According to Qur'an 55:56, what quality do the Hoor al-'Ayn have?",
+        "options": [
+          "They are very tall",
+          "They can fly",
+          "They are pure and untouched before by man or jinn",
+          "They are made of light"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 15,
+    "questions": [
+      {
+        "question": "Why do people gather in Paradise's markets?",
+        "options": [
+          "To buy and sell goods",
+          "To socialize and receive gifts from Allah",
+          "To attend classes",
+          "To work and earn rewards"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How often will people visit Paradise's markets?",
+        "options": [
+          "Daily",
+          "Monthly",
+          "Every Friday",
+          "Once a year"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What happens when people attend Paradise's markets?",
+        "options": [
+          "They trade goods with each other",
+          "Winds blow carrying fragrances and increase their beauty",
+          "They compete in games",
+          "They listen to lectures"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What will spouses notice when people return from Paradise's markets?",
+        "options": [
+          "They brought back gifts",
+          "They learned new things",
+          "They are even more beautiful than before",
+          "They are tired from the journey"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 16,
+    "questions": [
+      {
+        "question": "What age will everyone be in Paradise?",
+        "options": [
+          "Whatever age they died at",
+          "Thirty or thirty-three years old",
+          "Twenty-one years old",
+          "They will be ageless"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What happens to people who were sick or disabled in worldly life?",
+        "options": [
+          "They remain the same",
+          "They improve slightly",
+          "They will be perfectly healthy and whole",
+          "They wait to be healed"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Will people age in Paradise?",
+        "options": [
+          "Yes, very slowly",
+          "No, they remain at perfect age forever",
+          "Only in appearance",
+          "They age but stay healthy"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "According to hadith, how will people of Paradise enter it?",
+        "options": [
+          "As old and wise",
+          "As children",
+          "Hairless, beardless, with eyes anointed with kohl, aged thirty or thirty-three",
+          "In their worldly appearance"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 17,
+    "questions": [
+      {
+        "question": "What is the greatest blessing in Paradise?",
+        "options": [
+          "The palaces and rivers",
+          "Seeing Allah's Face",
+          "Reuniting with family",
+          "Never feeling pain"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How often will believers see Allah in Paradise?",
+        "options": [
+          "Only once",
+          "Once a year",
+          "Regularly, like gazing at the full moon",
+          "Never directly"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What will happen when believers see Allah?",
+        "options": [
+          "They will feel slightly happy",
+          "They will forget every other pleasure of Paradise",
+          "They will ask to return to their palaces",
+          "They will become unconscious"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "According to Qur'an 75:22-23, what will some faces do on that Day?",
+        "options": [
+          "Be covered with veils",
+          "Be radiant, looking at their Lord",
+          "Turn away in shame",
+          "Glow with golden light"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 18,
+    "questions": [
+      {
+        "question": "How will Allah speak to believers in Paradise?",
+        "options": [
+          "Through angels only",
+          "Through written messages",
+          "Directly without any translator or barrier",
+          "Through the prophets"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What will Allah say to greet the people of Paradise?",
+        "options": [
+          "Welcome",
+          "Salāmun (Peace)",
+          "Congratulations",
+          "Well done"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What will Allah ask the people of Paradise?",
+        "options": [
+          "If they remember their sins",
+          "If they are pleased",
+          "If they want more blessings",
+          "If they miss the worldly life"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "According to Qur'an 36:58, what is the word from the Merciful Lord?",
+        "options": [
+          "Forgiveness",
+          "Peace (Salām)",
+          "Mercy",
+          "Love"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 19,
+    "questions": [
+      {
+        "question": "What will NOT exist in Paradise?",
+        "options": [
+          "Rivers and gardens",
+          "Death, disease, pain, sadness, or worry",
+          "Food and drink",
+          "Companionship"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What will the announcer proclaim to the people of Paradise?",
+        "options": [
+          "That they must continue worshipping",
+          "That they will live forever, never die, be healthy, young, and in bliss",
+          "That they can visit Earth occasionally",
+          "That they must wait for judgment"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "According to Qur'an 44:56, will people taste death in Paradise?",
+        "options": [
+          "Yes, occasionally",
+          "Only if they wish to",
+          "No, except the first death (worldly death)",
+          "Yes, but they are resurrected"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What is one of Paradise's greatest blessings regarding time?",
+        "options": [
+          "Time moves very fast",
+          "Time stops completely",
+          "The eternal security that families stay together and joy never ends",
+          "People can travel back in time"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 20,
+    "questions": [
+      {
+        "question": "What determines whether our actions are leading us to Paradise?",
+        "options": [
+          "How much money we donate",
+          "Whether we pray faithfully, treat others kindly, avoid sins, and strive to please Allah",
+          "Where we were born",
+          "How many people we know"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What does the path to Paradise require?",
+        "options": [
+          "Only praying five times daily",
+          "Sincere faith, consistent good deeds, and repentance from sins",
+          "Being perfect without any mistakes",
+          "Only avoiding major sins"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "According to hadith, how close is Paradise to us?",
+        "options": [
+          "Very far away in the heavens",
+          "Closer than the strap of our shoe",
+          "A lifetime of work away",
+          "Only accessible after death"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What should Paradise motivate us to do?",
+        "options": [
+          "Ignore worldly responsibilities",
+          "Judge others who don't practice",
+          "Live righteously and call others to the truth",
+          "Worry constantly about our deeds"
+        ],
+        "answer": 2
+      }
+    ]
+  }
+]

@@ -11,8 +11,8 @@ import angelsLessons from "./lessons/angelsLessons.js";
 import endTimesLessons from "./lessons/endTimesLessons.js";
 import graveLessons from "./lessons/graveLessons.js";
 import judgementLessons from "./lessons/judgementLessons.js";
-import hellfireLessons from "./lessons/hellfireLessons.js";
-import paradiseLessons from "./lessons/paradiseLessons.js";
+import { hellfireLessons } from "./lessons/hellfireLessons.js";
+import { paradiseLessons } from "./lessons/paradiseLessons.js";
 
 import { useProgressStore } from "../store/progressStore";
 

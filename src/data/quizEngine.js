@@ -17,6 +17,8 @@ import angelsQuizzesData from './quizzes/angelsQuizzes.json';
 import endTimesQuizzesData from './quizzes/endTimesQuizzes.json';
 import graveQuizzesData from './quizzes/graveQuizzes.json';
 import judgementQuizzesData from './quizzes/judgementQuizzes.json';
+import hellfireQuizzesData from './quizzes/hellfireQuizzes.json';
+import paradiseQuizzesData from './quizzes/paradiseQuizzes.json';
 
 // ---------------------------------------------------------------------
 //  FUNCTIONS
@@ -63,6 +65,12 @@ export const getQuizForLesson = (lessonId, pathId = 1) => {
       break;
     case 12:
       quizzesData = judgementQuizzesData;
+      break;
+    case 13:
+      quizzesData = hellfireQuizzesData;
+      break;
+    case 14:
+      quizzesData = paradiseQuizzesData;
       break;
     default:
       quizzesData = namesOfAllahQuizzesData;
