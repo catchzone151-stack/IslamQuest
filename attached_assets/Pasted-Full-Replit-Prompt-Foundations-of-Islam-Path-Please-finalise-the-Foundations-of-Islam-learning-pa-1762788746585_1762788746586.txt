@@ -1,0 +1,45 @@
+Full Replit Prompt – Foundations of Islam Path
+
+Please finalise the Foundations of Islam learning path (path ID: 2) with the following requirements:
+
+🕌 1. Lesson & Quiz Content
+
+Each of the 17 lessons must have 4 short, simplified paragraphs (about 80–100 words total per lesson).
+
+Lessons should draw only from the Qur’an and authentic hadith (Sahih Bukhari and Sahih Muslim).
+
+Include at least one ayah or hadith as supporting evidence in each lesson (Arabic + English translation).
+
+Keep the tone educational, simple, and age-friendly (suitable for children from age 10+).
+
+Every lesson must teach exactly what the quiz tests — the quiz questions should match that lesson’s content, not any other topic.
+
+Each quiz should have 4 multiple-choice questions, clear and relevant, not too easy or obvious.
+
+Continue using the same reward modal (no design or functional changes).
+
+The “Continue” button after completing a quiz must remain functional and consistent.
+
+Do not modify or generate quizzes or lessons for any other learning paths.
+
+🎨 2. Visual and Layout Adjustments
+
+Remove all lesson subheadings (secondary lines under the main lesson title).
+Example: keep “Belief in Allah” only, remove “Knowing and affirming Allah’s Oneness”.
+
+Reposition the gold section headings (e.g. Five Pillars of Islam, Six Pillars of Faith, Living Islam):
+move them slightly to the left of the central vertical line so they appear neatly aligned beside the path, not overlapping the connector line.
+
+Maintain their gold colour, font size, and weight, just change positioning.
+
+Ensure layout remains responsive on all devices (mobile, tablet, desktop).
+
+Apply these layout changes only to the Foundations of Islam path.
+
+🟢 Do not alter:
+
+Navigation, progress logic, reward system, or animations.
+
+Any other paths, data, or files outside of foundationsLessons.js and its matching quiz file.
+
+The result should match the Names of Allah path quality and behaviour but with these specific design and content adjustments.
