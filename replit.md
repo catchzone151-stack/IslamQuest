@@ -3,6 +3,39 @@
 ## Overview
 Islam Quest is a mobile-first web application designed as a gamified Islamic learning platform. Its core purpose is to provide an interactive educational experience, guiding users through structured learning paths that cover fundamental Islamic beliefs, stories of prophets, and other essential knowledge. Key capabilities include a friendly mascot (Zayd), an achievement system, customizable avatars, and quiz-based assessments to reinforce learning. The project aims to make Islamic education engaging and accessible, fostering continuous learning and spiritual growth.
 
+## Recent Changes
+
+### November 10, 2025 - Paths 5 & 6 Implementation (Wives of the Prophet ﷺ & Ten Promised Jannah)
+- **Work Completed**: Created two complete learning paths with lessons, quizzes, and path-specific UI customizations
+- **Path 5 - Wives of the Prophet ﷺ (13 lessons)**:
+  - **Content**: Khadijah (2 lessons), Aishah (2 lessons), Sawdah, Hafsah, Zaynab bint Khuzaymah, Umm Salamah, Zaynab bint Jahsh, Juwayriyyah, Safiyyah, Umm Habibah, Maymunah (1 lesson each)
+  - **Structure**: 3 paragraphs per lesson (18-28 words each, verified compliant), 1 Sahih hadith (Arabic + English), Key Lesson Learned
+  - **Sources**: ONLY Sahih Bukhari and Sahih Muslim with proper citations
+  - **13 quizzes**: 52 total questions (4 MCQs per quiz), balanced answer distribution, aligned with lesson content
+  - **UI**: ZaydHappy mascot (family theme), greeting "Meet the noble Mothers of the Believers 🌸", hidden subtitles
+- **Path 6 - Ten Promised Jannah (10 lessons)**:
+  - **Content**: Abu Bakr, Umar, Uthman, Ali, Talhah, Zubayr, Abd al-Rahman ibn Awf, Saad ibn Abi Waqqas, Saeed ibn Zayd, Abu Ubaydah (one lesson per companion)
+  - **Structure**: 3 paragraphs per lesson (18-28 words each, verified compliant), 1 Qur'an ayah or Sahih hadith (Arabic + English), Key Lesson Learned
+  - **Sources**: Book "Ten Promised Paradise" + Sahih Bukhari/Muslim hadith
+  - **10 quizzes**: 40 total questions (4 MCQs per quiz), perfect answer distribution (10 at each index 0-3), aligned with lesson content
+  - **UI**: ZaydShield mascot (heroic theme), greeting "Learn from the heroes promised Paradise 🕊️", hidden subtitles
+- **Technical Implementation**:
+  - Created `src/data/lessons/wivesLessons.js` (13 lessons, strict word count compliance)
+  - Created `src/data/quizzes/wivesQuizzes.json` (13 quizzes, 52 questions)
+  - Created `src/data/lessons/tenPromisedLessons.js` (10 lessons, strict word count compliance)
+  - Created `src/data/quizzes/tenPromisedQuizzes.json` (10 quizzes, 40 questions)
+  - Updated `src/data/quizEngine.js` to import and route Path 5 and 6 quizzes (cases 5 & 6)
+  - Updated `src/screens/Pathway.jsx` with conditional UI rendering for pathId 5 & 6 (mascots, greetings, hidden subtitles)
+  - `src/data/lessonLoader.js` already included Path 5 & 6 mapping (cases 5 & 6)
+- **Files Created/Modified**: 
+  - `src/data/lessons/wivesLessons.js` (new file, 13 lessons)
+  - `src/data/quizzes/wivesQuizzes.json` (new file, 13 quizzes)
+  - `src/data/lessons/tenPromisedLessons.js` (new file, 10 lessons)
+  - `src/data/quizzes/tenPromisedQuizzes.json` (new file, 10 quizzes)
+  - `src/data/quizEngine.js` (added Path 5 & 6 quiz routing)
+  - `src/screens/Pathway.jsx` (updated with Path 5 & 6 conditional UI)
+- **Quality Assurance**: Paragraph word counts verified (18-28 words), quiz alignment confirmed, no regressions on paths 1-4
+
 ## User Preferences
 Preferred communication style: Simple, everyday language.
 
