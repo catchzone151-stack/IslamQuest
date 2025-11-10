@@ -126,7 +126,7 @@ export default function Home() {
         background: "linear-gradient(to bottom, #081426, #0e2340)",
         color: "white",
         padding: 16,
-        paddingBottom: 90,
+        paddingBottom: 80,
         overflowX: "hidden",
         overflowY: "visible",
         position: "relative",
@@ -579,8 +579,6 @@ export default function Home() {
           ▶
         </button>
       </div>
-
-      <div style={{ height: "110px" }} />
 
       {/*
        * ===============================================================
