@@ -9,6 +9,7 @@ import { getLessonsForPath } from "../data/lessonLoader.js";
 // Mascots
 import ZaydStudy from "../assets/mascots/mascot_zayd_reading.webp";
 import ZaydTeaching from "../assets/mascots/mascot_zayd_teaching.webp";
+import ZaydLantern from "../assets/mascots/mascot_zayd_lantern.webp";
 
 export default function Pathway() {
   const { pathId } = useParams();
@@ -156,7 +157,11 @@ export default function Pathway() {
         }}
       >
         <img
-          src={numericPathId === 2 ? ZaydTeaching : ZaydStudy}
+          src={
+            numericPathId === 2 ? ZaydTeaching :
+            numericPathId === 3 ? ZaydLantern :
+            ZaydStudy
+          }
           alt="Zayd mascot"
           style={{
             width: 70,
@@ -180,6 +185,8 @@ export default function Pathway() {
         >
           {numericPathId === 2 
             ? "Let's strengthen your faith together 💪"
+            : numericPathId === 3
+            ? "Let's journey through the lives of the Prophets 🌙"
             : "As Salaam Alikum Wa Rahmatullah, We find the name... 🌙"}
         </div>
       </div>
@@ -218,17 +225,26 @@ export default function Pathway() {
           const isActive = i === activeIndex;
           const top = FIRST_NODE_TOP + i * NODE_SPACING;
 
-          // Section headers for Foundations of Islam path (pathId 2)
-          const sectionHeaders = {
-            1: "The Five Pillars of Islam",
-            6: "The Six Pillars of Belief (Īmān)",
-            12: "Living Islam"
-          };
-          const showSectionHeader = numericPathId === 2 && sectionHeaders[lesson.id];
+          // Section headers for Foundations of Islam (pathId 2) and Stories of Prophets (pathId 3)
+          let sectionHeaders = {};
+          if (numericPathId === 2) {
+            sectionHeaders = {
+              1: "The Five Pillars of Islam",
+              6: "The Six Pillars of Belief (Īmān)",
+              12: "Living Islam"
+            };
+          } else if (numericPathId === 3) {
+            sectionHeaders = {
+              1: "Early Prophets",
+              18: "Prophets of Bani Isra'il",
+              42: "Prophets Before 'Īsā"
+            };
+          }
+          const showSectionHeader = (numericPathId === 2 || numericPathId === 3) && sectionHeaders[lesson.id];
 
           return (
             <React.Fragment key={lesson.id}>
-              {/* Section Header (Foundations path only) */}
+              {/* Section Header (Foundations and Prophets paths) */}
               {showSectionHeader && (
                 <div
                   style={{
@@ -338,8 +354,8 @@ export default function Pathway() {
                   {shortenTitleEnglish(lesson.title)}
                 </div>
 
-                {/* NEW: English meaning line (hidden for Foundations path) */}
-                {numericPathId !== 2 && lesson.meaning && (
+                {/* NEW: English meaning line (hidden for Foundations and Prophets paths) */}
+                {numericPathId !== 2 && numericPathId !== 3 && lesson.meaning && (
                   <div style={{ fontSize: "0.75rem", color: "#ccc" }}>
                     {lesson.meaning}
                   </div>
