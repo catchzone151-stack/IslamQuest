@@ -1,15 +1,19 @@
+import React from "react";
+
+const NAV_HEIGHT = 76;
+
 export default function ScreenContainer({ children }) {
   return (
     <div
       style={{
         minHeight: "100vh",
+        background: "var(--navy)",
+        padding: "clamp(12px, 3vw, 24px)",
+        paddingBottom: `${NAV_HEIGHT + 34}px`, // 76 + 34 = 110px
+        maxWidth: "100%",
         width: "100%",
-        background: "linear-gradient(to bottom, #081426, #0e2340)",
-        color: "white",
-        padding: 16,
-        paddingBottom: 90,
-        overflowX: "hidden",
         boxSizing: "border-box",
+        overflowX: "hidden",
       }}
     >
       {children}

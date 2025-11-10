@@ -5,6 +5,7 @@ entrypoint = "index.html"
 
 [nix]
 channel = "stable-24_05"
+packages = ["zip"]
 
 [unitTest]
 language = "nodejs"
@@ -16,43 +17,15 @@ publicDir = "dist"
 
 [[ports]]
 localPort = 5000
-externalPort = 80
-
-[[ports]]
-localPort = 5001
-externalPort = 3003
-
-[[ports]]
-localPort = 5002
-externalPort = 4200
-
-[[ports]]
-localPort = 5003
 externalPort = 5000
 
 [[ports]]
-localPort = 5174
+localPort = 5001
 externalPort = 3000
 
 [[ports]]
-localPort = 5175
-externalPort = 3001
-
-[[ports]]
-localPort = 5176
-externalPort = 3002
-
-[[ports]]
-localPort = 35307
-externalPort = 5173
-
-[[ports]]
-localPort = 36587
-externalPort = 6800
-
-[[ports]]
-localPort = 43347
-externalPort = 6000
+localPort = 5002
+externalPort = 80
 
 [agent]
 expertMode = true

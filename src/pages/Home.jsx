@@ -95,7 +95,6 @@ export default function Home() {
    */
   const handlePathClick = (p) => {
     navigate(`/path/${p.id}`);
-
   };
 
   /**
@@ -127,9 +126,11 @@ export default function Home() {
         background: "linear-gradient(to bottom, #081426, #0e2340)",
         color: "white",
         padding: 16,
-        // bottom safe space above nav
-        paddingBottom: "calc(env(safe-area-inset-bottom) + 30px)",
+        // ✅ Fix: ensure content never hides behind BottomNav
+        paddingBottom: "calc(env(safe-area-inset-bottom) + 120px)",
         overflowX: "hidden",
+        overflowY: "visible",
+        position: "relative",
       }}
     >
       {/*
@@ -579,6 +580,8 @@ export default function Home() {
           ▶
         </button>
       </div>
+
+      <div style={{ height: "110px" }} />
 
       {/*
        * ===============================================================

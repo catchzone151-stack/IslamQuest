@@ -1,133 +1,63 @@
-// src/components/TitleListModal.jsx
 import React from "react";
-import { titles } from "../data/titles";
-import { useTitleStore } from "../store/useTitleStore";
-import "../styles/titles.css";
 
-export default function TitleListModal({ isOpen, onClose }) {
-  const { currentTier } = useTitleStore();
-
-  if (!isOpen) return null;
-
-  const tierColours = {
-    1: "#f5e6c6",
-    2: "#ffd700",
-    3: "#00a86b",
-    4: "#0066ff",
-    5: "#b0c3ff",
-    6: "#b22222",
-    7: "#ffbf00",
-    8: "#e0ffff",
-    9: "#00b080",
-    10: "#ffffff",
-  };
-
+export default function TitleListModal({ titles = [], onClose }) {
   return (
-    <div className="title-modal-backdrop" onClick={onClose}>
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        background: "rgba(0,0,0,0.8)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        zIndex: 100,
+      }}
+      onClick={onClose}
+    >
       <div
-        className="title-modal"
-        onClick={(e) => e.stopPropagation()}
         style={{
-          maxHeight: "80vh",
-          overflowY: "auto",
-          background: "rgba(0, 15, 35, 0.95)",
-          border: "1px solid rgba(255,255,255,0.15)",
-          borderRadius: 16,
-          padding: 20,
+          background: "#0a0a1a",
+          borderRadius: "16px",
+          padding: "24px",
+          border: "1px solid rgba(255,215,0,0.3)",
           color: "white",
-          boxShadow: "0 0 20px rgba(0,0,0,0.5)",
-          backdropFilter: "blur(8px)",
+          width: "300px",
+          textAlign: "center",
         }}
+        onClick={(e) => e.stopPropagation()}
       >
-        <h2
-          style={{
-            textAlign: "center",
-            marginBottom: 16,
-            color: "white",
-          }}
-        >
-          Title Progression
-        </h2>
-
-        <div className="title-list">
-          {titles.map((t) => {
-            const unlocked = t.id <= currentTier;
-            const textColour = tierColours[t.id] || "#ffffff";
-
-            return (
-              <div
-                key={t.id}
-                className={`title-item ${t.cssClass} ${
-                  unlocked ? "unlocked" : "locked"
-                }`}
+        <h3 style={{ color: "#FFD700", marginBottom: "12px" }}>Your Titles</h3>
+        {titles.length === 0 ? (
+          <p>No titles unlocked yet.</p>
+        ) : (
+          <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+            {titles.map((t, i) => (
+              <li
+                key={i}
                 style={{
-                  border: unlocked
-                    ? "1px solid rgba(255, 215, 0, 0.4)"
-                    : "1px solid rgba(255,255,255,0.1)",
-                  borderRadius: 10,
-                  marginBottom: 10,
-                  padding: "10px 14px",
-                  background: unlocked
-                    ? "rgba(0, 50, 90, 0.45)"
-                    : "rgba(10, 10, 10, 0.3)",
+                  padding: "6px 0",
+                  borderBottom: "1px solid rgba(255,255,255,0.1)",
                 }}
               >
-                <div
-                  className="title-name"
-                  style={{
-                    fontWeight: 600,
-                    color: textColour,
-                    textShadow: unlocked
-                      ? "0 0 6px rgba(255,255,255,0.4)"
-                      : "none",
-                  }}
-                >
-                  {t.name}
-                  {!unlocked && (
-                    <span style={{ marginLeft: 8, color: "#aaa" }}>🔒</span>
-                  )}
-                </div>
-                <div
-                  className="title-req"
-                  style={{
-                    fontSize: "0.85rem",
-                    color: "#ffffff",
-                    marginTop: 4,
-                  }}
-                >
-                  {t.requirement}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        <div style={{ textAlign: "center", marginTop: 18 }}>
-          <button
-            onClick={onClose}
-            style={{
-              background: "linear-gradient(90deg, #0074D9, #00BFFF)",
-              border: "none",
-              color: "white",
-              fontWeight: 600,
-              borderRadius: 10,
-              padding: "10px 24px",
-              cursor: "pointer",
-              boxShadow: "0 0 10px rgba(0,191,255,0.6)",
-              transition: "all 0.25s ease",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.boxShadow =
-                "0 0 14px rgba(0,191,255,0.9)")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.boxShadow =
-                "0 0 10px rgba(0,191,255,0.6)")
-            }
-          >
-            ✨ Close
-          </button>
-        </div>
+                {t}
+              </li>
+            ))}
+          </ul>
+        )}
+        <button
+          onClick={onClose}
+          style={{
+            marginTop: "20px",
+            background: "#FFD700",
+            border: "none",
+            borderRadius: "8px",
+            padding: "10px 20px",
+            cursor: "pointer",
+            fontWeight: 600,
+          }}
+        >
+          Close
+        </button>
       </div>
     </div>
   );
