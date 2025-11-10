@@ -25,7 +25,7 @@ export default function BottomNav() {
         left: 0,
         right: 0,
         height: `${NAV_HEIGHT}px`,
-        background: "linear-gradient(to bottom, #0e2340, #081426)",
+        background: "#0e2340",
         borderTop: "1px solid rgba(255, 215, 0, 0.1)",
         boxShadow: "0 -2px 12px rgba(0, 0, 0, 0.4)",
         display: "flex",

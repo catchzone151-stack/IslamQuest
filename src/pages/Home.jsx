@@ -126,7 +126,7 @@ export default function Home() {
         background: "linear-gradient(to bottom, #081426, #0e2340)",
         color: "white",
         padding: 16,
-        paddingBottom: 100,
+        paddingBottom: 90,
         overflowX: "hidden",
         overflowY: "visible",
         position: "relative",
