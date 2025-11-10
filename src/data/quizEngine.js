@@ -9,6 +9,8 @@ import namesOfAllahQuizzesData from './quizzes/namesOfAllah.json';
 import foundationsQuizzesData from './quizzes/foundations.json';
 import prophetsQuizzesData from './quizzes/prophets.json';
 import prophetLifeQuizzesData from './quizzes/prophetLife.json';
+import wivesQuizzesData from './quizzes/wivesQuizzes.json';
+import tenPromisedQuizzesData from './quizzes/tenPromisedQuizzes.json';
 
 // ---------------------------------------------------------------------
 //  FUNCTIONS
@@ -31,6 +33,12 @@ export const getQuizForLesson = (lessonId, pathId = 1) => {
       break;
     case 4:
       quizzesData = prophetLifeQuizzesData;
+      break;
+    case 5:
+      quizzesData = wivesQuizzesData;
+      break;
+    case 6:
+      quizzesData = tenPromisedQuizzesData;
       break;
     default:
       quizzesData = namesOfAllahQuizzesData;

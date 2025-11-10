@@ -11,6 +11,8 @@ import ZaydStudy from "../assets/mascots/mascot_zayd_reading.webp";
 import ZaydTeaching from "../assets/mascots/mascot_zayd_teaching.webp";
 import ZaydLantern from "../assets/mascots/mascot_zayd_lantern.webp";
 import ZaydBook from "../assets/mascots/mascot_zayd_book.webp";
+import ZaydHappy from "../assets/mascots/mascot_zayd_happy.webp";
+import ZaydShield from "../assets/mascots/mascot_zayd_shield.webp";
 
 export default function Pathway() {
   const { pathId } = useParams();
@@ -162,6 +164,8 @@ export default function Pathway() {
             numericPathId === 2 ? ZaydTeaching :
             numericPathId === 3 ? ZaydLantern :
             numericPathId === 4 ? ZaydBook :
+            numericPathId === 5 ? ZaydHappy :
+            numericPathId === 6 ? ZaydShield :
             ZaydStudy
           }
           alt="Zayd mascot"
@@ -191,6 +195,10 @@ export default function Pathway() {
             ? "Let's journey through the lives of the Prophets 🌙"
             : numericPathId === 4
             ? "Let's follow the footsteps of the Prophet ﷺ 🌙"
+            : numericPathId === 5
+            ? "Meet the noble Mothers of the Believers 🌸"
+            : numericPathId === 6
+            ? "Learn from the heroes promised Paradise 🕊️"
             : "As Salaam Alikum Wa Rahmatullah, We find the name... 🌙"}
         </div>
       </div>
@@ -364,8 +372,8 @@ export default function Pathway() {
                   {shortenTitleEnglish(lesson.title)}
                 </div>
 
-                {/* NEW: English meaning line (hidden for Foundations, Prophets, and Prophet's Life paths) */}
-                {numericPathId !== 2 && numericPathId !== 3 && numericPathId !== 4 && lesson.meaning && (
+                {/* NEW: English meaning line (hidden for paths 2-6) */}
+                {numericPathId !== 2 && numericPathId !== 3 && numericPathId !== 4 && numericPathId !== 5 && numericPathId !== 6 && lesson.meaning && (
                   <div style={{ fontSize: "0.75rem", color: "#ccc" }}>
                     {lesson.meaning}
                   </div>
