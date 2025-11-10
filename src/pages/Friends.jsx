@@ -21,6 +21,7 @@ export default function Friends() {
     acceptFriendRequest,
     declineFriendRequest,
     cancelOutgoingRequest,
+    removeFriend,
     sendMessage,
     sendChallenge,
     getFriendsLeaderboard,
@@ -196,6 +197,12 @@ export default function Friends() {
             setShowMiniProfile(null);
           }}
           onChallenge={() => handleChallenge(showMiniProfile.id)}
+          onRemove={() => {
+            if (window.confirm(`Remove ${showMiniProfile.name} from your friends?`)) {
+              removeFriend(showMiniProfile.id);
+              setShowMiniProfile(null);
+            }
+          }}
         />
       )}
 
@@ -750,7 +757,7 @@ function ActivityTab({ activityFeed }) {
   );
 }
 
-function MiniProfileModal({ friend, onClose, onMessage, onChallenge }) {
+function MiniProfileModal({ friend, onClose, onMessage, onChallenge, onRemove }) {
   const friendsSince = friend.addedAt ? new Date(friend.addedAt).toLocaleDateString() : "Recently";
 
   return (
@@ -863,7 +870,7 @@ function MiniProfileModal({ friend, onClose, onMessage, onChallenge }) {
           Friends since: {friendsSince}
         </div>
 
-        <div style={{ display: "flex", gap: 12 }}>
+        <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
           <button
             onClick={onChallenge}
             style={{
@@ -906,6 +913,23 @@ function MiniProfileModal({ friend, onClose, onMessage, onChallenge }) {
             Message
           </button>
         </div>
+
+        {/* Remove Friend Button */}
+        <button
+          onClick={onRemove}
+          style={{
+            width: "100%",
+            background: "transparent",
+            border: "none",
+            color: "rgba(239, 68, 68, 0.7)",
+            fontSize: "0.9rem",
+            cursor: "pointer",
+            padding: "8px",
+            textDecoration: "underline",
+          }}
+        >
+          Remove Friend
+        </button>
       </div>
     </div>
   );
