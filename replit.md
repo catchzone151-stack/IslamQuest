@@ -6,24 +6,26 @@ Islam Quest is a gamified Islamic learning platform built as a mobile-first web 
 
 ## Recent Changes
 
-### November 10, 2025 - Foundations of Islam Path Completion
-- **Work Completed**: Fully restructured and enhanced the "Foundations of Islam" learning path (Path 2) with production-ready content
-- **Content Improvements**:
-  - Restructured all 17 lessons to match Names of Allah schema with arabic name, meaning, description array, evidence, reflection
-  - Converted lesson content from single strings to exactly 4 paragraphs each (80-100 words per paragraph, 320-400 total per lesson)
-  - Added authentic Islamic evidence to all 17 lessons with Arabic text, English translation, and source citation (Qur'an/Sahih Hadith)
-  - Created 17 matching quizzes with 4 questions each, randomized options
-  - Added thoughtful reflection questions to each lesson for deeper understanding
-- **Technical Updates**:
-  - Updated `Lesson.jsx` to render new evidence blocks with Arabic + English text display
-  - Added path-specific conditional display: hides "meaning" subtitle for Foundations path (pathId 2) while preserving it for Names of Allah
-  - Fixed quizId fields to be numeric (1-17) for consistency with quiz engine routing via lessonId
-  - Maintained backward compatibility with Names of Allah path (no regressions)
+### November 10, 2025 - Foundations of Islam Path Condensation & UI Polish
+- **Work Completed**: Condensed Foundations of Islam lessons and rebuilt quizzes for improved readability; applied custom UI styling for Foundations path only
+- **Content Updates**:
+  - **Condensed all 17 lessons**: Reduced from 80-100 words per paragraph to ~30 words per paragraph while maintaining meaning and alignment with quizzes
+  - **Rebuilt all 17 quizzes**: Created fresh questions matching condensed content with varied answer indices (not always 1 or 2), balanced difficulty, age 10+ language
+  - **Quiz quality**: Each quiz has 4 questions based on authentic sources (Qur'an, Sahih Bukhari, Sahih Muslim) that match specific lesson content exactly
+- **UI Updates (Foundations Path Only - pathId 2)**:
+  - **Mascot**: Replaced reading mascot with teaching mascot (ZaydTeaching) for Foundations path
+  - **Greeting**: Changed from "As-salāmu ʿalaykum..." to "Let's strengthen your faith together 💪"
+  - **Lesson titles**: Removed meaning subheadings (e.g., "The Declaration of Faith") - now shows only main titles (e.g., "Shahadah")
+  - **Section headers**: Shifted left (calc(50% - 80px)) instead of centered, avoiding overlap with lesson nodes
+- **Technical Implementation**:
+  - Conditional rendering in `Pathway.jsx` ensures UI changes only affect pathId === 2
+  - No regressions in Names of Allah path or other learning paths
+  - Maintained lesson structure: arabic, title, meaning, description[4], evidence, reflection, quizId
 - **Files Modified**: 
-  - `src/data/lessons/foundationsLessons.js` (complete restructure of 17 lessons)
-  - `src/pages/Lesson.jsx` (evidence rendering + conditional display logic)
-  - Pre-existing: `src/data/quizzes/foundations.json` (17 quizzes already created)
-- **Quality Assurance**: All 68 paragraphs (17 lessons × 4) verified at 80-100 words. Architect-approved as production-ready.
+  - `src/data/lessons/foundationsLessons.js` (condensed all 68 paragraphs to ~30 words each)
+  - `src/data/quizzes/foundations.json` (completely rebuilt all 17 quizzes)
+  - `src/screens/Pathway.jsx` (conditional UI changes for Foundations path only)
+- **Quality Assurance**: Architect-approved as production-ready with balanced quiz difficulty and proper quiz-to-lesson alignment.
 
 ### November 8, 2025 - Dynamic Lesson System Implementation
 - **Problem Fixed**: Lessons were hardcoded to only show "Names of Allah" content regardless of which learning path was selected
