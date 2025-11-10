@@ -1,0 +1,587 @@
+[
+  {
+    "lessonId": 1,
+    "questions": [
+      {
+        "question": "How did the Prophet ﷺ describe the major signs when they begin appearing?",
+        "options": [
+          "They will come quickly one after another like beads falling from a broken necklace",
+          "They will appear slowly over many centuries",
+          "They will happen all at once on one day",
+          "They will appear in reverse order"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "What is the purpose of learning about the major signs of the End Times?",
+        "options": [
+          "To predict exactly when they will happen",
+          "To prepare for the Hereafter by increasing good deeds and strengthening faith",
+          "To become famous scholars",
+          "To frighten other people"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "According to Qur'an 54:1, what has already happened as a sign?",
+        "options": [
+          "The sun has risen from the west",
+          "The earth has split open",
+          "The Hour has come near, and the moon has split in two",
+          "The sky has turned red"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What makes the major signs different from other events?",
+        "options": [
+          "They are small and hard to notice",
+          "They happen every few years",
+          "They only affect certain countries",
+          "They are extraordinary events that have never happened before"
+        ],
+        "answer": 3
+      }
+    ]
+  },
+  {
+    "lessonId": 2,
+    "questions": [
+      {
+        "question": "What will be distributed fairly during the Mahdi's leadership?",
+        "options": [
+          "Knowledge and books",
+          "Wealth, so no one will be in need",
+          "Land and property",
+          "Food and water only"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How long will the Mahdi rule according to authentic hadith?",
+        "options": [
+          "Three years",
+          "Seven years",
+          "Ten years",
+          "Forty years"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What will Prophet ʿĪsā do when he descends during the Mahdi's time?",
+        "options": [
+          "He will lead the prayer",
+          "He will become the new leader",
+          "He will pray behind the Mahdi",
+          "He will leave immediately"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Where will the Mahdi come from?",
+        "options": [
+          "From the Prophet's ﷺ family, with the name Muhammad ibn Abdullah",
+          "From a distant land unknown to Muslims",
+          "From among the angels",
+          "From the descendants of kings"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "lessonId": 3,
+    "questions": [
+      {
+        "question": "What protects believers from the Dajjāl's deception?",
+        "options": [
+          "Wearing special amulets",
+          "Staying indoors always",
+          "Memorizing Surah Al-Kahf's opening verses",
+          "Traveling to distant lands"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "According to Sahih Muslim 2946, how significant is the trial of the Dajjāl?",
+        "options": [
+          "It is one of many equal trials",
+          "It is only important for certain people",
+          "From the creation of Adam until the Hour, there is no matter greater than the Dajjāl",
+          "It is less important than other trials"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What physical characteristic will the Dajjāl have?",
+        "options": [
+          "Blind in the right eye with the word 'disbeliever' written on his forehead",
+          "Extremely tall with no hair",
+          "Three eyes and golden skin",
+          "Completely invisible to believers"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "How will the Dajjāl test people's faith?",
+        "options": [
+          "By asking difficult questions",
+          "What he calls Paradise will actually be Hell, and what he calls Hell will be Paradise",
+          "By offering them wealth and power",
+          "By challenging them to physical contests"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 4,
+    "questions": [
+      {
+        "question": "What will ʿĪsā break after defeating the Dajjāl?",
+        "options": [
+          "The gates of the city",
+          "The cross",
+          "The idols",
+          "The weapons of war"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Where will Prophet ʿĪsā descend from Heaven?",
+        "options": [
+          "At the Kaaba in Makkah",
+          "In Jerusalem",
+          "To a white minaret in Damascus",
+          "At Mount Sinai"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Where will ʿĪsā kill the Dajjāl?",
+        "options": [
+          "At the gate of Lud in Palestine",
+          "In Damascus",
+          "At the Kaaba",
+          "On Mount Tur"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "According to Qur'an 43:61, what does ʿĪsā's return signify?",
+        "options": [
+          "The end of all prophecies",
+          "ʿĪsā will be a sign for the Hour",
+          "The beginning of a new era",
+          "The defeat of all evil"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 5,
+    "questions": [
+      {
+        "question": "How will Allah destroy Yāʾjūj and Mājūj?",
+        "options": [
+          "Allah will send worms that will kill them all overnight",
+          "A massive flood will drown them",
+          "Fire from the sky will consume them",
+          "The believers will defeat them in battle"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "Where will ʿĪsā and the believers seek refuge from Yāʾjūj and Mājūj?",
+        "options": [
+          "In underground caves",
+          "On Mount Tur",
+          "In fortified cities",
+          "On ships in the ocean"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What happens every day before Yāʾjūj and Mājūj are released?",
+        "options": [
+          "They grow stronger and larger",
+          "They dig through the barrier but cannot break through until Allah permits",
+          "They sleep and rest",
+          "They fight among themselves"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How numerous will Yāʾjūj and Mājūj be when they emerge?",
+        "options": [
+          "A few thousand warriors",
+          "Hundreds of thousands",
+          "Millions from a single city",
+          "So numerous their first group drinks a lake completely while their last group finds it empty"
+        ],
+        "answer": 3
+      }
+    ]
+  },
+  {
+    "lessonId": 6,
+    "questions": [
+      {
+        "question": "What does the beast carry to mark people?",
+        "options": [
+          "A sword and shield",
+          "The staff of Prophet Musa and the seal of Prophet Sulayman",
+          "A book and a pen",
+          "Fire and water"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What will happen to the faces of believers when the beast marks them?",
+        "options": [
+          "Nothing will change",
+          "They will become bright",
+          "They will be covered",
+          "They will turn red"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "According to Qur'an 27:82, what will the beast tell people?",
+        "options": [
+          "That the Hour is near",
+          "That they must repent immediately",
+          "That mankind did not believe with certainty in Allah's verses",
+          "That judgment has begun"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Where will the beast emerge from the earth?",
+        "options": [
+          "In Makkah near Mount Safa",
+          "In Madinah",
+          "In Jerusalem",
+          "In Damascus"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "lessonId": 7,
+    "questions": [
+      {
+        "question": "What will most people do after Allah lifts the smoke?",
+        "options": [
+          "Thank Allah and remain faithful",
+          "Return to their disbelief and sins",
+          "Migrate to other lands",
+          "Build places of worship"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How will the smoke affect believers?",
+        "options": [
+          "It will not touch them at all",
+          "Something like a common cold with discomfort",
+          "Severe torture like the disbelievers",
+          "Complete blindness temporarily"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "According to Qur'an 44:10-11, what will the smoke do?",
+        "options": [
+          "Bring a visible smoke covering the people; this is a painful punishment",
+          "Only affect the mountains and seas",
+          "Last for seven days",
+          "Turn the sky black permanently"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "How long will the smoke cover the earth?",
+        "options": [
+          "Forty days",
+          "One week",
+          "One month",
+          "One year"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "lessonId": 8,
+    "questions": [
+      {
+        "question": "For how many days will the sun continue rising from the west?",
+        "options": [
+          "One day only",
+          "Three days",
+          "Seven days",
+          "Forty days"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What happens on the morning the sun rises from the west?",
+        "options": [
+          "Time will stop completely",
+          "The door of repentance will close forever",
+          "The earth will shake violently",
+          "All vegetation will die"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Who will benefit from believing after seeing the sun rise from the west?",
+        "options": [
+          "Everyone who believes at that moment",
+          "Only the prophets",
+          "Only those who were already righteous",
+          "No one who did not believe before that moment"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "According to Sahih Bukhari 4636, what will happen when people see the sun rising from the west?",
+        "options": [
+          "They will all believe, but faith will not benefit those who had not believed before",
+          "Half will believe and half will disbelieve",
+          "No one will notice the change",
+          "Only the righteous will see it"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "lessonId": 9,
+    "questions": [
+      {
+        "question": "How many massive landslides will occur?",
+        "options": [
+          "Three: one in the east, one in the west, and one in the Arabian Peninsula",
+          "Two: one in the north and one in the south",
+          "Seven landslides around the world",
+          "One massive landslide at the Kaaba"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "Why will the three landslides occur according to the lesson?",
+        "options": [
+          "As a natural geological event",
+          "As punishment for widespread evil, immorality, and rejection of Allah's guidance",
+          "To create new mountains",
+          "To test people's patience"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "According to Sahih Bukhari 7121, what else will increase before the Hour?",
+        "options": [
+          "Rainfall and crops",
+          "Earthquakes",
+          "Population",
+          "Wealth and prosperity"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What will happen to entire regions during the landslides?",
+        "options": [
+          "They will rise up high",
+          "They will turn into deserts",
+          "They will be covered in water",
+          "They will sink into the ground"
+        ],
+        "answer": 3
+      }
+    ]
+  },
+  {
+    "lessonId": 10,
+    "questions": [
+      {
+        "question": "How will the fire from Yemen travel?",
+        "options": [
+          "Extremely fast, giving no time to escape",
+          "Slowly, allowing people to flee ahead of it",
+          "Only at night while people sleep",
+          "Underground without being seen"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What is the purpose of the fire from Yemen?",
+        "options": [
+          "To purify the earth",
+          "To drive all remaining people toward the place of final gathering",
+          "To destroy all buildings",
+          "To create new land"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "When will the fire from Yemen appear in the sequence of signs?",
+        "options": [
+          "At the very beginning",
+          "In the middle of the signs",
+          "Before the Mahdi appears",
+          "The last sign before the Day of Judgment itself begins"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "According to Sahih Muslim 2901, where will the fire emerge from?",
+        "options": [
+          "Yemen, driving the people to their place of gathering",
+          "The Arabian Peninsula",
+          "The east",
+          "Damascus"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "lessonId": 11,
+    "questions": [
+      {
+        "question": "What will happen when Isrāfīl blows the trumpet the second time?",
+        "options": [
+          "Everything will die again",
+          "All of creation will be resurrected and brought back to life",
+          "The earth will be destroyed",
+          "Time will reverse"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What happens to the mountains when the first trumpet is blown?",
+        "options": [
+          "They grow taller",
+          "They crumble into dust",
+          "They turn into gold",
+          "They float in the air"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "According to Qur'an 39:68, who will survive the first trumpet blast?",
+        "options": [
+          "Only the prophets",
+          "Only the righteous believers",
+          "Only those in Paradise",
+          "Only those whom Allah wills"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "Where is Angel Isrāfīl positioned right now?",
+        "options": [
+          "Ready with the trumpet at his lips, waiting for Allah's command",
+          "Resting until the final days",
+          "Recording people's deeds",
+          "Guarding the gates of Paradise"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "lessonId": 12,
+    "questions": [
+      {
+        "question": "What will Allah send to cause bodies to grow from the earth?",
+        "options": [
+          "Sunlight from above",
+          "Rain from beneath the Throne",
+          "Wind from the four directions",
+          "Fire from the earth"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How will people be resurrected according to the hadith?",
+        "options": [
+          "Fully clothed and prepared",
+          "Barefoot, naked, and uncircumcised",
+          "As children again",
+          "As they were at their best age"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What does Qur'an 39:68 say happens after the second trumpet is blown?",
+        "options": [
+          "The sky will turn dark",
+          "People will sleep for a thousand years",
+          "At once they will be standing, looking on",
+          "The earth will split open"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Who will be resurrected on that day?",
+        "options": [
+          "Everyone who ever lived: prophets, believers, disbelievers, and even animals",
+          "Only believers and prophets",
+          "Only humans, not animals",
+          "Only those who died recently"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "lessonId": 13,
+    "questions": [
+      {
+        "question": "How long will people stand before Allah on the Day of Judgment?",
+        "options": [
+          "Fifty thousand years",
+          "One thousand years",
+          "One hundred years",
+          "Until sunset"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "How will righteous people receive their book of deeds?",
+        "options": [
+          "From behind their back",
+          "In their right hand",
+          "In their left hand",
+          "From above their head"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "According to the lesson, what will everyone be questioned about?",
+        "options": [
+          "Only their prayers and fasting",
+          "Only their major sins",
+          "Their time, wealth, knowledge, and how they treated their body",
+          "Only their beliefs"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What will happen to evildoers when they receive their book of deeds?",
+        "options": [
+          "They will receive it in their right hand",
+          "They will receive it from above",
+          "They will not receive a book",
+          "They will receive it in their left hand behind their back"
+        ],
+        "answer": 3
+      }
+    ]
+  }
+]
