@@ -13,6 +13,7 @@ import ZaydLantern from "../assets/mascots/mascot_zayd_lantern.webp";
 import ZaydBook from "../assets/mascots/mascot_zayd_book.webp";
 import ZaydHappy from "../assets/mascots/mascot_zayd_happy.webp";
 import ZaydShield from "../assets/mascots/mascot_zayd_shield.webp";
+import ZaydCheer from "../assets/mascots/mascot_zayd_cheer.webp";
 
 export default function Pathway() {
   const { pathId } = useParams();
@@ -166,6 +167,7 @@ export default function Pathway() {
             numericPathId === 4 ? ZaydBook :
             numericPathId === 5 ? ZaydHappy :
             numericPathId === 6 ? ZaydShield :
+            numericPathId === 7 ? ZaydCheer :
             ZaydStudy
           }
           alt="Zayd mascot"
@@ -199,6 +201,8 @@ export default function Pathway() {
             ? "Meet the noble Mothers of the Believers 🌸"
             : numericPathId === 6
             ? "Learn from the heroes promised Paradise 🕊️"
+            : numericPathId === 7
+            ? "Celebrate the four greatest women in Islam ✨"
             : "As Salaam Alikum Wa Rahmatullah, We find the name... 🌙"}
         </div>
       </div>
@@ -237,7 +241,7 @@ export default function Pathway() {
           const isActive = i === activeIndex;
           const top = FIRST_NODE_TOP + i * NODE_SPACING;
 
-          // Section headers for Foundations of Islam (pathId 2), Stories of Prophets (pathId 3), and Prophet's Life (pathId 4)
+          // Section headers for Foundations of Islam (pathId 2), Stories of Prophets (pathId 3), Prophet's Life (pathId 4), and Four Greatest Women (pathId 7)
           let sectionHeaders = {};
           if (numericPathId === 2) {
             sectionHeaders = {
@@ -257,8 +261,15 @@ export default function Pathway() {
               41: "Madinah Period",
               71: "Final Years"
             };
+          } else if (numericPathId === 7) {
+            sectionHeaders = {
+              1: "Maryam",
+              4: "Asiyah",
+              7: "Khadijah",
+              10: "Fatimah"
+            };
           }
-          const showSectionHeader = (numericPathId === 2 || numericPathId === 3 || numericPathId === 4) && sectionHeaders[lesson.id];
+          const showSectionHeader = (numericPathId === 2 || numericPathId === 3 || numericPathId === 4 || numericPathId === 7) && sectionHeaders[lesson.id];
 
           return (
             <React.Fragment key={lesson.id}>
