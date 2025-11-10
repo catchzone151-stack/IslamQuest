@@ -1,19 +1,34 @@
 // /src/data/quizEngine.js
-// Handles all quiz data + XP/coin calculation for the Names of Allah path
+// Handles all quiz data + XP/coin calculation for all learning paths
 
 // ---------------------------------------------------------------------
 //  QUIZ DATA – Import from JSON
 // ---------------------------------------------------------------------
 
 import namesOfAllahQuizzesData from './quizzes/namesOfAllah.json';
+import foundationsQuizzesData from './quizzes/foundations.json';
 
 // ---------------------------------------------------------------------
 //  FUNCTIONS
 // ---------------------------------------------------------------------
 
-// Fetch quiz for a specific lesson
-export const getQuizForLesson = (lessonId) => {
-  const quizData = namesOfAllahQuizzesData.find(q => q.lessonId === parseInt(lessonId));
+// Fetch quiz for a specific lesson based on pathId and lessonId
+export const getQuizForLesson = (lessonId, pathId = 1) => {
+  let quizzesData = [];
+  
+  // Load the correct quiz data based on pathId
+  switch (parseInt(pathId)) {
+    case 1:
+      quizzesData = namesOfAllahQuizzesData;
+      break;
+    case 2:
+      quizzesData = foundationsQuizzesData;
+      break;
+    default:
+      quizzesData = namesOfAllahQuizzesData;
+  }
+  
+  const quizData = quizzesData.find(q => q.lessonId === parseInt(lessonId));
   if (!quizData) return [];
   
   // Transform JSON format to component format

@@ -37,7 +37,7 @@ const QuizScreen = () => {
   const evaluateTitle = useTitleStore((s) => s.evaluateTitle);
 
   useEffect(() => {
-    const raw = getQuizForLesson(lessonId) || [];
+    const raw = getQuizForLesson(lessonId, pathId) || [];
     const prepared = raw.map(shuffleQuestion);
     setQuizData(prepared);
     setCurrentQ(0);
@@ -46,7 +46,7 @@ const QuizScreen = () => {
     setIsQuizDone(false);
     setResults(null);
     setMascotMood("start");
-  }, [lessonId]);
+  }, [lessonId, pathId]);
 
   const handleSelect = (index) => {
     if (selected !== null || isQuizDone) return;
@@ -87,7 +87,7 @@ const QuizScreen = () => {
   };
 
   const handleRetry = () => {
-    const raw = getQuizForLesson(lessonId) || [];
+    const raw = getQuizForLesson(lessonId, pathId) || [];
     const prepared = raw.map(shuffleQuestion);
     setQuizData(prepared);
     setCurrentQ(0);

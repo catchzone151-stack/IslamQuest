@@ -1,0 +1,125 @@
+REPLIT PROMPT — Foundations of Islam Path (Final Version)
+
+Generate or verify complete lessons and quizzes for the learning path “Foundations of Islam” in my IslamQuest app.
+
+⚠️ Follow these rules exactly and make no assumptions:
+
+📁 Files to use only:
+
+/src/data/lessons/foundationsLessons.js
+
+/src/data/quizzes/foundations.json
+
+Do not modify any other learning path, modal, or UI file.
+
+📘 Curriculum structure:
+
+There must be 17 lessons total, divided into 3 themed sections.
+Each lesson must include:
+
+id (1–17)
+
+title
+
+meaning (short 1–2 line summary)
+
+content (lesson body; around 150–200 words, concise and child-friendly)
+
+Section 1 — The Five Pillars of Islam (Lessons 1–5)
+
+Shahadah – The Declaration of Faith
+
+Salah – The Connection to Allah
+
+Zakah – Purifying Wealth
+
+Sawm – Fasting for Allah Alone
+
+Hajj – The Journey of Unity
+
+Section 2 — The Six Pillars of Belief (Īmān) (Lessons 6–11)
+
+Belief in Allah
+
+Belief in Angels
+
+Belief in the Revealed Books
+
+Belief in the Prophets
+
+Belief in the Last Day
+
+Belief in Divine Decree (Qadr)
+
+Section 3 — Living Islam (Lessons 12–17)
+
+Ihsan – Worship as if You See Him
+
+Tawbah – Returning to Allah
+
+Adab – Good Manners in Islam
+
+Dua – Speaking to Allah
+
+Brotherhood – The Muslim Ummah
+
+The Balance – Faith in Action
+
+🧠 Quiz generation rules:
+
+For every lesson above, create one quiz in /src/data/quizzes/foundations.json.
+
+Each quiz should contain 4 multiple-choice questions with 4 options and 1 correct answer.
+
+Questions must come directly from that lesson’s teaching — no mixing between lessons.
+
+Difficulty: medium (ages 10+), not too easy, not too hard, not obvious.
+
+Mix up correct answer positions.
+
+Focus on real understanding (meaning, wisdom, purpose, reflection).
+
+📚 Source material (use only these):
+
+Qur’an (direct ayat references when relevant)
+
+Sahih al-Bukhari
+
+Sahih Muslim
+Do not use weak hadiths, stories, or tafsir paraphrasing.
+
+🎨 App integration & logic:
+
+Maintain the same modal design, gold theme, and reward logic as in “Names of Allah.”
+
+Keep the MashaAllah reward modal identical — no new styling, text, or animations.
+
+The Continue Learning button must still function exactly the same.
+
+XP and coin rewards work the same way; no logic change.
+
+Lessons must unlock sequentially after completing each quiz.
+
+Add section headers inside the path display (non-clickable gold titles):
+
+“The Five Pillars of Islam” before Lesson 1
+
+“The Six Pillars of Belief (Īmān)” before Lesson 6
+
+“Living Islam” before Lesson 12
+
+✅ Final verification:
+
+When done, output a short summary showing:
+
+✅ Total lessons created (should be 17)
+
+✅ Total quizzes created (should be 17)
+
+✅ Confirmation all lesson–quiz IDs link correctly
+
+✅ Confirmation reward modal and Continue logic were not modified
+
+✅ Confirmation section headers appear in gold and match the theme
+
+Only output this summary and do not include extra explanations or unrelated code.

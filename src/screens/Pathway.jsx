@@ -215,8 +215,40 @@ export default function Pathway() {
           const isActive = i === activeIndex;
           const top = FIRST_NODE_TOP + i * NODE_SPACING;
 
+          // Section headers for Foundations of Islam path (pathId 2)
+          const sectionHeaders = {
+            1: "The Five Pillars of Islam",
+            6: "The Six Pillars of Belief (Īmān)",
+            12: "Living Islam"
+          };
+          const showSectionHeader = numericPathId === 2 && sectionHeaders[lesson.id];
+
           return (
-            <div key={lesson.id}>
+            <React.Fragment key={lesson.id}>
+              {/* Section Header (Foundations path only) */}
+              {showSectionHeader && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: top - 40,
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    color: "#D4AF37",
+                    fontSize: "0.95rem",
+                    fontWeight: 700,
+                    textAlign: "center",
+                    letterSpacing: "0.5px",
+                    textTransform: "uppercase",
+                    textShadow: "0 0 10px rgba(212,175,55,0.5)",
+                    pointerEvents: "none",
+                    zIndex: 3,
+                  }}
+                >
+                  {sectionHeaders[lesson.id]}
+                </div>
+              )}
+
+              <div>
               {/* Node */}
               <div
                 onClick={() => handleLessonClick(lesson)}
@@ -322,6 +354,7 @@ export default function Pathway() {
                 )}
               </div>
             </div>
+            </React.Fragment>
           );
         })}
       </div>
