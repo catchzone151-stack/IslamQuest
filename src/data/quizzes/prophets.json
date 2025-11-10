@@ -16,21 +16,21 @@
         "question": "What special knowledge did Allah teach Adam that the angels didn't have?",
         "options": [
           "How to build houses",
-          "The names of all things",
           "How to fly",
-          "The language of birds"
+          "The language of birds",
+          "The names of all things"
         ],
-        "answer": 1
+        "answer": 3
       },
       {
         "question": "What did Adam and Hawwa do after they disobeyed Allah?",
         "options": [
           "They ran away",
           "They blamed each other",
-          "They felt shame and sought Allah's forgiveness",
-          "They stayed quiet"
+          "They stayed quiet",
+          "They felt shame and sought Allah's forgiveness"
         ],
-        "answer": 2
+        "answer": 3
       },
       {
         "question": "What did Allah promise to send to Adam's descendants?",
@@ -127,10 +127,10 @@
         "options": [
           "Made him king",
           "Gave him great wealth",
-          "Raised him to a high station in the heavens",
-          "Made him live forever"
+          "Made him live forever",
+          "Raised him to a high station in the heavens"
         ],
-        "answer": 2
+        "answer": 3
       }
     ]
   },
@@ -142,20 +142,20 @@
         "options": [
           "Ba'al and Asherah",
           "The sun and moon",
-          "Wadd, Suwa, Yaghuth, Ya'uq, and Nasr",
-          "The golden calf"
+          "The golden calf",
+          "Wadd, Suwa, Yaghuth, Ya'uq, and Nasr"
         ],
-        "answer": 2
+        "answer": 3
       },
       {
         "question": "How long did Nuh call his people to Allah?",
         "options": [
           "50 years",
           "500 years",
-          "950 years",
-          "100 years"
+          "100 years",
+          "950 years"
         ],
-        "answer": 2
+        "answer": 3
       },
       {
         "question": "Why did the leaders reject Nuh's message?",
@@ -532,10 +532,10 @@
         "options": [
           "He left the city",
           "He stopped preaching",
-          "He continued calling them to righteousness",
-          "He joined them"
+          "He joined them",
+          "He continued calling them to righteousness"
         ],
-        "answer": 2
+        "answer": 3
       }
     ]
   },
@@ -567,10 +567,10 @@
         "options": [
           "With fire only",
           "With a flood",
-          "The ground was flipped upside down and stones rained upon them",
-          "With a strong wind"
+          "With a strong wind",
+          "The ground was flipped upside down and stones rained upon them"
         ],
-        "answer": 2
+        "answer": 3
       },
       {
         "question": "Who was saved from the destruction?",
@@ -602,10 +602,10 @@
         "options": [
           "She found a well",
           "People helped her",
-          "The angel Jibril struck the ground and Zamzam water gushed forth",
-          "Rain started falling"
+          "Rain started falling",
+          "The angel Jibril struck the ground and Zamzam water gushed forth"
         ],
-        "answer": 2
+        "answer": 3
       },
       {
         "question": "What was Ismail's response when Ibrahim told him about the dream?",
@@ -622,10 +622,10 @@
         "options": [
           "His fear",
           "His anger",
-          "His perfect submission to Allah",
-          "His confusion"
+          "His confusion",
+          "His perfect submission to Allah"
         ],
-        "answer": 2
+        "answer": 3
       }
     ]
   },
@@ -647,10 +647,10 @@
         "options": [
           "Wealth and power",
           "To be remembered by people",
-          "For Allah to accept their work and raise a nation of believers",
-          "For long life"
+          "For long life",
+          "For Allah to accept their work and raise a nation of believers"
         ],
-        "answer": 2
+        "answer": 3
       },
       {
         "question": "How is Ismail described in the Qur'an?",
@@ -882,10 +882,10 @@
         "options": [
           "He stayed silent",
           "He ran away without speaking",
-          "'Allah forbid! He is my master who has been good to me'",
-          "He called for help"
+          "He called for help",
+          "'Allah forbid! He is my master who has been good to me'"
         ],
-        "answer": 2
+        "answer": 3
       },
       {
         "question": "Even though Yusuf was innocent, what happened to him?",
@@ -962,30 +962,30 @@
         "options": [
           "Only his wealth",
           "Only his health",
-          "His wealth, children, and health",
-          "Nothing - he was never tested"
+          "Nothing - he was never tested",
+          "His wealth, children, and health"
         ],
-        "answer": 2
+        "answer": 3
       },
       {
         "question": "How did Ayyub respond to losing everything?",
         "options": [
           "He complained constantly",
           "He blamed Allah",
-          "He remained patient and never complained about Allah",
-          "He gave up worshipping"
+          "He gave up worshipping",
+          "He remained patient and never complained about Allah"
         ],
-        "answer": 2
+        "answer": 3
       },
       {
         "question": "Who stayed with Ayyub during his suffering when others abandoned him?",
         "options": [
           "His brothers",
           "His children",
-          "His loyal wife",
-          "The king"
+          "The king",
+          "His loyal wife"
         ],
-        "answer": 2
+        "answer": 3
       }
     ]
   },
@@ -1007,20 +1007,20 @@
         "options": [
           "Through medicine",
           "After many years slowly",
-          "He commanded Ayyub to strike his foot and a spring gushed out",
-          "Through a doctor"
+          "Through a doctor",
+          "He commanded Ayyub to strike his foot and a spring gushed out"
         ],
-        "answer": 2
+        "answer": 3
       },
       {
         "question": "What did Allah give Ayyub after his test?",
         "options": [
           "The same as before",
           "Less than before",
-          "Double what he had before",
-          "Nothing in this life"
+          "Nothing in this life",
+          "Double what he had before"
         ],
-        "answer": 2
+        "answer": 3
       },
       {
         "question": "What does Ayyub's story remind us about trials?",
@@ -1412,10 +1412,10 @@
         "options": [
           "A sword and shield",
           "An army",
-          "A sling and stone, relying on Allah",
-          "Magic"
+          "Magic",
+          "A sling and stone, relying on Allah"
         ],
-        "answer": 2
+        "answer": 3
       },
       {
         "question": "What special gift did Allah give to Dawud's voice?",
@@ -1432,10 +1432,10 @@
         "options": [
           "In luxury and comfort",
           "Traveling the world",
-          "Worshipping Allah, fasting, and standing in night prayer",
-          "Building palaces"
+          "Building palaces",
+          "Worshipping Allah, fasting, and standing in night prayer"
         ],
-        "answer": 2
+        "answer": 3
       }
     ]
   },
@@ -1457,10 +1457,10 @@
         "options": [
           "Jewelry",
           "Buildings",
-          "Armor and shields to protect people",
-          "Coins"
+          "Coins",
+          "Armor and shields to protect people"
         ],
-        "answer": 2
+        "answer": 3
       },
       {
         "question": "What did Dawud do when he realized he made a mistake in judgment?",
@@ -1492,10 +1492,10 @@
         "options": [
           "Only control over humans",
           "Only wealth",
-          "Powers over winds, jinn, animals, and more",
-          "Only ability to build"
+          "Only ability to build",
+          "Powers over winds, jinn, animals, and more"
         ],
-        "answer": 2
+        "answer": 3
       },
       {
         "question": "What amazing ability did Sulayman have with animals?",
