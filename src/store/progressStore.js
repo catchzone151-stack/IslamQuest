@@ -35,8 +35,8 @@ export const useProgressStore = create((set, get) => ({
     { id: 10, title: "The End Times", progress: 0, totalLessons: 10, completedLessons: 0, status: "available" },
     { id: 11, title: "The Grave", progress: 0, totalLessons: 8, completedLessons: 0, status: "available" },
     { id: 12, title: "Day of Judgement", progress: 0, totalLessons: 10, completedLessons: 0, status: "available" },
-    { id: 13, title: "Hellfire", progress: 0, totalLessons: 6, completedLessons: 0, status: "available" },
-    { id: 14, title: "Paradise", progress: 0, totalLessons: 6, completedLessons: 0, status: "available" },
+    { id: 13, title: "Hellfire", progress: 0, totalLessons: 19, completedLessons: 0, status: "available" },
+    { id: 14, title: "Paradise", progress: 0, totalLessons: 20, completedLessons: 0, status: "available" },
   ],
 
   // 🧠 Save & Load
