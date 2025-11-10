@@ -11,7 +11,7 @@ Preferred communication style: Simple, everyday language.
 ### Frontend Architecture
 - **Technology Stack**: React 18.2, Vite, JavaScript, React Router DOM v7.9, Framer Motion, Lucide React.
 - **Design Pattern**: Component-based architecture with a mobile-first responsive design and a bottom navigation pattern.
-- **State Management**: Local state using React hooks, global state with Zustand (`progressStore`, `userStore`, `titleStore`), and LocalStorage for persistence. Future migration to Supabase for cloud synchronization is planned.
+- **State Management**: Local state using React hooks, global state with Zustand (`progressStore`, `userStore`, `titleStore`, `friendsStore`), and LocalStorage for persistence. Future migration to Supabase for cloud synchronization is planned.
 
 ### Styling Architecture
 - **Approach**: CSS-in-JS using standard CSS files with custom properties for theming.
@@ -24,6 +24,7 @@ Preferred communication style: Simple, everyday language.
 - **Recent Completion (November 2025)**: Paths 13 (Understanding Hellfire - 19 lessons, 76 quiz questions) and 14 (The Beauty of Paradise - 20 lessons, 80 quiz questions) completed with full content, evidence, and assessments.
 - **Progression Model**: XP and coin rewards for lesson completion, streak system for daily engagement, and certificates for path completion.
 - **Asset Management**: Centralized `assets.js` system for optimized WebP images (mascots, avatars, badges).
+- **Friends System (Phase 4 - November 2025)**: Complete social features including friend management (add/search by nickname), friend requests (incoming/outgoing with accept/decline), friends leaderboard with Friend of the Week, activity feed with Zayd mascot appearances, and quick messaging with 10 pre-set kid-safe motivational messages. All data stored in LocalStorage with Supabase-ready architecture for Phase 5.
 
 ### Authentication & User Management
 - **Provider**: Supabase Auth, integrated via `@supabase/auth-helpers-react` and `@supabase/supabase-js`.
