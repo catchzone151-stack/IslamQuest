@@ -5,42 +5,42 @@
       {
         "question": "What does the Shahadah declare about Allah?",
         "options": [
-          "That Allah has partners in worship",
+          "That Allah has partners",
           "That Allah alone deserves worship",
-          "That Allah needs our prayers",
-          "That Allah is one of many gods"
+          "That Allah needs our help",
+          "That we can worship other things too"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What must accompany the Shahadah for it to be valid?",
+        "options": [
+          "Wealth and success",
+          "Belief in the heart, understanding, and sincere action",
+          "Just saying the words",
+          "Being born Muslim"
         ],
         "answer": 1
       },
       {
         "question": "According to the Prophet ﷺ, what happens to those who die upon the Shahadah?",
         "options": [
-          "They will be tested in the grave",
+          "They will be tested longer",
+          "They must wait for intercession",
           "They will enter Paradise",
-          "They must first repent",
-          "They will be questioned by angels"
+          "They need to do more good deeds first"
         ],
-        "answer": 1
+        "answer": 2
       },
       {
-        "question": "Why must the Shahadah come from the heart?",
+        "question": "How often should Muslims renew their Shahadah?",
         "options": [
-          "Because words alone have no meaning without sincere belief",
-          "Because Allah does not hear spoken words",
-          "Because angels record only heart intentions",
-          "Because the tongue can lie but the heart cannot"
+          "Once in a lifetime",
+          "Only during Ramadan",
+          "Daily, reflecting on its meaning",
+          "Only when they make mistakes"
         ],
-        "answer": 0
-      },
-      {
-        "question": "What is the second part of the Shahadah testifying?",
-        "options": [
-          "That Ibrahim is a prophet",
-          "That the Quran is revealed",
-          "That angels exist",
-          "That Muhammad ﷺ is His messenger"
-        ],
-        "answer": 3
+        "answer": 2
       }
     ]
   },
@@ -48,42 +48,42 @@
     "lessonId": 2,
     "questions": [
       {
-        "question": "How many times a day do Muslims pray?",
+        "question": "How many times do Muslims pray each day?",
         "options": [
           "Three times",
           "Five times",
           "Seven times",
-          "Two times"
+          "Twice"
         ],
         "answer": 1
       },
       {
-        "question": "What is the first thing we will be asked about on the Day of Judgment?",
+        "question": "What will be the first thing questioned on the Day of Judgment?",
         "options": [
-          "Zakah",
-          "Hajj",
-          "Prayer",
-          "Fasting"
+          "Our charity",
+          "Our fasting",
+          "Our prayer",
+          "Our pilgrimage"
         ],
         "answer": 2
       },
       {
-        "question": "Why did Allah command us to establish prayer?",
+        "question": "What does Salah cleanse according to the lesson?",
         "options": [
-          "For His remembrance",
-          "To lose weight",
-          "To earn money",
-          "To impress others"
+          "Only major sins",
+          "Physical dirt",
+          "Minor sins, like bathing cleanses the body",
+          "Nothing at all"
         ],
-        "answer": 0
+        "answer": 2
       },
       {
-        "question": "What does Salah teach us?",
+        "question": "What does prayer bring to our hearts?",
         "options": [
-          "Pride and arrogance",
-          "Discipline, humility, and gratitude",
-          "How to speak Arabic",
-          "How to be wealthy"
+          "Wealth and success",
+          "Peace and strength to face challenges",
+          "Fame and recognition",
+          "Power over others"
         ],
         "answer": 1
       }
@@ -93,7 +93,7 @@
     "lessonId": 3,
     "questions": [
       {
-        "question": "What percentage of savings must Muslims give as Zakah each year?",
+        "question": "What percentage of wealth must Muslims give as Zakah yearly?",
         "options": [
           "5%",
           "10%",
@@ -103,34 +103,34 @@
         "answer": 2
       },
       {
-        "question": "What does Zakah purify according to the Quran?",
+        "question": "What does Zakah purify?",
         "options": [
-          "Our homes",
-          "Our clothes",
-          "Our wealth and hearts",
-          "Our food"
+          "Only our wealth",
+          "Only our hearts",
+          "Our wealth and hearts from greed",
+          "Our homes"
         ],
         "answer": 2
       },
       {
-        "question": "What did the Prophet ﷺ say about charity and wealth?",
+        "question": "What did the Prophet ﷺ teach about charity and wealth?",
         "options": [
-          "Charity increases debt",
-          "Charity does not decrease wealth",
           "Charity makes you poor",
-          "Charity is only for the rich"
-        ],
-        "answer": 1
-      },
-      {
-        "question": "What does Zakah teach us about our wealth?",
-        "options": [
-          "That it is all ours to keep",
-          "That wealth is power",
-          "That it is a trust from Allah",
-          "That we should hide it"
+          "Charity decreases wealth",
+          "Charity never decreases wealth but increases it",
+          "Only the rich should give charity"
         ],
         "answer": 2
+      },
+      {
+        "question": "On Judgment Day, what will charity be for those who gave?",
+        "options": [
+          "Lost forever",
+          "Forgotten",
+          "A burden",
+          "Treasure waiting in Paradise"
+        ],
+        "answer": 3
       }
     ]
   },
@@ -140,40 +140,40 @@
       {
         "question": "During which month do Muslims fast?",
         "options": [
-          "Dhul Hijjah",
-          "Shawwal",
+          "Muharram",
           "Ramadan",
-          "Muharram"
+          "Shawwal",
+          "Dhul Hijjah"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What is the Arabic term for God-consciousness that fasting develops?",
+        "options": [
+          "Ihsan",
+          "Sabr",
+          "Taqwa",
+          "Iman"
         ],
         "answer": 2
       },
       {
-        "question": "What is one purpose of fasting mentioned in the Quran?",
+        "question": "What did the Prophet ﷺ promise for those who fast Ramadan with faith?",
         "options": [
-          "To lose weight",
-          "To become righteous",
-          "To save money",
-          "To sleep more"
+          "Wealth and success",
+          "All previous sins forgiven",
+          "A long life",
+          "Fame"
         ],
         "answer": 1
       },
       {
-        "question": "According to the Prophet ﷺ, what happens to those who fast Ramadan with faith?",
+        "question": "Which night in Ramadan is better than a thousand months of worship?",
         "options": [
-          "They will become wealthy",
-          "Their previous sins will be forgiven",
-          "They will become famous",
-          "They will live longer"
-        ],
-        "answer": 1
-      },
-      {
-        "question": "What should fasting help us control besides hunger?",
-        "options": [
-          "Our sleep schedule",
-          "Our spending habits",
-          "Anger, gossip, and evil thoughts",
-          "Our friendships"
+          "The first night",
+          "The 15th night",
+          "Laylatul Qadr",
+          "The last night"
         ],
         "answer": 2
       }
@@ -183,42 +183,42 @@
     "lessonId": 5,
     "questions": [
       {
-        "question": "Where do Muslims perform Hajj?",
+        "question": "Which prophet originally established the rituals of Hajj?",
         "options": [
-          "Madinah",
-          "Jerusalem",
-          "Makkah",
-          "Cairo"
+          "Prophet Musa",
+          "Prophet Isa",
+          "Prophet Ibrahim",
+          "Prophet Nuh"
         ],
         "answer": 2
       },
       {
-        "question": "What does wearing simple white clothing during Hajj show?",
+        "question": "What is the simple white clothing worn during Hajj called?",
         "options": [
-          "That we are tourists",
-          "That we are all equal before Allah",
-          "That we are wealthy",
-          "That we follow fashion"
+          "Thobe",
+          "Abaya",
+          "Ihram",
+          "Jalabiya"
         ],
-        "answer": 1
+        "answer": 2
       },
       {
-        "question": "According to the Prophet ﷺ, how pure is someone who performs Hajj without sin?",
+        "question": "What does the equality shown in Hajj teach us?",
         "options": [
-          "As pure as after making wudu",
-          "As pure as the day their mother gave birth to them",
-          "As pure as after prayer",
-          "As pure as after fasting"
+          "That wealth determines value",
+          "That race makes us different",
+          "That humility is key and we're all equal before Allah",
+          "That kings are superior"
         ],
-        "answer": 1
+        "answer": 2
       },
       {
-        "question": "What do the pillars that pilgrims stone during Hajj represent?",
+        "question": "According to the Prophet ﷺ, how does a sincere pilgrim return from Hajj?",
         "options": [
-          "The prophets",
-          "Shaytan",
-          "The angels",
-          "Past mistakes"
+          "Wealthy and famous",
+          "Pure as a newborn",
+          "Unchanged",
+          "Burdened with sins"
         ],
         "answer": 1
       }
@@ -228,44 +228,44 @@
     "lessonId": 6,
     "questions": [
       {
-        "question": "How many partners does Allah have?",
+        "question": "What is the first pillar of Iman (faith)?",
         "options": [
-          "One",
-          "Two",
-          "None",
-          "Three"
-        ],
-        "answer": 2
-      },
-      {
-        "question": "According to Surah Al-Ikhlas, what does Allah NOT do?",
-        "options": [
-          "He does not sleep",
-          "He neither begets nor is born",
-          "He does not speak",
-          "He does not create"
+          "Belief in angels",
+          "Belief in Allah",
+          "Belief in prophets",
+          "Belief in books"
         ],
         "answer": 1
       },
       {
-        "question": "How many names of Allah did the Prophet ﷺ say lead to Paradise for those who memorize them?",
+        "question": "How many beautiful names does Allah have according to the Prophet ﷺ?",
         "options": [
-          "Fifty",
-          "Seventy",
+          "Seventy-seven",
+          "Eighty-eight",
           "Ninety-nine",
           "One hundred"
         ],
         "answer": 2
       },
       {
-        "question": "What does belief in Allah give to our hearts?",
+        "question": "What does Tawheed mean?",
         "options": [
-          "Confusion and doubt",
-          "Peace and hope",
-          "Fear and worry",
-          "Anger and sadness"
+          "Worshipping many gods",
+          "Worshipping Allah alone",
+          "Following traditions",
+          "Respecting elders"
         ],
         "answer": 1
+      },
+      {
+        "question": "Which name of Allah means 'The Most Merciful'?",
+        "options": [
+          "Al-Aleem",
+          "Al-Qawiyy",
+          "Ar-Rahman",
+          "Al-Hakim"
+        ],
+        "answer": 2
       }
     ]
   },
@@ -276,11 +276,11 @@
         "question": "What are angels created from?",
         "options": [
           "Fire",
-          "Clay",
           "Light",
+          "Clay",
           "Water"
         ],
-        "answer": 2
+        "answer": 1
       },
       {
         "question": "Which angel brought revelation to the prophets?",
@@ -293,24 +293,24 @@
         "answer": 2
       },
       {
-        "question": "What are the names of the two angels that record our deeds?",
+        "question": "What does the angel Raqib record?",
         "options": [
-          "Harut and Marut",
-          "Raqib and Atid",
-          "Munkar and Nakir",
-          "Malik and Ridwan"
+          "Bad deeds",
+          "Good deeds",
+          "Our dreams",
+          "Our prayers only"
         ],
         "answer": 1
       },
       {
-        "question": "What do angels do for those who seek knowledge?",
+        "question": "Which angel will blow the trumpet on Judgment Day?",
         "options": [
-          "They ignore them",
-          "They lower their wings for them",
-          "They test them",
-          "They write their names"
+          "Jibril",
+          "Mikail",
+          "Atid",
+          "Israfil"
         ],
-        "answer": 1
+        "answer": 3
       }
     ]
   },
@@ -318,44 +318,44 @@
     "lessonId": 8,
     "questions": [
       {
-        "question": "Which book was revealed to Prophet Musa (Moses)?",
+        "question": "Which book was revealed to Prophet Musa?",
         "options": [
           "Injil",
-          "Tawrah",
           "Zabur",
-          "Quran"
+          "Tawrah",
+          "Qur'an"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Over how many years was the Qur'an revealed?",
+        "options": [
+          "Ten years",
+          "Twenty-three years",
+          "Forty years",
+          "Seven years"
         ],
         "answer": 1
       },
       {
-        "question": "What makes the Quran different from earlier scriptures?",
+        "question": "What makes the Qur'an different from previous scriptures?",
         "options": [
-          "It is longer",
-          "It has been perfectly preserved",
-          "It is written in Arabic",
-          "It has more stories"
+          "It was written in Arabic",
+          "It has more stories",
+          "It is universal and timeless for all people",
+          "It is shorter"
         ],
-        "answer": 1
+        "answer": 2
       },
       {
-        "question": "According to the Prophet ﷺ, who is the best among people?",
+        "question": "Who promised to protect the Qur'an from corruption?",
         "options": [
-          "The one who is wealthiest",
-          "The one who learns the Quran and teaches it",
-          "The one who travels most",
-          "The one who has many friends"
+          "The Prophet ﷺ",
+          "The Companions",
+          "The scholars",
+          "Allah Himself"
         ],
-        "answer": 1
-      },
-      {
-        "question": "Why were earlier books changed over time?",
-        "options": [
-          "Because people lost or altered them",
-          "Because Allah wanted them changed",
-          "Because they were written in stone",
-          "Because they were too long"
-        ],
-        "answer": 0
+        "answer": 3
       }
     ]
   },
@@ -363,44 +363,44 @@
     "lessonId": 9,
     "questions": [
       {
-        "question": "How many prophets are mentioned by name in the Quran?",
+        "question": "What is the core message all prophets taught?",
         "options": [
-          "10",
-          "25",
-          "50",
-          "100"
+          "Build great civilizations",
+          "Tawheed - worship Allah alone",
+          "Seek worldly success",
+          "Perform many rituals"
         ],
         "answer": 1
       },
       {
-        "question": "What does the Quran say about Prophet Muhammad ﷺ?",
+        "question": "Why is Prophet Muhammad ﷺ called the Seal of Prophets?",
         "options": [
-          "He is the first prophet",
-          "He is the seal of the prophets",
-          "He is an angel",
-          "He is only for Arabs"
-        ],
-        "answer": 1
-      },
-      {
-        "question": "What did all prophets teach?",
-        "options": [
-          "Different religions",
-          "Worship Allah alone and live righteously",
-          "How to build empires",
-          "How to make money"
-        ],
-        "answer": 1
-      },
-      {
-        "question": "How did the Prophet ﷺ describe the relationship between prophets?",
-        "options": [
-          "They are enemies",
-          "They are strangers",
-          "They are brothers with one religion",
-          "They are competitors"
+          "He was the first prophet",
+          "He lived the longest",
+          "He is the final messenger, no prophet after him",
+          "He performed the most miracles"
         ],
         "answer": 2
+      },
+      {
+        "question": "What were prophets known for?",
+        "options": [
+          "Wealth and power",
+          "Honesty, trustworthiness, and strong character",
+          "Fighting wars",
+          "Building empires"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How should we treat all prophets?",
+        "options": [
+          "Worship them",
+          "Prefer some over others",
+          "Reject some of them",
+          "Respect all equally without worship"
+        ],
+        "answer": 3
       }
     ]
   },
@@ -408,12 +408,12 @@
     "lessonId": 10,
     "questions": [
       {
-        "question": "What will happen to every soul according to the Quran?",
+        "question": "Which angel will blow the trumpet to end the world?",
         "options": [
-          "Live forever on earth",
-          "Taste death",
-          "Become an angel",
-          "Disappear"
+          "Jibril",
+          "Israfil",
+          "Mikail",
+          "Atid"
         ],
         "answer": 1
       },
@@ -422,30 +422,30 @@
         "options": [
           "Angels",
           "The scales",
-          "Prophets",
-          "Our families"
+          "Our families",
+          "Prophets"
         ],
         "answer": 1
       },
       {
-        "question": "Who did the Prophet ﷺ say is truly clever?",
+        "question": "In which hand will believers receive their record?",
         "options": [
-          "The one who is wealthy",
-          "The one who controls himself and works for the afterlife",
-          "The one who travels the world",
-          "The one who has many friends"
+          "Left hand",
+          "Both hands",
+          "Right hand",
+          "Behind their back"
         ],
-        "answer": 1
+        "answer": 2
       },
       {
-        "question": "What does belief in the Last Day remind us about this life?",
+        "question": "What does belief in Judgment Day help us do?",
         "options": [
-          "That it is eternal",
-          "That it is temporary",
-          "That it does not matter",
-          "That we should only enjoy it"
+          "Ignore our actions",
+          "Live without purpose",
+          "Motivate good deeds and avoid evil",
+          "Only focus on this world"
         ],
-        "answer": 1
+        "answer": 2
       }
     ]
   },
@@ -453,44 +453,44 @@
     "lessonId": 11,
     "questions": [
       {
-        "question": "What is Al-Lawh Al-Mahfudh?",
+        "question": "What is Qadr?",
         "options": [
-          "A mountain in Makkah",
-          "The Preserved Tablet where everything is written",
-          "An angel's name",
-          "A type of prayer"
+          "A type of prayer",
+          "Divine decree - Allah's knowledge of everything",
+          "A pillar of Islam",
+          "Fasting"
         ],
         "answer": 1
       },
       {
-        "question": "According to the Prophet ﷺ, what can the entire creation NOT do?",
+        "question": "Where did Allah write everything before creating the universe?",
         "options": [
-          "Harm you without Allah's permission",
-          "Benefit you except with what Allah has written",
-          "Help you find Paradise",
-          "Teach you the Quran"
+          "In the Qur'an",
+          "In the Torah",
+          "In the Preserved Tablet",
+          "In our hearts"
         ],
-        "answer": 1
+        "answer": 2
       },
       {
-        "question": "What should we do when something good happens?",
+        "question": "What should we do when good things happen to us?",
         "options": [
-          "Boast about it",
+          "Become proud",
           "Thank Allah",
-          "Ignore it",
-          "Demand more"
+          "Think we earned it alone",
+          "Forget Allah"
         ],
         "answer": 1
       },
       {
-        "question": "What does belief in Qadr bring to the heart?",
+        "question": "What does belief in Qadr protect us from?",
         "options": [
-          "Anxiety and worry",
-          "Peace",
-          "Arrogance",
-          "Confusion"
+          "Success and happiness",
+          "Hard work",
+          "Arrogance and despair",
+          "Making choices"
         ],
-        "answer": 1
+        "answer": 2
       }
     ]
   },
@@ -498,44 +498,44 @@
     "lessonId": 12,
     "questions": [
       {
-        "question": "How did the Prophet ﷺ define Ihsan?",
+        "question": "What does Ikhlas mean?",
         "options": [
-          "To pray five times a day",
-          "To worship Allah as if you see Him",
-          "To give charity often",
-          "To read the Quran daily"
+          "Praying five times",
+          "Sincerity - doing everything for Allah alone",
+          "Giving charity",
+          "Fasting"
         ],
         "answer": 1
       },
       {
-        "question": "What does Ihsan transform into acts of worship?",
+        "question": "According to the Prophet ﷺ, what are actions judged by?",
         "options": [
-          "Only prayer and fasting",
-          "Only charity",
-          "Ordinary actions when done for Allah's sake",
-          "Only Hajj rituals"
+          "Their size",
+          "Their appearance",
+          "Intentions",
+          "How many people see them"
         ],
         "answer": 2
       },
       {
-        "question": "Who does the Quran say Allah is with?",
+        "question": "What happens to good deeds done to impress others?",
         "options": [
-          "Those who are wealthy",
-          "Those who are famous",
-          "Those who are righteous and do good",
-          "Those who travel often"
+          "They are rewarded more",
+          "The reward is lost",
+          "They count half",
+          "Nothing changes"
         ],
-        "answer": 2
+        "answer": 1
       },
       {
-        "question": "When does a person of Ihsan pray?",
+        "question": "What does sincerity purify hearts from?",
         "options": [
-          "Only when others are watching",
-          "Only in the mosque",
-          "Only on Fridays",
-          "In public and private with the same excellence"
+          "Happiness",
+          "Knowledge",
+          "Pride and arrogance",
+          "Wealth"
         ],
-        "answer": 3
+        "answer": 2
       }
     ]
   },
@@ -543,44 +543,44 @@
     "lessonId": 13,
     "questions": [
       {
-        "question": "What does Tawbah mean?",
+        "question": "What does Akhlaq refer to?",
         "options": [
-          "Turning back to Allah after sin",
-          "Giving charity",
-          "Making dua",
-          "Praying at night"
-        ],
-        "answer": 0
-      },
-      {
-        "question": "According to the Prophet ﷺ, who are the best sinners?",
-        "options": [
-          "Those who hide their sins",
-          "Those who repent",
-          "Those who blame others",
-          "Those who deny their sins"
+          "Prayer times",
+          "Good character and manners",
+          "Fasting rules",
+          "Pilgrimage rituals"
         ],
         "answer": 1
       },
       {
-        "question": "What is NOT one of the conditions of true Tawbah?",
+        "question": "According to the Prophet ﷺ, who has the most complete faith?",
         "options": [
-          "Stop the sin immediately",
-          "Tell everyone about your sin",
-          "Feel genuine regret",
-          "Resolve never to return to it"
+          "Those who pray the most",
+          "Those with the best character",
+          "Those who are wealthiest",
+          "Those who fast the most"
         ],
         "answer": 1
       },
       {
-        "question": "What does Allah say He forgives in Surah Az-Zumar?",
+        "question": "What can bad manners do to good deeds?",
         "options": [
-          "Only small sins",
-          "All sins except shirk at death",
-          "Only one sin per person",
-          "Sins of prophets only"
+          "Nothing at all",
+          "Strengthen them",
+          "Destroy them",
+          "Double their reward"
         ],
-        "answer": 1
+        "answer": 2
+      },
+      {
+        "question": "What is the heaviest thing on the scale of deeds?",
+        "options": [
+          "Wealth",
+          "Knowledge",
+          "Good character",
+          "Fasting"
+        ],
+        "answer": 2
       }
     ]
   },
@@ -588,44 +588,44 @@
     "lessonId": 14,
     "questions": [
       {
-        "question": "According to the Prophet ﷺ, who are the best people?",
+        "question": "What is Niyyah?",
         "options": [
-          "Those with the most wealth",
-          "Those who have the best manners and character",
-          "Those who pray the longest",
-          "Those who fast the most"
+          "A type of charity",
+          "Intention in our hearts before action",
+          "A prayer",
+          "Fasting"
         ],
         "answer": 1
       },
       {
-        "question": "What are examples of good Adab?",
+        "question": "Can everyday actions become worship with the right intention?",
         "options": [
-          "Speaking kindly, keeping promises, being honest",
-          "Arguing often and proving you're right",
-          "Ignoring people's greetings",
-          "Mocking others to make them laugh"
+          "No, never",
+          "Only prayer counts",
+          "Yes, even eating and working",
+          "Only during Ramadan"
         ],
-        "answer": 0
+        "answer": 2
       },
       {
-        "question": "Even if someone prays and fasts, what can make their worship incomplete?",
+        "question": "Where is intention truly held?",
         "options": [
-          "Not owning a Quran",
-          "Harming others with words or actions",
-          "Not traveling for Hajj",
-          "Not memorizing Quran"
+          "On our tongues",
+          "In written words",
+          "In our hearts",
+          "In our hands"
         ],
-        "answer": 1
+        "answer": 2
       },
       {
-        "question": "What does Adab reflect about Islam?",
+        "question": "How often should we renew our intentions?",
         "options": [
-          "That it is difficult",
-          "The beauty of Islam",
-          "That only Arabs can practice it",
-          "That it is only about rules"
+          "Once a year",
+          "Only on Fridays",
+          "Frequently throughout the day",
+          "Never"
         ],
-        "answer": 1
+        "answer": 2
       }
     ]
   },
@@ -633,44 +633,44 @@
     "lessonId": 15,
     "questions": [
       {
-        "question": "What did the Prophet ﷺ call Dua?",
+        "question": "What does Shukr mean?",
         "options": [
-          "A nice habit",
-          "The essence of worship",
-          "A waste of time",
-          "Only for scholars"
+          "Patience",
+          "Gratitude - thanking Allah",
+          "Prayer",
+          "Charity"
         ],
         "answer": 1
       },
       {
-        "question": "What does Allah promise about those who call upon Him?",
+        "question": "How many ways can we show gratitude according to the lesson?",
         "options": [
-          "They will become rich",
-          "He will respond to them",
-          "They will never face hardship",
-          "They will live forever"
-        ],
-        "answer": 1
-      },
-      {
-        "question": "When can Dua be made?",
-        "options": [
-          "Only during prayer",
-          "Only in Arabic",
-          "Anytime, anywhere, in any language",
-          "Only at the mosque"
+          "One way",
+          "Two ways",
+          "Three ways",
+          "Five ways"
         ],
         "answer": 2
       },
       {
-        "question": "What does making Dua show about our relationship with Allah?",
+        "question": "What does Allah promise if we are grateful?",
         "options": [
-          "That we are ungrateful",
-          "Our dependence on Allah",
-          "That we don't trust Him",
-          "That we are weak"
+          "He will test us more",
+          "Nothing changes",
+          "He will increase our blessings",
+          "We will become wealthy"
         ],
-        "answer": 1
+        "answer": 2
+      },
+      {
+        "question": "What should we say to express gratitude for blessings?",
+        "options": [
+          "Thank you",
+          "Good luck",
+          "Alhamdulillah",
+          "Congratulations"
+        ],
+        "answer": 2
       }
     ]
   },
@@ -678,44 +678,44 @@
     "lessonId": 16,
     "questions": [
       {
-        "question": "What unites all Muslims as one family?",
+        "question": "What does Istiqamah mean?",
         "options": [
-          "Same language",
-          "Same country",
-          "Faith in Allah and love for His Messenger",
-          "Same culture"
-        ],
-        "answer": 2
-      },
-      {
-        "question": "How did the Prophet ﷺ describe believers' care for each other?",
-        "options": [
-          "Like a garden with many plants",
-          "Like a body where one part's pain affects the whole",
-          "Like stars in the sky",
-          "Like fish in the ocean"
+          "Speed in worship",
+          "Steadfastness - staying firm on the straight path",
+          "Changing often",
+          "Doing everything at once"
         ],
         "answer": 1
       },
       {
-        "question": "What does the Quran say about the believers?",
+        "question": "What did the Prophet ﷺ say about the most beloved deeds to Allah?",
         "options": [
-          "The believers are but brothers",
-          "The believers should compete",
-          "The believers should isolate",
-          "The believers are different"
+          "The biggest ones",
+          "The most public ones",
+          "Those done consistently, even if small",
+          "Only those done in Ramadan"
         ],
-        "answer": 0
+        "answer": 2
       },
       {
-        "question": "What does true brotherhood mean?",
+        "question": "What does consistency build over time?",
         "options": [
-          "Loving for your brother what you love for yourself",
-          "Only helping your family",
-          "Ignoring others' mistakes",
-          "Competing with other Muslims"
+          "Arrogance",
+          "Discipline and stronger relationship with Allah",
+          "Laziness",
+          "Confusion"
         ],
-        "answer": 0
+        "answer": 1
+      },
+      {
+        "question": "What should we prioritize in worship?",
+        "options": [
+          "Intensity over sustainability",
+          "Doing everything at once",
+          "Commitment and sustainability over intensity",
+          "Only big actions"
+        ],
+        "answer": 2
       }
     ]
   },
@@ -723,44 +723,44 @@
     "lessonId": 17,
     "questions": [
       {
-        "question": "What does the Quran say about seeking the Hereafter and this world?",
+        "question": "What is the foundation of true faith?",
         "options": [
-          "Ignore this world completely",
-          "Only focus on this world",
-          "Seek the Hereafter but don't forget your share of this world",
-          "Choose one or the other"
-        ],
-        "answer": 2
-      },
-      {
-        "question": "Who was the perfect example of balance in life?",
-        "options": [
-          "Prophet Ibrahim",
-          "Prophet Musa",
-          "Prophet Muhammad ﷺ",
-          "Prophet Nuh"
-        ],
-        "answer": 2
-      },
-      {
-        "question": "What path does Islam represent?",
-        "options": [
-          "The extreme path",
-          "The middle path",
-          "The easiest path",
-          "The hardest path"
+          "Wealth",
+          "Love for Allah and His Messenger ﷺ",
+          "Knowledge alone",
+          "Prayer only"
         ],
         "answer": 1
       },
       {
-        "question": "What happens when we live with balance in Islam?",
+        "question": "How is true love for Allah proven?",
         "options": [
-          "We become confused",
-          "Our faith becomes weak",
-          "Our faith becomes strong and hearts content",
-          "We lose focus"
+          "Through feelings only",
+          "Through words only",
+          "Through obedience and following His commands",
+          "Through wealth"
         ],
         "answer": 2
+      },
+      {
+        "question": "What does love for the Prophet ﷺ require?",
+        "options": [
+          "Just knowing his name",
+          "Following his example in everything",
+          "Only celebrating his birthday",
+          "Memorizing his appearance"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What should we love more than anything else?",
+        "options": [
+          "Our families",
+          "Our wealth",
+          "Our own lives",
+          "Allah and His Messenger ﷺ"
+        ],
+        "answer": 3
       }
     ]
   }
