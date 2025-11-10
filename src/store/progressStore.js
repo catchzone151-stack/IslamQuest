@@ -4,6 +4,23 @@ import { useTitleStore } from "./useTitleStore";
 
 const STORAGE_KEY = "islamQuestProgress_v3";
 
+const DEFAULT_PATHS = [
+  { id: 1, title: "Names of Allah", progress: 0.35, totalLessons: 10, completedLessons: 3, status: "available" },
+  { id: 2, title: "Foundations of Islam", progress: 0.1, totalLessons: 12, completedLessons: 1, status: "available" },
+  { id: 3, title: "Stories of Prophets", progress: 0.08, totalLessons: 8, completedLessons: 1, status: "available" },
+  { id: 4, title: "Life of Muhammad ﷺ", progress: 0.05, totalLessons: 10, completedLessons: 0, status: "available" },
+  { id: 5, title: "Wives of the Prophet ﷺ", progress: 0, totalLessons: 6, completedLessons: 0, status: "available" },
+  { id: 6, title: "Ten Promised Jannah", progress: 0, totalLessons: 10, completedLessons: 0, status: "available" },
+  { id: 7, title: "Four Greatest Women", progress: 0, totalLessons: 8, completedLessons: 0, status: "available" },
+  { id: 8, title: "Stories of the Companions", progress: 0, totalLessons: 10, completedLessons: 0, status: "available" },
+  { id: 9, title: "Angels and Jinns", progress: 0, totalLessons: 10, completedLessons: 0, status: "available" },
+  { id: 10, title: "The End Times", progress: 0, totalLessons: 10, completedLessons: 0, status: "available" },
+  { id: 11, title: "The Grave", progress: 0, totalLessons: 8, completedLessons: 0, status: "available" },
+  { id: 12, title: "Day of Judgement", progress: 0, totalLessons: 10, completedLessons: 0, status: "available" },
+  { id: 13, title: "Hellfire", progress: 0, totalLessons: 19, completedLessons: 0, status: "available" },
+  { id: 14, title: "Paradise", progress: 0, totalLessons: 20, completedLessons: 0, status: "available" },
+];
+
 export const useProgressStore = create((set, get) => ({
   // 🪙 Base user stats
   xp: 0,
@@ -19,25 +36,10 @@ export const useProgressStore = create((set, get) => ({
   certificates: [],
   lessonStates: {},
   lockedLessons: {},
-  hasPremium: false, // 🟡 NEW premium flag
+  hasPremium: false,
 
   // 🌙 Learning Paths
-  paths: [
-    { id: 1, title: "Names of Allah", progress: 0.35, totalLessons: 10, completedLessons: 3, status: "available" },
-    { id: 2, title: "Foundations of Islam", progress: 0.1, totalLessons: 12, completedLessons: 1, status: "available" },
-    { id: 3, title: "Stories of Prophets", progress: 0.08, totalLessons: 8, completedLessons: 1, status: "available" },
-    { id: 4, title: "Life of Muhammad ﷺ", progress: 0.05, totalLessons: 10, completedLessons: 0, status: "available" },
-    { id: 5, title: "Wives of the Prophet ﷺ", progress: 0, totalLessons: 6, completedLessons: 0, status: "available" },
-    { id: 6, title: "Ten Promised Jannah", progress: 0, totalLessons: 10, completedLessons: 0, status: "available" },
-    { id: 7, title: "Four Greatest Women", progress: 0, totalLessons: 8, completedLessons: 0, status: "available" },
-    { id: 8, title: "Stories of the Companions", progress: 0, totalLessons: 10, completedLessons: 0, status: "available" },
-    { id: 9, title: "Angels and Jinns", progress: 0, totalLessons: 10, completedLessons: 0, status: "available" },
-    { id: 10, title: "The End Times", progress: 0, totalLessons: 10, completedLessons: 0, status: "available" },
-    { id: 11, title: "The Grave", progress: 0, totalLessons: 8, completedLessons: 0, status: "available" },
-    { id: 12, title: "Day of Judgement", progress: 0, totalLessons: 10, completedLessons: 0, status: "available" },
-    { id: 13, title: "Hellfire", progress: 0, totalLessons: 19, completedLessons: 0, status: "available" },
-    { id: 14, title: "Paradise", progress: 0, totalLessons: 20, completedLessons: 0, status: "available" },
-  ],
+  paths: DEFAULT_PATHS,
 
   // 🧠 Save & Load
   saveProgress: () => {
@@ -47,7 +49,20 @@ export const useProgressStore = create((set, get) => ({
 
   loadProgress: () => {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) set(JSON.parse(saved));
+    if (saved) {
+      const savedData = JSON.parse(saved);
+      if (savedData.paths) {
+        savedData.paths = savedData.paths.map(savedPath => {
+          const defaultPath = DEFAULT_PATHS.find(p => p.id === savedPath.id);
+          return {
+            ...savedPath,
+            totalLessons: defaultPath ? defaultPath.totalLessons : savedPath.totalLessons,
+            title: defaultPath ? defaultPath.title : savedPath.title,
+          };
+        });
+      }
+      set(savedData);
+    }
   },
 
   // 🌙 Daily streak
