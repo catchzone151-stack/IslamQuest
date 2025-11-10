@@ -7,6 +7,7 @@
 
 import namesOfAllahQuizzesData from './quizzes/namesOfAllah.json';
 import foundationsQuizzesData from './quizzes/foundations.json';
+import prophetsQuizzesData from './quizzes/prophets.json';
 
 // ---------------------------------------------------------------------
 //  FUNCTIONS
@@ -23,6 +24,9 @@ export const getQuizForLesson = (lessonId, pathId = 1) => {
       break;
     case 2:
       quizzesData = foundationsQuizzesData;
+      break;
+    case 3:
+      quizzesData = prophetsQuizzesData;
       break;
     default:
       quizzesData = namesOfAllahQuizzesData;
