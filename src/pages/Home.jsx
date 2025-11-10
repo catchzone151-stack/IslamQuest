@@ -123,12 +123,11 @@ export default function Home() {
       className="page-transition"
       style={{
         minHeight: "100vh",
-        background: "linear-gradient(to bottom, #081426, #0e2340)",
+        background: "#0e2340",
         color: "white",
         padding: 16,
         paddingBottom: 80,
         overflowX: "hidden",
-        overflowY: "visible",
         position: "relative",
       }}
     >
