@@ -1,6 +1,6 @@
 // Wives of the Prophet ﷺ Learning Path
 // 13 lessons about the Mothers of the Believers
-// Each lesson: 3 paragraphs (~23 words each), authentic hadith evidence, key lesson
+// Each lesson: 3 paragraphs (18-28 words each), authentic hadith evidence, key lesson
 // Sources: Sahih Bukhari and Sahih Muslim only
 
 const wivesLessons = [
@@ -8,9 +8,9 @@ const wivesLessons = [
     id: 1,
     title: "Khadijah bint Khuwaylid",
     description: [
-      "Khadijah was a noble businesswoman of Makkah, known for her wisdom and wealth. She hired Muhammad ﷺ for his honesty and trustworthiness. Their successful trade journey led to marriage when she was forty and he was twenty-five years old.",
-      "She was the first person to believe in Islam when revelation came. Khadijah comforted the Prophet ﷺ after the first revelation, reassuring him of Allah's protection. She supported him emotionally and financially through the difficult early years of persecution.",
-      "All the Prophet's ﷺ children except Ibrahim were born to Khadijah. She died after twenty-five years of blessed marriage. The Prophet ﷺ never forgot her devotion and continued praising her even after her death."
+      "Khadijah was a wealthy businesswoman known for wisdom and honor. She hired Muhammad ﷺ for his trustworthiness. Their marriage began after successful trade journeys together.",
+      "She became the first believer when revelation came to Muhammad ﷺ. Khadijah comforted and reassured him of Allah's protection during difficult early persecution years.",
+      "All the Prophet's ﷺ children except Ibrahim were born to Khadijah. He never forgot her devotion and praised her throughout his life, even after her death."
     ],
     evidence: {
       arabic: "خَيْرُ نِسَائِهَا مَرْيَمُ، وَخَيْرُ نِسَائِهَا خَدِيجَةُ",
@@ -25,9 +25,9 @@ const wivesLessons = [
     id: 2,
     title: "Khadijah bint Khuwaylid - Part 2",
     description: [
-      "The Prophet ﷺ showed tremendous love and loyalty to Khadijah even after her death. He would slaughter a sheep and send portions to her friends. When Aishah felt jealous of his continued praise for Khadijah, he explained her unique virtues and unwavering support.",
-      "During the Year of Sorrow, both Khadijah and Abu Talib died. The Prophet ﷺ grieved deeply, as he lost his beloved wife and protective uncle. Khadijah had been his companion, confidante, and strongest supporter through the most challenging trials.",
-      "Allah sent greetings of peace to Khadijah through Angel Jibril. The angel told the Prophet ﷺ to give her glad tidings of a palace in Paradise made of pearls. This showed her elevated status and Allah's pleasure with her faith and sacrifices."
+      "The Prophet ﷺ showed tremendous loyalty to Khadijah after her death. He sent meat to her friends and praised her constantly, explaining her unique virtues to others.",
+      "During the Year of Sorrow, Khadijah and Abu Talib both died. The Prophet ﷺ grieved deeply, losing his beloved wife and his protective uncle in the same year.",
+      "Allah sent greetings to Khadijah through Angel Jibril. The angel gave her glad tidings of a palace in Paradise made of pearls, showing her elevated status."
     ],
     evidence: {
       arabic: "إِنِّي قَدْ رُزِقْتُ حُبَّهَا",
@@ -42,9 +42,9 @@ const wivesLessons = [
     id: 3,
     title: "Sawdah bint Zam'ah",
     description: [
-      "Sawdah was among the early Muslims who accepted Islam and migrated to Abyssinia to escape persecution. After Khadijah's death, the Prophet ﷺ married Sawdah. She was older, kind-hearted, and helped care for his young daughters during a difficult time.",
-      "Sawdah was known for her generosity and cheerful nature. She made the Prophet ﷺ laugh with her sense of humor. When she grew older, she gave her scheduled night to Aishah to remain in the Prophet's ﷺ household and maintain her status as his wife.",
-      "Her sacrifice showed her wisdom and selflessness. She preferred staying married to the Prophet ﷺ over worldly concerns. The Prophet ﷺ accepted her decision, and she continued living as one of the Mothers of the Believers until her death."
+      "Sawdah was among early Muslims who migrated to Abyssinia. After Khadijah died, the Prophet ﷺ married her. She helped care for his young daughters during this difficult time.",
+      "Sawdah was generous and cheerful, often making the Prophet ﷺ laugh. When she grew older, she gave her scheduled night to Aishah to remain his wife.",
+      "Her sacrifice showed wisdom and selflessness. She preferred staying married to the Prophet ﷺ over worldly concerns, continuing as a Mother of Believers until her death."
     ],
     evidence: {
       arabic: "وَهَبَتْ سَوْدَةُ يَوْمَهَا لِعَائِشَةَ",
@@ -59,9 +59,9 @@ const wivesLessons = [
     id: 4,
     title: "Aishah bint Abu Bakr",
     description: [
-      "Aishah was the daughter of Abu Bakr, the Prophet's ﷺ closest companion. She married the Prophet ﷺ at a young age and became his most beloved wife. The Prophet ﷺ received revelation while in her company more than with any other wife.",
-      "She was extremely intelligent and had a remarkable memory. Aishah memorized the Quran and understood its meanings deeply. Senior companions would come to her to learn Islamic rulings. She corrected even senior companions when they made mistakes in narrating hadith.",
-      "Aishah loved the Prophet ﷺ deeply and he loved her greatly. He would race with her and show her affection. When asked whom he loved most, he said Aishah. She was blessed with knowledge, understanding, and a special closeness to the Prophet ﷺ."
+      "Aishah was Abu Bakr's daughter and became the Prophet's ﷺ most beloved wife. The Prophet ﷺ received more revelation in her company than with any other wife.",
+      "She was extremely intelligent with remarkable memory. Aishah memorized the Quran and understood it deeply. Senior companions came to her to learn Islamic rulings and hadith.",
+      "Aishah and the Prophet ﷺ loved each other deeply. He would race with her and show affection. When asked whom he loved most, he said Aishah."
     ],
     evidence: {
       arabic: "فَضْلُ عَائِشَةَ عَلَى النِّسَاءِ كَفَضْلِ الثَّرِيدِ عَلَى سَائِرِ الطَّعَامِ",
@@ -76,9 +76,9 @@ const wivesLessons = [
     id: 5,
     title: "Aishah bint Abu Bakr - Part 2",
     description: [
-      "Aishah narrated over two thousand hadiths, making her one of the most prolific narrators. She taught many companions and the next generation of scholars. Her house became a center of learning where students would come to study Islam from the Mother of the Believers.",
-      "During the incident of Ifk, false accusations were spread against Aishah's honor. She was deeply hurt, but Allah revealed verses in the Quran declaring her innocence. This established her purity and warned against slander. The revelation elevated her status and protected her honor forever.",
-      "The Prophet ﷺ told Aishah that Angel Jibril sent her greetings of peace. She responded with peace upon Jibril and asked Allah to reward him with good. The Prophet ﷺ passed away in her home, resting in her lap, on her appointed day."
+      "Aishah narrated over two thousand hadiths, teaching companions and the next generation. Her house became a center of learning where students studied Islam from her.",
+      "False accusations were spread against Aishah during the incident of Ifk. Allah revealed Quranic verses declaring her innocence, establishing her purity and warning against slander forever.",
+      "Angel Jibril sent greetings to Aishah through the Prophet ﷺ. The Prophet ﷺ passed away in her home, resting in her lap, on her appointed day."
     ],
     evidence: {
       arabic: "خُذُوا شَطْرَ دِينِكُمْ عَنْ هَذِهِ الْحُمَيْرَاءِ",
@@ -93,9 +93,9 @@ const wivesLessons = [
     id: 6,
     title: "Hafsah bint Umar",
     description: [
-      "Hafsah was the daughter of Umar ibn al-Khattab, the second Caliph. Her first husband died, leaving her widowed at a young age. The Prophet ﷺ married her, strengthening his bond with Umar and honoring her with the status of Mother of the Believers.",
-      "Hafsah was known for her knowledge, piety, and dedication to worship. She frequently fasted and prayed during the night. Like Aishah, she was intelligent and learned much from the Prophet ﷺ during their marriage. She was entrusted with preserving the original written copy of the Quran.",
-      "After Abu Bakr compiled the Quran, the original manuscript was kept with Hafsah for safekeeping. When Uthman made official copies, he borrowed it from her. Her trustworthiness made her the guardian of Islam's most precious written treasure until her death."
+      "Hafsah was Umar ibn al-Khattab's daughter. Her first husband died, leaving her widowed. The Prophet ﷺ married her, strengthening his bond with Umar and honoring her.",
+      "Hafsah was known for piety and worship. She frequently fasted and prayed at night. Like Aishah, she was intelligent and learned much from the Prophet ﷺ.",
+      "After Abu Bakr compiled the Quran, Hafsah safeguarded the original manuscript. Her trustworthiness made her guardian of Islam's most precious written treasure until her death."
     ],
     evidence: {
       arabic: "كَانَتْ حَفْصَةُ صَوَّامَةً قَوَّامَةً",
@@ -110,9 +110,9 @@ const wivesLessons = [
     id: 7,
     title: "Zaynab bint Khuzaymah",
     description: [
-      "Zaynab bint Khuzaymah was known as Umm al-Masakin, the Mother of the Poor, for her exceptional generosity. She dedicated her life to helping the needy and feeding the hungry. Her compassion for those less fortunate made her famous throughout Arabia.",
-      "Her first husband was killed in the Battle of Uhud, leaving her widowed. The Prophet ﷺ married her to honor her sacrifice and provide for her. She continued her charitable work as the Mother of the Believers, caring for the poor and vulnerable.",
-      "Zaynab lived only eight months after marrying the Prophet ﷺ before she passed away. Though her time with him was brief, her legacy of generosity and kindness to the poor remained an example. She is buried in Jannat al-Baqi in Madinah."
+      "Zaynab was known as Umm al-Masakin, Mother of the Poor. She dedicated her life to helping the needy and feeding the hungry throughout Arabia.",
+      "Her husband was killed at the Battle of Uhud. The Prophet ﷺ married her to honor her sacrifice. She continued her charitable work caring for the poor.",
+      "Zaynab lived only eight months after marrying the Prophet ﷺ before passing away. Her legacy of generosity and kindness remained an example. She is buried in Madinah."
     ],
     evidence: {
       arabic: "تُصَدِّقُ بِكُلِّ مَا عِنْدَهَا",
@@ -127,9 +127,9 @@ const wivesLessons = [
     id: 8,
     title: "Umm Salamah",
     description: [
-      "Umm Salamah's name was Hind bint Abi Umayyah, and she was among the earliest Muslims. She migrated to Abyssinia with her first husband, fleeing persecution. They returned to Makkah and later migrated to Madinah, enduring great hardships. Her husband was martyred at Uhud.",
-      "After her waiting period, the Prophet ﷺ proposed marriage. She initially hesitated, mentioning her children and age. The Prophet ﷺ married her, and she brought her children into his household. He treated them with kindness and raised them with his own children.",
-      "Umm Salamah was wise, intelligent, and eloquent. The Prophet ﷺ consulted her during the Treaty of Hudaybiyyah when companions were reluctant to obey. Her advice resolved the tense situation. She narrated many hadiths and taught knowledge to many students after the Prophet's ﷺ death."
+      "Umm Salamah, named Hind bint Abi Umayyah, was among the earliest Muslims. She migrated to Abyssinia, then Madinah, enduring great hardships. Her husband was martyred at Uhud.",
+      "After her waiting period, the Prophet ﷺ proposed marriage. He married her and brought her children into his household, treating them with great kindness and care.",
+      "Umm Salamah was wise and eloquent. The Prophet ﷺ consulted her during the Treaty of Hudaybiyyah. Her advice resolved the tense situation among the reluctant companions."
     ],
     evidence: {
       arabic: "أَفْضَلُ مَا يُقَالُ عِنْدَ الْمُصِيبَةِ: إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ، اللَّهُمَّ أْجُرْنِي فِي مُصِيبَتِي وَأَخْلِفْ لِي خَيْرًا مِنْهَا",
@@ -144,9 +144,9 @@ const wivesLessons = [
     id: 9,
     title: "Zaynab bint Jahsh",
     description: [
-      "Zaynab bint Jahsh was the Prophet's ﷺ cousin and a noble woman of high lineage. Allah arranged her marriage to the Prophet ﷺ through divine revelation after her divorce from Zayd. Quranic verses were revealed specifically about this marriage, abolishing pre-Islamic adoption practices.",
-      "Zaynab was extremely pious, generous, and skilled in leather work and crafts. She would earn money through her skills and give it all away in charity. The other wives testified that Zaynab gave more charity than anyone among them.",
-      "The Prophet ﷺ told his wives that the one with the longest hand would join him first after death. They measured their hands physically, but he meant the longest in charity. Zaynab died first among them, fulfilling this prophecy through her unmatched generosity."
+      "Zaynab bint Jahsh was the Prophet's ﷺ cousin. Allah arranged her marriage to him through divine revelation after her divorce. Quranic verses abolished pre-Islamic adoption practices.",
+      "Zaynab was pious, generous, and skilled in leather crafts. She earned money through her skills and gave everything away in charity, more than all other wives.",
+      "The Prophet ﷺ told his wives the longest hand would join him first in death. Zaynab died first, fulfilling this prophecy through her unmatched generosity and charitable giving."
     ],
     evidence: {
       arabic: "أَطْوَلُكُنَّ يَدًا",
@@ -161,9 +161,9 @@ const wivesLessons = [
     id: 10,
     title: "Juwayriyyah bint al-Harith",
     description: [
-      "Juwayriyyah was the daughter of al-Harith, chief of the Banu Mustaliq tribe. After her tribe was defeated in battle, she became a captive. She came to the Prophet ﷺ seeking help to pay for her freedom. He offered to pay her freedom price and marry her.",
-      "When the Prophet ﷺ married Juwayriyyah, Muslims released all the captives from her tribe out of respect for their relationship to the Prophet ﷺ. This act of kindness and honor led to the entire Banu Mustaliq tribe embracing Islam. Her marriage brought blessing to hundreds of people.",
-      "Juwayriyyah was extremely devoted to worship and remembrance of Allah. The Prophet ﷺ found her in prayer after Fajr and she was still there at mid-morning. He taught her powerful words of dhikr that equaled her hours of worship in reward."
+      "Juwayriyyah was chief al-Harith's daughter. After her tribe's defeat in battle, she became a captive. The Prophet ﷺ offered to pay her freedom and marry her.",
+      "When the Prophet ﷺ married Juwayriyyah, Muslims released all captives from her tribe out of respect. This kindness led the entire Banu Mustaliq tribe to embrace Islam.",
+      "Juwayriyyah was devoted to worship and remembrance. The Prophet ﷺ found her praying from Fajr until mid-morning. He taught her powerful dhikr equaling her worship hours."
     ],
     evidence: {
       arabic: "سُبْحَانَ اللهِ عَدَدَ خَلْقِهِ، سُبْحَانَ اللهِ رِضَا نَفْسِهِ، سُبْحَانَ اللهِ زِنَةَ عَرْشِهِ، سُبْحَانَ اللهِ مِدَادَ كَلِمَاتِهِ",
@@ -178,9 +178,9 @@ const wivesLessons = [
     id: 11,
     title: "Safiyyah bint Huyayy",
     description: [
-      "Safiyyah was from the Jewish tribe of Banu Nadir and descended from Prophet Harun. After the conquest of Khaybar, she became a captive. The Prophet ﷺ freed her and offered her the choice between returning to her people or accepting Islam and marrying him.",
-      "She chose Islam and marriage to the Prophet ﷺ. Some companions initially struggled with her Jewish background, but the Prophet ﷺ defended her honor. He told her if anyone insulted her lineage, she should remind them she descends from Prophets Harun and Musa.",
-      "Safiyyah was noble, dignified, and patient when facing insults. She was kind and generous to others. The Prophet ﷺ treated her with kindness and respect. Her marriage showed that Islam transcends race and previous faith when one accepts true guidance."
+      "Safiyyah descended from Prophet Harun and belonged to the Jewish Banu Nadir tribe. After Khaybar's conquest, the Prophet ﷺ freed her and offered her Islam and marriage.",
+      "She chose Islam and married the Prophet ﷺ. When companions questioned her background, the Prophet ﷺ defended her honor, reminding her she descends from Prophets.",
+      "Safiyyah was noble, dignified, and patient when facing insults. The Prophet ﷺ treated her with kindness. Her marriage showed Islam transcends race and previous faith."
     ],
     evidence: {
       arabic: "إِنَّ أَبِي هَارُونُ وَإِنَّ عَمِّي مُوسَى",
@@ -195,9 +195,9 @@ const wivesLessons = [
     id: 12,
     title: "Umm Habibah",
     description: [
-      "Umm Habibah's name was Ramlah bint Abi Sufyan, daughter of Islam's fiercest early enemy. She accepted Islam early and migrated to Abyssinia with her husband. There, her husband tragically left Islam and became Christian, but she remained firmly steadfast on Islam.",
-      "Alone in a foreign land with a young daughter, she maintained her faith with remarkable strength. The Prophet ﷺ sent a marriage proposal through the Negus of Abyssinia. She accepted, and the Negus arranged their marriage with a generous dowry honoring her dedication.",
-      "Her marriage occurred while her father Abu Sufyan still opposed Islam. Later when Abu Sufyan accepted Islam, their relationship improved. Umm Habibah's unwavering faith despite family pressure and personal hardship exemplified true commitment. She remained devoted to knowledge and worship throughout her life."
+      "Umm Habibah, named Ramlah bint Abi Sufyan, was Islam's fiercest enemy's daughter. She migrated to Abyssinia where her husband left Islam, but she remained steadfast.",
+      "Alone in a foreign land with her daughter, she maintained faith with remarkable strength. The Prophet ﷺ sent a marriage proposal through the Negus of Abyssinia.",
+      "Her marriage occurred while Abu Sufyan still opposed Islam. Umm Habibah's unwavering faith despite family pressure exemplified true commitment. She remained devoted to worship throughout life."
     ],
     evidence: {
       arabic: "مَنْ صَلَّى اثْنَتَيْ عَشْرَةَ رَكْعَةً فِي يَوْمٍ وَلَيْلَةٍ بُنِيَ لَهُ بِهِنَّ بَيْتٌ فِي الْجَنَّةِ",
@@ -212,9 +212,9 @@ const wivesLessons = [
     id: 13,
     title: "Maymunah bint al-Harith",
     description: [
-      "Maymunah bint al-Harith was the last wife the Prophet ﷺ married. She offered herself in marriage to the Prophet ﷺ, and Allah revealed a verse allowing this special privilege for him. She was known for her piety, righteousness, and maintaining family ties.",
-      "Maymunah was the maternal aunt of Khalid ibn al-Walid, one of Islam's greatest military commanders. She was also related to other prominent companions. Her marriage strengthened ties between the Prophet ﷺ and important Muslim families, bringing unity to the community.",
-      "She was extremely generous and dedicated to worship. Maymunah narrated many hadiths about the Prophet's ﷺ private life and worship habits. She lived many years after the Prophet ﷺ died, teaching and narrating hadith. She died in Makkah and was buried at Sarif."
+      "Maymunah was the last wife the Prophet ﷺ married. She offered herself in marriage, and Allah revealed a verse allowing this privilege. She was known for piety.",
+      "Maymunah was Khalid ibn al-Walid's maternal aunt and related to prominent companions. Her marriage strengthened ties between the Prophet ﷺ and important Muslim families.",
+      "She was generous and dedicated to worship. Maymunah narrated many hadiths about the Prophet's ﷺ private life. She lived many years after his death, teaching and narrating."
     ],
     evidence: {
       arabic: "وَامْرَأَةً مُؤْمِنَةً إِنْ وَهَبَتْ نَفْسَهَا لِلنَّبِيِّ",
