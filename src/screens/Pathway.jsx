@@ -241,7 +241,7 @@ export default function Pathway() {
           const isActive = i === activeIndex;
           const top = FIRST_NODE_TOP + i * NODE_SPACING;
 
-          // Section headers for Foundations of Islam (pathId 2), Stories of Prophets (pathId 3), Prophet's Life (pathId 4), and Four Greatest Women (pathId 7)
+          // Section headers for Foundations of Islam (pathId 2), Stories of Prophets (pathId 3), and Prophet's Life (pathId 4)
           let sectionHeaders = {};
           if (numericPathId === 2) {
             sectionHeaders = {
@@ -261,15 +261,8 @@ export default function Pathway() {
               41: "Madinah Period",
               71: "Final Years"
             };
-          } else if (numericPathId === 7) {
-            sectionHeaders = {
-              1: "Maryam",
-              4: "Asiyah",
-              7: "Khadijah",
-              10: "Fatimah"
-            };
           }
-          const showSectionHeader = (numericPathId === 2 || numericPathId === 3 || numericPathId === 4 || numericPathId === 7) && sectionHeaders[lesson.id];
+          const showSectionHeader = (numericPathId === 2 || numericPathId === 3 || numericPathId === 4) && sectionHeaders[lesson.id];
 
           return (
             <React.Fragment key={lesson.id}>

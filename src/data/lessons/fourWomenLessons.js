@@ -6,7 +6,7 @@
 const greatestWomenLessons = [
   {
     id: 1,
-    title: "Part 1",
+    title: "Maryam - Part 1",
     description: [
       "Maryam's mother dedicated her unborn child to Allah's service. When Maryam was born, her mother accepted Allah's plan with gratitude and named her Maryam, meaning devoted servant.",
       "Maryam grew up in the temple under Prophet Zakariyyah's care. She devoted herself to worship and prayer. Allah provided her with miraculous sustenance from Heaven that amazed Zakariyyah greatly.",
@@ -23,7 +23,7 @@ const greatestWomenLessons = [
 
   {
     id: 2,
-    title: "Part 2",
+    title: "Maryam - Part 2",
     description: [
       "Angel Jibril appeared to Maryam in human form while she was alone. Frightened, she sought Allah's protection. The angel announced Allah had chosen her to bear a miraculous blessed child.",
       "Maryam asked how she could have a child when no man had touched her. The angel explained Allah creates what He wills by simply saying 'Be' and it is.",
@@ -40,7 +40,7 @@ const greatestWomenLessons = [
 
   {
     id: 3,
-    title: "Part 3",
+    title: "Maryam - Part 3",
     description: [
       "When Maryam brought baby Isa to her people, they accused her of wrongdoing. Instead of defending herself, she pointed to the infant in her arms with complete trust.",
       "Baby Isa spoke miraculously from the cradle, declaring he was Allah's servant. He announced Allah gave him scripture and prophethood, commanding him to pray and give charity throughout life.",
@@ -57,7 +57,7 @@ const greatestWomenLessons = [
 
   {
     id: 4,
-    title: "Part 1",
+    title: "Asiyah - Part 1",
     description: [
       "Asiyah was married to Pharaoh, history's most arrogant tyrant who claimed divinity. Despite living in a palace of disbelief and oppression, she secretly believed in the One True Allah.",
       "She witnessed Pharaoh's cruelty daily but maintained her faith hidden in her heart. Asiyah saw through his false claims of godhood and recognized only Allah deserves worship and submission.",
@@ -74,7 +74,7 @@ const greatestWomenLessons = [
 
   {
     id: 5,
-    title: "Part 2",
+    title: "Asiyah - Part 2",
     description: [
       "When baby Musa was found in the river, Asiyah's heart filled with love for him. She convinced Pharaoh to spare the baby and let her raise him in the palace.",
       "Asiyah cared for Musa with tenderness and love, not knowing he would become the prophet who would challenge her husband's tyranny. Allah placed mercy in her heart for His chosen messenger.",
@@ -91,7 +91,7 @@ const greatestWomenLessons = [
 
   {
     id: 6,
-    title: "Part 3",
+    title: "Asiyah - Part 3",
     description: [
       "When Pharaoh discovered Asiyah's faith in Musa's God, his rage knew no bounds. He ordered her tortured brutally to force her to renounce belief and return to worshipping him.",
       "As they tortured her under the scorching sun, Asiyah raised her eyes to Heaven and made a beautiful supplication. She asked Allah for a house in Paradise near Him.",
@@ -108,7 +108,7 @@ const greatestWomenLessons = [
 
   {
     id: 7,
-    title: "Part 1",
+    title: "Khadijah - Part 1",
     description: [
       "Khadijah was a noble, wealthy businesswoman known throughout Makkah for wisdom and honor. People called her 'The Pure One' because of her impeccable character and dignified reputation.",
       "She hired Muhammad ﷺ to lead her trade caravan because of his legendary trustworthiness and honesty. His excellent character and integrity during the journey deeply impressed her servant Maysarah.",
@@ -125,7 +125,7 @@ const greatestWomenLessons = [
 
   {
     id: 8,
-    title: "Part 2",
+    title: "Khadijah - Part 2",
     description: [
       "When revelation first came to Muhammad ﷺ in the cave, he returned home trembling and fearful. Khadijah immediately comforted him, declaring Allah would never disgrace someone so noble.",
       "Khadijah became the very first person to accept Islam, believing instantly without doubt or hesitation. She supported him completely during the difficult early years when Muslims faced brutal persecution.",
@@ -142,7 +142,7 @@ const greatestWomenLessons = [
 
   {
     id: 9,
-    title: "Part 3",
+    title: "Khadijah - Part 3",
     description: [
       "During the Year of Sorrow, both Khadijah and Abu Talib died within months. The Prophet ﷺ lost his beloved wife and protective uncle, grieving deeply for his greatest supporter.",
       "Even after her death, the Prophet ﷺ honored Khadijah constantly. He sent meat to her friends and spoke of her virtues. When Aishah felt jealous, he explained no one could replace Khadijah.",
@@ -159,7 +159,7 @@ const greatestWomenLessons = [
 
   {
     id: 10,
-    title: "Part 1",
+    title: "Fatimah - Part 1",
     description: [
       "Fatimah was the youngest daughter of the Prophet Muhammad ﷺ and Khadijah. The Prophet ﷺ loved her immensely, standing whenever she entered and kissing her forehead with tenderness.",
       "She witnessed the persecution of her father in Makkah. Young Fatimah once removed harmful filth from his back while he prayed, showing courage beyond her years and deep love.",
@@ -176,7 +176,7 @@ const greatestWomenLessons = [
 
   {
     id: 11,
-    title: "Part 2",
+    title: "Fatimah - Part 2",
     description: [
       "Despite being the Prophet's daughter, Fatimah lived in poverty. She ground grain by hand until her hands blistered. When she asked for a servant, the Prophet ﷺ taught her dhikr instead.",
       "The Prophet ﷺ told her that glorifying Allah thirty-three times, praising Him thirty-three times, and magnifying Him thirty-four times after each prayer was better than any servant.",
@@ -193,7 +193,7 @@ const greatestWomenLessons = [
 
   {
     id: 12,
-    title: "Part 3",
+    title: "Fatimah - Part 3",
     description: [
       "Fatimah had deep knowledge of the Quran and Sunnah, learning directly from her father. She possessed wisdom beyond her years and understood Islam's teachings with remarkable clarity and depth.",
       "The Prophet ﷺ told Fatimah privately that she would be the first of his family to join him after death. She wept, then smiled when he said she would be the leader of Paradise's women.",
