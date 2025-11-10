@@ -5,6 +5,36 @@ Islam Quest is a mobile-first web application designed as a gamified Islamic lea
 
 ## Recent Changes
 
+### November 10, 2025 - Paths 8 & 9 Implementation (Stories of the Companions & Angels in Islam)
+- **Work Completed**: Created two complete learning paths with lessons, quizzes, and proper quiz routing
+- **Path 8 - Stories of the Companions (32 lessons)**:
+  - **Content**: Major Sahaba including Abu Bakr, Umar, Uthman, Ali, Bilal, Salman, Abu Dharr, Hamza, Mus'ab, Abdullah ibn Mas'ud, Abdullah ibn Abbas, Abdullah ibn Umar, Abu Huraira, Zayd ibn Harithah, Khalid ibn Walid, Amr ibn al-As, Sa'd ibn Mu'adh, Sa'd ibn Ubadah, Usayd ibn Hudayr, Anas ibn Malik, Abu Ayyub al-Ansari, Abu Talha, Ubayy ibn Ka'b, Mu'adh ibn Jabal, Abu Ubaidah ibn al-Jarrah, Ammar ibn Yasir, Suhaib ar-Rumi, Talhah ibn Ubaydullah, Az-Zubayr ibn al-Awwam, Saeed ibn Zayd, Abdur Rahman ibn Awf, Saad ibn Abi Waqqas
+  - **Structure**: 4 paragraphs per lesson (~30 words each), 1 Qur'an ayah or Sahih hadith (Arabic + English), Key Lesson Learned
+  - **Sources**: ONLY Qur'an and Sahih Bukhari/Muslim with proper citations
+  - **32 quizzes**: 128 total questions (4 MCQs per quiz), balanced answer distribution (29, 32, 36, 31), aligned with lesson content
+  - **UI**: Default mascot and greeting (no path-specific customization)
+- **Path 9 - Angels in Islam (11 lessons)**:
+  - **Content**: Jibrīl (Gabriel), Mīkā'īl (Michael), Isrāfīl, Angel of Death (Malak al-Mawt), Munkar and Nakir, Guardian Angels (Mu'aqqibat), Recording Angels (Kiraman Katibin), Mālik (Guardian of Hellfire), Ridwān (Guardian of Paradise), Angel of the Mountains, Angels in Worship
+  - **Structure**: 3 paragraphs per lesson (~30 words each), 1 Qur'an ayah or Sahih hadith (Arabic + English), Key Lesson Learned
+  - **Sources**: ONLY Qur'an and Sahih Bukhari/Muslim with proper citations
+  - **Content Note**: All Jinn content excluded (focus only on angels)
+  - **11 quizzes**: 44 total questions (4 MCQs per quiz), perfect answer distribution (11 at each index 0-3), aligned with lesson content
+  - **UI**: Default mascot and greeting (no path-specific customization)
+- **Technical Implementation**:
+  - Created `src/data/lessons/companionsLessons.js` (32 lessons, authentic sources)
+  - Created `src/data/quizzes/companionsQuizzes.json` (32 quizzes, 128 questions)
+  - Created `src/data/lessons/angelsLessons.js` (11 lessons, authentic sources, no Jinn content)
+  - Created `src/data/quizzes/angelsQuizzes.json` (11 quizzes, 44 questions)
+  - Updated `src/data/quizEngine.js` to import and route Path 8 and 9 quizzes (cases 8 & 9)
+  - `src/data/lessonLoader.js` already included Path 8 & 9 mapping (cases 8 & 9)
+- **Files Created/Modified**:
+  - `src/data/lessons/companionsLessons.js` (new file, 32 lessons)
+  - `src/data/quizzes/companionsQuizzes.json` (new file, 32 quizzes)
+  - `src/data/lessons/angelsLessons.js` (new file, 11 lessons)
+  - `src/data/quizzes/angelsQuizzes.json` (new file, 11 quizzes)
+  - `src/data/quizEngine.js` (added Path 8 & 9 quiz routing)
+- **Quality Assurance**: All sources verified as Qur'an/Sahih hadith, quiz alignment confirmed, answer distribution balanced, no regressions on paths 1-7
+
 ### November 10, 2025 - Path 7 Implementation (Four Greatest Women in Islam)
 - **Work Completed**: Created complete learning path with lessons, quizzes, and path-specific UI customizations
 - **Path 7 - Four Greatest Women in Islam (12 lessons)**:
