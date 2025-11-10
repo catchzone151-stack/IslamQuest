@@ -1,0 +1,3512 @@
+[
+  {
+    "lessonId": 1,
+    "questions": [
+      {
+        "question": "Who led the army with war elephants to destroy the Ka'bah?",
+        "options": [
+          "Abraha the Abyssinian ruler",
+          "The Persian king",
+          "The Roman emperor",
+          "The King of Yemen"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "What did Allah send to destroy Abraha's army?",
+        "options": [
+          "A great flood",
+          "A fierce wind",
+          "Flocks of birds carrying stones of baked clay",
+          "An earthquake"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What year was this miraculous event called?",
+        "options": [
+          "The Year of Sorrow",
+          "The Year of Victory",
+          "The Year of the Elephant",
+          "The Year of Migration"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Which Qur'anic surah mentions the companions of the elephant?",
+        "options": [
+          "Surah Al-Fil (105)",
+          "Surah Al-Fatiha",
+          "Surah Al-Ikhlas",
+          "Surah An-Nas"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "lessonId": 2,
+    "questions": [
+      {
+        "question": "On which day of the week was Muhammad ﷺ born?",
+        "options": [
+          "Friday",
+          "Monday",
+          "Thursday",
+          "Saturday"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What was the name of the Prophet's ﷺ mother?",
+        "options": [
+          "Khadijah",
+          "Halimah",
+          "Aminah",
+          "Fatimah"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What miraculous sign did his mother see on the night of his birth?",
+        "options": [
+          "A light that illuminated the palaces of Syria",
+          "Stars falling from the sky",
+          "The moon splitting",
+          "Rain falling on the desert"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "What does the name 'Muhammad' mean?",
+        "options": [
+          "The leader",
+          "The trustworthy",
+          "The praised one",
+          "The victorious"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 3,
+    "questions": [
+      {
+        "question": "Who was Muhammad's ﷺ foster mother in the desert?",
+        "options": [
+          "Aminah",
+          "Halimah as-Sa'diyah",
+          "Khadijah",
+          "Sumayyah"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What blessings did Halimah experience after accepting baby Muhammad ﷺ?",
+        "options": [
+          "She found gold",
+          "Her weak camel became strong and her goats gave abundant milk",
+          "She became wealthy from trade",
+          "She won a competition"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How many years did Muhammad ﷺ live with Halimah's family?",
+        "options": [
+          "Two years",
+          "Four years",
+          "Six years",
+          "Eight years"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Why did Arab nobles send their children to the desert?",
+        "options": [
+          "For military training",
+          "For better health and to learn pure Arabic",
+          "To escape enemies",
+          "To work as shepherds"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 4,
+    "questions": [
+      {
+        "question": "How old was Muhammad ﷺ when the Opening of the Chest occurred?",
+        "options": [
+          "Two years old",
+          "Four years old",
+          "Six years old",
+          "Eight years old"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did the angels remove from the Prophet's ﷺ heart?",
+        "options": [
+          "A white stone",
+          "A golden coin",
+          "A black clot",
+          "A piece of cloth"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What water did the angels use to wash his heart?",
+        "options": [
+          "Rain water",
+          "Sea water",
+          "River water",
+          "Zamzam water"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "Which surah asks 'Did We not expand for you your breast?'",
+        "options": [
+          "Surah Al-Fatiha",
+          "Surah Ash-Sharh (94)",
+          "Surah Al-Ikhlas",
+          "Surah Al-Fil"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 5,
+    "questions": [
+      {
+        "question": "At what age did Muhammad's ﷺ mother Aminah pass away?",
+        "options": [
+          "When he was four",
+          "When he was six",
+          "When he was eight",
+          "When he was ten"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Where did Aminah pass away?",
+        "options": [
+          "In Makkah",
+          "At Abwa",
+          "In Madinah",
+          "In Ta'if"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Who became Muhammad's ﷺ guardian after Abdul-Muttalib died?",
+        "options": [
+          "Abu Jahl",
+          "Abu Sufyan",
+          "Abu Talib",
+          "Abu Lahab"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "At what age did Abdul-Muttalib pass away?",
+        "options": [
+          "When Muhammad ﷺ was six",
+          "When Muhammad ﷺ was eight",
+          "When Muhammad ﷺ was ten",
+          "When Muhammad ﷺ was twelve"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 6,
+    "questions": [
+      {
+        "question": "How old was Muhammad ﷺ when he traveled to Syria with Abu Talib?",
+        "options": [
+          "Ten years old",
+          "Twelve years old",
+          "Fifteen years old",
+          "Twenty years old"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Who was the Christian monk who recognized signs of prophethood in young Muhammad ﷺ?",
+        "options": [
+          "Waraqah",
+          "Bahira",
+          "Negus",
+          "Salman"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What signs did Bahira witness?",
+        "options": [
+          "A star following Muhammad ﷺ",
+          "Muhammad ﷺ speaking different languages",
+          "A cloud shading Muhammad ﷺ and trees bowing as he passed",
+          "Angels appearing around him"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Why did Abu Talib return Muhammad ﷺ to Makkah earlier than planned?",
+        "options": [
+          "Because of illness",
+          "To protect him from enemies after Bahira's warning",
+          "Due to bad weather",
+          "Because trade failed"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 7,
+    "questions": [
+      {
+        "question": "What job did young Muhammad ﷺ work as?",
+        "options": [
+          "A merchant",
+          "A shepherd",
+          "A blacksmith",
+          "A builder"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What were the two titles Muhammad ﷺ was known by in Makkah?",
+        "options": [
+          "Al-Amin (The Trustworthy) and As-Sadiq (The Truthful)",
+          "Al-Hakim (The Wise) and Al-Adil (The Just)",
+          "Al-Qawi (The Strong) and Al-Karim (The Generous)",
+          "Al-Amir (The Leader) and Al-Malik (The King)"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "Which Qur'anic verse praises the Prophet's ﷺ moral character?",
+        "options": [
+          "Qur'an 2:1",
+          "Qur'an 68:4",
+          "Qur'an 112:1",
+          "Qur'an 1:1"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did working as a shepherd teach Muhammad ﷺ?",
+        "options": [
+          "Fighting skills",
+          "Business strategy",
+          "Patience, responsibility, and care for those under his authority",
+          "Construction techniques"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 8,
+    "questions": [
+      {
+        "question": "How old was Muhammad ﷺ when he married Khadijah?",
+        "options": [
+          "Twenty years old",
+          "Twenty-five years old",
+          "Thirty years old",
+          "Forty years old"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How old was Khadijah when she married the Prophet ﷺ?",
+        "options": [
+          "Twenty-five",
+          "Thirty",
+          "Forty",
+          "Fifty"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Who was Khadijah's servant that accompanied Muhammad ﷺ to Syria?",
+        "options": [
+          "Bilal",
+          "Zayd",
+          "Maysarah",
+          "Salman"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How long did their marriage last?",
+        "options": [
+          "Ten blessed years",
+          "Fifteen blessed years",
+          "Twenty blessed years",
+          "Twenty-five blessed years"
+        ],
+        "answer": 3
+      }
+    ]
+  },
+  {
+    "lessonId": 9,
+    "questions": [
+      {
+        "question": "How old was Muhammad ﷺ when the Ka'bah was being rebuilt?",
+        "options": [
+          "Twenty-five",
+          "Thirty",
+          "Thirty-five",
+          "Forty"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What was the dispute among Quraysh tribes about?",
+        "options": [
+          "Who would lead prayers",
+          "Who would place the Black Stone in its corner",
+          "Who would guard the Ka'bah",
+          "Who would collect taxes"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How did Muhammad ﷺ solve the dispute?",
+        "options": [
+          "He placed it himself alone",
+          "He gave it to the eldest chief",
+          "He placed the stone on a cloth and had all tribal leaders lift it together",
+          "He drew lots to decide"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Why did everyone accept Muhammad ﷺ as the judge?",
+        "options": [
+          "He was the strongest",
+          "He was the wealthiest",
+          "He was called 'Al-Amin, the Trustworthy One'",
+          "He was the oldest"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 10,
+    "questions": [
+      {
+        "question": "Where did Muhammad ﷺ retreat for solitude and contemplation?",
+        "options": [
+          "Cave Thawr",
+          "Cave Hira on Mount Nur",
+          "Mount Arafat",
+          "The desert"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Which month did he spend in the cave?",
+        "options": [
+          "Muharram",
+          "Rajab",
+          "Ramadan",
+          "Dhul Hijjah"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Who supported his spiritual retreats by sending food and supplies?",
+        "options": [
+          "His uncle Abu Talib",
+          "His wife Khadijah",
+          "His cousin Ali",
+          "His friend Abu Bakr"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did he worship according to during these retreats?",
+        "options": [
+          "The way of his ancestors",
+          "The way of Prophet Ibrahim",
+          "The way of the Quraysh",
+          "No specific way"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 11,
+    "questions": [
+      {
+        "question": "How old was Muhammad ﷺ when he received the first revelation?",
+        "options": [
+          "Thirty-five years old",
+          "Forty years old",
+          "Forty-five years old",
+          "Fifty years old"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What was the first word of Qur'an revealed?",
+        "options": [
+          "Believe",
+          "Say",
+          "Read (Iqra)",
+          "Worship"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Who was Khadijah's cousin that confirmed Muhammad ﷺ was a prophet?",
+        "options": [
+          "Bahira",
+          "Waraqah",
+          "Negus",
+          "Salman"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did Muhammad ﷺ say when he rushed home trembling?",
+        "options": [
+          "Help me!",
+          "I am afraid!",
+          "Cover me! Cover me!",
+          "What happened?"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 12,
+    "questions": [
+      {
+        "question": "Who was the first person to accept Islam?",
+        "options": [
+          "Abu Bakr",
+          "Ali",
+          "Khadijah",
+          "Zayd"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How long did the secret phase of da'wah last?",
+        "options": [
+          "One year",
+          "Three years",
+          "Five years",
+          "Seven years"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Who was the Prophet's ﷺ best friend that accepted Islam without hesitation?",
+        "options": [
+          "Umar",
+          "Uthman",
+          "Abu Bakr",
+          "Ali"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Which companions did Abu Bakr bring to Islam?",
+        "options": [
+          "Bilal and Ammar",
+          "Hamzah and Abbas",
+          "Uthman, Zubayr, Abdur-Rahman ibn Awf, Sa'd ibn Abi Waqqas, and Talhah",
+          "Khalid and Amr"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 13,
+    "questions": [
+      {
+        "question": "From which mountain did the Prophet ﷺ call the Quraysh for public preaching?",
+        "options": [
+          "Mount Uhud",
+          "Mount Safa",
+          "Mount Hira",
+          "Mount Thawr"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Who cursed the Prophet ﷺ saying 'May you perish!'?",
+        "options": [
+          "Abu Jahl",
+          "Abu Sufyan",
+          "Abu Lahab",
+          "Umayyah"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did Allah command in Qur'an 15:94?",
+        "options": [
+          "Pray regularly",
+          "Declare what you are commanded",
+          "Be patient",
+          "Migrate"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What changed after this event?",
+        "options": [
+          "Secret phase ended and public confrontation began",
+          "Muslims became wealthy",
+          "Quraysh accepted Islam",
+          "Muslims left Makkah"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "lessonId": 14,
+    "questions": [
+      {
+        "question": "What did Quraysh offer Muhammad ﷺ to stop preaching?",
+        "options": [
+          "Only wealth",
+          "Only power",
+          "Wealth, kingship, and beautiful women",
+          "A leadership position"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What was the Prophet's ﷺ response to their offers?",
+        "options": [
+          "He asked for time to think",
+          "He accepted some wealth",
+          "Even if they placed the sun in his right hand and moon in his left, he wouldn't abandon this message",
+          "He negotiated for better terms"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What names did they call Muhammad ﷺ?",
+        "options": [
+          "Liar and thief",
+          "Magician, poet, and madman",
+          "Traitor and enemy",
+          "Fool and weakling"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Why did Quraysh reject Islam according to the lesson?",
+        "options": [
+          "They didn't understand it",
+          "They feared it would destroy their wealth, power, and social status",
+          "They were too busy with trade",
+          "They preferred their old traditions only"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 15,
+    "questions": [
+      {
+        "question": "What did Bilal repeatedly say while being tortured?",
+        "options": [
+          "La ilaha illallah",
+          "Ahad, Ahad (One, One)",
+          "Allahu Akbar",
+          "Muhammad Rasulullah"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Who was Islam's first martyr?",
+        "options": [
+          "Yasir",
+          "Bilal",
+          "Sumayyah",
+          "Ammar"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How was Sumayyah martyred?",
+        "options": [
+          "She was burned",
+          "Abu Jahl murdered her with a spear",
+          "She was stoned",
+          "She died from beating"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did Abu Bakr do to help tortured slaves?",
+        "options": [
+          "He fought their masters",
+          "He hid them in his house",
+          "He used his wealth to purchase and free them",
+          "He appealed to Quraysh leaders"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 16,
+    "questions": [
+      {
+        "question": "To which country did the first Muslims migrate?",
+        "options": [
+          "Syria",
+          "Yemen",
+          "Abyssinia (Ethiopia)",
+          "Persia"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What was the name of the Christian king of Abyssinia?",
+        "options": [
+          "Negus",
+          "Heraclius",
+          "Khosrow",
+          "Muqawqis"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "Who spoke eloquently defending Muslims before Negus?",
+        "options": [
+          "Abu Bakr",
+          "Uthman",
+          "Ja'far ibn Abi Talib",
+          "Bilal"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did Ja'far recite that moved Negus to tears?",
+        "options": [
+          "Poetry about justice",
+          "Qur'an about Mary and Jesus",
+          "Hadith about mercy",
+          "Prayers for peace"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 17,
+    "questions": [
+      {
+        "question": "Who was Hamzah to the Prophet ﷺ?",
+        "options": [
+          "His brother",
+          "His cousin",
+          "His uncle",
+          "His friend"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What caused Hamzah to accept Islam?",
+        "options": [
+          "He read the Qur'an",
+          "He had a dream",
+          "He heard Abu Jahl had physically harmed the Prophet ﷺ and became furious",
+          "His family convinced him"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did Hamzah do to Abu Jahl?",
+        "options": [
+          "He debated with him",
+          "He struck him with his bow and challenged him",
+          "He ignored him",
+          "He reported him to leaders"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How did Hamzah's Islam strengthen Muslims?",
+        "options": [
+          "He brought wealth",
+          "His courage and fighting skills provided protection so Muslims could pray openly",
+          "He convinced Quraysh to stop torture",
+          "He became the new leader"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 18,
+    "questions": [
+      {
+        "question": "What was Umar planning to do before he accepted Islam?",
+        "options": [
+          "Leave Makkah",
+          "Kill Muhammad ﷺ",
+          "Become a merchant",
+          "Join the army"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What made Umar go to his sister's house?",
+        "options": [
+          "To visit for a meal",
+          "He was invited",
+          "Someone informed him his sister and brother-in-law had accepted Islam",
+          "He lived there"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Which surah did Umar read that touched his heart?",
+        "options": [
+          "Surah Al-Fatiha",
+          "Surah Ta-Ha",
+          "Surah Yaseen",
+          "Surah Al-Mulk"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What happened after Umar accepted Islam?",
+        "options": [
+          "Nothing changed",
+          "Muslims had to hide more",
+          "Muslims' strength doubled and they began praying openly at the Ka'bah",
+          "Quraysh immediately accepted Islam"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 19,
+    "questions": [
+      {
+        "question": "How did Muslims march to the Ka'bah to pray publicly?",
+        "options": [
+          "In one large group",
+          "Individually at different times",
+          "In two lines, one led by Hamzah and one by Umar",
+          "Only at night"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What was significant about Muslims praying publicly?",
+        "options": [
+          "It was the first time they prayed near the Ka'bah openly",
+          "It was during Ramadan",
+          "They prayed in Arabic",
+          "They used a new prayer format"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "How did Quraysh react to this public worship?",
+        "options": [
+          "They joined the Muslims",
+          "They were shocked and angered",
+          "They ignored it",
+          "They celebrated with them"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did this event demonstrate?",
+        "options": [
+          "Muslims' weakness",
+          "Islam's growing strength and Muslims' readiness to face consequences",
+          "Quraysh's acceptance",
+          "The end of persecution"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 20,
+    "questions": [
+      {
+        "question": "How long did the boycott last?",
+        "options": [
+          "One year",
+          "Three years",
+          "Five years",
+          "Seven years"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Which clans were boycotted?",
+        "options": [
+          "Only Banu Hashim",
+          "Only Banu Muttalib",
+          "Banu Hashim and Banu Muttalib",
+          "All Muslim clans"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did the boycotted people eat during extreme hunger?",
+        "options": [
+          "Only dates",
+          "Only bread",
+          "Leaves and tree bark",
+          "Fish from the sea"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What could be heard throughout Makkah at night?",
+        "options": [
+          "Prayers",
+          "Music",
+          "Children's cries from hunger",
+          "Celebration"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 21,
+    "questions": [
+      {
+        "question": "What destroyed the boycott document?",
+        "options": [
+          "Fire",
+          "Water",
+          "Termites ate everything except Allah's name",
+          "Someone tore it up"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How did the Prophet ﷺ know about the termites?",
+        "options": [
+          "Someone told him",
+          "He guessed",
+          "Allah informed him",
+          "He found the document"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Who were the compassionate Makkans that helped end the boycott?",
+        "options": [
+          "Abu Jahl and Abu Lahab",
+          "Hisham ibn Amr and others who felt ashamed",
+          "The Quraysh elders",
+          "Foreign merchants"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did the end of the boycott prove?",
+        "options": [
+          "Quraysh's power",
+          "Oppression cannot destroy truth; Allah supports those who stand firm",
+          "Muslims' weakness",
+          "The boycott was effective"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 22,
+    "questions": [
+      {
+        "question": "Who passed away first in the Year of Sorrow?",
+        "options": [
+          "Khadijah",
+          "Abu Talib",
+          "Abdul-Muttalib",
+          "Abu Bakr's wife"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What protection did Abu Talib provide even though he didn't accept Islam?",
+        "options": [
+          "Financial support",
+          "Tribal protection that prevented Quraysh from killing the Prophet ﷺ",
+          "Military power",
+          "Political influence only"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How long was the Prophet ﷺ married to Khadijah?",
+        "options": [
+          "Fifteen years",
+          "Twenty years",
+          "Twenty-five years",
+          "Thirty years"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Why was this year called the Year of Sorrow?",
+        "options": [
+          "Muslims lost a battle",
+          "The Prophet ﷺ lost his two greatest supporters: Khadijah and Abu Talib",
+          "There was a famine",
+          "Many Muslims were killed"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 23,
+    "questions": [
+      {
+        "question": "Which city did the Prophet ﷺ travel to seeking support?",
+        "options": [
+          "Madinah",
+          "Ta'if",
+          "Syria",
+          "Yemen"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How did the people of Ta'if respond to his message?",
+        "options": [
+          "They accepted Islam immediately",
+          "They listened politely but declined",
+          "They mocked him and ordered children and slaves to stone him",
+          "They gave him money to leave"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Who was the freed slave that protected the Prophet ﷺ in Ta'if?",
+        "options": [
+          "Bilal",
+          "Zayd ibn Harithah",
+          "Salman",
+          "Ammar"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did Angel Jibril offer to do to Ta'if?",
+        "options": [
+          "Flood the city",
+          "Send birds with stones",
+          "Crush it between two mountains",
+          "Burn it with fire"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 24,
+    "questions": [
+      {
+        "question": "What did the Prophet ﷺ pray for regarding Ta'if?",
+        "options": [
+          "Their immediate destruction",
+          "That they would be poor",
+          "O Allah, guide my people for they know not - hoping their descendants would believe",
+          "That they would never prosper"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Who were Addas?",
+        "options": [
+          "A king",
+          "A Christian servant from Nineveh who gave the Prophet ﷺ grapes",
+          "A merchant",
+          "A warrior"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What made Addas recognize the Prophet's ﷺ special status?",
+        "options": [
+          "His appearance",
+          "His wealth",
+          "When the Prophet ﷺ mentioned Prophet Yunus from Nineveh",
+          "His miracles"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What does this story teach about trials?",
+        "options": [
+          "Avoid all difficult situations",
+          "Trials prepare believers for greater responsibilities and Allah sends comfort in hardship",
+          "Trials mean Allah is angry",
+          "Only weak people face trials"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 25,
+    "questions": [
+      {
+        "question": "When did Isra and Mi'raj occur?",
+        "options": [
+          "Before prophethood",
+          "During the Year of Sorrow after Ta'if rejection",
+          "After Hijrah",
+          "After Battle of Badr"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What was the name of the miraculous creature that carried the Prophet ﷺ?",
+        "options": [
+          "Buraq",
+          "Qaswa",
+          "Duldul",
+          "Sakhr"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "Where did the night journey begin?",
+        "options": [
+          "From Cave Hira",
+          "From the Ka'bah",
+          "From Masjid al-Haram to Masjid al-Aqsa",
+          "From Madinah"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did the Prophet ﷺ lead at Masjid al-Aqsa?",
+        "options": [
+          "A battle",
+          "A congregation",
+          "Prayer with all the prophets",
+          "A council meeting"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 26,
+    "questions": [
+      {
+        "question": "How many heavens did the Prophet ﷺ ascend through?",
+        "options": [
+          "Three",
+          "Five",
+          "Seven",
+          "Ten"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Which prophet did the Prophet ﷺ meet in the sixth heaven?",
+        "options": [
+          "Prophet Ibrahim",
+          "Prophet Isa",
+          "Prophet Musa",
+          "Prophet Nuh"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Which prophet was met in the seventh heaven?",
+        "options": [
+          "Prophet Musa",
+          "Prophet Isa",
+          "Prophet Ibrahim",
+          "Prophet Nuh"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Originally, how many daily prayers were obligated?",
+        "options": [
+          "Five",
+          "Ten",
+          "Fifty",
+          "One hundred"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 27,
+    "questions": [
+      {
+        "question": "Who advised the Prophet ﷺ to request reduction in prayers?",
+        "options": [
+          "Prophet Ibrahim",
+          "Prophet Isa",
+          "Prophet Musa",
+          "Angel Jibril"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How many prayers were finally obligated?",
+        "options": [
+          "Three",
+          "Five",
+          "Seven",
+          "Ten"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What is the reward for the five daily prayers?",
+        "options": [
+          "Reward of five",
+          "Reward of ten",
+          "Reward of fifty",
+          "Reward of one hundred"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did Quraysh do when the Prophet ﷺ told them about this journey?",
+        "options": [
+          "They believed immediately",
+          "They mocked and called him a liar",
+          "They asked for proof only",
+          "They ignored him"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 28,
+    "questions": [
+      {
+        "question": "Who believed the Prophet ﷺ immediately about Isra and Mi'raj?",
+        "options": [
+          "Umar",
+          "Uthman",
+          "Abu Bakr (earning the title As-Siddiq, the Truthful)",
+          "Ali"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did Abu Bakr say when asked if he believed?",
+        "options": [
+          "I need proof",
+          "I'll think about it",
+          "If he said it, then I believe him",
+          "That's impossible"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What proof did the Prophet ﷺ provide to Quraysh?",
+        "options": [
+          "He showed them Buraq",
+          "He described Masjid al-Aqsa in perfect detail though he'd never been there before",
+          "He brought back a stone",
+          "He performed a miracle"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What does this journey teach about faith?",
+        "options": [
+          "Doubt everything",
+          "Only believe what you see",
+          "True faith means trusting the Prophet ﷺ even when something seems impossible",
+          "Question all miracles"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 29,
+    "questions": [
+      {
+        "question": "From which city did the Ansar (Helpers) come?",
+        "options": [
+          "Makkah",
+          "Ta'if",
+          "Yathrib (later called Madinah)",
+          "Syria"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Where did the Prophet ﷺ meet them for the first time?",
+        "options": [
+          "At the Ka'bah",
+          "In the market",
+          "At Aqabah during Hajj season",
+          "In Madinah"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How many people were in the first pledge of Aqabah?",
+        "options": [
+          "Six men",
+          "Twelve men",
+          "Seventy men",
+          "One hundred men"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did they pledge in the first Aqabah?",
+        "options": [
+          "To fight enemies",
+          "To worship Allah alone, not steal, not commit adultery, not kill children, not slander",
+          "To give all their wealth",
+          "To migrate immediately"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 30,
+    "questions": [
+      {
+        "question": "How many people pledged in the Second Aqabah?",
+        "options": [
+          "Twelve",
+          "Fifty",
+          "Seventy-three men and two women",
+          "One hundred"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did they pledge in the second Aqabah?",
+        "options": [
+          "Only to pray",
+          "To protect the Prophet ﷺ as they protect their own families",
+          "To give charity",
+          "To fast"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did one Ansari ask the Prophet ﷺ?",
+        "options": [
+          "What's our reward for this?",
+          "When will you come?",
+          "How much will it cost?",
+          "Is this dangerous?"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "What was the Prophet's ﷺ simple answer?",
+        "options": [
+          "Wealth and power",
+          "Victory in this life",
+          "Paradise",
+          "Fame and honor"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 31,
+    "questions": [
+      {
+        "question": "Why did Muslims begin migrating to Madinah?",
+        "options": [
+          "For business",
+          "After the Second Pledge of Aqabah, the Prophet ﷺ permitted them to migrate for safety",
+          "They were expelled by force",
+          "To find food"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did Quraysh do when they discovered Muslims migrating?",
+        "options": [
+          "They celebrated",
+          "They ignored it",
+          "They increased persecution and tried to prevent migration",
+          "They joined them"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Which companion was tortured for days for wanting to migrate?",
+        "options": [
+          "Bilal",
+          "Suhayb ar-Rumi had to give up all his wealth",
+          "Abu Bakr",
+          "Umar"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What sacrifice did Muslims make to migrate?",
+        "options": [
+          "Nothing",
+          "Only money",
+          "They left homes, businesses, and families for faith",
+          "Only time"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 32,
+    "questions": [
+      {
+        "question": "What did Quraysh leaders plot when most Muslims had migrated?",
+        "options": [
+          "To negotiate peace",
+          "To kill Muhammad ﷺ",
+          "To destroy the Ka'bah",
+          "To leave Makkah"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How did they plan to kill him?",
+        "options": [
+          "Poison his food",
+          "Burn his house",
+          "Young men from each tribe would strike together so blame is shared",
+          "Attack during prayer"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Who informed the Prophet ﷺ about the plot?",
+        "options": [
+          "A spy",
+          "His uncle",
+          "Allah through Angel Jibril",
+          "Abu Bakr"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Who slept in the Prophet's ﷺ bed as a decoy?",
+        "options": [
+          "Abu Bakr",
+          "Umar",
+          "Ali",
+          "Zayd"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 33,
+    "questions": [
+      {
+        "question": "Which companion accompanied the Prophet ﷺ on Hijrah?",
+        "options": [
+          "Umar",
+          "Ali",
+          "Abu Bakr",
+          "Uthman"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Where did they hide from Quraysh pursuers?",
+        "options": [
+          "Cave Hira",
+          "Cave Thawr",
+          "A house",
+          "The desert"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What miracle protected them in the cave?",
+        "options": [
+          "Rain",
+          "A spider's web and bird's nest at the cave entrance",
+          "Angels blocked it",
+          "An earthquake"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did Abu Bakr say when he was worried?",
+        "options": [
+          "We will die!",
+          "We should run!",
+          "They are too close!",
+          "What if they find us?"
+        ],
+        "answer": 3
+      }
+    ]
+  },
+  {
+    "lessonId": 34,
+    "questions": [
+      {
+        "question": "What did the Prophet ﷺ tell worried Abu Bakr?",
+        "options": [
+          "Hide deeper",
+          "Do not grieve; indeed Allah is with us",
+          "Run away",
+          "Fight them"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How did Quraysh pursuers miss finding them?",
+        "options": [
+          "It was dark",
+          "They saw the spider web and bird nest and thought no one could have entered recently",
+          "They went the wrong direction",
+          "Angels made them blind"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What bounty did Quraysh offer for capturing the Prophet ﷺ?",
+        "options": [
+          "50 camels",
+          "100 camels",
+          "1000 camels",
+          "100 gold coins"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Which Qur'anic verse references Allah being with them in the cave?",
+        "options": [
+          "Qur'an 3:144",
+          "Qur'an 9:40",
+          "Qur'an 2:214",
+          "Qur'an 48:1"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 35,
+    "questions": [
+      {
+        "question": "Who was Suraqah ibn Malik?",
+        "options": [
+          "A companion",
+          "A bounty hunter who pursued the Prophet ﷺ",
+          "A Quraysh leader",
+          "A guide"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What happened to Suraqah's horse?",
+        "options": [
+          "It ran away",
+          "It died",
+          "Its legs sank into the sand three times miraculously",
+          "It went faster"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did the Prophet ﷺ promise Suraqah?",
+        "options": [
+          "Gold and silver",
+          "The bracelets of Khosrow, the Persian emperor",
+          "A position in government",
+          "A house in Madinah"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "When was this prophecy fulfilled?",
+        "options": [
+          "Never",
+          "During the Prophet's ﷺ lifetime",
+          "Years later during Umar's caliphate after Persia was conquered",
+          "During Abu Bakr's caliphate"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 36,
+    "questions": [
+      {
+        "question": "When did the Prophet ﷺ arrive in Quba?",
+        "options": [
+          "On Friday",
+          "On Monday, 12th Rabi al-Awwal",
+          "On Saturday",
+          "On Sunday"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What was the first thing the Prophet ﷺ built in Quba?",
+        "options": [
+          "A house",
+          "A market",
+          "A mosque",
+          "A well"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How did Madinah residents welcome him?",
+        "options": [
+          "With fear",
+          "With silence",
+          "With joy, singing 'Tala'al Badru Alayna'",
+          "They didn't notice"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What does 'Tala'al Badru Alayna' mean?",
+        "options": [
+          "Victory has come",
+          "The full moon has risen over us",
+          "Welcome our leader",
+          "Peace be upon you"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 37,
+    "questions": [
+      {
+        "question": "Where did the Prophet's ﷺ camel stop in Madinah?",
+        "options": [
+          "At the marketplace",
+          "At Abu Bakr's house",
+          "At the land that would become Masjid an-Nabawi",
+          "At the city gate"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Whose house did the Prophet ﷺ initially stay in?",
+        "options": [
+          "Umar's",
+          "Ali's",
+          "Abu Ayyub al-Ansari's",
+          "Sa'd ibn Mu'adh's"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What was the first major project in Madinah?",
+        "options": [
+          "Building homes",
+          "Building the market",
+          "Building Masjid an-Nabawi (the Prophet's Mosque)",
+          "Building walls"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Who worked on building the mosque?",
+        "options": [
+          "Only skilled builders",
+          "Only the Ansar",
+          "Everyone including the Prophet ﷺ carried bricks and stones",
+          "Hired workers"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 38,
+    "questions": [
+      {
+        "question": "What were Muhajirin?",
+        "options": [
+          "Migrants from Makkah who sacrificed everything for Islam",
+          "The original people of Madinah",
+          "Guards",
+          "Merchants"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "What were Ansar?",
+        "options": [
+          "Migrants from Makkah",
+          "Helpers from Madinah who welcomed and supported Muhajirin",
+          "Slaves",
+          "Foreign allies"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did the Prophet ﷺ establish between Muhajirin and Ansar?",
+        "options": [
+          "Business partnerships",
+          "Competition",
+          "Brotherhood bonds where Ansar shared wealth, homes, and farms",
+          "Separate communities"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What does this brotherhood teach?",
+        "options": [
+          "Keep wealth to yourself",
+          "Trust no one",
+          "Islamic bonds transcend tribal, racial, and ethnic divisions",
+          "Only help family"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 39,
+    "questions": [
+      {
+        "question": "What document did the Prophet ﷺ establish in Madinah?",
+        "options": [
+          "The Constitution of Madinah",
+          "The Trade Agreement",
+          "The Peace Treaty",
+          "The War Declaration"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "Who did the constitution include?",
+        "options": [
+          "Only Muslims",
+          "Muslims, Jews, and other tribes",
+          "Only Arabs",
+          "Only Quraysh"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did the constitution guarantee?",
+        "options": [
+          "Muslim supremacy",
+          "Jewish rule",
+          "Religious freedom, mutual defense, and justice for all",
+          "Quraysh control"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What does this constitution show?",
+        "options": [
+          "Islam oppresses others",
+          "Islam respects diversity and human rights when establishing governance",
+          "Only Muslims have rights",
+          "Religion doesn't matter"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 40,
+    "questions": [
+      {
+        "question": "What was the direction of prayer before the change?",
+        "options": [
+          "The Ka'bah",
+          "Jerusalem",
+          "Mount Sinai",
+          "Madinah"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did the Prophet ﷺ wish for?",
+        "options": [
+          "Wealth",
+          "To face the Ka'bah during prayer",
+          "Power",
+          "Victory"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What happened during a prayer in Masjid al-Qiblatain?",
+        "options": [
+          "Nothing changed",
+          "Angel Jibril commanded them to turn toward the Ka'bah mid-prayer",
+          "They finished then changed",
+          "They waited until next prayer"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What does this change teach?",
+        "options": [
+          "Directions don't matter",
+          "Always face Jerusalem",
+          "Obedience to Allah means accepting changes even mid-action",
+          "Prayer is not important"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 41,
+    "questions": [
+      {
+        "question": "Who were the hypocrites (Munafiqun)?",
+        "options": [
+          "Open enemies",
+          "Those who pretended to be Muslim but secretly worked against Islam",
+          "New Muslims",
+          "Jews and Christians"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Who was the leader of the hypocrites?",
+        "options": [
+          "Abu Jahl",
+          "Abu Lahab",
+          "Abdullah ibn Ubayy",
+          "Abu Sufyan"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What made hypocrites more dangerous than open enemies?",
+        "options": [
+          "They were stronger",
+          "They were wealthier",
+          "They spread doubt, lies, and division from within the Muslim community",
+          "They had more weapons"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How did the Prophet ﷺ treat hypocrites?",
+        "options": [
+          "He killed them all",
+          "He expelled them immediately",
+          "He was patient, giving them chances to repent while protecting the community",
+          "He ignored them"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 42,
+    "questions": [
+      {
+        "question": "What was the first battle in Islamic history?",
+        "options": [
+          "Battle of Uhud",
+          "Battle of Badr",
+          "Battle of Khandaq",
+          "Battle of Hunayn"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How many Muslims fought at Badr?",
+        "options": [
+          "100",
+          "313",
+          "500",
+          "1000"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How many Quraysh fighters were there?",
+        "options": [
+          "About 300",
+          "About 500",
+          "About 1000",
+          "About 2000"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Why did Quraysh march to Badr?",
+        "options": [
+          "For trade",
+          "For pilgrimage",
+          "To protect their caravan and punish Muslims",
+          "For tourism"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 43,
+    "questions": [
+      {
+        "question": "What did the Prophet ﷺ do before deciding to fight at Badr?",
+        "options": [
+          "He decided alone",
+          "He consulted his companions (Shura)",
+          "He waited for a sign",
+          "He sent spies"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Who suggested moving camp to control water wells?",
+        "options": [
+          "Abu Bakr",
+          "Umar",
+          "Al-Hubab ibn al-Mundhir",
+          "Ali"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did the Prophet ﷺ do when given this advice?",
+        "options": [
+          "Rejected it",
+          "Got angry",
+          "Accepted it immediately, showing humility and wisdom",
+          "Ignored it"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did the Ansar pledge before battle?",
+        "options": [
+          "To run if outnumbered",
+          "To fight until victory or martyrdom",
+          "To watch from afar",
+          "To negotiate peace"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 44,
+    "questions": [
+      {
+        "question": "What did Muslims do on the night before Badr?",
+        "options": [
+          "They panicked",
+          "They fled",
+          "They prayed through the night while Allah sent rain and sleep",
+          "They partied"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did rain do for Muslims?",
+        "options": [
+          "Made them cold",
+          "Purified them and firmed the sand under their feet",
+          "Delayed battle",
+          "Flooded the area"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did Allah send to help Muslims?",
+        "options": [
+          "More soldiers",
+          "Thousands of angels",
+          "Weapons",
+          "Food"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What was the result of the Battle of Badr?",
+        "options": [
+          "Muslims lost",
+          "A tie",
+          "Decisive Muslim victory - 70 Quraysh killed, 70 captured",
+          "Both sides retreated"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 45,
+    "questions": [
+      {
+        "question": "Which leaders of Quraysh were killed at Badr?",
+        "options": [
+          "Abu Sufyan",
+          "Abu Jahl and Umayyah ibn Khalaf",
+          "Abu Lahab",
+          "All survived"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How did the Prophet ﷺ treat prisoners of war?",
+        "options": [
+          "He killed them all",
+          "He enslaved them",
+          "With mercy - they could be freed for ransom or teaching Muslims to read",
+          "He tortured them"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did Badr prove?",
+        "options": [
+          "Numbers guarantee victory",
+          "Wealth wins wars",
+          "Faith and divine support overcome material superiority",
+          "Muslims should avoid fighting"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did Qur'an call the Battle of Badr?",
+        "options": [
+          "The Day of Testing",
+          "The Day of Criterion (Yawm al-Furqan)",
+          "The Day of Victory",
+          "The Day of Angels"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 46,
+    "questions": [
+      {
+        "question": "Why did Quraysh march to Uhud?",
+        "options": [
+          "For trade",
+          "For revenge after defeat at Badr",
+          "To negotiate",
+          "For pilgrimage"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How many fighters did Quraysh bring to Uhud?",
+        "options": [
+          "1,000",
+          "2,000",
+          "3,000",
+          "5,000"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did the hypocrite Abdullah ibn Ubayy do?",
+        "options": [
+          "He fought bravely",
+          "He withdrew with 300 men, weakening Muslim forces",
+          "He gave money",
+          "He supported the Prophet ﷺ"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How many Muslims remained to fight?",
+        "options": [
+          "500",
+          "700",
+          "900",
+          "1,000"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 47,
+    "questions": [
+      {
+        "question": "What strategic position did the Prophet ﷺ place archers on?",
+        "options": [
+          "Inside the valley",
+          "The mountain of Uhud",
+          "Behind Quraysh",
+          "At the city gates"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What were the archers' strict orders?",
+        "options": [
+          "Attack when ready",
+          "Stay on the mountain no matter what happens",
+          "Follow the cavalry",
+          "Retreat if losing"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What happened initially in the battle?",
+        "options": [
+          "Muslims were losing",
+          "Muslims were winning and Quraysh began retreating",
+          "Both sides were equal",
+          "No fighting occurred"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What fatal mistake did most archers make?",
+        "options": [
+          "They ran away",
+          "They slept",
+          "They left their position to collect war booty, disobeying orders",
+          "They attacked the wrong enemy"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 48,
+    "questions": [
+      {
+        "question": "What happened after archers left their position?",
+        "options": [
+          "Muslims won faster",
+          "Nothing changed",
+          "Quraysh cavalry circled and attacked from behind, turning victory into chaos",
+          "Quraysh retreated"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Who was martyred defending the Prophet ﷺ?",
+        "options": [
+          "Abu Bakr",
+          "Umar",
+          "Hamzah, the Prophet's ﷺ uncle",
+          "Ali"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What injuries did the Prophet ﷺ sustain?",
+        "options": [
+          "None",
+          "Minor cuts",
+          "His tooth was broken and face was injured",
+          "Broken bones"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What lesson did Muslims learn from Uhud?",
+        "options": [
+          "Never fight again",
+          "Disobedience has consequences; victory comes from Allah, not our strength",
+          "Numbers guarantee victory",
+          "Leadership was wrong"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 49,
+    "questions": [
+      {
+        "question": "What rumor spread during Uhud?",
+        "options": [
+          "That Muslims were winning",
+          "That reinforcements arrived",
+          "That the Prophet ﷺ was killed",
+          "That Quraysh retreated"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How did some Muslims react to this rumor?",
+        "options": [
+          "They all ran away",
+          "Some lost hope and stopped fighting",
+          "They fought harder",
+          "They celebrated"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did one companion say when told the Prophet ﷺ died?",
+        "options": [
+          "Then we should surrender",
+          "Then Islam is finished",
+          "Then let us die for what he died for",
+          "Let's run away"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What verse was revealed after this?",
+        "options": [
+          "Don't fight",
+          "Muhammad is only a messenger; if he dies will you turn back?",
+          "Victory is guaranteed",
+          "Never trust anyone"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 50,
+    "questions": [
+      {
+        "question": "How did Quraysh mutilate martyrs' bodies?",
+        "options": [
+          "They didn't",
+          "They buried them",
+          "Hind bint Utbah cut off ears and noses in barbaric revenge",
+          "They honored them"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Whose body did Hind mutilate most severely?",
+        "options": [
+          "Any random martyr",
+          "Hamzah, because he killed her father at Badr",
+          "The Prophet ﷺ",
+          "Abu Bakr"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How did the Prophet ﷺ respond to this brutality?",
+        "options": [
+          "With equal brutality",
+          "With revenge plans",
+          "With grief but restraint, forbidding mutilation in war",
+          "By attacking immediately"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What does this teach about Islamic warfare?",
+        "options": [
+          "Anything goes in war",
+          "Revenge is encouraged",
+          "Islam maintains moral limits even against brutal enemies",
+          "Show no mercy"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 51,
+    "questions": [
+      {
+        "question": "What did the Prophet ﷺ do the day after Uhud despite injuries?",
+        "options": [
+          "Rested",
+          "Pursued Quraysh to show Muslims were still strong (Hamra al-Asad)",
+          "Celebrated",
+          "Retreated to Makkah"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What message did this pursuit send?",
+        "options": [
+          "Muslims were weak",
+          "Muslims were defeated",
+          "Muslims remained defiant and ready to fight despite setback",
+          "Muslims surrendered"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How did Quraysh respond when they heard?",
+        "options": [
+          "They attacked again",
+          "They were intimidated and continued retreating to Makkah",
+          "They laughed",
+          "They negotiated"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What does this teach about resilience?",
+        "options": [
+          "Hide after defeat",
+          "Give up when hurt",
+          "Rising after falling demonstrates true strength and faith",
+          "Wait for help"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 52,
+    "questions": [
+      {
+        "question": "Which Jewish tribe broke their treaty after Uhud?",
+        "options": [
+          "Banu Qaynuqa",
+          "Banu Nadir",
+          "Banu Quraydhah",
+          "Banu Aws"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "What did they do to a Muslim woman?",
+        "options": [
+          "Helped her",
+          "Ignored her",
+          "Humiliated her by exposing her in the marketplace",
+          "Protected her"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How did a Muslim react to this?",
+        "options": [
+          "He ran away",
+          "He killed the Jewish man who did this",
+          "He complained to leaders",
+          "He ignored it"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What was the consequence for Banu Qaynuqa?",
+        "options": [
+          "Nothing",
+          "They apologized",
+          "They were expelled from Madinah for breaking the treaty",
+          "They were rewarded"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 53,
+    "questions": [
+      {
+        "question": "Who were massacred at Bi'r Ma'unah?",
+        "options": [
+          "Quraysh fighters",
+          "70 Qur'an teachers sent to teach tribes were treacherously killed",
+          "Jewish merchants",
+          "Random travelers"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Why were they sent there?",
+        "options": [
+          "To fight",
+          "To trade",
+          "Arab tribes requested teachers of Qur'an",
+          "To explore"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What was this massacre?",
+        "options": [
+          "An accident",
+          "Self-defense",
+          "A treacherous ambush and mass murder of unarmed teachers",
+          "A fair battle"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How did the Prophet ﷺ react?",
+        "options": [
+          "He ignored it",
+          "He celebrated",
+          "He was deeply grieved, making Qunut supplication against betrayers",
+          "He laughed"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 54,
+    "questions": [
+      {
+        "question": "What does 'Ghazwah' mean?",
+        "options": [
+          "A pilgrimage",
+          "A battle where the Prophet ﷺ personally participated",
+          "A treaty",
+          "A trade mission"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What does 'Sariyyah' mean?",
+        "options": [
+          "A battle with the Prophet ﷺ present",
+          "A military expedition led by companions while Prophet ﷺ stayed in Madinah",
+          "A peace mission",
+          "A trade caravan"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Approximately how many total campaigns were there?",
+        "options": [
+          "About 30",
+          "About 50",
+          "About 80-100 combined",
+          "About 200"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What was the purpose of these campaigns?",
+        "options": [
+          "Conquest for wealth",
+          "Defense, treaty enforcement, responding to aggression",
+          "Slavery",
+          "Tourism"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 55,
+    "questions": [
+      {
+        "question": "What was Ghazwat Banu Mustaliq?",
+        "options": [
+          "A peace conference",
+          "A trade mission",
+          "A campaign against a tribe preparing to attack Muslims",
+          "A pilgrimage"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Who spread lies about Aisha after this campaign?",
+        "options": [
+          "Quraysh",
+          "Hypocrites led by Abdullah ibn Ubayy",
+          "Jews",
+          "Persians"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What were the false accusations called?",
+        "options": [
+          "The Rumor",
+          "The Lie of Ifk",
+          "The Slander",
+          "The Gossip"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How was Aisha's innocence proven?",
+        "options": [
+          "Witnesses testified",
+          "Investigation found proof",
+          "Allah revealed Qur'anic verses declaring her innocence",
+          "The Prophet ﷺ just believed her"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 56,
+    "questions": [
+      {
+        "question": "What do the verses about Ifk teach?",
+        "options": [
+          "Gossip is harmless",
+          "Believe all rumors",
+          "Don't spread rumors without evidence; slander destroys innocent people",
+          "Always suspect others"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What punishment did Qur'an establish for false accusations?",
+        "options": [
+          "No punishment",
+          "Small fine",
+          "80 lashes for those who falsely accuse without four witnesses",
+          "Exile"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What was the worst part for Aisha?",
+        "options": [
+          "The Prophet ﷺ divorced her",
+          "She was expelled",
+          "People she trusted believed and spread the lies",
+          "She was imprisoned"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What does this incident teach about rumors?",
+        "options": [
+          "Spread them quickly",
+          "Investigate and verify before speaking; slander is a major sin",
+          "Believe everything",
+          "Ignore all news"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 57,
+    "questions": [
+      {
+        "question": "What did Banu Nadir plot to do?",
+        "options": [
+          "Trade with Muslims",
+          "Make peace",
+          "Drop a boulder on the Prophet ﷺ from above, violating their treaty",
+          "Leave Madinah"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How did the Prophet ﷺ know about their plot?",
+        "options": [
+          "A spy told him",
+          "He guessed",
+          "Allah informed him through revelation",
+          "He saw them"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did the Prophet ﷺ give them after this treachery?",
+        "options": [
+          "Nothing",
+          "Punishment immediately",
+          "Ten days to leave Madinah peacefully",
+          "A second chance to stay"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Who promised to help Banu Nadir but didn't?",
+        "options": [
+          "Quraysh",
+          "Other Jews",
+          "The hypocrite Abdullah ibn Ubayy",
+          "Persians"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 58,
+    "questions": [
+      {
+        "question": "How many warriors marched toward Madinah in the coalition?",
+        "options": [
+          "1,000",
+          "5,000",
+          "10,000",
+          "20,000"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Who encouraged this unprecedented alliance?",
+        "options": [
+          "Abu Sufyan alone",
+          "Exiled Banu Nadir leaders",
+          "Persians",
+          "Romans"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What strategy did Salman al-Farisi suggest?",
+        "options": [
+          "Run away",
+          "Surrender",
+          "Digging a trench around Madinah's vulnerable areas",
+          "Attack first"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Was this strategy known to Arabs?",
+        "options": [
+          "Yes, commonly used",
+          "No, it was unknown to Arabs",
+          "Yes, but rarely used",
+          "Yes, invented by Arabs"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 59,
+    "questions": [
+      {
+        "question": "Who worked on digging the trench?",
+        "options": [
+          "Only soldiers",
+          "Only young men",
+          "Everyone: men, women, and children worked desperately",
+          "Hired workers"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How many stones did the Prophet ﷺ tie to his stomach?",
+        "options": [
+          "None",
+          "One",
+          "Two stones to suppress hunger",
+          "Three"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What happened when the Prophet ﷺ struck massive boulders?",
+        "options": [
+          "Nothing",
+          "They moved slightly",
+          "They shattered with sparks and he prophesied conquests of Persia, Rome, Yemen",
+          "He gave up"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did companions see in those sparks?",
+        "options": [
+          "Just fire",
+          "Nothing special",
+          "Light and future hope",
+          "Danger"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 60,
+    "questions": [
+      {
+        "question": "How did the coalition react to finding a trench?",
+        "options": [
+          "They crossed easily",
+          "They gave up immediately",
+          "They were surprised; they'd never seen this strategy and couldn't cross",
+          "They dug their own"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How long did the siege last?",
+        "options": [
+          "A few days",
+          "One week",
+          "Several weeks",
+          "Several months"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Who killed the coalition champion in single combat?",
+        "options": [
+          "Umar",
+          "Hamzah",
+          "Ali",
+          "Abu Bakr"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What does Qur'an 33:11 say about this trial?",
+        "options": [
+          "It was easy",
+          "Believers were tested and shaken with a severe shaking",
+          "Everyone stayed calm",
+          "No one was afraid"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 61,
+    "questions": [
+      {
+        "question": "Which Jewish tribe betrayed Muslims during the siege?",
+        "options": [
+          "Banu Qaynuqa",
+          "Banu Nadir",
+          "Banu Quraydhah",
+          "Banu Aws"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What made their betrayal catastrophic?",
+        "options": [
+          "They were small",
+          "They exposed Madinah's undefended side, putting families at risk while men defended the trench",
+          "They left the city",
+          "They took supplies"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did hypocrites say during this darkest moment?",
+        "options": [
+          "Victory is near",
+          "Keep fighting",
+          "Islam is finished",
+          "Everything is fine"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How did true believers respond according to Qur'an 33:22?",
+        "options": [
+          "They panicked",
+          "They fled",
+          "They said 'This is what Allah promised' and it increased them in faith",
+          "They surrendered"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 62,
+    "questions": [
+      {
+        "question": "What did Allah send to help Muslims?",
+        "options": [
+          "More soldiers",
+          "Food",
+          "A fierce, freezing wind and angels",
+          "Weapons"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did the wind do to the coalition camp?",
+        "options": [
+          "Cooled them down",
+          "Uprooted tents, scattered fires, overturned pots, and terrified horses",
+          "Helped them",
+          "Nothing"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Who ordered the coalition to retreat?",
+        "options": [
+          "The Persian king",
+          "Abu Jahl",
+          "Abu Sufyan",
+          "Khalid"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How many Muslims died in this month-long siege?",
+        "options": [
+          "None - a miracle",
+          "Ten",
+          "Fifty",
+          "One hundred"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "lessonId": 63,
+    "questions": [
+      {
+        "question": "What did the Prophet ﷺ declare after the coalition fled?",
+        "options": [
+          "Build higher walls",
+          "Quraysh would no longer attack; Muslims would now pressure Makkah",
+          "Prepare for defense",
+          "Celebrate for weeks"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did the Battle of Trench prove?",
+        "options": [
+          "Numbers always win",
+          "Wealth guarantees victory",
+          "Faith, strategy, and divine help can overcome any material superiority",
+          "Walls are unnecessary"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What changed after this battle?",
+        "options": [
+          "Nothing",
+          "Muslims became defensive only",
+          "Islam's enemies were on defensive while Muslims expanded influence",
+          "Quraysh grew stronger"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What does Qur'an 33:25 say Allah did?",
+        "options": [
+          "Nothing",
+          "Repelled disbelievers in their rage; sufficient was Allah for believers",
+          "Made Muslims fight alone",
+          "Gave victory to Quraysh"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 64,
+    "questions": [
+      {
+        "question": "Who did Banu Quraydhah choose to judge their case?",
+        "options": [
+          "The Prophet ﷺ",
+          "Abu Bakr",
+          "Sa'd ibn Mu'adh, their former ally",
+          "Umar"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Why did they choose Sa'd?",
+        "options": [
+          "He was their enemy",
+          "He was wise",
+          "They hoped for leniency from their old friend",
+          "Random choice"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What was Sa'd's judgment based on?",
+        "options": [
+          "His personal opinion",
+          "The Qur'an",
+          "Their own Torah's law for treason during war",
+          "Roman law"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What was Sa'd's condition during judgment?",
+        "options": [
+          "He was healthy",
+          "He was celebrating",
+          "He was mortally wounded from the Trench siege",
+          "He was traveling"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 65,
+    "questions": [
+      {
+        "question": "How many Muslims accompanied the Prophet ﷺ to Hudaybiyyah?",
+        "options": [
+          "500",
+          "1,000",
+          "1,400",
+          "3,000"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did Muslims take to show peaceful intentions?",
+        "options": [
+          "Full weapons",
+          "Only travelers' swords and wore ihram with sacrificial animals",
+          "Gifts of gold",
+          "Nothing"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Why did the Prophet's ﷺ camel Qaswa sit down at Hudaybiyyah?",
+        "options": [
+          "It was tired",
+          "It was sick",
+          "She was commanded by Allah to stop there",
+          "It was injured"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What Arab tradition did Quraysh violate?",
+        "options": [
+          "Trading rules",
+          "Marriage customs",
+          "Allowing all pilgrims access to Ka'bah during pilgrimage months",
+          "Hospitality"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 66,
+    "questions": [
+      {
+        "question": "What were the main terms of Hudaybiyyah treaty?",
+        "options": [
+          "Muslims conquer Makkah",
+          "Muslims return this year, come next year for 3 days, 10-year peace, return escapees",
+          "Quraysh accept Islam",
+          "Both sides disarm forever"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Who felt the terms were humiliating?",
+        "options": [
+          "Only Abu Bakr",
+          "No one",
+          "Many companions, especially Umar",
+          "Only Ali"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Who had to be returned in chains according to the treaty?",
+        "options": [
+          "A spy",
+          "Abu Jandal, Suhay's son who escaped torture",
+          "A prisoner",
+          "A merchant"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did Qur'an call this treaty?",
+        "options": [
+          "A defeat",
+          "A clear conquest (Fath Mubeen)",
+          "A mistake",
+          "A temporary solution"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 67,
+    "questions": [
+      {
+        "question": "Who was sent as envoy to Quraysh during negotiations?",
+        "options": [
+          "Abu Bakr",
+          "Ali",
+          "Uthman",
+          "Umar"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What rumor spread about the envoy?",
+        "options": [
+          "He was captured",
+          "He was killed",
+          "He defected",
+          "He got lost"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did the Prophet ﷺ call Muslims to do?",
+        "options": [
+          "Retreat",
+          "Negotiate",
+          "Pledge loyalty unto death under a tree",
+          "Attack immediately"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What is this pledge called?",
+        "options": [
+          "Bay'ah al-Kubra",
+          "Bay'ah al-Ridwan (Pledge of Allah's Pleasure)",
+          "Bay'ah al-Aqabah",
+          "Bay'ah al-Islam"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 68,
+    "questions": [
+      {
+        "question": "What did Suhay object to when writing the treaty?",
+        "options": [
+          "The date",
+          "The location",
+          "Writing 'Muhammad, Messenger of Allah' - refused to acknowledge prophethood",
+          "The terms"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did the Prophet ﷺ tell Ali to write instead?",
+        "options": [
+          "Muhammad the Leader",
+          "Muhammad son of Abdullah",
+          "Muhammad the Prophet",
+          "Muhammad the Truthful"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Who erased 'Messenger of Allah'?",
+        "options": [
+          "Ali did it",
+          "Abu Bakr",
+          "The Prophet ﷺ erased it himself, showing humility",
+          "Umar"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What happened within two years after this treaty?",
+        "options": [
+          "Islam declined",
+          "War resumed",
+          "Islam grew more than the previous twenty years combined",
+          "Nothing changed"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 69,
+    "questions": [
+      {
+        "question": "To which world rulers did the Prophet ﷺ send letters?",
+        "options": [
+          "Only Arab leaders",
+          "Byzantine Emperor Heraclius, Persian Emperor Khosrow, Egyptian Muqawqis, Abyssinian Negus, and others",
+          "Only Muslims",
+          "Only nearby tribes"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Who secretly accepted Islam?",
+        "options": [
+          "Heraclius",
+          "Khosrow",
+          "Negus of Abyssinia",
+          "Muqawqis"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did Khosrow of Persia do with the letter?",
+        "options": [
+          "Accepted it",
+          "Kept it",
+          "Arrogantly tore it and commanded his governor to capture Muhammad ﷺ",
+          "Ignored it"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did the Prophet ﷺ prophesy about Khosrow?",
+        "options": [
+          "He would become rich",
+          "He would live long",
+          "His kingdom would be torn as he tore the letter",
+          "He would become Muslim"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 70,
+    "questions": [
+      {
+        "question": "Where did Banu Nadir leaders settle after expulsion?",
+        "options": [
+          "Makkah",
+          "Syria",
+          "Khaybar",
+          "Yemen"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How many fortresses did Khaybar have?",
+        "options": [
+          "Two",
+          "Four",
+          "Eight",
+          "Twelve"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Who was given the banner and opened the main fortress?",
+        "options": [
+          "Umar",
+          "Abu Bakr",
+          "Ali",
+          "Khalid"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What arrangement was made after Khaybar surrendered?",
+        "options": [
+          "All were expelled",
+          "All were enslaved",
+          "Jews could remain farming, paying half their produce as tax",
+          "They were all executed"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 71,
+    "questions": [
+      {
+        "question": "How many Muslims performed Umrah in 7 AH?",
+        "options": [
+          "1,000",
+          "2,000",
+          "3,000",
+          "5,000"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did Quraysh do during the Muslims' Umrah?",
+        "options": [
+          "They joined them",
+          "They attacked",
+          "They evacuated the city and watched from surrounding mountains",
+          "They celebrated with them"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did Quraysh witness that softened hearts?",
+        "options": [
+          "Wealth",
+          "Islamic brotherhood, discipline, and devotion",
+          "Military power",
+          "Nothing special"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did this peaceful Umrah demonstrate?",
+        "options": [
+          "Muslim weakness",
+          "Islam's strength through spiritual discipline rather than military force",
+          "Quraysh's power",
+          "Nothing important"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 72,
+    "questions": [
+      {
+        "question": "Why did the Prophet ﷺ send 3,000 Muslims to Syria?",
+        "options": [
+          "For trade",
+          "For pilgrimage",
+          "A Muslim envoy was killed by Ghassanid allies of Byzantine Empire",
+          "For exploration"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How many enemy forces did Muslims face at Mu'tah?",
+        "options": [
+          "10,000",
+          "50,000",
+          "100,000",
+          "200,000 Byzantine and Arab coalition"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "Who became commander after all three appointed commanders were martyred?",
+        "options": [
+          "Abu Bakr",
+          "Umar",
+          "Khalid ibn Walid",
+          "Ali"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What title did the Prophet ﷺ give Khalid?",
+        "options": [
+          "The Brave",
+          "Sword of Allah",
+          "The Wise",
+          "The Strong"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 73,
+    "questions": [
+      {
+        "question": "What did Quraysh's allied tribe do?",
+        "options": [
+          "Made peace",
+          "Attacked a Muslim-allied tribe, violating the treaty",
+          "Left Arabia",
+          "Converted to Islam"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Who went to Madinah trying to renew the treaty?",
+        "options": [
+          "Abu Jahl",
+          "Abu Lahab",
+          "Abu Sufyan",
+          "Khalid"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did Abu Sufyan's daughter Umm Habibah do?",
+        "options": [
+          "Welcomed him warmly",
+          "Gave him gifts",
+          "Refused to let him sit on the Prophet's ﷺ mat, prioritizing Islam over father",
+          "Helped him negotiate"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How did the Prophet ﷺ prepare for Makkah's conquest?",
+        "options": [
+          "Publicly announced it",
+          "In secrecy, praying Quraysh wouldn't discover the plan",
+          "Asked permission first",
+          "Sent warnings"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 74,
+    "questions": [
+      {
+        "question": "How many Muslims marched to conquer Makkah?",
+        "options": [
+          "5,000",
+          "10,000",
+          "15,000",
+          "20,000"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Who brought Abu Sufyan to the Muslim camp?",
+        "options": [
+          "Umar",
+          "Ali",
+          "Abbas, the Prophet's ﷺ uncle",
+          "Khalid"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did the Prophet ﷺ promise for safety?",
+        "options": [
+          "Only for Muslims",
+          "No one",
+          "Those who stayed home, sought Abu Sufyan's house, or entered the sanctuary",
+          "Only for Quraysh leaders"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did the Prophet ﷺ declare after conquering Makkah?",
+        "options": [
+          "Execute all enemies",
+          "Enslave Quraysh",
+          "General amnesty: 'Go, you are free'",
+          "Exile everyone"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 75,
+    "questions": [
+      {
+        "question": "How many idols were in the Ka'bah?",
+        "options": [
+          "100",
+          "200",
+          "360",
+          "500"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did the Prophet ﷺ recite as he pointed at each idol?",
+        "options": [
+          "Allahu Akbar",
+          "La ilaha illallah",
+          "Truth has come and falsehood has vanished",
+          "Bismillah"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Which painting did the Prophet ﷺ protect in the Ka'bah?",
+        "options": [
+          "A landscape",
+          "A painting of Mary and baby Jesus",
+          "A battle scene",
+          "A geometric pattern"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Who gave the adhan from atop the Ka'bah?",
+        "options": [
+          "Abu Bakr",
+          "Umar",
+          "Bilal, the former slave",
+          "Ali"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 76,
+    "questions": [
+      {
+        "question": "What was the period after Makkah's conquest called?",
+        "options": [
+          "The Year of Victory",
+          "The Year of Delegations",
+          "The Year of Peace",
+          "The Year of Conquest"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Which tribe that stoned the Prophet ﷺ at Ta'if now accepted Islam?",
+        "options": [
+          "Quraysh",
+          "Aws",
+          "Thaqif",
+          "Khazraj"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How long did it take for Islam to spread throughout Arabia?",
+        "options": [
+          "Ten years",
+          "Twenty-three years",
+          "Thirty years",
+          "Fifty years"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What verse was revealed completing the religion?",
+        "options": [
+          "The first verse",
+          "This day I have perfected your religion (Qur'an 5:3)",
+          "The last verse",
+          "A verse about prayer"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 77,
+    "questions": [
+      {
+        "question": "How many Muslims accompanied the Prophet ﷺ on Farewell Hajj?",
+        "options": [
+          "10,000",
+          "50,000",
+          "Over 100,000",
+          "200,000"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "On which day did he deliver his final sermon?",
+        "options": [
+          "Day of Eid",
+          "Day of Arafah",
+          "Day of Sacrifice",
+          "Day of Tarwiyah"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What fundamental principles did he remind Muslims about?",
+        "options": [
+          "Only religious duties",
+          "Only business rules",
+          "Sanctity of life, property, honor; racial equality; women's rights; following Qur'an and Sunnah",
+          "Only family relations"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Why did the Prophet ﷺ weep after the verse was revealed?",
+        "options": [
+          "He was sad about the past",
+          "He was afraid",
+          "He understood it meant his mission was complete and death was near",
+          "He was angry"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 78,
+    "questions": [
+      {
+        "question": "When did the Prophet ﷺ pass away?",
+        "options": [
+          "Monday, 12 Rabi al-Awwal",
+          "Friday, 1 Ramadan",
+          "Sunday, 10 Dhul Hijjah",
+          "Wednesday, 15 Sha'ban"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "Who did the Prophet ﷺ ask to lead prayers when he was too ill?",
+        "options": [
+          "Umar",
+          "Ali",
+          "Abu Bakr",
+          "Uthman"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What were the Prophet's ﷺ last words?",
+        "options": [
+          "Pray regularly",
+          "Be kind to each other",
+          "Rather, the highest companion in Paradise",
+          "Follow the Qur'an"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did Abu Bakr say to the grieving companions?",
+        "options": [
+          "Don't be sad",
+          "He will come back",
+          "Whoever worshipped Muhammad, he is dead; whoever worships Allah, Allah is Ever-Living",
+          "We must choose a new prophet"
+        ],
+        "answer": 2
+      }
+    ]
+  }
+]
