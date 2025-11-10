@@ -1,0 +1,1442 @@
+[
+  {
+    "lessonId": 1,
+    "questions": [
+      {
+        "question": "What title did Abu Bakr earn because he believed the Prophet ﷺ immediately?",
+        "options": [
+          "Al-Farooq",
+          "As-Siddiq (The Truthful Believer)",
+          "Dhun-Nurayn",
+          "The Sword of Allah"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did Abu Bakr do when the Prophet ﷺ described his night journey and the disbelievers mocked him?",
+        "options": [
+          "He asked for proof",
+          "He remained silent",
+          "He joined the mockers",
+          "He declared if Muhammad ﷺ said it, it must be true"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "Who did Abu Bakr help free from slavery and torture?",
+        "options": [
+          "Bilal and other tortured Muslim slaves",
+          "Persian prisoners",
+          "Roman captives",
+          "Jewish merchants"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "According to the Qur'an 92:17-18, who will be removed from Hellfire?",
+        "options": [
+          "The wealthy and powerful",
+          "The righteous one who gives wealth to purify himself",
+          "The strongest warriors",
+          "The most educated scholars"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 2,
+    "questions": [
+      {
+        "question": "What happened when Umar first discovered his sister had accepted Islam?",
+        "options": [
+          "He celebrated with her",
+          "He ignored her decision",
+          "He heard Qur'an recitation and his heart softened completely",
+          "He reported her to Quraysh"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What changed for Muslims after Umar accepted Islam?",
+        "options": [
+          "They could finally pray openly at the Ka'bah",
+          "They received more wealth",
+          "They gained Roman support",
+          "They built the first mosque"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "How did Umar show justice and simplicity as the second Caliph?",
+        "options": [
+          "He built a grand palace",
+          "He collected high taxes",
+          "He patrolled Madinah at night checking on the poor and carried flour for a widow",
+          "He appointed only family members"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "According to the hadith, what did the Prophet ﷺ pray for?",
+        "options": [
+          "Strengthen Islam with either Abu Jahl or Umar ibn al-Khattab",
+          "Defeat the Romans quickly",
+          "More gold for the Muslims",
+          "A larger army"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 3,
+    "questions": [
+      {
+        "question": "What title did Uthman earn and why?",
+        "options": [
+          "The Generous One for his wealth",
+          "The Brave One for his fighting",
+          "Dhun-Nurayn (Possessor of Two Lights) for marrying two daughters of the Prophet ﷺ",
+          "The Scholar for his knowledge"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did Uthman do for the Muslim army during the Tabuk expedition?",
+        "options": [
+          "He led them into battle",
+          "He provided one-third of the entire army's equipment and supplies",
+          "He stayed behind to protect Madinah",
+          "He negotiated peace with the enemy"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How did Uthman die as the third Caliph?",
+        "options": [
+          "In battle against the Romans",
+          "From old age peacefully",
+          "He was killed while reading Qur'an during his fast, with blood dripping on the pages",
+          "From an illness"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "According to Sahih Bukhari 3695, what did the Prophet ﷺ say about Uthman?",
+        "options": [
+          "Nothing will harm Uthman after what he did today",
+          "Uthman is the bravest warrior",
+          "Uthman is the wisest scholar",
+          "Uthman will be the next leader"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "lessonId": 4,
+    "questions": [
+      {
+        "question": "How old was Ali when he accepted Islam?",
+        "options": [
+          "Age ten, becoming the first young boy to believe",
+          "Age twenty",
+          "Age fifteen",
+          "Age five"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "What brave act did Ali perform on the night of Hijrah?",
+        "options": [
+          "He fought all the assassins alone",
+          "He warned the Prophet ﷺ about danger",
+          "He slept in the Prophet's ﷺ bed while assassins surrounded the house",
+          "He led the Muslims to Madinah"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Who did Ali marry?",
+        "options": [
+          "Khadijah",
+          "Aisha",
+          "Fatimah, the Prophet's ﷺ beloved daughter",
+          "Hafsa"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "According to Sahih Bukhari 3706, how did the Prophet ﷺ describe Ali's position?",
+        "options": [
+          "Like a brother to me",
+          "You are to me like Harun was to Musa, except there is no prophet after me",
+          "You are my best friend",
+          "You are the strongest warrior"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 5,
+    "questions": [
+      {
+        "question": "What did Bilal repeatedly declare while being tortured in the desert sun?",
+        "options": [
+          "Forgive me",
+          "Help me",
+          "Ahad, Ahad (One, One)",
+          "I believe"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Who purchased Bilal from his master and freed him?",
+        "options": [
+          "Abu Bakr",
+          "Umar",
+          "Uthman",
+          "Ali"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "What special role did the Prophet ﷺ choose Bilal for?",
+        "options": [
+          "His personal guard",
+          "His scribe",
+          "Islam's first muezzin, calling believers to prayer",
+          "His cook"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "According to Sahih Bukhari 3697, what did the Prophet ﷺ say about Bilal?",
+        "options": [
+          "He is the bravest man",
+          "I heard the sound of your footsteps in front of me in Paradise",
+          "He is the wisest companion",
+          "He will lead the Muslims"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 6,
+    "questions": [
+      {
+        "question": "What was Salman searching for before he met the Prophet ﷺ?",
+        "options": [
+          "Wealth and power",
+          "Truth, traveling from monk to monk seeking knowledge",
+          "A place to live",
+          "His lost family"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How did Salman test if Muhammad ﷺ was the awaited prophet?",
+        "options": [
+          "He asked difficult questions",
+          "He offered food - the Prophet ﷺ refused charity but accepted gifts",
+          "He checked his appearance",
+          "He waited for a sign from heaven"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What brilliant military strategy did Salman suggest during the Battle of the Trench?",
+        "options": [
+          "Attacking at night",
+          "Sending spies",
+          "Building ships",
+          "Digging a defensive trench around Madinah, a Persian strategy unknown to Arabs"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "According to Sahih Muslim 2546, what did the Prophet ﷺ say about Salman?",
+        "options": [
+          "Salman is from us, the People of the Household",
+          "Salman is the best warrior",
+          "Salman is the wisest scholar",
+          "Salman is the richest companion"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "lessonId": 7,
+    "questions": [
+      {
+        "question": "Who was Islam's first shaheedah (female martyr)?",
+        "options": [
+          "Fatimah",
+          "Sumayyah, Ammar's mother, killed by Abu Jahl",
+          "Khadijah",
+          "Asiyah"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did the Prophet ﷺ say when passing by the family of Yasir during torture?",
+        "options": [
+          "Fight back against them",
+          "Run away quickly",
+          "Patience, O family of Yasir, for Paradise is your promised destination",
+          "Hide your faith"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What concession did Allah reveal about Ammar's situation?",
+        "options": [
+          "He could stop praying temporarily",
+          "He could leave Makkah immediately",
+          "Forced words under extreme torture don't nullify sincere belief in the heart",
+          "He could take revenge"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "How did Ammar die?",
+        "options": [
+          "As a shaheed at the Battle of Siffin at age ninety-three",
+          "Peacefully in his sleep",
+          "From illness",
+          "In a trading accident"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "lessonId": 8,
+    "questions": [
+      {
+        "question": "What did the Prophet ﷺ say when companions laughed at Abdullah ibn Mas'ud's thin legs?",
+        "options": [
+          "He agreed they were funny looking",
+          "He stayed silent",
+          "Abdullah's legs would weigh heavier than Mount Uhud on Judgment Day",
+          "Physical strength matters most"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What happened when Abdullah publicly recited Qur'an at the Ka'bah?",
+        "options": [
+          "Everyone praised him",
+          "Nothing happened",
+          "The Quraysh beat him severely for his bold recitation",
+          "He was forced to stop"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "What special permission did the Prophet ﷺ give Abdullah?",
+        "options": [
+          "To lead prayers",
+          "To enter his private quarters anytime",
+          "To collect zakat",
+          "To command armies"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "According to Sahih Bukhari 3760, what did the Prophet ﷺ recommend about Abdullah?",
+        "options": [
+          "Appoint him as governor",
+          "Learn the Qur'an from four, and he mentioned Abdullah ibn Mas'ud first",
+          "Follow him in battle",
+          "Give him all your wealth"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 9,
+    "questions": [
+      {
+        "question": "Why was Abu Hurayrah often hungry?",
+        "options": [
+          "There was a famine",
+          "He was very poor and sick",
+          "He chose knowledge over earning worldly provisions, staying constantly with the Prophet ﷺ",
+          "He gave all his food away"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What special supplication did the Prophet ﷺ make for Abu Hurayrah?",
+        "options": [
+          "For wealth and health",
+          "For his memory never to forget anything he learned",
+          "For a long life only",
+          "For many children"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How did Abu Hurayrah's household worship at night?",
+        "options": [
+          "They all prayed together",
+          "Abu Hurayrah worshipped, then woke his wife, then she woke their daughter until dawn",
+          "Only Abu Hurayrah prayed",
+          "They took turns sleeping"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "Why is Abu Hurayrah so important to Muslims today?",
+        "options": [
+          "He preserved over five thousand hadiths that benefit all Muslims",
+          "He was the richest companion",
+          "He built many mosques",
+          "He conquered many lands"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "lessonId": 10,
+    "questions": [
+      {
+        "question": "Why was Hudhayfah called the Keeper of Secrets?",
+        "options": [
+          "He knew where treasure was hidden",
+          "The Prophet ﷺ confided in him about future hypocrites in the community",
+          "He was a spy",
+          "He wrote secret letters"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did Hudhayfah do when his father was accidentally killed by Muslims at Uhud?",
+        "options": [
+          "He sought revenge",
+          "He left Islam",
+          "He immediately forgave them and asked Allah to forgive them, donating blood money to charity",
+          "He demanded justice"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Who would ask Hudhayfah to confirm he wasn't among the hypocrites?",
+        "options": [
+          "Abu Bakr",
+          "Even Umar ibn al-Khattab asked this, showing Umar's humility",
+          "Ali",
+          "Uthman"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "According to Qur'an 4:142, what do hypocrites think they can do to Allah?",
+        "options": [
+          "Deceive Him, but He is deceiving them",
+          "Please Him with words",
+          "Avoid Him forever",
+          "Outsmart Him"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "lessonId": 11,
+    "questions": [
+      {
+        "question": "What title did the Prophet ﷺ give to Khalid ibn al-Walid?",
+        "options": [
+          "The Truthful One",
+          "Saifullah (Sword of Allah)",
+          "The Generous One",
+          "The Patient One"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What was remarkable about Khalid's military career?",
+        "options": [
+          "He won only a few battles",
+          "He avoided fighting when possible",
+          "He never lost a single battle throughout his entire military career",
+          "He fought in only one battle"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did Khalid do at the Battle of Mu'tah?",
+        "options": [
+          "He refused to fight",
+          "He surrendered the army",
+          "When three commanders died, he took command and saved the outnumbered Muslim army",
+          "He stayed in the camp"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "How did Khalid die and how did he feel about it?",
+        "options": [
+          "He died peacefully in bed, which saddened him as he wished for martyrdom on the battlefield",
+          "He died in battle, fulfilling his wish",
+          "He died from illness, satisfied",
+          "He died while praying, happy"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "lessonId": 12,
+    "questions": [
+      {
+        "question": "What title did the Prophet ﷺ give Abu Ubaydah?",
+        "options": [
+          "Amin al-Ummah (Trustworthy One of this nation)",
+          "The Brave Warrior",
+          "The Great Scholar",
+          "The Generous Helper"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "What sacrifice did Abu Ubaydah make at the Battle of Uhud for the Prophet ﷺ?",
+        "options": [
+          "He gave his sword",
+          "He removed metal rings from the Prophet's ﷺ helmet with his teeth, losing two front teeth",
+          "He carried the Prophet ﷺ to safety",
+          "He fought ten enemies alone"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How did Abu Ubaydah show his humility?",
+        "options": [
+          "He refused all positions",
+          "He gave away all his wealth",
+          "When appointed as commander, he tried to decline and lived simply despite high rank",
+          "He stopped praying in public"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "How did Abu Ubaydah die?",
+        "options": [
+          "In battle against Romans",
+          "He died in the plague as a shaheed, refusing to abandon his people",
+          "From old age",
+          "While traveling to Syria"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 13,
+    "questions": [
+      {
+        "question": "What did Sa'd tell his mother when she vowed to starve until he renounced Islam?",
+        "options": [
+          "He would leave Islam for her",
+          "He asked others for help",
+          "Even if she had a hundred souls leaving one by one, he would never leave Islam",
+          "He ran away from home"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What eternal principle did Allah reveal about Sa'd's situation with his mother?",
+        "options": [
+          "Always obey parents in everything",
+          "Parents must be treated kindly but not obeyed in shirk or disbelief",
+          "Avoid parents who disagree",
+          "Leave home immediately"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What special expression did the Prophet ﷺ make only for Sa'd during battles?",
+        "options": [
+          "You are the strongest",
+          "Shoot, Sa'd! May my father and mother be sacrificed for you!",
+          "You are blessed",
+          "Fight with courage"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "What major victory did Sa'd command?",
+        "options": [
+          "The Battle of Badr",
+          "The Battle of Qadisiyyah, which defeated the Persian Empire",
+          "The Battle of Uhud",
+          "The conquest of Makkah"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "lessonId": 14,
+    "questions": [
+      {
+        "question": "What selfless act did Talha do regarding the Battle of Badr?",
+        "options": [
+          "He fought alone against many",
+          "He was absent but insisted on giving his share of spoils to those who fought",
+          "He led the entire army",
+          "He captured the most enemies"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How did Talha protect the Prophet ﷺ at the Battle of Uhud?",
+        "options": [
+          "He built a shield wall",
+          "He called for reinforcements",
+          "He shielded the Prophet ﷺ with his body, his hand becoming paralyzed from arrows",
+          "He fought off all attackers"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "According to Sahih Bukhari 3739, what did the Prophet ﷺ say about Talha?",
+        "options": [
+          "He is the wisest companion",
+          "Whoever wishes to see a martyr walking on earth, let him look at Talha",
+          "He is the richest companion",
+          "He is the strongest warrior"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "What did Talha do when he received seventy thousand gold coins?",
+        "options": [
+          "He saved them for later",
+          "He invested in business",
+          "He built a palace",
+          "He couldn't sleep until he distributed every coin to the deserving"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 15,
+    "questions": [
+      {
+        "question": "How did Zubayr's uncle torture him to force him to renounce Islam?",
+        "options": [
+          "By beating him daily",
+          "By hanging him in smoke",
+          "By denying him food",
+          "By locking him in a room"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "According to Sahih Bukhari 3719, what did the Prophet ﷺ say about disciples?",
+        "options": [
+          "Every prophet has a disciple, and my disciple is Zubayr",
+          "Zubayr is the bravest warrior",
+          "Zubayr is the wisest scholar",
+          "Zubayr is the richest companion"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "What showed Zubayr's continuous sacrifice throughout his life?",
+        "options": [
+          "He gave all his wealth",
+          "He never married",
+          "His body was covered with battle scars from every major battle",
+          "He never owned property"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Besides being a warrior, what else was Zubayr?",
+        "options": [
+          "A poet only",
+          "An artist only",
+          "A successful merchant and farmer who earned wealth through honest work",
+          "A doctor only"
+        ],
+        "answer": 3
+      }
+    ]
+  },
+  {
+    "lessonId": 16,
+    "questions": [
+      {
+        "question": "How old was Anas when he began serving the Prophet ﷺ?",
+        "options": [
+          "Ten years old",
+          "Five years old",
+          "Fifteen years old",
+          "Twenty years old"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "What three blessings did the Prophet ﷺ pray for Anas?",
+        "options": [
+          "Wealth only",
+          "Abundant wealth, many children, and long life",
+          "Knowledge only",
+          "Strength only"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Why is Anas important for understanding the Prophet's ﷺ daily life?",
+        "options": [
+          "He wrote many books",
+          "He took photographs",
+          "He narrated thousands of hadiths about the Prophet's ﷺ daily habits and character",
+          "He painted pictures"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "How did the Prophet ﷺ treat Anas during ten years of service?",
+        "options": [
+          "He was strict and demanding",
+          "He never scolded him or said 'Why did you do that?' even once",
+          "He rarely spoke to him",
+          "He gave him difficult tasks"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 17,
+    "questions": [
+      {
+        "question": "How did Abdullah ibn Umar follow the Prophet's ﷺ example?",
+        "options": [
+          "Only in prayer",
+          "Only in fasting",
+          "He meticulously followed every action, even copying where the Prophet ﷺ stopped during travels",
+          "Only in charity"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Despite his father being the powerful Caliph, what did Abdullah prefer?",
+        "options": [
+          "Political power and wealth",
+          "Military command",
+          "Worship and teaching over authority and power",
+          "Traveling abroad"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "What made Abdullah one of the major sources of Islamic knowledge?",
+        "options": [
+          "He wrote many books",
+          "He narrated thousands of hadiths with careful accuracy",
+          "He built many schools",
+          "He traveled extensively"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "According to Sahih Bukhari 1122, what did the Prophet ﷺ say about Abdullah?",
+        "options": [
+          "Abdullah is an excellent man; if only he would pray at night",
+          "Abdullah is the richest",
+          "Abdullah is the strongest",
+          "Abdullah is the wisest"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 18,
+    "questions": [
+      {
+        "question": "What did Umm Sulaym do when her husband refused Islam?",
+        "options": [
+          "She stayed with him anyway",
+          "She asked others for help",
+          "She divorced him for Allah's sake, showing faith comes before worldly relationships",
+          "She tried to force him"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What was unique about Umm Sulaym's dowry when she married Abu Talhah?",
+        "options": [
+          "A large sum of money",
+          "A house and land",
+          "His conversion to Islam",
+          "Gold and jewelry"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "What did Umm Sulaym do at the Battle of Uhud while pregnant?",
+        "options": [
+          "She stayed home safely",
+          "She insisted on participating to carry water and help defend Muslims",
+          "She only prayed at home",
+          "She sent others instead"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "How did Umm Sulaym show incredible patience when her young son died?",
+        "options": [
+          "She cried loudly",
+          "She told everyone immediately",
+          "She prepared the body, told no one, and waited for her husband using wisdom and patience",
+          "She refused to accept it"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 19,
+    "questions": [
+      {
+        "question": "What did Abu Darda give up when he accepted Islam?",
+        "options": [
+          "His family",
+          "His home",
+          "His profitable trade business to dedicate himself to worship and knowledge",
+          "His friends"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "According to Sahih Muslim 2448, what did the Prophet ﷺ say about Abu Darda?",
+        "options": [
+          "Abu Darda is the wise one of this nation",
+          "Abu Darda is the richest",
+          "Abu Darda is the strongest",
+          "Abu Darda is the youngest"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "How did Abu Darda live despite opportunities for wealth?",
+        "options": [
+          "He built a grand home",
+          "He wore fine clothes",
+          "He lived extremely simply, preferring spiritual richness over material comfort",
+          "He collected treasures"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "What did students do to learn from Abu Darda?",
+        "options": [
+          "They read his books",
+          "They traveled from distant lands to study under him in Damascus",
+          "They sent him letters",
+          "They waited for him to travel"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 20,
+    "questions": [
+      {
+        "question": "How did the Prophet ﷺ choose Abu Ayyub's house when he arrived in Madinah?",
+        "options": [
+          "Abu Bakr recommended it",
+          "He chose the biggest house",
+          "He let his camel walk freely, saying it was commanded by Allah, and it stopped there",
+          "He picked randomly"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did Abu Ayyub and his wife do when they accidentally broke a water jug upstairs?",
+        "options": [
+          "They cleaned it quickly",
+          "They ignored it",
+          "They used their only blanket to soak up water, fearing a drop might disturb the Prophet ﷺ",
+          "They asked for help"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "How long did the Prophet ﷺ live in Abu Ayyub's home?",
+        "options": [
+          "One month",
+          "Seven months until the mosque and homes were built",
+          "One year",
+          "Two years"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "What showed Abu Ayyub's lifelong dedication even in old age?",
+        "options": [
+          "He retired peacefully",
+          "He wrote books",
+          "He participated in the campaign to conquer Constantinople at age eighty",
+          "He taught at the mosque"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 21,
+    "questions": [
+      {
+        "question": "Despite being very young, what did the Prophet ﷺ say about Mu'adh?",
+        "options": [
+          "He was the strongest warrior",
+          "He was the most knowledgeable concerning halal and haram matters",
+          "He was the wealthiest",
+          "He was the fastest learner"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What methodology did the Prophet ﷺ teach Mu'adh for judging between people?",
+        "options": [
+          "Use only personal opinion",
+          "Ask others first",
+          "Use Qur'an first, then Sunnah, then ijtihad",
+          "Follow local customs"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How did Mu'adh react when saying goodbye to the Prophet ﷺ before going to Yemen?",
+        "options": [
+          "He was excited to leave",
+          "He left quickly",
+          "He walked alongside the Prophet's ﷺ animal not wanting to separate, and wept intensely",
+          "He didn't say goodbye"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "According to the hadith, what will be Mu'adh's status on Judgment Day?",
+        "options": [
+          "With the warriors",
+          "Scholars will be brought forward, and Mu'adh will be ahead of them by a stone's throw",
+          "With the wealthy",
+          "At the back of the group"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "lessonId": 22,
+    "questions": [
+      {
+        "question": "What did Abd al-Rahman ask for when offered to share wealth and a wife?",
+        "options": [
+          "He accepted both immediately",
+          "He asked for half the wealth",
+          "He asked only to be shown the marketplace to earn his own living",
+          "He asked for a house instead"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What massive donation did Abd al-Rahman make to the Muslim army?",
+        "options": [
+          "One hundred gold coins",
+          "Seven hundred camels loaded with grain and supplies",
+          "A fleet of ships",
+          "A piece of land"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "Why did Abd al-Rahman weep when eating fine food?",
+        "options": [
+          "The food was bad",
+          "He was sick",
+          "He remembered how the Prophet ﷺ and early companions suffered hunger",
+          "He was alone"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "According to Sahih Bukhari 3679, what guarantee was Abd al-Rahman given?",
+        "options": [
+          "He would be wealthy forever",
+          "Abd al-Rahman ibn Awf is in Paradise",
+          "He would live long",
+          "He would be a leader"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "lessonId": 23,
+    "questions": [
+      {
+        "question": "What happened when Khalid ibn Sa'id's father discovered his faith?",
+        "options": [
+          "He celebrated with him",
+          "He ignored it",
+          "He beat him severely and expelled him from the family home",
+          "He tried to convince him gently"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Where did Khalid migrate to escape persecution?",
+        "options": [
+          "Madinah immediately",
+          "Syria",
+          "Abyssinia during the first migration",
+          "Yemen"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "How did Khalid die?",
+        "options": [
+          "From old age",
+          "From illness",
+          "He was martyred at the Battle of Marj al-Saffar fighting Byzantines",
+          "In a trading accident"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "According to Qur'an 3:169, what about those killed in Allah's cause?",
+        "options": [
+          "They are forgotten",
+          "They are dead and gone",
+          "They are alive with their Lord, receiving provision",
+          "They are sleeping"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "lessonId": 24,
+    "questions": [
+      {
+        "question": "What special weapon did the Prophet ﷺ give Abu Dujanah at Uhud?",
+        "options": [
+          "A shield",
+          "A sword with its right, after Abu Dujanah promised to use it until it bent",
+          "A spear",
+          "A bow"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What did Abu Dujanah wear only in battle?",
+        "options": [
+          "A golden helmet",
+          "A red headband that signaled extraordinary courage",
+          "Silver armor",
+          "A white cloak"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How did Abu Dujanah protect the Prophet ﷺ during Uhud?",
+        "options": [
+          "He fought all enemies",
+          "He called for help",
+          "He used his own body as a shield, with arrows striking his back repeatedly",
+          "He built a wall"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "Where was Abu Dujanah eventually martyred?",
+        "options": [
+          "At the Battle of Badr",
+          "At the Battle of Yamamah fighting false prophets",
+          "At the Battle of Uhud",
+          "At the Battle of Hunayn"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "lessonId": 25,
+    "questions": [
+      {
+        "question": "How old was Usama when the Prophet ﷺ appointed him as military commander?",
+        "options": [
+          "Thirty years old",
+          "Twenty-five years old",
+          "Only eighteen years old",
+          "Forty years old"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "Who questioned Usama's appointment due to his youth?",
+        "options": [
+          "No one questioned it",
+          "Only young companions",
+          "Some senior companions like Abu Bakr and Umar were in his army",
+          "Only his enemies"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "What happened to Usama's father Zayd at the Battle of Mu'tah?",
+        "options": [
+          "He survived and returned",
+          "He retreated safely",
+          "He was martyred while carrying the Muslim banner",
+          "He was captured"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What does Usama's appointment teach about leadership in Islam?",
+        "options": [
+          "Age is the only factor",
+          "Leadership is based on ability and wisdom, not age or seniority alone",
+          "Only the oldest can lead",
+          "Family connections matter most"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "lessonId": 26,
+    "questions": [
+      {
+        "question": "How old was Zayd ibn Thabit when the Prophet ﷺ migrated to Madinah?",
+        "options": [
+          "Only eleven years old, too young to fight at Badr",
+          "Twenty years old",
+          "Fifteen years old",
+          "Five years old"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "How quickly did Zayd learn Hebrew when asked by the Prophet ﷺ?",
+        "options": [
+          "One year",
+          "Six months",
+          "Just fifteen days, showing exceptional intelligence",
+          "Two months"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What critical task did Abu Bakr assign to Zayd after the Prophet's ﷺ death?",
+        "options": [
+          "Leading the army",
+          "Collecting the Qur'an into one written volume",
+          "Governing a city",
+          "Teaching children"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "According to Sahih Bukhari 3756, what was Zayd most knowledgeable about?",
+        "options": [
+          "Inheritance laws",
+          "Military strategy",
+          "Medicine",
+          "Poetry"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "lessonId": 27,
+    "questions": [
+      {
+        "question": "Who was Hafsa's father?",
+        "options": [
+          "Abu Bakr",
+          "Umar ibn al-Khattab",
+          "Uthman",
+          "Ali"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What tremendous responsibility was Hafsa given after the Prophet's ﷺ death?",
+        "options": [
+          "Teaching all children",
+          "The official written copy of the Qur'an was entrusted to her for safekeeping",
+          "Leading women's prayers",
+          "Distributing charity"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "How long did Hafsa live after the Prophet's ﷺ death?",
+        "options": [
+          "Five years",
+          "Ten years",
+          "Thirty-four years, continuing to teach and guide Muslims",
+          "Twenty years"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "According to Qur'an 33:6, what title do the Prophet's ﷺ wives have?",
+        "options": [
+          "His wives are mothers to the believers",
+          "His wives are teachers",
+          "His wives are princesses",
+          "His wives are guardians"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "lessonId": 28,
+    "questions": [
+      {
+        "question": "What choice did Zayd ibn Harithah make when his father came to take him home?",
+        "options": [
+          "He went home immediately",
+          "He asked for time to decide",
+          "He chose to stay with Muhammad ﷺ rather than return to his biological family",
+          "He asked others for advice"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What unique honor does Zayd have in the Qur'an?",
+        "options": [
+          "He is mentioned in many verses",
+          "He is the only companion named directly in the Qur'an",
+          "He is praised the most",
+          "He is mentioned as a prophet"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How did the Prophet ﷺ describe his feelings toward Zayd?",
+        "options": [
+          "Zayd was a good servant",
+          "Zayd was helpful",
+          "Zayd was the most beloved person to him",
+          "Zayd was loyal"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "How did Zayd die?",
+        "options": [
+          "From old age",
+          "From illness",
+          "He was martyred at the Battle of Mu'tah while carrying the Muslim banner",
+          "In a peaceful sleep"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "lessonId": 29,
+    "questions": [
+      {
+        "question": "Why did Abu Darda sell his beloved horse?",
+        "options": [
+          "He needed money",
+          "It was old",
+          "He didn't want anything to distract his heart from Allah",
+          "Someone offered a high price"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What did Abu Darda say about sleep when his wife suggested he rest more?",
+        "options": [
+          "Sleep is important for health",
+          "The long sleep is ahead in the grave",
+          "He would sleep later",
+          "He needed more rest"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How did Abu Darda spend most nights according to his wife?",
+        "options": [
+          "Sleeping peacefully",
+          "Working on business",
+          "Praying, barely sleeping",
+          "Reading books"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "What did Abu Darda say when he was dying?",
+        "options": [
+          "He was afraid",
+          "He was sad",
+          "He smiled and said he was eager to meet Allah and see His generous rewards",
+          "He asked for more time"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "lessonId": 30,
+    "questions": [
+      {
+        "question": "What relation was Jafar to the Prophet ﷺ?",
+        "options": [
+          "His cousin and older brother of Ali ibn Abi Talib",
+          "His uncle",
+          "His nephew",
+          "His brother-in-law"
+        ],
+        "answer": 0
+      },
+      {
+        "question": "What did Jafar recite to the Abyssinian king to defend Islam?",
+        "options": [
+          "Poetry about Arabia",
+          "Surah Maryam, describing how Islam honors Isa and Maryam",
+          "Stories of battles",
+          "Verses about nature"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "How did the Prophet ﷺ react when Jafar returned from Abyssinia?",
+        "options": [
+          "He greeted him normally",
+          "He was too busy to meet him",
+          "He kissed Jafar between his eyes and said he didn't know which brought more joy",
+          "He sent a messenger"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What special title did Jafar earn and why?",
+        "options": [
+          "The Scholar for his knowledge",
+          "Jafar at-Tayyar (The Flier) because Allah gave him two wings to fly in Paradise",
+          "The Generous for his wealth",
+          "The Brave for his strength"
+        ],
+        "answer": 3
+      }
+    ]
+  },
+  {
+    "lessonId": 31,
+    "questions": [
+      {
+        "question": "What did Nusaybah do at the Battle of Uhud?",
+        "options": [
+          "She stayed home",
+          "She only prayed",
+          "She defended the Prophet ﷺ with sword and bow, throwing herself between him and enemy swords",
+          "She sent supplies"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What injury did Nusaybah receive protecting the Prophet ﷺ?",
+        "options": [
+          "A broken leg",
+          "A deep shoulder wound that troubled her for the rest of her life",
+          "A small cut",
+          "A head injury"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What happened to Nusaybah at the Battle of Yamamah?",
+        "options": [
+          "She stayed behind",
+          "She watched from afar",
+          "Her hand was cut off and she received eleven other wounds while fighting",
+          "She only helped the wounded"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "According to Qur'an 33:35, what verses were revealed after Nusaybah's question?",
+        "options": [
+          "Verses addressing both believing men and believing women equally",
+          "Verses only about men",
+          "Verses only about women",
+          "Verses about paradise"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "lessonId": 32,
+    "questions": [
+      {
+        "question": "What was Abu Sufyan's position before accepting Islam?",
+        "options": [
+          "A peaceful merchant",
+          "Islam's greatest enemy who led Quraysh in multiple battles",
+          "A neutral observer",
+          "A supporter from the beginning"
+        ],
+        "answer": 1
+      },
+      {
+        "question": "What honor did the Prophet ﷺ give Abu Sufyan when Makkah was conquered?",
+        "options": [
+          "A large sum of money",
+          "He declared whoever entered Abu Sufyan's house would be safe",
+          "A position as governor",
+          "Land and property"
+        ],
+        "answer": 2
+      },
+      {
+        "question": "What sacrifice did Abu Sufyan make fighting for Islam after his conversion?",
+        "options": [
+          "He lost his wealth",
+          "He lost both eyes in battle, becoming completely blind while defending Islam",
+          "He moved away",
+          "He gave up leadership"
+        ],
+        "answer": 3
+      },
+      {
+        "question": "According to Qur'an 8:38, what happens to those who cease disbelief?",
+        "options": [
+          "What has previously occurred will be forgiven for them",
+          "They must pay a fine",
+          "They can never be trusted",
+          "They will always be punished"
+        ],
+        "answer": 0
+      }
+    ]
+  }
+]
