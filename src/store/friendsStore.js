@@ -59,6 +59,7 @@ export const useFriendsStore = create((set, get) => ({
         friendOfWeek: data.friendOfWeek || null,
         hasUnseenRequests: data.hasUnseenRequests || false,
       });
+      get().setFriendOfWeek();
     }
   },
 
@@ -94,6 +95,7 @@ export const useFriendsStore = create((set, get) => ({
     }));
 
     get().addActivity(`${request.name} is now your friend 🎉`);
+    get().setFriendOfWeek();
     get().saveToStorage();
   },
 
@@ -115,6 +117,7 @@ export const useFriendsStore = create((set, get) => ({
     set((state) => ({
       friends: state.friends.filter((f) => f.id !== userId),
     }));
+    get().setFriendOfWeek();
     get().saveToStorage();
   },
 
@@ -194,7 +197,8 @@ export const useFriendsStore = create((set, get) => ({
     if (friends.length > 0) {
       const topFriend = [...friends].sort((a, b) => b.xp - a.xp)[0];
       set({ friendOfWeek: topFriend });
-      get().saveToStorage();
+    } else {
+      set({ friendOfWeek: null });
     }
   },
 }));
