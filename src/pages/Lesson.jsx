@@ -122,17 +122,19 @@ export default function Lesson() {
         {lesson.title}
       </div>
 
-      {/* Meaning */}
-      <div
-        style={{
-          fontSize: "0.9rem",
-          color: "#ffd85a",
-          textAlign: "center",
-          marginBottom: "16px",
-        }}
-      >
-        {lesson.meaning}
-      </div>
+      {/* Meaning - Only show for Names of Allah (pathId 1) */}
+      {pathId === "1" && lesson.meaning && (
+        <div
+          style={{
+            fontSize: "0.9rem",
+            color: "#ffd85a",
+            textAlign: "center",
+            marginBottom: "16px",
+          }}
+        >
+          {lesson.meaning}
+        </div>
+      )}
 
       {/* Description */}
       <div
@@ -152,7 +154,59 @@ export default function Lesson() {
             {para}
           </p>
         ))}
+        
+        {/* Content fallback for any lessons using old format */}
+        {!lesson.description && lesson.content && (
+          <div style={{ whiteSpace: "pre-line" }}>{lesson.content}</div>
+        )}
       </div>
+
+      {/* Evidence Block - For Foundations path */}
+      {lesson.evidence && (
+        <div
+          style={{
+            background: "linear-gradient(135deg, rgba(212,175,55,0.1) 0%, rgba(16,185,129,0.05) 100%)",
+            border: "1px solid rgba(212,175,55,0.3)",
+            borderRadius: "14px",
+            padding: "16px",
+            marginBottom: "16px",
+          }}
+        >
+          <div
+            style={{
+              fontSize: "1.1rem",
+              fontWeight: 600,
+              color: "#D4AF37",
+              textAlign: "center",
+              marginBottom: "12px",
+              fontFamily: "serif",
+            }}
+          >
+            {lesson.evidence.arabic}
+          </div>
+          <div
+            style={{
+              fontSize: "0.85rem",
+              color: "#d0d4e4",
+              textAlign: "center",
+              fontStyle: "italic",
+              marginBottom: "6px",
+            }}
+          >
+            {lesson.evidence.translation}
+          </div>
+          <div
+            style={{
+              fontSize: "0.75rem",
+              color: "#ffd85a",
+              textAlign: "center",
+              fontWeight: 500,
+            }}
+          >
+            — {lesson.evidence.source}
+          </div>
+        </div>
+      )}
 
       {/* Reflection */}
       <div
