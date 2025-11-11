@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getQuizForLesson, calculateResults } from "../data/quizEngine";
 import { mascotQuizStates } from "../data/mascotQuizStates";
 import { useProgressStore } from "../store/progressStore";
-import { useTitleStore } from "../store/useTitleStore";
 
 import QuizHeader from "../components/quiz/QuizHeader";
 import QuestionCard from "../components/quiz/QuestionCard";
@@ -34,7 +33,6 @@ const QuizScreen = () => {
 
   const addXP = useProgressStore((s) => s.addXP || (() => {}));
   const addCoins = useProgressStore((s) => s.addCoins || (() => {}));
-  const evaluateTitle = useTitleStore((s) => s.evaluateTitle);
 
   useEffect(() => {
     const raw = getQuizForLesson(lessonId, pathId) || [];
@@ -81,7 +79,6 @@ const QuizScreen = () => {
     setResults(res);
     addXP(res.xp);
     addCoins(res.coins);
-    evaluateTitle();
     setIsQuizDone(true);
     setMascotMood(res.passed ? "pass" : "fail");
   };

@@ -1,6 +1,6 @@
 // src/store/progressStore.js
 import { create } from "zustand";
-import { useTitleStore } from "./useTitleStore";
+import { getCurrentLevel, checkLevelUp } from "../utils/diamondLevels";
 
 const STORAGE_KEY = "islamQuestProgress_v3";
 
@@ -29,7 +29,7 @@ export const useProgressStore = create((set, get) => ({
   lastStudyDate: null,
   freezeTokens: 1,
   xpMultiplier: 0,
-  level: 1,
+  level: 1, // Diamond level (1-10)
   lastLogin: null,
   avatar: "default",
   displayName: "Student of Knowledge",
@@ -37,6 +37,10 @@ export const useProgressStore = create((set, get) => ({
   lessonStates: {},
   lockedLessons: {},
   hasPremium: false,
+  
+  // 💎 Diamond Level System
+  showLevelUpModal: false,
+  levelUpData: null,
 
   // 🌙 Learning Paths
   paths: DEFAULT_PATHS,
@@ -110,9 +114,31 @@ export const useProgressStore = create((set, get) => ({
     const bonus = Math.round((amount * xpMultiplier) / 100);
     const total = amount + bonus;
     const newXP = xp + total;
-    const newLevel = Math.floor(newXP / 100) + 1;
-    set({ xp: newXP, level: newLevel });
+    
+    // 💎 Check for level up using Diamond Level System
+    const levelUpResult = checkLevelUp(xp, newXP);
+    const newDiamondLevel = getCurrentLevel(newXP);
+    
+    set({ 
+      xp: newXP, 
+      level: newDiamondLevel.level,
+    });
+    
+    // 🎉 Trigger level-up notification if leveled up
+    if (levelUpResult.leveledUp) {
+      set({
+        showLevelUpModal: true,
+        levelUpData: levelUpResult,
+      });
+    }
+    
     get().saveProgress();
+  },
+  
+  // 💎 Close level-up modal
+  closeLevelUpModal: () => {
+    set({ showLevelUpModal: false, levelUpData: null });
+    get().saveProgress(); // Save to prevent modal from reappearing on reload
   },
 
   addCoins: (amount) => {

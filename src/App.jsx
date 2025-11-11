@@ -17,6 +17,8 @@ import QuizScreen from "./screens/QuizScreen.jsx";
 // ✅ Components & stores
 import BottomNav from "./components/BottomNav.jsx";
 import { useUserStore } from "./store/useUserStore";
+import { useProgressStore } from "./store/progressStore";
+import { ZaydLevelUpPopup } from "./components/ZaydLevelUpPopup";
 
 // ✅ Onboarding screens
 import BismillahScreen from "./onboarding/BismillahScreen.jsx";
@@ -73,6 +75,7 @@ function PlaceholderQuizPage() {
 
 export default function App() {
   const { hasOnboarded, isHydrated } = useUserStore();
+  const { showLevelUpModal, levelUpData, closeLevelUpModal } = useProgressStore();
 
   // ✅ Wait until Zustand store is rehydrated (prevents onboarding redirect)
   if (!isHydrated) {
@@ -141,6 +144,14 @@ export default function App() {
 
       {/* ✅ Persistent bottom navigation */}
       {hasOnboarded && <BottomNav />}
+      
+      {/* 💎 Global Level-Up Modal */}
+      {showLevelUpModal && levelUpData && (
+        <ZaydLevelUpPopup
+          levelUpData={levelUpData}
+          onClose={closeLevelUpModal}
+        />
+      )}
     </BrowserRouter>
   );
 }

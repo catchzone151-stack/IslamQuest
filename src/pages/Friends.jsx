@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useFriendsStore } from "../store/friendsStore";
 import { useProgressStore } from "../store/progressStore";
 import { Search, UserPlus, Users, Trophy, Activity, X, Send, Swords } from "lucide-react";
+import { LevelBadgeCompact } from "../components/LevelBadge";
 
 export default function Friends() {
   const [activeTab, setActiveTab] = useState("friends");
@@ -349,8 +350,17 @@ function FriendCard({ friend, onViewProfile, onMessage, onChallenge }) {
           <div style={{ color: "#D4AF37", fontWeight: "600", fontSize: "1.1rem" }}>
             {friend.name}
           </div>
-          <div style={{ color: "rgba(212, 175, 55, 0.7)", fontSize: "0.9rem", marginTop: 4 }}>
-            {friend.xp} XP • {friend.streak} day streak 🔥
+          <div style={{ 
+            display: "flex", 
+            alignItems: "center", 
+            gap: 8, 
+            marginTop: 8,
+            flexWrap: "wrap",
+          }}>
+            <LevelBadgeCompact xp={friend.xp} size={20} />
+            <span style={{ color: "rgba(212, 175, 55, 0.7)", fontSize: "0.85rem" }}>
+              • {friend.xp} XP • {friend.streak} day streak 🔥
+            </span>
           </div>
         </div>
 
@@ -478,8 +488,11 @@ function RequestCard({ request, type, onAccept, onDecline, onCancel }) {
         </div>
         <div>
           <div style={{ color: "#D4AF37", fontWeight: "600" }}>{request.name}</div>
-          <div style={{ color: "rgba(212, 175, 55, 0.7)", fontSize: "0.85rem" }}>
-            {request.xp} XP
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 4 }}>
+            <LevelBadgeCompact xp={request.xp} size={18} />
+            <span style={{ color: "rgba(212, 175, 55, 0.7)", fontSize: "0.85rem" }}>
+              {request.xp} XP
+            </span>
           </div>
         </div>
       </div>
@@ -610,8 +623,11 @@ function LeaderboardTab({ leaderboardTab, setLeaderboardTab, friendsLeaderboard,
               <div style={{ color: "#D4AF37", fontWeight: "600", fontSize: "1.2rem" }}>
                 {friendOfWeek.name}
               </div>
-              <div style={{ color: "rgba(212, 175, 55, 0.7)" }}>
-                {friendOfWeek.xp} XP
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 6 }}>
+                <LevelBadgeCompact xp={friendOfWeek.xp} size={22} />
+                <span style={{ color: "rgba(212, 175, 55, 0.7)" }}>
+                  {friendOfWeek.xp} XP
+                </span>
               </div>
             </div>
           </div>
@@ -674,8 +690,11 @@ function LeaderboardTab({ leaderboardTab, setLeaderboardTab, friendsLeaderboard,
                   <div style={{ color: "#D4AF37", fontWeight: "600" }}>
                     {user.name}
                   </div>
-                  <div style={{ color: "rgba(212, 175, 55, 0.7)", fontSize: "0.9rem" }}>
-                    {user.xp} XP
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 4 }}>
+                    <LevelBadgeCompact xp={user.xp} size={20} />
+                    <span style={{ color: "rgba(212, 175, 55, 0.7)", fontSize: "0.9rem" }}>
+                      {user.xp} XP
+                    </span>
                   </div>
                 </div>
               </div>

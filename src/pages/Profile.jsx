@@ -6,9 +6,9 @@ import { useProgressStore } from "../store/progressStore";
 import ProfileCard from "../components/ProfileCard";
 import EditNameInput from "../components/EditNameInput";
 import EditAvatarModal from "../components/EditAvatarModal";
-import LevelDetailModal from "../components/LevelDetailModal";
-import TitleDisplay from "../components/TitleDisplay";
-import TitleListModal from "../components/TitleListModal";
+import { LevelBadge } from "../components/LevelBadge";
+import { ViewAllLevelsModal } from "../components/ViewAllLevelsModal";
+import { getCurrentLevel, getXPProgress } from "../utils/diamondLevels";
 
 export default function Profile() {
   const { name, avatar, setName, setAvatar } = useUserStore();
@@ -16,12 +16,11 @@ export default function Profile() {
 
   const [showEditName, setShowEditName] = useState(false);
   const [showEditAvatar, setShowEditAvatar] = useState(false);
-  const [showLevelDetail, setShowLevelDetail] = useState(false);
-  const [showTitles, setShowTitles] = useState(false);
+  const [showAllLevels, setShowAllLevels] = useState(false);
 
-  const level = Math.floor(xp / 500) + 1;
-  const nextLevelXP = level * 500;
-  const progress = Math.min((xp / nextLevelXP) * 100, 100);
+  const currentLevel = getCurrentLevel(xp);
+  const xpProgress = getXPProgress(xp);
+  const progress = xpProgress.percentage;
 
   return (
     <ScreenContainer>
@@ -86,19 +85,33 @@ export default function Profile() {
             >
               {name || "Explorer"}
             </h2>
-            <p
-              onClick={() => setShowLevelDetail(true)}
-              style={{
-                marginTop: 4,
-                opacity: 0.85,
-                cursor: "pointer",
+            
+            {/* 💎 Diamond Level Badge */}
+            <div 
+              style={{ 
+                marginTop: 16,
+                display: "flex",
+                justifyContent: "center",
               }}
             >
-              Level {level} • {xp} XP
-            </p>
+              <LevelBadge
+                xp={xp}
+                size="large"
+                showXP={true}
+                animated={false}
+              />
+            </div>
 
-            {/* === Title Section === */}
-            <TitleDisplay onViewAll={() => setShowTitles(true)} />
+            {/* XP Progress Info */}
+            {xpProgress.nextLevel && (
+              <p style={{
+                marginTop: 8,
+                color: "rgba(212, 175, 55, 0.7)",
+                fontSize: "0.85rem",
+              }}>
+                {xpProgress.currentLevelXP.toLocaleString()} / {xpProgress.requiredDelta.toLocaleString()} XP to Level {xpProgress.nextLevel.level}
+              </p>
+            )}
           </div>
         </div>
 
@@ -107,7 +120,7 @@ export default function Profile() {
           style={{
             width: "80%",
             maxWidth: 350,
-            margin: "16px auto 26px",
+            margin: "16px auto 8px",
             background: "rgba(255,255,255,0.1)",
             borderRadius: 12,
             overflow: "hidden",
@@ -118,11 +131,30 @@ export default function Profile() {
             style={{
               width: `${progress}%`,
               height: "100%",
-              background: "linear-gradient(90deg,#FFD700,#FFA500)",
+              background: currentLevel.gradient,
+              boxShadow: currentLevel.glow,
               transition: "width 0.6s ease",
             }}
           />
         </div>
+
+        {/* View All Levels Button */}
+        <button
+          onClick={() => setShowAllLevels(true)}
+          style={{
+            background: "linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(244, 208, 63, 0.1) 100%)",
+            border: "1px solid rgba(212, 175, 55, 0.4)",
+            borderRadius: 12,
+            padding: "10px 20px",
+            color: "#D4AF37",
+            fontWeight: "600",
+            cursor: "pointer",
+            fontSize: "0.9rem",
+            marginTop: 12,
+          }}
+        >
+          💎 View All Levels
+        </button>
 
         {/* === Stats cards === */}
         <div
@@ -173,18 +205,12 @@ export default function Profile() {
         onSave={setAvatar}
       />
 
-      <LevelDetailModal
-        isOpen={showLevelDetail}
-        onClose={() => setShowLevelDetail(false)}
-        currentXP={xp}
-        level={level}
-        nextLevelXP={nextLevelXP}
-      />
-
-      <TitleListModal
-        isOpen={showTitles}
-        onClose={() => setShowTitles(false)}
-      />
+      {showAllLevels && (
+        <ViewAllLevelsModal
+          currentXP={xp}
+          onClose={() => setShowAllLevels(false)}
+        />
+      )}
     </ScreenContainer>
   );
 }

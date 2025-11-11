@@ -11,7 +11,7 @@ Preferred communication style: Simple, everyday language.
 ### Frontend Architecture
 - **Technology Stack**: React 18.2, Vite, JavaScript, React Router DOM v7.9, Framer Motion, Lucide React.
 - **Design Pattern**: Component-based architecture with a mobile-first responsive design and a bottom navigation pattern.
-- **State Management**: Local state using React hooks, global state with Zustand (`progressStore`, `userStore`, `titleStore`, `friendsStore`), and LocalStorage for persistence. Future migration to Supabase for cloud synchronization is planned.
+- **State Management**: Local state using React hooks, global state with Zustand (`progressStore`, `userStore`, `friendsStore`), and LocalStorage for persistence. Future migration to Supabase for cloud synchronization is planned.
 
 ### Styling Architecture
 - **Approach**: CSS-in-JS using standard CSS files with custom properties for theming.
@@ -23,8 +23,9 @@ Preferred communication style: Simple, everyday language.
 - **Content Standards**: All lessons follow strict formatting: 3 paragraphs (18-28 words each, targeting ~23), Arabic evidence with English translation, source citations, and "Key Lesson Learned" sections. Age 10+ appropriate language throughout. Quizzes have 4 MCQs per lesson with balanced answer indices.
 - **Recent Completion (November 2025)**: Paths 13 (Understanding Hellfire - 19 lessons, 76 quiz questions) and 14 (The Beauty of Paradise - 20 lessons, 80 quiz questions) completed with full content, evidence, and assessments.
 - **Progression Model**: XP and coin rewards for lesson completion, streak system for daily engagement, and certificates for path completion.
+- **Diamond Level System (November 2025)**: Complete 10-level progression system replacing old titles. Levels 1-10 with unique diamond colors (Bronze→Legendary Gold Gradient), auto-calculated XP thresholds designed for quick early progression (Level 2 at 280 XP ≈2 quizzes), level-up detection triggers Zayd mascot popup animation. Global modal integration in App.jsx. Components: `DiamondIcon`, `LevelBadge`, `ViewAllLevelsModal`, `ZaydLevelUpPopup`. Integrated across Profile, Friends leaderboard, and activity feed. Prepared for Supabase migration with clean store architecture.
 - **Asset Management**: Centralized `assets.js` system for optimized WebP images (mascots, avatars, badges).
-- **Friends System (Phase 4 - November 2025)**: Complete social features including friend management (add/search by nickname), friend requests (incoming/outgoing with accept/decline), friends leaderboard with Friend of the Week, activity feed with Zayd mascot appearances, and quick messaging with 10 pre-set kid-safe motivational messages. All data stored in LocalStorage with Supabase-ready architecture for Phase 5.
+- **Friends System (Phase 4 - November 2025)**: Complete social features including friend management (add/search by nickname), friend requests (incoming/outgoing with accept/decline), friends leaderboard with Friend of the Week, activity feed with Zayd mascot appearances, and quick messaging with 10 pre-set kid-safe motivational messages. All data stored in LocalStorage with Supabase-ready architecture for Phase 5. Friends display diamond level badges throughout.
 
 ### Authentication & User Management
 - **Provider**: Supabase Auth, integrated via `@supabase/auth-helpers-react` and `@supabase/supabase-js`.
