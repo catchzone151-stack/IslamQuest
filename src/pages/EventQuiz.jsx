@@ -45,13 +45,7 @@ export default function EventQuiz() {
     }
   }, [event, eventId, hasEntered, navigate]);
 
-  // Check coins on mount - only before quiz starts
-  useEffect(() => {
-    if (!quizStarted && !showCountdown && coins < 25) {
-      alert("You need 25 coins to enter this event!");
-      navigate("/events");
-    }
-  }, [coins, navigate, quizStarted, showCountdown]);
+  // No longer needed - coins checked in handleStartQuiz before countdown
 
   // Timer countdown
   useEffect(() => {
@@ -82,6 +76,14 @@ export default function EventQuiz() {
   }, [quizStarted, timeLeft, userAnswers, questions, currentQuestionIndex]);
 
   const handleStartQuiz = () => {
+    // Pre-countdown validation: Check coins to prevent wasted countdown
+    if (coins < 25) {
+      alert("You need 25 coins to enter this event!");
+      navigate("/events");
+      return;
+    }
+    
+    // Start countdown
     setShowInfoModal(false);
     setShowCountdown(true);
   };
@@ -89,14 +91,23 @@ export default function EventQuiz() {
   const handleCountdownComplete = () => {
     setShowCountdown(false);
     
-    // Defensive re-check: verify user hasn't already entered and has enough coins
+    // Critical validations AFTER countdown but BEFORE quiz starts
+    // This ensures atomicity: if checks fail, no coins lost
     if (hasEntered(eventId)) {
       alert("You've already entered this event!");
       navigate("/events");
       return;
     }
     
-    // Deduct coins - abort if insufficient funds
+    // Load questions FIRST to validate
+    const eventQuestions = getEventQuestions(eventId, 10);
+    if (!eventQuestions || eventQuestions.length === 0) {
+      alert("Error loading quiz questions. Please try again.");
+      navigate("/events");
+      return;
+    }
+    
+    // Deduct coins ONLY after confirming questions loaded
     const success = removeCoins(25);
     if (!success) {
       alert("You don't have enough coins! You need 25 coins to enter.");
@@ -104,12 +115,14 @@ export default function EventQuiz() {
       return;
     }
     
-    // Load questions
-    const eventQuestions = getEventQuestions(eventId, 10);
+    // Start quiz FIRST (atomic with coin deduction)
     setQuestions(eventQuestions);
-    
-    // Start quiz
     setQuizStarted(true);
+    
+    // Record entry IMMEDIATELY after quiz starts (transactional integrity)
+    // This prevents coin loss if user refreshes during quiz
+    // Entry will be updated with final score when quiz completes
+    enterEvent(eventId, 0, []);
   };
 
   const handleAnswerSelect = (answerIndex) => {
@@ -173,7 +186,8 @@ export default function EventQuiz() {
     const score = finalAnswers.filter(a => a.correct).length;
     setQuizScore(score);
     
-    // Save entry to store with complete answers
+    // UPDATE entry with final score and answers
+    // Entry was already created in handleCountdownComplete with score=0
     enterEvent(eventId, score, finalAnswers);
     
     // Show provisional results
@@ -182,7 +196,8 @@ export default function EventQuiz() {
 
   if (!event) return null;
 
-  const currentQuestion = questions[currentQuestionIndex];
+  // Only calculate currentQuestion if questions exist
+  const currentQuestion = questions.length > 0 ? questions[currentQuestionIndex] : null;
   const progress = questions.length > 0 ? ((currentQuestionIndex + 1) / questions.length) * 100 : 0;
 
   return (
@@ -202,7 +217,7 @@ export default function EventQuiz() {
       )}
 
       {/* Quiz Screen */}
-      {quizStarted && questions.length > 0 && currentQuestion && (
+      {quizStarted && currentQuestion && (
         <>
           {/* Header */}
           <div className="quiz-header">

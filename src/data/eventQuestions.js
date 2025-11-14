@@ -508,10 +508,14 @@ export function getEventQuestions(eventId, count = 10) {
   const shuffled = [...questions].sort(() => Math.random() - 0.5);
   
   // Take requested count and randomize answer order
-  return shuffled.slice(0, count).map(q => ({
-    ...q,
-    options: randomizeOptions(q.options, q.correct)
-  }));
+  return shuffled.slice(0, count).map(q => {
+    const randomized = randomizeOptions(q.options, q.correct);
+    return {
+      ...q,
+      options: randomized.options,
+      correct: randomized.correct
+    };
+  });
 }
 
 // Randomize answer options but track correct answer
