@@ -10,8 +10,14 @@ export default function PathPage() {
   const navigate = useNavigate();
   const pathId = parseInt(id, 10);
 
-  const { paths, isUnlocked, hasPremium, unlockPremium, lessonStates } =
+  const { paths, isUnlocked, hasPremium, unlockPremium, lessonStates, lockedLessons } =
     useProgressStore();
+  
+  // Debug logging
+  console.log("🔒 PathPage Debug:");
+  console.log("  - hasPremium:", hasPremium);
+  console.log("  - lockedLessons for path", pathId, ":", lockedLessons[pathId]);
+  console.log("  - lessonStates for path", pathId, ":", lessonStates[pathId]);
 
   const [showModal, setShowModal] = useState(false);
   const [showPopup, setShowPopup] = useState(false);

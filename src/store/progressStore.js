@@ -71,8 +71,13 @@ export const useProgressStore = create((set, get) => ({
       
       // 🔒 Initialize lockedLessons based on existing progress for migration
       if (!savedData.lockedLessons || Object.keys(savedData.lockedLessons).length === 0) {
+        console.log("🔒 Migrating locks from existing progress...");
         savedData.lockedLessons = get().normalizeLocks(savedData.lessonStates || {});
+        console.log("🔒 Normalized locks:", savedData.lockedLessons);
       }
+      
+      // Force hasPremium to false for testing
+      console.log("🔒 hasPremium status:", savedData.hasPremium);
       
       set(savedData);
       get().saveProgress(); // Persist the normalized locks
@@ -439,15 +444,28 @@ export const useProgressStore = create((set, get) => ({
   isUnlocked: (pathId, lessonId) => {
     if (lessonId === 1) return true;
     const { lockedLessons, hasPremium } = get();
-    if (hasPremium) return true; // premium users bypass locks
+    
+    console.log(`🔒 Checking unlock: path=${pathId}, lesson=${lessonId}, hasPremium=${hasPremium}`);
+    
+    if (hasPremium) {
+      console.log("🔒 Premium user - unlocking all");
+      return true; // premium users bypass locks
+    }
     
     // Safeguard: if lockedLessons[pathId] doesn't exist, lesson is locked
-    if (!lockedLessons[pathId]) return false;
+    if (!lockedLessons[pathId]) {
+      console.log("🔒 No lock data for path - LOCKED");
+      return false;
+    }
     
-    return (
+    const isUnlocked = !!(
       lockedLessons[pathId][lessonId] &&
       lockedLessons[pathId][lessonId].unlocked
     );
+    
+    console.log(`🔒 Lock status:`, isUnlocked ? "UNLOCKED" : "LOCKED");
+    
+    return isUnlocked;
   },
 
   // 💳 Premium unlock
@@ -459,6 +477,12 @@ export const useProgressStore = create((set, get) => ({
   resetAllLocks: () => {
     set({ lockedLessons: {} });
     get().saveProgress();
+  },
+  
+  // 🧹 Force reset for testing (removes all progress)
+  forceResetForTesting: () => {
+    localStorage.clear();
+    window.location.reload();
   },
 }));
 
