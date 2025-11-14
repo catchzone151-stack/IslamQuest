@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Pathway from "./screens/Pathway.jsx";
 import Lesson from "./pages/Lesson.jsx";
 import Challenge from "./pages/Challenge.jsx";
+import ChallengeGame from "./pages/challenges/ChallengeGame.jsx";
 import DailyChallenge from "./pages/DailyChallenge.jsx";
 import Friends from "./pages/Friends.jsx";
 import Profile from "./pages/Profile.jsx";
@@ -145,6 +146,7 @@ export default function App() {
               <Route path="/path/:pathId/quiz/:lessonId" element={<QuizScreen />} />
 
               <Route path="/challenge" element={<Challenge />} />
+              <Route path="/challenge/:challengeId" element={<ChallengeGame />} />
               <Route path="/daily" element={<DailyChallenge />} />
               <Route path="/events" element={<GlobalEvents />} />
               <Route path="/events/:eventId" element={<EventQuiz />} />

@@ -1,0 +1,241 @@
+/* Challenge Game Container */
+.challenge-game-container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #081426, #0e2340);
+  padding: 16px;
+  padding-bottom: 90px;
+  color: white;
+}
+
+.challenge-loading {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 1.2rem;
+  color: #d4af37;
+}
+
+/* Header */
+.challenge-game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.challenge-game-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #d4af37;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.challenge-game-timer {
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+/* Progress Bar */
+.challenge-progress-container {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.challenge-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #d4af37);
+  transition: width 0.3s ease;
+  border-radius: 4px;
+}
+
+.challenge-progress-text {
+  text-align: center;
+  color: #cbd5e1;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+/* Question Card */
+.challenge-question-card {
+  background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(16,185,129,0.05));
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.challenge-question-text {
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* Answer Options */
+.challenge-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.challenge-option {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 16px 20px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  position: relative;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.challenge-option:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.challenge-option:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.challenge-option.selected {
+  border-color: #d4af37;
+  background: rgba(212, 175, 55, 0.15);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.challenge-option.correct {
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.15);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+.challenge-option.wrong {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.15);
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+}
+
+.option-icon {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-left: 10px;
+}
+
+/* Chain Display (Lightning Chain) */
+.chain-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border-radius: 20px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+  animation: pulse-chain 1s ease-in-out infinite;
+}
+
+@keyframes pulse-chain {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Time Up Overlay */
+.challenge-time-up-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  animation: fadeIn 0.3s ease;
+}
+
+.time-up-message {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #ef4444;
+  text-shadow: 0 0 30px rgba(239, 68, 68, 0.8);
+  animation: bounceIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .challenge-question-text {
+    font-size: 1.1rem;
+  }
+
+  .challenge-option {
+    padding: 14px 16px;
+    font-size: 0.95rem;
+    min-height: 55px;
+  }
+
+  .challenge-game-header {
+    padding: 12px;
+  }
+
+  .challenge-game-title {
+    font-size: 1rem;
+  }
+
+  .challenge-game-timer {
+    font-size: 1rem;
+  }
+}
