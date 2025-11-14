@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import ZaydChallenge from "../assets/mascots/mascot_zayd_challenge.webp";
 
 export default function Challenge() {
   const navigate = useNavigate();
@@ -121,73 +120,6 @@ export default function Challenge() {
         >
           Enter Global Events →
         </button>
-      </div>
-
-      {/* Daily Challenge Card - COMING SOON */}
-      <div
-        style={{
-          maxWidth: 520,
-          margin: "0 auto",
-          background:
-            "linear-gradient(135deg, rgba(0,255,209,0.18), rgba(255,215,0,0.16))",
-          border: "1px solid rgba(255,255,255,0.12)",
-          borderRadius: 18,
-          padding: 16,
-          boxShadow: "0 0 18px rgba(0,255,209,0.25)",
-          display: "grid",
-          gridTemplateColumns: "1fr auto",
-          alignItems: "center",
-          gap: 12,
-        }}
-      >
-        <div>
-          <h3 style={{ color: "gold", margin: "0 0 6px", fontSize: "1.2rem" }}>
-            Daily Challenge
-          </h3>
-          <p style={{ opacity: 0.8, fontSize: "0.85rem", marginBottom: 10 }}>
-            Coming Soon
-          </p>
-          <ul
-            style={{
-              margin: 0,
-              paddingLeft: 16,
-              lineHeight: 1.5,
-              opacity: 0.95,
-              fontSize: "0.9rem",
-            }}
-          >
-            <li>One-tap mini quiz from unlocked paths</li>
-            <li>Streak-safe daily bonus + coins</li>
-            <li>Zayd reactions & reward modal</li>
-          </ul>
-          <button
-            onClick={() => alert("Daily Challenge system is being built next!")}
-            style={{
-              marginTop: 12,
-              background: "gold",
-              border: "none",
-              padding: "10px 18px",
-              borderRadius: 10,
-              fontWeight: "bold",
-              cursor: "pointer",
-              color: "#0b2145",
-            }}
-          >
-            Got it 👍
-          </button>
-        </div>
-
-        <img
-          src={ZaydChallenge}
-          alt="Zayd Challenge"
-          style={{
-            width: 96,
-            height: "auto",
-            animation: "bounceY 1.6s ease-in-out infinite",
-            transformOrigin: "50% 90%",
-            filter: "drop-shadow(0 6px 10px rgba(0,0,0,0.35))",
-          }}
-        />
       </div>
 
       {/* Local keyframes */}
