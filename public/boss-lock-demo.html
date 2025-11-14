@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Boss Level Lock Demo</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(to bottom, #081426, #0e2340);
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+    h1 {
+      color: #d4af37;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .card {
+      background: linear-gradient(135deg, #1e3a5f 0%, #0f1c2e 100%);
+      border: 2px solid rgba(212,175,55,0.5);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .card.locked {
+      background: linear-gradient(135deg, #374151, #1f2937);
+      border: 2px solid rgba(107,114,128,0.3);
+      opacity: 0.7;
+    }
+    .lock-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.7);
+      borderRadius: 20px;
+      padding: 4px 12px;
+      fontSize: 0.75rem;
+      fontWeight: 600;
+      color: #94a3b8;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .mascot {
+      width: 60px;
+      height: 60px;
+    }
+    h2 {
+      color: #d4af37;
+      margin: 0 0 4px;
+      fontSize: 1.4rem;
+      fontWeight: 700;
+    }
+    h2.locked {
+      color: #94a3b8;
+    }
+    .status {
+      margin: 0;
+      fontSize: 0.85rem;
+      fontWeight: 600;
+      color: #10b981;
+    }
+    .status.locked {
+      color: #6b7280;
+    }
+    .description {
+      opacity: 0.95;
+      lineHeight: 1.5;
+      fontSize: 0.9rem;
+      marginBottom: 12px;
+    }
+    .rewards {
+      background: rgba(0,0,0,0.3);
+      borderRadius: 10px;
+      padding: 10px 14px;
+      fontSize: 0.85rem;
+      fontWeight: 600;
+    }
+    .label {
+      background: rgba(212,175,55,0.2);
+      color: #d4af37;
+      padding: 8px 16px;
+      borderRadius: 8px;
+      textAlign: center;
+      marginBottom: 20px;
+      fontWeight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔒 Boss Level Lock Demo</h1>
+    
+    <div class="label">LOCKED STATE (Level 1-7)</div>
+    <div class="card locked">
+      <div class="lock-badge">🔒 Level 8+ Only</div>
+      <div class="header">
+        <img src="/src/assets/mascots/mascot_zayd_challenge.webp" alt="Challenge" class="mascot">
+        <div>
+          <h2 class="locked">Boss Level Challenge the Dev</h2>
+          <p class="status locked">🔒 Locked</p>
+        </div>
+      </div>
+      <p class="description">
+        Daily ultra-hard challenge • 5 ultra-hard questions • 30s total
+      </p>
+      <div class="rewards" style="color: #6b7280;">
+        Rewards: +300 XP • +50 coins
+      </div>
+    </div>
+
+    <div class="label" style="background: rgba(16,185,129,0.2); color: #10b981;">UNLOCKED STATE (Level 8+)</div>
+    <div class="card">
+      <div class="header">
+        <img src="/src/assets/mascots/mascot_zayd_challenge.webp" alt="Challenge" class="mascot">
+        <div>
+          <h2>Boss Level Challenge the Dev</h2>
+          <p class="status">✓ Available Today</p>
+        </div>
+      </div>
+      <p class="description">
+        Daily ultra-hard challenge • 5 ultra-hard questions • 30s total
+      </p>
+      <div class="rewards" style="color: #10b981;">
+        Rewards: +300 XP • +50 coins
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px; opacity: 0.7;">
+      <p>The lock automatically appears when user level is below 8</p>
+      <p>Click the locked card shows a modal explaining the requirement</p>
+    </div>
+  </div>
+</body>
+</html>
