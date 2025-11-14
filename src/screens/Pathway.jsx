@@ -21,7 +21,7 @@ export default function Pathway() {
   const scrollRef = useRef(null);
   const numericPathId = Number(pathId);
 
-  const { paths, lessonStates } = useProgressStore();
+  const { paths, lessonStates, isUnlocked } = useProgressStore();
   const { avatar } = useUserStore();
 
   const pathMeta = useMemo(
@@ -56,14 +56,13 @@ export default function Pathway() {
   }
 
   // Build lesson states (completed / locked)
+  // 🔒 Using universal locking system via isUnlocked()
   const pathLessonState = lessonStates?.[numericPathId] || {};
   const lessons = baseLessons.map((lesson) => {
     const isCompleted = !!pathLessonState[lesson.id]?.passed;
-    const needs = lesson.lockedUntil;
-    const isLockedSequential =
-      needs !== null && needs !== undefined && !pathLessonState[needs]?.passed;
-    const isLockedPurchase = !!lesson.requiresPurchase;
-    const isLocked = isLockedSequential || isLockedPurchase;
+    // Use the universal isUnlocked function instead of lockedUntil
+    const unlocked = isUnlocked(numericPathId, lesson.id);
+    const isLocked = !unlocked;
 
     return { ...lesson, isCompleted, isLocked };
   });
