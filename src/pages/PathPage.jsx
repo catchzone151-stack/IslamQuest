@@ -12,13 +12,6 @@ export default function PathPage() {
 
   const { paths, isUnlocked, hasPremium, unlockPremium, lessonStates, lockedLessons } =
     useProgressStore();
-  
-  // Debug logging
-  console.log("🔒 PathPage Debug:");
-  console.log("  - hasPremium:", hasPremium);
-  console.log("  - lockedLessons for path", pathId, ":", lockedLessons[pathId]);
-  console.log("  - lessonStates for path", pathId, ":", lessonStates[pathId]);
-  console.log("  - Full lockedLessons object:", lockedLessons);
 
   const [showModal, setShowModal] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -94,7 +87,6 @@ export default function PathPage() {
         {lessons.map((lesson) => {
           const unlocked = isUnlocked(pathId, lesson.id);
           const isCurrent = lesson.id === currentLessonId;
-          console.log(`🔒 Lesson ${lesson.id}: unlocked=${unlocked}, isCurrent=${isCurrent}`);
           return (
             <div
               key={lesson.id}

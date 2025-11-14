@@ -55,14 +55,14 @@ export const CHALLENGE_MODES = {
 export const BOSS_LEVEL = {
   id: "boss_level",
   name: "Boss Level",
-  icon: "👑",
+  icon: "👑", // Will be replaced with Zayd mascot image
   description: "Daily ultra-hard challenge",
   questionCount: 5,
   totalTime: 30,
   minLevel: 8,
   rewards: { win: { xp: 300, coins: 50 }, lose: { xp: 50, coins: 0 } },
-  gradient: "linear-gradient(135deg, #d4af37 0%, #f59e0b 100%)",
-  glow: "0 0 30px rgba(212, 175, 55, 0.7)"
+  gradient: "linear-gradient(135deg, #1e3a5f 0%, #0f1c2e 100%)", // Dark blue gradient
+  glow: "0 0 30px rgba(30, 58, 95, 0.7)"
 };
 
 export const useChallengeStore = create((set, get) => ({

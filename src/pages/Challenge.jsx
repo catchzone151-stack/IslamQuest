@@ -7,6 +7,7 @@ import ChallengeExplainerModal from "../components/challenges/ChallengeExplainer
 import ChallengeCountdown from "../components/challenges/ChallengeCountdown";
 import NoSharedLessonsModal from "../components/challenges/NoSharedLessonsModal";
 import BossLockedModal from "../components/challenges/BossLockedModal";
+import ZaydDefault from "../assets/mascots/mascot_zayd_default.webp";
 
 export default function Challenge() {
   const navigate = useNavigate();
@@ -265,7 +266,7 @@ export default function Challenge() {
           )}
 
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
-            <span style={{ fontSize: "2.5rem" }}>{BOSS_LEVEL.icon}</span>
+            <img src={ZaydDefault} alt="Zayd" style={{ width: "60px", height: "60px" }} />
             <div>
               <h2 style={{ color: level >= BOSS_LEVEL.minLevel ? "#d4af37" : "#94a3b8", margin: "0 0 4px", fontSize: "1.4rem", fontWeight: 700 }}>
                 {BOSS_LEVEL.name}
@@ -289,6 +290,64 @@ export default function Challenge() {
             fontWeight: 600
           }}>
             Rewards: +{BOSS_LEVEL.rewards.win.xp} XP • +{BOSS_LEVEL.rewards.win.coins} coins
+          </div>
+        </div>
+      </div>
+
+      {/* Challenge the Dev Card */}
+      <div style={{ maxWidth: 520, margin: "0 auto 24px" }}>
+        <div
+          onClick={() => alert("Coming soon! The developer challenge will be available in the next update. 🚀")}
+          style={{
+            background: "linear-gradient(135deg, #1e3a5f 0%, #0f1c2e 100%)",
+            border: "2px solid rgba(212,175,55,0.5)",
+            borderRadius: 18,
+            padding: 20,
+            boxShadow: "0 0 30px rgba(30, 58, 95, 0.7)",
+            cursor: "pointer",
+            transition: "all 0.3s ease",
+            position: "relative",
+          }}
+        >
+          <div style={{
+            position: "absolute",
+            top: 10,
+            right: 10,
+            background: "rgba(212,175,55,0.2)",
+            borderRadius: 20,
+            padding: "4px 12px",
+            fontSize: "0.75rem",
+            fontWeight: 600,
+            color: "#d4af37"
+          }}>
+            🔥 Coming Soon
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
+            <img src={ZaydDefault} alt="Zayd" style={{ width: "60px", height: "60px" }} />
+            <div>
+              <h2 style={{ color: "#d4af37", margin: "0 0 4px", fontSize: "1.4rem", fontWeight: 700 }}>
+                Challenge the Dev!
+              </h2>
+              <p style={{ color: "#10b981", margin: 0, fontSize: "0.85rem", fontWeight: 600 }}>
+                ⚡ Ultimate Challenge
+              </p>
+            </div>
+          </div>
+
+          <p style={{ opacity: 0.95, lineHeight: 1.5, fontSize: "0.9rem", marginBottom: 12 }}>
+            Think you can beat the developer? Test your Islamic knowledge against handpicked questions!
+          </p>
+
+          <div style={{ 
+            background: "rgba(0,0,0,0.3)", 
+            borderRadius: 10, 
+            padding: "10px 14px",
+            fontSize: "0.85rem",
+            color: "#10b981",
+            fontWeight: 600
+          }}>
+            Rewards: +500 XP • +100 coins
           </div>
         </div>
       </div>
