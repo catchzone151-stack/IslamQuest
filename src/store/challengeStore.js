@@ -96,18 +96,36 @@ export const useChallengeStore = create((set, get) => ({
 
   // Get shared completed lessons between two users
   getSharedLessons: (userId, friendId) => {
-    // For now, use current user's completed lessons (will fetch both from DB later)
+    // Get current user's completed lessons
     const { lessonStates } = useProgressStore.getState();
-    const completedLessons = Object.keys(lessonStates).filter(
+    const currentUserCompletedLessons = Object.keys(lessonStates).filter(
       key => lessonStates[key]?.completed === true
     );
     
-    // Mock friend's lessons for now (in Supabase, we'll fetch friend's actual data)
-    // Simulate friend has completed ~70% of what current user has
-    const friendCompletedLessons = completedLessons.filter(() => Math.random() > 0.3);
+    // Get friend's completed lessons from friendsStore
+    // In LocalStorage mode, friends have a completedLessons array
+    // In Supabase mode, we'll fetch from DB
+    const { friends } = useFriendsStore.getState();
+    const friend = friends.find(f => f.id === friendId);
     
-    // Find intersection
-    const shared = completedLessons.filter(lesson => 
+    let friendCompletedLessons = [];
+    if (friend) {
+      // If friend has completedLessons stored, use it
+      if (friend.completedLessons && Array.isArray(friend.completedLessons)) {
+        friendCompletedLessons = friend.completedLessons;
+      } else {
+        // Mock for friends without stored lesson data
+        // Simulate friend has completed a random subset (deterministic based on friend ID)
+        // This ensures consistency across sessions
+        const seed = friend.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+        friendCompletedLessons = currentUserCompletedLessons.filter((_, index) => 
+          ((seed + index) % 3) !== 0 // Deterministic ~66% overlap
+        );
+      }
+    }
+    
+    // Find intersection (lessons both have completed)
+    const shared = currentUserCompletedLessons.filter(lesson => 
       friendCompletedLessons.includes(lesson)
     );
     

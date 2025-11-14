@@ -169,7 +169,7 @@ export default function ChallengeGame() {
     const finalScore = answers.filter(a => a.correct).length;
     setScore(finalScore);
 
-    // Save results
+    // Save results and award rewards
     if (isBoss) {
       useChallengeStore.getState().saveBossAttempt(finalScore, answers);
       const result = finalScore >= BOSS_LEVEL.questionCount * 0.6 ? "win" : "lose";
@@ -179,16 +179,19 @@ export default function ChallengeGame() {
       const isChallenger = challenge.challengerId === currentUserId;
       useChallengeStore.getState().saveChallengeProgress(challengeId, finalScore, answers, isChallenger);
       
-      // If both players finished, determine winner and award rewards
-      if (challenge.challengerScore !== null && challenge.opponentScore !== null) {
-        const result = useChallengeStore.getState().completeChallenge(challengeId);
+      // Re-read the updated challenge from store to check if both players finished
+      const updatedChallenge = useChallengeStore.getState().challenges.find(c => c.id === challengeId);
+      if (updatedChallenge && updatedChallenge.challengerScore !== null && updatedChallenge.opponentScore !== null) {
+        // Both players finished - complete the challenge and award rewards
+        const winner = useChallengeStore.getState().completeChallenge(challengeId);
         let rewardType = "lose";
-        if (result === "draw") rewardType = "draw";
-        else if ((result === challenge.challengerId && isChallenger) || 
-                 (result === challenge.opponentId && !isChallenger)) {
+        if (winner === "draw") {
+          rewardType = "draw";
+        } else if ((winner === updatedChallenge.challengerId && isChallenger) || 
+                   (winner === updatedChallenge.opponentId && !isChallenger)) {
           rewardType = "win";
         }
-        useChallengeStore.getState().awardRewards(challenge.mode, rewardType);
+        useChallengeStore.getState().awardRewards(updatedChallenge.mode, rewardType);
       }
     }
 
@@ -211,17 +214,41 @@ export default function ChallengeGame() {
   const progress = ((currentIndex + 1) / questions.length) * 100;
 
   if (showResults) {
-    const rewards = useChallengeStore.getState().awardRewards(
-      isBoss ? "boss_level" : challenge?.mode,
-      score >= questions.length * 0.6 ? "win" : "lose"
-    );
+    // Calculate rewards WITHOUT awarding them (already awarded in handleGameComplete)
+    const config = isBoss ? BOSS_LEVEL : (challenge && CHALLENGE_MODES[challenge.mode.toUpperCase()]);
+    let result;
+    
+    if (isBoss) {
+      result = score >= BOSS_LEVEL.questionCount * 0.6 ? "win" : "lose";
+    } else if (challenge) {
+      // Re-read challenge to get final winner status
+      const updatedChallenge = useChallengeStore.getState().challenges.find(c => c.id === challengeId);
+      const currentUserId = "current_user";
+      const isChallenger = challenge.challengerId === currentUserId;
+      
+      if (updatedChallenge?.winner) {
+        if (updatedChallenge.winner === "draw") {
+          result = "draw";
+        } else if ((updatedChallenge.winner === updatedChallenge.challengerId && isChallenger) ||
+                   (updatedChallenge.winner === updatedChallenge.opponentId && !isChallenger)) {
+          result = "win";
+        } else {
+          result = "lose";
+        }
+      } else {
+        // Game not completed yet (waiting for opponent)
+        result = "pending";
+      }
+    }
+    
+    const rewards = config?.rewards[result] || config?.rewards.lose || { xp: 0, coins: 0 };
 
     return (
       <ChallengeResultsModal
         mode={mode}
         score={score}
         totalQuestions={questions.length}
-        result={score >= questions.length * 0.6 ? "win" : "lose"}
+        result={result}
         rewards={rewards}
         opponentName={isBoss ? "Boss" : challenge?.opponentId}
         opponentScore={challenge?.opponentScore}
