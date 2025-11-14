@@ -246,27 +246,39 @@ export default function Challenge() {
             cursor: "pointer",
             transition: "all 0.3s ease",
             position: "relative",
-            opacity: level >= BOSS_LEVEL.minLevel ? 1 : 0.7,
             animation: level >= BOSS_LEVEL.minLevel ? "bossGlow 2s ease-in-out infinite" : "none"
           }}
         >
           {level < BOSS_LEVEL.minLevel && (
-            <div style={{
-              position: "absolute",
-              top: 10,
-              right: 10,
-              background: "rgba(0,0,0,0.7)",
-              borderRadius: 20,
-              padding: "4px 12px",
-              fontSize: "0.75rem",
-              fontWeight: 600,
-              color: "#94a3b8"
-            }}>
-              🔒 Level {BOSS_LEVEL.minLevel}+ Only
-            </div>
+            <>
+              <div style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: "linear-gradient(135deg, rgba(55, 65, 81, 0.85), rgba(31, 41, 55, 0.85))",
+                borderRadius: 18,
+                pointerEvents: "none"
+              }} />
+              <div style={{
+                position: "absolute",
+                top: 10,
+                right: 10,
+                background: "rgba(0,0,0,0.7)",
+                borderRadius: 20,
+                padding: "4px 12px",
+                fontSize: "0.75rem",
+                fontWeight: 600,
+                color: "#94a3b8",
+                zIndex: 1
+              }}>
+                🔒 Level {BOSS_LEVEL.minLevel}+ Only
+              </div>
+            </>
           )}
 
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12, position: "relative", zIndex: 1 }}>
             <img src={ZaydChallenge} alt="Zayd Challenge" style={{ width: "60px", height: "60px" }} />
             <div>
               <h2 style={{ color: level >= BOSS_LEVEL.minLevel ? "#d4af37" : "#94a3b8", margin: "0 0 4px", fontSize: "1.4rem", fontWeight: 700 }}>
@@ -278,7 +290,7 @@ export default function Challenge() {
             </div>
           </div>
 
-          <p style={{ opacity: 0.95, lineHeight: 1.5, fontSize: "0.9rem", marginBottom: 12 }}>
+          <p style={{ opacity: 0.95, lineHeight: 1.5, fontSize: "0.9rem", marginBottom: 12, position: "relative", zIndex: 1 }}>
             {BOSS_LEVEL.description} • {BOSS_LEVEL.questionCount} ultra-hard questions • {BOSS_LEVEL.totalTime}s total
           </p>
 
@@ -288,7 +300,9 @@ export default function Challenge() {
             padding: "10px 14px",
             fontSize: "0.85rem",
             color: level >= BOSS_LEVEL.minLevel ? "#10b981" : "#6b7280",
-            fontWeight: 600
+            fontWeight: 600,
+            position: "relative",
+            zIndex: 1
           }}>
             Rewards: +{BOSS_LEVEL.rewards.win.xp} XP • +{BOSS_LEVEL.rewards.win.coins} coins
           </div>

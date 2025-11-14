@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Boss Level Lock - FIXED</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(to bottom, #081426, #0e2340);
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+    h1 {
+      color: #d4af37;
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 1.8rem;
+    }
+    .subtitle {
+      text-align: center;
+      color: #10b981;
+      margin-bottom: 30px;
+      font-weight: 600;
+    }
+    .card {
+      background: linear-gradient(135deg, #1e3a5f 0%, #0f1c2e 100%);
+      border: 2px solid rgba(212,175,55,0.5);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 20px;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .card.locked {
+      background: linear-gradient(135deg, #374151, #1f2937);
+      border: 2px solid rgba(107,114,128,0.3);
+    }
+    
+    /* THE KEY FIX: Grey overlay */
+    .grey-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(55, 65, 81, 0.85), rgba(31, 41, 55, 0.85));
+      border-radius: 18px;
+      pointer-events: none;
+    }
+    
+    .lock-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.7);
+      borderRadius: 20px;
+      padding: 4px 12px;
+      fontSize: 0.75rem;
+      fontWeight: 600;
+      color: #94a3b8;
+      z-index: 1;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
+    }
+    .mascot {
+      width: 60px;
+      height: 60px;
+      font-size: 3rem;
+    }
+    h2 {
+      color: #d4af37;
+      margin: 0 0 4px;
+      fontSize: 1.4rem;
+      fontWeight: 700;
+    }
+    h2.locked {
+      color: #94a3b8;
+    }
+    .status {
+      margin: 0;
+      fontSize: 0.85rem;
+      fontWeight: 600;
+      color: #10b981;
+    }
+    .status.locked {
+      color: #6b7280;
+    }
+    .description {
+      opacity: 0.95;
+      lineHeight: 1.5;
+      fontSize: 0.9rem;
+      marginBottom: 12px;
+      position: relative;
+      z-index: 1;
+    }
+    .rewards {
+      background: rgba(0,0,0,0.3);
+      borderRadius: 10px;
+      padding: 10px 14px;
+      fontSize: 0.85rem;
+      fontWeight: 600;
+      position: relative;
+      z-index: 1;
+    }
+    .label {
+      background: rgba(212,175,55,0.2);
+      color: #d4af37;
+      padding: 8px 16px;
+      borderRadius: 8px;
+      textAlign: center;
+      marginBottom: 20px;
+      fontWeight: 600;
+    }
+    .fix-highlight {
+      background: rgba(16,185,129,0.2);
+      border: 2px solid #10b981;
+      color: #10b981;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>✅ Boss Level Lock - FIXED</h1>
+    <p class="subtitle">Both Issues Resolved!</p>
+    
+    <div class="fix-highlight">
+      ✅ Fix 1: Grey overlay now covers entire card when locked<br>
+      ✅ Fix 2: Questions redirect if no lessons completed
+    </div>
+
+    <div class="label">🔒 LOCKED STATE (Level 1-7)</div>
+    <div class="card locked">
+      <!-- THE KEY FIX: Grey overlay -->
+      <div class="grey-overlay"></div>
+      
+      <div class="lock-badge">🔒 Level 8+ Only</div>
+      <div class="header">
+        <div class="mascot">🦁</div>
+        <div>
+          <h2 class="locked">Boss Level Challenge the Dev</h2>
+          <p class="status locked">🔒 Locked</p>
+        </div>
+      </div>
+      <p class="description">
+        Daily ultra-hard challenge • 5 ultra-hard questions • 30s total
+      </p>
+      <div class="rewards" style="color: #6b7280;">
+        Rewards: +300 XP • +50 coins
+      </div>
+    </div>
+
+    <div class="label" style="background: rgba(16,185,129,0.2); color: #10b981;">✅ UNLOCKED STATE (Level 8+)</div>
+    <div class="card">
+      <div class="header">
+        <div class="mascot">🦁</div>
+        <div>
+          <h2>Boss Level Challenge the Dev</h2>
+          <p class="status">✓ Available Today</p>
+        </div>
+      </div>
+      <p class="description">
+        Daily ultra-hard challenge • 5 ultra-hard questions • 30s total
+      </p>
+      <div class="rewards" style="color: #10b981;">
+        Rewards: +300 XP • +50 coins
+      </div>
+    </div>
+
+    <div style="margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 12px; border-left: 4px solid #10b981;">
+      <h3 style="color: #10b981; margin-top: 0;">What Was Fixed:</h3>
+      <p><strong>Issue 1: Lock Overlay</strong></p>
+      <ul style="line-height: 1.8;">
+        <li>Added full-coverage grey overlay div (rgba 0.85 opacity)</li>
+        <li>Overlay positioned absolutely to cover entire card</li>
+        <li>Content elements have z-index: 1 to stay visible above overlay</li>
+        <li>Lock badge has z-index: 1 to remain clickable</li>
+      </ul>
+      
+      <p><strong>Issue 2: Questions Loading</strong></p>
+      <ul style="line-height: 1.8;">
+        <li>Added check for empty questions array in ChallengeGame.jsx</li>
+        <li>Shows alert: "Complete some lessons first to unlock Boss Level questions!"</li>
+        <li>Immediately redirects back to /challenge</li>
+        <li>Prevents infinite "Loading questions..." state</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

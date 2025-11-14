@@ -44,6 +44,11 @@ export default function ChallengeGame() {
     // Load questions based on challenge type
     if (isBoss) {
       const bossQuestions = useChallengeStore.getState().getBossLevelQuestions();
+      if (bossQuestions.length === 0) {
+        alert("Complete some lessons first to unlock Boss Level questions!");
+        navigate("/challenge");
+        return;
+      }
       setQuestions(bossQuestions);
       setTimeLeft(BOSS_LEVEL.totalTime);
     } else if (challenge) {
@@ -55,7 +60,7 @@ export default function ChallengeGame() {
         setTimeLeft(config.timePerQuestion);
       }
     }
-  }, [challengeId, isBoss, challenge]);
+  }, [challengeId, isBoss, challenge, navigate]);
 
   useEffect(() => {
     // Start timer
