@@ -19,8 +19,12 @@ export default function DailyQuestCard() {
       return;
     }
 
-    if (questStatus === "ready" || questStatus === "new_day") {
+    // Only generate new quest if it's a new day, otherwise use existing
+    if (questStatus === "new_day") {
       checkAndGenerateDailyQuest();
+    }
+
+    if (questStatus === "ready" || questStatus === "new_day") {
       setShowExplainer(true);
     }
   };

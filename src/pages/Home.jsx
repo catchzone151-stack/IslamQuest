@@ -47,6 +47,21 @@ export default function Home() {
   // Which "page" of the carousel we're on (0 / 1 / 2)
   const [page, setPage] = useState(0);
 
+  // Pull live data from the store
+  const {
+    xp,
+    coins,
+    streak,
+    paths,
+    triggerDailyStudy,
+  } = useProgressStore();
+
+  // Load Daily Quest state from localStorage on mount
+  const { loadDailyQuest } = useDailyQuestStore();
+  useEffect(() => {
+    loadDailyQuest();
+  }, [loadDailyQuest]);
+
   /**
    * Sync carousel scroll -> page indicator dots
    */
@@ -304,27 +319,33 @@ export default function Home() {
        * DAILY QUEST CARD
        * ===============================================================
        */}
-      <div
-        style={{
-          background:
-            "linear-gradient(135deg, rgba(0,255,209,0.3), rgba(255,215,0,0.3))",
-          borderRadius: 18,
-          padding: 16,
-          margin: "6px 0 18px",
-          display: "grid",
-          gridTemplateColumns: "1fr auto",
-          alignItems: "center",
-        }}
-      >
-        <div>
-          <h3 style={{ color: "gold", margin: "0 0 6px" }}>Daily Quest</h3>
-          <p style={{ margin: 0, color: "#e6f7ff" }}>
-            Earn XP with today’s mini challenge!
-          </p>
-
-          <button
       <DailyQuestCard />
+
+      {/*
+       * ===============================================================
+       * LEARNING PATHS CAROUSEL
+       * ===============================================================
+       */}
+      <div style={{ position: "relative", padding: "0 0 12px" }}>
+        <div
+          ref={carouselRef}
+          style={{
+            display: "flex",
+            overflowX: "auto",
+            gap: 14,
+            paddingBottom: 8,
+            scrollBehavior: "smooth",
+          }}
+        >
+          {paths.map((p, index) => {
+            const gradient =
+              gradients[index] || gradients[index % gradients.length];
+            const progress = typeof p.progress === "number" ? p.progress : 0;
+            const percent = Math.min(100, Math.max(0, progress * 100));
+            const completed = p.completedLessons || 0;
+            const total = p.totalLessons || 0;
             const isFull = total > 0 && completed >= total;
+
 
             return (
               <div

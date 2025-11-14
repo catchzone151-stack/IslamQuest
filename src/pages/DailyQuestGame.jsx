@@ -12,15 +12,16 @@ export default function DailyQuestGame() {
   const [answers, setAnswers] = useState([]);
   const [showResults, setShowResults] = useState(false);
 
+  // Guard: Prevent entry if quest isn't ready or questions not loaded
   useEffect(() => {
     const status = getQuestStatus();
-    if (status !== "ready") {
+    if (status !== "ready" || questions.length === 0) {
       navigate("/");
     }
-  }, [navigate, getQuestStatus]);
+  }, [navigate, getQuestStatus, questions.length]);
 
+  // Additional guard for direct navigation attempts
   if (questions.length === 0) {
-    navigate("/");
     return null;
   }
 
