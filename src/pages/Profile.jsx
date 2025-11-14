@@ -9,6 +9,7 @@ import EditAvatarModal from "../components/EditAvatarModal";
 import { LevelBadge } from "../components/LevelBadge";
 import { ViewAllLevelsModal } from "../components/ViewAllLevelsModal";
 import PurchaseStreakFreezeModal from "../components/PurchaseStreakFreezeModal";
+import PurchaseModal from "../components/PurchaseModal";
 import { getCurrentLevel, getXPProgress } from "../utils/diamondLevels";
 import ui_xp from "../assets/ui/ui_xp.webp";
 import ui_coin from "../assets/ui/ui_coin.webp";
@@ -24,12 +25,15 @@ export default function Profile() {
     shieldCount,
     premiumStatus,
     familyMembers,
+    purchaseIndividual,
+    purchaseFamily,
   } = useProgressStore();
 
   const [showEditName, setShowEditName] = useState(false);
   const [showEditAvatar, setShowEditAvatar] = useState(false);
   const [showAllLevels, setShowAllLevels] = useState(false);
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
+  const [showPremiumModal, setShowPremiumModal] = useState(false);
 
   const currentLevel = getCurrentLevel(xp);
   const xpProgress = getXPProgress(xp);
@@ -270,6 +274,28 @@ export default function Profile() {
             </div>
           </div>
 
+          {/* Upgrade Button - Only show for free users */}
+          {premiumStatus === "free" && (
+            <button
+              onClick={() => setShowPremiumModal(true)}
+              style={{
+                background: "linear-gradient(135deg, #FFD700 0%, #FFA500 100%)",
+                color: "#111827",
+                border: "none",
+                borderRadius: 12,
+                padding: "14px 24px",
+                fontSize: "1rem",
+                fontWeight: 700,
+                width: "100%",
+                cursor: "pointer",
+                marginBottom: 16,
+                boxShadow: "0 4px 12px rgba(255, 215, 0, 0.3)",
+              }}
+            >
+              ⭐ Upgrade to Premium
+            </button>
+          )}
+
           {/* Family Members (only show if family plan) */}
           {premiumStatus === "family" && (
             <div
@@ -403,6 +429,23 @@ export default function Profile() {
           onClose={() => setShowPurchaseModal(false)}
           onSuccess={() => {
             setShowPurchaseModal(false);
+          }}
+        />
+      )}
+
+      {showPremiumModal && (
+        <PurchaseModal
+          onClose={() => setShowPremiumModal(false)}
+          onPurchase={(planType) => {
+            // Call appropriate purchase function
+            const result = planType === "individual" 
+              ? purchaseIndividual()
+              : purchaseFamily();
+            
+            if (result.success) {
+              setShowPremiumModal(false);
+              alert(`Alhamdulillah! ${planType === "individual" ? "Individual" : "Family"} plan activated! 🎉`);
+            }
           }}
         />
       )}
