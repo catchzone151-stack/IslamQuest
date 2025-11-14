@@ -68,8 +68,40 @@ export const useProgressStore = create((set, get) => ({
           };
         });
       }
+      
+      // 🔒 Initialize lockedLessons based on existing progress for migration
+      if (!savedData.lockedLessons || Object.keys(savedData.lockedLessons).length === 0) {
+        savedData.lockedLessons = get().normalizeLocks(savedData.lessonStates || {});
+      }
+      
       set(savedData);
+      get().saveProgress(); // Persist the normalized locks
     }
+  },
+  
+  // 🔒 Normalize locks based on lesson completion
+  normalizeLocks: (lessonStates) => {
+    const locks = {};
+    
+    // For each path, unlock lessons based on completion
+    for (let pathId = 1; pathId <= 14; pathId++) {
+      locks[pathId] = {};
+      const pathState = lessonStates[pathId] || {};
+      const passedLessons = Object.keys(pathState)
+        .filter(lessonId => pathState[lessonId]?.passed)
+        .map(Number)
+        .sort((a, b) => a - b);
+      
+      // Find the highest completed lesson
+      const maxCompleted = passedLessons.length > 0 ? Math.max(...passedLessons) : 0;
+      
+      // Unlock all lessons up to and including the next lesson after max completed
+      for (let lessonId = 1; lessonId <= maxCompleted + 1; lessonId++) {
+        locks[pathId][lessonId] = { unlocked: true };
+      }
+    }
+    
+    return locks;
   },
 
   // 🛡️ Mark day as complete (unified tracking for all activities)
@@ -408,8 +440,11 @@ export const useProgressStore = create((set, get) => ({
     if (lessonId === 1) return true;
     const { lockedLessons, hasPremium } = get();
     if (hasPremium) return true; // premium users bypass locks
+    
+    // Safeguard: if lockedLessons[pathId] doesn't exist, lesson is locked
+    if (!lockedLessons[pathId]) return false;
+    
     return (
-      lockedLessons[pathId] &&
       lockedLessons[pathId][lessonId] &&
       lockedLessons[pathId][lessonId].unlocked
     );
