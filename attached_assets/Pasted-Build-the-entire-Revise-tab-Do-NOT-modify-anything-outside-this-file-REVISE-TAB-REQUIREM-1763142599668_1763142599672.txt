@@ -1,0 +1,118 @@
+Build the entire Revise tab.
+Do NOT modify anything outside this file.
+
+
+---
+
+📘 REVISE TAB REQUIREMENTS
+
+1) Core Purpose
+
+Help users revise areas they are weak in by turning past mistakes into learning.
+
+2) Main Feature — “Review Mistakes”
+
+Collect every question the user has ever got WRONG from:
+• lesson quizzes
+• Daily Quest
+• challenges
+
+Avoid duplicates: only store unique questions.
+
+Stored format (Supabase-ready):
+
+
+{ question, options, answer, sourcePathId, lessonId, lastSeen }
+
+Show them as infinite revision MCQs, shuffled.
+
+
+3) Revision Session Logic
+
+Each session = 10 questions pulled randomly from the weak-question pool.
+
+If the pool has less than 10 → use all.
+
+No timer.
+
+After each question: instant correctness feedback (green/red highlight).
+
+At the end:
+
+show score
+
+if user answers a previously wrong question correctly → remove it from weak pool
+
+if user gets one wrong again → refresh its lastSeen timestamp
+
+
+Small rewards (to prevent farming):
+
+Correct: +4 XP
+
+Perfect score bonus: +10 XP
+
+
+
+4) Second Feature — “Smart Revision”
+
+(Adds value beyond mistakes)
+
+Identify the user’s weakest learning path (lowest accuracy).
+
+Create a custom 8-question revision pack from that path only.
+
+These questions do NOT need to be previous mistakes—just challenging, high-value ones.
+
+Rewards:
+
++25 XP
+
++10 coins
+
+
+
+5) UI/UX Requirements
+
+Two big gold/navy cards:
+
+1. “Review Mistakes”
+
+
+2. “Smart Revision”
+
+
+
+Use existing theme (navy, gold, rounded, glow).
+
+Place Zayd mascot on the top-right corner of the page.
+
+Use the same quiz engine UI so it feels consistent.
+
+Add small info lines under each card like:
+
+“Fix mistakes from past lessons.”
+
+“Revise your weakest topics intelligently.”
+
+
+
+6) Technical Architecture (Supabase-ready)
+
+Keep everything local for now, but:
+
+Use helper functions:
+saveWrongQuestion, getWeakPool, removeIfMastered, getWeakestPath, etc.
+
+All stored objects must use ISO dates.
+
+Structure data so migration to Supabase later is trivial.
+
+
+
+
+---
+
+🛑 DO NOT CHANGE
+
+Daily Quest, Challenge tab, lessons, quizzes, navigation, level system, or any scoring outside what’s stated.
