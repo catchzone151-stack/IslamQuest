@@ -17,6 +17,7 @@ import Login from "./pages/Login.jsx";
 import QuizScreen from "./screens/QuizScreen.jsx";
 import GlobalEvents from "./pages/GlobalEvents.jsx";
 import EventQuiz from "./pages/EventQuiz.jsx";
+import LockDiagnostics from "./pages/LockDiagnostics.jsx";
 
 // ✅ Components & stores
 import BottomNav from "./components/BottomNav.jsx";
@@ -156,6 +157,7 @@ export default function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/revise" element={<Revise />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/diagnostics" element={<LockDiagnostics />} />
 
               {/* fallback */}
               <Route path="*" element={<Home />} />
