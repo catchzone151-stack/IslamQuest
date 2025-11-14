@@ -17,7 +17,14 @@ import ui_shield from "../assets/ui/ui_shield.webp";
 
 export default function Profile() {
   const { name, avatar, setName, setAvatar } = useUserStore();
-  const { xp, coins, streak, shieldCount } = useProgressStore();
+  const { 
+    xp, 
+    coins, 
+    streak, 
+    shieldCount,
+    premiumStatus,
+    familyMembers,
+  } = useProgressStore();
 
   const [showEditName, setShowEditName] = useState(false);
   const [showEditAvatar, setShowEditAvatar] = useState(false);
@@ -216,6 +223,148 @@ export default function Profile() {
           <span>🛡️</span>
           <span>Add Streak Freeze</span>
         </button>
+
+        {/* === Premium Section === */}
+        <div
+          style={{
+            maxWidth: 400,
+            margin: "32px auto 0",
+            padding: 20,
+            background: "rgba(255, 215, 0, 0.05)",
+            border: "1px solid rgba(255, 215, 0, 0.2)",
+            borderRadius: 16,
+          }}
+        >
+          <h3
+            style={{
+              color: "#FFD700",
+              fontSize: "1.2rem",
+              fontWeight: 700,
+              marginBottom: 16,
+            }}
+          >
+            💳 Premium Status
+          </h3>
+
+          {/* Current Plan */}
+          <div
+            style={{
+              background: "rgba(255, 255, 255, 0.03)",
+              padding: 16,
+              borderRadius: 12,
+              marginBottom: 16,
+            }}
+          >
+            <div style={{ color: "#cbd5e1", fontSize: "0.9rem", marginBottom: 8 }}>
+              Current Plan:
+            </div>
+            <div
+              style={{
+                color: "#FFD700",
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                textTransform: "capitalize",
+              }}
+            >
+              {premiumStatus === "free" ? "Free 🆓" : premiumStatus === "individual" ? "Individual ⭐" : "Family 👨‍👩‍👧‍👦"}
+            </div>
+          </div>
+
+          {/* Family Members (only show if family plan) */}
+          {premiumStatus === "family" && (
+            <div
+              style={{
+                background: "rgba(255, 255, 255, 0.03)",
+                padding: 16,
+                borderRadius: 12,
+              }}
+            >
+              <h4
+                style={{
+                  color: "#cbd5e1",
+                  fontSize: "1rem",
+                  fontWeight: 600,
+                  marginBottom: 12,
+                }}
+              >
+                Family Members ({familyMembers.length}/5)
+              </h4>
+
+              {familyMembers.length === 0 ? (
+                <p style={{ color: "#94a3b8", fontSize: "0.85rem", marginBottom: 12 }}>
+                  No family members yet. Invite up to 5 members!
+                </p>
+              ) : (
+                <div style={{ marginBottom: 12 }}>
+                  {familyMembers.map((member) => (
+                    <div
+                      key={member.id}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        padding: 10,
+                        background: "rgba(255, 255, 255, 0.05)",
+                        borderRadius: 8,
+                        marginBottom: 8,
+                      }}
+                    >
+                      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                        <div
+                          style={{
+                            width: 32,
+                            height: 32,
+                            borderRadius: "50%",
+                            background: "#4B5563",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: "1rem",
+                          }}
+                        >
+                          👤
+                        </div>
+                        <span style={{ color: "#fff", fontSize: "0.9rem" }}>
+                          {member.name}
+                        </span>
+                      </div>
+                      <button
+                        style={{
+                          background: "transparent",
+                          border: "1px solid rgba(239, 68, 68, 0.5)",
+                          color: "#ef4444",
+                          padding: "4px 12px",
+                          borderRadius: 6,
+                          fontSize: "0.75rem",
+                          cursor: "pointer",
+                        }}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Invite Button (placeholder) */}
+              <button
+                style={{
+                  background: "linear-gradient(135deg, #FFD700 0%, #FFA500 100%)",
+                  color: "#111827",
+                  border: "none",
+                  borderRadius: 8,
+                  padding: "10px 16px",
+                  fontSize: "0.9rem",
+                  fontWeight: 700,
+                  width: "100%",
+                  cursor: "pointer",
+                }}
+              >
+                + Invite Member
+              </button>
+            </div>
+          )}
+        </div>
 
         <style>
           {`

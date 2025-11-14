@@ -15,7 +15,8 @@ export default function PathPage() {
     paths, 
     isLessonUnlocked, 
     premiumStatus, 
-    unlockPremium, 
+    purchaseIndividual,
+    purchaseFamily,
     lessonStates, 
     lockedLessons 
   } = useProgressStore();
@@ -198,11 +199,17 @@ export default function PathPage() {
         <PurchaseModal
           onClose={() => setShowModal(false)}
           onPurchase={(planType) => {
-            unlockPremium(planType); // Pass "individual" or "family"
-            setShowModal(false);
-            setPopupMsg("Alhamdulillah! Full access unlocked 🎉");
-            setShowPopup(true);
-            setTimeout(() => setShowPopup(false), 2500);
+            // Call appropriate purchase function
+            const result = planType === "individual" 
+              ? purchaseIndividual()
+              : purchaseFamily();
+            
+            if (result.success) {
+              setShowModal(false);
+              setPopupMsg("Alhamdulillah! Full access unlocked 🎉");
+              setShowPopup(true);
+              setTimeout(() => setShowPopup(false), 2500);
+            }
           }}
         />
       )}

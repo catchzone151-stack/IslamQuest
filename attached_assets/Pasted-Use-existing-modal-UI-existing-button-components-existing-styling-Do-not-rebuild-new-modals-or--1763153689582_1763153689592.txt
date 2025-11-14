@@ -1,0 +1,150 @@
+Use existing modal UI + existing button components + existing styling.
+Do not rebuild new modals or layouts unless required.
+
+
+---
+
+1. Payment Tiers
+
+Individual Plan (£4.99)
+
+Unlocks all lessons permanently
+
+Applies across device
+
+Stored in:
+
+localStorage now
+
+Supabase later
+
+
+
+Family Plan (£18 total, 6 users)
+
+Owner + 5 members
+
+Each user has separate XP, coins, streak, avatar, nickname
+
+All family users get everything unlocked
+
+
+
+---
+
+2. Upgrade Existing Premium Modal
+
+Use the same modal component from Prompt 1 and upgrade its content:
+
+Zayd mascot (keep existing animation)
+
+Clean navy + gold styling (existing theme)
+
+Buttons:
+
+“Unlock All – £4.99”
+
+“Family Access – £18 (6 users)”
+
+“Restore Purchase”
+
+
+
+Add simple benefit bullet points (use existing font styles):
+
+Unlock all lessons
+
+Lifetime access
+
+No ads
+
+Works across devices (Supabase-ready)
+
+
+No layout changes except text/buttons.
+
+
+---
+
+3. Payment Functions (placeholders only)
+
+Add the following functions but DO NOT integrate external services yet:
+
+purchaseIndividual()
+purchaseFamily()
+restorePurchases()
+
+On success:
+
+premiumStatus = "individual" or "family"
+familyPlanId = random generated string (if family)
+
+Then re-run unlock logic to unlock everything immediately.
+
+
+---
+
+4. Family Plan UI (use existing screens)
+
+Inside Profile → Premium section:
+
+Show user’s current plan
+
+If family plan:
+
+Show a list UI using existing card/avatar components
+
+Add placeholder buttons: Invite / Remove (UI only, no backend yet)
+
+
+Keep styling consistent with the rest of the app
+
+
+
+---
+
+5. Supabase/RevenueCat Preparation
+
+You MUST prepare the architecture:
+
+All premium checks go through
+premiumStatus & familyPlanId
+
+All lesson unlocking must still depend on
+isLessonUnlocked()
+
+
+DO NOT integrate anything yet; just prepare.
+
+
+---
+
+6. Do NOT change:
+
+Path content
+
+XP/streak logic
+
+Lesson maps
+
+Daily quest
+
+Revision
+
+Challenges
+
+Friends
+
+Navigation
+
+Theme
+
+
+Only update premium-related behaviour.
+
+
+---
+
+🟩 PROMPT 2 SUMMARY
+
+Upgrade premium modal → add payment tiers → add family UI → add placeholder purchase logic → connect to lock system → prepare for Supabase.

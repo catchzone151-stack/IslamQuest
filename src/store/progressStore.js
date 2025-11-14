@@ -45,6 +45,7 @@ export const useProgressStore = create((set, get) => ({
   // 💳 Premium System (Supabase-ready)
   premiumStatus: "free", // "free" | "individual" | "family"
   familyPlanId: null, // For family plan sync (future Supabase feature)
+  familyMembers: [], // Array of { id, name, avatar, xp } for family plan
   
   // 💎 Diamond Level System
   showLevelUpModal: false,
@@ -494,6 +495,109 @@ export const useProgressStore = create((set, get) => ({
       hasPremium: true,
     });
     get().saveProgress();
+  },
+
+  // 💳 PLACEHOLDER: Purchase Individual Plan (£4.99)
+  // Later: integrate with payment provider (Stripe/RevenueCat)
+  purchaseIndividual: () => {
+    console.log("🛒 Processing Individual Plan purchase (£4.99)...");
+    // Simulate payment success
+    // Clear family data when switching to individual plan
+    set({ 
+      premiumStatus: "individual",
+      hasPremium: true,
+      familyPlanId: null,
+      familyMembers: [],
+    });
+    get().saveProgress();
+    return { success: true, plan: "individual" };
+  },
+
+  // 💳 PLACEHOLDER: Purchase Family Plan (£18 for 6 users)
+  // Later: integrate with payment provider + Supabase for family sync
+  purchaseFamily: () => {
+    console.log("🛒 Processing Family Plan purchase (£18)...");
+    // Generate random family plan ID (will come from Supabase later)
+    const familyId = `family_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    
+    // Simulate payment success
+    set({ 
+      premiumStatus: "family",
+      hasPremium: true,
+      familyPlanId: familyId,
+      familyMembers: [], // Owner can invite up to 5 members
+    });
+    get().saveProgress();
+    return { success: true, plan: "family", familyId };
+  },
+
+  // 💳 PLACEHOLDER: Restore previous purchases
+  // Later: check with payment provider for existing purchases
+  restorePurchases: () => {
+    console.log("🔄 Checking for previous purchases...");
+    
+    // Read from localStorage to check for saved premium status
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) {
+      return { 
+        success: false, 
+        message: "No previous purchases found" 
+      };
+    }
+    
+    const savedData = JSON.parse(saved);
+    const savedPremiumStatus = savedData.premiumStatus || "free";
+    
+    if (savedPremiumStatus !== "free") {
+      // Rehydrate premium state from localStorage
+      set({ 
+        premiumStatus: savedPremiumStatus,
+        hasPremium: true,
+        familyPlanId: savedData.familyPlanId || null,
+        familyMembers: savedData.familyMembers || [],
+      });
+      get().saveProgress(); // Ensure consistency
+      
+      return { 
+        success: true, 
+        message: `${savedPremiumStatus === "individual" ? "Individual" : "Family"} plan restored successfully!`,
+        plan: savedPremiumStatus 
+      };
+    }
+    
+    return { 
+      success: false, 
+      message: "No previous purchases found" 
+    };
+  },
+
+  // 👨‍👩‍👧‍👦 PLACEHOLDER: Add family member
+  // Later: sync with Supabase family table
+  addFamilyMember: (memberData) => {
+    const { familyMembers } = get();
+    if (familyMembers.length >= 5) {
+      return { success: false, message: "Family plan is full (max 5 members)" };
+    }
+    
+    const newMember = {
+      id: `member_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      name: memberData.name || "Family Member",
+      avatar: memberData.avatar || null,
+      joinedAt: new Date().toISOString(),
+    };
+    
+    set({ familyMembers: [...familyMembers, newMember] });
+    get().saveProgress();
+    return { success: true, member: newMember };
+  },
+
+  // 👨‍👩‍👧‍👦 PLACEHOLDER: Remove family member
+  // Later: sync with Supabase
+  removeFamilyMember: (memberId) => {
+    const { familyMembers } = get();
+    set({ familyMembers: familyMembers.filter(m => m.id !== memberId) });
+    get().saveProgress();
+    return { success: true };
   },
 
   resetAllLocks: () => {
