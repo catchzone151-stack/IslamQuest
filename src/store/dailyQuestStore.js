@@ -159,6 +159,9 @@ export const useDailyQuestStore = create((set, get) => ({
     const coins = 20;
 
     useProgressStore.getState().addXPAndCoins(xp, coins);
+    
+    // 🛡️ Mark day as complete for streak tracking
+    useProgressStore.getState().markDayComplete();
 
     set({
       completed: true,

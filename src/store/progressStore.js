@@ -27,7 +27,10 @@ export const useProgressStore = create((set, get) => ({
   coins: 0,
   streak: 0,
   lastStudyDate: null,
-  freezeTokens: 1,
+  lastCompletedActivityDate: null, // Unified tracking for all activities
+  shieldCount: 0, // Streak freeze shields (max 3)
+  needsRepairPrompt: false, // Show repair modal on next open
+  brokenStreakValue: 0, // Store streak value before break for repair
   xpMultiplier: 0,
   level: 1, // Diamond level (1-10)
   lastLogin: null,
@@ -69,32 +72,196 @@ export const useProgressStore = create((set, get) => ({
     }
   },
 
-  // 🌙 Daily streak
-  triggerDailyStudy: () => {
+  // 🛡️ Mark day as complete (unified tracking for all activities)
+  // Called from: applyQuizResults, daily quest completion, challenge completion, event completion
+  markDayComplete: () => {
     const today = new Date().toDateString();
-    const { lastStudyDate, streak, freezeTokens } = get();
+    const { lastCompletedActivityDate, streak } = get();
 
-    if (lastStudyDate === today) return;
+    // Already counted today (but allow restart if streak is 0 from skip/break)
+    if (lastCompletedActivityDate === today && streak > 0) return;
 
-    if (!lastStudyDate) {
-      set({ streak: 1, lastStudyDate: today });
-    } else {
-      const diff = new Date(today) - new Date(lastStudyDate);
-      const oneDay = 86400000;
-
-      if (diff <= oneDay * 2) {
-        set({ streak: streak + 1, lastStudyDate: today });
-      } else {
-        if (freezeTokens > 0) {
-          set({ freezeTokens: freezeTokens - 1, lastStudyDate: today });
-        } else {
-          set({ streak: 1, lastStudyDate: today });
-        }
-      }
+    // First time user
+    if (!lastCompletedActivityDate) {
+      set({ 
+        streak: 1,
+        lastCompletedActivityDate: today,
+        lastStudyDate: today,
+      });
+      get().calculateXPMultiplier();
+      get().saveProgress();
+      return;
     }
 
+    // Calculate days since last activity
+    const lastDate = new Date(lastCompletedActivityDate);
+    const currentDate = new Date(today);
+    const diffTime = currentDate - lastDate;
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+    // Consecutive day - increment streak
+    if (diffDays === 1) {
+      set({ 
+        streak: streak + 1,
+        lastCompletedActivityDate: today,
+        lastStudyDate: today,
+      });
+      get().calculateXPMultiplier();
+      get().saveProgress();
+    } else if (diffDays === 0) {
+      // Same day - check if streak needs to be initialized (from skip repair)
+      if (streak === 0) {
+        set({ 
+          streak: 1,
+          lastCompletedActivityDate: today,
+          lastStudyDate: today,
+        });
+        get().calculateXPMultiplier();
+        get().saveProgress();
+      } else {
+        // Already counted today with active streak
+        set({ 
+          lastCompletedActivityDate: today,
+          lastStudyDate: today,
+        });
+        get().saveProgress();
+      }
+    } else {
+      // Gap > 1 day - streak was broken, start fresh
+      set({ 
+        streak: 1,
+        lastCompletedActivityDate: today,
+        lastStudyDate: today,
+      });
+      get().calculateXPMultiplier();
+      get().saveProgress();
+    }
+  },
+
+  // 🌙 Check streak status on app open
+  // This runs once per session to detect breaks and consume shields if needed
+  checkStreakOnAppOpen: () => {
+    const today = new Date().toDateString();
+    const { lastCompletedActivityDate, streak, shieldCount, needsRepairPrompt } = get();
+
+    // Already checked today or already needs repair
+    if (lastCompletedActivityDate === today || needsRepairPrompt) return;
+
+    // First time user
+    if (!lastCompletedActivityDate) {
+      return;
+    }
+
+    // Calculate days since last activity
+    const lastDate = new Date(lastCompletedActivityDate);
+    const currentDate = new Date(today);
+    const diffTime = currentDate - lastDate;
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+    // Streak is safe (activity yesterday or today)
+    if (diffDays <= 1) {
+      return;
+    }
+
+    // Calculate how many shields needed to cover the gap
+    // If missed 2 days, need 1 shield. If missed 3 days, need 2 shields, etc.
+    const shieldsNeeded = diffDays - 1;
+
+    // Try to use shields to cover the gap
+    if (shieldCount >= shieldsNeeded) {
+      // Enough shields - consume them and preserve streak
+      // Set lastCompletedActivityDate to yesterday so next activity increments properly
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yesterdayStr = yesterday.toDateString();
+      
+      set({ 
+        shieldCount: shieldCount - shieldsNeeded,
+        lastCompletedActivityDate: yesterdayStr,
+        lastStudyDate: yesterdayStr, // Keep for consistency
+      });
+      get().saveProgress();
+      return;
+    }
+
+    // No shields - streak breaks
+    set({ 
+      brokenStreakValue: streak,
+      streak: 0,
+      needsRepairPrompt: true,
+    });
     get().calculateXPMultiplier();
     get().saveProgress();
+  },
+
+  // 🛡️ Purchase streak freeze shield
+  purchaseShield: () => {
+    const { coins, shieldCount } = get();
+    const SHIELD_COST = 100;
+    const MAX_SHIELDS = 3;
+
+    // Already at max
+    if (shieldCount >= MAX_SHIELDS) {
+      return { success: false, reason: "max" };
+    }
+
+    // Not enough coins
+    if (coins < SHIELD_COST) {
+      return { success: false, reason: "insufficient_coins" };
+    }
+
+    // Purchase successful
+    set({ 
+      coins: coins - SHIELD_COST,
+      shieldCount: shieldCount + 1,
+    });
+    get().saveProgress();
+    return { success: true };
+  },
+
+  // 🔧 Repair broken streak
+  repairStreak: () => {
+    const { coins, brokenStreakValue, shieldCount } = get();
+    const REPAIR_COST = 200;
+    const MAX_SHIELDS = 3;
+
+    // Not enough coins
+    if (coins < REPAIR_COST) {
+      return { success: false, reason: "insufficient_coins" };
+    }
+
+    // Repair successful
+    const newShieldCount = Math.min(shieldCount + 1, MAX_SHIELDS);
+    set({ 
+      coins: coins - REPAIR_COST,
+      streak: brokenStreakValue,
+      shieldCount: newShieldCount,
+      needsRepairPrompt: false,
+      brokenStreakValue: 0,
+      lastCompletedActivityDate: new Date().toDateString(),
+    });
+    get().calculateXPMultiplier();
+    get().saveProgress();
+    return { success: true, giftedShield: true };
+  },
+
+  // ❌ Skip streak repair
+  skipRepair: () => {
+    const today = new Date().toDateString();
+    set({ 
+      needsRepairPrompt: false,
+      brokenStreakValue: 0,
+      streak: 0,
+      lastCompletedActivityDate: today,
+      lastStudyDate: today,
+    });
+    get().calculateXPMultiplier();
+    get().saveProgress();
+  },
+
+  // 🌙 Legacy function - kept for backward compatibility
+  triggerDailyStudy: () => {
+    get().markDayComplete();
   },
 
   // ⭐ XP multiplier
@@ -220,6 +387,10 @@ export const useProgressStore = create((set, get) => ({
 
     // unlock next lesson
     get().unlockLesson(pathId, lessonId + 1);
+    
+    // 🛡️ Mark day as complete for streak tracking
+    get().markDayComplete();
+    
     get().saveProgress();
   },
 

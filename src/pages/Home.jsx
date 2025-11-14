@@ -27,6 +27,8 @@ import { useDailyQuestStore } from "../store/dailyQuestStore";
 
 // Components
 import DailyQuestCard from "../components/dailyquest/DailyQuestCard";
+import PurchaseStreakFreezeModal from "../components/PurchaseStreakFreezeModal";
+import RepairStreakModal from "../components/RepairStreakModal";
 
 // Mascots & UI assets
 import Zayd from "../assets/mascots/mascot_zayd_default.webp";
@@ -47,13 +49,20 @@ export default function Home() {
   // Which "page" of the carousel we're on (0 / 1 / 2)
   const [page, setPage] = useState(0);
 
+  // Modal states
+  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
+  const [showRepairModal, setShowRepairModal] = useState(false);
+
   // Pull live data from the store
   const {
     xp,
     coins,
     streak,
+    shieldCount,
+    needsRepairPrompt,
     paths,
     triggerDailyStudy,
+    checkStreakOnAppOpen,
   } = useProgressStore();
 
   // Load Daily Quest state from localStorage on mount
@@ -61,6 +70,18 @@ export default function Home() {
   useEffect(() => {
     loadDailyQuest();
   }, [loadDailyQuest]);
+
+  // Check streak status on mount and show repair modal if needed
+  useEffect(() => {
+    checkStreakOnAppOpen();
+  }, [checkStreakOnAppOpen]);
+
+  // Show repair modal if needed
+  useEffect(() => {
+    if (needsRepairPrompt) {
+      setShowRepairModal(true);
+    }
+  }, [needsRepairPrompt]);
 
   /**
    * Sync carousel scroll -> page indicator dots
@@ -234,7 +255,7 @@ export default function Home() {
             </span>
           </div>
 
-          {/* Shield teaser / shop teaser */}
+          {/* Streak Freeze Shield */}
           <div
             style={{
               display: "flex",
@@ -245,8 +266,8 @@ export default function Home() {
             <img
               src={ui_shield}
               alt="Shield"
-              title="Shield Shop"
-              onClick={() => alert("Shield shop coming soon")}
+              title="Streak Freeze"
+              onClick={() => setShowPurchaseModal(true)}
               style={{
                 width: 44,
                 height: 44,
@@ -281,7 +302,7 @@ export default function Home() {
                 textShadow: "0 2px 4px rgba(0,0,0,0.55)",
               }}
             >
-              0
+              {shieldCount}
             </span>
           </div>
         </div>
@@ -597,6 +618,23 @@ export default function Home() {
           backface-visibility: hidden;
         }
       `}</style>
+
+      {/* Purchase Streak Freeze Modal */}
+      {showPurchaseModal && (
+        <PurchaseStreakFreezeModal
+          onClose={() => setShowPurchaseModal(false)}
+          onSuccess={() => {
+            setShowPurchaseModal(false);
+          }}
+        />
+      )}
+
+      {/* Repair Streak Modal */}
+      {showRepairModal && (
+        <RepairStreakModal
+          onClose={() => setShowRepairModal(false)}
+        />
+      )}
     </div>
   );
 }

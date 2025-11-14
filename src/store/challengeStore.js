@@ -214,6 +214,10 @@ export const useChallengeStore = create((set, get) => ({
     } else {
       winner = "draw";
     }
+    
+    // 🛡️ Mark day as complete for streak tracking
+    const { useProgressStore } = require("./progressStore");
+    useProgressStore.getState().markDayComplete();
 
     set(state => ({
       challenges: state.challenges.map(c =>

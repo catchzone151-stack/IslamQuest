@@ -8,18 +8,21 @@ import EditNameInput from "../components/EditNameInput";
 import EditAvatarModal from "../components/EditAvatarModal";
 import { LevelBadge } from "../components/LevelBadge";
 import { ViewAllLevelsModal } from "../components/ViewAllLevelsModal";
+import PurchaseStreakFreezeModal from "../components/PurchaseStreakFreezeModal";
 import { getCurrentLevel, getXPProgress } from "../utils/diamondLevels";
 import ui_xp from "../assets/ui/ui_xp.webp";
 import ui_coin from "../assets/ui/ui_coin.webp";
 import ui_streak from "../assets/ui/ui_streak.webp";
+import ui_shield from "../assets/ui/ui_shield.webp";
 
 export default function Profile() {
   const { name, avatar, setName, setAvatar } = useUserStore();
-  const { xp, coins, streak } = useProgressStore();
+  const { xp, coins, streak, shieldCount } = useProgressStore();
 
   const [showEditName, setShowEditName] = useState(false);
   const [showEditAvatar, setShowEditAvatar] = useState(false);
   const [showAllLevels, setShowAllLevels] = useState(false);
+  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
 
   const currentLevel = getCurrentLevel(xp);
   const xpProgress = getXPProgress(xp);
@@ -182,7 +185,37 @@ export default function Profile() {
             value={`${streak} 🔥`}
             color="#FF6347"
           />
+          <ProfileCard
+            icon={ui_shield}
+            label="Shields"
+            value={`${shieldCount}/3 🛡️`}
+            color="#4fd5ff"
+          />
         </div>
+
+        {/* === Add Freeze Button === */}
+        <button
+          onClick={() => setShowPurchaseModal(true)}
+          style={{
+            background: "linear-gradient(135deg, rgba(79, 213, 255, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%)",
+            border: "1px solid rgba(79, 213, 255, 0.4)",
+            borderRadius: 12,
+            padding: "12px 24px",
+            color: "#4fd5ff",
+            fontWeight: "600",
+            cursor: "pointer",
+            fontSize: "0.95rem",
+            marginTop: 20,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 8,
+            margin: "20px auto 0",
+          }}
+        >
+          <span>🛡️</span>
+          <span>Add Streak Freeze</span>
+        </button>
 
         <style>
           {`
@@ -213,6 +246,15 @@ export default function Profile() {
         <ViewAllLevelsModal
           currentXP={xp}
           onClose={() => setShowAllLevels(false)}
+        />
+      )}
+
+      {showPurchaseModal && (
+        <PurchaseStreakFreezeModal
+          onClose={() => setShowPurchaseModal(false)}
+          onSuccess={() => {
+            setShowPurchaseModal(false);
+          }}
         />
       )}
     </ScreenContainer>

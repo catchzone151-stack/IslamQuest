@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { useProgressStore } from "./progressStore";
 
 // Stable empty array for leaderboard fallback (prevents reference changes)
 export const EMPTY_LEADERBOARD = Object.freeze([]);
@@ -157,6 +158,9 @@ export const useEventsStore = create(
         
         // Generate provisional rank (mock for now, will use real leaderboard)
         const provisionalRank = Math.floor(Math.random() * 50) + 1;
+        
+        // 🛡️ Mark day as complete for streak tracking
+        useProgressStore.getState().markDayComplete();
         
         set({
           weeklyEntries: {
