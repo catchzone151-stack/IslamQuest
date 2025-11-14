@@ -10,6 +10,7 @@ import { LevelBadge } from "../components/LevelBadge";
 import { ViewAllLevelsModal } from "../components/ViewAllLevelsModal";
 import PurchaseStreakFreezeModal from "../components/PurchaseStreakFreezeModal";
 import PurchaseModal from "../components/PurchaseModal";
+import InviteFamilyMemberModal from "../components/InviteFamilyMemberModal";
 import { getCurrentLevel, getXPProgress } from "../utils/diamondLevels";
 import ui_xp from "../assets/ui/ui_xp.webp";
 import ui_coin from "../assets/ui/ui_coin.webp";
@@ -27,6 +28,8 @@ export default function Profile() {
     familyMembers,
     purchaseIndividual,
     purchaseFamily,
+    addFamilyMember,
+    removeFamilyMember,
   } = useProgressStore();
 
   const [showEditName, setShowEditName] = useState(false);
@@ -34,6 +37,7 @@ export default function Profile() {
   const [showAllLevels, setShowAllLevels] = useState(false);
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
   const [showPremiumModal, setShowPremiumModal] = useState(false);
+  const [showInviteModal, setShowInviteModal] = useState(false);
 
   const currentLevel = getCurrentLevel(xp);
   const xpProgress = getXPProgress(xp);
@@ -355,6 +359,11 @@ export default function Profile() {
                         </span>
                       </div>
                       <button
+                        onClick={() => {
+                          if (window.confirm(`Remove ${member.name} from your family plan?`)) {
+                            removeFamilyMember(member.id);
+                          }
+                        }}
                         style={{
                           background: "transparent",
                           border: "1px solid rgba(239, 68, 68, 0.5)",
@@ -372,22 +381,25 @@ export default function Profile() {
                 </div>
               )}
 
-              {/* Invite Button (placeholder) */}
-              <button
-                style={{
-                  background: "linear-gradient(135deg, #FFD700 0%, #FFA500 100%)",
-                  color: "#111827",
-                  border: "none",
-                  borderRadius: 8,
-                  padding: "10px 16px",
-                  fontSize: "0.9rem",
-                  fontWeight: 700,
-                  width: "100%",
-                  cursor: "pointer",
-                }}
-              >
-                + Invite Member
-              </button>
+              {/* Invite Button */}
+              {familyMembers.length < 5 && (
+                <button
+                  onClick={() => setShowInviteModal(true)}
+                  style={{
+                    background: "linear-gradient(135deg, #FFD700 0%, #FFA500 100%)",
+                    color: "#111827",
+                    border: "none",
+                    borderRadius: 8,
+                    padding: "10px 16px",
+                    fontSize: "0.9rem",
+                    fontWeight: 700,
+                    width: "100%",
+                    cursor: "pointer",
+                  }}
+                >
+                  + Invite Member
+                </button>
+              )}
             </div>
           )}
         </div>
@@ -445,6 +457,21 @@ export default function Profile() {
             if (result.success) {
               setShowPremiumModal(false);
               alert(`Alhamdulillah! ${planType === "individual" ? "Individual" : "Family"} plan activated! 🎉`);
+            }
+          }}
+        />
+      )}
+
+      {showInviteModal && (
+        <InviteFamilyMemberModal
+          isOpen={showInviteModal}
+          onClose={() => setShowInviteModal(false)}
+          onInvite={(memberName) => {
+            const result = addFamilyMember({ name: memberName });
+            if (result.success) {
+              alert(`Invitation sent to ${memberName}! 📧`);
+            } else {
+              alert(result.message);
             }
           }}
         />
