@@ -57,26 +57,27 @@ export default function GlobalEvents() {
   const handleEventClick = (event) => {
     const entered = hasEntered(event.id);
     
-    // If results unlocked and user entered, show results modal
-    if (resultsUnlocked && entered) {
-      setSelectedEvent(event);
-      setShowResultsModal(true);
-      return;
-    }
-    
     // Check if user has enough coins
     if (coins < 25) {
       setShowInsufficientCoinsModal(true);
       return;
     }
     
-    // Check if already entered (skip in dev mode to allow unlimited retries)
-    if (!import.meta.env.DEV && entered) {
+    // In dev mode, always allow quiz navigation (for testing)
+    // In production, block if already entered (unless results are unlocked)
+    if (!import.meta.env.DEV && entered && !resultsUnlocked) {
       alert("You've already entered this event this week! Results unlock Thursday 22:00 GMT.");
       return;
     }
     
-    // Navigate to event quiz
+    // If results unlocked and user entered (production only), show results modal
+    if (!import.meta.env.DEV && resultsUnlocked && entered) {
+      setSelectedEvent(event);
+      setShowResultsModal(true);
+      return;
+    }
+    
+    // Navigate to event quiz (dev mode always goes here)
     navigate(`/events/${event.id}`);
   };
 
@@ -138,7 +139,7 @@ export default function GlobalEvents() {
               {/* Status Badge */}
               {entered && (
                 <div className="event-status-badge">
-                  {hasResults ? '🏆 View Results' : '✅ Entered'}
+                  ✅ Entered
                 </div>
               )}
               
