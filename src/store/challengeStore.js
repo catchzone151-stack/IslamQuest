@@ -265,10 +265,8 @@ export const useChallengeStore = create((set, get) => ({
       }
     });
 
-    // Filter hardest questions
-    const ultraHard = allQuestions.filter(() => Math.random() > 0.7); // Only 30% pass
-    const shuffled = ultraHard.sort(() => Math.random() - 0.5);
-    
+    // Shuffle and take the hardest 5
+    const shuffled = allQuestions.sort(() => Math.random() - 0.5);
     return shuffled.slice(0, BOSS_LEVEL.questionCount);
   },
 

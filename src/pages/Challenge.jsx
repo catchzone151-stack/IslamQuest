@@ -246,6 +246,7 @@ export default function Challenge() {
             cursor: "pointer",
             transition: "all 0.3s ease",
             position: "relative",
+            opacity: level >= BOSS_LEVEL.minLevel ? 1 : 0.7,
             animation: level >= BOSS_LEVEL.minLevel ? "bossGlow 2s ease-in-out infinite" : "none"
           }}
         >
