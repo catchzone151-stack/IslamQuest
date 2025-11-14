@@ -71,6 +71,19 @@
   margin-bottom: 24px;
 }
 
+/* Auto-advance Hint */
+.quiz-auto-advance-hint {
+  text-align: center;
+  color: #10b981;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-top: 20px;
+  padding: 12px;
+  background: rgba(16, 185, 129, 0.1);
+  border-radius: 10px;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
 /* Answer Options */
 .quiz-options {
   display: flex;

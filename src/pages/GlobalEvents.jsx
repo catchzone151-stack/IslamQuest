@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useEventsStore } from "../store/eventsStore";
 import { useProgressStore } from "../store/progressStore";
 import FinalResultsModal from "../components/events/FinalResultsModal";
+import InsufficientCoinsModal from "../components/events/InsufficientCoinsModal";
 import "./GlobalEvents.css";
 
 export default function GlobalEvents() {
@@ -24,6 +25,7 @@ export default function GlobalEvents() {
   const [timeLeft, setTimeLeft] = useState("");
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [showResultsModal, setShowResultsModal] = useState(false);
+  const [showInsufficientCoinsModal, setShowInsufficientCoinsModal] = useState(false);
 
   // Check for week reset on mount
   useEffect(() => {
@@ -64,7 +66,7 @@ export default function GlobalEvents() {
     
     // Check if user has enough coins
     if (coins < 25) {
-      alert("You need 25 coins to enter this event. Complete more lessons to earn coins!");
+      setShowInsufficientCoinsModal(true);
       return;
     }
     
@@ -172,6 +174,13 @@ export default function GlobalEvents() {
             setShowResultsModal(false);
             setSelectedEvent(null);
           }}
+        />
+      )}
+
+      {/* Insufficient Coins Modal */}
+      {showInsufficientCoinsModal && (
+        <InsufficientCoinsModal
+          onClose={() => setShowInsufficientCoinsModal(false)}
         />
       )}
     </div>

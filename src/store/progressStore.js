@@ -156,6 +156,13 @@ export const useProgressStore = create((set, get) => ({
     return true; // Success
   },
 
+  // 🛠️ Dev helper - grant coins for testing
+  grantCoins: (amount) => {
+    set((s) => ({ coins: s.coins + amount }));
+    get().saveProgress();
+    console.log(`✅ Granted ${amount} coins! New balance:`, get().coins);
+  },
+
   // 🏆 Certificates
   earnCertificate: (id, title) => {
     const { certificates } = get();

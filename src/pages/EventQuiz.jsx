@@ -28,6 +28,9 @@ export default function EventQuiz() {
   const [timeLeft, setTimeLeft] = useState(60); // 60 seconds total
   const [showProvisionalResults, setShowProvisionalResults] = useState(false);
   const [quizScore, setQuizScore] = useState(0);
+  const [isCompleting, setIsCompleting] = useState(false);
+  const autoAdvanceTimeoutRef = React.useRef(null);
+  const selectedAnswerRef = React.useRef(null);
 
   // Redirect if invalid event or already entered
   useEffect(() => {
@@ -57,8 +60,18 @@ export default function EventQuiz() {
     const timer = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 1) {
-          // Time's up! Auto-submit
-          handleQuizComplete();
+          // Time's up! Auto-submit with current answers
+          // Build final answer if one is selected
+          let finalAnswers = [...userAnswers];
+          if (selectedAnswerRef.current !== null) {
+            const isCorrect = selectedAnswerRef.current === questions[currentQuestionIndex].correct;
+            finalAnswers.push({
+              questionId: questions[currentQuestionIndex].id,
+              selectedAnswer: selectedAnswerRef.current,
+              correct: isCorrect
+            });
+          }
+          handleQuizComplete(finalAnswers);
           return 0;
         }
         return prev - 1;
@@ -66,7 +79,7 @@ export default function EventQuiz() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [quizStarted, timeLeft]);
+  }, [quizStarted, timeLeft, userAnswers, questions, currentQuestionIndex]);
 
   const handleStartQuiz = () => {
     setShowInfoModal(false);
@@ -100,45 +113,67 @@ export default function EventQuiz() {
   };
 
   const handleAnswerSelect = (answerIndex) => {
+    if (selectedAnswer !== null || isCompleting) return; // Prevent double-selection
+    
     setSelectedAnswer(answerIndex);
+    selectedAnswerRef.current = answerIndex; // Store in ref for timeout closure
+    
+    // Auto-advance after 500ms for better UX
+    autoAdvanceTimeoutRef.current = setTimeout(() => {
+      handleNextQuestion();
+    }, 500);
   };
 
   const handleNextQuestion = () => {
-    // Save answer
-    const isCorrect = selectedAnswer === questions[currentQuestionIndex].correct;
-    setUserAnswers([...userAnswers, {
+    const answer = selectedAnswerRef.current;
+    if (answer === null || isCompleting) return; // Safety check using ref
+    
+    // Clear any pending auto-advance
+    if (autoAdvanceTimeoutRef.current) {
+      clearTimeout(autoAdvanceTimeoutRef.current);
+      autoAdvanceTimeoutRef.current = null;
+    }
+    
+    // Build new answer entry
+    const isCorrect = answer === questions[currentQuestionIndex].correct;
+    const newAnswer = {
       questionId: questions[currentQuestionIndex].id,
-      selectedAnswer,
+      selectedAnswer: answer,
       correct: isCorrect
-    }]);
+    };
+    
+    // Build complete answers array
+    const updatedAnswers = [...userAnswers, newAnswer];
+    setUserAnswers(updatedAnswers);
 
     // Move to next or finish
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setSelectedAnswer(null);
+      selectedAnswerRef.current = null; // Reset ref
     } else {
-      handleQuizComplete();
+      // Pass complete answers to avoid async setState issue
+      handleQuizComplete(updatedAnswers);
     }
   };
 
-  const handleQuizComplete = () => {
-    setQuizStarted(false);
+  const handleQuizComplete = (finalAnswers = userAnswers) => {
+    if (isCompleting) return; // Prevent double-completion
+    setIsCompleting(true);
     
-    // Calculate final score
-    const finalAnswers = [...userAnswers];
-    if (selectedAnswer !== null) {
-      const isCorrect = selectedAnswer === questions[currentQuestionIndex].correct;
-      finalAnswers.push({
-        questionId: questions[currentQuestionIndex].id,
-        selectedAnswer,
-        correct: isCorrect
-      });
+    // Clear any pending auto-advance
+    if (autoAdvanceTimeoutRef.current) {
+      clearTimeout(autoAdvanceTimeoutRef.current);
+      autoAdvanceTimeoutRef.current = null;
     }
     
+    setQuizStarted(false);
+    
+    // Calculate final score using passed-in answers (includes last answer)
     const score = finalAnswers.filter(a => a.correct).length;
     setQuizScore(score);
     
-    // Save entry to store
+    // Save entry to store with complete answers
     enterEvent(eventId, score, finalAnswers);
     
     // Show provisional results
@@ -198,6 +233,7 @@ export default function EventQuiz() {
                   key={index}
                   className={`quiz-option ${selectedAnswer === index ? 'selected' : ''}`}
                   onClick={() => handleAnswerSelect(index)}
+                  disabled={selectedAnswer !== null || isCompleting}
                 >
                   <span className="option-letter">{String.fromCharCode(65 + index)}</span>
                   <span className="option-text">{option}</span>
@@ -205,14 +241,10 @@ export default function EventQuiz() {
               ))}
             </div>
 
-            {/* Next Button */}
-            <button
-              className="quiz-next-btn"
-              onClick={handleNextQuestion}
-              disabled={selectedAnswer === null}
-            >
-              {currentQuestionIndex < questions.length - 1 ? 'Next Question →' : 'Finish Quiz'}
-            </button>
+            {/* Auto-advancing - no Next button needed */}
+            <p className="quiz-auto-advance-hint">
+              {selectedAnswer === null ? 'Select your answer...' : 'Moving to next question...'}
+            </p>
           </div>
 
           {/* Mascot */}
