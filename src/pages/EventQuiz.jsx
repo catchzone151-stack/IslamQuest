@@ -32,18 +32,13 @@ export default function EventQuiz() {
   const autoAdvanceTimeoutRef = React.useRef(null);
   const selectedAnswerRef = React.useRef(null);
 
-  // Redirect if invalid event or already entered
+  // Redirect if invalid event
   useEffect(() => {
     if (!event) {
       navigate("/events");
       return;
     }
-    
-    if (hasEntered(eventId)) {
-      alert("You've already entered this event!");
-      navigate("/events");
-    }
-  }, [event, eventId, hasEntered, navigate]);
+  }, [event, navigate]);
 
   // No longer needed - coins checked in handleStartQuiz before countdown
 
@@ -93,7 +88,9 @@ export default function EventQuiz() {
     
     // Critical validations AFTER countdown but BEFORE quiz starts
     // This ensures atomicity: if checks fail, no coins lost
-    if (hasEntered(eventId)) {
+    // In dev mode, skip this check to allow unlimited retries
+    // In production, this prevents duplicate entries and coin deductions
+    if (!import.meta.env.DEV && hasEntered(eventId)) {
       alert("You've already entered this event!");
       navigate("/events");
       return;

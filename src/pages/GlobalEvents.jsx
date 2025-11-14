@@ -70,8 +70,8 @@ export default function GlobalEvents() {
       return;
     }
     
-    // Check if already entered
-    if (entered) {
+    // Check if already entered (skip in dev mode to allow unlimited retries)
+    if (!import.meta.env.DEV && entered) {
       alert("You've already entered this event this week! Results unlock Thursday 22:00 GMT.");
       return;
     }
@@ -157,9 +157,14 @@ export default function GlobalEvents() {
                 <span className="event-leaderboard-icon">📊</span>
               </div>
 
+              {/* New Event Badge (for un-entered events) */}
+              {!entered && (
+                <div className="new-event-badge">NEW!</div>
+              )}
+              
               {/* New Results Indicator */}
               {hasResults && !viewed && (
-                <div className="new-results-badge">NEW!</div>
+                <div className="new-results-badge">RESULTS!</div>
               )}
             </div>
           );

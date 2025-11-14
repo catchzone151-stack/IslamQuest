@@ -8,8 +8,8 @@ import { LevelBadge } from "../LevelBadge";
 import "./EventModals.css";
 
 export default function FinalResultsModal({ event, onClose }) {
-  // Unified selector with readiness flags
-  const { weekId, entry, leaderboard } = useEventsStore(
+  // Unified selector with readiness flags and stable function references
+  const { weekId, entry, leaderboard, generateMockLeaderboard, grantRewardsForEvent } = useEventsStore(
     (state) => {
       const weekId = state.currentWeekId;
       const entry = state.weeklyEntries[event.id] ?? null;
@@ -18,13 +18,12 @@ export default function FinalResultsModal({ event, onClose }) {
         weekId,
         entry,
         leaderboard,
+        generateMockLeaderboard: state.generateMockLeaderboard,
+        grantRewardsForEvent: state.grantRewardsForEvent,
       };
     },
     shallow
   );
-  
-  const generateMockLeaderboard = useEventsStore(state => state.generateMockLeaderboard);
-  const grantRewardsForEvent = useEventsStore(state => state.grantRewardsForEvent);
   
   const { addXP, addCoins, xp } = useProgressStore();
   const { nickname, avatar } = useUserStore();
