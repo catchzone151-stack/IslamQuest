@@ -16,6 +16,7 @@ import QuizScreen from "./screens/QuizScreen.jsx";
 
 // ✅ Components & stores
 import BottomNav from "./components/BottomNav.jsx";
+import ScrollToTop from "./components/ScrollToTop.jsx";
 import { useUserStore } from "./store/useUserStore";
 import { useProgressStore } from "./store/progressStore";
 import { ZaydLevelUpPopup } from "./components/ZaydLevelUpPopup";
@@ -97,6 +98,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <div
         style={{
           background:
