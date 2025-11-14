@@ -2,7 +2,7 @@
 import { create } from "zustand";
 import { getCurrentLevel, checkLevelUp } from "../utils/diamondLevels";
 
-const STORAGE_KEY = "islamQuestProgress_v3";
+const STORAGE_KEY = "islamQuestProgress_v4";
 
 const DEFAULT_PATHS = [
   { id: 1, title: "Names of Allah", progress: 0, totalLessons: 104, completedLessons: 0, status: "available" },
