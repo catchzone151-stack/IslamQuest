@@ -84,13 +84,12 @@ export default function EventQuiz() {
   };
 
   const handleCountdownComplete = () => {
-    setShowCountdown(false);
-    
     // Critical validations AFTER countdown but BEFORE quiz starts
     // This ensures atomicity: if checks fail, no coins lost
     // In dev mode, skip this check to allow unlimited retries
     // In production, this prevents duplicate entries and coin deductions
     if (!import.meta.env.DEV && hasEntered(eventId)) {
+      setShowCountdown(false);
       alert("You've already entered this event!");
       navigate("/events");
       return;
@@ -99,6 +98,7 @@ export default function EventQuiz() {
     // Load questions FIRST to validate
     const eventQuestions = getEventQuestions(eventId, 10);
     if (!eventQuestions || eventQuestions.length === 0) {
+      setShowCountdown(false);
       alert("Error loading quiz questions. Please try again.");
       navigate("/events");
       return;
@@ -107,6 +107,7 @@ export default function EventQuiz() {
     // Deduct coins ONLY after confirming questions loaded
     const success = removeCoins(25);
     if (!success) {
+      setShowCountdown(false);
       alert("You don't have enough coins! You need 25 coins to enter.");
       navigate("/events");
       return;
@@ -115,6 +116,7 @@ export default function EventQuiz() {
     // Start quiz FIRST (atomic with coin deduction)
     setQuestions(eventQuestions);
     setQuizStarted(true);
+    setShowCountdown(false); // Hide countdown only after quiz is ready
     
     // Record entry IMMEDIATELY after quiz starts (transactional integrity)
     // This prevents coin loss if user refreshes during quiz
