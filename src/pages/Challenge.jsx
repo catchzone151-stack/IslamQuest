@@ -44,7 +44,7 @@ export default function Challenge() {
             "linear-gradient(135deg, rgba(212,175,55,0.25), rgba(16,185,129,0.2))",
           border: "2px solid rgba(212,175,55,0.5)",
           borderRadius: 18,
-          padding: 20,
+          padding: 16,
           boxShadow: "0 0 30px rgba(212,175,55,0.4)",
           cursor: "pointer",
           transition: "all 0.3s ease",
@@ -58,45 +58,16 @@ export default function Challenge() {
           e.currentTarget.style.boxShadow = "0 0 30px rgba(212,175,55,0.4)";
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
-          <span style={{ fontSize: "2.5rem" }}>🌍</span>
-          <div>
-            <h2 style={{ color: "#d4af37", margin: "0 0 4px", fontSize: "1.4rem", fontWeight: 700 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <span style={{ fontSize: "2rem" }}>🌍</span>
+            <h2 style={{ color: "#d4af37", margin: 0, fontSize: "1.3rem", fontWeight: 700 }}>
               Global Events
             </h2>
-            <p style={{ color: "#10b981", margin: 0, fontSize: "0.9rem", fontWeight: 600 }}>
-              🔴 LIVE NOW • Weekly Competition
-            </p>
           </div>
-        </div>
-        
-        <p style={{ opacity: 0.95, lineHeight: 1.6, marginBottom: 12 }}>
-          Compete with Muslims worldwide in 4 themed events. Answer 10 hard questions, climb the leaderboard, and earn amazing rewards based on your rank!
-        </p>
-
-        <div style={{ 
-          display: "grid", 
-          gridTemplateColumns: "1fr 1fr", 
-          gap: 8, 
-          marginBottom: 16,
-          fontSize: "0.85rem"
-        }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <span>🕌</span>
-            <span>Pillar Clash</span>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <span>✨</span>
-            <span>Names Mastery</span>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <span>🌙</span>
-            <span>Faith Test</span>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <span>📖</span>
-            <span>Seerah Challenge</span>
-          </div>
+          <p style={{ color: "#10b981", margin: 0, fontSize: "0.85rem", fontWeight: 600 }}>
+            🔴 LIVE NOW
+          </p>
         </div>
 
         <button
@@ -104,10 +75,10 @@ export default function Challenge() {
             width: "100%",
             background: "linear-gradient(135deg, #10b981, #059669)",
             border: "none",
-            padding: "14px 20px",
+            padding: "12px 18px",
             borderRadius: 12,
             fontWeight: 700,
-            fontSize: "1.05rem",
+            fontSize: "1rem",
             cursor: "pointer",
             color: "white",
             boxShadow: "0 4px 15px rgba(16,185,129,0.3)",
