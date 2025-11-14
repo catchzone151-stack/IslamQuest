@@ -54,7 +54,8 @@ export default function FinalResultsModal({ event, onClose }) {
       generateMockLeaderboard(event.id, entry);
       hasRequestedLeaderboard.current = true;
     }
-  }, [event.id, entry, hasLeaderboard, generateMockLeaderboard]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [event.id, entry, hasLeaderboard]);
   
   // Grant rewards once when userRank exists
   useEffect(() => {
@@ -68,7 +69,8 @@ export default function FinalResultsModal({ event, onClose }) {
       
       hasGrantedRewards.current = true;
     }
-  }, [event.id, weekId, userRank, entry, grantRewardsForEvent, addXP, addCoins]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [event.id, weekId, userRank, entry]);
   
   // Get Zayd message based on rank
   const getZaydMessage = () => {
