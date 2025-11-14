@@ -1,6 +1,16 @@
 import React from "react";
+import assets from "../assets/assets";
 
-export default function EditAvatarModal({ avatars, onSelect, onClose }) {
+export default function EditAvatarModal({ isOpen, onClose, currentAvatar, onSave }) {
+  if (!isOpen) return null;
+
+  const avatarList = Object.values(assets.avatars);
+
+  const handleSelect = (avatar) => {
+    onSave(avatar);
+    onClose();
+  };
+
   return (
     <div
       style={{
@@ -23,21 +33,35 @@ export default function EditAvatarModal({ avatars, onSelect, onClose }) {
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, 80px)",
           gap: "10px",
+          maxWidth: "90vw",
+          maxHeight: "80vh",
+          overflowY: "auto",
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {avatars.map((a, i) => (
+        {avatarList.map((a, i) => (
           <img
             key={i}
             src={a}
             alt="avatar"
-            onClick={() => onSelect(a)}
+            onClick={() => handleSelect(a)}
             style={{
               width: "80px",
               height: "80px",
               borderRadius: "50%",
               cursor: "pointer",
-              border: "2px solid transparent",
+              border: currentAvatar === a ? "3px solid #FFD700" : "2px solid transparent",
+              transition: "all 0.2s",
+            }}
+            onMouseOver={(e) => {
+              if (currentAvatar !== a) {
+                e.target.style.border = "2px solid #FFD700";
+              }
+            }}
+            onMouseOut={(e) => {
+              if (currentAvatar !== a) {
+                e.target.style.border = "2px solid transparent";
+              }
             }}
           />
         ))}
