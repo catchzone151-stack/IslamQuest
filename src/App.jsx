@@ -13,6 +13,8 @@ import Profile from "./pages/Profile.jsx";
 import Revise from "./pages/Revise.jsx";
 import Login from "./pages/Login.jsx";
 import QuizScreen from "./screens/QuizScreen.jsx";
+import GlobalEvents from "./pages/GlobalEvents.jsx";
+import EventQuiz from "./pages/EventQuiz.jsx";
 
 // ✅ Components & stores
 import BottomNav from "./components/BottomNav.jsx";
@@ -132,6 +134,8 @@ export default function App() {
 
               <Route path="/challenge" element={<Challenge />} />
               <Route path="/daily" element={<DailyChallenge />} />
+              <Route path="/events" element={<GlobalEvents />} />
+              <Route path="/events/:eventId" element={<EventQuiz />} />
               <Route path="/friends" element={<Friends />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/revise" element={<Revise />} />
