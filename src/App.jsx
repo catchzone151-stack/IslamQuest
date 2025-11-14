@@ -9,6 +9,7 @@ import Lesson from "./pages/Lesson.jsx";
 import Challenge from "./pages/Challenge.jsx";
 import ChallengeGame from "./pages/challenges/ChallengeGame.jsx";
 import DailyChallenge from "./pages/DailyChallenge.jsx";
+import DailyQuestGame from "./pages/DailyQuestGame.jsx";
 import Friends from "./pages/Friends.jsx";
 import Profile from "./pages/Profile.jsx";
 import Revise from "./pages/Revise.jsx";
@@ -148,6 +149,7 @@ export default function App() {
               <Route path="/challenge" element={<Challenge />} />
               <Route path="/challenge/:challengeId" element={<ChallengeGame />} />
               <Route path="/daily" element={<DailyChallenge />} />
+              <Route path="/daily-quest" element={<DailyQuestGame />} />
               <Route path="/events" element={<GlobalEvents />} />
               <Route path="/events/:eventId" element={<EventQuiz />} />
               <Route path="/friends" element={<Friends />} />

@@ -23,6 +23,10 @@ import { useNavigate } from "react-router-dom";
 
 import { useProgressStore } from "../store/progressStore";
 import { useUserStore } from "../store/useUserStore";
+import { useDailyQuestStore } from "../store/dailyQuestStore";
+
+// Components
+import DailyQuestCard from "../components/dailyquest/DailyQuestCard";
 
 // Mascots & UI assets
 import Zayd from "../assets/mascots/mascot_zayd_default.webp";
@@ -43,15 +47,6 @@ export default function Home() {
   // Which "page" of the carousel we're on (0 / 1 / 2)
   const [page, setPage] = useState(0);
 
-  // Pull live data from the store
-  const {
-    xp,
-    coins,
-    streak,
-    paths, // dynamic list from progressStore.js
-    triggerDailyStudy, // daily streak handler
-  } = useProgressStore();
-
   /**
    * Sync carousel scroll -> page indicator dots
    */
@@ -68,7 +63,6 @@ export default function Home() {
       }
     };
 
-    // Initialize + listen
     onScroll();
     el.addEventListener("scroll", onScroll, { passive: true });
     return () => el.removeEventListener("scroll", onScroll);
@@ -329,71 +323,7 @@ export default function Home() {
           </p>
 
           <button
-            onClick={() => {
-              // update streak + XP bonus in store
-              triggerDailyStudy();
-              // go to the challenge screen
-              navigate("/challenge");
-            }}
-            style={{
-              marginTop: 10,
-              background: "gold",
-              border: "none",
-              padding: "10px 18px",
-              borderRadius: 10,
-              fontWeight: "bold",
-              cursor: "pointer",
-              transition: "all 0.2s",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = "#ffdd33";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = "gold";
-            }}
-          >
-            Let’s Go!
-          </button>
-        </div>
-
-        {/* mascot variant with bounce */}
-        <img
-          src={ZaydChallenge}
-          alt="Zayd Challenge"
-          style={{
-            width: 80,
-            height: "auto",
-            marginLeft: 10,
-            animation:
-              "bounceYSmooth 2.25s cubic-bezier(.22,.61,.36,1) infinite",
-            transformOrigin: "50% 90%",
-          }}
-        />
-      </div>
-
-      {/*
-       * ===============================================================
-       * LEARNING PATHS CAROUSEL
-       * ===============================================================
-       */}
-      <div style={{ position: "relative", padding: "0 0 12px" }}>
-        <div
-          ref={carouselRef}
-          style={{
-            display: "flex",
-            overflowX: "auto",
-            gap: 14,
-            paddingBottom: 8,
-            scrollBehavior: "smooth",
-          }}
-        >
-          {paths.map((p, index) => {
-            const gradient =
-              gradients[index] || gradients[index % gradients.length];
-            const progress = typeof p.progress === "number" ? p.progress : 0;
-            const percent = Math.min(100, Math.max(0, progress * 100));
-            const completed = p.completedLessons || 0;
-            const total = p.totalLessons || 0;
+      <DailyQuestCard />
             const isFull = total > 0 && completed >= total;
 
             return (
