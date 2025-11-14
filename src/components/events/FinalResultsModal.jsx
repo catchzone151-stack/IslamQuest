@@ -1,70 +1,73 @@
-import React, { useState, useEffect } from "react";
-import { useEventsStore } from "../../store/eventsStore";
+import React, { useState, useEffect, useRef } from "react";
+import { useEventsStore, EMPTY_LEADERBOARD } from "../../store/eventsStore";
 import { useProgressStore } from "../../store/progressStore";
 import { useUserStore } from "../../store/useUserStore";
-import zaydHappy from "../../assets/zayd_happy.webp";
-import zaydDefault from "../../assets/zayd_default.webp";
-import LevelBadge from "../LevelBadge";
-import { getAvatarImage } from "../../assets/assets";
+import { shallow } from "zustand/shallow";
+import assets from "../../assets/assets";
+import { LevelBadge } from "../LevelBadge";
 import "./EventModals.css";
 
 export default function FinalResultsModal({ event, onClose }) {
-  const {
-    getEntry,
-    getLeaderboard,
-    getUserRank,
-    generateMockLeaderboard,
-    markResultsViewed
-  } = useEventsStore();
+  // Unified selector with readiness flags
+  const { weekId, entry, leaderboard } = useEventsStore(
+    (state) => {
+      const weekId = state.currentWeekId;
+      const entry = state.weeklyEntries[event.id] ?? null;
+      const leaderboard = weekId ? (state.leaderboards[weekId]?.[event.id] ?? EMPTY_LEADERBOARD) : EMPTY_LEADERBOARD;
+      return {
+        weekId,
+        entry,
+        leaderboard,
+      };
+    },
+    shallow
+  );
+  
+  const generateMockLeaderboard = useEventsStore(state => state.generateMockLeaderboard);
+  const grantRewardsForEvent = useEventsStore(state => state.grantRewardsForEvent);
   
   const { addXP, addCoins, xp } = useProgressStore();
   const { nickname, avatar } = useUserStore();
   
   const [showFullLeaderboard, setShowFullLeaderboard] = useState(false);
-  const [rewardsApplied, setRewardsApplied] = useState(false);
+  const hasRequestedLeaderboard = useRef(false);
+  const hasGrantedRewards = useRef(false);
   
-  const entry = getEntry(event.id);
-  let leaderboard = getLeaderboard(event.id);
+  // Derived state
+  const hasLeaderboard = leaderboard !== EMPTY_LEADERBOARD && leaderboard.length > 0;
+  const isLoading = entry && !hasLeaderboard;
   
-  // Generate leaderboard if not exists
+  // Calculate userRank from leaderboard
+  const userIndex = leaderboard.findIndex(p => p.userId === "current_user");
+  const userRank = userIndex >= 0 ? userIndex + 1 : null;
+  
+  // Reset refs on event or week change
   useEffect(() => {
-    if (leaderboard.length === 0 && entry) {
+    hasRequestedLeaderboard.current = false;
+    hasGrantedRewards.current = false;
+  }, [event.id, weekId]);
+  
+  // Generate leaderboard once when needed
+  useEffect(() => {
+    if (entry && !hasLeaderboard && !hasRequestedLeaderboard.current) {
       generateMockLeaderboard(event.id, entry);
+      hasRequestedLeaderboard.current = true;
     }
-  }, [event.id, entry, leaderboard.length, generateMockLeaderboard]);
+  }, [event.id, entry, hasLeaderboard, generateMockLeaderboard]);
   
-  // Refresh leaderboard after generation
+  // Grant rewards once when userRank exists
   useEffect(() => {
-    if (leaderboard.length === 0) {
-      leaderboard = getLeaderboard(event.id);
+    if (!hasGrantedRewards.current && userRank && entry) {
+      const rewards = grantRewardsForEvent(event.id, userRank);
+      
+      if (rewards) {
+        addXP(rewards.xpReward);
+        addCoins(rewards.coinReward);
+      }
+      
+      hasGrantedRewards.current = true;
     }
-  }, [event.id, getLeaderboard]);
-  
-  const userRank = getUserRank(event.id);
-  
-  // Apply rewards on mount (once)
-  useEffect(() => {
-    if (!entry || rewardsApplied || !userRank) return;
-    
-    let xpReward = 100;
-    let coinReward = 10;
-    
-    if (userRank === 1) {
-      xpReward = 1000;
-      coinReward = 300;
-    } else if (userRank <= 3) {
-      xpReward = 750;
-      coinReward = 200;
-    } else if (userRank <= 10) {
-      xpReward = 500;
-      coinReward = 100;
-    }
-    
-    addXP(xpReward);
-    addCoins(coinReward);
-    markResultsViewed(event.id);
-    setRewardsApplied(true);
-  }, [entry, userRank, rewardsApplied, addXP, addCoins, markResultsViewed, event.id]);
+  }, [event.id, weekId, userRank, entry, grantRewardsForEvent, addXP, addCoins]);
   
   // Get Zayd message based on rank
   const getZaydMessage = () => {
@@ -76,9 +79,27 @@ export default function FinalResultsModal({ event, onClose }) {
     return "Next week is yours, in shā' Allāh! 🌙";
   };
   
-  const zaydImage = userRank && userRank <= 10 ? zaydHappy : zaydDefault;
+  const zaydImage = userRank && userRank <= 10 ? assets.mascots.mascot_zayd_happy : assets.mascots.mascot_zayd_default;
   
-  if (!entry || leaderboard.length === 0) {
+  // Helper to get avatar image from avatar key
+  const getAvatarImage = (avatarKey) => {
+    return assets.avatars[avatarKey] || assets.avatars.avatar_lion;
+  };
+  
+  // Handle missing entry (error state)
+  if (!entry) {
+    return (
+      <div className="event-modal-overlay">
+        <div className="event-modal">
+          <p>Error: No entry found</p>
+          <button onClick={onClose} className="modal-close-btn">Close</button>
+        </div>
+      </div>
+    );
+  }
+  
+  // Handle loading state
+  if (isLoading) {
     return (
       <div className="event-modal-overlay">
         <div className="event-modal">

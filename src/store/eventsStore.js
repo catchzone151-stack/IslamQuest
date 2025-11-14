@@ -1,6 +1,9 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+// Stable empty array for leaderboard fallback (prevents reference changes)
+export const EMPTY_LEADERBOARD = Object.freeze([]);
+
 // Get current GMT week boundaries (Friday 00:00 to Thursday 23:59)
 function getCurrentWeekId() {
   const now = new Date();
@@ -16,14 +19,27 @@ function getCurrentWeekId() {
   return currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
 }
 
-// Check if results are unlocked (Thursday 22:00 GMT)
+// Check if results are unlocked (Thursday 22:00 GMT onwards until Monday 00:00)
 function areResultsUnlocked() {
   const now = new Date();
-  const dayOfWeek = now.getUTCDay();
+  const dayOfWeek = now.getUTCDay(); // 0=Sunday, 1=Monday, ..., 4=Thursday, 5=Friday, 6=Saturday
   const hour = now.getUTCHours();
   
-  // Thursday (4) at or after 22:00 GMT
-  return dayOfWeek === 4 && hour >= 22;
+  // Results are unlocked from Thursday 22:00 through Sunday 23:59
+  // Then locked again Monday 00:00 onwards
+  
+  // Thursday at or after 22:00 → unlocked
+  if (dayOfWeek === 4 && hour >= 22) {
+    return true;
+  }
+  
+  // Friday, Saturday, Sunday → unlocked (still in results window)
+  if (dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 0) {
+    return true;
+  }
+  
+  // Monday, Tuesday, Wednesday, Thursday before 22:00 → locked
+  return false;
 }
 
 // Get time until next results unlock
@@ -125,10 +141,11 @@ export const useEventsStore = create(
             archivedAt: new Date().toISOString()
           };
           
-          // Reset for new week
+          // Reset for new week (clear leaderboards to prevent stale data)
           set({
             currentWeekId: newWeekId,
             weeklyEntries: {},
+            leaderboards: {},
             resultsViewed: {}
           });
         }
@@ -183,6 +200,44 @@ export const useEventsStore = create(
         return !!resultsViewed[eventId];
       },
       
+      // Helper: Compute rewards based on rank
+      computeRewardsForRank: (rank) => {
+        if (rank === 1) return { xpReward: 1000, coinReward: 300 };
+        if (rank <= 3) return { xpReward: 750, coinReward: 200 };
+        if (rank <= 10) return { xpReward: 500, coinReward: 100 };
+        return { xpReward: 100, coinReward: 10 };
+      },
+      
+      // Grant rewards for event (atomic - prevents double-granting)
+      grantRewardsForEvent: (eventId, userRank) => {
+        // Early exit if already granted
+        if (get().resultsViewed[eventId]) {
+          return null;
+        }
+        
+        const computedRewards = get().computeRewardsForRank(userRank);
+        let rewards = null;
+        
+        set((state) => {
+          // Re-check inside functional update (race safety)
+          if (state.resultsViewed[eventId]) {
+            return; // No change (Zustand treats undefined as no-op)
+          }
+          
+          rewards = computedRewards;
+          
+          // Return only the changed slice
+          return {
+            resultsViewed: {
+              ...state.resultsViewed,
+              [eventId]: true,
+            },
+          };
+        });
+        
+        return rewards;
+      },
+      
       // Generate mock leaderboard (temporary until Supabase)
       generateMockLeaderboard: (eventId, userEntry) => {
         const { currentWeekId, leaderboards } = get();
@@ -205,17 +260,14 @@ export const useEventsStore = create(
           completedAt: new Date(Date.now() - Math.random() * 86400000).toISOString()
         }));
         
-        // Add user if they scored well enough
-        const userScore = userEntry.score;
-        if (userScore >= 6) {
-          mockPlayers.push({
-            userId: "current_user",
-            nickname: "You",
-            avatar: "avatar1",
-            score: userScore,
-            completedAt: userEntry.completedAt
-          });
-        }
+        // Always add user to leaderboard (regardless of score)
+        mockPlayers.push({
+          userId: "current_user",
+          nickname: "You",
+          avatar: "avatar1",
+          score: userEntry.score,
+          completedAt: userEntry.completedAt
+        });
         
         // Sort by score (desc), then by time (asc)
         mockPlayers.sort((a, b) => {

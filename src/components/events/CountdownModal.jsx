@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import zaydHappy from "../../assets/zayd_happy.webp";
+import assets from "../../assets/assets";
 import "./EventModals.css";
 
 export default function CountdownModal({ onComplete }) {
@@ -23,7 +23,7 @@ export default function CountdownModal({ onComplete }) {
       <div className="countdown-modal">
         {/* Zayd Animation */}
         <div className="countdown-mascot">
-          <img src={zaydHappy} alt="Zayd" className="countdown-zayd" />
+          <img src={assets.mascots.mascot_zayd_happy} alt="Zayd" className="countdown-zayd" />
         </div>
 
         {/* Countdown Number */}

@@ -6,7 +6,7 @@ import { getEventQuestions } from "../data/eventQuestions";
 import EventInfoModal from "../components/events/EventInfoModal";
 import CountdownModal from "../components/events/CountdownModal";
 import ProvisionalResultsModal from "../components/events/ProvisionalResultsModal";
-import zaydDefault from "../assets/zayd_default.webp";
+import assets from "../assets/assets";
 import "./EventQuiz.css";
 
 export default function EventQuiz() {
@@ -92,7 +92,7 @@ export default function EventQuiz() {
 
   const handleNextQuestion = () => {
     // Save answer
-    const isCorrect = selectedAnswer === questions[currentQuestionIndex].options.correct;
+    const isCorrect = selectedAnswer === questions[currentQuestionIndex].correct;
     setUserAnswers([...userAnswers, {
       questionId: questions[currentQuestionIndex].id,
       selectedAnswer,
@@ -114,7 +114,7 @@ export default function EventQuiz() {
     // Calculate final score
     const finalAnswers = [...userAnswers];
     if (selectedAnswer !== null) {
-      const isCorrect = selectedAnswer === questions[currentQuestionIndex].options.correct;
+      const isCorrect = selectedAnswer === questions[currentQuestionIndex].correct;
       finalAnswers.push({
         questionId: questions[currentQuestionIndex].id,
         selectedAnswer,
@@ -204,7 +204,7 @@ export default function EventQuiz() {
 
           {/* Mascot */}
           <div className="quiz-mascot">
-            <img src={zaydDefault} alt="Zayd" />
+            <img src={assets.mascots.mascot_zayd_default} alt="Zayd" />
           </div>
         </>
       )}

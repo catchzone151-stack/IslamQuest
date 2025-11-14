@@ -1,6 +1,6 @@
 import React from "react";
 import { useEventsStore } from "../../store/eventsStore";
-import zaydDefault from "../../assets/zayd_default.webp";
+import assets from "../../assets/assets";
 import "./EventModals.css";
 
 export default function ProvisionalResultsModal({ event, score, totalQuestions, onClose }) {
@@ -13,7 +13,7 @@ export default function ProvisionalResultsModal({ event, score, totalQuestions, 
       <div className="event-modal provisional-modal">
         {/* Zayd Header */}
         <div className="modal-mascot-header">
-          <img src={zaydDefault} alt="Zayd" className="modal-zayd bounce" />
+          <img src={assets.mascots.mascot_zayd_default} alt="Zayd" className="modal-zayd bounce" />
         </div>
 
         {/* Title */}
