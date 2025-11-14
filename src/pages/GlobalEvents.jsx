@@ -136,13 +136,6 @@ export default function GlobalEvents() {
               }}
               onClick={() => handleEventClick(event)}
             >
-              {/* Status Badge */}
-              {entered && (
-                <div className="event-status-badge">
-                  ✅ Entered
-                </div>
-              )}
-              
               {/* Event Icon */}
               <div className="event-icon">{event.icon}</div>
               
@@ -158,14 +151,16 @@ export default function GlobalEvents() {
                 <span className="event-leaderboard-icon">📊</span>
               </div>
 
+              {/* Entered Badge - Bottom Center */}
+              {entered && (
+                <div className="event-entered-badge">
+                  ✅ Entered
+                </div>
+              )}
+
               {/* New Event Badge (for un-entered events) */}
               {!entered && (
                 <div className="new-event-badge">NEW!</div>
-              )}
-              
-              {/* New Results Indicator */}
-              {hasResults && !viewed && (
-                <div className="new-results-badge">RESULTS!</div>
               )}
             </div>
           );
