@@ -1,6 +1,7 @@
 // src/store/progressStore.js
 import { create } from "zustand";
 import { getCurrentLevel, checkLevelUp } from "../utils/diamondLevels";
+import { FREE_LESSON_LIMITS } from "./premiumConfig";
 
 const STORAGE_KEY = "islamQuestProgress_v4";
 
@@ -39,7 +40,11 @@ export const useProgressStore = create((set, get) => ({
   certificates: [],
   lessonStates: {},
   lockedLessons: {},
-  hasPremium: false,
+  hasPremium: false, // Deprecated: derived from premiumStatus, kept for backwards compatibility
+  
+  // 💳 Premium System (Supabase-ready)
+  premiumStatus: "free", // "free" | "individual" | "family"
+  familyPlanId: null, // For family plan sync (future Supabase feature)
   
   // 💎 Diamond Level System
   showLevelUpModal: false,
@@ -74,8 +79,18 @@ export const useProgressStore = create((set, get) => ({
         savedData.lockedLessons = get().normalizeLocks(savedData.lessonStates || {});
       }
       
+      // 💳 Migrate legacy hasPremium to premiumStatus
+      if (!savedData.premiumStatus) {
+        savedData.premiumStatus = savedData.hasPremium ? "individual" : "free";
+      }
+      if (savedData.familyPlanId === undefined) {
+        savedData.familyPlanId = null;
+      }
+      // Derive hasPremium from premiumStatus for backwards compatibility
+      savedData.hasPremium = savedData.premiumStatus !== "free";
+      
       set(savedData);
-      get().saveProgress(); // Persist the normalized locks
+      get().saveProgress(); // Persist the normalized locks and premium status
     }
   },
   
@@ -436,24 +451,48 @@ export const useProgressStore = create((set, get) => ({
     get().saveProgress();
   },
 
-  isUnlocked: (pathId, lessonId) => {
+  // 🔒 Central lesson unlock check (combines sequential + premium limits)
+  // This is the NEW core function - use this everywhere!
+  isLessonUnlocked: (pathId, lessonId) => {
+    const { lockedLessons, premiumStatus } = get();
+    
+    // Lesson 1 is always unlocked
     if (lessonId === 1) return true;
-    const { lockedLessons, hasPremium } = get();
     
-    if (hasPremium) return true; // premium users bypass locks
-    
-    // Safeguard: if lockedLessons[pathId] doesn't exist, lesson is locked
+    // Check sequential unlocking FIRST (applies to ALL users including premium)
+    // Must complete previous lesson to unlock next one
     if (!lockedLessons[pathId]) return false;
-    
-    return !!(
+    const isSequentiallyUnlocked = !!(
       lockedLessons[pathId][lessonId] &&
       lockedLessons[pathId][lessonId].unlocked
     );
+    
+    if (!isSequentiallyUnlocked) return false;
+    
+    // For free users: check premium paywall limits
+    if (premiumStatus === "free") {
+      const freeLimit = FREE_LESSON_LIMITS[pathId] || 0;
+      if (lessonId > freeLimit) {
+        return false; // Locked by premium paywall
+      }
+    }
+    
+    // Premium users: sequential check passed, premium bypass applies
+    return true;
   },
 
-  // 💳 Premium unlock
-  unlockPremium: () => {
-    set({ hasPremium: true });
+  // 🔒 DEPRECATED: Backwards compatibility wrapper
+  // Use isLessonUnlocked() instead
+  isUnlocked: (pathId, lessonId) => {
+    return get().isLessonUnlocked(pathId, lessonId);
+  },
+
+  // 💳 Premium unlock (updates both premiumStatus and hasPremium)
+  unlockPremium: (planType = "individual") => {
+    set({ 
+      premiumStatus: planType, // "individual" or "family"
+      hasPremium: true,
+    });
     get().saveProgress();
   },
 

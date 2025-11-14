@@ -33,28 +33,61 @@ export default function PurchaseModal({ onClose, onPurchase }) {
             marginBottom: "10px",
           }}
         >
-          Continue Your Journey
+          Unlock All Lessons
         </h2>
-        <p style={{ marginBottom: "18px" }}>
-          Unlock all lessons forever for <strong>£2.99</strong> (one-time).
+        <p style={{ marginBottom: "24px", color: "#cbd5e1", fontSize: "0.95rem" }}>
+          Get lifetime access to all 14 learning paths.
         </p>
 
         <button
-          onClick={onPurchase}
+          onClick={() => onPurchase("individual")}
           style={{
             backgroundColor: "#FFD700",
             color: "#111827",
             fontWeight: 700,
             border: "none",
             borderRadius: "12px",
-            padding: "10px 24px",
+            padding: "12px 24px",
             marginBottom: "10px",
             width: "100%",
             cursor: "pointer",
             fontSize: "1rem",
           }}
         >
-          Purchase Now
+          Individual Plan (placeholder)
+        </button>
+
+        <button
+          onClick={() => onPurchase("family")}
+          style={{
+            backgroundColor: "#4B5563",
+            color: "#fff",
+            fontWeight: 700,
+            border: "none",
+            borderRadius: "12px",
+            padding: "12px 24px",
+            marginBottom: "16px",
+            width: "100%",
+            cursor: "pointer",
+            fontSize: "1rem",
+          }}
+        >
+          Family Plan (placeholder)
+        </button>
+
+        <button
+          onClick={onClose}
+          style={{
+            backgroundColor: "transparent",
+            color: "#6B7280",
+            border: "none",
+            cursor: "pointer",
+            fontSize: "0.85rem",
+            marginBottom: "10px",
+            textDecoration: "underline",
+          }}
+        >
+          Restore Purchase
         </button>
 
         <button
@@ -65,7 +98,6 @@ export default function PurchaseModal({ onClose, onPurchase }) {
             border: "none",
             cursor: "pointer",
             fontSize: "0.9rem",
-            marginTop: "4px",
           }}
         >
           Not Now

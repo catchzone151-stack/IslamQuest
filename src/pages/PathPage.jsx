@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useProgressStore } from "../store/progressStore";
+import { FREE_LESSON_LIMITS } from "../store/premiumConfig";
 import PurchaseModal from "../components/PurchaseModal";
 import lionDefault from "../assets/mascots/mascot_zayd_default.webp";
 import { getLessonsForPath } from "../data/lessonLoader";
@@ -10,8 +11,14 @@ export default function PathPage() {
   const navigate = useNavigate();
   const pathId = parseInt(id, 10);
 
-  const { paths, isUnlocked, hasPremium, unlockPremium, lessonStates, lockedLessons } =
-    useProgressStore();
+  const { 
+    paths, 
+    isLessonUnlocked, 
+    premiumStatus, 
+    unlockPremium, 
+    lessonStates, 
+    lockedLessons 
+  } = useProgressStore();
 
   const [showModal, setShowModal] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -30,17 +37,26 @@ export default function PathPage() {
   })();
 
   const handleLessonClick = (lesson) => {
-    if (lesson.premium && !hasPremium) {
-      setShowModal(true);
-      return;
-    }
-    const unlocked = isUnlocked(pathId, lesson.id);
+    const unlocked = isLessonUnlocked(pathId, lesson.id);
+    
     if (!unlocked) {
-      setPopupMsg("Complete the previous lesson to unlock this one!");
-      setShowPopup(true);
-      setTimeout(() => setShowPopup(false), 2500);
-      return;
+      // Check if it's premium-locked or sequentially-locked
+      const freeLimit = FREE_LESSON_LIMITS[pathId] || 0;
+      const isPremiumLocked = premiumStatus === "free" && lesson.id > freeLimit;
+      
+      if (isPremiumLocked) {
+        // Show premium purchase modal
+        setShowModal(true);
+        return;
+      } else {
+        // Show sequential unlock message
+        setPopupMsg("Complete the previous lesson to unlock this one!");
+        setShowPopup(true);
+        setTimeout(() => setShowPopup(false), 2500);
+        return;
+      }
     }
+    
     navigate(`/lesson/${pathId}/${lesson.id}`);
   };
 
@@ -85,7 +101,7 @@ export default function PathPage() {
         }}
       >
         {lessons.map((lesson) => {
-          const unlocked = isUnlocked(pathId, lesson.id);
+          const unlocked = isLessonUnlocked(pathId, lesson.id);
           const isCurrent = lesson.id === currentLessonId;
           return (
             <div
@@ -181,8 +197,8 @@ export default function PathPage() {
       {showModal && (
         <PurchaseModal
           onClose={() => setShowModal(false)}
-          onPurchase={() => {
-            unlockPremium();
+          onPurchase={(planType) => {
+            unlockPremium(planType); // Pass "individual" or "family"
             setShowModal(false);
             setPopupMsg("Alhamdulillah! Full access unlocked 🎉");
             setShowPopup(true);
