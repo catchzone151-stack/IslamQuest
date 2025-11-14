@@ -43,7 +43,7 @@ const angelsLessons = [
     title: "Isrāfīl",
     description: [
       "Isrāfīl is the angel tasked with blowing the trumpet that signals the Day of Judgment. He stands ready, waiting for Allah's command, with the trumpet at his lips, prepared to blow it the instant Allah orders him to announce the end of time.",
-      "When Isrāfīl blows the trumpet the first time, every living thing in the heavens and earth will die instantly, except those Allah wills. The second blow will resurrect all of creation, bringing every human and jinn back to life for judgment and eternal accountability.",
+      "When Isrāfīl blows the trumpet the first time, every living thing in the heavens and earth will die instantly, except those Allah wills. The second blow will resurrect all of creation, bringing everyone back to life for judgment and eternal accountability.",
       "The Prophet ﷺ said Isrāfīl has been ready since creation, never taking his eyes off the Throne, waiting for the command. This teaches us that the Hour could come at any moment, and we must always be prepared with good deeds and sincere faith."
     ],
     evidence: {

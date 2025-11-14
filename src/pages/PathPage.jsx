@@ -106,10 +106,10 @@ export default function PathPage() {
                 fontSize: "1.1rem",
                 cursor: "pointer",
                 border: unlocked ? "2px solid #FFD700" : "2px solid #222",
-                boxShadow: isCurrent
-                  ? "0 0 20px rgba(255, 215, 0, 0.6)"
-                  : "none",
                 transition: "all 0.3s ease",
+                animation: unlocked 
+                  ? (isCurrent ? "currentLessonPulse 2s ease-in-out infinite" : "goldPulse 2s ease-in-out infinite")
+                  : "none",
               }}
             >
               <span
@@ -195,6 +195,24 @@ export default function PathPage() {
         @keyframes bounce {
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes goldPulse {
+          0%, 100% { 
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); 
+          }
+          50% { 
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); 
+          }
+        }
+        
+        @keyframes currentLessonPulse {
+          0%, 100% { 
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); 
+          }
+          50% { 
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.5); 
+          }
         }
       `}</style>
     </div>
