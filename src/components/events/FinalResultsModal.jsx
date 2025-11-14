@@ -8,31 +8,19 @@ import { LevelBadge } from "../LevelBadge";
 import "./EventModals.css";
 
 export default function FinalResultsModal({ event, onClose }) {
-  // State selector (data only, no functions to avoid reference changes)
-  const { weekId, entry, leaderboard } = useEventsStore(
-    (state) => {
-      const weekId = state.currentWeekId;
-      const entry = state.weeklyEntries[event.id] ?? null;
-      const leaderboard = weekId ? (state.leaderboards[weekId]?.[event.id] ?? EMPTY_LEADERBOARD) : EMPTY_LEADERBOARD;
-      return {
-        weekId,
-        entry,
-        leaderboard,
-      };
-    },
-    shallow
-  );
-  
-  // Stable function references (Zustand functions don't change)
-  const generateMockLeaderboard = useEventsStore(state => state.generateMockLeaderboard);
-  const grantRewardsForEvent = useEventsStore(state => state.grantRewardsForEvent);
+  // Separate selectors to avoid shallow comparison issues
+  const weekId = useEventsStore(state => state.currentWeekId);
+  const entry = useEventsStore(state => state.weeklyEntries[event.id] ?? null);
+  const leaderboard = useEventsStore(state => {
+    const wid = state.currentWeekId;
+    return wid ? (state.leaderboards[wid]?.[event.id] ?? EMPTY_LEADERBOARD) : EMPTY_LEADERBOARD;
+  });
   
   const { addXP, addCoins, xp } = useProgressStore();
   const { nickname, avatar } = useUserStore();
   
   const [showFullLeaderboard, setShowFullLeaderboard] = useState(false);
-  const hasRequestedLeaderboard = useRef(false);
-  const hasGrantedRewards = useRef(false);
+  const hasInitialized = useRef(false);
   
   // Derived state
   const hasLeaderboard = leaderboard !== EMPTY_LEADERBOARD && leaderboard.length > 0;
@@ -42,35 +30,30 @@ export default function FinalResultsModal({ event, onClose }) {
   const userIndex = leaderboard.findIndex(p => p.userId === "current_user");
   const userRank = userIndex >= 0 ? userIndex + 1 : null;
   
-  // Reset refs on event or week change
+  // Single initialization effect
   useEffect(() => {
-    hasRequestedLeaderboard.current = false;
-    hasGrantedRewards.current = false;
-  }, [event.id, weekId]);
-  
-  // Generate leaderboard once when needed
-  useEffect(() => {
-    if (entry && !hasLeaderboard && !hasRequestedLeaderboard.current) {
+    if (hasInitialized.current) return;
+    if (!entry) return;
+    
+    // Generate leaderboard
+    if (!hasLeaderboard) {
+      const generateMockLeaderboard = useEventsStore.getState().generateMockLeaderboard;
       generateMockLeaderboard(event.id, entry);
-      hasRequestedLeaderboard.current = true;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [event.id, entry, hasLeaderboard]);
-  
-  // Grant rewards once when userRank exists
-  useEffect(() => {
-    if (!hasGrantedRewards.current && userRank && entry) {
+    
+    // Grant rewards if we have a rank
+    if (userRank) {
+      const grantRewardsForEvent = useEventsStore.getState().grantRewardsForEvent;
       const rewards = grantRewardsForEvent(event.id, userRank);
       
       if (rewards) {
         addXP(rewards.xpReward);
         addCoins(rewards.coinReward);
       }
-      
-      hasGrantedRewards.current = true;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [event.id, weekId, userRank, entry]);
+    
+    hasInitialized.current = true;
+  }, [event.id, entry, hasLeaderboard, userRank, addXP, addCoins]);
   
   // Get Zayd message based on rank
   const getZaydMessage = () => {
