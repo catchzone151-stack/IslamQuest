@@ -42,12 +42,13 @@ export default function EventQuiz() {
     }
   }, [event, eventId, hasEntered, navigate]);
 
-  // Check coins on mount
+  // Check coins on mount - only before quiz starts
   useEffect(() => {
-    if (coins < 25) {
+    if (!quizStarted && !showCountdown && coins < 25) {
+      alert("You need 25 coins to enter this event!");
       navigate("/events");
     }
-  }, [coins, navigate]);
+  }, [coins, navigate, quizStarted, showCountdown]);
 
   // Timer countdown
   useEffect(() => {
@@ -75,8 +76,20 @@ export default function EventQuiz() {
   const handleCountdownComplete = () => {
     setShowCountdown(false);
     
-    // Deduct coins
-    removeCoins(25);
+    // Defensive re-check: verify user hasn't already entered and has enough coins
+    if (hasEntered(eventId)) {
+      alert("You've already entered this event!");
+      navigate("/events");
+      return;
+    }
+    
+    // Deduct coins - abort if insufficient funds
+    const success = removeCoins(25);
+    if (!success) {
+      alert("You don't have enough coins! You need 25 coins to enter.");
+      navigate("/events");
+      return;
+    }
     
     // Load questions
     const eventQuestions = getEventQuestions(eventId, 10);
@@ -180,7 +193,7 @@ export default function EventQuiz() {
             
             {/* Answer Options */}
             <div className="quiz-options">
-              {currentQuestion.options.options.map((option, index) => (
+              {currentQuestion.options.map((option, index) => (
                 <button
                   key={index}
                   className={`quiz-option ${selectedAnswer === index ? 'selected' : ''}`}

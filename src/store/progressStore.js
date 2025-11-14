@@ -146,6 +146,16 @@ export const useProgressStore = create((set, get) => ({
     get().saveProgress();
   },
 
+  removeCoins: (amount) => {
+    const { coins } = get();
+    if (coins < amount) {
+      return false; // Insufficient funds
+    }
+    set((s) => ({ coins: s.coins - amount }));
+    get().saveProgress();
+    return true; // Success
+  },
+
   // 🏆 Certificates
   earnCertificate: (id, title) => {
     const { certificates } = get();
