@@ -31,8 +31,7 @@ const QuizScreen = () => {
   const [mascotMood, setMascotMood] = useState("start");
   const [results, setResults] = useState(null);
 
-  const addXP = useProgressStore((s) => s.addXP || (() => {}));
-  const addCoins = useProgressStore((s) => s.addCoins || (() => {}));
+  const applyQuizResults = useProgressStore((s) => s.applyQuizResults);
 
   useEffect(() => {
     const raw = getQuizForLesson(lessonId, pathId) || [];
@@ -77,8 +76,14 @@ const QuizScreen = () => {
   const finishQuiz = (finalAnswers) => {
     const res = calculateResults(finalAnswers);
     setResults(res);
-    addXP(res.xp);
-    addCoins(res.coins);
+    
+    // Apply quiz results (unlocks next lesson, awards XP/coins, updates progress)
+    applyQuizResults(
+      { xp: res.xp, coins: res.coins },
+      parseInt(pathId),
+      parseInt(lessonId)
+    );
+    
     setIsQuizDone(true);
     setMascotMood(res.passed ? "pass" : "fail");
   };
