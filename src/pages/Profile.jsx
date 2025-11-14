@@ -9,6 +9,9 @@ import EditAvatarModal from "../components/EditAvatarModal";
 import { LevelBadge } from "../components/LevelBadge";
 import { ViewAllLevelsModal } from "../components/ViewAllLevelsModal";
 import { getCurrentLevel, getXPProgress } from "../utils/diamondLevels";
+import ui_xp from "../assets/ui/ui_xp.webp";
+import ui_coin from "../assets/ui/ui_coin.webp";
+import ui_streak from "../assets/ui/ui_streak.webp";
 
 export default function Profile() {
   const { name, avatar, setName, setAvatar } = useUserStore();
@@ -163,17 +166,18 @@ export default function Profile() {
             gap: 12,
             justifyContent: "center",
             flexWrap: "wrap",
+            marginTop: 20,
           }}
         >
-          <ProfileCard icon="/src/assets/icons/xp.png" label="XP" value={xp} />
+          <ProfileCard icon={ui_xp} label="XP" value={xp} />
           <ProfileCard
-            icon="/src/assets/icons/coin.png"
+            icon={ui_coin}
             label="Coins"
             value={coins}
             color="#FFA500"
           />
           <ProfileCard
-            icon="/src/assets/icons/streak.png"
+            icon={ui_streak}
             label="Streak"
             value={`${streak} 🔥`}
             color="#FF6347"
