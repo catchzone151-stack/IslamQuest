@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Resetting IslamQuest...</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(circle at 20% 20%, #0a0f1e 0%, #030614 70%);
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .container {
+      text-align: center;
+      padding: 40px;
+    }
+    h1 {
+      color: #D4AF37;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(212, 175, 55, 0.3);
+      border-top: 4px solid #D4AF37;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌙 Resetting IslamQuest</h1>
+    <p>Clearing your data and taking you to onboarding...</p>
+    <div class="spinner"></div>
+  </div>
+  <script>
+    // Clear all localStorage
+    localStorage.clear();
+    
+    // Redirect to onboarding after 1.5 seconds
+    setTimeout(() => {
+      window.location.href = '/onboarding/bismillah';
+    }, 1500);
+  </script>
+</body>
+</html>
