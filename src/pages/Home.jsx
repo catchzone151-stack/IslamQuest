@@ -33,6 +33,7 @@ import RepairStreakModal from "../components/RepairStreakModal";
 // Mascots & UI assets
 import Zayd from "../assets/mascots/mascot_zayd_default.webp";
 import ZaydChallenge from "../assets/mascots/mascot_zayd_challenge.webp";
+import MainMascot from "../assets/mascots/mascot_home_main.png";
 import ui_xp from "../assets/ui/ui_xp.webp";
 import ui_streak from "../assets/ui/ui_streak.webp";
 import ui_coin from "../assets/ui/ui_coin.webp";
@@ -212,10 +213,10 @@ export default function Home() {
         {/* Center mascot */}
         <div style={{ textAlign: "center" }}>
           <img
-            src={Zayd}
-            alt="Zayd Mascot"
+            src={MainMascot}
+            alt="Main Mascot"
             style={{
-              width: 85,
+              width: 100,
               height: "auto",
               display: "block",
               margin: "0 auto",
