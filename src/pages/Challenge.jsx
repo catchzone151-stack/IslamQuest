@@ -263,7 +263,7 @@ export default function Challenge() {
               }} />
               <div style={{
                 position: "absolute",
-                top: -8,
+                top: 8,
                 right: 10,
                 background: "rgba(0,0,0,0.7)",
                 borderRadius: 20,
@@ -271,7 +271,7 @@ export default function Challenge() {
                 fontSize: "0.75rem",
                 fontWeight: 600,
                 color: "#94a3b8",
-                zIndex: 1
+                zIndex: 2
               }}>
                 🔒 Level {BOSS_LEVEL.minLevel}+ Only
               </div>
