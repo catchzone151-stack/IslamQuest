@@ -3,7 +3,6 @@ import ScreenContainer from "../components/ScreenContainer";
 import { useReviseStore } from "../store/reviseStore";
 import { useProgressStore } from "../store/progressStore";
 import QuestionCard from "../components/quiz/QuestionCard";
-import Zayd from "../assets/mascots/mascot_zayd_default.webp";
 
 export default function Revise() {
   const [mode, setMode] = useState(null); // null | "mistakes" | "smart"
@@ -335,20 +334,6 @@ export default function Revise() {
   return (
     <ScreenContainer>
       <div style={{ position: "relative", padding: "20px 20px 40px" }}>
-        {/* Zayd mascot in top-right corner */}
-        <img
-          src={Zayd}
-          alt="Zayd"
-          style={{
-            position: "absolute",
-            top: 10,
-            right: 10,
-            width: "80px",
-            height: "auto",
-            animation: "floatZayd 3s ease-in-out infinite",
-          }}
-        />
-
         {/* Title */}
         <div style={{ textAlign: "center", marginTop: "20px", marginBottom: "30px" }}>
           <h1
@@ -483,10 +468,6 @@ export default function Revise() {
           @keyframes shimmer {
             0% { background-position: 0% 50%; }
             100% { background-position: 200% 50%; }
-          }
-          @keyframes floatZayd {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
           }
         `}
       </style>
