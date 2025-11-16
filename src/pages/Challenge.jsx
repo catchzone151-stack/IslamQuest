@@ -239,7 +239,7 @@ export default function Challenge() {
               ? "2px solid rgba(212,175,55,0.5)"
               : "2px solid rgba(107,114,128,0.3)",
             borderRadius: 18,
-            padding: 20,
+            padding: "24px 20px 20px 20px",
             boxShadow: level >= BOSS_LEVEL.minLevel 
               ? BOSS_LEVEL.glow 
               : "0 0 20px rgba(107,114,128,0.3)",
@@ -263,7 +263,7 @@ export default function Challenge() {
               }} />
               <div style={{
                 position: "absolute",
-                top: 8,
+                top: 10,
                 right: 10,
                 background: "rgba(0,0,0,0.7)",
                 borderRadius: 20,
@@ -278,8 +278,17 @@ export default function Challenge() {
             </>
           )}
 
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12, position: "relative", zIndex: 1 }}>
-            <img src={BossLevelMascot} alt="Boss Level Mascot" style={{ width: "70px", height: "70px" }} />
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12, marginTop: 8, position: "relative", zIndex: 1 }}>
+            <img 
+              src={BossLevelMascot} 
+              alt="Boss Level Mascot" 
+              style={{ 
+                width: "85px", 
+                height: "85px",
+                filter: "drop-shadow(0 0 20px rgba(59, 130, 246, 0.8)) drop-shadow(0 0 40px rgba(59, 130, 246, 0.5))",
+                animation: "bossAura 2s ease-in-out infinite"
+              }} 
+            />
             <div>
               <h2 style={{ color: level >= BOSS_LEVEL.minLevel ? "#d4af37" : "#94a3b8", margin: "0 0 4px", fontSize: "1.4rem", fontWeight: 700 }}>
                 Boss Level Challenge the Dev
@@ -421,6 +430,15 @@ export default function Challenge() {
           }
           50% {
             box-shadow: 0 0 40px rgba(212, 175, 55, 0.8);
+          }
+        }
+        
+        @keyframes bossAura {
+          0%, 100% {
+            filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.8)) drop-shadow(0 0 40px rgba(59, 130, 246, 0.5));
+          }
+          50% {
+            filter: drop-shadow(0 0 30px rgba(59, 130, 246, 1)) drop-shadow(0 0 50px rgba(59, 130, 246, 0.7));
           }
         }
       `}</style>
