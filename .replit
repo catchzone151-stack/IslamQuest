@@ -1,11 +1,11 @@
 run = "npm run dev"
-modules = ["nodejs-20"]
+modules = ["nodejs-20", "python-3.11"]
 hidden = [".config", "package-lock.json"]
 entrypoint = "index.html"
 
 [nix]
 channel = "stable-24_05"
-packages = ["zip"]
+packages = ["freetype", "lcms2", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "tcl", "tk", "zip", "zlib"]
 
 [unitTest]
 language = "nodejs"
@@ -38,6 +38,10 @@ externalPort = 8080
 [[ports]]
 localPort = 37143
 externalPort = 4200
+
+[[ports]]
+localPort = 37557
+externalPort = 8081
 
 [[ports]]
 localPort = 38211
