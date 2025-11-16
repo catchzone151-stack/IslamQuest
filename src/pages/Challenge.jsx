@@ -7,7 +7,7 @@ import ChallengeExplainerModal from "../components/challenges/ChallengeExplainer
 import ChallengeCountdown from "../components/challenges/ChallengeCountdown";
 import NoSharedLessonsModal from "../components/challenges/NoSharedLessonsModal";
 import BossLockedModal from "../components/challenges/BossLockedModal";
-import ZaydChallenge from "../assets/mascots/mascot_zayd_challenge.webp";
+import BossLevelMascot from "../assets/mascots/mascot_boss_level.png";
 
 export default function Challenge() {
   const navigate = useNavigate();
@@ -263,7 +263,7 @@ export default function Challenge() {
               }} />
               <div style={{
                 position: "absolute",
-                top: 10,
+                top: -8,
                 right: 10,
                 background: "rgba(0,0,0,0.7)",
                 borderRadius: 20,
@@ -279,7 +279,7 @@ export default function Challenge() {
           )}
 
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12, position: "relative", zIndex: 1 }}>
-            <img src={ZaydChallenge} alt="Zayd Challenge" style={{ width: "60px", height: "60px" }} />
+            <img src={BossLevelMascot} alt="Boss Level Mascot" style={{ width: "70px", height: "70px" }} />
             <div>
               <h2 style={{ color: level >= BOSS_LEVEL.minLevel ? "#d4af37" : "#94a3b8", margin: "0 0 4px", fontSize: "1.4rem", fontWeight: 700 }}>
                 Boss Level Challenge the Dev
