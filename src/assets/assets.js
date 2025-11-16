@@ -21,18 +21,27 @@ import mascot_zayd_book from "./mascots/mascot_zayd_book.webp";
 import mascot_path_main from "./mascots/mascot_path_main.png";
 
 // ============ AVATARS ============
-import avatar_dino from "./avatars/avatar_dino.png.png";
-import avatar_fox from "./avatars/avatar_fox.png.png";
-import avatar_lion from "./avatars/avatar_lion.png.png";
-import avatar_lion_female_scarf from "./avatars/avatar_lion_female_scarf.png.png";
-import avatar_lion_glasses from "./avatars/avatar_lion_glasses.png.png";
-import avatar_lion_headphones from "./avatars/avatar_lion_headphones.png.png";
-import avatar_lion_hoodie from "./avatars/avatar_lion_hoodie.png.png";
-import avatar_lion_kufiya from "./avatars/avatar_lion_kufiya.png.png";
-import avatar_lion_suit from "./avatars/avatar_lion_suit.png.png";
-import avatar_lion_traditional from "./avatars/avatar_lion_traditional.png.png";
+import avatar_man_lantern from "./avatars/avatar_man_lantern.png";
+import avatar_man_tasbih from "./avatars/avatar_man_tasbih.png";
+import avatar_man_cup from "./avatars/avatar_man_cup.png";
+import avatar_man_pencil from "./avatars/avatar_man_pencil.png";
+import avatar_man_spoon from "./avatars/avatar_man_spoon.png";
+import avatar_man_soccer from "./avatars/avatar_man_soccer.png";
+import avatar_woman_hijab_book from "./avatars/avatar_woman_hijab_book.png";
+import avatar_woman_hijab_dua from "./avatars/avatar_woman_hijab_dua.png";
+import avatar_woman_hijab_tasbih from "./avatars/avatar_woman_hijab_tasbih.png";
+import avatar_woman_hijab_pen from "./avatars/avatar_woman_hijab_pen.png";
+import avatar_woman_hijab_studying from "./avatars/avatar_woman_hijab_studying.png";
+import avatar_woman_hijab_praying from "./avatars/avatar_woman_hijab_praying.png";
+import avatar_woman_hijab_beads from "./avatars/avatar_woman_hijab_beads.png";
+import avatar_woman_niqab from "./avatars/avatar_woman_niqab.png";
+import avatar_woman_cartoon from "./avatars/avatar_woman_cartoon.png";
+import avatar_woman_pixel from "./avatars/avatar_woman_pixel.png";
+import avatar_woman_neon from "./avatars/avatar_woman_neon.png";
 import avatar_ninja_female from "./avatars/avatar_ninja_female.png.png";
 import avatar_ninja_male from "./avatars/avatar_ninja_male.png.png";
+import avatar_dino from "./avatars/avatar_dino.png.png";
+import avatar_fox from "./avatars/avatar_fox.png.png";
 import avatar_panda from "./avatars/avatar_panda.png.png";
 import avatar_rabbit from "./avatars/avatar_rabbit.png.png";
 import avatar_robot from "./avatars/avatar_robot.png.png";
@@ -75,18 +84,27 @@ const assets = {
     mascot_path_main,
   },
   avatars: {
-    avatar_dino,
-    avatar_fox,
-    avatar_lion,
-    avatar_lion_female_scarf,
-    avatar_lion_glasses,
-    avatar_lion_headphones,
-    avatar_lion_hoodie,
-    avatar_lion_kufiya,
-    avatar_lion_suit,
-    avatar_lion_traditional,
+    avatar_man_lantern,
+    avatar_man_tasbih,
+    avatar_man_cup,
+    avatar_man_pencil,
+    avatar_man_spoon,
+    avatar_man_soccer,
+    avatar_woman_hijab_book,
+    avatar_woman_hijab_dua,
+    avatar_woman_hijab_tasbih,
+    avatar_woman_hijab_pen,
+    avatar_woman_hijab_studying,
+    avatar_woman_hijab_praying,
+    avatar_woman_hijab_beads,
+    avatar_woman_niqab,
+    avatar_woman_cartoon,
+    avatar_woman_pixel,
+    avatar_woman_neon,
     avatar_ninja_female,
     avatar_ninja_male,
+    avatar_dino,
+    avatar_fox,
     avatar_panda,
     avatar_rabbit,
     avatar_robot,
