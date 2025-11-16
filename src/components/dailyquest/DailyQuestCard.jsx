@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDailyQuestStore } from "../../store/dailyQuestStore";
 import DailyQuestExplainerModal from "./DailyQuestExplainerModal";
 import DailyQuestCountdown from "./DailyQuestCountdown";
-import ZaydChallenge from "../../assets/mascots/mascot_zayd_challenge.webp";
+import DailyQuestMascot from "../../assets/mascots/mascot_daily_quest.png";
 
 export default function DailyQuestCard() {
   const navigate = useNavigate();
@@ -103,10 +103,10 @@ export default function DailyQuestCard() {
         </div>
 
         <img
-          src={ZaydChallenge}
-          alt="Zayd Challenge"
+          src={DailyQuestMascot}
+          alt="Daily Quest Mascot"
           style={{
-            width: 80,
+            width: 90,
             height: "auto",
             marginLeft: 10,
             animation:
