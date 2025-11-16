@@ -18,6 +18,7 @@ import mascot_zayd_jump from "./mascots/mascot_zayd_jump.webp";
 import mascot_zayd_lantern from "./mascots/mascot_zayd_lantern.webp";
 import mascot_zayd_reading from "./mascots/mascot_zayd_reading.webp";
 import mascot_zayd_book from "./mascots/mascot_zayd_book.webp";
+import mascot_path_main from "./mascots/mascot_path_main.png";
 
 // ============ AVATARS ============
 import avatar_dino from "./avatars/avatar_dino.png.png";
@@ -71,6 +72,7 @@ const assets = {
     mascot_zayd_lantern,
     mascot_zayd_reading,
     mascot_zayd_book,
+    mascot_path_main,
   },
   avatars: {
     avatar_dino,

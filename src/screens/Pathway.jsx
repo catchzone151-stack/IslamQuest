@@ -7,13 +7,7 @@ import { useUserStore } from "../store/useUserStore";
 import { getLessonsForPath } from "../data/lessonLoader.js";
 
 // Mascots
-import ZaydStudy from "../assets/mascots/mascot_zayd_reading.webp";
-import ZaydTeaching from "../assets/mascots/mascot_zayd_teaching.webp";
-import ZaydLantern from "../assets/mascots/mascot_zayd_lantern.webp";
-import ZaydBook from "../assets/mascots/mascot_zayd_book.webp";
-import ZaydHappy from "../assets/mascots/mascot_zayd_happy.webp";
-import ZaydShield from "../assets/mascots/mascot_zayd_shield.webp";
-import ZaydCheer from "../assets/mascots/mascot_zayd_cheer.webp";
+import PathMascot from "../assets/mascots/mascot_path_main.png";
 
 export default function Pathway() {
   const { pathId } = useParams();
@@ -160,16 +154,8 @@ export default function Pathway() {
         }}
       >
         <img
-          src={
-            numericPathId === 2 ? ZaydTeaching :
-            numericPathId === 3 ? ZaydLantern :
-            numericPathId === 4 ? ZaydBook :
-            numericPathId === 5 ? ZaydHappy :
-            numericPathId === 6 ? ZaydShield :
-            numericPathId === 7 ? ZaydCheer :
-            ZaydStudy
-          }
-          alt="Zayd mascot"
+          src={PathMascot}
+          alt="Learning guide"
           style={{
             width: 70,
             height: "auto",
@@ -190,7 +176,9 @@ export default function Pathway() {
             whiteSpace: "normal",
           }}
         >
-          {numericPathId === 2 
+          {numericPathId === 1
+            ? "As Salaam Alikum Wa Rahmatullah, We find the name... 🌙"
+            : numericPathId === 2 
             ? "Let's strengthen your faith together 💪"
             : numericPathId === 3
             ? "Let's journey through the lives of the Prophets 🌙"
@@ -202,7 +190,21 @@ export default function Pathway() {
             ? "Learn from the heroes promised Paradise 🕊️"
             : numericPathId === 7
             ? "Celebrate the four greatest women in Islam ✨"
-            : "As Salaam Alikum Wa Rahmatullah, We find the name... 🌙"}
+            : numericPathId === 8
+            ? "Discover the greatest Companions of the Prophet ﷺ ⭐"
+            : numericPathId === 9
+            ? "Meet the noble Angels of Allah ✨"
+            : numericPathId === 10
+            ? "Prepare for the Signs of the Hour ⏳"
+            : numericPathId === 11
+            ? "Understand the journey of the Grave 🕊️"
+            : numericPathId === 12
+            ? "Prepare for the Day of Reckoning ⚖️"
+            : numericPathId === 13
+            ? "Learn about the Fire and seek protection 🔥"
+            : numericPathId === 14
+            ? "Dream of eternal bliss in Paradise 🌺"
+            : "Begin your journey of knowledge 📖"}
         </div>
       </div>
 

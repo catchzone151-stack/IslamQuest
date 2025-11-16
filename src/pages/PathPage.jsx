@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useProgressStore } from "../store/progressStore";
 import { FREE_LESSON_LIMITS } from "../store/premiumConfig";
 import PurchaseModal from "../components/PurchaseModal";
-import lionDefault from "../assets/mascots/mascot_zayd_default.webp";
+import PathMascot from "../assets/mascots/mascot_path_main.png";
 import { getLessonsForPath } from "../data/lessonLoader";
 
 export default function PathPage() {
@@ -85,8 +85,8 @@ export default function PathPage() {
       {/* Avatar */}
       <div style={{ display: "flex", justifyContent: "center" }}>
         <img
-          src={lionDefault}
-          alt="Mascot"
+          src={PathMascot}
+          alt="Learning guide"
           style={{ width: "90px", height: "90px", animation: "bounce 2s infinite" }}
         />
       </div>
@@ -158,8 +158,8 @@ export default function PathPage() {
 
               {isCurrent && (
                 <img
-                  src={lionDefault}
-                  alt="Avatar"
+                  src={PathMascot}
+                  alt="Current lesson"
                   style={{
                     position: "absolute",
                     top: "-40px",
