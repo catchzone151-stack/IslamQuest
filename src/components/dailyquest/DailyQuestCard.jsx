@@ -109,9 +109,6 @@ export default function DailyQuestCard() {
             width: 90,
             height: "auto",
             marginLeft: 10,
-            animation:
-              "bounceYSmooth 2.25s cubic-bezier(.22,.61,.36,1) infinite",
-            transformOrigin: "50% 90%",
           }}
         />
       </div>
