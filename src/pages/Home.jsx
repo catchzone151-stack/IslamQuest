@@ -329,11 +329,16 @@ export default function Home() {
       <p
         style={{
           textAlign: "center",
-          fontSize: "1.05rem",
+          fontSize: "1.15rem",
           margin: "6px 0 14px",
+          fontFamily: "'Amiri', 'Georgia', serif",
+          fontWeight: "500",
+          color: "#FFD700",
+          textShadow: "0 2px 8px rgba(212, 175, 55, 0.4)",
+          letterSpacing: "0.5px",
         }}
       >
-        As-salāmu ʿalaykum, {name || "Explorer"} 👋
+        As salaam 'alaikum, {name || "Explorer"} 👋
       </p>
 
       {/*
