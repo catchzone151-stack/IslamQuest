@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useChallengeStore, CHALLENGE_MODES, BOSS_LEVEL } from "../../store/challengeStore";
 import { useProgressStore } from "../../store/progressStore";
 import ChallengeResultsModal from "../../components/challenges/ChallengeResultsModal";
+import assets from "../../assets/assets";
 import "./ChallengeGame.css";
 
 export default function ChallengeGame() {
@@ -287,6 +288,18 @@ export default function ChallengeGame() {
       <p className="challenge-progress-text">
         Question {currentIndex + 1} of {questions.length}
       </p>
+
+      {/* Thinking Mascot */}
+      <div style={{ textAlign: "center", marginBottom: "20px" }}>
+        <img 
+          src={assets.mascots.mascot_quiz_thinking} 
+          alt="Zayd Thinking"
+          style={{
+            width: "80px",
+            height: "auto"
+          }}
+        />
+      </div>
 
       {/* Question Card */}
       <div className="challenge-question-card">

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDailyQuestStore } from "../store/dailyQuestStore";
 import QuestionCard from "../components/quiz/QuestionCard";
+import assets from "../assets/assets";
 
 export default function DailyQuestGame() {
   const navigate = useNavigate();
@@ -133,6 +134,18 @@ export default function DailyQuestGame() {
             </div>
           </div>
 
+          {/* Mascot */}
+          <img 
+            src={assets.mascots.mascot_quiz_cheering} 
+            alt="Zayd Cheering"
+            style={{
+              width: "100px",
+              height: "auto",
+              margin: "0 auto 20px",
+              animation: "bounce 1.5s infinite"
+            }}
+          />
+
           {/* Come back tomorrow message */}
           <p
             style={{
@@ -143,6 +156,13 @@ export default function DailyQuestGame() {
           >
             Come back tomorrow for a new Daily Quest! 🌙
           </p>
+          
+          <style>{`
+            @keyframes bounce {
+              0%, 100% { transform: translateY(0); }
+              50% { transform: translateY(-10px); }
+            }
+          `}</style>
 
           {/* Continue button */}
           <button
@@ -232,6 +252,18 @@ export default function DailyQuestGame() {
             }}
           />
         </div>
+      </div>
+
+      {/* Thinking Mascot */}
+      <div style={{ textAlign: "center", marginBottom: "20px" }}>
+        <img 
+          src={assets.mascots.mascot_quiz_thinking} 
+          alt="Zayd Thinking"
+          style={{
+            width: "80px",
+            height: "auto"
+          }}
+        />
       </div>
 
       {/* Question Card */}

@@ -3,6 +3,7 @@ import ScreenContainer from "../components/ScreenContainer";
 import { useReviseStore } from "../store/reviseStore";
 import { useProgressStore } from "../store/progressStore";
 import QuestionCard from "../components/quiz/QuestionCard";
+import assets from "../assets/assets";
 
 export default function Revise() {
   const [mode, setMode] = useState(null); // null | "mistakes" | "smart"
@@ -169,6 +170,25 @@ export default function Revise() {
             boxShadow: "0 10px 40px rgba(212, 175, 55, 0.3)",
           }}
         >
+          {/* Mascot */}
+          <img 
+            src={assets.mascots.mascot_quiz_cheering} 
+            alt="Zayd Cheering"
+            style={{
+              width: "100px",
+              height: "auto",
+              margin: "0 auto 20px",
+              animation: "bounce 1.5s infinite"
+            }}
+          />
+          
+          <style>{`
+            @keyframes bounce {
+              0%, 100% { transform: translateY(0); }
+              50% { transform: translateY(-10px); }
+            }
+          `}</style>
+
           <h1
             style={{
               fontSize: "2rem",
@@ -314,6 +334,17 @@ export default function Revise() {
                 ? "Master your weak areas"
                 : "Strengthen your weakest path"}
             </p>
+            
+            {/* Thinking Mascot */}
+            <img 
+              src={assets.mascots.mascot_quiz_thinking} 
+              alt="Zayd Thinking"
+              style={{
+                width: "80px",
+                height: "auto",
+                margin: "20px auto 0"
+              }}
+            />
           </div>
 
           <QuestionCard

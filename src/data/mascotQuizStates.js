@@ -1,13 +1,11 @@
-import mascot_zayd_default from '../assets/mascots/mascot_zayd_default.webp';
-import mascot_zayd_thinking from '../assets/mascots/mascot_zayd_thinking.webp';
-import mascot_zayd_thumbsup from '../assets/mascots/mascot_zayd_thumbsup.webp';
-import mascot_zayd_trophy from '../assets/mascots/mascot_zayd_trophy.webp';
+import mascot_quiz_thinking from '../assets/mascots/mascot_quiz_thinking.webp';
+import mascot_quiz_cheering from '../assets/mascots/mascot_quiz_cheering.webp';
 
 export const mascotQuizStates = {
-  start: mascot_zayd_default,
-  thinking: mascot_zayd_thinking,
-  correct: mascot_zayd_thumbsup,
-  incorrect: mascot_zayd_thinking,
-  pass: mascot_zayd_trophy,
-  fail: mascot_zayd_default,
+  start: mascot_quiz_thinking,
+  thinking: mascot_quiz_thinking,
+  correct: mascot_quiz_thinking,
+  incorrect: mascot_quiz_thinking,
+  pass: mascot_quiz_cheering,
+  fail: mascot_quiz_thinking,
 };
