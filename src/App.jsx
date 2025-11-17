@@ -22,9 +22,9 @@ import LockDiagnostics from "./pages/LockDiagnostics.jsx";
 // ✅ Components & stores
 import BottomNav from "./components/BottomNav.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
+import ModalController from "./components/ModalController.jsx";
 import { useUserStore } from "./store/useUserStore";
 import { useProgressStore } from "./store/progressStore";
-import { ZaydLevelUpPopup } from "./components/ZaydLevelUpPopup";
 
 // ✅ Onboarding screens
 import BismillahScreen from "./onboarding/BismillahScreen.jsx";
@@ -81,7 +81,7 @@ function PlaceholderQuizPage() {
 
 export default function App() {
   const { hasOnboarded, isHydrated } = useUserStore();
-  const { showLevelUpModal, levelUpData, closeLevelUpModal, grantCoins, coins } = useProgressStore();
+  const { grantCoins, coins } = useProgressStore();
 
   // 🛠️ DEV: Grant 5000 coins on first load (only in dev mode and after hydration)
   useEffect(() => {
@@ -169,13 +169,8 @@ export default function App() {
       {/* ✅ Persistent bottom navigation */}
       {hasOnboarded && <BottomNav />}
       
-      {/* 💎 Global Level-Up Modal */}
-      {showLevelUpModal && levelUpData && (
-        <ZaydLevelUpPopup
-          levelUpData={levelUpData}
-          onClose={closeLevelUpModal}
-        />
-      )}
+      {/* 💎 Centralized Modal System */}
+      <ModalController />
     </BrowserRouter>
   );
 }

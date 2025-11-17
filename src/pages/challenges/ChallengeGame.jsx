@@ -2,13 +2,14 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useChallengeStore, CHALLENGE_MODES, BOSS_LEVEL } from "../../store/challengeStore";
 import { useProgressStore } from "../../store/progressStore";
-import ChallengeResultsModal from "../../components/challenges/ChallengeResultsModal";
+import { useModalStore, MODAL_TYPES } from "../../store/modalStore";
 import assets from "../../assets/assets";
 import "./ChallengeGame.css";
 
 export default function ChallengeGame() {
   const navigate = useNavigate();
   const { challengeId } = useParams();
+  const { showModal } = useModalStore();
   
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -16,7 +17,6 @@ export default function ChallengeGame() {
   const [answers, setAnswers] = useState([]);
   const [timeLeft, setTimeLeft] = useState(0);
   const [isTimeUp, setIsTimeUp] = useState(false);
-  const [showResults, setShowResults] = useState(false);
   const [score, setScore] = useState(0);
   const [chainLength, setChainLength] = useState(0);
   const [gameEnded, setGameEnded] = useState(false);
@@ -201,31 +201,12 @@ export default function ChallengeGame() {
       }
     }
 
-    setShowResults(true);
-  };
-
-  const handleClose = () => {
-    navigate("/challenge");
-  };
-
-  if (questions.length === 0) {
-    return (
-      <div className="challenge-game-container">
-        <div className="challenge-loading">Loading questions...</div>
-      </div>
-    );
-  }
-
-  const currentQuestion = questions[currentIndex];
-  const progress = ((currentIndex + 1) / questions.length) * 100;
-
-  if (showResults) {
-    // Calculate rewards WITHOUT awarding them (already awarded in handleGameComplete)
+    // Calculate rewards WITHOUT awarding them (already awarded above)
     const config = isBoss ? BOSS_LEVEL : (challenge && CHALLENGE_MODES[challenge.mode.toUpperCase()]);
     let result;
     
     if (isBoss) {
-      result = score >= BOSS_LEVEL.questionCount * 0.6 ? "win" : "lose";
+      result = finalScore >= BOSS_LEVEL.questionCount * 0.6 ? "win" : "lose";
     } else if (challenge) {
       // Re-read challenge to get final winner status
       const updatedChallenge = useChallengeStore.getState().challenges.find(c => c.id === challengeId);
@@ -248,20 +229,29 @@ export default function ChallengeGame() {
     }
     
     const rewards = config?.rewards[result] || config?.rewards.lose || { xp: 0, coins: 0 };
+    
+    showModal(MODAL_TYPES.CHALLENGE_RESULTS, {
+      mode,
+      score: finalScore,
+      totalQuestions: questions.length,
+      result,
+      rewards,
+      opponentName: isBoss ? "Boss" : challenge?.opponentId,
+      opponentScore: challenge?.opponentScore,
+      onClose: () => navigate("/challenge")
+    });
+  };
 
+  if (questions.length === 0) {
     return (
-      <ChallengeResultsModal
-        mode={mode}
-        score={score}
-        totalQuestions={questions.length}
-        result={result}
-        rewards={rewards}
-        opponentName={isBoss ? "Boss" : challenge?.opponentId}
-        opponentScore={challenge?.opponentScore}
-        onClose={handleClose}
-      />
+      <div className="challenge-game-container">
+        <div className="challenge-loading">Loading questions...</div>
+      </div>
     );
   }
+
+  const currentQuestion = questions[currentIndex];
+  const progress = ((currentIndex + 1) / questions.length) * 100;
 
   return (
     <div className="challenge-game-container">

@@ -3,10 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getQuizForLesson, calculateResults } from "../data/quizEngine";
 import { mascotQuizStates } from "../data/mascotQuizStates";
 import { useProgressStore } from "../store/progressStore";
+import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 
 import QuizHeader from "../components/quiz/QuizHeader";
 import QuestionCard from "../components/quiz/QuestionCard";
-import RewardModal from "../components/quiz/RewardModal";
 
 const shuffleQuestion = (q) => {
   const order = q.options.map((_, i) => i);
@@ -32,6 +32,7 @@ const QuizScreen = () => {
   const [results, setResults] = useState(null);
 
   const applyQuizResults = useProgressStore((s) => s.applyQuizResults);
+  const { showModal } = useModalStore();
 
   useEffect(() => {
     const raw = getQuizForLesson(lessonId, pathId) || [];
@@ -86,6 +87,18 @@ const QuizScreen = () => {
     
     setIsQuizDone(true);
     setMascotMood(res.passed ? "pass" : "fail");
+    
+    // Show reward modal
+    showModal(MODAL_TYPES.REWARD, {
+      score: res.correct,
+      totalQ: res.total,
+      xp: res.xp,
+      coins: res.coins,
+      passed: res.passed,
+      mascotImg: mascotQuizStates[res.passed ? "pass" : "fail"],
+      onRetry: handleRetry,
+      onContinue: handleContinue
+    });
   };
 
   const handleRetry = () => {
@@ -139,24 +152,13 @@ const QuizScreen = () => {
       </div>
 
       <div className="flex-1 flex items-center justify-center px-4 py-6">
-        {!isQuizDone ? (
+        {!isQuizDone && (
           <QuestionCard
             question={quizData[currentQ]}
             currentQ={currentQ}
             totalQ={quizData.length}
             selected={selected}
             onSelect={handleSelect}
-          />
-        ) : (
-          <RewardModal
-            score={results.correct}
-            totalQ={results.total}
-            xp={results.xp}
-            coins={results.coins}
-            passed={results.passed}
-            mascotImg={mascotQuizStates[mascotMood]}
-            onRetry={handleRetry}
-            onContinue={handleContinue}
           />
         )}
       </div>

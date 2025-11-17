@@ -2,10 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useEventsStore } from "../store/eventsStore";
 import { useProgressStore } from "../store/progressStore";
+import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import { getEventQuestions } from "../data/eventQuestions";
-import EventInfoModal from "../components/events/EventInfoModal";
-import CountdownModal from "../components/events/CountdownModal";
-import ProvisionalResultsModal from "../components/events/ProvisionalResultsModal";
 import assets from "../assets/assets";
 import "./EventQuiz.css";
 
@@ -14,19 +12,17 @@ export default function EventQuiz() {
   const navigate = useNavigate();
   const { getEvents, enterEvent, hasEntered } = useEventsStore();
   const { coins, removeCoins } = useProgressStore();
+  const { showModal } = useModalStore();
   
   const events = getEvents();
   const event = events.find(e => e.id === eventId);
   
-  const [showInfoModal, setShowInfoModal] = useState(true);
-  const [showCountdown, setShowCountdown] = useState(false);
   const [quizStarted, setQuizStarted] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [userAnswers, setUserAnswers] = useState([]);
   const [timeLeft, setTimeLeft] = useState(60); // 60 seconds total
-  const [showProvisionalResults, setShowProvisionalResults] = useState(false);
   const [quizScore, setQuizScore] = useState(0);
   const [isCompleting, setIsCompleting] = useState(false);
   const autoAdvanceTimeoutRef = React.useRef(null);
@@ -39,6 +35,17 @@ export default function EventQuiz() {
       return;
     }
   }, [event, navigate]);
+
+  // Show info modal on mount
+  useEffect(() => {
+    if (event) {
+      showModal(MODAL_TYPES.EVENT_INFO, {
+        event,
+        onStart: handleStartQuiz,
+        onCancel: () => navigate("/events")
+      });
+    }
+  }, []);
 
   // No longer needed - coins checked in handleStartQuiz before countdown
 
@@ -79,8 +86,9 @@ export default function EventQuiz() {
     }
     
     // Start countdown
-    setShowInfoModal(false);
-    setShowCountdown(true);
+    showModal(MODAL_TYPES.EVENT_COUNTDOWN, {
+      onComplete: handleCountdownComplete
+    });
   };
 
   const handleCountdownComplete = () => {
@@ -89,7 +97,6 @@ export default function EventQuiz() {
     // In dev mode, skip this check to allow unlimited retries
     // In production, this prevents duplicate entries and coin deductions
     if (!import.meta.env.DEV && hasEntered(eventId)) {
-      setShowCountdown(false);
       alert("You've already entered this event!");
       navigate("/events");
       return;
@@ -100,7 +107,6 @@ export default function EventQuiz() {
     console.log("🎯 Loaded questions:", eventQuestions?.length, "questions for event:", eventId);
     
     if (!eventQuestions || eventQuestions.length === 0) {
-      setShowCountdown(false);
       alert("Error loading quiz questions. Please try again.");
       navigate("/events");
       return;
@@ -109,7 +115,6 @@ export default function EventQuiz() {
     // Deduct coins ONLY after confirming questions loaded
     const success = removeCoins(25);
     if (!success) {
-      setShowCountdown(false);
       alert("You don't have enough coins! You need 25 coins to enter.");
       navigate("/events");
       return;
@@ -120,7 +125,6 @@ export default function EventQuiz() {
     // Start quiz FIRST (atomic with coin deduction)
     setQuestions(eventQuestions);
     setQuizStarted(true);
-    setShowCountdown(false); // Hide countdown only after quiz is ready
     
     console.log("🚀 Quiz should now be visible!");
     
@@ -196,7 +200,12 @@ export default function EventQuiz() {
     enterEvent(eventId, score, finalAnswers);
     
     // Show provisional results
-    setShowProvisionalResults(true);
+    showModal(MODAL_TYPES.EVENT_PROVISIONAL_RESULTS, {
+      event,
+      score,
+      totalQuestions: questions.length,
+      onClose: () => navigate("/events")
+    });
   };
 
   if (!event) return null;
@@ -207,20 +216,6 @@ export default function EventQuiz() {
 
   return (
     <div className="event-quiz-container">
-      {/* Info Modal */}
-      {showInfoModal && (
-        <EventInfoModal
-          event={event}
-          onStart={handleStartQuiz}
-          onCancel={() => navigate("/events")}
-        />
-      )}
-
-      {/* Countdown Modal */}
-      {showCountdown && (
-        <CountdownModal onComplete={handleCountdownComplete} />
-      )}
-
       {/* Quiz Screen */}
       {quizStarted && currentQuestion && (
         <>
@@ -272,16 +267,6 @@ export default function EventQuiz() {
             <img src={assets.mascots.mascot_quiz_thinking} alt="Zayd" />
           </div>
         </>
-      )}
-
-      {/* Provisional Results Modal */}
-      {showProvisionalResults && (
-        <ProvisionalResultsModal
-          event={event}
-          score={quizScore}
-          totalQuestions={questions.length}
-          onClose={() => navigate("/events")}
-        />
       )}
     </div>
   );

@@ -34,7 +34,6 @@ import avatar_woman_hijab_dua from "./avatars/avatar_woman_hijab_dua.png";
 import avatar_woman_hijab_tasbih from "./avatars/avatar_woman_hijab_tasbih.png";
 import avatar_woman_hijab_pen from "./avatars/avatar_woman_hijab_pen.png";
 import avatar_woman_hijab_studying from "./avatars/avatar_woman_hijab_studying.png";
-import avatar_woman_hijab_praying from "./avatars/avatar_woman_hijab_praying.png";
 import avatar_woman_hijab_beads from "./avatars/avatar_woman_hijab_beads.png";
 import avatar_woman_niqab from "./avatars/avatar_woman_niqab.png";
 import avatar_woman_cartoon from "./avatars/avatar_woman_cartoon.png";
@@ -99,7 +98,6 @@ const assets = {
     avatar_woman_hijab_tasbih,
     avatar_woman_hijab_pen,
     avatar_woman_hijab_studying,
-    avatar_woman_hijab_praying,
     avatar_woman_hijab_beads,
     avatar_woman_niqab,
     avatar_woman_cartoon,

@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEventsStore } from "../store/eventsStore";
 import { useProgressStore } from "../store/progressStore";
-import FinalResultsModal from "../components/events/FinalResultsModal";
-import InsufficientCoinsModal from "../components/events/InsufficientCoinsModal";
+import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import "./GlobalEvents.css";
 
 export default function GlobalEvents() {
@@ -19,13 +18,12 @@ export default function GlobalEvents() {
   } = useEventsStore();
   
   const { coins } = useProgressStore();
+  const { showModal } = useModalStore();
   const events = getEvents();
   const resultsUnlocked = areResultsUnlocked();
   
   const [timeLeft, setTimeLeft] = useState("");
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [showResultsModal, setShowResultsModal] = useState(false);
-  const [showInsufficientCoinsModal, setShowInsufficientCoinsModal] = useState(false);
 
   // Check for week reset on mount
   useEffect(() => {
@@ -59,7 +57,7 @@ export default function GlobalEvents() {
     
     // Check if user has enough coins
     if (coins < 25) {
-      setShowInsufficientCoinsModal(true);
+      showModal(MODAL_TYPES.INSUFFICIENT_COINS);
       return;
     }
     
@@ -73,7 +71,10 @@ export default function GlobalEvents() {
     // If results unlocked and user entered (production only), show results modal
     if (!import.meta.env.DEV && resultsUnlocked && entered) {
       setSelectedEvent(event);
-      setShowResultsModal(true);
+      showModal(MODAL_TYPES.EVENT_FINAL_RESULTS, {
+        event: event,
+        entry: getEntry(event.id)
+      });
       return;
     }
     
@@ -166,24 +167,6 @@ export default function GlobalEvents() {
           );
         })}
       </div>
-
-      {/* Final Results Modal */}
-      {showResultsModal && selectedEvent && (
-        <FinalResultsModal
-          event={selectedEvent}
-          onClose={() => {
-            setShowResultsModal(false);
-            setSelectedEvent(null);
-          }}
-        />
-      )}
-
-      {/* Insufficient Coins Modal */}
-      {showInsufficientCoinsModal && (
-        <InsufficientCoinsModal
-          onClose={() => setShowInsufficientCoinsModal(false)}
-        />
-      )}
     </div>
   );
 }

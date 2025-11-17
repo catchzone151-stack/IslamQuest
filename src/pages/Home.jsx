@@ -24,11 +24,10 @@ import { useNavigate } from "react-router-dom";
 import { useProgressStore } from "../store/progressStore";
 import { useUserStore } from "../store/useUserStore";
 import { useDailyQuestStore } from "../store/dailyQuestStore";
+import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 
 // Components
 import DailyQuestCard from "../components/dailyquest/DailyQuestCard";
-import PurchaseStreakFreezeModal from "../components/PurchaseStreakFreezeModal";
-import RepairStreakModal from "../components/RepairStreakModal";
 
 // Mascots & UI assets
 import Zayd from "../assets/mascots/mascot_zayd_default.webp";
@@ -50,9 +49,8 @@ export default function Home() {
   // Which "page" of the carousel we're on (0 / 1 / 2)
   const [page, setPage] = useState(0);
 
-  // Modal states
-  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
-  const [showRepairModal, setShowRepairModal] = useState(false);
+  // Modal store
+  const { showModal } = useModalStore();
 
   // Pull live data from the store
   const {
@@ -80,9 +78,9 @@ export default function Home() {
   // Show repair modal if needed
   useEffect(() => {
     if (needsRepairPrompt) {
-      setShowRepairModal(true);
+      showModal(MODAL_TYPES.REPAIR_STREAK);
     }
-  }, [needsRepairPrompt]);
+  }, [needsRepairPrompt, showModal]);
 
   /**
    * Sync carousel scroll -> page indicator dots
@@ -268,7 +266,7 @@ export default function Home() {
               src={ui_shield}
               alt="Shield"
               title="Streak Freeze"
-              onClick={() => setShowPurchaseModal(true)}
+              onClick={() => showModal(MODAL_TYPES.PURCHASE_STREAK_FREEZE)}
               style={{
                 width: 44,
                 height: 44,
@@ -624,23 +622,6 @@ export default function Home() {
           backface-visibility: hidden;
         }
       `}</style>
-
-      {/* Purchase Streak Freeze Modal */}
-      {showPurchaseModal && (
-        <PurchaseStreakFreezeModal
-          onClose={() => setShowPurchaseModal(false)}
-          onSuccess={() => {
-            setShowPurchaseModal(false);
-          }}
-        />
-      )}
-
-      {/* Repair Streak Modal */}
-      {showRepairModal && (
-        <RepairStreakModal
-          onClose={() => setShowRepairModal(false)}
-        />
-      )}
     </div>
   );
 }

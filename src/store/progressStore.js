@@ -2,6 +2,7 @@
 import { create } from "zustand";
 import { getCurrentLevel, checkLevelUp } from "../utils/diamondLevels";
 import { FREE_LESSON_LIMITS } from "./premiumConfig";
+import { useModalStore, MODAL_TYPES } from "./modalStore";
 
 const STORAGE_KEY = "islamQuestProgress_v4";
 
@@ -46,10 +47,6 @@ export const useProgressStore = create((set, get) => ({
   premiumStatus: "free", // "free" | "individual" | "family"
   familyPlanId: null, // For family plan sync (future Supabase feature)
   familyMembers: [], // Array of { id, name, avatar, xp } for family plan
-  
-  // 💎 Diamond Level System
-  showLevelUpModal: false,
-  levelUpData: null,
 
   // 🌙 Learning Paths
   paths: DEFAULT_PATHS,
@@ -341,19 +338,12 @@ export const useProgressStore = create((set, get) => ({
     
     // 🎉 Trigger level-up notification if leveled up
     if (levelUpResult.leveledUp) {
-      set({
-        showLevelUpModal: true,
-        levelUpData: levelUpResult,
+      useModalStore.getState().showModal(MODAL_TYPES.LEVEL_UP, {
+        levelUpData: levelUpResult
       });
     }
     
     get().saveProgress();
-  },
-  
-  // 💎 Close level-up modal
-  closeLevelUpModal: () => {
-    set({ showLevelUpModal: false, levelUpData: null });
-    get().saveProgress(); // Save to prevent modal from reappearing on reload
   },
 
   addCoins: (amount) => {

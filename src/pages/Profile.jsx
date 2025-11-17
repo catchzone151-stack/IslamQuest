@@ -1,16 +1,11 @@
 // src/pages/Profile.jsx
-import React, { useState } from "react";
+import React from "react";
 import ScreenContainer from "../components/ScreenContainer";
 import { useUserStore } from "../store/useUserStore";
 import { useProgressStore } from "../store/progressStore";
+import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import ProfileCard from "../components/ProfileCard";
-import EditNameInput from "../components/EditNameInput";
-import EditAvatarModal from "../components/EditAvatarModal";
 import { LevelBadge } from "../components/LevelBadge";
-import { ViewAllLevelsModal } from "../components/ViewAllLevelsModal";
-import PurchaseStreakFreezeModal from "../components/PurchaseStreakFreezeModal";
-import PurchaseModal from "../components/PurchaseModal";
-import InviteFamilyMemberModal from "../components/InviteFamilyMemberModal";
 import { getCurrentLevel, getXPProgress } from "../utils/diamondLevels";
 import ui_xp from "../assets/ui/ui_xp.webp";
 import ui_coin from "../assets/ui/ui_coin.webp";
@@ -31,13 +26,8 @@ export default function Profile() {
     addFamilyMember,
     removeFamilyMember,
   } = useProgressStore();
-
-  const [showEditName, setShowEditName] = useState(false);
-  const [showEditAvatar, setShowEditAvatar] = useState(false);
-  const [showAllLevels, setShowAllLevels] = useState(false);
-  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
-  const [showPremiumModal, setShowPremiumModal] = useState(false);
-  const [showInviteModal, setShowInviteModal] = useState(false);
+  
+  const { showModal } = useModalStore();
 
   const currentLevel = getCurrentLevel(xp);
   const xpProgress = getXPProgress(xp);
@@ -74,7 +64,10 @@ export default function Profile() {
         {/* === Avatar + Nickname === */}
         <div style={{ marginTop: 24 }}>
           <button
-            onClick={() => setShowEditAvatar(true)}
+            onClick={() => showModal(MODAL_TYPES.EDIT_AVATAR, {
+              currentAvatar: avatar,
+              onSave: setAvatar
+            })}
             style={{
               border: "none",
               background: "transparent",
@@ -96,7 +89,10 @@ export default function Profile() {
 
           <div style={{ marginTop: 12 }}>
             <h2
-              onClick={() => setShowEditName(true)}
+              onClick={() => showModal(MODAL_TYPES.EDIT_NAME, {
+                initialName: name,
+                onSave: setName
+              })}
               style={{
                 cursor: "pointer",
                 fontSize: "1.3rem",
@@ -161,7 +157,7 @@ export default function Profile() {
 
         {/* View All Levels Button */}
         <button
-          onClick={() => setShowAllLevels(true)}
+          onClick={() => showModal(MODAL_TYPES.VIEW_ALL_LEVELS)}
           style={{
             background: "linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(244, 208, 63, 0.1) 100%)",
             border: "1px solid rgba(212, 175, 55, 0.4)",
@@ -210,7 +206,7 @@ export default function Profile() {
 
         {/* === Add Freeze Button === */}
         <button
-          onClick={() => setShowPurchaseModal(true)}
+          onClick={() => showModal(MODAL_TYPES.PURCHASE_STREAK_FREEZE)}
           style={{
             background: "linear-gradient(135deg, rgba(79, 213, 255, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%)",
             border: "1px solid rgba(79, 213, 255, 0.4)",
@@ -281,7 +277,7 @@ export default function Profile() {
           {/* Upgrade Button - Only show for free users */}
           {premiumStatus === "free" && (
             <button
-              onClick={() => setShowPremiumModal(true)}
+              onClick={() => showModal(MODAL_TYPES.PURCHASE)}
               style={{
                 background: "linear-gradient(135deg, #FFD700 0%, #FFA500 100%)",
                 color: "#111827",
@@ -384,7 +380,7 @@ export default function Profile() {
               {/* Invite Button */}
               {familyMembers.length < 5 && (
                 <button
-                  onClick={() => setShowInviteModal(true)}
+                  onClick={() => showModal(MODAL_TYPES.INVITE_FAMILY)}
                   style={{
                     background: "linear-gradient(135deg, #FFD700 0%, #FFA500 100%)",
                     color: "#111827",
@@ -413,69 +409,6 @@ export default function Profile() {
           `}
         </style>
       </div>
-
-      {/* === Modals === */}
-      <EditNameInput
-        isOpen={showEditName}
-        onClose={() => setShowEditName(false)}
-        currentName={name}
-        onSave={setName}
-      />
-
-      <EditAvatarModal
-        isOpen={showEditAvatar}
-        onClose={() => setShowEditAvatar(false)}
-        currentAvatar={avatar}
-        onSave={setAvatar}
-      />
-
-      {showAllLevels && (
-        <ViewAllLevelsModal
-          currentXP={xp}
-          onClose={() => setShowAllLevels(false)}
-        />
-      )}
-
-      {showPurchaseModal && (
-        <PurchaseStreakFreezeModal
-          onClose={() => setShowPurchaseModal(false)}
-          onSuccess={() => {
-            setShowPurchaseModal(false);
-          }}
-        />
-      )}
-
-      {showPremiumModal && (
-        <PurchaseModal
-          onClose={() => setShowPremiumModal(false)}
-          onPurchase={(planType) => {
-            // Call appropriate purchase function
-            const result = planType === "individual" 
-              ? purchaseIndividual()
-              : purchaseFamily();
-            
-            if (result.success) {
-              setShowPremiumModal(false);
-              alert(`Alhamdulillah! ${planType === "individual" ? "Individual" : "Family"} plan activated! 🎉`);
-            }
-          }}
-        />
-      )}
-
-      {showInviteModal && (
-        <InviteFamilyMemberModal
-          isOpen={showInviteModal}
-          onClose={() => setShowInviteModal(false)}
-          onInvite={(memberName) => {
-            const result = addFamilyMember({ name: memberName });
-            if (result.success) {
-              alert(`Invitation sent to ${memberName}! 📧`);
-            } else {
-              alert(result.message);
-            }
-          }}
-        />
-      )}
     </ScreenContainer>
   );
 }

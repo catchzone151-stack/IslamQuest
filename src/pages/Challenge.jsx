@@ -3,10 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useChallengeStore, CHALLENGE_MODES, BOSS_LEVEL } from "../store/challengeStore";
 import { useProgressStore } from "../store/progressStore";
 import { useFriendsStore } from "../store/friendsStore";
-import ChallengeExplainerModal from "../components/challenges/ChallengeExplainerModal";
-import ChallengeCountdown from "../components/challenges/ChallengeCountdown";
-import NoSharedLessonsModal from "../components/challenges/NoSharedLessonsModal";
-import BossLockedModal from "../components/challenges/BossLockedModal";
+import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import BossLevelMascot from "../assets/mascots/mascot_boss_level.png";
 
 export default function Challenge() {
@@ -15,13 +12,10 @@ export default function Challenge() {
   const { level } = useProgressStore();
   const { friends } = useFriendsStore();
   const { loadFromStorage } = useChallengeStore();
+  const { showModal } = useModalStore();
 
   const [selectedMode, setSelectedMode] = useState(null);
   const [selectedFriend, setSelectedFriend] = useState(null);
-  const [showExplainer, setShowExplainer] = useState(false);
-  const [showCountdown, setShowCountdown] = useState(false);
-  const [showNoSharedLessons, setShowNoSharedLessons] = useState(false);
-  const [showBossLocked, setShowBossLocked] = useState(false);
   const [showFriendSelector, setShowFriendSelector] = useState(false);
 
   useEffect(() => {
@@ -41,16 +35,25 @@ export default function Challenge() {
     // Check if they have shared lessons
     const shared = useChallengeStore.getState().getSharedLessons("current_user", friend.id);
     if (shared.length === 0) {
-      setShowNoSharedLessons(true);
+      showModal(MODAL_TYPES.NO_SHARED_LESSONS, {
+        friendName: friend.name
+      });
       return;
     }
     
-    setShowExplainer(true);
+    showModal(MODAL_TYPES.CHALLENGE_EXPLAINER, {
+      mode: selectedMode,
+      onStart: handleStartChallenge,
+      onCancel: handleCancelExplainer
+    });
   };
 
   const handleBossClick = () => {
     if (level < BOSS_LEVEL.minLevel) {
-      setShowBossLocked(true);
+      showModal(MODAL_TYPES.BOSS_LOCKED, {
+        currentLevel: level,
+        requiredLevel: BOSS_LEVEL.minLevel
+      });
       return;
     }
 
@@ -61,15 +64,19 @@ export default function Challenge() {
     }
 
     setSelectedMode(BOSS_LEVEL);
-    setShowExplainer(true);
+    showModal(MODAL_TYPES.CHALLENGE_EXPLAINER, {
+      mode: BOSS_LEVEL,
+      onStart: handleStartChallenge,
+      onCancel: handleCancelExplainer
+    });
   };
 
   const handleStartChallenge = () => {
-    setShowExplainer(false);
-    
     if (selectedMode.id === "boss_level") {
       // Start boss level immediately
-      setShowCountdown(true);
+      showModal(MODAL_TYPES.CHALLENGE_COUNTDOWN, {
+        onComplete: handleCountdownComplete
+      });
     } else {
       // Create friend challenge
       const result = useChallengeStore.getState().createChallenge(
@@ -78,7 +85,9 @@ export default function Challenge() {
       );
       
       if (result.success) {
-        setShowCountdown(true);
+        showModal(MODAL_TYPES.CHALLENGE_COUNTDOWN, {
+          onComplete: handleCountdownComplete
+        });
       } else {
         alert("Failed to create challenge. Please try again.");
       }
@@ -86,8 +95,6 @@ export default function Challenge() {
   };
 
   const handleCountdownComplete = () => {
-    setShowCountdown(false);
-    
     if (selectedMode.id === "boss_level") {
       navigate(`/challenge/boss`);
     } else {
@@ -101,7 +108,6 @@ export default function Challenge() {
   };
 
   const handleCancelExplainer = () => {
-    setShowExplainer(false);
     setSelectedMode(null);
     setSelectedFriend(null);
   };
@@ -318,38 +324,7 @@ export default function Challenge() {
         </div>
       </div>
 
-      {/* Modals */}
-      {showExplainer && selectedMode && (
-        <ChallengeExplainerModal
-          mode={selectedMode}
-          onStart={handleStartChallenge}
-          onCancel={handleCancelExplainer}
-        />
-      )}
-
-      {showCountdown && (
-        <ChallengeCountdown onComplete={handleCountdownComplete} />
-      )}
-
-      {showNoSharedLessons && (
-        <NoSharedLessonsModal
-          friendName={selectedFriend?.name}
-          onClose={() => {
-            setShowNoSharedLessons(false);
-            setSelectedMode(null);
-            setSelectedFriend(null);
-          }}
-        />
-      )}
-
-      {showBossLocked && (
-        <BossLockedModal
-          currentLevel={level}
-          onClose={() => setShowBossLocked(false)}
-        />
-      )}
-
-      {/* Friend Selector Modal */}
+      {/* Friend Selector Modal (UI-only, not in central modal system) */}
       {showFriendSelector && (
         <div className="challenge-modal-overlay" onClick={() => setShowFriendSelector(false)}>
           <div className="challenge-modal" onClick={(e) => e.stopPropagation()}>
