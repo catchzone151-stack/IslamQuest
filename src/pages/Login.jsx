@@ -48,8 +48,6 @@ export default function Login() {
           "Signed up, but error creating profile: " + profileError.message,
         );
         return;
-      } else {
-        console.log("Profile inserted for user:", user.id);
       }
     }
 

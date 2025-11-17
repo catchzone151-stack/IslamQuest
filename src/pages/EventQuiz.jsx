@@ -104,7 +104,6 @@ export default function EventQuiz() {
     
     // Load questions FIRST to validate
     const eventQuestions = getEventQuestions(eventId, 10);
-    console.log("🎯 Loaded questions:", eventQuestions?.length, "questions for event:", eventId);
     
     if (!eventQuestions || eventQuestions.length === 0) {
       alert("Error loading quiz questions. Please try again.");
@@ -120,13 +119,9 @@ export default function EventQuiz() {
       return;
     }
     
-    console.log("✅ Starting quiz with", eventQuestions.length, "questions");
-    
     // Start quiz FIRST (atomic with coin deduction)
     setQuestions(eventQuestions);
     setQuizStarted(true);
-    
-    console.log("🚀 Quiz should now be visible!");
     
     // Record entry IMMEDIATELY after quiz starts (transactional integrity)
     // This prevents coin loss if user refreshes during quiz

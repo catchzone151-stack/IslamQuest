@@ -365,7 +365,6 @@ export const useProgressStore = create((set, get) => ({
   grantCoins: (amount) => {
     set((s) => ({ coins: s.coins + amount }));
     get().saveProgress();
-    console.log(`✅ Granted ${amount} coins! New balance:`, get().coins);
   },
 
   // 🏆 Certificates
@@ -490,7 +489,6 @@ export const useProgressStore = create((set, get) => ({
   // 💳 PLACEHOLDER: Purchase Individual Plan (£4.99)
   // Later: integrate with payment provider (Stripe/RevenueCat)
   purchaseIndividual: () => {
-    console.log("🛒 Processing Individual Plan purchase (£4.99)...");
     // Simulate payment success
     // Clear family data when switching to individual plan
     set({ 
@@ -506,7 +504,6 @@ export const useProgressStore = create((set, get) => ({
   // 💳 PLACEHOLDER: Purchase Family Plan (£18 for 6 users)
   // Later: integrate with payment provider + Supabase for family sync
   purchaseFamily: () => {
-    console.log("🛒 Processing Family Plan purchase (£18)...");
     // Generate random family plan ID (will come from Supabase later)
     const familyId = `family_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
@@ -524,8 +521,6 @@ export const useProgressStore = create((set, get) => ({
   // 💳 PLACEHOLDER: Restore previous purchases
   // Later: check with payment provider for existing purchases
   restorePurchases: () => {
-    console.log("🔄 Checking for previous purchases...");
-    
     // Read from localStorage to check for saved premium status
     const saved = localStorage.getItem(STORAGE_KEY);
     if (!saved) {
