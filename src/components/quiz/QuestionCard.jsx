@@ -1,6 +1,6 @@
 import React from "react";
 
-const QuestionCard = ({
+const QuestionCard = React.memo(({
   question,
   selected,
   onSelect,
@@ -94,6 +94,6 @@ const QuestionCard = ({
       </div>
     </div>
   );
-};
+});
 
 export default QuestionCard;

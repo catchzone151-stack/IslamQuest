@@ -4,7 +4,7 @@ import React from "react";
 import { DiamondIcon } from "./DiamondIcon";
 import { getCurrentLevel, getXPProgress } from "../utils/diamondLevels";
 
-export function LevelBadge({ 
+export const LevelBadge = React.memo(function LevelBadge({ 
   xp, 
   size = "medium", 
   showXP = false, 
@@ -72,10 +72,10 @@ export function LevelBadge({
       </div>
     </div>
   );
-}
+});
 
 // Simplified version for small spaces (just diamond + level number)
-export function LevelBadgeCompact({ xp, size = 24 }) {
+export const LevelBadgeCompact = React.memo(function LevelBadgeCompact({ xp, size = 24 }) {
   const levelData = getCurrentLevel(xp);
 
   return (
@@ -102,4 +102,4 @@ export function LevelBadgeCompact({ xp, size = 24 }) {
       </span>
     </div>
   );
-}
+});

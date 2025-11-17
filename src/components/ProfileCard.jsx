@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function ProfileCard({ icon, label, value, color = "#FFD700" }) {
+const ProfileCard = React.memo(function ProfileCard({ icon, label, value, color = "#FFD700" }) {
   return (
     <div
       style={{
@@ -26,4 +26,6 @@ export default function ProfileCard({ icon, label, value, color = "#FFD700" }) {
       <p style={{ color, fontWeight: "bold", fontSize: "1.1rem", margin: "4px 0" }}>{value}</p>
     </div>
   );
-}
+});
+
+export default ProfileCard;

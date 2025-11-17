@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function ProgressBar({ value, max = 1 }) {
+const ProgressBar = React.memo(function ProgressBar({ value, max = 1 }) {
   const width = Math.min(100, (value / max) * 100);
   return (
     <div
@@ -24,4 +24,6 @@ export default function ProgressBar({ value, max = 1 }) {
       ></div>
     </div>
   );
-}
+});
+
+export default ProgressBar;

@@ -3,7 +3,6 @@ import React, { useEffect, Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // ✅ Critical imports (loaded immediately)
-import Home from "./pages/Home";
 import BottomNav from "./components/BottomNav.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 import ModalController from "./components/ModalController.jsx";
@@ -17,6 +16,7 @@ import NameScreen from "./onboarding/NameScreen.jsx";
 import AvatarScreen from "./onboarding/AvatarScreen.jsx";
 
 // 🚀 LAZY LOADED ROUTES - Split bundle for faster initial load
+const Home = lazy(() => import("./pages/Home"));
 const Pathway = lazy(() => import("./screens/Pathway.jsx"));
 const Lesson = lazy(() => import("./pages/Lesson.jsx"));
 const Challenge = lazy(() => import("./pages/Challenge.jsx"));
@@ -175,27 +175,27 @@ export default function App() {
               <Route path="*" element={<BismillahScreen />} />
             </>
           ) : (
-            <Suspense fallback={<LoadingScreen />}>
+            <>
               {/* ✅ MAIN APP ROUTES - Lazy loaded for performance */}
-              <Route path="/" element={<Home />} />
-              <Route path="/path/:pathId" element={<Pathway />} />
-              <Route path="/path/:pathId/lesson/:lessonId" element={<Lesson />} />
-              <Route path="/path/:pathId/quiz/:lessonId" element={<QuizScreen />} />
+              <Route path="/" element={<Suspense fallback={<LoadingScreen />}><Home /></Suspense>} />
+              <Route path="/path/:pathId" element={<Suspense fallback={<LoadingScreen />}><Pathway /></Suspense>} />
+              <Route path="/path/:pathId/lesson/:lessonId" element={<Suspense fallback={<LoadingScreen />}><Lesson /></Suspense>} />
+              <Route path="/path/:pathId/quiz/:lessonId" element={<Suspense fallback={<LoadingScreen />}><QuizScreen /></Suspense>} />
 
-              <Route path="/challenge" element={<Challenge />} />
-              <Route path="/challenge/:challengeId" element={<ChallengeGame />} />
-              <Route path="/daily-quest" element={<DailyQuestGame />} />
-              <Route path="/events" element={<GlobalEvents />} />
-              <Route path="/events/:eventId" element={<EventQuiz />} />
-              <Route path="/friends" element={<Friends />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/revise" element={<Revise />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/diagnostics" element={<LockDiagnostics />} />
+              <Route path="/challenge" element={<Suspense fallback={<LoadingScreen />}><Challenge /></Suspense>} />
+              <Route path="/challenge/:challengeId" element={<Suspense fallback={<LoadingScreen />}><ChallengeGame /></Suspense>} />
+              <Route path="/daily-quest" element={<Suspense fallback={<LoadingScreen />}><DailyQuestGame /></Suspense>} />
+              <Route path="/events" element={<Suspense fallback={<LoadingScreen />}><GlobalEvents /></Suspense>} />
+              <Route path="/events/:eventId" element={<Suspense fallback={<LoadingScreen />}><EventQuiz /></Suspense>} />
+              <Route path="/friends" element={<Suspense fallback={<LoadingScreen />}><Friends /></Suspense>} />
+              <Route path="/profile" element={<Suspense fallback={<LoadingScreen />}><Profile /></Suspense>} />
+              <Route path="/revise" element={<Suspense fallback={<LoadingScreen />}><Revise /></Suspense>} />
+              <Route path="/login" element={<Suspense fallback={<LoadingScreen />}><Login /></Suspense>} />
+              <Route path="/diagnostics" element={<Suspense fallback={<LoadingScreen />}><LockDiagnostics /></Suspense>} />
 
               {/* fallback */}
-              <Route path="*" element={<Home />} />
-            </Suspense>
+              <Route path="*" element={<Suspense fallback={<LoadingScreen />}><Home /></Suspense>} />
+            </>
           )}
         </Routes>
       </div>

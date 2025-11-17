@@ -2,7 +2,7 @@
 import React from "react";
 import { getCurrentLevel, DIAMOND_LEVELS } from "../utils/diamondLevels";
 
-export function DiamondIcon({ 
+export const DiamondIcon = React.memo(function DiamondIcon({ 
   xp = null, 
   level = null, 
   size = 24, 
@@ -72,7 +72,7 @@ export function DiamondIcon({
       }}/>
     </div>
   );
-}
+});
 
 // CSS animations (add to global CSS or include here as a style tag)
 export const diamondAnimations = `
