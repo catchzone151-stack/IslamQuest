@@ -12,6 +12,7 @@ Preferred communication style: Simple, everyday language.
 - **Technology Stack**: React 18.2, Vite, JavaScript, React Router DOM v7.9, Framer Motion, Lucide React.
 - **Design Pattern**: Component-based architecture with a mobile-first responsive design and a bottom navigation pattern.
 - **State Management**: Local state using React hooks, global state with Zustand (`progressStore`, `userStore`, `friendsStore`), and LocalStorage for persistence. Future migration to Supabase for cloud synchronization is planned.
+- **Performance Optimizations (November 2025)**: Route-based code splitting using React.lazy() and Suspense for all 12 main app routes (Home, Pathway, Lesson, QuizScreen, Challenge, ChallengeGame, DailyQuest, GlobalEvents, EventQuiz, Friends, Profile, Revise), reducing initial bundle size. React.memo applied to frequently re-rendering components (ProfileCard, LevelBadge, LevelBadgeCompact, DiamondIcon, ProgressBar, QuestionCard) to prevent unnecessary renders. All CSS animations GPU-optimized using only transform and opacity properties for smooth 60fps performance on mobile devices. Custom LoadingScreen component provides smooth transitions during lazy route loading.
 
 ### Styling Architecture
 - **Approach**: CSS-in-JS using standard CSS files with custom properties for theming.
