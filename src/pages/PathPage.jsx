@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useProgressStore } from "../store/progressStore";
 import { FREE_LESSON_LIMITS } from "../store/premiumConfig";
 import PurchaseModal from "../components/PurchaseModal";
-import PathMascot from "../assets/mascots/mascot_path_main.webp";
+import PathMascot from "../assets/mascots/mascot_zayd_teaching.webp";
 import { getLessonsForPath } from "../data/lessonLoader";
 
 export default function PathPage() {

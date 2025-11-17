@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getLessonsForPath } from "../data/lessonLoader";
-import lionMascot from "../assets/mascots/mascot_zayd_teaching.webp";
+import zaydTeachingMascot from "../assets/mascots/mascot_zayd_teaching.webp";
 
 export default function Lesson() {
   const { pathId, lessonId } = useParams();
@@ -79,7 +79,7 @@ export default function Lesson() {
     >
       {/* Mascot top-right */}
       <img
-        src={lionMascot}
+        src={zaydTeachingMascot}
         alt="Zayd teaching"
         style={{
           position: "absolute",

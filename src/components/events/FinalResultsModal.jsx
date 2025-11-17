@@ -69,7 +69,7 @@ export default function FinalResultsModal({ event, onClose }) {
   
   // Helper to get avatar image from avatar key
   const getAvatarImage = (avatarKey) => {
-    return assets.avatars[avatarKey] || assets.avatars.avatar_lion;
+    return assets.avatars[avatarKey] || assets.avatars.avatar_dino;
   };
   
   // Handle missing entry (error state)

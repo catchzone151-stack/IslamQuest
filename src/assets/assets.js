@@ -18,9 +18,6 @@ import mascot_zayd_jump from "./mascots/mascot_zayd_jump.webp";
 import mascot_zayd_lantern from "./mascots/mascot_zayd_lantern.webp";
 import mascot_zayd_reading from "./mascots/mascot_zayd_reading.webp";
 import mascot_zayd_book from "./mascots/mascot_zayd_book.webp";
-import mascot_path_main from "./mascots/mascot_path_main.webp";
-import mascot_quiz_thinking from "./mascots/mascot_quiz_thinking.webp";
-import mascot_quiz_cheering from "./mascots/mascot_quiz_cheering.webp";
 
 // ============ AVATARS ============
 import avatar_man_lantern from "./avatars/avatar_man_lantern.webp";
@@ -82,9 +79,6 @@ const assets = {
     mascot_zayd_lantern,
     mascot_zayd_reading,
     mascot_zayd_book,
-    mascot_path_main,
-    mascot_quiz_thinking,
-    mascot_quiz_cheering,
   },
   avatars: {
     avatar_man_lantern,

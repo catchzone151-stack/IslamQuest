@@ -172,7 +172,7 @@ export default function Revise() {
         >
           {/* Mascot */}
           <img 
-            src={assets.mascots.mascot_quiz_cheering} 
+            src={assets.mascots.mascot_zayd_cheer} 
             alt="Zayd Cheering"
             style={{
               width: "100px",
@@ -337,7 +337,7 @@ export default function Revise() {
             
             {/* Thinking Mascot */}
             <img 
-              src={assets.mascots.mascot_quiz_thinking} 
+              src={assets.mascots.mascot_zayd_thinking} 
               alt="Zayd Thinking"
               style={{
                 width: "80px",

@@ -13,7 +13,7 @@ export default function ProvisionalResultsModal({ event, score, totalQuestions, 
       <div className="event-modal provisional-modal">
         {/* Zayd Header */}
         <div className="modal-mascot-header">
-          <img src={assets.mascots.mascot_quiz_cheering} alt="Zayd" className="modal-zayd bounce" />
+          <img src={assets.mascots.mascot_zayd_cheer} alt="Zayd" className="modal-zayd bounce" />
         </div>
 
         {/* Title */}
