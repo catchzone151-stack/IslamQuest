@@ -8,7 +8,6 @@ import Pathway from "./screens/Pathway.jsx";
 import Lesson from "./pages/Lesson.jsx";
 import Challenge from "./pages/Challenge.jsx";
 import ChallengeGame from "./pages/challenges/ChallengeGame.jsx";
-import DailyChallenge from "./pages/DailyChallenge.jsx";
 import DailyQuestGame from "./pages/DailyQuestGame.jsx";
 import Friends from "./pages/Friends.jsx";
 import Profile from "./pages/Profile.jsx";
@@ -17,7 +16,7 @@ import Login from "./pages/Login.jsx";
 import QuizScreen from "./screens/QuizScreen.jsx";
 import GlobalEvents from "./pages/GlobalEvents.jsx";
 import EventQuiz from "./pages/EventQuiz.jsx";
-import LockDiagnostics from "./pages/LockDiagnostics.jsx";
+import LockDiagnostics from "./pages/LockDiagnostics.jsx"; // Dev/Debug page
 
 // ✅ Components & stores
 import BottomNav from "./components/BottomNav.jsx";
@@ -149,7 +148,6 @@ export default function App() {
 
               <Route path="/challenge" element={<Challenge />} />
               <Route path="/challenge/:challengeId" element={<ChallengeGame />} />
-              <Route path="/daily" element={<DailyChallenge />} />
               <Route path="/daily-quest" element={<DailyQuestGame />} />
               <Route path="/events" element={<GlobalEvents />} />
               <Route path="/events/:eventId" element={<EventQuiz />} />
