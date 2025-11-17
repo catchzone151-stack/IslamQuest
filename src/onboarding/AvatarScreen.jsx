@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useUserStore } from "../store/useUserStore";
 import { motion } from "framer-motion";
 
-// ✅ Load all .png avatars (stable and cross-platform)
-const avatarContext = import.meta.glob("/src/assets/avatars/*.png", {
+// ✅ Load all .webp avatars (optimized and compressed)
+const avatarContext = import.meta.glob("/src/assets/avatars/*.webp", {
   eager: true,
 });
 

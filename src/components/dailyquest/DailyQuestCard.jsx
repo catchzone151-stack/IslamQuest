@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDailyQuestStore } from "../../store/dailyQuestStore";
 import DailyQuestExplainerModal from "./DailyQuestExplainerModal";
 import DailyQuestCountdown from "./DailyQuestCountdown";
-import DailyQuestMascot from "../../assets/mascots/mascot_daily_quest.png";
+import DailyQuestMascot from "../../assets/mascots/mascot_daily_quest.webp";
 
 export default function DailyQuestCard() {
   const navigate = useNavigate();
