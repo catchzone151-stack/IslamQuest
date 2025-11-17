@@ -1,35 +1,71 @@
 // src/App.jsx
-import React, { useEffect } from "react";
+import React, { useEffect, Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-// ✅ Import main pages
+// ✅ Critical imports (loaded immediately)
 import Home from "./pages/Home";
-import Pathway from "./screens/Pathway.jsx";
-import Lesson from "./pages/Lesson.jsx";
-import Challenge from "./pages/Challenge.jsx";
-import ChallengeGame from "./pages/challenges/ChallengeGame.jsx";
-import DailyQuestGame from "./pages/DailyQuestGame.jsx";
-import Friends from "./pages/Friends.jsx";
-import Profile from "./pages/Profile.jsx";
-import Revise from "./pages/Revise.jsx";
-import Login from "./pages/Login.jsx";
-import QuizScreen from "./screens/QuizScreen.jsx";
-import GlobalEvents from "./pages/GlobalEvents.jsx";
-import EventQuiz from "./pages/EventQuiz.jsx";
-import LockDiagnostics from "./pages/LockDiagnostics.jsx"; // Dev/Debug page
-
-// ✅ Components & stores
 import BottomNav from "./components/BottomNav.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 import ModalController from "./components/ModalController.jsx";
 import { useUserStore } from "./store/useUserStore";
 import { useProgressStore } from "./store/progressStore";
 
-// ✅ Onboarding screens
+// ✅ Onboarding screens (loaded immediately for first-time users)
 import BismillahScreen from "./onboarding/BismillahScreen.jsx";
 import SalaamScreen from "./onboarding/SalaamScreen.jsx";
 import NameScreen from "./onboarding/NameScreen.jsx";
 import AvatarScreen from "./onboarding/AvatarScreen.jsx";
+
+// 🚀 LAZY LOADED ROUTES - Split bundle for faster initial load
+const Pathway = lazy(() => import("./screens/Pathway.jsx"));
+const Lesson = lazy(() => import("./pages/Lesson.jsx"));
+const Challenge = lazy(() => import("./pages/Challenge.jsx"));
+const ChallengeGame = lazy(() => import("./pages/challenges/ChallengeGame.jsx"));
+const DailyQuestGame = lazy(() => import("./pages/DailyQuestGame.jsx"));
+const Friends = lazy(() => import("./pages/Friends.jsx"));
+const Profile = lazy(() => import("./pages/Profile.jsx"));
+const Revise = lazy(() => import("./pages/Revise.jsx"));
+const Login = lazy(() => import("./pages/Login.jsx"));
+const QuizScreen = lazy(() => import("./screens/QuizScreen.jsx"));
+const GlobalEvents = lazy(() => import("./pages/GlobalEvents.jsx"));
+const EventQuiz = lazy(() => import("./pages/EventQuiz.jsx"));
+const LockDiagnostics = lazy(() => import("./pages/LockDiagnostics.jsx"));
+
+// 🌙 Loading Component for lazy routes
+function LoadingScreen() {
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "radial-gradient(circle at 20% 20%, rgba(10,15,30,1) 0%, rgba(3,6,20,1) 70%)",
+        color: "white",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "column",
+        gap: "20px",
+      }}
+    >
+      <div
+        style={{
+          width: "50px",
+          height: "50px",
+          border: "4px solid rgba(212, 175, 55, 0.3)",
+          borderTop: "4px solid #D4AF37",
+          borderRadius: "50%",
+          animation: "spin 1s linear infinite",
+        }}
+      />
+      <p style={{ color: "#D4AF37", fontSize: "1.1rem", fontWeight: 500 }}>Loading…</p>
+      <style>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
+    </div>
+  );
+}
 
 // ✅ Optional: temporary placeholder for future quiz
 function PlaceholderQuizPage() {
@@ -139,8 +175,8 @@ export default function App() {
               <Route path="*" element={<BismillahScreen />} />
             </>
           ) : (
-            <>
-              {/* ✅ MAIN APP ROUTES */}
+            <Suspense fallback={<LoadingScreen />}>
+              {/* ✅ MAIN APP ROUTES - Lazy loaded for performance */}
               <Route path="/" element={<Home />} />
               <Route path="/path/:pathId" element={<Pathway />} />
               <Route path="/path/:pathId/lesson/:lessonId" element={<Lesson />} />
@@ -159,7 +195,7 @@ export default function App() {
 
               {/* fallback */}
               <Route path="*" element={<Home />} />
-            </>
+            </Suspense>
           )}
         </Routes>
       </div>
