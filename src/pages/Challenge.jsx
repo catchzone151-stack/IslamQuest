@@ -42,13 +42,18 @@ export default function Challenge() {
     setSelectedFriend(friend);
     setShowFriendSelector(false);
     
-    // Check if they have shared lessons
-    const shared = useChallengeStore.getState().getSharedLessons("current_user", friend.id);
-    if (shared.length === 0) {
-      showModal(MODAL_TYPES.NO_SHARED_LESSONS, {
-        friendName: friend.name
-      });
-      return;
+    // 🤖 BETA MODE: Skip shared lessons check for testing
+    const betaMode = useDeveloperStore.getState().betaMode;
+    
+    if (!betaMode) {
+      // Check if they have shared lessons (only in production mode)
+      const shared = useChallengeStore.getState().getSharedLessons("current_user", friend.id);
+      if (shared.length === 0) {
+        showModal(MODAL_TYPES.NO_SHARED_LESSONS, {
+          friendName: friend.name
+        });
+        return;
+      }
     }
     
     showModal(MODAL_TYPES.CHALLENGE_EXPLAINER, {

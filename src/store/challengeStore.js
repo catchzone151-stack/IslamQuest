@@ -147,15 +147,24 @@ export const useChallengeStore = create((set, get) => ({
   // Create a new challenge (Supabase-ready structure)
   createChallenge: (friendId, mode) => {
     const currentUserId = "current_user"; // Will be from auth later
+    const betaMode = useDeveloperStore.getState()?.betaMode;
     const sharedLessons = get().getSharedLessons(currentUserId, friendId);
     
-    // Check if they have shared lessons
-    if (sharedLessons.length === 0) {
+    // 🤖 BETA MODE: If no completed lessons, use fallback lesson IDs for testing
+    let lessonsToUse = sharedLessons;
+    if (betaMode && sharedLessons.length === 0) {
+      // Use first lesson from each path as fallback
+      lessonsToUse = [
+        "path1_lesson1", "path2_lesson1", "path3_lesson1", "path4_lesson1",
+        "path5_lesson1", "path6_lesson1", "path7_lesson1", "path8_lesson1"
+      ];
+    } else if (!betaMode && sharedLessons.length === 0) {
+      // In production mode, require shared lessons
       return { success: false, error: "NO_SHARED_LESSONS" };
     }
 
     const config = CHALLENGE_MODES[mode];
-    const questions = get().getQuestionsForMode(mode, sharedLessons);
+    const questions = get().getQuestionsForMode(mode, lessonsToUse);
     
     if (questions.length === 0) {
       return { success: false, error: "NO_QUESTIONS" };
@@ -341,6 +350,7 @@ export const useChallengeStore = create((set, get) => ({
   // Get questions for a specific mode
   getQuestionsForMode: (mode, sharedLessons) => {
     const config = CHALLENGE_MODES[mode];
+    const betaMode = useDeveloperStore.getState()?.betaMode;
     const { lessonStates } = useProgressStore.getState();
     
     // Get all questions from shared lessons
@@ -352,12 +362,95 @@ export const useChallengeStore = create((set, get) => ({
       }
     });
 
+    // 🤖 BETA MODE: Use fallback questions if no lessons completed
+    if (betaMode && allQuestions.length === 0) {
+      allQuestions = get().getBetaFallbackQuestions();
+    }
+
     // Filter for hard questions and shuffle
     const hardQuestions = allQuestions.filter(q => q.difficulty === "hard" || Math.random() > 0.3);
     const shuffled = hardQuestions.sort(() => Math.random() - 0.5);
     
     const count = config.questionCount || 8;
     return shuffled.slice(0, count);
+  },
+
+  // 🤖 BETA MODE: Fallback question pool for testing without completed lessons
+  getBetaFallbackQuestions: () => {
+    return [
+      {
+        question: "What is the first pillar of Islam?",
+        options: ["Prayer", "Shahada (Declaration of Faith)", "Fasting", "Charity"],
+        answer: 1,
+        difficulty: "hard"
+      },
+      {
+        question: "How many daily prayers are obligatory in Islam?",
+        options: ["3", "4", "5", "6"],
+        answer: 2,
+        difficulty: "hard"
+      },
+      {
+        question: "Which prophet built the Kaaba?",
+        options: ["Prophet Muhammad ﷺ", "Prophet Ibrahim ﷺ", "Prophet Musa ﷺ", "Prophet Isa ﷺ"],
+        answer: 1,
+        difficulty: "hard"
+      },
+      {
+        question: "What is the holy book of Islam?",
+        options: ["Torah", "Bible", "Qur'an", "Vedas"],
+        answer: 2,
+        difficulty: "hard"
+      },
+      {
+        question: "In which month do Muslims fast?",
+        options: ["Rajab", "Shaban", "Ramadan", "Dhul Hijjah"],
+        answer: 2,
+        difficulty: "hard"
+      },
+      {
+        question: "What is Zakat?",
+        options: ["Fasting", "Prayer", "Charity", "Pilgrimage"],
+        answer: 2,
+        difficulty: "hard"
+      },
+      {
+        question: "Where is the Kaaba located?",
+        options: ["Medina", "Mecca", "Jerusalem", "Cairo"],
+        answer: 1,
+        difficulty: "hard"
+      },
+      {
+        question: "What does 'Islam' mean?",
+        options: ["Peace", "Submission to Allah", "Both peace and submission", "Faith"],
+        answer: 2,
+        difficulty: "hard"
+      },
+      {
+        question: "Who was the first person to accept Islam?",
+        options: ["Abu Bakr", "Khadijah", "Ali", "Umar"],
+        answer: 1,
+        difficulty: "hard"
+      },
+      {
+        question: "How many verses are in Surah Al-Fatiha?",
+        options: ["5", "6", "7", "8"],
+        answer: 2,
+        difficulty: "hard"
+      },
+      {
+        question: "What is the meaning of 'Bismillah'?",
+        options: ["In the name of Allah", "Praise be to Allah", "Allah is Great", "There is no god but Allah"],
+        answer: 0,
+        difficulty: "hard"
+      },
+      {
+        question: "Which direction do Muslims face when praying?",
+        options: ["East", "West", "Towards Mecca", "North"],
+        answer: 2,
+        difficulty: "hard"
+      }
+    ];
   },
 
   // Get questions for Boss Level (from ANY lesson)
