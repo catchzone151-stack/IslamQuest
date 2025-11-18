@@ -7,6 +7,37 @@ import { useModalStore, MODAL_TYPES } from "../../store/modalStore";
 import assets from "../../assets/assets";
 import "./ChallengeGame.css";
 
+// Helper function to normalize mode from any format to config object
+const getModeConfig = (modeInput) => {
+  if (!modeInput) return null;
+  
+  // Already a config object
+  if (typeof modeInput === 'object' && modeInput.id) {
+    return modeInput;
+  }
+  
+  // String ID (like "mind_duel") - find by ID
+  if (typeof modeInput === 'string') {
+    // First try: find by ID
+    const foundById = Object.values(CHALLENGE_MODES).find(m => m.id === modeInput);
+    if (foundById) return foundById;
+    
+    // Second try: convert to uppercase key and lookup
+    const modeKey = modeInput.toUpperCase();
+    if (CHALLENGE_MODES[modeKey]) {
+      return CHALLENGE_MODES[modeKey];
+    }
+    
+    // Third try: if it's already a key like "MIND_DUEL"
+    if (CHALLENGE_MODES[modeInput]) {
+      return CHALLENGE_MODES[modeInput];
+    }
+  }
+  
+  console.error('Failed to normalize mode:', modeInput);
+  return null;
+};
+
 export default function ChallengeGame() {
   const navigate = useNavigate();
   const { challengeId } = useParams();
@@ -32,15 +63,15 @@ export default function ChallengeGame() {
   const { challenges } = useChallengeStore();
   const challenge = isBoss ? null : challenges.find(c => c.id === challengeId);
   
-  // Get mode configuration
+  // Get mode configuration using robust normalization
   let mode;
   if (isBoss) {
     mode = BOSS_LEVEL;
   } else if (challenge) {
-    // Convert mode string to proper key (mind_duel -> MIND_DUEL)
-    const modeKey = challenge.mode.toUpperCase();
-    mode = CHALLENGE_MODES[modeKey];
+    mode = getModeConfig(challenge.mode);
   }
+  
+  console.log('🎮 ChallengeGame initialized', { isBoss, challenge, mode });
 
   useEffect(() => {
     // Load questions based on challenge type
@@ -55,10 +86,10 @@ export default function ChallengeGame() {
       setTimeLeft(BOSS_LEVEL.totalTime);
     } else if (challenge) {
       setQuestions(challenge.questions);
-      const config = CHALLENGE_MODES[challenge.mode.toUpperCase()];
-      if (config.totalTime) {
+      const config = getModeConfig(challenge.mode);
+      if (config?.totalTime) {
         setTimeLeft(config.totalTime);
-      } else if (config.timePerQuestion) {
+      } else if (config?.timePerQuestion) {
         setTimeLeft(config.timePerQuestion);
       }
     }
@@ -210,7 +241,7 @@ export default function ChallengeGame() {
       }
 
       // Calculate rewards WITHOUT awarding them (already awarded above)
-      const config = isBoss ? BOSS_LEVEL : (challenge && CHALLENGE_MODES[challenge.mode.toUpperCase()]);
+      const config = isBoss ? BOSS_LEVEL : (challenge && getModeConfig(challenge.mode));
       let result;
       
       if (isBoss) {
