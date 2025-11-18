@@ -983,7 +983,16 @@ export const useChallengeStore = create((set, get) => ({
   // Award rewards
   awardRewards: (mode, result) => {
     const config = mode === "boss_level" ? BOSS_LEVEL : CHALLENGE_MODES[mode];
-    const rewards = config.rewards[result] || config.rewards.lose;
+    
+    // Safe rewards access - handle invalid results like "pending"
+    let rewards = { xp: 0, coins: 0 };
+    if (config?.rewards) {
+      if (result && config.rewards[result]) {
+        rewards = config.rewards[result];
+      } else if (config.rewards.lose) {
+        rewards = config.rewards.lose;
+      }
+    }
     
     const { addXP, addCoins } = useProgressStore.getState();
     addXP(rewards.xp);
