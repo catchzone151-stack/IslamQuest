@@ -28,6 +28,7 @@ export default function Challenge() {
     
     // Check if friend was pre-selected from Friends page
     if (location.state?.preselectedFriend) {
+      console.log('👥 Pre-selected friend detected:', location.state.preselectedFriend);
       setSelectedFriend(location.state.preselectedFriend);
     }
   }, [location.state]);
@@ -36,8 +37,11 @@ export default function Challenge() {
     const mode = CHALLENGE_MODES[modeKey];
     setSelectedMode(mode);
     
+    console.log('🎯 handleModeClick', { modeKey, mode, selectedFriend });
+    
     // If friend is already pre-selected (from Friends page), skip friend selector
     if (selectedFriend) {
+      console.log('✅ Friend already selected, going to explainer');
       // Check beta mode for shared lessons requirement
       const betaMode = useDeveloperStore.getState().betaMode;
       
@@ -118,6 +122,13 @@ export default function Challenge() {
     // Use the passed mode or fall back to selectedMode
     const currentMode = modeOverride || selectedMode;
     
+    console.log('🎮 handleStartChallenge called', { 
+      modeOverride, 
+      selectedMode, 
+      currentMode,
+      selectedFriend 
+    });
+    
     // Check if this is boss level (use both checks for reliability)
     const isBossLevel = currentMode?.id === "boss_level" || currentMode?.name === "Boss Level";
     
@@ -133,9 +144,12 @@ export default function Challenge() {
     
     // Create friend challenge (requires selectedFriend)
     if (!selectedFriend) {
+      console.error('❌ No selectedFriend!', selectedFriend);
       alert("Please select a friend to challenge.");
       return;
     }
+    
+    console.log('✅ Creating challenge', { friendId: selectedFriend.id, modeId: currentMode.id });
     
     const result = useChallengeStore.getState().createChallenge(
       selectedFriend.id,
