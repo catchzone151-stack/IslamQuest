@@ -10,6 +10,7 @@ import { ModalProvider, ModalRoot } from "./providers/ModalProvider.jsx";
 import { ShimmerCard, ShimmerImage } from "./components/ShimmerLoader.jsx";
 import { useUserStore } from "./store/useUserStore";
 import { useProgressStore } from "./store/progressStore";
+import { preloadCriticalAssets, preloadAllMascots } from "./utils/imagePreloader";
 
 // ✅ Onboarding screens (loaded immediately for first-time users)
 import BismillahScreen from "./onboarding/BismillahScreen.jsx";
@@ -17,15 +18,17 @@ import SalaamScreen from "./onboarding/SalaamScreen.jsx";
 import NameScreen from "./onboarding/NameScreen.jsx";
 import AvatarScreen from "./onboarding/AvatarScreen.jsx";
 
+// 🏠 CRITICAL ROUTES - Loaded immediately for instant navigation
+import Home from "./pages/Home";
+import Profile from "./pages/Profile.jsx";
+import Friends from "./pages/Friends.jsx";
+
 // 🚀 LAZY LOADED ROUTES - Split bundle for faster initial load
-const Home = lazy(() => import("./pages/Home"));
 const Pathway = lazy(() => import("./screens/Pathway.jsx"));
 const Lesson = lazy(() => import("./pages/Lesson.jsx"));
 const Challenge = lazy(() => import("./pages/Challenge.jsx"));
 const ChallengeGame = lazy(() => import("./pages/challenges/ChallengeGame.jsx"));
 const DailyQuestGame = lazy(() => import("./pages/DailyQuestGame.jsx"));
-const Friends = lazy(() => import("./pages/Friends.jsx"));
-const Profile = lazy(() => import("./pages/Profile.jsx"));
 const Revise = lazy(() => import("./pages/Revise.jsx"));
 const Login = lazy(() => import("./pages/Login.jsx"));
 const QuizScreen = lazy(() => import("./screens/QuizScreen.jsx"));
@@ -142,6 +145,17 @@ export default function App() {
   const { hasOnboarded, isHydrated } = useUserStore();
   const { grantCoins, coins } = useProgressStore();
 
+  // 🚀 PERFORMANCE: Preload all critical assets immediately
+  useEffect(() => {
+    if (!isHydrated) return;
+    
+    // Start preloading critical assets (UI icons, mascots, avatars)
+    preloadCriticalAssets();
+    
+    // Preload all mascots in background (for smooth modals)
+    setTimeout(() => preloadAllMascots(), 1000);
+  }, [isHydrated]);
+
   // 🛠️ DEV: Grant 5000 coins on first load (only in dev mode and after hydration)
   useEffect(() => {
     const isDev = import.meta.env.DEV;
@@ -201,8 +215,12 @@ export default function App() {
               </>
             ) : (
               <>
-                {/* ✅ MAIN APP ROUTES - Lazy loaded for performance */}
-                <Route path="/" element={<Suspense fallback={<LoadingScreen />}><Home /></Suspense>} />
+                {/* 🏠 CRITICAL ROUTES - Instant load, no suspense */}
+                <Route path="/" element={<Home />} />
+                <Route path="/friends" element={<Friends />} />
+                <Route path="/profile" element={<Profile />} />
+
+                {/* 🚀 SECONDARY ROUTES - Lazy loaded for performance */}
                 <Route path="/path/:pathId" element={<Suspense fallback={<LoadingScreen />}><Pathway /></Suspense>} />
                 <Route path="/path/:pathId/lesson/:lessonId" element={<Suspense fallback={<LoadingScreen />}><Lesson /></Suspense>} />
                 <Route path="/path/:pathId/quiz/:lessonId" element={<Suspense fallback={<LoadingScreen />}><QuizScreen /></Suspense>} />
@@ -212,14 +230,12 @@ export default function App() {
                 <Route path="/daily-quest" element={<Suspense fallback={<LoadingScreen />}><DailyQuestGame /></Suspense>} />
                 <Route path="/events" element={<Suspense fallback={<LoadingScreen />}><GlobalEvents /></Suspense>} />
                 <Route path="/events/:eventId" element={<Suspense fallback={<LoadingScreen />}><EventQuiz /></Suspense>} />
-                <Route path="/friends" element={<Suspense fallback={<LoadingScreen />}><Friends /></Suspense>} />
-                <Route path="/profile" element={<Suspense fallback={<LoadingScreen />}><Profile /></Suspense>} />
                 <Route path="/revise" element={<Suspense fallback={<LoadingScreen />}><Revise /></Suspense>} />
                 <Route path="/login" element={<Suspense fallback={<LoadingScreen />}><Login /></Suspense>} />
                 <Route path="/diagnostics" element={<Suspense fallback={<LoadingScreen />}><LockDiagnostics /></Suspense>} />
 
                 {/* fallback */}
-                <Route path="*" element={<Suspense fallback={<LoadingScreen />}><Home /></Suspense>} />
+                <Route path="*" element={<Home />} />
               </>
             )}
           </Routes>
