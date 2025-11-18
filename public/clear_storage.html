@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Clear Storage - Dev Mode</title>
+</head>
+<body style="background: #0A1A2F; color: white; font-family: sans-serif; padding: 40px; text-align: center;">
+  <h1 style="color: #D4AF37;">Dev Mode Reset</h1>
+  <p>Click the button below to clear localStorage and activate dev mode</p>
+  <button onclick="clearAndRedirect()" style="padding: 12px 24px; background: #D4AF37; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 20px;">
+    Clear & Reload with Dev Mode
+  </button>
+  <script>
+    function clearAndRedirect() {
+      localStorage.clear();
+      window.location.href = '/';
+    }
+  </script>
+</body>
+</html>

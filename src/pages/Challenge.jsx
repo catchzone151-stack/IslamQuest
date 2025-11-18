@@ -79,20 +79,21 @@ export default function Challenge() {
       showModal(MODAL_TYPES.CHALLENGE_COUNTDOWN, {
         onComplete: handleCountdownComplete
       });
-    } else {
-      // Create friend challenge
-      const result = useChallengeStore.getState().createChallenge(
-        selectedFriend.id,
-        selectedMode.id
-      );
+      return; // Exit early for boss level
+    }
+    
+    // Create friend challenge
+    const result = useChallengeStore.getState().createChallenge(
+      selectedFriend.id,
+      selectedMode.id
+    );
       
-      if (result.success) {
-        showModal(MODAL_TYPES.CHALLENGE_COUNTDOWN, {
-          onComplete: handleCountdownComplete
-        });
-      } else {
-        alert("Failed to create challenge. Please try again.");
-      }
+    if (result.success) {
+      showModal(MODAL_TYPES.CHALLENGE_COUNTDOWN, {
+        onComplete: handleCountdownComplete
+      });
+    } else {
+      alert("Failed to create challenge. Please try again.");
     }
   };
 
