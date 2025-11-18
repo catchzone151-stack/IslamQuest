@@ -4,12 +4,14 @@ import { useChallengeStore, CHALLENGE_MODES, BOSS_LEVEL } from "../store/challen
 import { useProgressStore } from "../store/progressStore";
 import { useFriendsStore } from "../store/friendsStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
+import { getCurrentLevel } from "../utils/diamondLevels";
 import BossLevelMascot from "../assets/mascots/mascot_boss.webp";
 
 export default function Challenge() {
   const navigate = useNavigate();
   
-  const { level } = useProgressStore();
+  const { xp } = useProgressStore();
+  const level = getCurrentLevel(xp).level;
   const { friends } = useFriendsStore();
   const { loadFromStorage } = useChallengeStore();
   const { showModal } = useModalStore();
