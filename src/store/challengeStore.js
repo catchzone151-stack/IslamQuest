@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { useProgressStore } from "./progressStore";
 import { useFriendsStore } from "./friendsStore";
 import { useDeveloperStore } from "./developerStore";
+import { getQuizForLesson } from "../data/quizEngine";
 
 const STORAGE_KEY = "islamQuestChallenges_v1";
 const CHALLENGE_DURATION = 48 * 60 * 60 * 1000; // 48 hours in ms
@@ -144,12 +145,47 @@ export const useChallengeStore = create((set, get) => ({
     };
   },
 
-  // 🏗️ Build question pool from ALL completed lessons
+  // 🏗️ Build question pool from ALL completed lessons (or ALL lessons in beta mode)
   buildQuestionPool: () => {
+    const betaMode = useDeveloperStore.getState()?.betaMode;
     const { lessonStates } = useProgressStore.getState();
     const allQuestions = [];
     
-    // Iterate through all lesson states to find completed lessons
+    // 🧪 BETA MODE: Pull from ALL lessons across ALL 14 paths
+    if (betaMode) {
+      // Iterate through all 14 learning paths
+      for (let pathId = 1; pathId <= 14; pathId++) {
+        // Get lesson count for each path (approximate max lessons per path)
+        const maxLessons = pathId === 1 ? 99 : pathId === 2 ? 17 : pathId === 3 ? 25 : 
+                          pathId === 4 ? 19 : pathId === 5 ? 11 : pathId === 6 ? 10 :
+                          pathId === 7 ? 4 : pathId === 8 ? 10 : pathId === 9 ? 5 :
+                          pathId === 10 ? 7 : pathId === 11 ? 5 : pathId === 12 ? 8 :
+                          pathId === 13 ? 7 : 8; // paradise (path 14) has 8 lessons
+        
+        // Pull questions from all lessons in this path
+        for (let lessonId = 1; lessonId <= maxLessons; lessonId++) {
+          try {
+            const quiz = getQuizForLesson(lessonId, pathId);
+            if (quiz && quiz.length > 0) {
+              allQuestions.push(...quiz.map(q => ({
+                question: q.text,
+                options: q.options,
+                answer: q.correctIndex,
+                difficulty: q.difficulty || "medium",
+                sourceLesson: `path${pathId}_lesson${lessonId}`
+              })));
+            }
+          } catch (error) {
+            // Skip lessons that don't have quizzes
+            continue;
+          }
+        }
+      }
+      
+      return allQuestions;
+    }
+    
+    // REGULAR MODE: Pull from completed lessons only
     Object.keys(lessonStates).forEach(lessonKey => {
       const lessonState = lessonStates[lessonKey];
       // Check if lesson is completed
@@ -171,18 +207,20 @@ export const useChallengeStore = create((set, get) => ({
   getQuestionPool: () => {
     const { questionPoolCache, cacheTimestamp } = get();
     const { lessonStates } = useProgressStore.getState();
+    const betaMode = useDeveloperStore.getState()?.betaMode;
     
-    // Check if cache is valid (rebuild if lesson states changed)
+    // Check if cache is valid (rebuild if lesson states changed OR beta mode changed)
     const currentLessonCount = Object.keys(lessonStates).filter(
       key => lessonStates[key]?.completed || lessonStates[key]?.passed
     ).length;
     
-    // Rebuild cache if invalid or empty
+    // Rebuild cache if invalid, empty, lesson count changed, or beta mode changed
     if (!questionPoolCache || !cacheTimestamp || 
-        questionPoolCache.lessonCount !== currentLessonCount) {
+        questionPoolCache.lessonCount !== currentLessonCount ||
+        questionPoolCache.betaMode !== betaMode) {
       const pool = get().buildQuestionPool();
       set({
-        questionPoolCache: { questions: pool, lessonCount: currentLessonCount },
+        questionPoolCache: { questions: pool, lessonCount: currentLessonCount, betaMode },
         cacheTimestamp: Date.now()
       });
       return pool;
