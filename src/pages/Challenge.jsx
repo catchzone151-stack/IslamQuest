@@ -139,7 +139,7 @@ export default function Challenge() {
     
     const result = useChallengeStore.getState().createChallenge(
       selectedFriend.id,
-      selectedMode.id
+      currentMode.id
     );
       
     if (result.success) {
