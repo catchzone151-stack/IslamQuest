@@ -45,7 +45,7 @@ export default function Challenge() {
     
     showModal(MODAL_TYPES.CHALLENGE_EXPLAINER, {
       mode: selectedMode,
-      onStart: handleStartChallenge,
+      onStart: () => handleStartChallenge(selectedMode),
       onCancel: handleCancelExplainer
     });
   };
@@ -68,14 +68,17 @@ export default function Challenge() {
     setSelectedMode(BOSS_LEVEL);
     showModal(MODAL_TYPES.CHALLENGE_EXPLAINER, {
       mode: BOSS_LEVEL,
-      onStart: handleStartChallenge,
+      onStart: () => handleStartChallenge(BOSS_LEVEL),
       onCancel: handleCancelExplainer
     });
   };
 
-  const handleStartChallenge = () => {
+  const handleStartChallenge = (modeOverride = null) => {
+    // Use the passed mode or fall back to selectedMode
+    const currentMode = modeOverride || selectedMode;
+    
     // Check if this is boss level (use both checks for reliability)
-    const isBossLevel = selectedMode?.id === "boss_level" || selectedMode?.name === "Boss Level";
+    const isBossLevel = currentMode?.id === "boss_level" || currentMode?.name === "Boss Level";
     
     if (isBossLevel) {
       // Start boss level immediately

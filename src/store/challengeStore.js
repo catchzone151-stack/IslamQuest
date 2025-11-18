@@ -56,9 +56,9 @@ export const BOSS_LEVEL = {
   id: "boss_level",
   name: "Boss Level",
   icon: "👑",
-  description: "Daily ultra-hard challenge - 10 questions in 60s",
-  questionCount: 10,
-  totalTime: 60,
+  description: "Daily ultra-hard challenge - 15 questions in 30s",
+  questionCount: 15,
+  totalTime: 30,
   minLevel: 8,
   rewards: { win: { xp: 500, coins: 100 }, lose: { xp: 50, coins: 0 } },
   gradient: "linear-gradient(135deg, #1e3a5f 0%, #0f1c2e 100%)",
@@ -633,9 +633,9 @@ export const useChallengeStore = create((set, get) => ({
       }
     ];
     
-    // Shuffle and select 10 random questions
+    // Shuffle and select 15 random questions
     const shuffled = [...questionPool].sort(() => Math.random() - 0.5);
-    const selected = shuffled.slice(0, 10);
+    const selected = shuffled.slice(0, 15);
     
     // Add IDs and return
     return selected.map((q, index) => ({
