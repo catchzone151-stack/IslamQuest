@@ -55,6 +55,7 @@ export default function ChallengeGame() {
   
   const timerRef = useRef(null);
   const selectedAnswerRef = useRef(null);
+  const isCompletingRef = useRef(false);
 
   // Determine if it's a boss level or friend challenge
   const isBoss = challengeId === "boss";
@@ -209,90 +210,95 @@ export default function ChallengeGame() {
   };
 
   const handleGameComplete = () => {
+    // Prevent double-completion
+    if (isCompletingRef.current) return;
+    isCompletingRef.current = true;
+    
     if (timerRef.current) clearInterval(timerRef.current);
     setGameEnded(true);
     
     console.log('🏁 handleGameComplete called', { isBoss, mode, challenge, answers });
     
-    // Use state updater to get current answers
-    setAnswers(currentAnswers => {
-      const finalScore = currentAnswers.filter(a => a.correct).length;
-      setScore(finalScore);
-      
-      console.log('📊 Final score calculated', { finalScore, totalQuestions: questions.length, currentAnswers });
+    // Calculate final score directly from current answers state
+    const finalScore = answers.filter(a => a.correct).length;
+    setScore(finalScore);
+    
+    console.log('📊 Final score calculated', { finalScore, totalQuestions: questions.length, answers });
 
-      // Save results and award rewards
-      if (isBoss) {
-        useChallengeStore.getState().saveBossAttempt(finalScore, currentAnswers);
-        const result = finalScore >= BOSS_LEVEL.questionCount * 0.6 ? "win" : "lose";
-        useChallengeStore.getState().awardRewards("boss_level", result);
-      } else if (challenge) {
-        const currentUserId = "current_user";
-        const isChallenger = challenge.challengerId === currentUserId;
-        useChallengeStore.getState().saveChallengeProgress(challengeId, finalScore, currentAnswers, isChallenger);
-        
-        // Re-read the updated challenge from store to check if both players finished
-        const updatedChallenge = useChallengeStore.getState().challenges.find(c => c.id === challengeId);
-        if (updatedChallenge && updatedChallenge.challengerScore !== null && updatedChallenge.opponentScore !== null) {
-          // Both players finished - complete the challenge and award rewards
-          const winner = useChallengeStore.getState().completeChallenge(challengeId);
-          let rewardType = "lose";
-          if (winner === "draw") {
-            rewardType = "draw";
-          } else if ((winner === updatedChallenge.challengerId && isChallenger) || 
-                     (winner === updatedChallenge.opponentId && !isChallenger)) {
-            rewardType = "win";
-          }
-          useChallengeStore.getState().awardRewards(updatedChallenge.mode, rewardType);
+    // Save results and award rewards
+    if (isBoss) {
+      useChallengeStore.getState().saveBossAttempt(finalScore, answers);
+      const result = finalScore >= BOSS_LEVEL.questionCount * 0.6 ? "win" : "lose";
+      useChallengeStore.getState().awardRewards("boss_level", result);
+    } else if (challenge) {
+      const currentUserId = "current_user";
+      const isChallenger = challenge.challengerId === currentUserId;
+      useChallengeStore.getState().saveChallengeProgress(challengeId, finalScore, answers, isChallenger);
+      
+      // Re-read the updated challenge from store to check if both players finished
+      const updatedChallenge = useChallengeStore.getState().challenges.find(c => c.id === challengeId);
+      if (updatedChallenge && updatedChallenge.challengerScore !== null && updatedChallenge.opponentScore !== null) {
+        // Both players finished - complete the challenge and award rewards
+        const winner = useChallengeStore.getState().completeChallenge(challengeId);
+        let rewardType = "lose";
+        if (winner === "draw") {
+          rewardType = "draw";
+        } else if ((winner === updatedChallenge.challengerId && isChallenger) || 
+                   (winner === updatedChallenge.opponentId && !isChallenger)) {
+          rewardType = "win";
         }
+        useChallengeStore.getState().awardRewards(updatedChallenge.mode, rewardType);
       }
+    }
 
-      // Use the mode from component scope (already normalized)
-      console.log('🎯 Using mode for rewards', { mode });
+    // Use the mode from component scope (already normalized)
+    console.log('🎯 Using mode for rewards', { mode });
+    
+    if (!mode) {
+      console.error('❌ Mode is undefined! Cannot show results.');
+      return;
+    }
+    
+    let result;
+    
+    if (isBoss) {
+      result = finalScore >= BOSS_LEVEL.questionCount * 0.6 ? "win" : "lose";
+    } else if (challenge) {
+      // Re-read challenge to get final winner status
+      const updatedChallenge = useChallengeStore.getState().challenges.find(c => c.id === challengeId);
+      const currentUserId = "current_user";
+      const isChallenger = challenge.challengerId === currentUserId;
       
-      let result;
-      
-      if (isBoss) {
-        result = finalScore >= BOSS_LEVEL.questionCount * 0.6 ? "win" : "lose";
-      } else if (challenge) {
-        // Re-read challenge to get final winner status
-        const updatedChallenge = useChallengeStore.getState().challenges.find(c => c.id === challengeId);
-        const currentUserId = "current_user";
-        const isChallenger = challenge.challengerId === currentUserId;
-        
-        if (updatedChallenge?.winner) {
-          if (updatedChallenge.winner === "draw") {
-            result = "draw";
-          } else if ((updatedChallenge.winner === updatedChallenge.challengerId && isChallenger) ||
-                     (updatedChallenge.winner === updatedChallenge.opponentId && !isChallenger)) {
-            result = "win";
-          } else {
-            result = "lose";
-          }
+      if (updatedChallenge?.winner) {
+        if (updatedChallenge.winner === "draw") {
+          result = "draw";
+        } else if ((updatedChallenge.winner === updatedChallenge.challengerId && isChallenger) ||
+                   (updatedChallenge.winner === updatedChallenge.opponentId && !isChallenger)) {
+          result = "win";
         } else {
-          // Game not completed yet (waiting for opponent)
-          result = "pending";
+          result = "lose";
         }
+      } else {
+        // Game not completed yet (waiting for opponent)
+        result = "pending";
       }
-      
-      console.log('🏆 Result determined', { result, mode, rewards: mode?.rewards });
-      
-      const rewards = mode?.rewards?.[result] || mode?.rewards?.lose || { xp: 0, coins: 0 };
-      
-      console.log('💰 Showing results modal', { finalScore, result, rewards });
-      
-      showModal(MODAL_TYPES.CHALLENGE_RESULTS, {
-        mode,
-        score: finalScore,
-        totalQuestions: questions.length,
-        result,
-        rewards,
-        opponentName: isBoss ? "Boss" : challenge?.opponentId,
-        opponentScore: challenge?.opponentScore,
-        onClose: () => navigate("/challenge")
-      });
-      
-      return currentAnswers; // Return unchanged
+    }
+    
+    console.log('🏆 Result determined', { result, mode, rewards: mode?.rewards });
+    
+    const rewards = mode?.rewards?.[result] || mode?.rewards?.lose || { xp: 0, coins: 0 };
+    
+    console.log('💰 Showing results modal', { finalScore, result, rewards });
+    
+    showModal(MODAL_TYPES.CHALLENGE_RESULTS, {
+      mode,
+      score: finalScore,
+      totalQuestions: questions.length,
+      result,
+      rewards,
+      opponentName: isBoss ? "Boss" : challenge?.opponentId,
+      opponentScore: challenge?.opponentScore,
+      onClose: () => navigate("/challenge")
     });
   };
 
