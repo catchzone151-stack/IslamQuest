@@ -212,20 +212,24 @@ export default function ChallengeGame() {
     if (timerRef.current) clearInterval(timerRef.current);
     setGameEnded(true);
     
-    // Calculate final score from answers state
-    setTimeout(() => {
-      const finalScore = answers.filter(a => a.correct).length;
+    console.log('🏁 handleGameComplete called', { isBoss, mode, challenge, answers });
+    
+    // Use state updater to get current answers
+    setAnswers(currentAnswers => {
+      const finalScore = currentAnswers.filter(a => a.correct).length;
       setScore(finalScore);
+      
+      console.log('📊 Final score calculated', { finalScore, totalQuestions: questions.length, currentAnswers });
 
       // Save results and award rewards
       if (isBoss) {
-        useChallengeStore.getState().saveBossAttempt(finalScore, answers);
+        useChallengeStore.getState().saveBossAttempt(finalScore, currentAnswers);
         const result = finalScore >= BOSS_LEVEL.questionCount * 0.6 ? "win" : "lose";
         useChallengeStore.getState().awardRewards("boss_level", result);
       } else if (challenge) {
         const currentUserId = "current_user";
         const isChallenger = challenge.challengerId === currentUserId;
-        useChallengeStore.getState().saveChallengeProgress(challengeId, finalScore, answers, isChallenger);
+        useChallengeStore.getState().saveChallengeProgress(challengeId, finalScore, currentAnswers, isChallenger);
         
         // Re-read the updated challenge from store to check if both players finished
         const updatedChallenge = useChallengeStore.getState().challenges.find(c => c.id === challengeId);
@@ -243,8 +247,9 @@ export default function ChallengeGame() {
         }
       }
 
-      // Calculate rewards WITHOUT awarding them (already awarded above)
-      const config = isBoss ? BOSS_LEVEL : (challenge && getModeConfig(challenge.mode));
+      // Use the mode from component scope (already normalized)
+      console.log('🎯 Using mode for rewards', { mode });
+      
       let result;
       
       if (isBoss) {
@@ -270,7 +275,11 @@ export default function ChallengeGame() {
         }
       }
       
-      const rewards = config?.rewards[result] || config?.rewards.lose || { xp: 0, coins: 0 };
+      console.log('🏆 Result determined', { result, mode, rewards: mode?.rewards });
+      
+      const rewards = mode?.rewards?.[result] || mode?.rewards?.lose || { xp: 0, coins: 0 };
+      
+      console.log('💰 Showing results modal', { finalScore, result, rewards });
       
       showModal(MODAL_TYPES.CHALLENGE_RESULTS, {
         mode,
@@ -282,7 +291,9 @@ export default function ChallengeGame() {
         opponentScore: challenge?.opponentScore,
         onClose: () => navigate("/challenge")
       });
-    }, 100);
+      
+      return currentAnswers; // Return unchanged
+    });
   };
 
   if (questions.length === 0) {
