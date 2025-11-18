@@ -192,7 +192,8 @@ export default function Home() {
               <img
                 src={icon}
                 alt={i === 0 ? "Streak" : "XP"}
-                style={{ width: 40 }}
+                loading="eager"
+                style={{ width: 40, height: 40 }}
               />
               <span
                 style={{
@@ -213,9 +214,10 @@ export default function Home() {
           <img
             src={MainMascot}
             alt="Main Mascot"
+            loading="eager"
             style={{
               width: 100,
-              height: "auto",
+              height: 100,
               display: "block",
               margin: "0 auto",
               willChange: "transform",
@@ -241,7 +243,7 @@ export default function Home() {
               alignItems: "center",
             }}
           >
-            <img src={ui_coin} alt="Coins" style={{ width: 40 }} />
+            <img src={ui_coin} alt="Coins" loading="eager" style={{ width: 40, height: 40 }} />
             <span
               style={{
                 marginTop: 4,
@@ -265,6 +267,7 @@ export default function Home() {
             <img
               src={ui_shield}
               alt="Shield"
+              loading="eager"
               title="Streak Freeze"
               onClick={() => showModal(MODAL_TYPES.PURCHASE_STREAK_FREEZE)}
               style={{

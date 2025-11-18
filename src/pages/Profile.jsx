@@ -77,6 +77,7 @@ export default function Profile() {
             <img
               src={avatar || "/default-avatar.png"}
               alt="Avatar"
+              loading="eager"
               style={{
                 width: 100,
                 height: 100,
