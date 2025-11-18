@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "../hooks/useNavigate";
 import { useChallengeStore, CHALLENGE_MODES, BOSS_LEVEL } from "../store/challengeStore";
@@ -22,6 +22,9 @@ export default function Challenge() {
   const [selectedMode, setSelectedMode] = useState(null);
   const [selectedFriend, setSelectedFriend] = useState(null);
   const [showFriendSelector, setShowFriendSelector] = useState(false);
+  
+  // Use ref to ensure we always have the latest friend value
+  const friendRef = useRef(null);
 
   useEffect(() => {
     loadFromStorage();
@@ -29,7 +32,9 @@ export default function Challenge() {
     // Check if friend was pre-selected from Friends page
     if (location.state?.preselectedFriend) {
       console.log('👥 Pre-selected friend detected:', location.state.preselectedFriend);
-      setSelectedFriend(location.state.preselectedFriend);
+      const friend = location.state.preselectedFriend;
+      setSelectedFriend(friend);
+      friendRef.current = friend;
     }
   }, [location.state]);
 
@@ -69,6 +74,7 @@ export default function Challenge() {
 
   const handleFriendSelect = (friend) => {
     setSelectedFriend(friend);
+    friendRef.current = friend;
     setShowFriendSelector(false);
     
     // 🤖 BETA MODE: Skip shared lessons check for testing
@@ -122,11 +128,16 @@ export default function Challenge() {
     // Use the passed mode or fall back to selectedMode
     const currentMode = modeOverride || selectedMode;
     
+    // Use ref for friend to get latest value immediately
+    const currentFriend = friendRef.current || selectedFriend;
+    
     console.log('🎮 handleStartChallenge called', { 
       modeOverride, 
       selectedMode, 
       currentMode,
-      selectedFriend 
+      selectedFriend,
+      friendRef: friendRef.current,
+      currentFriend
     });
     
     // Check if this is boss level (use both checks for reliability)
@@ -142,17 +153,17 @@ export default function Challenge() {
       return; // Exit early for boss level
     }
     
-    // Create friend challenge (requires selectedFriend)
-    if (!selectedFriend) {
-      console.error('❌ No selectedFriend!', selectedFriend);
+    // Create friend challenge (requires currentFriend)
+    if (!currentFriend) {
+      console.error('❌ No currentFriend!', { currentFriend, selectedFriend, friendRef: friendRef.current });
       alert("Please select a friend to challenge.");
       return;
     }
     
-    console.log('✅ Creating challenge', { friendId: selectedFriend.id, modeId: currentMode.id });
+    console.log('✅ Creating challenge', { friendId: currentFriend.id, modeId: currentMode.id });
     
     const result = useChallengeStore.getState().createChallenge(
-      selectedFriend.id,
+      currentFriend.id,
       currentMode.id
     );
       
