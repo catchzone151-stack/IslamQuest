@@ -1,7 +1,17 @@
 // src/utils/imagePreloader.js
-import assets from '../assets/assets';
+// Comprehensive image preloader using Vite's import.meta.glob to automatically
+// capture ALL images in the project for instant Duolingo-style loading
 
 const preloadedImages = new Set();
+
+// Automatically import ALL images from assets directory
+const allImages = import.meta.glob('../assets/**/*.{webp,png,jpg,jpeg}', { 
+  eager: true,
+  import: 'default'
+});
+
+// Extract all image URLs from the glob import
+const allImageUrls = Object.values(allImages);
 
 export function preloadImage(src) {
   return new Promise((resolve) => {
@@ -27,39 +37,25 @@ export function preloadImages(srcArray) {
   return Promise.all(srcArray.map(src => preloadImage(src)));
 }
 
-export async function preloadCriticalAssets() {
-  const criticalAssets = [
-    // UI Icons (most frequently used)
-    assets.ui.ui_coin,
-    assets.ui.ui_xp,
-    assets.ui.ui_streak,
-    assets.ui.ui_shield,
-
-    // Critical Mascots (home, quiz, rewards)
-    assets.mascots.mascot_zayd_happy,
-    assets.mascots.mascot_zayd_teaching,
-    assets.mascots.mascot_zayd_thinking,
-    assets.mascots.mascot_zayd_cheer,
-    assets.mascots.mascot_zayd_default,
-    assets.mascots.mascot_zayd_challenge,
-
-    // All avatars (needed for profile, friends, avatar selection)
-    ...Object.values(assets.avatars),
-  ];
-
-  await preloadImages(criticalAssets);
-}
-
-export async function preloadAllMascots() {
-  const mascots = Object.values(assets.mascots);
-  await preloadImages(mascots);
-}
-
-export async function preloadAllCertificates() {
-  const certificates = Object.values(assets.certificates);
-  await preloadImages(certificates);
+// Preload EVERYTHING immediately - all 81+ images
+export async function preloadAllAssets() {
+  console.log(`🚀 Preloading ${allImageUrls.length} images for instant rendering...`);
+  const startTime = performance.now();
+  
+  await preloadImages(allImageUrls);
+  
+  const endTime = performance.now();
+  console.log(`✅ All ${allImageUrls.length} images preloaded in ${(endTime - startTime).toFixed(0)}ms`);
 }
 
 export function isPreloaded(src) {
   return preloadedImages.has(src);
+}
+
+export function getPreloadedCount() {
+  return preloadedImages.size;
+}
+
+export function getAllImageUrls() {
+  return allImageUrls;
 }

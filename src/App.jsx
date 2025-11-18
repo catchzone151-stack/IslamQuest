@@ -10,7 +10,7 @@ import { ModalProvider, ModalRoot } from "./providers/ModalProvider.jsx";
 import { ShimmerCard, ShimmerImage } from "./components/ShimmerLoader.jsx";
 import { useUserStore } from "./store/useUserStore";
 import { useProgressStore } from "./store/progressStore";
-import { preloadCriticalAssets, preloadAllMascots } from "./utils/imagePreloader";
+import { preloadAllAssets } from "./utils/imagePreloader";
 
 // ✅ Onboarding screens (loaded immediately for first-time users)
 import BismillahScreen from "./onboarding/BismillahScreen.jsx";
@@ -143,15 +143,12 @@ export default function App() {
   const { hasOnboarded, isHydrated } = useUserStore();
   const { grantCoins, coins } = useProgressStore();
 
-  // 🚀 PERFORMANCE: Preload all critical assets and route modules
+  // 🚀 PERFORMANCE: Preload ALL assets and route modules IMMEDIATELY for instant Duolingo-style loading
   useEffect(() => {
-    if (!isHydrated) return;
-    
-    // Start preloading critical assets (UI icons, mascots, avatars)
-    preloadCriticalAssets();
+    // Preload ALL 81+ images instantly (mascots, avatars, certificates, UI icons, everything)
+    preloadAllAssets();
     
     // Eagerly preload ALL route modules to avoid suspension on any navigation
-    // This eliminates React 18 "suspended during synchronous input" errors
     Promise.all([
       import("./pages/Home"),
       import("./screens/Pathway.jsx"),
@@ -168,13 +165,7 @@ export default function App() {
       import("./pages/Login.jsx"),
       import("./pages/LockDiagnostics.jsx"),
     ]);
-    
-    // Preload all mascots in background (for smooth modals)
-    const mascotTimer = setTimeout(() => preloadAllMascots(), 1000);
-    
-    // Cleanup timeout on unmount
-    return () => clearTimeout(mascotTimer);
-  }, [isHydrated]);
+  }, []);
 
   // 🛠️ DEV: Grant 5000 coins on first load (only in dev mode and after hydration)
   useEffect(() => {
