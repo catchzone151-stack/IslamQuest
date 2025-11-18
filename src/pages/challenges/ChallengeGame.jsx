@@ -288,7 +288,15 @@ export default function ChallengeGame() {
     
     console.log('🏆 Result determined', { result, mode, rewards: mode?.rewards });
     
-    const rewards = mode?.rewards?.[result] || mode?.rewards?.lose || { xp: 0, coins: 0 };
+    // Calculate rewards safely - handle "pending" result
+    let rewards = { xp: 0, coins: 0 };
+    if (mode?.rewards) {
+      if (result && mode.rewards[result]) {
+        rewards = mode.rewards[result];
+      } else if (mode.rewards.lose) {
+        rewards = mode.rewards.lose;
+      }
+    }
     
     console.log('💰 Showing results modal', { finalScore, result, rewards });
     
