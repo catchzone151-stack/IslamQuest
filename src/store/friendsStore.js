@@ -1,6 +1,8 @@
 import { create } from "zustand";
+import { useDeveloperStore } from "./developerStore";
 
 const STORAGE_KEY = "islamQuestFriends_v1";
+const SIMULATED_FRIENDS_KEY = "islamQuestSimulatedFriends_v1";
 
 const QUICK_MESSAGES = [
   "MashaAllah you're flying 🚀",
@@ -15,6 +17,97 @@ const QUICK_MESSAGES = [
   "Your dedication is amazing 💎"
 ];
 
+// Simulated Friends for Beta Mode Testing
+const SIMULATED_FRIENDS_TEMPLATE = [
+  // 2 Smart Opponents (high accuracy, fast response)
+  {
+    nickname: "BraveBeliever",
+    difficulty: "smart",
+    accuracy: 0.85,
+    responseDelay: { min: 3000, max: 7000 },
+    avatar: "avatar1",
+    level: 8,
+    xp: 6200,
+    coins: 850,
+    streak: 42,
+    wins: 28,
+    losses: 7,
+    completedLessons: 45
+  },
+  {
+    nickname: "IbadahHero",
+    difficulty: "smart",
+    accuracy: 0.88,
+    responseDelay: { min: 3000, max: 8000 },
+    avatar: "avatar2",
+    level: 9,
+    xp: 7800,
+    coins: 1050,
+    streak: 38,
+    wins: 32,
+    losses: 6,
+    completedLessons: 52
+  },
+  // 2 Medium Opponents
+  {
+    nickname: "NurSeeker",
+    difficulty: "medium",
+    accuracy: 0.65,
+    responseDelay: { min: 6000, max: 12000 },
+    avatar: "avatar3",
+    level: 5,
+    xp: 3100,
+    coins: 420,
+    streak: 18,
+    wins: 15,
+    losses: 12,
+    completedLessons: 28
+  },
+  {
+    nickname: "QuranKnight",
+    difficulty: "medium",
+    accuracy: 0.68,
+    responseDelay: { min: 5000, max: 11000 },
+    avatar: "avatar4",
+    level: 6,
+    xp: 4200,
+    coins: 580,
+    streak: 25,
+    wins: 18,
+    losses: 14,
+    completedLessons: 35
+  },
+  // 2 Weak Opponents (lower accuracy, slower response)
+  {
+    nickname: "SunnahRider",
+    difficulty: "weak",
+    accuracy: 0.45,
+    responseDelay: { min: 8000, max: 15000 },
+    avatar: "avatar1",
+    level: 3,
+    xp: 1200,
+    coins: 180,
+    streak: 7,
+    wins: 5,
+    losses: 18,
+    completedLessons: 15
+  },
+  {
+    nickname: "GuidedStriver",
+    difficulty: "weak",
+    accuracy: 0.48,
+    responseDelay: { min: 9000, max: 18000 },
+    avatar: "avatar2",
+    level: 4,
+    xp: 1800,
+    coins: 250,
+    streak: 12,
+    wins: 8,
+    losses: 20,
+    completedLessons: 22
+  }
+];
+
 export const useFriendsStore = create((set, get) => ({
   friends: [],
   incomingRequests: [],
@@ -24,9 +117,67 @@ export const useFriendsStore = create((set, get) => ({
   hasUnseenRequests: false,
   quickMessages: QUICK_MESSAGES,
 
+  // 🤖 SIMULATED FRIENDS SYSTEM (Beta Mode Only)
+  generateSimulatedFriends: () => {
+    return SIMULATED_FRIENDS_TEMPLATE.map((template, index) => ({
+      id: `simulated_${template.nickname.toLowerCase()}`,
+      name: template.nickname,
+      avatar: template.avatar,
+      xp: template.xp,
+      coins: template.coins,
+      streak: template.streak,
+      level: template.level,
+      wins: template.wins,
+      losses: template.losses,
+      isSimulated: true,
+      difficulty: template.difficulty,
+      accuracy: template.accuracy,
+      responseDelay: template.responseDelay,
+      completedLessons: Array.from({ length: template.completedLessons }, (_, i) => `lesson_${i + 1}`),
+      addedAt: new Date().toISOString(),
+    }));
+  },
+
+  initializeSimulatedFriends: () => {
+    const betaMode = useDeveloperStore.getState().betaMode;
+    if (!betaMode) return;
+
+    const saved = localStorage.getItem(SIMULATED_FRIENDS_KEY);
+    let simulatedFriends;
+
+    if (saved) {
+      simulatedFriends = JSON.parse(saved);
+    } else {
+      simulatedFriends = get().generateSimulatedFriends();
+      localStorage.setItem(SIMULATED_FRIENDS_KEY, JSON.stringify(simulatedFriends));
+    }
+
+    const currentFriends = get().friends.filter(f => !f.isSimulated);
+    const allFriends = [...currentFriends, ...simulatedFriends];
+
+    set({ friends: allFriends });
+    get().setFriendOfWeek();
+  },
+
+  cleanupSimulatedFriends: () => {
+    const realFriends = get().friends.filter(f => !f.isSimulated);
+    set({ friends: realFriends });
+    localStorage.removeItem(SIMULATED_FRIENDS_KEY);
+    get().setFriendOfWeek();
+    get().saveToStorage();
+  },
+
+  isSimulatedFriend: (friendId) => {
+    const friend = get().friends.find(f => f.id === friendId);
+    return friend?.isSimulated === true;
+  },
+
   saveToStorage: () => {
+    // Filter out simulated friends before saving (they're stored separately)
+    const realFriends = get().friends.filter(f => !f.isSimulated);
+    
     const data = {
-      friends: get().friends,
+      friends: realFriends,
       incomingRequests: get().incomingRequests,
       outgoingRequests: get().outgoingRequests,
       activityFeed: get().activityFeed,
@@ -59,6 +210,12 @@ export const useFriendsStore = create((set, get) => ({
         hasUnseenRequests: data.hasUnseenRequests || false,
       });
       get().setFriendOfWeek();
+    }
+
+    // 🤖 Initialize simulated friends if beta mode is active
+    const betaMode = useDeveloperStore.getState()?.betaMode;
+    if (betaMode) {
+      get().initializeSimulatedFriends();
     }
   },
 
@@ -163,8 +320,51 @@ export const useFriendsStore = create((set, get) => ({
   },
 
   getGlobalLeaderboard: () => {
-    // Global leaderboard disabled - will be implemented with Supabase
-    return [];
+    const betaMode = useDeveloperStore.getState()?.betaMode;
+    
+    if (!betaMode) {
+      // Global leaderboard disabled in production - will be implemented with Supabase
+      return [];
+    }
+
+    // 🤖 Beta Mode: Show simulated friends + current user
+    const friends = get().friends;
+    
+    // Get current user data from progressStore (lazy import to avoid circular dependency)
+    let currentUser = null;
+    try {
+      const { useProgressStore } = require('./progressStore');
+      const { xp, coins, level, streak } = useProgressStore.getState();
+      const { name, avatar } = require('./useUserStore').useUserStore.getState();
+      
+      currentUser = {
+        id: 'current_user',
+        name: name || 'You',
+        avatar: avatar || 'avatar1',
+        xp: xp || 0,
+        coins: coins || 0,
+        level: level || 1,
+        streak: streak || 0,
+        isCurrentUser: true
+      };
+    } catch (error) {
+      console.warn('Could not load current user for leaderboard:', error);
+    }
+
+    // Combine current user + all friends (real + simulated)
+    const allPlayers = currentUser ? [currentUser, ...friends] : friends;
+
+    // Sort by XP → Level → Coins
+    return allPlayers
+      .sort((a, b) => {
+        if (b.xp !== a.xp) return b.xp - a.xp;
+        if (b.level !== a.level) return b.level - a.level;
+        return b.coins - a.coins;
+      })
+      .map((player, index) => ({
+        ...player,
+        rank: index + 1,
+      }));
   },
 
   clearRequestsBadge: () => {
