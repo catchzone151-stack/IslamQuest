@@ -33,8 +33,12 @@ export default function ChallengeResultsModal({
     // Check if this is a boss level challenge (mode can be string or object)
     const isBossLevel = mode === "boss_level" || mode?.id === "boss_level" || mode?.name === "Boss Level";
     
-    // Boss level always shows boss mascot regardless of win/lose
-    if (isBossLevel) return mascotBoss;
+    // Boss level shows appropriate mascot based on result
+    if (isBossLevel) {
+      if (result === "win") return mascotCongrats;
+      if (result === "lose") return mascotDefeated;
+      return mascotBoss;
+    }
     
     // Regular challenges show result-based mascots
     if (result === "win") return mascotCongrats;

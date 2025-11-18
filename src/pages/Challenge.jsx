@@ -74,7 +74,7 @@ export default function Challenge() {
   };
 
   const handleStartChallenge = () => {
-    if (selectedMode.id === "boss_level") {
+    if (selectedMode?.id === "boss_level") {
       // Start boss level immediately
       showModal(MODAL_TYPES.CHALLENGE_COUNTDOWN, {
         onComplete: handleCountdownComplete
@@ -82,7 +82,12 @@ export default function Challenge() {
       return; // Exit early for boss level
     }
     
-    // Create friend challenge
+    // Create friend challenge (requires selectedFriend)
+    if (!selectedFriend) {
+      alert("Please select a friend to challenge.");
+      return;
+    }
+    
     const result = useChallengeStore.getState().createChallenge(
       selectedFriend.id,
       selectedMode.id

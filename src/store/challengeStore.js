@@ -262,35 +262,35 @@ export const useChallengeStore = create((set, get) => ({
           id: "boss_q1",
           question: "Which name of Allah means 'The All-Knowing'?",
           options: ["Al-Aleem", "Al-Hakeem", "Al-Baseer", "Al-Samee"],
-          correctIndex: 0,
+          answer: 0,
           difficulty: "hard"
         },
         {
           id: "boss_q2",
           question: "How many prophets are mentioned by name in the Qur'an?",
           options: ["13", "25", "40", "124,000"],
-          correctIndex: 1,
+          answer: 1,
           difficulty: "hard"
         },
         {
           id: "boss_q3",
           question: "What is the last verse revealed in the Qur'an?",
           options: ["Ayat al-Kursi", "The verse about debt", "The final verse of Surah Al-Baqarah", "The opening of Al-Fatiha"],
-          correctIndex: 1,
+          answer: 1,
           difficulty: "hard"
         },
         {
           id: "boss_q4",
           question: "Which companion was known as 'The Sword of Allah'?",
           options: ["Ali ibn Abi Talib", "Umar ibn al-Khattab", "Khalid ibn al-Walid", "Abu Bakr as-Siddiq"],
-          correctIndex: 2,
+          answer: 2,
           difficulty: "hard"
         },
         {
           id: "boss_q5",
           question: "What was the first masjid built by Prophet Muhammad ﷺ?",
           options: ["Masjid al-Haram", "Masjid an-Nabawi", "Masjid Quba", "Masjid al-Aqsa"],
-          correctIndex: 2,
+          answer: 2,
           difficulty: "hard"
         }
       ];

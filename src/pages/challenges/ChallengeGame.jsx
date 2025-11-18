@@ -102,7 +102,9 @@ export default function ChallengeGame() {
 
     // For Lightning Chain, check if answer is correct
     if (mode?.id === "lightning_chain") {
-      const isCorrect = answerIndex === questions[currentIndex].correct;
+      const currentQ = questions[currentIndex];
+      const correctAnswer = currentQ.answer ?? currentQ.correctIndex ?? currentQ.correct;
+      const isCorrect = answerIndex === correctAnswer;
       
       const newAnswer = {
         questionId: questions[currentIndex].id || currentIndex,
@@ -145,7 +147,9 @@ export default function ChallengeGame() {
     const answerIndex = selectedAnswerRef.current;
     if (answerIndex === null) return;
 
-    const isCorrect = answerIndex === questions[currentIndex].correct;
+    const currentQ = questions[currentIndex];
+    const correctAnswer = currentQ.answer ?? currentQ.correctIndex ?? currentQ.correct;
+    const isCorrect = answerIndex === correctAnswer;
     const newAnswer = {
       questionId: questions[currentIndex].id || currentIndex,
       selectedAnswer: answerIndex,
