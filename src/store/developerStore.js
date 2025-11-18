@@ -16,11 +16,31 @@ export const useDeveloperStore = create((set, get) => ({
   toggleBetaMode: () => {
     const newBetaMode = !get().betaMode;
     set({ betaMode: newBetaMode });
+    
+    // 🤖 Handle simulated friends based on beta mode
+    const friendsStore = useFriendsStore.getState();
+    if (newBetaMode) {
+      // Turning beta mode ON - initialize simulated friends
+      friendsStore.initializeSimulatedFriends();
+    } else {
+      // Turning beta mode OFF - cleanup simulated friends
+      friendsStore.cleanupSimulatedFriends();
+    }
+    
     get().saveToStorage();
   },
 
   setBetaMode: (enabled) => {
     set({ betaMode: enabled });
+    
+    // 🤖 Handle simulated friends based on beta mode
+    const friendsStore = useFriendsStore.getState();
+    if (enabled) {
+      friendsStore.initializeSimulatedFriends();
+    } else {
+      friendsStore.cleanupSimulatedFriends();
+    }
+    
     get().saveToStorage();
   },
 

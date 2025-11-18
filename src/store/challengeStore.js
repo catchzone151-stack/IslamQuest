@@ -171,7 +171,62 @@ export const useChallengeStore = create((set, get) => ({
     }));
     
     get().saveToStorage();
+    
+    // 🤖 Check if opponent is simulated and schedule auto-response
+    const { isSimulatedFriend } = useFriendsStore.getState();
+    if (isSimulatedFriend(friendId)) {
+      get().scheduleSimulatedResponse(challenge.id, friendId);
+    }
+    
     return { success: true, challenge };
+  },
+
+  // 🤖 Schedule auto-response for simulated friend
+  scheduleSimulatedResponse: (challengeId, friendId) => {
+    const { friends } = useFriendsStore.getState();
+    const friend = friends.find(f => f.id === friendId);
+    
+    if (!friend || !friend.isSimulated) return;
+
+    // Random delay based on friend's response delay range
+    const { min, max } = friend.responseDelay;
+    const delay = Math.floor(Math.random() * (max - min + 1)) + min;
+
+    setTimeout(() => {
+      get().simulateFriendResponse(challengeId, friend);
+    }, delay);
+  },
+
+  // 🤖 Simulate friend playing the challenge
+  simulateFriendResponse: (challengeId, friend) => {
+    const challenge = get().challenges.find(c => c.id === challengeId);
+    if (!challenge || challenge.opponentScore !== null) return;
+
+    const { questions } = challenge;
+    const accuracy = friend.accuracy;
+
+    // Simulate answers based on accuracy
+    const simulatedAnswers = questions.map((q, index) => {
+      const willGetCorrect = Math.random() < accuracy;
+      if (willGetCorrect) {
+        return q.answer; // Correct answer
+      } else {
+        // Random wrong answer
+        const wrongOptions = [0, 1, 2, 3].filter(opt => opt !== q.answer);
+        return wrongOptions[Math.floor(Math.random() * wrongOptions.length)];
+      }
+    });
+
+    // Calculate score
+    const score = simulatedAnswers.filter((ans, idx) => ans === questions[idx].answer).length;
+
+    // Save the opponent's progress
+    get().saveChallengeProgress(challengeId, score, simulatedAnswers, false);
+    
+    // If challenger has also played, complete the challenge
+    if (challenge.challengerScore !== null) {
+      get().completeChallenge(challengeId);
+    }
   },
 
   // Save challenge progress
