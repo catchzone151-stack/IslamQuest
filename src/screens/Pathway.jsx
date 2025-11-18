@@ -16,7 +16,7 @@ export default function Pathway() {
   const scrollRef = useRef(null);
   const numericPathId = Number(pathId);
 
-  const { paths, lessonStates, isUnlocked } = useProgressStore();
+  const { paths, lessonStates, isLessonUnlocked } = useProgressStore();
   const { avatar } = useUserStore();
 
   const pathMeta = useMemo(
@@ -51,12 +51,12 @@ export default function Pathway() {
   }
 
   // Build lesson states (completed / locked)
-  // 🔒 Using universal locking system via isUnlocked()
+  // 🔒 Using universal locking system via isLessonUnlocked()
   const pathLessonState = lessonStates?.[numericPathId] || {};
   const lessons = baseLessons.map((lesson) => {
     const isCompleted = !!pathLessonState[lesson.id]?.passed;
-    // Use the universal isUnlocked function instead of lockedUntil
-    const unlocked = isUnlocked(numericPathId, lesson.id);
+    // Use the universal isLessonUnlocked function instead of lockedUntil
+    const unlocked = isLessonUnlocked(numericPathId, lesson.id);
     const isLocked = !unlocked;
 
     return { ...lesson, isCompleted, isLocked };

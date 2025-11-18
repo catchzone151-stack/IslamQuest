@@ -34,12 +34,22 @@ function generateDailyQuestions() {
   const { lessonStates } = useProgressStore.getState();
   
   // Get all completed lessons
-  const completedLessons = Object.keys(lessonStates)
-    .filter(key => lessonStates[key]?.completed === true)
-    .map(key => {
-      const [pathId, lessonId] = key.split("-").map(Number);
-      return { pathId, lessonId };
+  // lessonStates structure: { [pathId]: { [lessonId]: { passed: true } } }
+  const completedLessons = [];
+  Object.keys(lessonStates).forEach(pathId => {
+    const pathState = lessonStates[pathId];
+    // Defensive guard: skip if pathState is undefined/null
+    if (!pathState || typeof pathState !== 'object') return;
+    
+    Object.keys(pathState).forEach(lessonId => {
+      if (pathState[lessonId]?.passed === true) {
+        completedLessons.push({ 
+          pathId: parseInt(pathId), 
+          lessonId: parseInt(lessonId) 
+        });
+      }
     });
+  });
 
   if (completedLessons.length === 0) {
     return [];
@@ -49,15 +59,26 @@ function generateDailyQuestions() {
   const allQuestions = [];
   completedLessons.forEach(({ pathId, lessonId }) => {
     const quizData = getQuizForLesson(lessonId, pathId);
-    if (quizData && quizData.questions) {
-      quizData.questions.forEach(q => {
-        allQuestions.push({
-          ...q,
-          pathId,
-          lessonId,
-          text: q.question || q.text,
-          correctIndex: q.answer !== undefined ? q.answer : q.correctIndex,
-        });
+    // getQuizForLesson returns array directly, not object with questions property
+    if (quizData && Array.isArray(quizData) && quizData.length > 0) {
+      quizData.forEach(q => {
+        // Normalize different quiz schema formats
+        const text = q.text || q.question || q.prompt;
+        const options = q.options || q.choices;
+        const correctIndex = q.correctIndex !== undefined ? q.correctIndex : 
+                           (q.answer !== undefined ? q.answer : q.correctChoice);
+        
+        // Only add if we have valid data
+        if (text && options && Array.isArray(options) && correctIndex !== undefined) {
+          allQuestions.push({
+            ...q,
+            pathId,
+            lessonId,
+            text,
+            options,
+            correctIndex,
+          });
+        }
       });
     }
   });
@@ -174,9 +195,19 @@ export const useDailyQuestStore = create((set, get) => ({
   // Check if quest is available (user has completed lessons)
   isQuestAvailable: () => {
     const { lessonStates } = useProgressStore.getState();
-    const completedCount = Object.keys(lessonStates).filter(
-      key => lessonStates[key]?.completed === true
-    ).length;
+    // Count all completed lessons across all paths
+    let completedCount = 0;
+    Object.keys(lessonStates).forEach(pathId => {
+      const pathState = lessonStates[pathId];
+      // Defensive guard: skip if pathState is undefined/null
+      if (!pathState || typeof pathState !== 'object') return;
+      
+      Object.keys(pathState).forEach(lessonId => {
+        if (pathState[lessonId]?.passed === true) {
+          completedCount++;
+        }
+      });
+    });
     return completedCount > 0;
   },
 

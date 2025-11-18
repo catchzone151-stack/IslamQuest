@@ -351,6 +351,12 @@ export const useProgressStore = create((set, get) => ({
     get().saveProgress();
   },
 
+  // Combined helper for XP and coins (used by Daily Quest, Revise, etc.)
+  addXPAndCoins: (xp, coins) => {
+    if (xp) get().addXP(xp);
+    if (coins) get().addCoins(coins);
+  },
+
   removeCoins: (amount) => {
     const { coins } = get();
     if (coins < amount) {
