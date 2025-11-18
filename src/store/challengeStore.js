@@ -72,6 +72,9 @@ export const useChallengeStore = create((set, get) => ({
   challenges: [], // All friend challenges
   bossAttempts: [], // Boss level attempts
   challengeHistory: [], // Completed challenges
+  recentlyShownQuestions: [], // Last 50 questions to avoid repetition
+  questionPoolCache: null, // Memoized question pool
+  cacheTimestamp: null, // When cache was built
   
   // Helper: Save to storage (Supabase-ready)
   saveToStorage: () => {
@@ -79,6 +82,7 @@ export const useChallengeStore = create((set, get) => ({
       challenges: get().challenges,
       bossAttempts: get().bossAttempts,
       challengeHistory: get().challengeHistory,
+      recentlyShownQuestions: get().recentlyShownQuestions,
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   },
@@ -92,11 +96,122 @@ export const useChallengeStore = create((set, get) => ({
         challenges: data.challenges || [],
         bossAttempts: data.bossAttempts || [],
         challengeHistory: data.challengeHistory || [],
+        recentlyShownQuestions: data.recentlyShownQuestions || [],
       });
       
       // 🤖 Rehydrate simulated friend auto-responses
       get().rehydrateSimulatedResponses();
     }
+  },
+
+  // 📝 Track recently shown questions (last 50)
+  trackShownQuestion: (questionText) => {
+    set(state => {
+      const updated = [questionText, ...state.recentlyShownQuestions].slice(0, 50);
+      return { recentlyShownQuestions: updated };
+    });
+    get().saveToStorage();
+  },
+
+  // 🔄 Generate question variation (same meaning, different wording)
+  generateQuestionVariation: (originalQuestion) => {
+    const { question, options, answer, difficulty } = originalQuestion;
+    
+    // Create distractor variations by shuffling options
+    const newOptions = [...options];
+    const correctAnswer = options[answer];
+    
+    // Remove correct answer and shuffle remaining
+    const distractors = newOptions.filter((_, idx) => idx !== answer);
+    const shuffledDistractors = distractors.sort(() => Math.random() - 0.5);
+    
+    // Rebuild options array with correct answer in random position
+    const newAnswerIndex = Math.floor(Math.random() * 4);
+    const finalOptions = [];
+    for (let i = 0; i < 4; i++) {
+      if (i === newAnswerIndex) {
+        finalOptions.push(correctAnswer);
+      } else {
+        finalOptions.push(shuffledDistractors.shift());
+      }
+    }
+    
+    return {
+      ...originalQuestion,
+      options: finalOptions,
+      answer: newAnswerIndex,
+      isVariation: true // Mark as auto-generated
+    };
+  },
+
+  // 🏗️ Build question pool from ALL completed lessons
+  buildQuestionPool: () => {
+    const { lessonStates } = useProgressStore.getState();
+    const allQuestions = [];
+    
+    // Iterate through all lesson states to find completed lessons
+    Object.keys(lessonStates).forEach(lessonKey => {
+      const lessonState = lessonStates[lessonKey];
+      // Check if lesson is completed
+      if (lessonState?.completed === true || lessonState?.passed === true) {
+        // Add all questions from this lesson
+        if (lessonState.questions && Array.isArray(lessonState.questions)) {
+          allQuestions.push(...lessonState.questions.map(q => ({
+            ...q,
+            sourceLesson: lessonKey
+          })));
+        }
+      }
+    });
+    
+    return allQuestions;
+  },
+
+  // 🎯 Get question pool with caching
+  getQuestionPool: () => {
+    const { questionPoolCache, cacheTimestamp } = get();
+    const { lessonStates } = useProgressStore.getState();
+    
+    // Check if cache is valid (rebuild if lesson states changed)
+    const currentLessonCount = Object.keys(lessonStates).filter(
+      key => lessonStates[key]?.completed || lessonStates[key]?.passed
+    ).length;
+    
+    // Rebuild cache if invalid or empty
+    if (!questionPoolCache || !cacheTimestamp || 
+        questionPoolCache.lessonCount !== currentLessonCount) {
+      const pool = get().buildQuestionPool();
+      set({
+        questionPoolCache: { questions: pool, lessonCount: currentLessonCount },
+        cacheTimestamp: Date.now()
+      });
+      return pool;
+    }
+    
+    return questionPoolCache.questions;
+  },
+
+  // 🚫 Filter out recently shown questions
+  filterRecentQuestions: (questions) => {
+    const { recentlyShownQuestions } = get();
+    return questions.filter(q => !recentlyShownQuestions.includes(q.question));
+  },
+
+  // 🎲 Expand question pool with variations (for users with few completed lessons)
+  expandQuestionPool: (questions, targetCount) => {
+    const expanded = [...questions];
+    const neededVariations = Math.max(0, targetCount - questions.length);
+    
+    if (neededVariations > 0 && questions.length > 0) {
+      // Generate variations by cycling through original questions
+      for (let i = 0; i < neededVariations; i++) {
+        const sourceQuestion = questions[i % questions.length];
+        const variation = get().generateQuestionVariation(sourceQuestion);
+        expanded.push(variation);
+      }
+    }
+    
+    return expanded;
   },
 
   // Get shared completed lessons between two users
@@ -399,29 +514,58 @@ export const useChallengeStore = create((set, get) => ({
       return [];
     }
     
-    const betaMode = useDeveloperStore.getState()?.betaMode;
-    const { lessonStates } = useProgressStore.getState();
+    // 🎯 NEW SYSTEM: Get ALL questions from user's completed lessons (NOT just shared)
+    let allQuestions = get().getQuestionPool();
     
-    // Get all questions from shared lessons
-    let allQuestions = [];
-    sharedLessons.forEach(lessonKey => {
-      const lessonState = lessonStates[lessonKey];
-      if (lessonState?.questions) {
-        allQuestions = [...allQuestions, ...lessonState.questions];
-      }
-    });
-
-    // 🤖 BETA MODE: Use fallback questions if no lessons completed
-    if (betaMode && allQuestions.length === 0) {
+    // If no completed lessons, use minimal fallback for beta testing
+    if (allQuestions.length === 0) {
       allQuestions = get().getBetaFallbackQuestions();
     }
-
-    // Filter for hard questions and shuffle
-    const hardQuestions = allQuestions.filter(q => q.difficulty === "hard" || Math.random() > 0.3);
-    const shuffled = hardQuestions.sort(() => Math.random() - 0.5);
+    
+    // 🚫 Remove recently shown questions (last 50)
+    const freshQuestions = get().filterRecentQuestions(allQuestions);
+    
+    // 📊 Apply difficulty scaling based on mode
+    let filteredQuestions = freshQuestions;
+    
+    if (config.id === 'mind_duel') {
+      // Mind Duel: Highest reasoning complexity
+      filteredQuestions = freshQuestions.filter(q => 
+        q.difficulty === 'hard' || q.difficulty === 'medium'
+      );
+    } else if (config.id === 'lightning_round') {
+      // Lightning Round: Fastest recall (all difficulties)
+      filteredQuestions = freshQuestions;
+    } else if (config.id === 'speed_run') {
+      // Speed Run: Quick recall (medium/easy preferred)
+      filteredQuestions = freshQuestions.filter(q => 
+        q.difficulty !== 'hard' || Math.random() > 0.5
+      );
+    } else if (config.id === 'sudden_death') {
+      // Sudden Death: Mix of all difficulties for 25 questions
+      filteredQuestions = freshQuestions;
+    }
+    
+    // Fallback if filtering removed too many
+    if (filteredQuestions.length === 0) {
+      filteredQuestions = freshQuestions;
+    }
     
     const count = config.questionCount || 8;
-    return shuffled.slice(0, count);
+    
+    // 🎲 Expand pool if needed (generate variations)
+    if (filteredQuestions.length < count) {
+      filteredQuestions = get().expandQuestionPool(filteredQuestions, count);
+    }
+    
+    // Shuffle and select
+    const shuffled = filteredQuestions.sort(() => Math.random() - 0.5);
+    const selected = shuffled.slice(0, count);
+    
+    // 📝 Track shown questions to avoid repetition
+    selected.forEach(q => get().trackShownQuestion(q.question));
+    
+    return selected;
   },
 
   // 🤖 BETA MODE: Fallback question pool for testing without completed lessons
@@ -502,9 +646,42 @@ export const useChallengeStore = create((set, get) => ({
     ];
   },
 
-  // Get questions for Boss Level (from ANY lesson)
+  // Get questions for Boss Level (from ALL completed lessons - hardest tier only)
   getBossLevelQuestions: () => {
-    // Pool of 30 ultra-hard Islamic questions
+    // 🎯 NEW SYSTEM: Pull from user's completed lessons (hardest questions only)
+    let allQuestions = get().getQuestionPool();
+    
+    // Filter for HARD difficulty only (highest tier)
+    let hardQuestions = allQuestions.filter(q => q.difficulty === 'hard');
+    
+    // 🚫 Remove recently shown questions
+    hardQuestions = get().filterRecentQuestions(hardQuestions);
+    
+    // If pool is too small, expand with variations
+    const targetCount = BOSS_LEVEL.questionCount || 12;
+    if (hardQuestions.length < targetCount) {
+      // If no hard questions, use fallback pool
+      if (hardQuestions.length === 0) {
+        hardQuestions = get().getBossLevelFallbackQuestions();
+      } else {
+        // Expand pool with variations
+        hardQuestions = get().expandQuestionPool(hardQuestions, targetCount);
+      }
+    }
+    
+    // Shuffle and select
+    const shuffled = hardQuestions.sort(() => Math.random() - 0.5);
+    const selected = shuffled.slice(0, targetCount);
+    
+    // 📝 Track shown questions
+    selected.forEach(q => get().trackShownQuestion(q.question));
+    
+    return selected;
+  },
+
+  // 🤖 Fallback ultra-hard questions for Boss Level (when no lessons completed)
+  getBossLevelFallbackQuestions: () => {
+    // Pool of 90 ultra-hard Islamic questions
     const questionPool = [
       {
         question: "Which name of Allah means 'The All-Knowing'?",
@@ -958,16 +1135,8 @@ export const useChallengeStore = create((set, get) => ({
       }
     ];
     
-    // Shuffle and select 12 random questions
-    const shuffled = [...questionPool].sort(() => Math.random() - 0.5);
-    const selected = shuffled.slice(0, 12);
-    
-    // Add IDs and return
-    return selected.map((q, index) => ({
-      id: `boss_q${index + 1}_${Date.now()}`,
-      ...q,
-      difficulty: "hard"
-    }));
+    // Return pool (selection and shuffling handled by getBossLevelQuestions)
+    return questionPool.map(q => ({ ...q, difficulty: "hard" }));
   },
 
   // Boss Level: Check if can play today

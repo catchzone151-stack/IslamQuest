@@ -44,7 +44,14 @@ Preferred communication style: Simple, everyday language.
 
 ### Technical Implementations
 - **Frontend**: React 18.2, Vite, JavaScript, React Router DOM v7.9.
-- **State Management**: Local state with React hooks, global state with Zustand (for `progressStore`, `userStore`, `friendsStore`, `modalStore`, `eventsStore`, `dailyQuestStore`), and LocalStorage for persistence (with future migration to Supabase).
+- **State Management**: Local state with React hooks, global state with Zustand (for `progressStore`, `userStore`, `friendsStore`, `modalStore`, `eventsStore`, `dailyQuestStore`, `challengeStore`), and LocalStorage for persistence (with future migration to Supabase).
+- **Challenge Question Engine (November 2025)**: Advanced question selection system with:
+  - **Universal Pool**: Questions pulled from ALL completed lessons across all learning paths (not just shared lessons)
+  - **Repetition Prevention**: Tracks last 50 questions shown, prevents showing same questions repeatedly
+  - **Dynamic Expansion**: Auto-generates question variations (shuffled options, same content) for users with few completed lessons
+  - **Difficulty Scaling**: Mind Duel (hard/medium), Lightning Round (all), Speed Run (medium/easy preferred), Sudden Death (mixed), Boss Level (hard only)
+  - **Performance Cache**: Memoized question pool rebuilt only when lessons are completed
+  - **Beta-Mode Neutral**: Beta mode unlocks features but doesn't override question source logic
 - **Performance (November 2025)**: Route-based code splitting with eager preloading on mount. Duolingo-style image preloading using `import.meta.glob` auto-discovery loads ALL production images (~43 images) in ~400-1000ms immediately on app start. Critical hero assets use `<link rel="preload">` for instant first paint. Direct navigation (no transition delays) ensures instant page switches. `React.memo` optimizes component re-renders. Result: zero image pop-in lag across entire app.
 - **Modal System**: Unified, global modal system with 21 modal types, dual rendering strategies (inline/portal), Duolingo-style fade+scale animations, and race condition protection.
 
