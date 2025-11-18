@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import BottomNav from "./components/BottomNav.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 import ModalController from "./components/ModalController.jsx";
+import { ModalProvider, ModalRoot } from "./providers/ModalProvider.jsx";
+import { ShimmerCard, ShimmerImage } from "./components/ShimmerLoader.jsx";
 import { useUserStore } from "./store/useUserStore";
 import { useProgressStore } from "./store/progressStore";
 
@@ -39,24 +41,46 @@ function LoadingScreen() {
         minHeight: "100vh",
         background: "radial-gradient(circle at 20% 20%, rgba(10,15,30,1) 0%, rgba(3,6,20,1) 70%)",
         color: "white",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "column",
-        gap: "20px",
+        padding: "20px",
       }}
     >
-      <div
-        style={{
-          width: "50px",
-          height: "50px",
-          border: "4px solid rgba(212, 175, 55, 0.3)",
-          borderTop: "4px solid #D4AF37",
-          borderRadius: "50%",
-          animation: "spin 1s linear infinite",
-        }}
-      />
-      <p style={{ color: "#D4AF37", fontSize: "1.1rem", fontWeight: 500 }}>Loading…</p>
+      {/* Header Shimmer */}
+      <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "24px" }}>
+          <ShimmerImage width="60px" height="60px" borderRadius="50%" />
+          <div style={{ flex: 1 }}>
+            <ShimmerCard style={{ marginBottom: "8px", height: "24px", width: "70%" }} />
+            <ShimmerCard style={{ height: "16px", width: "50%" }} />
+          </div>
+        </div>
+
+        {/* Content Cards Shimmer */}
+        <ShimmerCard style={{ marginBottom: "16px" }} />
+        <ShimmerCard style={{ marginBottom: "16px" }} />
+        <ShimmerCard />
+
+        {/* Loading Indicator */}
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "12px",
+          marginTop: "40px",
+        }}>
+          <div
+            style={{
+              width: "40px",
+              height: "40px",
+              border: "3px solid rgba(212, 175, 55, 0.3)",
+              borderTop: "3px solid #D4AF37",
+              borderRadius: "50%",
+              animation: "spin 1s linear infinite",
+            }}
+          />
+          <p style={{ color: "#D4AF37", fontSize: "0.95rem", fontWeight: 500 }}>Loading…</p>
+        </div>
+      </div>
+      
       <style>{`
         @keyframes spin {
           0% { transform: rotate(0deg); }
@@ -149,62 +173,67 @@ export default function App() {
   }
 
   return (
-    <BrowserRouter>
-      <ScrollToTop />
-      <div
-        style={{
-          background:
-            "radial-gradient(circle at 20% 20%, rgba(10,15,30,1) 0%, rgba(3,6,20,1) 70%)",
-          minHeight: "100vh",
-          color: "white",
-          paddingBottom: "90px", // space for BottomNav
-        }}
-      >
-        <Routes>
-          {!hasOnboarded ? (
-            <>
-              {/* ✅ ONBOARDING FLOW */}
-              <Route
-                path="/onboarding/bismillah"
-                element={<BismillahScreen />}
-              />
-              <Route path="/onboarding/salaam" element={<SalaamScreen />} />
-              <Route path="/onboarding/name" element={<NameScreen />} />
-              <Route path="/onboarding/avatar" element={<AvatarScreen />} />
-              {/* Fallback — always go to Bismillah if not onboarded */}
-              <Route path="*" element={<BismillahScreen />} />
-            </>
-          ) : (
-            <>
-              {/* ✅ MAIN APP ROUTES - Lazy loaded for performance */}
-              <Route path="/" element={<Suspense fallback={<LoadingScreen />}><Home /></Suspense>} />
-              <Route path="/path/:pathId" element={<Suspense fallback={<LoadingScreen />}><Pathway /></Suspense>} />
-              <Route path="/path/:pathId/lesson/:lessonId" element={<Suspense fallback={<LoadingScreen />}><Lesson /></Suspense>} />
-              <Route path="/path/:pathId/quiz/:lessonId" element={<Suspense fallback={<LoadingScreen />}><QuizScreen /></Suspense>} />
+    <ModalProvider>
+      <BrowserRouter>
+        <ScrollToTop />
+        <div
+          style={{
+            background:
+              "radial-gradient(circle at 20% 20%, rgba(10,15,30,1) 0%, rgba(3,6,20,1) 70%)",
+            minHeight: "100vh",
+            color: "white",
+            paddingBottom: "90px", // space for BottomNav
+          }}
+        >
+          <Routes>
+            {!hasOnboarded ? (
+              <>
+                {/* ✅ ONBOARDING FLOW */}
+                <Route
+                  path="/onboarding/bismillah"
+                  element={<BismillahScreen />}
+                />
+                <Route path="/onboarding/salaam" element={<SalaamScreen />} />
+                <Route path="/onboarding/name" element={<NameScreen />} />
+                <Route path="/onboarding/avatar" element={<AvatarScreen />} />
+                {/* Fallback — always go to Bismillah if not onboarded */}
+                <Route path="*" element={<BismillahScreen />} />
+              </>
+            ) : (
+              <>
+                {/* ✅ MAIN APP ROUTES - Lazy loaded for performance */}
+                <Route path="/" element={<Suspense fallback={<LoadingScreen />}><Home /></Suspense>} />
+                <Route path="/path/:pathId" element={<Suspense fallback={<LoadingScreen />}><Pathway /></Suspense>} />
+                <Route path="/path/:pathId/lesson/:lessonId" element={<Suspense fallback={<LoadingScreen />}><Lesson /></Suspense>} />
+                <Route path="/path/:pathId/quiz/:lessonId" element={<Suspense fallback={<LoadingScreen />}><QuizScreen /></Suspense>} />
 
-              <Route path="/challenge" element={<Suspense fallback={<LoadingScreen />}><Challenge /></Suspense>} />
-              <Route path="/challenge/:challengeId" element={<Suspense fallback={<LoadingScreen />}><ChallengeGame /></Suspense>} />
-              <Route path="/daily-quest" element={<Suspense fallback={<LoadingScreen />}><DailyQuestGame /></Suspense>} />
-              <Route path="/events" element={<Suspense fallback={<LoadingScreen />}><GlobalEvents /></Suspense>} />
-              <Route path="/events/:eventId" element={<Suspense fallback={<LoadingScreen />}><EventQuiz /></Suspense>} />
-              <Route path="/friends" element={<Suspense fallback={<LoadingScreen />}><Friends /></Suspense>} />
-              <Route path="/profile" element={<Suspense fallback={<LoadingScreen />}><Profile /></Suspense>} />
-              <Route path="/revise" element={<Suspense fallback={<LoadingScreen />}><Revise /></Suspense>} />
-              <Route path="/login" element={<Suspense fallback={<LoadingScreen />}><Login /></Suspense>} />
-              <Route path="/diagnostics" element={<Suspense fallback={<LoadingScreen />}><LockDiagnostics /></Suspense>} />
+                <Route path="/challenge" element={<Suspense fallback={<LoadingScreen />}><Challenge /></Suspense>} />
+                <Route path="/challenge/:challengeId" element={<Suspense fallback={<LoadingScreen />}><ChallengeGame /></Suspense>} />
+                <Route path="/daily-quest" element={<Suspense fallback={<LoadingScreen />}><DailyQuestGame /></Suspense>} />
+                <Route path="/events" element={<Suspense fallback={<LoadingScreen />}><GlobalEvents /></Suspense>} />
+                <Route path="/events/:eventId" element={<Suspense fallback={<LoadingScreen />}><EventQuiz /></Suspense>} />
+                <Route path="/friends" element={<Suspense fallback={<LoadingScreen />}><Friends /></Suspense>} />
+                <Route path="/profile" element={<Suspense fallback={<LoadingScreen />}><Profile /></Suspense>} />
+                <Route path="/revise" element={<Suspense fallback={<LoadingScreen />}><Revise /></Suspense>} />
+                <Route path="/login" element={<Suspense fallback={<LoadingScreen />}><Login /></Suspense>} />
+                <Route path="/diagnostics" element={<Suspense fallback={<LoadingScreen />}><LockDiagnostics /></Suspense>} />
 
-              {/* fallback */}
-              <Route path="*" element={<Suspense fallback={<LoadingScreen />}><Home /></Suspense>} />
-            </>
-          )}
-        </Routes>
-      </div>
+                {/* fallback */}
+                <Route path="*" element={<Suspense fallback={<LoadingScreen />}><Home /></Suspense>} />
+              </>
+            )}
+          </Routes>
+        </div>
 
-      {/* ✅ Persistent bottom navigation */}
-      {hasOnboarded && <BottomNav />}
-      
-      {/* 💎 Centralized Modal System */}
-      <ModalController />
-    </BrowserRouter>
+        {/* ✅ Persistent bottom navigation */}
+        {hasOnboarded && <BottomNav />}
+        
+        {/* 💎 Centralized Modal System */}
+        <ModalController />
+        
+        {/* 🚪 Portal root for heavy modals */}
+        <ModalRoot />
+      </BrowserRouter>
+    </ModalProvider>
   );
 }
