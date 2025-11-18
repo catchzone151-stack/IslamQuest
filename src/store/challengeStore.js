@@ -56,8 +56,8 @@ export const BOSS_LEVEL = {
   id: "boss_level",
   name: "Boss Level",
   icon: "👑",
-  description: "Daily ultra-hard challenge - 15 questions in 30s",
-  questionCount: 15,
+  description: "Daily ultra-hard challenge - 12 questions in 30s",
+  questionCount: 12,
   totalTime: 30,
   minLevel: 8,
   rewards: { win: { xp: 500, coins: 100 }, lose: { xp: 50, coins: 0 } },
@@ -630,12 +630,87 @@ export const useChallengeStore = create((set, get) => ({
         question: "Which companion was the first to accept Islam from among the youth?",
         options: ["Abu Bakr", "Ali ibn Abi Talib", "Uthman", "Zubair ibn al-Awwam"],
         answer: 1
+      },
+      {
+        question: "What is the name of the bridge that all must cross on the Day of Judgment?",
+        options: ["As-Sirat", "Al-Mawazin", "Al-Hawd", "Al-A'raf"],
+        answer: 0
+      },
+      {
+        question: "Which prophet is known as 'Sayyid al-Awliya' (Leader of the Saints)?",
+        options: ["Ibrahim ﷺ", "Musa ﷺ", "Isa ﷺ", "None - this title is not for prophets"],
+        answer: 3
+      },
+      {
+        question: "How many surahs in the Qur'an are named after prophets?",
+        options: ["4", "5", "6", "7"],
+        answer: 2
+      },
+      {
+        question: "Which angel is responsible for taking souls?",
+        options: ["Jibril", "Mikail", "Azrael (Malak al-Mawt)", "Israfil"],
+        answer: 2
+      },
+      {
+        question: "What was the name of Prophet Muhammad's ﷺ wet nurse?",
+        options: ["Aminah", "Halimah as-Sa'diyah", "Barakah", "Thuwaybah"],
+        answer: 1
+      },
+      {
+        question: "Which surah contains the famous verse 'Allah does not burden a soul beyond what it can bear'?",
+        options: ["Al-Baqarah", "Aal-e-Imran", "An-Nisa", "Al-An'am"],
+        answer: 0
+      },
+      {
+        question: "How many heavens are mentioned in Islam?",
+        options: ["3", "5", "7", "9"],
+        answer: 2
+      },
+      {
+        question: "Which prophet had a staff that turned into a serpent?",
+        options: ["Ibrahim ﷺ", "Musa ﷺ", "Harun ﷺ", "Sulaiman ﷺ"],
+        answer: 1
+      },
+      {
+        question: "What is the name of the tree in Paradise from which Adam and Eve ate?",
+        options: ["Tuba Tree", "Zaqqum Tree", "The Forbidden Tree", "Sidrat al-Muntaha"],
+        answer: 2
+      },
+      {
+        question: "Which companion was known as 'The Scribe of Revelation'?",
+        options: ["Zayd ibn Thabit", "Abdullah ibn Mas'ud", "Ubayy ibn Ka'b", "All of the above"],
+        answer: 3
+      },
+      {
+        question: "In which surah is the story of the People of the Cave (Ashab al-Kahf)?",
+        options: ["Al-Kahf", "Al-Ankabut", "Al-Isra", "Maryam"],
+        answer: 0
+      },
+      {
+        question: "How many times is Maryam (Mary) mentioned by name in the Qur'an?",
+        options: ["19", "25", "34", "40"],
+        answer: 2
+      },
+      {
+        question: "Which battle is known as the 'Battle of the Trench'?",
+        options: ["Battle of Badr", "Battle of Uhud", "Battle of Khandaq", "Battle of Hunayn"],
+        answer: 2
+      },
+      {
+        question: "What is the Arabic term for the obligatory charity given at the end of Ramadan?",
+        options: ["Zakat", "Sadaqah", "Zakat al-Fitr", "Khums"],
+        answer: 2
+      },
+      {
+        question: "Which prophet is mentioned as 'Dhul-Kifl' in the Qur'an?",
+        options: ["Ilyas ﷺ", "Ayyub ﷺ", "Dhul-Kifl ﷺ", "Yusha ﷺ"],
+        answer: 2
       }
     ];
     
-    // Shuffle and select 15 random questions
+    // Shuffle and select 12 random questions
     const shuffled = [...questionPool].sort(() => Math.random() - 0.5);
-    const selected = shuffled.slice(0, 15);
+    const selected = shuffled.slice(0, 12);
     
     // Add IDs and return
     return selected.map((q, index) => ({

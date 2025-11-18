@@ -81,9 +81,11 @@ export default function Challenge() {
     const isBossLevel = currentMode?.id === "boss_level" || currentMode?.name === "Boss Level";
     
     if (isBossLevel) {
-      // Start boss level immediately
+      // Start boss level immediately - capture mode in closure
       showModal(MODAL_TYPES.CHALLENGE_COUNTDOWN, {
-        onComplete: handleCountdownComplete
+        onComplete: () => {
+          navigate(`/challenge/boss`);
+        }
       });
       return; // Exit early for boss level
     }
@@ -101,23 +103,17 @@ export default function Challenge() {
       
     if (result.success) {
       showModal(MODAL_TYPES.CHALLENGE_COUNTDOWN, {
-        onComplete: handleCountdownComplete
+        onComplete: () => {
+          // Get the latest challenge ID
+          const challenges = useChallengeStore.getState().challenges;
+          const latestChallenge = challenges[challenges.length - 1];
+          if (latestChallenge) {
+            navigate(`/challenge/${latestChallenge.id}`);
+          }
+        }
       });
     } else {
       alert("Failed to create challenge. Please try again.");
-    }
-  };
-
-  const handleCountdownComplete = () => {
-    if (selectedMode.id === "boss_level") {
-      navigate(`/challenge/boss`);
-    } else {
-      // Get the latest challenge ID
-      const challenges = useChallengeStore.getState().challenges;
-      const latestChallenge = challenges[challenges.length - 1];
-      if (latestChallenge) {
-        navigate(`/challenge/${latestChallenge.id}`);
-      }
     }
   };
 
