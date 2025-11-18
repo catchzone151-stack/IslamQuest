@@ -315,14 +315,17 @@ export default function ChallengeGame() {
           <span style={{ fontSize: "1.5rem" }}>{mode?.icon}</span>
           <span>{mode?.name}</span>
         </div>
-        <div 
-          className="challenge-game-timer"
-          style={{
-            color: timeLeft <= 10 ? "#ef4444" : "#10b981"
-          }}
-        >
-          ⏱️ {timeLeft}s
-        </div>
+        {/* Only show timer for modes with totalTime (Lightning Round, Boss) - NOT Mind Duel */}
+        {mode?.totalTime && (
+          <div 
+            className="challenge-game-timer"
+            style={{
+              color: timeLeft <= 10 ? "#ef4444" : "#10b981"
+            }}
+          >
+            ⏱️ {timeLeft}s
+          </div>
+        )}
       </div>
 
       {/* Progress Bar */}
