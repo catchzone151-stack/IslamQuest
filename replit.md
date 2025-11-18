@@ -17,7 +17,7 @@ Preferred communication style: Simple, everyday language.
 ### Technical Implementations
 - **Frontend**: React 18.2, Vite, JavaScript, React Router DOM v7.9.
 - **State Management**: Local state with React hooks, global state with Zustand (for `progressStore`, `userStore`, `friendsStore`, `modalStore`, `eventsStore`, `dailyQuestStore`), and LocalStorage for persistence (with future migration to Supabase).
-- **Performance (November 2025)**: Route-based code splitting with eager preloading on mount. Duolingo-style image preloading using `import.meta.glob` auto-discovery loads ALL 57 production images in ~400-600ms immediately on app start. Critical hero assets use `<link rel="preload">` for instant first paint. Direct navigation (no transition delays) ensures instant page switches. `React.memo` optimizes component re-renders. Result: zero image pop-in lag across entire app.
+- **Performance (November 2025)**: Route-based code splitting with eager preloading on mount. Duolingo-style image preloading using `import.meta.glob` auto-discovery loads ALL production images (~43 images) in ~400-1000ms immediately on app start. Critical hero assets use `<link rel="preload">` for instant first paint. Direct navigation (no transition delays) ensures instant page switches. `React.memo` optimizes component re-renders. Result: zero image pop-in lag across entire app.
 - **Modal System**: Unified, global modal system with 21 modal types, dual rendering strategies (inline/portal), Duolingo-style fade+scale animations, and race condition protection.
 
 ### Feature Specifications
@@ -47,3 +47,13 @@ Preferred communication style: Simple, everyday language.
 
 ### Asset Dependencies
 - **Media**: WebP images for all visual assets and SVG favicon. All assets are locally bundled.
+- **Mascots (November 2025)**: 9 culturally authentic Islamic mascot characters in WebP format (99-205KB each):
+  - `mascot_reading.webp` - Home page featured mascot
+  - `mascot_boss.webp` - Challenge and boss level contexts
+  - `mascot_congratulation.webp` - Success and achievement celebrations
+  - `mascot_waving.webp` - Daily quests and friendly greetings
+  - `mascot_pointing.webp` - Teaching and lesson contexts
+  - `mascot_onboarding.webp` - Onboarding flow
+  - `mascot_dua.webp` - Quiz states and contemplative moments
+  - `mascot_defeated.webp` - Failure states (available for future use)
+  - `mascot_tasbih.webp` - Spiritual contexts (available for future use)
