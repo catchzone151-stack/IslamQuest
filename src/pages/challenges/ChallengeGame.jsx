@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "../../hooks/useNavigate";
 import { useChallengeStore, CHALLENGE_MODES, BOSS_LEVEL } from "../../store/challengeStore";
@@ -59,21 +59,23 @@ export default function ChallengeGame() {
   // Determine if it's a boss level or friend challenge
   const isBoss = challengeId === "boss";
   
-  // For friend challenges, get the challenge data
+  // For friend challenges, get the challenge data (use useMemo to prevent infinite loop)
   const { challenges } = useChallengeStore();
-  const challenge = isBoss ? null : challenges.find(c => c.id === challengeId);
+  const challenge = useMemo(() => 
+    isBoss ? null : challenges.find(c => c.id === challengeId),
+    [isBoss, challenges, challengeId]
+  );
   
   // Get mode configuration using robust normalization
-  let mode;
-  if (isBoss) {
-    mode = BOSS_LEVEL;
-  } else if (challenge) {
-    mode = getModeConfig(challenge.mode);
-  }
-  
-  console.log('🎮 ChallengeGame initialized', { isBoss, challenge, mode });
+  const mode = useMemo(() => {
+    if (isBoss) return BOSS_LEVEL;
+    if (challenge) return getModeConfig(challenge.mode);
+    return null;
+  }, [isBoss, challenge]);
 
   useEffect(() => {
+    console.log('🎮 Loading challenge questions', { isBoss, challengeId, mode });
+    
     // Load questions based on challenge type
     if (isBoss) {
       const bossQuestions = useChallengeStore.getState().getBossLevelQuestions();
@@ -84,16 +86,17 @@ export default function ChallengeGame() {
       }
       setQuestions(bossQuestions);
       setTimeLeft(BOSS_LEVEL.totalTime);
-    } else if (challenge) {
+    } else if (challenge && mode) {
       setQuestions(challenge.questions);
-      const config = getModeConfig(challenge.mode);
-      if (config?.totalTime) {
-        setTimeLeft(config.totalTime);
-      } else if (config?.timePerQuestion) {
-        setTimeLeft(config.timePerQuestion);
+      // Only set timer for modes with totalTime (Lightning Round, Boss)
+      // Mind Duel has timePerQuestion, not totalTime
+      if (mode.totalTime) {
+        setTimeLeft(mode.totalTime);
+      } else if (mode.timePerQuestion) {
+        setTimeLeft(mode.timePerQuestion);
       }
     }
-  }, [challengeId, isBoss, challenge, navigate]);
+  }, [challengeId, isBoss, navigate]);
 
   useEffect(() => {
     // Start timer
