@@ -23,10 +23,15 @@ const DEFAULT_PATHS = [
   { id: 14, title: "Paradise", progress: 0, totalLessons: 20, completedLessons: 0, status: "available" },
 ];
 
+// 🛠️ DEV MODE SETTINGS
+const DEV_MODE = true; // Set to false for production
+const DEV_XP = 25000; // Level 8
+const DEV_COINS = 200;
+
 export const useProgressStore = create((set, get) => ({
   // 🪙 Base user stats
-  xp: 40000, // DEV MODE: Level 9 for testing Boss Level (normally 0)
-  coins: 0,
+  xp: DEV_MODE ? DEV_XP : 0,
+  coins: DEV_MODE ? DEV_COINS : 0,
   streak: 0,
   lastStudyDate: null,
   lastCompletedActivityDate: null, // Unified tracking for all activities
@@ -58,6 +63,17 @@ export const useProgressStore = create((set, get) => ({
   },
 
   loadProgress: () => {
+    // 🛠️ DEV MODE: Force dev settings on load
+    if (DEV_MODE) {
+      const devData = {
+        ...get(),
+        xp: DEV_XP,
+        coins: DEV_COINS,
+      };
+      set(devData);
+      return;
+    }
+    
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       const savedData = JSON.parse(saved);
