@@ -67,13 +67,13 @@ const QuestionCard = React.memo(({
 
             if (index === isCorrectIndex) {
               style.background = "#16a34a";
-              style.borderColor = "#16a34a";
+              style.border = "2px solid #16a34a";
             } else if (isSelected && index !== isCorrectIndex) {
               style.background = "#dc2626";
-              style.borderColor = "#dc2626";
+              style.border = "2px solid #dc2626";
             } else {
               style.opacity = 0.5;
-              style.borderColor = "#4b5563";
+              style.border = "2px solid #4b5563";
               style.color = "#9ca3af";
             }
           }
