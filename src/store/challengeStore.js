@@ -100,11 +100,19 @@ export const useChallengeStore = create((set, get) => ({
 
   // Get shared completed lessons between two users
   getSharedLessons: (userId, friendId) => {
+    // 🤖 BETA MODE: Allow challenges on any quiz regardless of shared lessons
+    const betaMode = useDeveloperStore.getState()?.betaMode;
+    
     // Get current user's completed lessons
     const { lessonStates } = useProgressStore.getState();
     const currentUserCompletedLessons = Object.keys(lessonStates).filter(
       key => lessonStates[key]?.completed === true
     );
+    
+    if (betaMode) {
+      // In beta mode, return ALL user's completed lessons (bypass shared requirement)
+      return currentUserCompletedLessons;
+    }
     
     // Get friend's completed lessons from friendsStore
     // In LocalStorage mode, friends have a completedLessons array

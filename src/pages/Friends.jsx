@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { useFriendsStore } from "../store/friendsStore";
 import { useProgressStore } from "../store/progressStore";
+import { useNavigate } from "../hooks/useNavigate";
 import { Search, UserPlus, Users, Trophy, Activity, X, Send, Swords } from "lucide-react";
 import { LevelBadgeCompact } from "../components/LevelBadge";
 
 export default function Friends() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("friends");
   const [searchQuery, setSearchQuery] = useState("");
   const [showMiniProfile, setShowMiniProfile] = useState(null);
@@ -49,7 +51,11 @@ export default function Friends() {
   };
 
   const handleChallenge = (friendId) => {
-    sendChallenge(friendId);
+    const friend = friends.find(f => f.id === friendId);
+    if (friend) {
+      // Navigate to Challenge page with friend pre-selected
+      navigate("/challenge", { state: { preselectedFriend: friend } });
+    }
     setShowMiniProfile(null);
   };
 
@@ -156,7 +162,7 @@ export default function Friends() {
             handleSearch={handleSearch}
             setShowMiniProfile={setShowMiniProfile}
             setShowMessageModal={setShowMessageModal}
-            sendChallenge={sendChallenge}
+            onChallenge={handleChallenge}
           />
         )}
 
@@ -217,7 +223,7 @@ export default function Friends() {
   );
 }
 
-function FriendsTab({ friends, searchQuery, setSearchQuery, handleSearch, setShowMiniProfile, setShowMessageModal, sendChallenge }) {
+function FriendsTab({ friends, searchQuery, setSearchQuery, handleSearch, setShowMiniProfile, setShowMessageModal, onChallenge }) {
   return (
     <>
       {/* Search Bar */}
@@ -284,7 +290,7 @@ function FriendsTab({ friends, searchQuery, setSearchQuery, handleSearch, setSho
               friend={friend}
               onViewProfile={() => setShowMiniProfile(friend)}
               onMessage={() => setShowMessageModal(friend)}
-              onChallenge={() => sendChallenge(friend.id)}
+              onChallenge={() => onChallenge(friend.id)}
             />
           ))}
         </div>

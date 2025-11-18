@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { useNavigate } from "../hooks/useNavigate";
 import { useChallengeStore, CHALLENGE_MODES, BOSS_LEVEL } from "../store/challengeStore";
 import { useProgressStore } from "../store/progressStore";
@@ -10,6 +11,7 @@ import BossLevelMascot from "../assets/mascots/mascot_boss.webp";
 
 export default function Challenge() {
   const navigate = useNavigate();
+  const location = useLocation();
   
   const { xp } = useProgressStore();
   const level = getCurrentLevel(xp).level;
@@ -23,7 +25,12 @@ export default function Challenge() {
 
   useEffect(() => {
     loadFromStorage();
-  }, []);
+    
+    // Check if friend was pre-selected from Friends page
+    if (location.state?.preselectedFriend) {
+      setSelectedFriend(location.state.preselectedFriend);
+    }
+  }, [location.state]);
 
   const handleModeClick = (modeKey) => {
     const mode = CHALLENGE_MODES[modeKey];
