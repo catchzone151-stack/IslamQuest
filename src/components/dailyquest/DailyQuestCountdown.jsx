@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import ZaydChallenge from "../../assets/mascots/mascot_zayd_challenge.webp";
+import ZaydChallenge from "../../assets/mascots/mascot_dua.webp";
 
 export default function DailyQuestCountdown({ onComplete }) {
   const [count, setCount] = useState(3);

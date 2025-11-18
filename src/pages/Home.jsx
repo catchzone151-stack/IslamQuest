@@ -30,9 +30,9 @@ import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import DailyQuestCard from "../components/dailyquest/DailyQuestCard";
 
 // Mascots & UI assets
-import Zayd from "../assets/mascots/mascot_zayd_default.webp";
-import ZaydChallenge from "../assets/mascots/mascot_zayd_challenge.webp";
-import MainMascot from "../assets/mascots/mascot_zayd_happy.webp";
+import Zayd from "../assets/mascots/mascot_waving.webp";
+import ZaydChallenge from "../assets/mascots/mascot_boss.webp";
+import MainMascot from "../assets/mascots/mascot_reading.webp";
 import ui_xp from "../assets/ui/ui_xp.webp";
 import ui_streak from "../assets/ui/ui_streak.webp";
 import ui_coin from "../assets/ui/ui_coin.webp";

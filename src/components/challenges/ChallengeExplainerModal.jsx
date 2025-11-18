@@ -1,4 +1,4 @@
-import ZaydChallenge from "../../assets/mascots/mascot_zayd_challenge.webp";
+import ZaydChallenge from "../../assets/mascots/mascot_boss.webp";
 import "./ChallengeModals.css";
 
 export default function ChallengeExplainerModal({ mode, onStart, onCancel }) {

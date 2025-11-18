@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Sparkles } from "lucide-react";
 import { DiamondIcon } from "./DiamondIcon";
 import { DIAMOND_LEVELS } from "../utils/diamondLevels";
-import mascot from "../assets/mascots/mascot_zayd_default.webp";
+import mascot from "../assets/mascots/mascot_congratulation.webp";
 
 export function ZaydLevelUpPopup({ levelUpData, onClose }) {
   const [isVisible, setIsVisible] = useState(false);

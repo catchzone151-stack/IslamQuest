@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "../hooks/useNavigate";
 import { motion } from "framer-motion";
-import zayd from "../assets/mascots/mascot_zayd_default.webp";
+import zayd from "../assets/mascots/mascot_onboarding.webp";
 
 export default function SalaamScreen() {
   const navigate = useNavigate();

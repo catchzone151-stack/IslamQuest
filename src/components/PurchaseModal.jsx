@@ -1,6 +1,6 @@
 import React from "react";
 import { useProgressStore } from "../store/progressStore";
-import ZaydDefault from "../assets/mascots/mascot_zayd_default.webp";
+import ZaydDefault from "../assets/mascots/mascot_waving.webp";
 
 export default function PurchaseModal({ onClose, onPurchase }) {
   const restorePurchases = useProgressStore((s) => s.restorePurchases);

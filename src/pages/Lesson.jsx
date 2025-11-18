@@ -2,7 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "../hooks/useNavigate";
 import { getLessonsForPath } from "../data/lessonLoader";
-import zaydTeachingMascot from "../assets/mascots/mascot_zayd_teaching.webp";
+import zaydTeachingMascot from "../assets/mascots/mascot_pointing.webp";
 
 export default function Lesson() {
   const { pathId, lessonId } = useParams();

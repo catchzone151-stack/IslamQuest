@@ -4,7 +4,7 @@ import { useChallengeStore, CHALLENGE_MODES, BOSS_LEVEL } from "../store/challen
 import { useProgressStore } from "../store/progressStore";
 import { useFriendsStore } from "../store/friendsStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
-import BossLevelMascot from "../assets/mascots/mascot_boss_level.webp";
+import BossLevelMascot from "../assets/mascots/mascot_boss.webp";
 
 export default function Challenge() {
   const navigate = useNavigate();

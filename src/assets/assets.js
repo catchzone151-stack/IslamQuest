@@ -1,23 +1,16 @@
 // src/assets/assets.js
 
 // ============ MASCOTS ============
-import mascot_zayd_default from "./mascots/mascot_zayd_default.webp";
-import mascot_zayd_thumbsup from "./mascots/mascot_zayd_thumbsup.webp";
-import mascot_zayd_thinking from "./mascots/mascot_zayd_thinking.webp";
-import mascot_zayd_teaching from "./mascots/mascot_zayd_teaching.webp";
-import mascot_zayd_teaching_alt from "./mascots/mascot_zayd_teaching_alt.webp";
-import mascot_zayd_trophy from "./mascots/mascot_zayd_trophy.webp";
-import mascot_zayd_wink from "./mascots/mascot_zayd_wink.webp";
-import mascot_zayd_shield from "./mascots/mascot_zayd_shield.webp";
-import mascot_zayd_certificate from "./mascots/mascot_zayd_certificate.webp";
-import mascot_zayd_challenge from "./mascots/mascot_zayd_challenge.webp";
-import mascot_zayd_cheer from "./mascots/mascot_zayd_cheer.webp";
-import mascot_zayd_clap from "./mascots/mascot_zayd_clap.webp";
-import mascot_zayd_happy from "./mascots/mascot_zayd_happy.webp";
-import mascot_zayd_jump from "./mascots/mascot_zayd_jump.webp";
-import mascot_zayd_lantern from "./mascots/mascot_zayd_lantern.webp";
-import mascot_zayd_reading from "./mascots/mascot_zayd_reading.webp";
-import mascot_zayd_book from "./mascots/mascot_zayd_book.webp";
+// Using only the "1 Mascot" culturally authentic Islamic mascots
+import mascot_boss from "./mascots/mascot_boss.webp";
+import mascot_congratulation from "./mascots/mascot_congratulation.webp";
+import mascot_defeated from "./mascots/mascot_defeated.webp";
+import mascot_dua from "./mascots/mascot_dua.webp";
+import mascot_onboarding from "./mascots/mascot_onboarding.webp";
+import mascot_pointing from "./mascots/mascot_pointing.webp";
+import mascot_reading from "./mascots/mascot_reading.webp";
+import mascot_tasbih from "./mascots/mascot_tasbih.webp";
+import mascot_waving from "./mascots/mascot_waving.webp";
 
 // ============ AVATARS ============
 import avatar_man_lantern from "./avatars/avatar_man_lantern.webp";
@@ -62,23 +55,16 @@ import ui_xp from "./ui/ui_xp.webp";
 // ============ EXPORT ============
 const assets = {
   mascots: {
-    mascot_zayd_default,
-    mascot_zayd_thumbsup,
-    mascot_zayd_thinking,
-    mascot_zayd_teaching,
-    mascot_zayd_teaching_alt,
-    mascot_zayd_trophy,
-    mascot_zayd_wink,
-    mascot_zayd_shield,
-    mascot_zayd_certificate,
-    mascot_zayd_challenge,
-    mascot_zayd_cheer,
-    mascot_zayd_clap,
-    mascot_zayd_happy,
-    mascot_zayd_jump,
-    mascot_zayd_lantern,
-    mascot_zayd_reading,
-    mascot_zayd_book,
+    // New culturally authentic Islamic mascots
+    mascot_boss,
+    mascot_congratulation,
+    mascot_defeated,
+    mascot_dua,
+    mascot_onboarding,
+    mascot_pointing,
+    mascot_reading,
+    mascot_tasbih,
+    mascot_waving,
   },
   avatars: {
     avatar_man_lantern,

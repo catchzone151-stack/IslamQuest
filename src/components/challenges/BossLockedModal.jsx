@@ -1,4 +1,4 @@
-import ZaydChallenge from "../../assets/mascots/mascot_zayd_challenge.webp";
+import ZaydChallenge from "../../assets/mascots/mascot_boss.webp";
 import { DiamondIcon } from "../DiamondIcon";
 import "./ChallengeModals.css";
 
