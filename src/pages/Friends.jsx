@@ -63,7 +63,7 @@ export default function Friends() {
     <div style={{
       minHeight: "100vh",
       background: "#0B1E2D",
-      paddingBottom: 80,
+      paddingBottom: 90,
     }}>
       {/* Header */}
       <div style={{

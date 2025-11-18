@@ -202,12 +202,13 @@ export default function App() {
       <BrowserRouter>
         <ScrollToTop />
         <div
+          className="app-root-container"
           style={{
             background:
               "radial-gradient(circle at 20% 20%, rgba(10,15,30,1) 0%, rgba(3,6,20,1) 70%)",
             minHeight: "100vh",
             color: "white",
-            paddingBottom: "90px", // space for BottomNav
+            paddingBottom: 90,
           }}
         >
           <Routes>

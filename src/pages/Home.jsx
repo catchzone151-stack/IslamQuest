@@ -155,7 +155,7 @@ export default function Home() {
         background: "#0e2340",
         color: "white",
         padding: 16,
-        paddingBottom: 80,
+        paddingBottom: 90,
         overflowX: "hidden",
         position: "relative",
       }}
@@ -500,6 +500,12 @@ export default function Home() {
               transition: "all 0.25s ease",
               margin: "0 6px",
               cursor: "pointer",
+              padding: "16px",
+              minWidth: "44px",
+              minHeight: "44px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           />
         ))}

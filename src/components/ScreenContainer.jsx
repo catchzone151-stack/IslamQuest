@@ -5,11 +5,12 @@ const NAV_HEIGHT = 76;
 export default function ScreenContainer({ children }) {
   return (
     <div
+      className="screen-container-root"
       style={{
         minHeight: "100vh",
         background: "var(--navy)",
         padding: "clamp(12px, 3vw, 24px)",
-        paddingBottom: `${NAV_HEIGHT + 34}px`, // 76 + 34 = 110px
+        paddingBottom: 110,
         maxWidth: "100%",
         width: "100%",
         boxSizing: "border-box",

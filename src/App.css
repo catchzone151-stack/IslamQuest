@@ -49,9 +49,23 @@ body {
 .screen {
   min-height: 100vh;
   padding: clamp(12px, 3vw, 24px);
+  padding-bottom: 90px;
+  padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px));
   max-width: 100%;
   overflow-x: hidden;
   background: #0e2340;
+}
+
+/* App root container safe-area support */
+.app-root-container {
+  padding-bottom: 90px !important;
+  padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+/* ScreenContainer safe-area support */
+.screen-container-root {
+  padding-bottom: 110px !important;
+  padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px)) !important;
 }
 
 /* Headings */
