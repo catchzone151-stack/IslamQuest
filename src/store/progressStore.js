@@ -602,6 +602,32 @@ export const useProgressStore = create((set, get) => ({
     get().saveProgress();
   },
   
+  // 🧹 Reset all progress to default (for developer/testing purposes)
+  resetAllProgress: () => {
+    set({
+      xp: 0,
+      coins: 0,
+      streak: 0,
+      level: 1, // Reset Diamond level
+      lastStudyDate: null,
+      lastCompletedActivityDate: null,
+      lastLogin: null,
+      shieldCount: 0,
+      needsRepairPrompt: false,
+      brokenStreakValue: 0,
+      xpMultiplier: 0,
+      certificates: [],
+      lessonStates: {},
+      lockedLessons: {},
+      paths: DEFAULT_PATHS,
+      premiumStatus: "free",
+      familyPlanId: null,
+      familyMembers: [],
+      hasPremium: false,
+    });
+    get().saveProgress();
+  },
+  
   // 🧹 Force reset for testing (removes all progress)
   forceResetForTesting: () => {
     localStorage.clear();
