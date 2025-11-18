@@ -147,13 +147,14 @@ export default function ChallengeGame() {
         correct: isCorrect
       };
 
-      setAnswers(prev => [...prev, newAnswer]);
+      const updatedAnswers = [...answers, newAnswer];
+      setAnswers(updatedAnswers);
 
       if (!isCorrect) {
         // Chain broken!
-        setChainLength(answers.length);
+        setChainLength(updatedAnswers.length);
         setGameEnded(true);
-        setTimeout(() => handleGameComplete(), 1500);
+        setTimeout(() => handleGameComplete(updatedAnswers), 1500);
       } else {
         // Continue chain
         setTimeout(() => {
@@ -166,9 +167,9 @@ export default function ChallengeGame() {
             }
           } else {
             // Completed all questions successfully!
-            setChainLength(answers.length + 1);
+            setChainLength(updatedAnswers.length);
             setGameEnded(true);
-            setTimeout(() => handleGameComplete(), 1500);
+            setTimeout(() => handleGameComplete(updatedAnswers), 1500);
           }
         }, 800);
       }
@@ -191,7 +192,8 @@ export default function ChallengeGame() {
       correct: isCorrect
     };
 
-    setAnswers(prev => [...prev, newAnswer]);
+    const updatedAnswers = [...answers, newAnswer];
+    setAnswers(updatedAnswers);
 
     if (currentIndex < questions.length - 1) {
       setCurrentIndex(currentIndex + 1);
@@ -203,13 +205,13 @@ export default function ChallengeGame() {
         setTimeLeft(mode.timePerQuestion);
       }
     } else {
-      // Last question answered
+      // Last question answered - pass complete answers to handleGameComplete
       setGameEnded(true);
-      setTimeout(() => handleGameComplete(), 1000);
+      setTimeout(() => handleGameComplete(updatedAnswers), 1000);
     }
   };
 
-  const handleGameComplete = () => {
+  const handleGameComplete = (finalAnswers = answers) => {
     // Prevent double-completion
     if (isCompletingRef.current) return;
     isCompletingRef.current = true;
@@ -217,23 +219,23 @@ export default function ChallengeGame() {
     if (timerRef.current) clearInterval(timerRef.current);
     setGameEnded(true);
     
-    console.log('🏁 handleGameComplete called', { isBoss, mode, challenge, answers });
+    console.log('🏁 handleGameComplete called', { isBoss, mode, challenge, finalAnswers });
     
-    // Calculate final score directly from current answers state
-    const finalScore = answers.filter(a => a.correct).length;
+    // Calculate final score from passed-in answers (includes last answer)
+    const finalScore = finalAnswers.filter(a => a.correct).length;
     setScore(finalScore);
     
-    console.log('📊 Final score calculated', { finalScore, totalQuestions: questions.length, answers });
+    console.log('📊 Final score calculated', { finalScore, totalQuestions: questions.length, finalAnswers });
 
     // Save results and award rewards
     if (isBoss) {
-      useChallengeStore.getState().saveBossAttempt(finalScore, answers);
+      useChallengeStore.getState().saveBossAttempt(finalScore, finalAnswers);
       const result = finalScore >= BOSS_LEVEL.questionCount * 0.6 ? "win" : "lose";
       useChallengeStore.getState().awardRewards("boss_level", result);
     } else if (challenge) {
       const currentUserId = "current_user";
       const isChallenger = challenge.challengerId === currentUserId;
-      useChallengeStore.getState().saveChallengeProgress(challengeId, finalScore, answers, isChallenger);
+      useChallengeStore.getState().saveChallengeProgress(challengeId, finalScore, finalAnswers, isChallenger);
       
       // Re-read the updated challenge from store to check if both players finished
       const updatedChallenge = useChallengeStore.getState().challenges.find(c => c.id === challengeId);
