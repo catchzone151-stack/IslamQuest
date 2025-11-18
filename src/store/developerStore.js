@@ -1,4 +1,8 @@
 import { create } from "zustand";
+import { useProgressStore } from "./progressStore";
+import { useUserStore } from "./useUserStore";
+import { useChallengeStore } from "./challengeStore";
+import { useDailyQuestStore } from "./dailyQuestStore";
 
 const STORAGE_KEY = "islamQuestDeveloper_v1";
 const APP_VERSION = "1.0.0-beta";
@@ -28,7 +32,6 @@ export const useDeveloperStore = create((set, get) => ({
   },
 
   resetOnboarding: () => {
-    const { useUserStore } = require("./useUserStore");
     useUserStore.getState().resetOnboarding();
   },
 
@@ -36,11 +39,6 @@ export const useDeveloperStore = create((set, get) => ({
     if (!window.confirm("⚠️ This will reset ALL progress (XP, coins, streak, lessons). Continue?")) {
       return;
     }
-
-    const { useProgressStore } = require("./progressStore");
-    const { useUserStore } = require("./useUserStore");
-    const { useChallengeStore } = require("./challengeStore");
-    const { useDailyQuestStore } = require("./dailyQuestStore");
 
     // Reset all stores
     useProgressStore.getState().resetAllProgress?.();
@@ -70,9 +68,6 @@ export const useDeveloperStore = create((set, get) => ({
   },
 
   getDebugInfo: () => {
-    const { useProgressStore } = require("./progressStore");
-    const { useUserStore } = require("./useUserStore");
-    
     const { xp, coins, streak, level, levelColor, levelBadge, lessonStates } = useProgressStore.getState();
     const { hasCompletedOnboarding } = useUserStore.getState();
     

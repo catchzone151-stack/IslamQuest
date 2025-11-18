@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { useProgressStore } from "./progressStore";
+import { useDeveloperStore } from "./developerStore";
 import {
   getQuizForLesson
 } from "../data/quizEngine";
@@ -143,7 +144,6 @@ export const useDailyQuestStore = create((set, get) => ({
     const state = get();
 
     // 🧪 BETA MODE: Always regenerate fresh questions for unlimited testing
-    const { useDeveloperStore } = require("./developerStore");
     const betaMode = useDeveloperStore.getState().betaMode;
     
     // If already today's quest AND not in beta mode, no need to regenerate

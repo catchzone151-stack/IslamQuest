@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { getCurrentLevel, checkLevelUp } from "../utils/diamondLevels";
 import { FREE_LESSON_LIMITS } from "./premiumConfig";
 import { useModalStore, MODAL_TYPES } from "./modalStore";
+import { useDeveloperStore } from "./developerStore";
 
 const STORAGE_KEY = "islamQuestProgress_v4";
 
@@ -451,7 +452,6 @@ export const useProgressStore = create((set, get) => ({
   // This is the NEW core function - use this everywhere!
   isLessonUnlocked: (pathId, lessonId) => {
     // 🧪 BETA MODE: Unlock all lessons for testing
-    const { useDeveloperStore } = require("./developerStore");
     if (useDeveloperStore.getState().betaMode) {
       return true;
     }

@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { useProgressStore } from "./progressStore";
 import { useFriendsStore } from "./friendsStore";
+import { useDeveloperStore } from "./developerStore";
 
 const STORAGE_KEY = "islamQuestChallenges_v1";
 const CHALLENGE_DURATION = 48 * 60 * 60 * 1000; // 48 hours in ms
@@ -216,7 +217,6 @@ export const useChallengeStore = create((set, get) => ({
     }
     
     // 🛡️ Mark day as complete for streak tracking
-    const { useProgressStore } = require("./progressStore");
     useProgressStore.getState().markDayComplete();
 
     set(state => ({
@@ -723,7 +723,6 @@ export const useChallengeStore = create((set, get) => ({
   // Boss Level: Check if can play today
   canPlayBossToday: () => {
     // 🧪 BETA MODE: Allow unlimited Boss Level plays for testing
-    const { useDeveloperStore } = require("./developerStore");
     if (useDeveloperStore.getState().betaMode) {
       return true;
     }
