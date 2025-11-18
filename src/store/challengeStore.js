@@ -254,62 +254,170 @@ export const useChallengeStore = create((set, get) => ({
 
   // Get questions for Boss Level (from ANY lesson)
   getBossLevelQuestions: () => {
-    // 🛠️ DEV MODE: Return mock hard questions for testing
-    const DEV_MODE = true;
-    if (DEV_MODE) {
-      return [
-        {
-          id: "boss_q1",
-          question: "Which name of Allah means 'The All-Knowing'?",
-          options: ["Al-Aleem", "Al-Hakeem", "Al-Baseer", "Al-Samee"],
-          answer: 0,
-          difficulty: "hard"
-        },
-        {
-          id: "boss_q2",
-          question: "How many prophets are mentioned by name in the Qur'an?",
-          options: ["13", "25", "40", "124,000"],
-          answer: 1,
-          difficulty: "hard"
-        },
-        {
-          id: "boss_q3",
-          question: "What is the last verse revealed in the Qur'an?",
-          options: ["Ayat al-Kursi", "The verse about debt", "The final verse of Surah Al-Baqarah", "The opening of Al-Fatiha"],
-          answer: 1,
-          difficulty: "hard"
-        },
-        {
-          id: "boss_q4",
-          question: "Which companion was known as 'The Sword of Allah'?",
-          options: ["Ali ibn Abi Talib", "Umar ibn al-Khattab", "Khalid ibn al-Walid", "Abu Bakr as-Siddiq"],
-          answer: 2,
-          difficulty: "hard"
-        },
-        {
-          id: "boss_q5",
-          question: "What was the first masjid built by Prophet Muhammad ﷺ?",
-          options: ["Masjid al-Haram", "Masjid an-Nabawi", "Masjid Quba", "Masjid al-Aqsa"],
-          answer: 2,
-          difficulty: "hard"
-        }
-      ];
-    }
-    
-    const { lessonStates } = useProgressStore.getState();
-    
-    // Get ALL completed lesson questions
-    let allQuestions = [];
-    Object.keys(lessonStates).forEach(lessonKey => {
-      const lessonState = lessonStates[lessonKey];
-      if (lessonState?.completed && lessonState?.questions) {
-        allQuestions = [...allQuestions, ...lessonState.questions];
+    // Pool of 30 ultra-hard Islamic questions
+    const questionPool = [
+      {
+        question: "Which name of Allah means 'The All-Knowing'?",
+        options: ["Al-Aleem", "Al-Hakeem", "Al-Baseer", "Al-Samee"],
+        answer: 0
+      },
+      {
+        question: "How many prophets are mentioned by name in the Qur'an?",
+        options: ["13", "25", "40", "124,000"],
+        answer: 1
+      },
+      {
+        question: "What is the last verse revealed in the Qur'an?",
+        options: ["Ayat al-Kursi", "The verse about debt in Surah Al-Baqarah", "The final verse of Surah Al-Baqarah", "Surah An-Nasr"],
+        answer: 1
+      },
+      {
+        question: "Which companion was known as 'The Sword of Allah'?",
+        options: ["Ali ibn Abi Talib", "Umar ibn al-Khattab", "Khalid ibn al-Walid", "Abu Bakr as-Siddiq"],
+        answer: 2
+      },
+      {
+        question: "What was the first masjid built by Prophet Muhammad ﷺ?",
+        options: ["Masjid al-Haram", "Masjid an-Nabawi", "Masjid Quba", "Masjid al-Aqsa"],
+        answer: 2
+      },
+      {
+        question: "How many times is Prophet Muhammad ﷺ mentioned by name in the Qur'an?",
+        options: ["3", "4", "5", "7"],
+        answer: 1
+      },
+      {
+        question: "Which surah is called 'the heart of the Qur'an'?",
+        options: ["Al-Fatiha", "Ya-Sin", "Al-Mulk", "Ar-Rahman"],
+        answer: 1
+      },
+      {
+        question: "In which year of Hijrah did the Battle of Badr take place?",
+        options: ["1st year", "2nd year", "3rd year", "4th year"],
+        answer: 1
+      },
+      {
+        question: "How many angels are mentioned by name in the Qur'an?",
+        options: ["1", "2", "3", "4"],
+        answer: 2
+      },
+      {
+        question: "What is the longest surah in the Qur'an?",
+        options: ["Al-Baqarah", "Aal-e-Imran", "An-Nisa", "Al-An'am"],
+        answer: 0
+      },
+      {
+        question: "Which prophet is mentioned the most in the Qur'an?",
+        options: ["Muhammad ﷺ", "Ibrahim ﷺ", "Musa ﷺ", "Isa ﷺ"],
+        answer: 2
+      },
+      {
+        question: "How many years did it take for the Qur'an to be revealed?",
+        options: ["10 years", "15 years", "23 years", "30 years"],
+        answer: 2
+      },
+      {
+        question: "Which sahabi was given the title 'Al-Farooq' (The Criterion)?",
+        options: ["Abu Bakr", "Umar ibn al-Khattab", "Uthman ibn Affan", "Ali ibn Abi Talib"],
+        answer: 1
+      },
+      {
+        question: "In which cave did Prophet Muhammad ﷺ receive the first revelation?",
+        options: ["Cave of Thawr", "Cave of Hira", "Cave of Uhud", "Cave of Safa"],
+        answer: 1
+      },
+      {
+        question: "What was the name of Prophet Muhammad's ﷺ mother?",
+        options: ["Khadijah", "Aminah", "Fatimah", "Aisha"],
+        answer: 1
+      },
+      {
+        question: "How many times is Sajdah (prostration) mentioned in the Qur'an?",
+        options: ["11", "13", "15", "17"],
+        answer: 2
+      },
+      {
+        question: "Which surah does not begin with Bismillah?",
+        options: ["Al-Fatiha", "At-Tawbah", "Al-Ikhlas", "An-Nas"],
+        answer: 1
+      },
+      {
+        question: "Who was the first male to accept Islam?",
+        options: ["Ali ibn Abi Talib", "Abu Bakr as-Siddiq", "Umar ibn al-Khattab", "Uthman ibn Affan"],
+        answer: 1
+      },
+      {
+        question: "How many Makki surahs are in the Qur'an?",
+        options: ["82", "86", "90", "93"],
+        answer: 1
+      },
+      {
+        question: "Which prophet could speak to animals and jinn?",
+        options: ["Dawud ﷺ", "Sulaiman ﷺ", "Musa ﷺ", "Isa ﷺ"],
+        answer: 1
+      },
+      {
+        question: "What is the shortest surah in the Qur'an?",
+        options: ["Al-Ikhlas", "Al-Kawthar", "Al-Asr", "An-Nasr"],
+        answer: 1
+      },
+      {
+        question: "In which battle did Prophet Muhammad ﷺ lose his tooth?",
+        options: ["Battle of Badr", "Battle of Uhud", "Battle of Khandaq", "Battle of Hunayn"],
+        answer: 1
+      },
+      {
+        question: "How many wives did Prophet Muhammad ﷺ have?",
+        options: ["9", "11", "13", "15"],
+        answer: 1
+      },
+      {
+        question: "Which angel is responsible for blowing the trumpet on the Day of Judgment?",
+        options: ["Jibril", "Mikail", "Israfil", "Azrael"],
+        answer: 2
+      },
+      {
+        question: "What was the occupation of Prophet Muhammad ﷺ before prophethood?",
+        options: ["Farmer", "Merchant/Shepherd", "Scholar", "Soldier"],
+        answer: 1
+      },
+      {
+        question: "Which surah is recommended to be recited on Friday?",
+        options: ["Al-Mulk", "Al-Kahf", "Ar-Rahman", "Ya-Sin"],
+        answer: 1
+      },
+      {
+        question: "How many children did Prophet Muhammad ﷺ have?",
+        options: ["5", "6", "7", "8"],
+        answer: 2
+      },
+      {
+        question: "Which companion compiled the Qur'an into one book first?",
+        options: ["Umar ibn al-Khattab", "Abu Bakr as-Siddiq", "Uthman ibn Affan", "Ali ibn Abi Talib"],
+        answer: 1
+      },
+      {
+        question: "What does 'Al-Qadr' mean?",
+        options: ["The Power", "The Decree/Divine Will", "The Night", "The Book"],
+        answer: 1
+      },
+      {
+        question: "In which year did the Hijrah (migration) to Madinah occur?",
+        options: ["610 CE", "615 CE", "622 CE", "630 CE"],
+        answer: 2
       }
-    });
-
-    // Shuffle and take the hardest 5
-    const shuffled = allQuestions.sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, BOSS_LEVEL.questionCount);
+    ];
+    
+    // Shuffle and select 5 random questions
+    const shuffled = [...questionPool].sort(() => Math.random() - 0.5);
+    const selected = shuffled.slice(0, 5);
+    
+    // Add IDs and return
+    return selected.map((q, index) => ({
+      id: `boss_q${index + 1}_${Date.now()}`,
+      ...q,
+      difficulty: "hard"
+    }));
   },
 
   // Boss Level: Check if can play today

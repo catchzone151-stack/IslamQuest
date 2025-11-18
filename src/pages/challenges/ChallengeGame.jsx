@@ -301,10 +301,11 @@ export default function ChallengeGame() {
         <h2 className="challenge-question-text">{currentQuestion.question}</h2>
         
         {/* Answer Options */}
-        <div className="challenge-options">
+<div className="challenge-options">
           {currentQuestion.options.map((option, index) => {
             const isSelected = selectedAnswer === index;
-            const isCorrect = index === currentQuestion.correct;
+            const correctAnswerIndex = currentQuestion.answer ?? currentQuestion.correctIndex ?? currentQuestion.correct;
+            const isCorrect = index === correctAnswerIndex;
             const showResult = selectedAnswer !== null;
 
             return (
