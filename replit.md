@@ -15,6 +15,9 @@ Preferred communication style: Simple, everyday language.
   - Boss Level playable below Level 8 requirement (bypasses level gate)
   - Daily Quest repeatable unlimited times
   - Simulated Friends System automatically activated (6 AI opponents with varied difficulty)
+  - Challenge friends on ANY completed lesson (bypasses shared lessons requirement)
+  - Challenges work even with NO completed lessons (uses fallback question pool)
+  - Quick challenge button (⚔️) in Friends tab for instant challenge navigation
   - XP, streak, coin, challenge rewards still function normally (no god mode)
 - **Developer Tools**:
   - Toggle Beta Mode ON/OFF
@@ -28,6 +31,7 @@ Preferred communication style: Simple, everyday language.
   - **Behavior**: Auto-appear in Friends list and Global Leaderboard, accept challenges automatically with realistic delay, simulate gameplay based on difficulty
   - **Persistence**: Stored separately in localStorage, auto-initialize on beta mode ON, auto-cleanup on beta mode OFF
   - **Integration**: Work with existing challenge system, leaderboard sorting (XP→Level→Coins), Friend of the Week
+  - **Challenge Testing**: Challenges can be completed fully in beta mode; shared lessons check bypassed, fallback question pool (12 basic Islamic questions) provided when no lessons completed, quick challenge button navigates to Challenge page with friend pre-selected
 - **Security**: Menu not discoverable through normal UI, local-storage based only
 - **Safety**: When betaMode = false, app behaves exactly as production release with simulated friends removed
 
