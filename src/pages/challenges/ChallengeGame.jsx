@@ -283,8 +283,8 @@ export default function ChallengeGame() {
       {/* Thinking Mascot */}
       <div style={{ textAlign: "center", marginBottom: "20px" }}>
         <img 
-          src={assets.mascots.mascot_zayd_thinking} 
-          alt="Zayd Thinking"
+          src={assets.mascots.mascot_dua} 
+          alt="Mascot"
           style={{
             width: "80px",
             height: "auto"

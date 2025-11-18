@@ -25,8 +25,8 @@ export default function PurchaseStreakFreezeModal({ onClose, onSuccess }) {
       <div className="event-modal-card" onClick={(e) => e.stopPropagation()}>
         <div className="event-modal-header">
           <img
-            src={assets.mascots.mascot_zayd_default}
-            alt="Zayd"
+            src={assets.mascots.mascot_waving}
+            alt="Mascot"
             className="modal-mascot-large"
             style={{
               animation: "float 3s ease-in-out infinite"

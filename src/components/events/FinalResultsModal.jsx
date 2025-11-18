@@ -65,7 +65,7 @@ export default function FinalResultsModal({ event, onClose }) {
     return "Next week is yours, in shā' Allāh! 🌙";
   };
   
-  const zaydImage = userRank && userRank <= 10 ? assets.mascots.mascot_zayd_happy : assets.mascots.mascot_zayd_default;
+  const zaydImage = userRank && userRank <= 10 ? assets.mascots.mascot_congratulation : assets.mascots.mascot_waving;
   
   // Helper to get avatar image from avatar key
   const getAvatarImage = (avatarKey) => {

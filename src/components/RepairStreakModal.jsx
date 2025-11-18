@@ -30,8 +30,8 @@ export default function RepairStreakModal({ onClose }) {
       <div className="event-modal-card" onClick={(e) => e.stopPropagation()}>
         <div className="event-modal-header">
           <img
-            src={assets.mascots.mascot_zayd_sad}
-            alt="Zayd"
+            src={assets.mascots.mascot_defeated}
+            alt="Mascot"
             className="modal-mascot-large"
             style={{
               animation: "float 3s ease-in-out infinite"

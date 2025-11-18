@@ -136,8 +136,8 @@ export default function DailyQuestGame() {
 
           {/* Mascot */}
           <img 
-            src={assets.mascots.mascot_zayd_cheer} 
-            alt="Zayd Cheering"
+            src={passed ? assets.mascots.mascot_congratulation : assets.mascots.mascot_defeated} 
+            alt="Mascot"
             style={{
               width: "100px",
               height: "auto",
@@ -257,8 +257,8 @@ export default function DailyQuestGame() {
       {/* Thinking Mascot */}
       <div style={{ textAlign: "center", marginBottom: "20px" }}>
         <img 
-          src={assets.mascots.mascot_zayd_thinking} 
-          alt="Zayd Thinking"
+          src={assets.mascots.mascot_dua} 
+          alt="Mascot"
           style={{
             width: "80px",
             height: "auto"

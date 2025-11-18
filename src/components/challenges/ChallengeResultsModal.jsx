@@ -1,4 +1,6 @@
-import ZaydChallenge from "../../assets/mascots/mascot_boss.webp";
+import mascotCongrats from "../../assets/mascots/mascot_congratulation.webp";
+import mascotDefeated from "../../assets/mascots/mascot_defeated.webp";
+import mascotBoss from "../../assets/mascots/mascot_boss.webp";
 import "./ChallengeModals.css";
 
 export default function ChallengeResultsModal({ 
@@ -27,13 +29,28 @@ export default function ChallengeResultsModal({
     return "Great effort!";
   };
 
+  const getMascot = () => {
+    // Check if this is a boss level challenge (mode can be string or object)
+    const isBossLevel = mode === "boss_level" || mode?.id === "boss_level" || mode?.name === "Boss Level";
+    
+    // Boss level always shows boss mascot regardless of win/lose
+    if (isBossLevel) return mascotBoss;
+    
+    // Regular challenges show result-based mascots
+    if (result === "win") return mascotCongrats;
+    if (result === "lose") return mascotDefeated;
+    
+    // For draws in regular challenges, show congratulation (friendly)
+    return mascotCongrats;
+  };
+
   return (
     <div className="challenge-modal-overlay">
       <div className="challenge-modal challenge-results-modal">
         {/* Zayd with Speech */}
         <div className="challenge-zayd-container">
           <img 
-            src={ZaydChallenge} 
+            src={getMascot()} 
             alt="Zayd" 
             className="challenge-zayd-bounce"
             style={{ width: 100, height: "auto" }}

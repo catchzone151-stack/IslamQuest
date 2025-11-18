@@ -8,7 +8,7 @@ import { useUserStore } from "../store/useUserStore";
 import { getLessonsForPath } from "../data/lessonLoader.js";
 
 // Mascots
-import PathMascot from "../assets/mascots/mascot_pointing.webp";
+import PathMascot from "../assets/mascots/mascot_tasbih.webp";
 
 export default function Pathway() {
   const { pathId } = useParams();

@@ -8,7 +8,7 @@ export default function EventInfoModal({ event, onStart, onCancel }) {
       <div className="event-modal">
         {/* Zayd Header */}
         <div className="modal-mascot-header">
-          <img src={assets.mascots.mascot_zayd_default} alt="Zayd" className="modal-zayd" />
+          <img src={assets.mascots.mascot_waving} alt="Mascot" className="modal-zayd" />
         </div>
 
         {/* Event Info */}

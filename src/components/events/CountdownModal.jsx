@@ -23,7 +23,7 @@ export default function CountdownModal({ onComplete }) {
       <div className="countdown-modal">
         {/* Zayd Animation */}
         <div className="countdown-mascot">
-          <img src={assets.mascots.mascot_zayd_happy} alt="Zayd" className="countdown-zayd" />
+          <img src={assets.mascots.mascot_dua} alt="Mascot" className="countdown-zayd" />
         </div>
 
         {/* Countdown Number */}
