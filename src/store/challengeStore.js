@@ -92,6 +92,9 @@ export const useChallengeStore = create((set, get) => ({
         bossAttempts: data.bossAttempts || [],
         challengeHistory: data.challengeHistory || [],
       });
+      
+      // 🤖 Rehydrate simulated friend auto-responses
+      get().rehydrateSimulatedResponses();
     }
   },
 
@@ -191,10 +194,52 @@ export const useChallengeStore = create((set, get) => ({
     // Random delay based on friend's response delay range
     const { min, max } = friend.responseDelay;
     const delay = Math.floor(Math.random() * (max - min + 1)) + min;
+    
+    // Calculate and store expected response time
+    const expectedResponseTime = Date.now() + delay;
+    
+    // Update challenge with scheduled response time
+    set(state => ({
+      challenges: state.challenges.map(c =>
+        c.id === challengeId ? { ...c, simulatedResponseTime: expectedResponseTime } : c
+      )
+    }));
+    get().saveToStorage();
 
     setTimeout(() => {
       get().simulateFriendResponse(challengeId, friend);
     }, delay);
+  },
+  
+  // 🤖 Rehydrate simulated responses on app reload
+  rehydrateSimulatedResponses: () => {
+    const challenges = get().challenges;
+    const { friends } = useFriendsStore.getState();
+    
+    challenges.forEach(challenge => {
+      // Check if this is a pending simulated challenge with scheduled response time
+      if (
+        challenge.simulatedResponseTime &&
+        challenge.opponentScore === null &&
+        challenge.status !== 'completed'
+      ) {
+        const friend = friends.find(f => f.id === challenge.opponentId);
+        if (friend && friend.isSimulated) {
+          const now = Date.now();
+          const timeLeft = challenge.simulatedResponseTime - now;
+          
+          if (timeLeft > 0) {
+            // Response still pending - reschedule
+            setTimeout(() => {
+              get().simulateFriendResponse(challenge.id, friend);
+            }, timeLeft);
+          } else {
+            // Response overdue - execute immediately
+            get().simulateFriendResponse(challenge.id, friend);
+          }
+        }
+      }
+    });
   },
 
   // 🤖 Simulate friend playing the challenge

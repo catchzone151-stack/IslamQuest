@@ -14,6 +14,7 @@ Preferred communication style: Simple, everyday language.
   - All lessons/quizzes unlocked regardless of progress or level
   - Boss Level playable below Level 8 requirement (bypasses level gate)
   - Daily Quest repeatable unlimited times
+  - Simulated Friends System automatically activated (6 AI opponents with varied difficulty)
   - XP, streak, coin, challenge rewards still function normally (no god mode)
 - **Developer Tools**:
   - Toggle Beta Mode ON/OFF
@@ -21,8 +22,14 @@ Preferred communication style: Simple, everyday language.
   - Reset Full Progress (including friends, challenges, daily quests, all progress)
   - View Debug Info (XP, coins, streak, level, completed lessons, app version)
   - Subtle "BETA – Not Final" watermark in Settings when active
+- **Simulated Friends System (Beta Mode Only)**:
+  - **6 AI Friends**: BraveBeliever, IbadahHero, NurSeeker, QuranKnight, SunnahRider, GuidedStriver
+  - **Difficulty Distribution**: 2 smart (85-88% accuracy, 3-8s response), 2 medium (65-68% accuracy, 5-12s response), 2 weak (45-48% accuracy, 8-18s response)
+  - **Behavior**: Auto-appear in Friends list and Global Leaderboard, accept challenges automatically with realistic delay, simulate gameplay based on difficulty
+  - **Persistence**: Stored separately in localStorage, auto-initialize on beta mode ON, auto-cleanup on beta mode OFF
+  - **Integration**: Work with existing challenge system, leaderboard sorting (XP→Level→Coins), Friend of the Week
 - **Security**: Menu not discoverable through normal UI, local-storage based only
-- **Safety**: When betaMode = false, app behaves exactly as production release
+- **Safety**: When betaMode = false, app behaves exactly as production release with simulated friends removed
 
 ### UI/UX Decisions
 - **Design**: Mobile-first responsive design with a bottom navigation pattern.

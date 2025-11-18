@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import { useDeveloperStore } from "./developerStore";
+import { useProgressStore } from "./progressStore";
+import { useUserStore } from "./useUserStore";
 
 const STORAGE_KEY = "islamQuestFriends_v1";
 const SIMULATED_FRIENDS_KEY = "islamQuestSimulatedFriends_v1";
@@ -330,29 +332,23 @@ export const useFriendsStore = create((set, get) => ({
     // 🤖 Beta Mode: Show simulated friends + current user
     const friends = get().friends;
     
-    // Get current user data from progressStore (lazy import to avoid circular dependency)
-    let currentUser = null;
-    try {
-      const { useProgressStore } = require('./progressStore');
-      const { xp, coins, level, streak } = useProgressStore.getState();
-      const { name, avatar } = require('./useUserStore').useUserStore.getState();
-      
-      currentUser = {
-        id: 'current_user',
-        name: name || 'You',
-        avatar: avatar || 'avatar1',
-        xp: xp || 0,
-        coins: coins || 0,
-        level: level || 1,
-        streak: streak || 0,
-        isCurrentUser: true
-      };
-    } catch (error) {
-      console.warn('Could not load current user for leaderboard:', error);
-    }
+    // Get current user data from progressStore
+    const { xp, coins, level, streak } = useProgressStore.getState();
+    const { name, avatar } = useUserStore.getState();
+    
+    const currentUser = {
+      id: 'current_user',
+      name: name || 'You',
+      avatar: avatar || 'avatar1',
+      xp: xp || 0,
+      coins: coins || 0,
+      level: level || 1,
+      streak: streak || 0,
+      isCurrentUser: true
+    };
 
     // Combine current user + all friends (real + simulated)
-    const allPlayers = currentUser ? [currentUser, ...friends] : friends;
+    const allPlayers = [currentUser, ...friends];
 
     // Sort by XP → Level → Coins
     return allPlayers
