@@ -4,7 +4,7 @@ import assets from '../assets/assets';
 const preloadedImages = new Set();
 
 export function preloadImage(src) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     if (preloadedImages.has(src)) {
       resolve(src);
       return;
@@ -15,7 +15,10 @@ export function preloadImage(src) {
       preloadedImages.add(src);
       resolve(src);
     };
-    img.onerror = reject;
+    img.onerror = () => {
+      // Resolve anyway to avoid breaking the promise chain
+      resolve(src);
+    };
     img.src = src;
   });
 }
@@ -44,32 +47,17 @@ export async function preloadCriticalAssets() {
     ...Object.values(assets.avatars),
   ];
 
-  try {
-    await preloadImages(criticalAssets);
-    console.log('✅ Critical assets preloaded');
-  } catch (error) {
-    console.warn('⚠️ Some assets failed to preload:', error);
-  }
+  await preloadImages(criticalAssets);
 }
 
 export async function preloadAllMascots() {
   const mascots = Object.values(assets.mascots);
-  try {
-    await preloadImages(mascots);
-    console.log('✅ All mascots preloaded');
-  } catch (error) {
-    console.warn('⚠️ Some mascots failed to preload:', error);
-  }
+  await preloadImages(mascots);
 }
 
 export async function preloadAllCertificates() {
   const certificates = Object.values(assets.certificates);
-  try {
-    await preloadImages(certificates);
-    console.log('✅ All certificates preloaded');
-  } catch (error) {
-    console.warn('⚠️ Some certificates failed to preload:', error);
-  }
+  await preloadImages(certificates);
 }
 
 export function isPreloaded(src) {

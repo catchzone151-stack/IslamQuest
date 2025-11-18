@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "../hooks/useNavigate";
 import { useUserStore } from "../store/useUserStore";
 import { motion } from "framer-motion";
 

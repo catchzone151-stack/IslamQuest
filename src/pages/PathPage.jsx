@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "../hooks/useNavigate";
 import { useProgressStore } from "../store/progressStore";
 import { FREE_LESSON_LIMITS } from "../store/premiumConfig";
 import PurchaseModal from "../components/PurchaseModal";

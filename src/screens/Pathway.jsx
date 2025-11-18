@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "../hooks/useNavigate";
 import { useProgressStore } from "../store/progressStore";
 import { useUserStore } from "../store/useUserStore";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "../hooks/useNavigate";
 import { motion } from "framer-motion";
 import zayd from "../assets/mascots/mascot_zayd_default.webp";
 

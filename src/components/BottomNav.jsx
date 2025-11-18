@@ -1,5 +1,6 @@
 import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "../hooks/useNavigate";
 import { Home, BookOpen, Sword, Users, User } from "lucide-react";
 import { useFriendsStore } from "../store/friendsStore";
 
