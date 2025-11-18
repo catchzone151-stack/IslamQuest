@@ -14,6 +14,7 @@ export const CHALLENGE_MODES = {
     icon: "🧠",
     description: "8 challenging Islamic questions",
     questionCount: 8,
+    trackTime: true,
     rewards: { win: { xp: 100, coins: 20 }, lose: { xp: 20, coins: 0 }, draw: { xp: 50, coins: 0 } },
     gradient: "linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)",
     glow: "0 0 20px rgba(139, 92, 246, 0.5)"
@@ -40,9 +41,9 @@ export const CHALLENGE_MODES = {
     gradient: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
     glow: "0 0 20px rgba(16, 185, 129, 0.5)"
   },
-  LIGHTNING_CHAIN: {
-    id: "lightning_chain",
-    name: "Lightning Chain",
+  SUDDEN_DEATH: {
+    id: "sudden_death",
+    name: "Sudden Death",
     icon: "⛓️",
     description: "25 questions - one wrong ends the game, fastest time wins draws",
     questionCount: 25,
@@ -294,7 +295,7 @@ export const useChallengeStore = create((set, get) => ({
     // Calculate score
     const score = simulatedAnswers.filter((ans, idx) => ans === questions[idx].answer).length;
 
-    // Generate completion time for time-tracked modes (Lightning Chain)
+    // Generate completion time for time-tracked modes (Sudden Death, Mind Duel)
     const mode = Object.values(CHALLENGE_MODES).find(m => m.id === challenge.mode);
     let completionTime = null;
     if (mode?.trackTime) {
@@ -355,7 +356,7 @@ export const useChallengeStore = create((set, get) => ({
     } else if (challenge.opponentScore > challenge.challengerScore) {
       winner = challenge.opponentId;
     } else {
-      // Scores are equal - check if it's a time-based mode (Lightning Chain)
+      // Scores are equal - check if it's a time-based mode (Sudden Death, Mind Duel)
       const mode = Object.values(CHALLENGE_MODES).find(m => m.id === challenge.mode);
       if (mode?.trackTime && challenge.challengerTime !== null && challenge.opponentTime !== null) {
         // Fastest time wins

@@ -54,10 +54,10 @@ Preferred communication style: Simple, everyday language.
 - **Social Features**: Friend management (add/search, requests), friends leaderboard (Friend of the Week), activity feed, and quick messaging.
 - **Gamification**:
     - **Friend Challenges (November 2025)**: 4 game modes with 48-hour active window, questions from shared completed lessons, and rewards:
-        - **Mind Duel (🧠)**: 8 challenging Islamic questions, no time limit
+        - **Mind Duel (🧠)**: 8 challenging Islamic questions, no time limit, fastest time wins tiebreakers
         - **Lightning Round (⚡)**: 10 questions in 60 seconds total
         - **Speed Run (🏃)**: Answer as many questions correctly in 30 seconds (40 questions prepared, auto-recycles if needed), wrong answers don't end game
-        - **Lightning Chain (⛓️)**: 25 questions - one wrong ends the game, fastest time wins draws (auto-recycles questions if user has completed fewer than 25 lessons)
+        - **Sudden Death (⛓️)**: 25 questions - one wrong ends the game, fastest time wins draws (auto-recycles questions if user has completed fewer than 25 lessons)
     - **Boss Level (November 2025)**: Daily ultra-hard challenge for Level 8+ users featuring 12 randomized questions from a pool of 90 authentic Islamic questions in 30 seconds. Rewards: +500 XP, +100 coins for wins (60%+ correct, i.e., 8/12). Includes robust scoring fix (setTimeout with state capture), direct mode passing via closure to bypass async state issues, visible countdown timer, and appropriate mascot display (congratulation on win, defeated on loss).
     - **Global Events**: Weekly competitive events (4 themed challenges) with 10 hard MCQs, entry fees, provisional and final leaderboards, and rank-based rewards.
     - **Daily Quests**: Solo daily challenge with 8 MCQs from user's completed lessons, awards XP and coins, resets daily.

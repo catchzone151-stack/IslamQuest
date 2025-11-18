@@ -99,8 +99,8 @@ export default function ChallengeGame() {
     } else if (challenge && mode) {
       let gameQuestions = [...challenge.questions];
       
-      // For Lightning Chain with 25 questions or Speed Run with 40, recycle if needed
-      if ((mode.id === 'lightning_chain' && mode.questionCount) || 
+      // For Sudden Death with 25 questions or Speed Run with 40, recycle if needed
+      if ((mode.id === 'sudden_death' && mode.questionCount) || 
           (mode.id === 'speed_run' && mode.questionCount)) {
         const targetCount = mode.questionCount;
         while (gameQuestions.length < targetCount) {
@@ -219,8 +219,8 @@ export default function ChallengeGame() {
     setSelectedAnswer(answerIndex);
     selectedAnswerRef.current = answerIndex;
 
-    // For Lightning Chain, check if answer is correct
-    if (mode?.id === "lightning_chain") {
+    // For Sudden Death, check if answer is correct
+    if (mode?.id === "sudden_death") {
       const currentQ = questions[currentIndex];
       const correctAnswer = currentQ.answer ?? currentQ.correctIndex ?? currentQ.correct;
       const isCorrect = answerIndex === correctAnswer;
@@ -494,8 +494,8 @@ export default function ChallengeGame() {
           })}
         </div>
 
-        {/* Chain Length Display (Lightning Chain only) */}
-        {mode?.id === "lightning_chain" && answers.length > 0 && (
+        {/* Chain Length Display (Sudden Death only) */}
+        {mode?.id === "sudden_death" && answers.length > 0 && (
           <div className="chain-display">
             <span>Chain: {answers.length}</span>
             <span>🔥</span>
