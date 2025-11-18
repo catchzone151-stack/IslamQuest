@@ -35,7 +35,32 @@ export default function Challenge() {
   const handleModeClick = (modeKey) => {
     const mode = CHALLENGE_MODES[modeKey];
     setSelectedMode(mode);
-    setShowFriendSelector(true);
+    
+    // If friend is already pre-selected (from Friends page), skip friend selector
+    if (selectedFriend) {
+      // Check beta mode for shared lessons requirement
+      const betaMode = useDeveloperStore.getState().betaMode;
+      
+      if (!betaMode) {
+        const shared = useChallengeStore.getState().getSharedLessons("current_user", selectedFriend.id);
+        if (shared.length === 0) {
+          showModal(MODAL_TYPES.NO_SHARED_LESSONS, {
+            friendName: selectedFriend.name
+          });
+          return;
+        }
+      }
+      
+      // Go straight to explainer
+      showModal(MODAL_TYPES.CHALLENGE_EXPLAINER, {
+        mode: mode,
+        onStart: () => handleStartChallenge(mode),
+        onCancel: handleCancelExplainer
+      });
+    } else {
+      // No pre-selected friend, show friend selector
+      setShowFriendSelector(true);
+    }
   };
 
   const handleFriendSelect = (friend) => {

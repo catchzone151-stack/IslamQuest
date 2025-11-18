@@ -163,8 +163,20 @@ export const useChallengeStore = create((set, get) => ({
       return { success: false, error: "NO_SHARED_LESSONS" };
     }
 
-    const config = CHALLENGE_MODES[mode];
-    const questions = get().getQuestionsForMode(mode, lessonsToUse);
+    // Normalize mode to object (might be passed as string ID or object)
+    let config;
+    if (typeof mode === 'string') {
+      config = Object.values(CHALLENGE_MODES).find(m => m.id === mode);
+    } else {
+      config = mode;
+    }
+    
+    if (!config) {
+      console.error('Invalid mode:', mode);
+      return { success: false, error: "INVALID_MODE" };
+    }
+    
+    const questions = get().getQuestionsForMode(config, lessonsToUse);
     
     if (questions.length === 0) {
       return { success: false, error: "NO_QUESTIONS" };
@@ -174,7 +186,7 @@ export const useChallengeStore = create((set, get) => ({
       id: `challenge_${Date.now()}`,
       challengerId: currentUserId,
       opponentId: friendId,
-      mode: mode,
+      mode: config.id,
       questions: questions,
       challengerScore: null, // Not played yet
       opponentScore: null,
@@ -349,7 +361,21 @@ export const useChallengeStore = create((set, get) => ({
 
   // Get questions for a specific mode
   getQuestionsForMode: (mode, sharedLessons) => {
-    const config = CHALLENGE_MODES[mode];
+    // Mode can be an object or a string ID - normalize it
+    let config;
+    if (typeof mode === 'string') {
+      // Find mode by ID
+      config = Object.values(CHALLENGE_MODES).find(m => m.id === mode);
+    } else {
+      // Mode is already an object
+      config = mode;
+    }
+    
+    if (!config) {
+      console.error('Invalid mode:', mode);
+      return [];
+    }
+    
     const betaMode = useDeveloperStore.getState()?.betaMode;
     const { lessonStates } = useProgressStore.getState();
     
