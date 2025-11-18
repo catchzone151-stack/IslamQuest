@@ -12,13 +12,13 @@ Preferred communication style: Simple, everyday language.
 - **Beta Mode**: Hidden developer menu for closed beta testing, accessible via 5 taps on home mascot within 4 seconds
 - **Features when betaMode = true**:
   - All lessons/quizzes unlocked regardless of progress or level
-  - Boss Level playable below Level 8 requirement
+  - Boss Level playable below Level 8 requirement (bypasses level gate)
   - Daily Quest repeatable unlimited times
   - XP, streak, coin, challenge rewards still function normally (no god mode)
 - **Developer Tools**:
   - Toggle Beta Mode ON/OFF
   - Reset Onboarding State
-  - Reset Full Progress
+  - Reset Full Progress (including friends, challenges, daily quests, all progress)
   - View Debug Info (XP, coins, streak, level, completed lessons, app version)
   - Subtle "BETA – Not Final" watermark in Settings when active
 - **Security**: Menu not discoverable through normal UI, local-storage based only

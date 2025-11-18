@@ -3,6 +3,7 @@ import { useProgressStore } from "./progressStore";
 import { useUserStore } from "./useUserStore";
 import { useChallengeStore } from "./challengeStore";
 import { useDailyQuestStore } from "./dailyQuestStore";
+import { useFriendsStore } from "./friendsStore";
 
 const STORAGE_KEY = "islamQuestDeveloper_v1";
 const APP_VERSION = "1.0.0-beta";
@@ -63,6 +64,17 @@ export const useDeveloperStore = create((set, get) => ({
       localStorage.removeItem("islamQuestDailyQuest");
       useDailyQuestStore.setState({ date: null, questions: [], completed: false, rewardGiven: false });
     }
+    
+    // Reset friends (clear all friends and requests)
+    localStorage.removeItem("islamQuestFriends_v1");
+    useFriendsStore.setState({ 
+      friends: [], 
+      incomingRequests: [], 
+      outgoingRequests: [], 
+      activityFeed: [], 
+      friendOfWeek: null, 
+      hasUnseenRequests: false 
+    });
 
     alert("✅ All progress has been reset!");
   },

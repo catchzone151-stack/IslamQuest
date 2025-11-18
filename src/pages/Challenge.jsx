@@ -4,6 +4,7 @@ import { useChallengeStore, CHALLENGE_MODES, BOSS_LEVEL } from "../store/challen
 import { useProgressStore } from "../store/progressStore";
 import { useFriendsStore } from "../store/friendsStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
+import { useDeveloperStore } from "../store/developerStore";
 import { getCurrentLevel } from "../utils/diamondLevels";
 import BossLevelMascot from "../assets/mascots/mascot_boss.webp";
 
@@ -51,7 +52,10 @@ export default function Challenge() {
   };
 
   const handleBossClick = () => {
-    if (level < BOSS_LEVEL.minLevel) {
+    // 🧪 BETA MODE: Allow Boss Level access below Level 8 for testing
+    const betaMode = useDeveloperStore.getState().betaMode;
+    
+    if (level < BOSS_LEVEL.minLevel && !betaMode) {
       showModal(MODAL_TYPES.BOSS_LOCKED, {
         currentLevel: level,
         requiredLevel: BOSS_LEVEL.minLevel
