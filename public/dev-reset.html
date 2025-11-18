@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dev Mode Activated</title>
+  <meta http-equiv="refresh" content="2;url=/">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #0A1A2F 0%, #1a3a52 100%);
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .container {
+      text-align: center;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      border: 2px solid #D4AF37;
+      box-shadow: 0 10px 40px rgba(212, 175, 55, 0.3);
+      max-width: 500px;
+    }
+    h1 {
+      color: #D4AF37;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+    .status {
+      font-size: 1.2rem;
+      margin: 20px 0;
+      color: #10B981;
+    }
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(212, 175, 55, 0.3);
+      border-top: 4px solid #D4AF37;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .details {
+      margin-top: 30px;
+      padding: 20px;
+      background: rgba(212, 175, 55, 0.1);
+      border-radius: 12px;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+    .detail-item {
+      margin: 8px 0;
+      display: flex;
+      justify-content: space-between;
+    }
+    .checkmark {
+      color: #10B981;
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="checkmark">✓</div>
+    <h1>Dev Mode Activated!</h1>
+    <div class="status">Storage cleared successfully</div>
+    <div class="spinner"></div>
+    
+    <div class="details">
+      <div class="detail-item">
+        <span>Level:</span>
+        <span style="color: #D4AF37; font-weight: bold;">8 - Diamond 💎</span>
+      </div>
+      <div class="detail-item">
+        <span>XP:</span>
+        <span style="color: #10B981; font-weight: bold;">25,000</span>
+      </div>
+      <div class="detail-item">
+        <span>Coins:</span>
+        <span style="color: #D4AF37; font-weight: bold;">200 🪙</span>
+      </div>
+      <div class="detail-item">
+        <span>Boss Level:</span>
+        <span style="color: #10B981; font-weight: bold;">Unlocked 👑</span>
+      </div>
+      <div class="detail-item">
+        <span>Daily Limit:</span>
+        <span style="color: #10B981; font-weight: bold;">Disabled ∞</span>
+      </div>
+    </div>
+    
+    <p style="margin-top: 20px; opacity: 0.8; font-size: 0.9rem;">
+      Redirecting to app in 2 seconds...
+    </p>
+  </div>
+
+  <script>
+    // Clear all localStorage
+    localStorage.clear();
+    console.log('✅ Dev Mode: localStorage cleared');
+    console.log('✅ Dev Mode: Level 8 (25,000 XP) + 200 Coins');
+    console.log('✅ Dev Mode: Boss Level unlocked with unlimited plays');
+  </script>
+</body>
+</html>
