@@ -15,17 +15,6 @@ const QUICK_MESSAGES = [
   "Your dedication is amazing 💎"
 ];
 
-const MOCK_GLOBAL_LEADERBOARD = [
-  { id: "global_1", name: "Fatima A.", avatar: "avatar2", xp: 3250, rank: 1 },
-  { id: "global_2", name: "Omar K.", avatar: "avatar1", xp: 3100, rank: 2 },
-  { id: "global_3", name: "Aisha M.", avatar: "avatar3", xp: 2980, rank: 3 },
-  { id: "global_4", name: "Ibrahim S.", avatar: "avatar4", xp: 2750, rank: 4 },
-  { id: "global_5", name: "Maryam Z.", avatar: "avatar2", xp: 2650, rank: 5 },
-  { id: "global_6", name: "Yusuf H.", avatar: "avatar1", xp: 2500, rank: 6 },
-  { id: "global_7", name: "Khadija L.", avatar: "avatar3", xp: 2350, rank: 7 },
-  { id: "global_8", name: "Ali R.", avatar: "avatar4", xp: 2200, rank: 8 },
-];
-
 export const useFriendsStore = create((set, get) => ({
   friends: [],
   incomingRequests: [],
@@ -164,31 +153,12 @@ export const useFriendsStore = create((set, get) => ({
   },
 
   getGlobalLeaderboard: () => {
-    return MOCK_GLOBAL_LEADERBOARD;
+    // Global leaderboard disabled - will be implemented with Supabase
+    return [];
   },
 
   clearRequestsBadge: () => {
     set({ hasUnseenRequests: false });
-    get().saveToStorage();
-  },
-
-  addMockIncomingRequest: () => {
-    const mockNames = ["Bilal", "Aisha", "Umar", "Zaynab", "Hassan", "Hafsa"];
-    const randomName = mockNames[Math.floor(Math.random() * mockNames.length)];
-    
-    const mockRequest = {
-      id: `request_${Date.now()}`,
-      name: randomName,
-      avatar: `avatar${Math.floor(Math.random() * 4) + 1}`,
-      xp: Math.floor(Math.random() * 2000) + 500,
-      streak: Math.floor(Math.random() * 30),
-    };
-
-    set((state) => ({
-      incomingRequests: [...state.incomingRequests, mockRequest],
-      hasUnseenRequests: true,
-    }));
-
     get().saveToStorage();
   },
 

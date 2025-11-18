@@ -27,7 +27,6 @@ export default function Friends() {
     sendChallenge,
     getFriendsLeaderboard,
     getGlobalLeaderboard,
-    addMockIncomingRequest,
   } = useFriendsStore();
 
   const { xp: currentUserXP } = useProgressStore();
@@ -158,7 +157,6 @@ export default function Friends() {
             setShowMiniProfile={setShowMiniProfile}
             setShowMessageModal={setShowMessageModal}
             sendChallenge={sendChallenge}
-            addMockIncomingRequest={addMockIncomingRequest}
           />
         )}
 
@@ -219,7 +217,7 @@ export default function Friends() {
   );
 }
 
-function FriendsTab({ friends, searchQuery, setSearchQuery, handleSearch, setShowMiniProfile, setShowMessageModal, sendChallenge, addMockIncomingRequest }) {
+function FriendsTab({ friends, searchQuery, setSearchQuery, handleSearch, setShowMiniProfile, setShowMessageModal, sendChallenge }) {
   return (
     <>
       {/* Search Bar */}
@@ -264,27 +262,6 @@ function FriendsTab({ friends, searchQuery, setSearchQuery, handleSearch, setSho
           </button>
         </div>
       </form>
-
-      {/* DEV ONLY: Helper button for testing incoming requests in Phase 4 (remove in Phase 5 when Supabase is active) */}
-      {import.meta.env.DEV && (
-        <button
-          onClick={addMockIncomingRequest}
-          style={{
-            width: "100%",
-            background: "rgba(16, 185, 129, 0.2)",
-            border: "1px dashed rgba(16, 185, 129, 0.5)",
-            borderRadius: 12,
-            padding: "10px 16px",
-            color: "#10B981",
-            fontWeight: "600",
-            cursor: "pointer",
-            marginBottom: 20,
-            fontSize: "0.9rem",
-          }}
-        >
-          🧪 DEV: Simulate Incoming Request
-        </button>
-      )}
 
       {/* Friends List */}
       {friends.length === 0 ? (
