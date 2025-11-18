@@ -1,5 +1,5 @@
 // src/providers/ModalProvider.jsx
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useContext, useState, useCallback, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
 const ModalContext = createContext(null);
@@ -81,8 +81,19 @@ export function ModalProvider({ children }) {
   });
 
   const [isClosing, setIsClosing] = useState(false);
+  const closeTimeoutRef = useRef(null);
+  const modalIdRef = useRef(0);
 
   const openModal = useCallback((type, content, data = {}, usePortal = false, onClose = null) => {
+    // Cancel any pending close timeout to prevent race condition
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+    
+    // Increment modal ID to track instances
+    modalIdRef.current += 1;
+    
     setModalState({
       isOpen: true,
       type,
@@ -95,24 +106,43 @@ export function ModalProvider({ children }) {
   }, []);
 
   const closeModal = useCallback(() => {
+    const closingModalId = modalIdRef.current;
     setIsClosing(true);
-    setTimeout(() => {
+    
+    // Cancel any existing timeout
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+    }
+    
+    closeTimeoutRef.current = setTimeout(() => {
+      // Invoke onClose callback first (may trigger new modal)
       if (modalState.onClose) {
         modalState.onClose();
       }
-      setModalState({
-        isOpen: false,
-        type: null,
-        content: null,
-        data: {},
-        usePortal: false,
-        onClose: null,
-      });
-      setIsClosing(false);
+      
+      // Only clear state if modal hasn't changed (no new modal opened in callback)
+      if (modalIdRef.current === closingModalId) {
+        setModalState({
+          isOpen: false,
+          type: null,
+          content: null,
+          data: {},
+          usePortal: false,
+          onClose: null,
+        });
+        setIsClosing(false);
+      }
+      closeTimeoutRef.current = null;
     }, 250); // Match animation duration
   }, [modalState]);
 
   const replaceModal = useCallback((type, content, data = {}, usePortal = false, onClose = null) => {
+    // Cancel any pending close timeout
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+    
     setModalState({
       isOpen: true,
       type,
