@@ -12,9 +12,8 @@ export const CHALLENGE_MODES = {
     id: "mind_duel",
     name: "Mind Duel",
     icon: "🧠",
-    description: "6-8 hard MCQs with 12s each",
+    description: "8 challenging Islamic questions",
     questionCount: 8,
-    timePerQuestion: 12,
     rewards: { win: { xp: 100, coins: 20 }, lose: { xp: 20, coins: 0 }, draw: { xp: 50, coins: 0 } },
     gradient: "linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)",
     glow: "0 0 20px rgba(139, 92, 246, 0.5)"
@@ -34,9 +33,8 @@ export const CHALLENGE_MODES = {
     id: "islamic_match",
     name: "Islamic Match",
     icon: "🔗",
-    description: "Match Islamic terms with meanings",
+    description: "Match Islamic terms with their meanings",
     questionCount: 8,
-    timePerQuestion: 20,
     rewards: { win: { xp: 120, coins: 20 }, lose: { xp: 20, coins: 0 }, draw: { xp: 50, coins: 0 } },
     gradient: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
     glow: "0 0 20px rgba(16, 185, 129, 0.5)"
@@ -45,8 +43,7 @@ export const CHALLENGE_MODES = {
     id: "lightning_chain",
     name: "Lightning Chain",
     icon: "⛓️",
-    description: "Increasing difficulty, one wrong ends",
-    timePerQuestion: 10,
+    description: "Answer carefully - one wrong ends the game",
     rewards: { win: { xp: 130, coins: 20 }, lose: { xp: 25, coins: 0 } },
     gradient: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
     glow: "0 0 20px rgba(239, 68, 68, 0.5)"
