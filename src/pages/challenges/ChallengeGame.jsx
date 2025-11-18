@@ -52,6 +52,7 @@ export default function ChallengeGame() {
   const [score, setScore] = useState(0);
   const [chainLength, setChainLength] = useState(0);
   const [gameEnded, setGameEnded] = useState(false);
+  const [textInput, setTextInput] = useState("");
   
   const timerRef = useRef(null);
   const selectedAnswerRef = useRef(null);
@@ -127,6 +128,42 @@ export default function ChallengeGame() {
     setTimeout(() => {
       handleGameComplete();
     }, 1000);
+  };
+
+  const handleTextSubmit = () => {
+    if (!textInput.trim() || selectedAnswer !== null || gameEnded) return;
+    
+    const currentQ = questions[currentIndex];
+    const correctAnswer = currentQ.options[currentQ.answer];
+    
+    // Case-insensitive comparison, trimmed
+    const isCorrect = textInput.trim().toLowerCase() === correctAnswer.toLowerCase();
+    
+    // Store the answer
+    const newAnswer = {
+      questionId: currentQ.id || currentIndex,
+      selectedAnswer: textInput.trim(),
+      correct: isCorrect
+    };
+    
+    const updatedAnswers = [...answers, newAnswer];
+    setAnswers(updatedAnswers);
+    setSelectedAnswer(isCorrect ? currentQ.answer : -1); // Use -1 for wrong answer
+    
+    setTimeout(() => {
+      if (currentIndex < questions.length - 1) {
+        setCurrentIndex(currentIndex + 1);
+        setSelectedAnswer(null);
+        setTextInput("");
+        if (mode?.timePerQuestion) {
+          setTimeLeft(mode.timePerQuestion);
+        }
+      } else {
+        // Last question
+        setGameEnded(true);
+        setTimeout(() => handleGameComplete(updatedAnswers), 1000);
+      }
+    }, 1500);
   };
 
   const handleAnswerSelect = (answerIndex) => {
@@ -368,33 +405,72 @@ export default function ChallengeGame() {
       <div className="challenge-question-card">
         <h2 className="challenge-question-text">{currentQuestion.question}</h2>
         
-        {/* Answer Options */}
-<div className="challenge-options">
-          {currentQuestion.options.map((option, index) => {
-            const isSelected = selectedAnswer === index;
-            const correctAnswerIndex = currentQuestion.answer ?? currentQuestion.correctIndex ?? currentQuestion.correct;
-            const isCorrect = index === correctAnswerIndex;
-            const showResult = selectedAnswer !== null;
+        {/* Fill-the-Gap: Text Input */}
+        {mode?.id === "fill_the_gap" ? (
+          <div className="fill-gap-input-container">
+            <input
+              type="text"
+              className="fill-gap-input"
+              placeholder="Type your answer..."
+              value={textInput}
+              onChange={(e) => setTextInput(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') handleTextSubmit();
+              }}
+              disabled={selectedAnswer !== null}
+              autoFocus
+              style={{
+                borderColor: selectedAnswer !== null 
+                  ? (selectedAnswer >= 0 ? '#10b981' : '#ef4444')
+                  : '#d4af37'
+              }}
+            />
+            <button
+              className="fill-gap-submit-btn"
+              onClick={handleTextSubmit}
+              disabled={!textInput.trim() || selectedAnswer !== null}
+            >
+              Submit ✓
+            </button>
+            {selectedAnswer !== null && (
+              <div className={`fill-gap-result ${selectedAnswer >= 0 ? 'correct' : 'wrong'}`}>
+                {selectedAnswer >= 0 ? (
+                  <span>✓ Correct!</span>
+                ) : (
+                  <span>✗ Wrong! Answer: {currentQuestion.options[currentQuestion.answer]}</span>
+                )}
+              </div>
+            )}
+          </div>
+        ) : (
+          /* MCQ Options for other modes */
+          <div className="challenge-options">
+            {currentQuestion.options.map((option, index) => {
+              const isSelected = selectedAnswer === index;
+              const correctAnswerIndex = currentQuestion.answer ?? currentQuestion.correctIndex ?? currentQuestion.correct;
+              const isCorrect = index === correctAnswerIndex;
+              const showResult = selectedAnswer !== null;
 
-            return (
-              <button
-                key={index}
-                className={`challenge-option ${isSelected ? 'selected' : ''} ${
-                  showResult && isSelected && isCorrect ? 'correct' : ''
-                } ${showResult && isSelected && !isCorrect ? 'wrong' : ''}`}
-                onClick={() => handleAnswerSelect(index)}
-                disabled={selectedAnswer !== null}
-                style={{
-                  borderColor: isSelected ? (showResult && isCorrect ? '#10b981' : showResult && !isCorrect ? '#ef4444' : '#d4af37') : 'rgba(255,255,255,0.2)'
-                }}
-              >
-                {option}
-                {showResult && isSelected && isCorrect && <span className="option-icon">✓</span>}
-                {showResult && isSelected && !isCorrect && <span className="option-icon">✗</span>}
-              </button>
-            );
-          })}
-        </div>
+              return (
+                <button
+                  key={index}
+                  className={`challenge-option ${isSelected ? 'selected' : ''} ${
+                    showResult && isSelected && isCorrect ? 'correct' : ''
+                  } ${showResult && isSelected && !isCorrect ? 'wrong' : ''}`}
+                  onClick={() => handleAnswerSelect(index)}
+                  disabled={selectedAnswer !== null}
+                  style={{
+                    borderColor: isSelected ? (showResult && isCorrect ? '#10b981' : showResult && !isCorrect ? '#ef4444' : '#d4af37') : 'rgba(255,255,255,0.2)'
+                  }}
+                >
+                  {option}
+                  {showResult && isSelected && isCorrect && <span className="option-icon">✓</span>}
+                  {showResult && isSelected && !isCorrect && <span className="option-icon">✗</span>}
+                </button>
+              );
+            })}
+          </div>
+        )}
 
         {/* Chain Length Display (Lightning Chain only) */}
         {mode?.id === "lightning_chain" && answers.length > 0 && (

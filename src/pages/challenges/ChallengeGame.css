@@ -217,6 +217,99 @@
   }
 }
 
+/* Fill-the-Gap Input Styles */
+.fill-gap-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fill-gap-input {
+  width: 100%;
+  padding: 16px 20px;
+  font-size: 1.1rem;
+  color: white;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(212, 175, 55, 0.5);
+  border-radius: 16px;
+  outline: none;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.fill-gap-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.fill-gap-input:focus {
+  border-color: #d4af37;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.fill-gap-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.fill-gap-submit-btn {
+  padding: 14px 28px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(135deg, #10b981, #059669);
+  border: 2px solid #10b981;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.fill-gap-submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+}
+
+.fill-gap-submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.fill-gap-result {
+  padding: 16px 20px;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-align: center;
+  animation: slideIn 0.3s ease;
+}
+
+.fill-gap-result.correct {
+  background: rgba(16, 185, 129, 0.15);
+  border: 2px solid #10b981;
+  color: #10b981;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+.fill-gap-result.wrong {
+  background: rgba(239, 68, 68, 0.15);
+  border: 2px solid #ef4444;
+  color: #ef4444;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Responsive */
 @media (max-width: 480px) {
   .challenge-question-text {
@@ -239,5 +332,20 @@
 
   .challenge-game-timer {
     font-size: 1rem;
+  }
+
+  .fill-gap-input {
+    font-size: 1rem;
+    padding: 14px 16px;
+  }
+
+  .fill-gap-submit-btn {
+    font-size: 1rem;
+    padding: 12px 24px;
+  }
+
+  .fill-gap-result {
+    font-size: 1rem;
+    padding: 14px 16px;
   }
 }
