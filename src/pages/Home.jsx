@@ -25,6 +25,7 @@ import { useProgressStore } from "../store/progressStore";
 import { useUserStore } from "../store/useUserStore";
 import { useDailyQuestStore } from "../store/dailyQuestStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
+import { useDeveloperStore } from "../store/developerStore";
 
 // Components
 import DailyQuestCard from "../components/dailyquest/DailyQuestCard";
@@ -51,6 +52,11 @@ export default function Home() {
 
   // Modal store
   const { showModal } = useModalStore();
+
+  // Developer menu access (hidden - 5 taps in 4 seconds)
+  const { openDeveloperMenu } = useDeveloperStore();
+  const [tapCount, setTapCount] = useState(0);
+  const tapTimerRef = useRef(null);
 
   // Pull live data from the store
   const {
@@ -222,6 +228,28 @@ export default function Home() {
               margin: "0 auto",
               willChange: "transform",
               transform: "translateZ(0)",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              const newCount = tapCount + 1;
+              setTapCount(newCount);
+
+              if (tapTimerRef.current) {
+                clearTimeout(tapTimerRef.current);
+              }
+
+              if (newCount >= 5) {
+                openDeveloperMenu();
+                setTapCount(0);
+                if (tapTimerRef.current) {
+                  clearTimeout(tapTimerRef.current);
+                  tapTimerRef.current = null;
+                }
+              } else {
+                tapTimerRef.current = setTimeout(() => {
+                  setTapCount(0);
+                }, 4000);
+              }
             }}
           />
         </div>
