@@ -3,6 +3,7 @@ import React from "react";
 import ScreenContainer from "../components/ScreenContainer";
 import { useUserStore } from "../store/useUserStore";
 import { useProgressStore } from "../store/progressStore";
+import { useDeveloperStore } from "../store/developerStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import ProfileCard from "../components/ProfileCard";
 import { LevelBadge } from "../components/LevelBadge";
@@ -27,6 +28,7 @@ export default function Profile() {
     removeFamilyMember,
   } = useProgressStore();
   
+  const { betaMode } = useDeveloperStore();
   const { showModal } = useModalStore();
 
   const currentLevel = getCurrentLevel(xp);
@@ -42,6 +44,28 @@ export default function Profile() {
           color: "white",
         }}
       >
+        {/* 🧪 BETA MODE WATERMARK */}
+        {betaMode && (
+          <div
+            style={{
+              position: "absolute",
+              top: 10,
+              right: 10,
+              fontSize: "0.65rem",
+              fontWeight: 600,
+              color: "rgba(212, 175, 55, 0.5)",
+              textTransform: "uppercase",
+              letterSpacing: "0.05em",
+              padding: "4px 8px",
+              background: "rgba(212, 175, 55, 0.1)",
+              borderRadius: 4,
+              border: "1px solid rgba(212, 175, 55, 0.3)",
+            }}
+          >
+            BETA – Not Final
+          </div>
+        )}
+        
         {/* === Header === */}
         <h1
           style={{

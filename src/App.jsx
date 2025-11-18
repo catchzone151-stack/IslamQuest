@@ -10,7 +10,9 @@ import { ModalProvider, ModalRoot } from "./providers/ModalProvider.jsx";
 import { ShimmerCard, ShimmerImage } from "./components/ShimmerLoader.jsx";
 import { useUserStore } from "./store/useUserStore";
 import { useProgressStore } from "./store/progressStore";
+import { useDeveloperStore } from "./store/developerStore";
 import { preloadAllAssets } from "./utils/imagePreloader";
+import DeveloperModal from "./components/DeveloperModal";
 
 // ✅ Onboarding screens (loaded immediately for first-time users)
 import BismillahScreen from "./onboarding/BismillahScreen.jsx";
@@ -142,6 +144,12 @@ function PlaceholderQuizPage() {
 export default function App() {
   const { hasOnboarded, isHydrated } = useUserStore();
   const { grantCoins, coins } = useProgressStore();
+  const { loadFromStorage } = useDeveloperStore();
+
+  // 🔧 Load developer settings from localStorage
+  useEffect(() => {
+    loadFromStorage();
+  }, [loadFromStorage]);
 
   // 🚀 PERFORMANCE: Preload ALL assets and route modules IMMEDIATELY for instant Duolingo-style loading
   useEffect(() => {
@@ -259,6 +267,9 @@ export default function App() {
         
         {/* 🚪 Portal root for heavy modals */}
         <ModalRoot />
+        
+        {/* 🔧 Hidden Developer Menu (Beta Testing) */}
+        <DeveloperModal />
       </BrowserRouter>
     </ModalProvider>
   );

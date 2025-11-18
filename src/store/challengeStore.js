@@ -722,9 +722,11 @@ export const useChallengeStore = create((set, get) => ({
 
   // Boss Level: Check if can play today
   canPlayBossToday: () => {
-    // 🛠️ DEV MODE: Always allow Boss Level play for testing
-    const DEV_MODE = true;
-    if (DEV_MODE) return true;
+    // 🧪 BETA MODE: Allow unlimited Boss Level plays for testing
+    const { useDeveloperStore } = require("./developerStore");
+    if (useDeveloperStore.getState().betaMode) {
+      return true;
+    }
     
     const today = new Date().toDateString();
     const { bossAttempts } = get();

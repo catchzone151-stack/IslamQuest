@@ -471,6 +471,12 @@ export const useProgressStore = create((set, get) => ({
   // 🔒 Central lesson unlock check (combines sequential + premium limits)
   // This is the NEW core function - use this everywhere!
   isLessonUnlocked: (pathId, lessonId) => {
+    // 🧪 BETA MODE: Unlock all lessons for testing
+    const { useDeveloperStore } = require("./developerStore");
+    if (useDeveloperStore.getState().betaMode) {
+      return true;
+    }
+    
     const { lockedLessons, premiumStatus } = get();
     
     // Lesson 1 is always unlocked

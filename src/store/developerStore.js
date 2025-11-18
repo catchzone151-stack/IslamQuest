@@ -42,10 +42,29 @@ export const useDeveloperStore = create((set, get) => ({
     const { useChallengeStore } = require("./challengeStore");
     const { useDailyQuestStore } = require("./dailyQuestStore");
 
-    useProgressStore.getState().resetAllProgress();
+    // Reset all stores
+    useProgressStore.getState().resetAllProgress?.();
     useUserStore.getState().resetOnboarding();
-    useChallengeStore.getState().resetAllChallenges();
-    useDailyQuestStore.getState().resetDailyQuest();
+    
+    // Reset challenges (check if method exists)
+    const challengeStore = useChallengeStore.getState();
+    if (challengeStore.resetAllChallenges) {
+      challengeStore.resetAllChallenges();
+    } else {
+      // Manual reset if method doesn't exist
+      localStorage.removeItem("islamQuestChallenges_v1");
+      useChallengeStore.setState({ challenges: [], bossAttempts: [], challengeHistory: [] });
+    }
+    
+    // Reset daily quest (check if method exists)
+    const dailyQuestStore = useDailyQuestStore.getState();
+    if (dailyQuestStore.resetDailyQuest) {
+      dailyQuestStore.resetDailyQuest();
+    } else {
+      // Manual reset if method doesn't exist
+      localStorage.removeItem("islamQuestDailyQuest");
+      useDailyQuestStore.setState({ date: null, questions: [], completed: false, rewardGiven: false });
+    }
 
     alert("✅ All progress has been reset!");
   },
