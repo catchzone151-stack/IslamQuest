@@ -63,12 +63,17 @@ export const useProgressStore = create((set, get) => ({
   },
 
   loadProgress: () => {
-    // 🛠️ DEV MODE: Force dev settings on load
+    // 🛠️ DEV MODE: Force dev settings on load with mock completed lessons
     if (DEV_MODE) {
       const devData = {
         ...get(),
         xp: DEV_XP,
         coins: DEV_COINS,
+        lessonStates: {
+          1: { 1: { passed: true }, 2: { passed: true }, 3: { passed: true } },
+          2: { 1: { passed: true }, 2: { passed: true } },
+          3: { 1: { passed: true }, 2: { passed: true }, 3: { passed: true } }
+        },
       };
       set(devData);
       return;
