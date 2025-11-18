@@ -26,7 +26,8 @@ Preferred communication style: Simple, everyday language.
 - **Progression Model**: XP and coin rewards, streak system, certificates for path completion. Features a universal lesson locking system enforcing sequential progression and a tiered freemium model with premium unlocking content. Includes a 10-level Diamond progression system.
 - **Social Features**: Friend management (add/search, requests), friends leaderboard (Friend of the Week), activity feed, and quick messaging.
 - **Gamification**:
-    - **Friend Challenges**: 4 game modes (Mind Duel, Lightning Round, Fill-the-Gap, Lightning Chain) with a 48-hour active window, questions from shared completed lessons, and rewards. Includes a daily "Boss Level" for high-level users.
+    - **Friend Challenges**: 4 game modes (Mind Duel, Lightning Round, Fill-the-Gap, Lightning Chain) with a 48-hour active window, questions from shared completed lessons, and rewards.
+    - **Boss Level (November 2025)**: Daily ultra-hard challenge for Level 8+ users featuring 10 randomized questions from a pool of 75 authentic Islamic questions in 60 seconds. Rewards: +500 XP, +100 coins for wins (60%+ correct). Includes robust scoring fix (React state callback), dual Boss Level detection, and appropriate mascot display (congratulation on win, defeated on loss).
     - **Global Events**: Weekly competitive events (4 themed challenges) with 10 hard MCQs, entry fees, provisional and final leaderboards, and rank-based rewards.
     - **Daily Quests**: Solo daily challenge with 8 MCQs from user's completed lessons, awards XP and coins, resets daily.
     - **Streak Freeze**: Duolingo-style streak protection with purchasable shields and an option to repair broken streaks.

@@ -177,18 +177,29 @@ export default function ChallengeGame() {
   const handleGameComplete = () => {
     if (timerRef.current) clearInterval(timerRef.current);
 
-    const finalScore = answers.filter(a => a.correct).length;
-    setScore(finalScore);
+    // Use callback to ensure we have the latest answers state
+    setAnswers(currentAnswers => {
+      const finalScore = currentAnswers.filter(a => a.correct).length;
+      setScore(finalScore);
+      
+      // Continue with the rest of the completion logic
+      completeChallengeWithScore(finalScore, currentAnswers);
+      
+      return currentAnswers;
+    });
+  };
+  
+  const completeChallengeWithScore = (finalScore, finalAnswers) => {
 
     // Save results and award rewards
     if (isBoss) {
-      useChallengeStore.getState().saveBossAttempt(finalScore, answers);
+      useChallengeStore.getState().saveBossAttempt(finalScore, finalAnswers);
       const result = finalScore >= BOSS_LEVEL.questionCount * 0.6 ? "win" : "lose";
       useChallengeStore.getState().awardRewards("boss_level", result);
     } else if (challenge) {
       const currentUserId = "current_user";
       const isChallenger = challenge.challengerId === currentUserId;
-      useChallengeStore.getState().saveChallengeProgress(challengeId, finalScore, answers, isChallenger);
+      useChallengeStore.getState().saveChallengeProgress(challengeId, finalScore, finalAnswers, isChallenger);
       
       // Re-read the updated challenge from store to check if both players finished
       const updatedChallenge = useChallengeStore.getState().challenges.find(c => c.id === challengeId);

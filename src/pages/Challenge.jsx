@@ -74,7 +74,10 @@ export default function Challenge() {
   };
 
   const handleStartChallenge = () => {
-    if (selectedMode?.id === "boss_level") {
+    // Check if this is boss level (use both checks for reliability)
+    const isBossLevel = selectedMode?.id === "boss_level" || selectedMode?.name === "Boss Level";
+    
+    if (isBossLevel) {
       // Start boss level immediately
       showModal(MODAL_TYPES.CHALLENGE_COUNTDOWN, {
         onComplete: handleCountdownComplete

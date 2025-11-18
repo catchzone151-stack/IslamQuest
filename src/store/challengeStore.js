@@ -55,13 +55,13 @@ export const CHALLENGE_MODES = {
 export const BOSS_LEVEL = {
   id: "boss_level",
   name: "Boss Level",
-  icon: "👑", // Will be replaced with Zayd mascot image
-  description: "Daily ultra-hard challenge",
-  questionCount: 5,
-  totalTime: 30,
+  icon: "👑",
+  description: "Daily ultra-hard challenge - 10 questions in 60s",
+  questionCount: 10,
+  totalTime: 60,
   minLevel: 8,
-  rewards: { win: { xp: 300, coins: 50 }, lose: { xp: 50, coins: 0 } },
-  gradient: "linear-gradient(135deg, #1e3a5f 0%, #0f1c2e 100%)", // Dark blue gradient
+  rewards: { win: { xp: 500, coins: 100 }, lose: { xp: 50, coins: 0 } },
+  gradient: "linear-gradient(135deg, #1e3a5f 0%, #0f1c2e 100%)",
   glow: "0 0 30px rgba(30, 58, 95, 0.7)"
 };
 
@@ -405,12 +405,237 @@ export const useChallengeStore = create((set, get) => ({
         question: "In which year did the Hijrah (migration) to Madinah occur?",
         options: ["610 CE", "615 CE", "622 CE", "630 CE"],
         answer: 2
+      },
+      {
+        question: "Which two surahs are called 'Az-Zahrawayn' (The Two Radiant Ones)?",
+        options: ["Al-Fatiha & Al-Ikhlas", "Al-Baqarah & Aal-e-Imran", "Ya-Sin & Ar-Rahman", "Al-Mulk & Al-Waqi'ah"],
+        answer: 1
+      },
+      {
+        question: "How many years did Prophet Nuh ﷺ preach to his people?",
+        options: ["500 years", "750 years", "950 years", "1000 years"],
+        answer: 2
+      },
+      {
+        question: "Which battle is known as 'Yawm al-Furqan' (Day of Criterion)?",
+        options: ["Battle of Badr", "Battle of Uhud", "Battle of Khandaq", "Battle of Hunayn"],
+        answer: 0
+      },
+      {
+        question: "What is the name of the gate of Paradise reserved for those who fast?",
+        options: ["Bab al-Jihad", "Bab al-Salah", "Bab ar-Rayyan", "Bab al-Sadaqah"],
+        answer: 2
+      },
+      {
+        question: "Which surah mentions two prophets in its name?",
+        options: ["Surah Ibrahim", "Surah Yunus", "Surah Hud", "No surah has two prophets in its name"],
+        answer: 3
+      },
+      {
+        question: "How many times is Iblees mentioned by name in the Qur'an?",
+        options: ["9", "11", "13", "15"],
+        answer: 1
+      },
+      {
+        question: "What was the name of Prophet Muhammad's ﷺ grandfather?",
+        options: ["Abdullah", "Abdul Muttalib", "Abu Talib", "Hashim"],
+        answer: 1
+      },
+      {
+        question: "Which prophet is known as 'Kalimullah' (The one who spoke to Allah)?",
+        options: ["Ibrahim ﷺ", "Musa ﷺ", "Isa ﷺ", "Muhammad ﷺ"],
+        answer: 1
+      },
+      {
+        question: "In which surah is the verse of the Throne (Ayat al-Kursi) found?",
+        options: ["Al-Fatiha", "Al-Baqarah", "Aal-e-Imran", "An-Nisa"],
+        answer: 1
+      },
+      {
+        question: "How many daughters did Prophet Muhammad ﷺ have?",
+        options: ["2", "3", "4", "5"],
+        answer: 2
+      },
+      {
+        question: "Which companion was promised Paradise while still alive?",
+        options: ["Only Abu Bakr", "Only Umar", "The ten promised Paradise (Asharah Mubasharah)", "All companions"],
+        answer: 2
+      },
+      {
+        question: "What is the longest verse in the Qur'an about?",
+        options: ["Prayer", "Debt and financial transactions", "Fasting", "Hajj"],
+        answer: 1
+      },
+      {
+        question: "Which prophet's name is mentioned 25 times in the Qur'an?",
+        options: ["Ibrahim ﷺ", "Nuh ﷺ", "Isa ﷺ", "Musa ﷺ"],
+        answer: 2
+      },
+      {
+        question: "What was the first thing created by Allah according to hadith?",
+        options: ["The Throne", "The Pen", "Light", "Water"],
+        answer: 1
+      },
+      {
+        question: "How many pillars does Iman (faith) have?",
+        options: ["4", "5", "6", "7"],
+        answer: 2
+      },
+      {
+        question: "Which surah is known as the 'Mother of the Qur'an'?",
+        options: ["Al-Fatiha", "Al-Baqarah", "Ya-Sin", "Al-Ikhlas"],
+        answer: 0
+      },
+      {
+        question: "What is the Arabic term for the standing position in prayer?",
+        options: ["Ruku", "Qiyam", "Sujud", "Julus"],
+        answer: 1
+      },
+      {
+        question: "Which companion was known as 'Dhul-Nurayn' (The Possessor of Two Lights)?",
+        options: ["Abu Bakr", "Umar", "Uthman ibn Affan", "Ali"],
+        answer: 2
+      },
+      {
+        question: "How many prostrations of recitation (Sajdah Tilawah) are in the Qur'an?",
+        options: ["11", "14", "15", "17"],
+        answer: 2
+      },
+      {
+        question: "Which month were the Muslims commanded to fast?",
+        options: ["Muharram", "Rajab", "Sha'ban", "Ramadan"],
+        answer: 3
+      },
+      {
+        question: "What is the name of the well of Zamzam's original name?",
+        options: ["Bir Zamzam", "Bir Isma'il", "It was always called Zamzam", "Bir Hajar"],
+        answer: 2
+      },
+      {
+        question: "Which prophet had control over the wind?",
+        options: ["Ibrahim ﷺ", "Sulaiman ﷺ", "Dawud ﷺ", "Musa ﷺ"],
+        answer: 1
+      },
+      {
+        question: "How many sons did Prophet Muhammad ﷺ have?",
+        options: ["1", "2", "3", "4"],
+        answer: 2
+      },
+      {
+        question: "What is the night when the Qur'an was first revealed called?",
+        options: ["Laylat al-Isra", "Laylat al-Qadr", "Laylat al-Bara'ah", "Laylat al-Mi'raj"],
+        answer: 1
+      },
+      {
+        question: "Which angel is responsible for rain and provisions?",
+        options: ["Jibril", "Mikail", "Israfil", "Malik"],
+        answer: 1
+      },
+      {
+        question: "How many Madani surahs are in the Qur'an?",
+        options: ["24", "28", "32", "36"],
+        answer: 1
+      },
+      {
+        question: "What is the Arabic word for the pillar of Islam regarding charity?",
+        options: ["Sadaqah", "Zakat", "Khums", "Fitrah"],
+        answer: 1
+      },
+      {
+        question: "Which companion was the first to be martyred in Islam?",
+        options: ["Hamza", "Sumayah bint Khayyat", "Mus'ab ibn Umair", "Yasir ibn Amir"],
+        answer: 1
+      },
+      {
+        question: "Which surah was revealed entirely at once?",
+        options: ["Al-Fatiha", "Al-Ikhlas", "Both Al-Fatiha and Al-Ikhlas", "Al-Kawthar"],
+        answer: 0
+      },
+      {
+        question: "How many times is the word 'Jannah' (Paradise) mentioned in the Qur'an?",
+        options: ["66", "77", "88", "99"],
+        answer: 1
+      },
+      {
+        question: "Which prophet is associated with the miracle of the she-camel?",
+        options: ["Salih ﷺ", "Hud ﷺ", "Shu'ayb ﷺ", "Lut ﷺ"],
+        answer: 0
+      },
+      {
+        question: "What was the age of Prophet Muhammad ﷺ when he passed away?",
+        options: ["60 years", "61 years", "63 years", "65 years"],
+        answer: 2
+      },
+      {
+        question: "Which Khalifah compiled the Qur'an into one standardized text?",
+        options: ["Abu Bakr", "Umar", "Uthman", "Ali"],
+        answer: 2
+      },
+      {
+        question: "What is the reward for reciting Surah Al-Ikhlas according to hadith?",
+        options: ["Equal to 1/3 of the Qur'an", "Equal to 1/2 of the Qur'an", "Equal to full Qur'an", "10 rewards"],
+        answer: 0
+      },
+      {
+        question: "Which direction did Muslims first pray towards?",
+        options: ["Makkah", "Madinah", "Jerusalem (Al-Aqsa)", "Yemen"],
+        answer: 2
+      },
+      {
+        question: "How many camels were sacrificed as ransom for Prophet Muhammad ﷺ's grandfather's vow?",
+        options: ["50", "75", "100", "150"],
+        answer: 2
+      },
+      {
+        question: "Which surah is entirely about the Oneness of Allah?",
+        options: ["Al-Fatiha", "Al-Ikhlas", "Al-Nas", "Al-Falaq"],
+        answer: 1
+      },
+      {
+        question: "What was the name of the first mosque built in Madinah?",
+        options: ["Masjid Quba", "Masjid an-Nabawi", "Masjid Qiblatain", "Masjid al-Jumu'ah"],
+        answer: 0
+      },
+      {
+        question: "Which prophet's people were destroyed by a loud blast (Sayhah)?",
+        options: ["Hud ﷺ", "Salih ﷺ", "Shu'ayb ﷺ", "Lut ﷺ"],
+        answer: 1
+      },
+      {
+        question: "How many types of Tawheed (Oneness of Allah) are there?",
+        options: ["1", "2", "3", "4"],
+        answer: 2
+      },
+      {
+        question: "Which battle did the angels participate in helping the Muslims?",
+        options: ["Battle of Badr", "Battle of Uhud", "Battle of Khandaq", "All of the above"],
+        answer: 0
+      },
+      {
+        question: "What is the name of the first male martyr in Islam?",
+        options: ["Hamza", "Yasir ibn Amir", "Mus'ab ibn Umair", "Zayd ibn Harithah"],
+        answer: 1
+      },
+      {
+        question: "Which prophet was swallowed by a whale?",
+        options: ["Musa ﷺ", "Yunus ﷺ", "Nuh ﷺ", "Sulaiman ﷺ"],
+        answer: 1
+      },
+      {
+        question: "How many prayers (Salawat) are mentioned in the Qur'an by specific names?",
+        options: ["3", "4", "5", "7"],
+        answer: 0
+      },
+      {
+        question: "Which companion was the first to accept Islam from among the youth?",
+        options: ["Abu Bakr", "Ali ibn Abi Talib", "Uthman", "Zubair ibn al-Awwam"],
+        answer: 1
       }
     ];
     
-    // Shuffle and select 5 random questions
+    // Shuffle and select 10 random questions
     const shuffled = [...questionPool].sort(() => Math.random() - 0.5);
-    const selected = shuffled.slice(0, 5);
+    const selected = shuffled.slice(0, 10);
     
     // Add IDs and return
     return selected.map((q, index) => ({
