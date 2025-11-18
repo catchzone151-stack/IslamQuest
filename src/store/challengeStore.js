@@ -34,6 +34,7 @@ export const CHALLENGE_MODES = {
     name: "Speed Run",
     icon: "🏃",
     description: "Answer as many questions correctly in 30 seconds",
+    questionCount: 40,
     totalTime: 30,
     rewards: { win: { xp: 120, coins: 20 }, lose: { xp: 20, coins: 0 }, draw: { xp: 50, coins: 0 } },
     gradient: "linear-gradient(135deg, #10b981 0%, #059669 100%)",

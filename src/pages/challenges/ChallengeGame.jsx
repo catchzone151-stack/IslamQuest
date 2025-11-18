@@ -99,17 +99,19 @@ export default function ChallengeGame() {
     } else if (challenge && mode) {
       let gameQuestions = [...challenge.questions];
       
-      // For Lightning Chain with 25 questions, recycle if needed
-      if (mode.id === 'lightning_chain' && mode.questionCount === 25) {
-        while (gameQuestions.length < 25) {
-          // Recycle questions with slight rewording by adding index
+      // For Lightning Chain with 25 questions or Speed Run with 40, recycle if needed
+      if ((mode.id === 'lightning_chain' && mode.questionCount) || 
+          (mode.id === 'speed_run' && mode.questionCount)) {
+        const targetCount = mode.questionCount;
+        while (gameQuestions.length < targetCount) {
+          // Recycle questions with unique IDs
           const recycledQuestions = challenge.questions.map((q, idx) => ({
             ...q,
             id: `${q.id || idx}_recycled_${Math.floor(gameQuestions.length / challenge.questions.length)}`
           }));
           gameQuestions = [...gameQuestions, ...recycledQuestions];
         }
-        gameQuestions = gameQuestions.slice(0, 25); // Ensure exactly 25
+        gameQuestions = gameQuestions.slice(0, targetCount); // Ensure exact count
       }
       
       setQuestions(gameQuestions);
@@ -120,7 +122,7 @@ export default function ChallengeGame() {
         setTimeLeft(mode.timePerQuestion);
       }
     }
-  }, [challengeId, isBoss, navigate]);
+  }, [challengeId, isBoss, navigate, challenge, mode]);
 
   useEffect(() => {
     // Start timer
@@ -445,7 +447,7 @@ export default function ChallengeGame() {
         <div className="challenge-progress-bar" style={{ width: `${progress}%` }} />
       </div>
       <p className="challenge-progress-text">
-        Question {currentIndex + 1} of {questions.length}
+        {mode?.id === "speed_run" ? `Question ${currentIndex + 1}` : `Question ${currentIndex + 1} of ${questions.length}`}
       </p>
 
       {/* Thinking Mascot */}
