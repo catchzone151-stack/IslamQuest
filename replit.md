@@ -8,6 +8,22 @@ Preferred communication style: Simple, everyday language.
 
 ## System Architecture
 
+### Beta Testing Infrastructure (November 2025)
+- **Beta Mode**: Hidden developer menu for closed beta testing, accessible via 5 taps on home mascot within 4 seconds
+- **Features when betaMode = true**:
+  - All lessons/quizzes unlocked regardless of progress or level
+  - Boss Level playable below Level 8 requirement
+  - Daily Quest repeatable unlimited times
+  - XP, streak, coin, challenge rewards still function normally (no god mode)
+- **Developer Tools**:
+  - Toggle Beta Mode ON/OFF
+  - Reset Onboarding State
+  - Reset Full Progress
+  - View Debug Info (XP, coins, streak, level, completed lessons, app version)
+  - Subtle "BETA – Not Final" watermark in Settings when active
+- **Security**: Menu not discoverable through normal UI, local-storage based only
+- **Safety**: When betaMode = false, app behaves exactly as production release
+
 ### UI/UX Decisions
 - **Design**: Mobile-first responsive design with a bottom navigation pattern.
 - **Responsive Design (November 2025)**: Complete mobile-first audit with progressive enhancement for safe-area support. CSS-based fallback + enhancement pattern ensures 90-110px BottomNav clearance on ALL browsers (legacy + modern), with safe-area bonus on iOS/Android notch devices. Inline numeric fallbacks (90px, 110px) override with CSS !important + env() for safe-area-inset-bottom. All modals support safe-area with fallback padding. Touch targets meet 44px accessibility minimum.
