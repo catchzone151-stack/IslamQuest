@@ -10,6 +10,7 @@ Preferred communication style: Simple, everyday language.
 
 ### UI/UX Decisions
 - **Design**: Mobile-first responsive design with a bottom navigation pattern.
+- **Responsive Design (November 2025)**: Complete mobile-first audit with progressive enhancement for safe-area support. CSS-based fallback + enhancement pattern ensures 90-110px BottomNav clearance on ALL browsers (legacy + modern), with safe-area bonus on iOS/Android notch devices. Inline numeric fallbacks (90px, 110px) override with CSS !important + env() for safe-area-inset-bottom. All modals support safe-area with fallback padding. Touch targets meet 44px accessibility minimum.
 - **Theming**: Consistent color palette using CSS variables: Navy for backgrounds, Gold for accents, Emerald Green for success, and Light gray for text.
 - **Animations**: GPU-optimized CSS and Framer Motion animations for smooth 60fps transitions and interactive elements.
 - **Loading UX**: Custom LoadingScreen with shimmer skeleton loaders and eager image preloading to prevent layout shifts and pop-in lag.
