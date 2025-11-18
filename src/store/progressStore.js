@@ -25,7 +25,7 @@ const DEFAULT_PATHS = [
 
 export const useProgressStore = create((set, get) => ({
   // 🪙 Base user stats
-  xp: 0,
+  xp: 40000, // DEV MODE: Level 9 for testing Boss Level (normally 0)
   coins: 0,
   streak: 0,
   lastStudyDate: null,
