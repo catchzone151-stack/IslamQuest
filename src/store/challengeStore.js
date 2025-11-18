@@ -43,8 +43,10 @@ export const CHALLENGE_MODES = {
     id: "lightning_chain",
     name: "Lightning Chain",
     icon: "⛓️",
-    description: "Answer carefully - one wrong ends the game",
-    rewards: { win: { xp: 130, coins: 20 }, lose: { xp: 25, coins: 0 } },
+    description: "25 questions - one wrong ends the game, fastest time wins draws",
+    questionCount: 25,
+    trackTime: true,
+    rewards: { win: { xp: 200, coins: 30 }, lose: { xp: 25, coins: 0 } },
     gradient: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
     glow: "0 0 20px rgba(239, 68, 68, 0.5)"
   }
@@ -291,8 +293,19 @@ export const useChallengeStore = create((set, get) => ({
     // Calculate score
     const score = simulatedAnswers.filter((ans, idx) => ans === questions[idx].answer).length;
 
+    // Generate completion time for time-tracked modes (Lightning Chain)
+    const mode = Object.values(CHALLENGE_MODES).find(m => m.id === challenge.mode);
+    let completionTime = null;
+    if (mode?.trackTime) {
+      // Simulate realistic completion time based on friend difficulty
+      const baseTime = questions.length * 3; // 3 seconds per question base
+      const randomFactor = friend.difficulty?.responseTime?.[0] || 5;
+      const randomRange = (friend.difficulty?.responseTime?.[1] || 10) - randomFactor;
+      completionTime = baseTime + (questions.length * (randomFactor + Math.random() * randomRange));
+    }
+
     // Save the opponent's progress
-    get().saveChallengeProgress(challengeId, score, simulatedAnswers, false);
+    get().saveChallengeProgress(challengeId, score, simulatedAnswers, false, completionTime);
     
     // If challenger has also played, complete the challenge
     if (challenge.challengerScore !== null) {
@@ -301,7 +314,7 @@ export const useChallengeStore = create((set, get) => ({
   },
 
   // Save challenge progress
-  saveChallengeProgress: (challengeId, score, answers, isChallenger) => {
+  saveChallengeProgress: (challengeId, score, answers, isChallenger, completionTime = null) => {
     set(state => ({
       challenges: state.challenges.map(c => {
         if (c.id === challengeId) {
@@ -310,6 +323,7 @@ export const useChallengeStore = create((set, get) => ({
               ...c,
               challengerScore: score,
               challengerAnswers: answers,
+              challengerTime: completionTime,
               status: c.opponentScore !== null ? "completed" : "active"
             };
           } else {
@@ -317,6 +331,7 @@ export const useChallengeStore = create((set, get) => ({
               ...c,
               opponentScore: score,
               opponentAnswers: answers,
+              opponentTime: completionTime,
               status: c.challengerScore !== null ? "completed" : "active"
             };
           }
@@ -339,7 +354,16 @@ export const useChallengeStore = create((set, get) => ({
     } else if (challenge.opponentScore > challenge.challengerScore) {
       winner = challenge.opponentId;
     } else {
-      winner = "draw";
+      // Scores are equal - check if it's a time-based mode (Lightning Chain)
+      const mode = Object.values(CHALLENGE_MODES).find(m => m.id === challenge.mode);
+      if (mode?.trackTime && challenge.challengerTime !== null && challenge.opponentTime !== null) {
+        // Fastest time wins
+        winner = challenge.challengerTime < challenge.opponentTime 
+          ? challenge.challengerId 
+          : challenge.opponentId;
+      } else {
+        winner = "draw";
+      }
     }
     
     // 🛡️ Mark day as complete for streak tracking

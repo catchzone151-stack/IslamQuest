@@ -60,6 +60,8 @@ export default function ChallengeGame() {
   const timerRef = useRef(null);
   const selectedAnswerRef = useRef(null);
   const isCompletingRef = useRef(false);
+  const startTimeRef = useRef(null);
+  const completionTimeRef = useRef(null);
 
   // Determine if it's a boss level or friend challenge
   const isBoss = challengeId === "boss";
@@ -81,6 +83,9 @@ export default function ChallengeGame() {
   useEffect(() => {
     console.log('🎮 Loading challenge questions', { isBoss, challengeId, mode });
     
+    // Start tracking time when game begins
+    startTimeRef.current = Date.now();
+    
     // Load questions based on challenge type
     if (isBoss) {
       const bossQuestions = useChallengeStore.getState().getBossLevelQuestions();
@@ -92,9 +97,23 @@ export default function ChallengeGame() {
       setQuestions(bossQuestions);
       setTimeLeft(BOSS_LEVEL.totalTime);
     } else if (challenge && mode) {
-      setQuestions(challenge.questions);
+      let gameQuestions = [...challenge.questions];
+      
+      // For Lightning Chain with 25 questions, recycle if needed
+      if (mode.id === 'lightning_chain' && mode.questionCount === 25) {
+        while (gameQuestions.length < 25) {
+          // Recycle questions with slight rewording by adding index
+          const recycledQuestions = challenge.questions.map((q, idx) => ({
+            ...q,
+            id: `${q.id || idx}_recycled_${Math.floor(gameQuestions.length / challenge.questions.length)}`
+          }));
+          gameQuestions = [...gameQuestions, ...recycledQuestions];
+        }
+        gameQuestions = gameQuestions.slice(0, 25); // Ensure exactly 25
+      }
+      
+      setQuestions(gameQuestions);
       // Only set timer for modes with totalTime (Lightning Round, Boss)
-      // Mind Duel has timePerQuestion, not totalTime
       if (mode.totalTime) {
         setTimeLeft(mode.totalTime);
       } else if (mode.timePerQuestion) {
@@ -282,7 +301,12 @@ export default function ChallengeGame() {
     if (timerRef.current) clearInterval(timerRef.current);
     setGameEnded(true);
     
-    console.log('🏁 handleGameComplete called', { isBoss, mode, challenge, finalAnswers });
+    // Calculate completion time
+    if (startTimeRef.current) {
+      completionTimeRef.current = (Date.now() - startTimeRef.current) / 1000; // in seconds
+    }
+    
+    console.log('🏁 handleGameComplete called', { isBoss, mode, challenge, finalAnswers, completionTime: completionTimeRef.current });
     
     // Calculate final score from passed-in answers (includes last answer)
     const finalScore = finalAnswers.filter(a => a.correct).length;
@@ -298,7 +322,13 @@ export default function ChallengeGame() {
     } else if (challenge) {
       const currentUserId = "current_user";
       const isChallenger = challenge.challengerId === currentUserId;
-      useChallengeStore.getState().saveChallengeProgress(challengeId, finalScore, finalAnswers, isChallenger);
+      useChallengeStore.getState().saveChallengeProgress(
+        challengeId, 
+        finalScore, 
+        finalAnswers, 
+        isChallenger, 
+        completionTimeRef.current
+      );
       
       // Re-read the updated challenge from store to check if both players finished
       const updatedChallenge = useChallengeStore.getState().challenges.find(c => c.id === challengeId);
