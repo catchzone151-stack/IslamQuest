@@ -255,6 +255,9 @@ export default function ChallengeGame() {
           }
         }, 800);
       }
+    } else if (mode?.id === "speed_run") {
+      // Speed Run - Continue immediately, wrong answers don't end game
+      setTimeout(() => handleNextQuestion(), 200);
     } else {
       // Regular modes
       setTimeout(() => handleNextQuestion(), 800);
@@ -461,82 +464,33 @@ export default function ChallengeGame() {
       <div className="challenge-question-card">
         <h2 className="challenge-question-text">{currentQuestion.question}</h2>
         
-        {/* Islamic Match: Matching Game */}
-        {mode?.id === "islamic_match" ? (
-          <div className="match-game-container">
-            <p className="match-instructions">Match the term with its meaning:</p>
-            <div className="match-columns">
-              {/* Left Column - Terms */}
-              <div className="match-column">
-                <button
-                  className={`match-item ${selectedLeft === 0 ? 'selected' : ''} ${
-                    matches.some(m => m.left === 0) ? (matches.find(m => m.left === 0)?.correct ? 'matched-correct' : 'matched-wrong') : ''
-                  }`}
-                  onClick={() => handleMatchSelect('left', 0)}
-                  disabled={selectedAnswer !== null || matches.some(m => m.left === 0)}
-                >
-                  <span className="match-icon">📖</span>
-                  <span>{currentQuestion.question}</span>
-                </button>
-              </div>
-              
-              {/* Right Column - Meanings */}
-              <div className="match-column">
-                {currentQuestion.options.map((option, index) => (
-                  <button
-                    key={index}
-                    className={`match-item ${selectedRight === index ? 'selected' : ''} ${
-                      matches.some(m => m.right === index) ? (matches.find(m => m.right === index)?.correct ? 'matched-correct' : 'matched-wrong') : ''
-                    }`}
-                    onClick={() => handleMatchSelect('right', index)}
-                    disabled={selectedAnswer !== null || matches.some(m => m.right === index)}
-                  >
-                    {option}
-                    {matches.some(m => m.right === index && m.correct) && <span className="match-check">✓</span>}
-                    {matches.some(m => m.right === index && !m.correct) && <span className="match-cross">✗</span>}
-                  </button>
-                ))}
-              </div>
-            </div>
-            {selectedAnswer !== null && (
-              <div className={`match-result ${selectedAnswer >= 0 ? 'correct' : 'wrong'}`}>
-                {selectedAnswer >= 0 ? (
-                  <span>✓ Perfect Match!</span>
-                ) : (
-                  <span>✗ Wrong! Correct: {currentQuestion.options[currentQuestion.answer]}</span>
-                )}
-              </div>
-            )}
-          </div>
-        ) : (
-          /* MCQ Options for other modes */
-          <div className="challenge-options">
-            {currentQuestion.options.map((option, index) => {
-              const isSelected = selectedAnswer === index;
-              const correctAnswerIndex = currentQuestion.answer ?? currentQuestion.correctIndex ?? currentQuestion.correct;
-              const isCorrect = index === correctAnswerIndex;
-              const showResult = selectedAnswer !== null;
+        {/* MCQ Options */}
+        <div className="challenge-options">
+          {currentQuestion.options.map((option, index) => {
+            const isSelected = selectedAnswer === index;
+            const correctAnswerIndex = currentQuestion.answer ?? currentQuestion.correctIndex ?? currentQuestion.correct;
+            const isCorrect = index === correctAnswerIndex;
+            const showResult = selectedAnswer !== null;
 
-              return (
-                <button
-                  key={index}
-                  className={`challenge-option ${isSelected ? 'selected' : ''} ${
-                    showResult && isSelected && isCorrect ? 'correct' : ''
-                  } ${showResult && isSelected && !isCorrect ? 'wrong' : ''}`}
-                  onClick={() => handleAnswerSelect(index)}
-                  disabled={selectedAnswer !== null}
-                  style={{
-                    borderColor: isSelected ? (showResult && isCorrect ? '#10b981' : showResult && !isCorrect ? '#ef4444' : '#d4af37') : 'rgba(255,255,255,0.2)'
-                  }}
-                >
-                  {option}
-                  {showResult && isSelected && isCorrect && <span className="option-icon">✓</span>}
-                  {showResult && isSelected && !isCorrect && <span className="option-icon">✗</span>}
-                </button>
-              );
-            })}
-          </div>
-        )}
+            return (
+              <button
+                key={index}
+                className={`challenge-option ${isSelected ? 'selected' : ''} ${
+                  showResult && isSelected && isCorrect ? 'correct' : ''
+                } ${showResult && isSelected && !isCorrect ? 'wrong' : ''}`}
+                onClick={() => handleAnswerSelect(index)}
+                disabled={selectedAnswer !== null}
+                style={{
+                  borderColor: isSelected ? (showResult && isCorrect ? '#10b981' : showResult && !isCorrect ? '#ef4444' : '#d4af37') : 'rgba(255,255,255,0.2)'
+                }}
+              >
+                {option}
+                {showResult && isSelected && isCorrect && <span className="option-icon">✓</span>}
+                {showResult && isSelected && !isCorrect && <span className="option-icon">✗</span>}
+              </button>
+            );
+          })}
+        </div>
 
         {/* Chain Length Display (Lightning Chain only) */}
         {mode?.id === "lightning_chain" && answers.length > 0 && (
