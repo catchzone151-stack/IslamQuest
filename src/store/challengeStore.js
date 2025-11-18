@@ -30,14 +30,14 @@ export const CHALLENGE_MODES = {
     gradient: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
     glow: "0 0 20px rgba(245, 158, 11, 0.5)"
   },
-  FILL_THE_GAP: {
-    id: "fill_the_gap",
-    name: "Fill-the-Gap",
-    icon: "📝",
-    description: "8-10 cloze questions from lessons",
-    questionCount: 9,
-    timePerQuestion: 15,
-    rewards: { win: { xp: 120, coins: 20 }, lose: { xp: 20, coins: 0 } },
+  ISLAMIC_MATCH: {
+    id: "islamic_match",
+    name: "Islamic Match",
+    icon: "🔗",
+    description: "Match Islamic terms with meanings",
+    questionCount: 8,
+    timePerQuestion: 20,
+    rewards: { win: { xp: 120, coins: 20 }, lose: { xp: 20, coins: 0 }, draw: { xp: 50, coins: 0 } },
     gradient: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
     glow: "0 0 20px rgba(16, 185, 129, 0.5)"
   },

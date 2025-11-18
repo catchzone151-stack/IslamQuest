@@ -217,6 +217,125 @@
   }
 }
 
+/* Islamic Match Game Styles */
+.match-game-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.match-instructions {
+  text-align: center;
+  color: #d4af37;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.match-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.match-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.match-item {
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  border-radius: 12px;
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 60px;
+}
+
+.match-item:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(4px);
+}
+
+.match-item:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.match-item.selected {
+  border-color: #d4af37;
+  background: rgba(212, 175, 55, 0.15);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+  transform: scale(1.05);
+}
+
+.match-item.matched-correct {
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.15);
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+}
+
+.match-item.matched-wrong {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.15);
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+}
+
+.match-icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.match-check {
+  position: absolute;
+  right: 12px;
+  font-size: 1.3rem;
+  color: #10b981;
+  font-weight: 700;
+}
+
+.match-cross {
+  position: absolute;
+  right: 12px;
+  font-size: 1.3rem;
+  color: #ef4444;
+  font-weight: 700;
+}
+
+.match-result {
+  padding: 16px 20px;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-align: center;
+  animation: slideIn 0.3s ease;
+  margin-top: 8px;
+}
+
+.match-result.correct {
+  background: rgba(16, 185, 129, 0.15);
+  border: 2px solid #10b981;
+  color: #10b981;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+.match-result.wrong {
+  background: rgba(239, 68, 68, 0.15);
+  border: 2px solid #ef4444;
+  color: #ef4444;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+}
+
 /* Fill-the-Gap Input Styles */
 .fill-gap-input-container {
   display: flex;
@@ -345,6 +464,26 @@
   }
 
   .fill-gap-result {
+    font-size: 1rem;
+    padding: 14px 16px;
+  }
+
+  .match-columns {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .match-item {
+    font-size: 0.9rem;
+    padding: 12px 14px;
+    min-height: 55px;
+  }
+
+  .match-instructions {
+    font-size: 0.95rem;
+  }
+
+  .match-result {
     font-size: 1rem;
     padding: 14px 16px;
   }

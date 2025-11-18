@@ -53,6 +53,9 @@ export default function ChallengeGame() {
   const [chainLength, setChainLength] = useState(0);
   const [gameEnded, setGameEnded] = useState(false);
   const [textInput, setTextInput] = useState("");
+  const [selectedLeft, setSelectedLeft] = useState(null);
+  const [selectedRight, setSelectedRight] = useState(null);
+  const [matches, setMatches] = useState([]);
   
   const timerRef = useRef(null);
   const selectedAnswerRef = useRef(null);
@@ -130,36 +133,59 @@ export default function ChallengeGame() {
     }, 1000);
   };
 
-  const handleTextSubmit = () => {
-    if (!textInput.trim() || selectedAnswer !== null || gameEnded) return;
+  const handleMatchSelect = (side, index) => {
+    if (selectedAnswer !== null || gameEnded) return;
     
+    if (side === 'left') {
+      if (selectedLeft === index) {
+        setSelectedLeft(null);
+      } else {
+        setSelectedLeft(index);
+        // Auto-check if both sides selected
+        if (selectedRight !== null) {
+          checkMatch(index, selectedRight);
+        }
+      }
+    } else {
+      if (selectedRight === index) {
+        setSelectedRight(null);
+      } else {
+        setSelectedRight(index);
+        // Auto-check if both sides selected
+        if (selectedLeft !== null) {
+          checkMatch(selectedLeft, index);
+        }
+      }
+    }
+  };
+
+  const checkMatch = (leftIdx, rightIdx) => {
     const currentQ = questions[currentIndex];
-    const correctAnswer = currentQ.options[currentQ.answer];
+    const isCorrect = rightIdx === currentQ.answer;
     
-    // Case-insensitive comparison, trimmed
-    const isCorrect = textInput.trim().toLowerCase() === correctAnswer.toLowerCase();
+    setMatches([...matches, { left: leftIdx, right: rightIdx, correct: isCorrect }]);
+    setSelectedAnswer(isCorrect ? rightIdx : -1);
     
-    // Store the answer
     const newAnswer = {
       questionId: currentQ.id || currentIndex,
-      selectedAnswer: textInput.trim(),
+      selectedAnswer: rightIdx,
       correct: isCorrect
     };
     
     const updatedAnswers = [...answers, newAnswer];
     setAnswers(updatedAnswers);
-    setSelectedAnswer(isCorrect ? currentQ.answer : -1); // Use -1 for wrong answer
     
     setTimeout(() => {
       if (currentIndex < questions.length - 1) {
         setCurrentIndex(currentIndex + 1);
         setSelectedAnswer(null);
-        setTextInput("");
+        setSelectedLeft(null);
+        setSelectedRight(null);
+        setMatches([]);
         if (mode?.timePerQuestion) {
           setTimeLeft(mode.timePerQuestion);
         }
       } else {
-        // Last question
         setGameEnded(true);
         setTimeout(() => handleGameComplete(updatedAnswers), 1000);
       }
@@ -405,39 +431,49 @@ export default function ChallengeGame() {
       <div className="challenge-question-card">
         <h2 className="challenge-question-text">{currentQuestion.question}</h2>
         
-        {/* Fill-the-Gap: Text Input */}
-        {mode?.id === "fill_the_gap" ? (
-          <div className="fill-gap-input-container">
-            <input
-              type="text"
-              className="fill-gap-input"
-              placeholder="Type your answer..."
-              value={textInput}
-              onChange={(e) => setTextInput(e.target.value)}
-              onKeyPress={(e) => {
-                if (e.key === 'Enter') handleTextSubmit();
-              }}
-              disabled={selectedAnswer !== null}
-              autoFocus
-              style={{
-                borderColor: selectedAnswer !== null 
-                  ? (selectedAnswer >= 0 ? '#10b981' : '#ef4444')
-                  : '#d4af37'
-              }}
-            />
-            <button
-              className="fill-gap-submit-btn"
-              onClick={handleTextSubmit}
-              disabled={!textInput.trim() || selectedAnswer !== null}
-            >
-              Submit ✓
-            </button>
+        {/* Islamic Match: Matching Game */}
+        {mode?.id === "islamic_match" ? (
+          <div className="match-game-container">
+            <p className="match-instructions">Match the term with its meaning:</p>
+            <div className="match-columns">
+              {/* Left Column - Terms */}
+              <div className="match-column">
+                <button
+                  className={`match-item ${selectedLeft === 0 ? 'selected' : ''} ${
+                    matches.some(m => m.left === 0) ? (matches.find(m => m.left === 0)?.correct ? 'matched-correct' : 'matched-wrong') : ''
+                  }`}
+                  onClick={() => handleMatchSelect('left', 0)}
+                  disabled={selectedAnswer !== null || matches.some(m => m.left === 0)}
+                >
+                  <span className="match-icon">📖</span>
+                  <span>{currentQuestion.question}</span>
+                </button>
+              </div>
+              
+              {/* Right Column - Meanings */}
+              <div className="match-column">
+                {currentQuestion.options.map((option, index) => (
+                  <button
+                    key={index}
+                    className={`match-item ${selectedRight === index ? 'selected' : ''} ${
+                      matches.some(m => m.right === index) ? (matches.find(m => m.right === index)?.correct ? 'matched-correct' : 'matched-wrong') : ''
+                    }`}
+                    onClick={() => handleMatchSelect('right', index)}
+                    disabled={selectedAnswer !== null || matches.some(m => m.right === index)}
+                  >
+                    {option}
+                    {matches.some(m => m.right === index && m.correct) && <span className="match-check">✓</span>}
+                    {matches.some(m => m.right === index && !m.correct) && <span className="match-cross">✗</span>}
+                  </button>
+                ))}
+              </div>
+            </div>
             {selectedAnswer !== null && (
-              <div className={`fill-gap-result ${selectedAnswer >= 0 ? 'correct' : 'wrong'}`}>
+              <div className={`match-result ${selectedAnswer >= 0 ? 'correct' : 'wrong'}`}>
                 {selectedAnswer >= 0 ? (
-                  <span>✓ Correct!</span>
+                  <span>✓ Perfect Match!</span>
                 ) : (
-                  <span>✗ Wrong! Answer: {currentQuestion.options[currentQuestion.answer]}</span>
+                  <span>✗ Wrong! Correct: {currentQuestion.options[currentQuestion.answer]}</span>
                 )}
               </div>
             )}
