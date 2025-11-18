@@ -37,6 +37,16 @@ export const useFriendsStore = create((set, get) => ({
   },
 
   loadFromStorage: () => {
+    // 🧹 ONE-TIME CLEANUP: Clear all old friends data (remove after beta)
+    // This ensures no fake/test friends persist from development
+    const cleanupFlag = localStorage.getItem("islamQuestFriends_cleaned_v1");
+    if (!cleanupFlag) {
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.setItem("islamQuestFriends_cleaned_v1", "true");
+      // Start fresh - no need to load old data
+      return;
+    }
+    
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       const data = JSON.parse(saved);
