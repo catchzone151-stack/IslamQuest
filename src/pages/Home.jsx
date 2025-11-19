@@ -159,6 +159,7 @@ export default function Home() {
       style={{
         background: "#0e2340",
         color: "white",
+        padding: 16,
         overflowX: "hidden",
         position: "relative",
       }}
@@ -511,7 +512,7 @@ export default function Home() {
           display: "flex",
           justifyContent: "center",
           marginTop: 8,
-          marginBottom: 24,
+          marginBottom: 8,
         }}
       >
         {[0, 1, 2].map((i) => (

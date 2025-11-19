@@ -38,13 +38,10 @@ Preferred communication style: Simple, everyday language.
 ### UI/UX Decisions
 - **Design**: Mobile-first responsive design with a bottom navigation pattern.
 - **Responsive Design (November 2025)**: Complete mobile-first audit with progressive enhancement for safe-area support. CSS-based fallback + enhancement pattern ensures 90-110px BottomNav clearance on ALL browsers (legacy + modern), with safe-area bonus on iOS/Android notch devices. Inline numeric fallbacks (90px, 110px) override with CSS !important + env() for safe-area-inset-bottom. All modals support safe-area with fallback padding. Touch targets meet 44px accessibility minimum.
-- **Layout Architecture (November 2025)**: Comprehensive layout refactor eliminates viewport-based height issues and ensures proper bottom navigation clearance:
+- **Layout Architecture (November 2025)**: Comprehensive layout refactor eliminates viewport-based height issues across entire app:
   - **Zero min-height: 100vh**: All instances replaced with height: 100% on html, body, #root to eliminate black strips and extra scroll space
   - **Unified Screen Wrapper**: `.screen` and `.no-extra-space` classes applied universally across all 19+ page components, conditional renders, and fallback states
   - **Consistent Background**: CSS variable --navy aligned to #0a2a43 across App.css and index.css, ensuring navy background extends properly to bottom nav
-  - **Bottom Nav Clearance**: `.screen` class uses `padding: 16px` with `padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)) !important` ensuring content never hides behind fixed bottom navigation while maintaining consistent side margins
-  - **No Inline Padding Conflicts**: Pages rely on .screen class padding (no inline overrides) for consistent spacing across entire app
-  - **Component-Level Spacing**: Home page pagination dots have 24px bottom margin for extra clearance
   - **Verified Coverage**: Repo-wide search confirms zero problematic height values (min-height: 100vh, minHeight: "100vh", min-h-screen)
   - **Components Updated**: ScreenContainer, ScreenWrapper, all onboarding screens, main pages, challenge screens, and CSS files cleaned
 - **Theming**: Consistent color palette using CSS variables: Navy (#0a2a43) for backgrounds, Gold for accents, Emerald Green for success, and Light gray for text.
