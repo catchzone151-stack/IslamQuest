@@ -159,9 +159,6 @@ export default function Home() {
       style={{
         background: "#0e2340",
         color: "white",
-        paddingLeft: 16,
-        paddingRight: 16,
-        paddingTop: 16,
         overflowX: "hidden",
         position: "relative",
       }}
@@ -178,6 +175,7 @@ export default function Home() {
           alignItems: "center",
           marginBottom: 8,
           columnGap: 8,
+          padding: "16px 16px 0 16px",
         }}
       >
         {/* Left cluster: Streak + XP */}
@@ -343,7 +341,7 @@ export default function Home() {
        * TITLE + SMALL GREETING
        * ===============================================================
        */}
-      <div style={{ textAlign: "center", marginBottom: 6 }}>
+      <div style={{ textAlign: "center", marginBottom: 6, padding: "0 16px" }}>
         <h1
           className="title-shimmer"
           style={{
@@ -359,7 +357,7 @@ export default function Home() {
         style={{
           textAlign: "center",
           fontSize: "1.15rem",
-          margin: "6px 0 14px",
+          margin: "6px 16px 14px 16px",
           fontWeight: "800",
           color: "#FFD700",
           textShadow: "0 2px 8px rgba(212, 175, 55, 0.4)",
@@ -374,7 +372,9 @@ export default function Home() {
        * DAILY QUEST CARD
        * ===============================================================
        */}
-      <DailyQuestCard />
+      <div style={{ padding: "0 16px" }}>
+        <DailyQuestCard />
+      </div>
 
       {/*
        * ===============================================================
@@ -388,6 +388,8 @@ export default function Home() {
             display: "flex",
             overflowX: "auto",
             gap: 14,
+            paddingLeft: 16,
+            paddingRight: 16,
             paddingBottom: 8,
             scrollBehavior: "smooth",
             scrollbarWidth: "none",

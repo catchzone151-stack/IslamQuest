@@ -37,13 +37,14 @@ Preferred communication style: Simple, everyday language.
 
 ### UI/UX Decisions
 - **Design**: Mobile-first responsive design with a bottom navigation pattern.
-- **Responsive Design (November 2025)**: Complete mobile-first audit with progressive enhancement for safe-area support. CSS-based fallback + enhancement pattern ensures 100px BottomNav clearance on ALL browsers (legacy + modern), with safe-area bonus on iOS/Android notch devices. Inline numeric fallback (100px) overrides with CSS !important + env() for safe-area-inset-bottom. All modals support safe-area with fallback padding. Touch targets meet 44px accessibility minimum.
-- **Layout Architecture (November 2025)**: Comprehensive layout refactor eliminates viewport-based height issues across entire app for APK builds:
+- **Responsive Design (November 2025)**: Complete mobile-first audit with progressive enhancement for safe-area support. Edge-to-edge layout with 100px BottomNav clearance (76px nav + 24px breathing room). CSS !important + env() safe-area-inset-bottom ensures proper spacing on iOS/Android notch devices. All modals support safe-area with fallback padding. Touch targets meet 44px accessibility minimum.
+- **Layout Architecture (November 2025)**: Comprehensive layout refactor eliminates viewport-based height issues and edge padding for APK builds:
   - **Zero viewport units**: All instances of 100vh, min-height: 100vh removed; replaced with height: 100% on html, body, #root to eliminate WebView issues
-  - **Unified Screen Wrapper**: `.screen` and `.no-extra-space` classes applied universally across all 19+ page components with 100px bottom padding for 76px nav bar
-  - **Consistent Background**: CSS variable --navy aligned to #0a2a43 across App.css and index.css, ensuring navy background extends properly to bottom nav
-  - **Mobile Fixes (Nov 19, 2025)**: Removed maxHeight: 100vh from Pathway.jsx, replaced modal max-height: 90vh with 85% percentage, increased bottom padding from 70px to 100px for proper nav clearance
-  - **Components Updated**: ScreenContainer, ScreenWrapper, all onboarding screens, main pages, challenge screens, EventModals.css, and CSS files optimized
+  - **Edge-to-edge Design (Nov 19, 2025)**: Removed all horizontal padding from `.screen` class wrapper to eliminate side borders. Individual content sections (headers, cards, carousels) have their own 16px horizontal padding for proper content spacing while maintaining flush edges.
+  - **App.css Import Fix (Nov 19, 2025)**: Added missing `import "./App.css"` in src/index.jsx to ensure `.screen` CSS rules actually load in bundle
+  - **Bottom Nav Clearance**: `.screen` class sets `padding-bottom: 100px` with `calc(100px + env(safe-area-inset-bottom, 0px))` for proper nav bar clearance
+  - **Consistent Background**: CSS variable --navy aligned to #0a2a43 across App.css and index.css, ensuring navy background extends edge-to-edge
+  - **Components Updated**: ScreenContainer, ScreenWrapper, Home.jsx, all onboarding screens, main pages, challenge screens, EventModals.css optimized
 - **Theming**: Consistent color palette using CSS variables: Navy (#0a2a43) for backgrounds, Gold for accents, Emerald Green for success, and Light gray for text.
 - **Animations**: GPU-optimized CSS and Framer Motion animations for smooth 60fps transitions and interactive elements.
 - **Loading UX**: Custom LoadingScreen with shimmer skeleton loaders and eager image preloading to prevent layout shifts and pop-in lag.
