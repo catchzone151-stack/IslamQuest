@@ -56,8 +56,10 @@ export default function ChallengeGame() {
   const [selectedLeft, setSelectedLeft] = useState(null);
   const [selectedRight, setSelectedRight] = useState(null);
   const [matches, setMatches] = useState([]);
+  const [elapsedTime, setElapsedTime] = useState(0);
   
   const timerRef = useRef(null);
+  const elapsedTimerRef = useRef(null);
   const selectedAnswerRef = useRef(null);
   const isCompletingRef = useRef(false);
   const startTimeRef = useRef(null);
@@ -125,7 +127,7 @@ export default function ChallengeGame() {
   }, [challengeId, isBoss, navigate, challenge, mode]);
 
   useEffect(() => {
-    // Start timer
+    // Start countdown timer for modes with totalTime
     if (questions.length > 0 && timeLeft > 0 && !gameEnded) {
       timerRef.current = setInterval(() => {
         setTimeLeft(prev => {
@@ -142,6 +144,19 @@ export default function ChallengeGame() {
       if (timerRef.current) clearInterval(timerRef.current);
     };
   }, [questions, timeLeft, gameEnded]);
+
+  useEffect(() => {
+    // Start elapsed timer for Mind Battle only
+    if (questions.length > 0 && mode?.id === 'mind_battle' && !gameEnded) {
+      elapsedTimerRef.current = setInterval(() => {
+        setElapsedTime(prev => prev + 1);
+      }, 1000);
+    }
+
+    return () => {
+      if (elapsedTimerRef.current) clearInterval(elapsedTimerRef.current);
+    };
+  }, [questions, gameEnded, mode]);
 
   const handleTimeUp = () => {
     setIsTimeUp(true);
@@ -436,7 +451,7 @@ export default function ChallengeGame() {
           <span style={{ fontSize: "1.5rem" }}>{mode?.icon}</span>
           <span>{mode?.name}</span>
         </div>
-        {/* Only show timer for modes with totalTime (Lightning Round, Boss) - NOT Mind Duel */}
+        {/* Countdown timer for modes with totalTime (Lightning Round, Boss, Speed Run) */}
         {mode?.totalTime && (
           <div 
             className="challenge-game-timer"
@@ -445,6 +460,17 @@ export default function ChallengeGame() {
             }}
           >
             ⏱️ {timeLeft}s
+          </div>
+        )}
+        {/* Elapsed timer for Mind Battle only */}
+        {mode?.id === 'mind_battle' && (
+          <div 
+            className="challenge-game-timer"
+            style={{
+              color: "#8b5cf6"
+            }}
+          >
+            🕐 {Math.floor(elapsedTime / 60).toString().padStart(2, '0')}:{(elapsedTime % 60).toString().padStart(2, '0')}
           </div>
         )}
       </div>

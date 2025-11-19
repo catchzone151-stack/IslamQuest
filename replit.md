@@ -50,7 +50,7 @@ Preferred communication style: Simple, everyday language.
   - **Beta Mode Enhanced Pool**: In beta mode, pulls from ALL lessons across ALL 14 paths (full database access) ensuring zero duplicates
   - **Repetition Prevention**: Tracks last 50 questions shown, prevents showing same questions repeatedly
   - **Dynamic Expansion**: Auto-generates question variations (shuffled options, same content) for users with few completed lessons
-  - **Difficulty Scaling**: Mind Duel (hard/medium), Lightning Round (all), Speed Run (medium/easy preferred), Sudden Death (mixed), Boss Level (hard only)
+  - **Difficulty Scaling**: Mind Battle (hard/medium), Lightning Round (all), Speed Run (medium/easy preferred), Sudden Death (mixed), Boss Level (hard only)
   - **Performance Cache**: Memoized question pool rebuilt only when lessons are completed or beta mode toggled
   - **Intelligent Cache Invalidation**: Cache rebuilds when lesson completion changes OR beta mode toggles
 - **Performance (November 2025)**: Route-based code splitting with eager preloading on mount. Duolingo-style image preloading using `import.meta.glob` auto-discovery loads ALL production images (~43 images) in ~400-1000ms immediately on app start. Critical hero assets use `<link rel="preload">` for instant first paint. Direct navigation (no transition delays) ensures instant page switches. `React.memo` optimizes component re-renders. Result: zero image pop-in lag across entire app.
@@ -62,7 +62,7 @@ Preferred communication style: Simple, everyday language.
 - **Social Features**: Friend management (add/search, requests), friends leaderboard (Friend of the Week), activity feed, and quick messaging.
 - **Gamification**:
     - **Friend Challenges (November 2025)**: 4 game modes with 48-hour active window, questions from shared completed lessons, and rewards:
-        - **Mind Duel (🧠)**: 8 challenging Islamic questions, no time limit, fastest time wins tiebreakers
+        - **Mind Battle (🧠)**: 8 questions, no time limit, fastest time wins tiebreakers, displays elapsed time counter
         - **Lightning Round (⚡)**: 10 questions in 60 seconds total
         - **Speed Run (🏃)**: Answer as many questions correctly in 30 seconds (40 questions prepared, auto-recycles if needed), wrong answers don't end game
         - **Sudden Death (⛓️)**: 25 questions - one wrong ends the game, fastest time wins draws (auto-recycles questions if user has completed fewer than 25 lessons)

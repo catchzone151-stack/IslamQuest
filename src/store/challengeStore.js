@@ -448,7 +448,7 @@ export const useChallengeStore = create((set, get) => ({
     // Calculate score
     const score = simulatedAnswers.filter((ans, idx) => ans === questions[idx].answer).length;
 
-    // Generate completion time for time-tracked modes (Sudden Death, Mind Duel)
+    // Generate completion time for time-tracked modes (Mind Battle, Sudden Death)
     const mode = Object.values(CHALLENGE_MODES).find(m => m.id === challenge.mode);
     let completionTime = null;
     if (mode?.trackTime) {
@@ -509,7 +509,7 @@ export const useChallengeStore = create((set, get) => ({
     } else if (challenge.opponentScore > challenge.challengerScore) {
       winner = challenge.opponentId;
     } else {
-      // Scores are equal - check if it's a time-based mode (Sudden Death, Mind Duel)
+      // Scores are equal - check if it's a time-based mode (Mind Battle, Sudden Death)
       const mode = Object.values(CHALLENGE_MODES).find(m => m.id === challenge.mode);
       if (mode?.trackTime && challenge.challengerTime !== null && challenge.opponentTime !== null) {
         // Fastest time wins
@@ -566,8 +566,8 @@ export const useChallengeStore = create((set, get) => ({
     // 📊 Apply difficulty scaling based on mode
     let filteredQuestions = freshQuestions;
     
-    if (config.id === 'mind_duel') {
-      // Mind Duel: Highest reasoning complexity
+    if (config.id === 'mind_battle') {
+      // Mind Battle: Highest reasoning complexity
       filteredQuestions = freshQuestions.filter(q => 
         q.difficulty === 'hard' || q.difficulty === 'medium'
       );
