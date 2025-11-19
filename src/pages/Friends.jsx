@@ -302,8 +302,9 @@ function FriendCard({ friend, onViewProfile, onMessage, onChallenge }) {
       padding: 16,
       border: "1px solid rgba(212, 175, 55, 0.2)",
       boxShadow: "0 4px 15px rgba(0, 0, 0, 0.3)",
+      overflow: "hidden",
     }}>
-      <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+      <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
         {/* Avatar */}
         <img
           src={getAvatarImage(friend.avatar, { userId: friend.id, nickname: friend.name })}
@@ -322,8 +323,15 @@ function FriendCard({ friend, onViewProfile, onMessage, onChallenge }) {
         />
 
         {/* Info */}
-        <div style={{ flex: 1, textAlign: "left" }}>
-          <div style={{ color: "#D4AF37", fontWeight: "600", fontSize: "1.1rem" }}>
+        <div style={{ flex: 1, textAlign: "left", minWidth: 0 }}>
+          <div style={{ 
+            color: "#D4AF37", 
+            fontWeight: "600", 
+            fontSize: "1.1rem",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}>
             {friend.name}
           </div>
           <div style={{ 
@@ -341,17 +349,18 @@ function FriendCard({ friend, onViewProfile, onMessage, onChallenge }) {
         </div>
 
         {/* Action Buttons */}
-        <div style={{ display: "flex", gap: 8 }}>
+        <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
           <button
             onClick={onChallenge}
             style={{
               background: "rgba(239, 68, 68, 0.2)",
               border: "1px solid rgba(239, 68, 68, 0.5)",
               borderRadius: 12,
-              padding: "8px 12px",
+              padding: "8px 10px",
               color: "#ef4444",
               cursor: "pointer",
               fontSize: "1.2rem",
+              flexShrink: 0,
             }}
             title="Challenge"
           >
@@ -363,10 +372,11 @@ function FriendCard({ friend, onViewProfile, onMessage, onChallenge }) {
               background: "rgba(212, 175, 55, 0.2)",
               border: "1px solid rgba(212, 175, 55, 0.5)",
               borderRadius: 12,
-              padding: "8px 12px",
+              padding: "8px 10px",
               color: "#D4AF37",
               cursor: "pointer",
               fontSize: "1.2rem",
+              flexShrink: 0,
             }}
             title="Message"
           >
