@@ -7,7 +7,7 @@ import coinIcon from "../../assets/ui/ui_coin.webp";
 const overlayStyle = {
   position: "fixed",
   inset: 0,
-  backgroundColor: "rgba(0,0,0,0.7)",
+  backgroundColor: "rgba(0,0,0,0.95)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",

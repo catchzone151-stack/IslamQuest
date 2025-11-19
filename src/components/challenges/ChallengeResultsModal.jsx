@@ -11,9 +11,17 @@ export default function ChallengeResultsModal({
   rewards,
   opponentName,
   opponentScore,
+  answeredCount, // Number of questions answered by user (for Speed Run)
+  opponentAnsweredCount, // Number of questions answered by opponent (for Speed Run)
   onClose 
 }) {
-  const percentage = Math.round((score / totalQuestions) * 100);
+  // For Speed Run, use answered count; otherwise use total questions
+  const isSpeedRun = mode === "speed_run" || mode?.id === "speed_run";
+  const userTotal = isSpeedRun && answeredCount ? answeredCount : totalQuestions;
+  const opponentTotal = isSpeedRun && opponentAnsweredCount ? opponentAnsweredCount : totalQuestions;
+  
+  // Guard against division by zero (if user answered no questions)
+  const percentage = userTotal > 0 ? Math.round((score / userTotal) * 100) : 0;
   
   // Handle mode as either string or object
   const isBossLevel = mode === "boss_level" || mode?.id === "boss_level" || mode?.name?.includes("Boss");
@@ -75,10 +83,10 @@ export default function ChallengeResultsModal({
         </h2>
 
         {/* Score Display */}
-        <div className="challenge-score-display">
+        <div className="challenge-score-display" style={{ minHeight: "100px" }}>
           <div className="score-section">
             <span className="score-label">You</span>
-            <span className="score-value">{score ?? 0}/{totalQuestions}</span>
+            <span className="score-value" style={{ wordBreak: "break-word" }}>{score ?? 0}/{userTotal}</span>
             <span className="score-percentage">{percentage ?? 0}%</span>
           </div>
           
@@ -87,13 +95,20 @@ export default function ChallengeResultsModal({
               <div className="score-vs">VS</div>
               
               <div className="score-section">
-                <span className="score-label">{opponentName || "Opponent"}</span>
-                <span className="score-value">
-                  {opponentScore !== null && opponentScore !== undefined ? `${opponentScore}/${totalQuestions}` : "Pending"}
+                <span className="score-label" style={{ 
+                  wordBreak: "break-word",
+                  maxWidth: "120px",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "normal",
+                  lineHeight: "1.2"
+                }}>{opponentName || "Opponent"}</span>
+                <span className="score-value" style={{ wordBreak: "break-word" }}>
+                  {opponentScore !== null && opponentScore !== undefined ? `${opponentScore}/${opponentTotal}` : "Pending"}
                 </span>
                 {opponentScore !== null && opponentScore !== undefined && (
                   <span className="score-percentage">
-                    {Math.round((opponentScore / totalQuestions) * 100)}%
+                    {opponentTotal > 0 ? Math.round((opponentScore / opponentTotal) * 100) : 0}%
                   </span>
                 )}
               </div>

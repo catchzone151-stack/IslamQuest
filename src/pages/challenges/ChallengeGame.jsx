@@ -398,10 +398,17 @@ export default function ChallengeGame() {
     
     console.log('💰 Showing results modal', { finalScore, result, rewards });
     
+    // For Speed Run, track how many questions were actually answered
+    const isSpeedRun = mode?.id === "speed_run";
+    const userAnsweredCount = isSpeedRun ? finalAnswers.length : questions.length;
+    const opponentAnsweredCount = isSpeedRun && challenge?.opponentAnswers ? challenge.opponentAnswers.length : questions.length;
+    
     showModal(MODAL_TYPES.CHALLENGE_RESULTS, {
       mode,
       score: finalScore,
       totalQuestions: questions.length,
+      answeredCount: userAnsweredCount,
+      opponentAnsweredCount: opponentAnsweredCount,
       result,
       rewards,
       opponentName: isBoss ? "Boss" : challenge?.opponentId,

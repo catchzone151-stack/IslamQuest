@@ -362,7 +362,9 @@ export default function Pathway() {
                   color: "#fff",
                   fontSize: "0.9rem",
                   lineHeight: 1.4,
-                  whiteSpace: "nowrap",
+                  whiteSpace: "normal",
+                  maxWidth: "calc(50vw - 85px)",
+                  wordWrap: "break-word",
                 }}
               >
                 <div

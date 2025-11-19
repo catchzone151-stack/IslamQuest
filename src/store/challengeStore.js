@@ -35,7 +35,7 @@ export const CHALLENGE_MODES = {
     id: "speed_run",
     name: "Speed Run",
     icon: "🏃",
-    description: "Answer as many questions correctly in 30 seconds",
+    description: "Answer as many correctly in 30 seconds (max 40 questions)",
     questionCount: 40,
     totalTime: 30,
     rewards: { win: { xp: 120, coins: 20 }, lose: { xp: 20, coins: 0 }, draw: { xp: 50, coins: 0 } },
