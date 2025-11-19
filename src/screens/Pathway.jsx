@@ -103,7 +103,6 @@ export default function Pathway() {
       ref={scrollRef}
       className="screen no-extra-space"
       style={{
-        maxHeight: "100vh",
         overflowY: "auto",
         background: "radial-gradient(circle at top, #0f2344 0%, #020815 70%)",
         color: "white",
