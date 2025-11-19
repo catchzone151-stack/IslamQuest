@@ -358,14 +358,13 @@ export default function Home() {
           textAlign: "center",
           fontSize: "1.15rem",
           margin: "6px 0 14px",
-          fontFamily: "'Amiri', 'Georgia', serif",
-          fontWeight: "500",
+          fontWeight: "800",
           color: "#FFD700",
           textShadow: "0 2px 8px rgba(212, 175, 55, 0.4)",
           letterSpacing: "0.5px",
         }}
       >
-        Assalamu Alaikum wa Rahmatullah, {name || "Explorer"} 👋
+        Assalamu Alaikum, {name || "Explorer"} 👋
       </p>
 
       {/*
