@@ -111,7 +111,7 @@ export default function Home() {
 
   /**
    * Programmatically scroll the carousel to a page index (0,1,2)
-   * Used by the page dots + dev slider buttons
+   * Used by the page dots
    */
   const goToPage = (i) => {
     const el = carouselRef.current;
@@ -531,68 +531,9 @@ export default function Home() {
               transition: "all 0.25s ease",
               margin: "0 6px",
               cursor: "pointer",
-              padding: "16px",
-              minWidth: "44px",
-              minHeight: "44px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
             }}
           />
         ))}
-      </div>
-
-      {/*
-       * ===============================================================
-       * DEV SLIDER / TEST NAV CONTROL
-       * ===============================================================
-       */}
-      <div
-        style={{
-          maxWidth: 360,
-          margin: "0 auto 8px",
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          color: "rgba(255,255,255,0.85)",
-        }}
-      >
-        <button
-          onClick={() => goToPage(Math.max(0, page - 1))}
-          style={{
-            padding: "6px 10px",
-            borderRadius: 8,
-            border: "1px solid rgba(255,255,255,0.25)",
-            background: "rgba(255,255,255,0.08)",
-            color: "white",
-            cursor: "pointer",
-          }}
-        >
-          ◀
-        </button>
-
-        <input
-          type="range"
-          min="0"
-          max="2"
-          value={page}
-          onChange={(e) => goToPage(Number(e.target.value))}
-          style={{ flex: 1 }}
-        />
-
-        <button
-          onClick={() => goToPage(Math.min(2, page + 1))}
-          style={{
-            padding: "6px 10px",
-            borderRadius: 8,
-            border: "1px solid rgba(255,255,255,0.25)",
-            background: "rgba(255,255,255,0.08)",
-            color: "white",
-            cursor: "pointer",
-          }}
-        >
-          ▶
-        </button>
       </div>
 
       {/*
