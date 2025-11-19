@@ -329,7 +329,7 @@ export const useFriendsStore = create((set, get) => ({
       return [];
     }
 
-    // 🤖 Beta Mode: Show simulated friends + current user
+    // 🤖 Beta Mode: Show simulated friends + current user + The Dev
     const friends = get().friends;
     
     // Get current user data from progressStore
@@ -347,8 +347,20 @@ export const useFriendsStore = create((set, get) => ({
       isCurrentUser: true
     };
 
-    // Combine current user + all friends (real + simulated)
-    const allPlayers = [currentUser, ...friends];
+    // Add "The Dev" NPC with exactly 168350 XP (appears only in global, not friends)
+    const theDev = {
+      id: 'the_dev_npc',
+      name: 'The Dev',
+      avatar: 'avatar_male_ninja',
+      xp: 168350,
+      coins: 50000,
+      level: 10,
+      streak: 365,
+      isNPC: true
+    };
+
+    // Combine current user + The Dev + all friends (real + simulated)
+    const allPlayers = [currentUser, theDev, ...friends];
 
     // Sort by XP → Level → Coins
     return allPlayers
