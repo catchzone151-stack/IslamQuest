@@ -12,7 +12,7 @@ const prophetsLessons = [
   // Prophet Adam (1 of 2)
   {
     id: 1,
-    title: "Prophet Adam عليه السلام - Part 1",
+    title: "Prophet Adam - Part 1",
     meaning: "The First Human",
     description: [
       "Allah created Adam from clay and breathed life into him. Angels were commanded to prostrate to Adam. All obeyed except Iblis, who refused out of pride and arrogance.",
@@ -32,7 +32,7 @@ const prophetsLessons = [
   // Prophet Adam (2 of 2)
   {
     id: 2,
-    title: "Prophet Adam عليه السلام - Part 2",
+    title: "Prophet Adam - Part 2",
     meaning: "The First Human",
     description: [
       "Adam and Hawwa descended to earth to begin humanity's journey. They were told that guidance would come from Allah. Those who follow it would have no fear or grief.",
@@ -52,7 +52,7 @@ const prophetsLessons = [
   // Prophet Idris (1 of 1)
   {
     id: 3,
-    title: "Prophet Idris عليه السلام",
+    title: "Prophet Idris",
     meaning: "The Elevated Prophet",
     description: [
       "Idris was a righteous prophet who came after Adam. He was known for his patience, truthfulness, and devotion. Allah raised him to a high station because of his purity and worship.",
@@ -72,7 +72,7 @@ const prophetsLessons = [
   // Prophet Nuh (1 of 2)
   {
     id: 4,
-    title: "Prophet Nuh عليه السلام - Part 1",
+    title: "Prophet Nuh - Part 1",
     meaning: "Noah",
     description: [
       "Nuh was sent to a people who worshipped idols named Wadd, Suwa, Yaghuth, Ya'uq, and Nasr. They had abandoned the worship of Allah, following the ways of their misguided forefathers.",
@@ -92,7 +92,7 @@ const prophetsLessons = [
   // Prophet Nuh (2 of 2)
   {
     id: 5,
-    title: "Prophet Nuh عليه السلام - Part 2",
+    title: "Prophet Nuh - Part 2",
     meaning: "Noah",
     description: [
       "Allah commanded Nuh to build a massive ark because a great flood was coming. People mocked him for building a ship on dry land. Nuh obeyed Allah's command without questioning or delay.",
@@ -112,7 +112,7 @@ const prophetsLessons = [
   // Prophet Hud (1 of 2)
   {
     id: 6,
-    title: "Prophet Hud عليه السلام - Part 1",
+    title: "Prophet Hud - Part 1",
     meaning: "The Prophet of 'Ad",
     description: [
       "Hud was sent to the people of 'Ad who lived in the region of Ahqaf. They were powerful, wealthy, and built massive structures and lofty towers showing their strength and pride.",
@@ -132,7 +132,7 @@ const prophetsLessons = [
   // Prophet Hud (2 of 2)
   {
     id: 7,
-    title: "Prophet Hud عليه السلام - Part 2",
+    title: "Prophet Hud - Part 2",
     meaning: "The Prophet of 'Ad",
     description: [
       "The people of 'Ad demanded Hud bring the punishment if he was truthful. Allah sent them three years of drought first, testing them and giving them time to repent and change.",
@@ -152,7 +152,7 @@ const prophetsLessons = [
   // Prophet Salih (1 of 2)
   {
     id: 8,
-    title: "Prophet Salih عليه السلام - Part 1",
+    title: "Prophet Salih - Part 1",
     meaning: "The Prophet of Thamud",
     description: [
       "Salih was sent to the people of Thamud who lived in a place called Al-Hijr. They carved beautiful homes into mountains, feeling secure and boasting about their skills and intelligence.",
@@ -172,7 +172,7 @@ const prophetsLessons = [
   // Prophet Salih (2 of 2)
   {
     id: 9,
-    title: "Prophet Salih عليه السلام - Part 2",
+    title: "Prophet Salih - Part 2",
     meaning: "The Prophet of Thamud",
     description: [
       "The she-camel lived peacefully among them for some time. But the arrogant leaders grew jealous of her and plotted to kill her despite Salih's clear warnings about the consequences.",
@@ -192,7 +192,7 @@ const prophetsLessons = [
   // Prophet Ibrahim (1 of 2)
   {
     id: 10,
-    title: "Prophet Ibrahim عليه السلام - Part 1",
+    title: "Prophet Ibrahim - Part 1",
     meaning: "Abraham",
     description: [
       "Ibrahim grew up in a land where everyone worshipped idols. His own father Azar was an idol-maker. Even as a youth, Ibrahim questioned why people worshipped powerless statues made by human hands.",
@@ -212,7 +212,7 @@ const prophetsLessons = [
   // Prophet Ibrahim (2 of 2)
   {
     id: 11,
-    title: "Prophet Ibrahim عليه السلام - Part 2",
+    title: "Prophet Ibrahim - Part 2",
     meaning: "Abraham",
     description: [
       "Allah commanded Ibrahim to leave his homeland and travel to new lands. He was tested repeatedly: leaving his family, settling his wife Hajar and baby Ismail in an empty desert valley.",
@@ -232,7 +232,7 @@ const prophetsLessons = [
   // Prophet Lut (1 of 2)
   {
     id: 12,
-    title: "Prophet Lut عليه السلام - Part 1",
+    title: "Prophet Lut - Part 1",
     meaning: "Lot",
     description: [
       "Lut was sent to a people who committed shameful acts that no other nation had done before. They openly practiced immoral behavior and cut off travelers, engaging in wickedness publicly without shame.",
@@ -252,7 +252,7 @@ const prophetsLessons = [
   // Prophet Lut (2 of 2)
   {
     id: 13,
-    title: "Prophet Lut عليه السلام - Part 2",
+    title: "Prophet Lut - Part 2",
     meaning: "Lot",
     description: [
       "Angels came to Lut in the form of handsome young men. When the townspeople heard of the guests, they rushed to Lut's house with evil intentions. Lut felt distressed and powerless.",
@@ -272,7 +272,7 @@ const prophetsLessons = [
   // Prophet Ismail (1 of 2)
   {
     id: 14,
-    title: "Prophet Ismail عليه السلام - Part 1",
+    title: "Prophet Ismail - Part 1",
     meaning: "Ishmael",
     description: [
       "Ismail was the first son of Prophet Ibrahim. As a baby, he was left with his mother Hajar in the empty desert of Makkah. Allah's wisdom placed them there to establish His sacred house.",
@@ -292,7 +292,7 @@ const prophetsLessons = [
   // Prophet Ismail (2 of 2)
   {
     id: 15,
-    title: "Prophet Ismail عليه السلام - Part 2",
+    title: "Prophet Ismail - Part 2",
     meaning: "Ishmael",
     description: [
       "After Allah ransomed Ismail with a ram, father and son worked together to rebuild the Ka'bah, the house of worship established by Adam and renewed by Ibrahim for all humanity.",
@@ -312,7 +312,7 @@ const prophetsLessons = [
   // Prophet Ishaq (1 of 2)
   {
     id: 16,
-    title: "Prophet Ishaq عليه السلام - Part 1",
+    title: "Prophet Ishaq - Part 1",
     meaning: "Isaac",
     description: [
       "Ishaq was given to Ibrahim and Sarah in their old age as a miracle after Sarah had been barren for many years. Angels gave her glad tidings of a son who would be righteous.",
@@ -332,7 +332,7 @@ const prophetsLessons = [
   // Prophet Ishaq (2 of 2)
   {
     id: 17,
-    title: "Prophet Ishaq عليه السلام - Part 2",
+    title: "Prophet Ishaq - Part 2",
     meaning: "Isaac",
     description: [
       "Ishaq continued the legacy of prophethood, maintaining the pure message of Tawhid in his land. He taught his people to worship Allah alone without partners or intermediaries between them and their Creator.",
@@ -356,7 +356,7 @@ const prophetsLessons = [
   // Prophet Ya'qub (1 of 2)
   {
     id: 18,
-    title: "Prophet Ya'qub عليه السلام - Part 1",
+    title: "Prophet Ya'qub - Part 1",
     meaning: "Jacob/Israel",
     description: [
       "Ya'qub was the son of Ishaq and grandson of Ibrahim. He was also called Isra'il and became a prophet continuing the legacy of Tawhid. His twelve sons became the fathers of the twelve tribes.",
@@ -376,7 +376,7 @@ const prophetsLessons = [
   // Prophet Ya'qub (2 of 2)
   {
     id: 19,
-    title: "Prophet Ya'qub عليه السلام - Part 2",
+    title: "Prophet Ya'qub - Part 2",
     meaning: "Jacob/Israel",
     description: [
       "Ya'qub never gave up hope that Yusuf was alive. When his sons went to Egypt, he told them to search for Yusuf and his brother. His trust in Allah remained unshaken despite years of separation.",
@@ -396,7 +396,7 @@ const prophetsLessons = [
   // Prophet Yusuf (1 of 2)
   {
     id: 20,
-    title: "Prophet Yusuf عليه السلام - Part 1",
+    title: "Prophet Yusuf - Part 1",
     meaning: "Joseph",
     description: [
       "Yusuf was beloved by his father Ya'qub. As a young boy, he saw a dream where eleven stars, the sun, and moon prostrated to him. Ya'qub knew this meant great things ahead.",
@@ -416,7 +416,7 @@ const prophetsLessons = [
   // Prophet Yusuf (2 of 2)
   {
     id: 21,
-    title: "Prophet Yusuf عليه السلام - Part 2",
+    title: "Prophet Yusuf - Part 2",
     meaning: "Joseph",
     description: [
       "In prison, Yusuf interpreted dreams through Allah's knowledge. When the king had a troubling dream, Yusuf explained it: seven years of plenty followed by seven years of famine. The king freed him.",
@@ -436,7 +436,7 @@ const prophetsLessons = [
   // Prophet Ayyub (1 of 2)
   {
     id: 22,
-    title: "Prophet Ayyub عليه السلام - Part 1",
+    title: "Prophet Ayyub - Part 1",
     meaning: "Job",
     description: [
       "Ayyub was a wealthy, healthy prophet blessed with family, land, and livestock. He was grateful to Allah, worshipped sincerely, and helped the poor. He lived a life of righteousness and devotion.",
@@ -456,7 +456,7 @@ const prophetsLessons = [
   // Prophet Ayyub (2 of 2)
   {
     id: 23,
-    title: "Prophet Ayyub عليه السلام - Part 2",
+    title: "Prophet Ayyub - Part 2",
     meaning: "Job",
     description: [
       "After many years of suffering, Ayyub finally called upon Allah: 'Indeed, adversity has touched me, and You are the Most Merciful of the merciful.' This wasn't a complaint but a humble plea.",
@@ -476,7 +476,7 @@ const prophetsLessons = [
   // Prophet Shu'ayb (1 of 2)
   {
     id: 24,
-    title: "Prophet Shu'ayb عليه السلام - Part 1",
+    title: "Prophet Shu'ayb - Part 1",
     meaning: "The Prophet of Madyan",
     description: [
       "Shu'ayb was sent to the people of Madyan who were dishonest in their business dealings. They cheated in weights and measures, giving less and taking more. They ambushed travelers and stole from them.",
@@ -496,7 +496,7 @@ const prophetsLessons = [
   // Prophet Shu'ayb (2 of 2)
   {
     id: 25,
-    title: "Prophet Shu'ayb عليه السلام - Part 2",
+    title: "Prophet Shu'ayb - Part 2",
     meaning: "The Prophet of Madyan",
     description: [
       "The people of Madyan refused to listen to Shu'ayb. They continued cheating, stealing, and worshipping false gods. They challenged him to bring Allah's punishment if he was truly a prophet sent by Allah.",
@@ -516,7 +516,7 @@ const prophetsLessons = [
   // Prophet Musa (1 of 2)
   {
     id: 26,
-    title: "Prophet Musa عليه السلام - Part 1",
+    title: "Prophet Musa - Part 1",
     meaning: "Moses",
     description: [
       "Musa was born in Egypt when Fir'awn (Pharaoh) was killing all newborn Israelite boys. Allah inspired Musa's mother to place him in a basket and let it float down the river to save him.",
@@ -536,7 +536,7 @@ const prophetsLessons = [
   // Prophet Musa (2 of 2)
   {
     id: 27,
-    title: "Prophet Musa عليه السلام - Part 2",
+    title: "Prophet Musa - Part 2",
     meaning: "Moses",
     description: [
       "While traveling with his family, Musa saw a fire on Mount Tur. When he approached it, Allah spoke to him directly: 'Indeed, I am your Lord, so remove your sandals. You are in the sacred valley.'",
@@ -556,7 +556,7 @@ const prophetsLessons = [
   // Prophet Harun (1 of 2)
   {
     id: 28,
-    title: "Prophet Harun عليه السلام - Part 1",
+    title: "Prophet Harun - Part 1",
     meaning: "Aaron",
     description: [
       "Harun was Musa's older brother and was appointed by Allah to support Musa in his mission to Fir'awn. Musa prayed for Harun to be his helper, and Allah granted this request mercifully.",
@@ -576,7 +576,7 @@ const prophetsLessons = [
   // Prophet Harun (2 of 2)
   {
     id: 29,
-    title: "Prophet Harun عليه السلام - Part 2",
+    title: "Prophet Harun - Part 2",
     meaning: "Aaron",
     description: [
       "When Musa returned and saw his people worshipping the calf, he was furious. He grabbed Harun's beard in anger. Harun explained that he tried to stop them but feared causing division among the believers.",
@@ -596,7 +596,7 @@ const prophetsLessons = [
   // Prophet Dhul-Kifl (1 of 2)
   {
     id: 30,
-    title: "Prophet Dhul-Kifl عليه السلام - Part 1",
+    title: "Prophet Dhul-Kifl - Part 1",
     meaning: "The Patient Prophet",
     description: [
       "Dhul-Kifl was a righteous prophet known for his patience and commitment to justice. He is mentioned in the Qur'an among the patient prophets who remained steadfast in their worship and calling to truth.",
@@ -616,7 +616,7 @@ const prophetsLessons = [
   // Prophet Dhul-Kifl (2 of 2)
   {
     id: 31,
-    title: "Prophet Dhul-Kifl عليه السلام - Part 2",
+    title: "Prophet Dhul-Kifl - Part 2",
     meaning: "The Patient Prophet",
     description: [
       "Despite tests and trials, Dhul-Kifl never became angry or gave up his duties. His patience became legendary, and he remained committed to helping people and calling them to Allah's path every day.",
@@ -636,7 +636,7 @@ const prophetsLessons = [
   // Prophet Dawud (1 of 2)
   {
     id: 32,
-    title: "Prophet Dawud عليه السلام - Part 1",
+    title: "Prophet Dawud - Part 1",
     meaning: "David",
     description: [
       "Dawud was a young shepherd when the Children of Israel faced the giant warrior Jalut (Goliath) and his massive army. King Talut's army was afraid to fight the terrifying giant and his forces.",
@@ -656,7 +656,7 @@ const prophetsLessons = [
   // Prophet Dawud (2 of 2)
   {
     id: 33,
-    title: "Prophet Dawud عليه السلام - Part 2",
+    title: "Prophet Dawud - Part 2",
     meaning: "David",
     description: [
       "Allah gave Dawud a special gift: iron became soft in his hands like clay. He made armor and shields to protect people in battle. He worked with his own hands, never relying only on his position as king.",
@@ -676,7 +676,7 @@ const prophetsLessons = [
   // Prophet Sulayman (1 of 2)
   {
     id: 34,
-    title: "Prophet Sulayman عليه السلام - Part 1",
+    title: "Prophet Sulayman - Part 1",
     meaning: "Solomon",
     description: [
       "Sulayman was the son of Prophet Dawud. He inherited prophethood and kingship from his father. Allah granted Sulayman a kingdom unlike any before or after, with powers over winds, jinn, animals, and more.",
@@ -696,7 +696,7 @@ const prophetsLessons = [
   // Prophet Sulayman (2 of 2)
   {
     id: 35,
-    title: "Prophet Sulayman عليه السلام - Part 2",
+    title: "Prophet Sulayman - Part 2",
     meaning: "Solomon",
     description: [
       "Sulayman learned that the Queen of Sheba and her people worshipped the sun instead of Allah. He sent a letter inviting her to worship Allah alone and abandon the false worship of created things.",
@@ -716,7 +716,7 @@ const prophetsLessons = [
   // Prophet Ilyas (1 of 2)
   {
     id: 36,
-    title: "Prophet Ilyas عليه السلام - Part 1",
+    title: "Prophet Ilyas - Part 1",
     meaning: "Elijah",
     description: [
       "Ilyas was sent to the people of Israel when they had turned away from worshipping Allah. They worshipped an idol called Ba'al and abandoned the pure teachings that Musa had brought to them.",
@@ -736,7 +736,7 @@ const prophetsLessons = [
   // Prophet Ilyas (2 of 2)
   {
     id: 37,
-    title: "Prophet Ilyas عليه السلام - Part 2",
+    title: "Prophet Ilyas - Part 2",
     meaning: "Elijah",
     description: [
       "Ilyas challenged the priests of Ba'al to a test: they would call upon their god, and he would call upon Allah. Whichever god answered with fire was the true God worth worshipping.",
@@ -756,7 +756,7 @@ const prophetsLessons = [
   // Prophet Al-Yasa' (1 of 2)
   {
     id: 38,
-    title: "Prophet Al-Yasa عليه السلام' - Part 1",
+    title: "Prophet Al-Yasa' - Part 1",
     meaning: "Elisha",
     description: [
       "Al-Yasa' was a prophet who succeeded Ilyas in calling the Children of Israel back to the worship of Allah alone. He continued the mission of fighting idol worship and establishing Tawhid among his people.",
@@ -776,7 +776,7 @@ const prophetsLessons = [
   // Prophet Al-Yasa' (2 of 2)
   {
     id: 39,
-    title: "Prophet Al-Yasa عليه السلام' - Part 2",
+    title: "Prophet Al-Yasa' - Part 2",
     meaning: "Elisha",
     description: [
       "Al-Yasa' taught his people through both words and actions. He lived a simple, pious life, showing them that true wealth is in faith and closeness to Allah, not in material possessions or power.",
@@ -796,7 +796,7 @@ const prophetsLessons = [
   // Prophet Yunus (1 of 2)
   {
     id: 40,
-    title: "Prophet Yunus عليه السلام - Part 1",
+    title: "Prophet Yunus - Part 1",
     meaning: "Jonah",
     description: [
       "Yunus was sent to the people of Nineveh (in modern-day Iraq) to call them to worship Allah. He preached to them for years, but they stubbornly rejected his message and continued their disbelief and sins.",
@@ -816,7 +816,7 @@ const prophetsLessons = [
   // Prophet Yunus (2 of 2)
   {
     id: 41,
-    title: "Prophet Yunus عليه السلام - Part 2",
+    title: "Prophet Yunus - Part 2",
     meaning: "Jonah",
     description: [
       "In the darkness of the whale's belly, Yunus realized his mistake. He turned to Allah in sincere repentance, declaring: 'There is no god except You; exalted are You. Indeed, I have been of the wrongdoers.'",
@@ -840,7 +840,7 @@ const prophetsLessons = [
   // Prophet Zakariyya (1 of 2)
   {
     id: 42,
-    title: "Prophet Zakariyya عليه السلام - Part 1",
+    title: "Prophet Zakariyya - Part 1",
     meaning: "Zechariah",
     description: [
       "Zakariyya was a righteous prophet and guardian of Maryam (Mary). He was very old, and his wife was barren. He had no children and worried there would be no one to continue his mission after him.",
@@ -860,7 +860,7 @@ const prophetsLessons = [
   // Prophet Zakariyya (2 of 2)
   {
     id: 43,
-    title: "Prophet Zakariyya عليه السلام - Part 2",
+    title: "Prophet Zakariyya - Part 2",
     meaning: "Zechariah",
     description: [
       "While Zakariyya was praying in the temple, angels gave him glad tidings: 'Allah gives you good news of Yahya, confirming a word from Allah, honorable, chaste, and a prophet from among the righteous.'",
@@ -880,7 +880,7 @@ const prophetsLessons = [
   // Prophet Yahya (1 of 2)
   {
     id: 44,
-    title: "Prophet Yahya عليه السلام - Part 1",
+    title: "Prophet Yahya - Part 1",
     meaning: "John the Baptist",
     description: [
       "Yahya was born to Zakariyya and his wife in their old age, a miracle from Allah. His name means 'he lives,' as he brought new life to his parents' hopes and to the message of truth.",
@@ -900,7 +900,7 @@ const prophetsLessons = [
   // Prophet Yahya (2 of 2)
   {
     id: 45,
-    title: "Prophet Yahya عليه السلام - Part 2",
+    title: "Prophet Yahya - Part 2",
     meaning: "John the Baptist",
     description: [
       "Yahya called the Children of Israel to return to pure worship of Allah. He spoke boldly against sin and corruption, even when it meant confronting powerful kings and leaders with the truth fearlessly.",
@@ -920,7 +920,7 @@ const prophetsLessons = [
   // Prophet 'Isa (1 of 2)
   {
     id: 46,
-    title: "Prophet 'Isa عليه السلام - Part 1",
+    title: "Prophet 'Isa - Part 1",
     meaning: "Jesus",
     description: [
       "'Isa was born to Maryam (Mary) miraculously without a father, as a sign of Allah's power. Angels told her she was chosen above all women and would give birth to a blessed prophet and messenger.",
@@ -940,7 +940,7 @@ const prophetsLessons = [
   // Prophet 'Isa (2 of 2)
   {
     id: 47,
-    title: "Prophet 'Isa عليه السلام - Part 2",
+    title: "Prophet 'Isa - Part 2",
     meaning: "Jesus",
     description: [
       "Some of the Children of Israel believed in 'Isa, but many rejected him. The corrupt priests and leaders plotted to kill him because he exposed their hypocrisy and called them back to true worship.",
