@@ -23,7 +23,7 @@ const QUICK_MESSAGES = [
 const SIMULATED_FRIENDS_TEMPLATE = [
   // 2 Smart Opponents (high accuracy, fast response)
   {
-    nickname: "BraveBeliever",
+    nickname: "BarelviBeliever",
     difficulty: "smart",
     accuracy: 0.85,
     responseDelay: { min: 3000, max: 7000 },
@@ -37,7 +37,7 @@ const SIMULATED_FRIENDS_TEMPLATE = [
     completedLessons: 45
   },
   {
-    nickname: "IbadahHero",
+    nickname: "SufiSeeker",
     difficulty: "smart",
     accuracy: 0.88,
     responseDelay: { min: 3000, max: 8000 },
@@ -52,7 +52,7 @@ const SIMULATED_FRIENDS_TEMPLATE = [
   },
   // 2 Medium Opponents
   {
-    nickname: "NurSeeker",
+    nickname: "DeobandiDummy",
     difficulty: "medium",
     accuracy: 0.65,
     responseDelay: { min: 6000, max: 12000 },
@@ -66,7 +66,7 @@ const SIMULATED_FRIENDS_TEMPLATE = [
     completedLessons: 28
   },
   {
-    nickname: "QuranKnight",
+    nickname: "SalafiTalafi",
     difficulty: "medium",
     accuracy: 0.68,
     responseDelay: { min: 5000, max: 11000 },
@@ -81,7 +81,7 @@ const SIMULATED_FRIENDS_TEMPLATE = [
   },
   // 2 Weak Opponents (lower accuracy, slower response)
   {
-    nickname: "SunnahRider",
+    nickname: "HanafiHero",
     difficulty: "weak",
     accuracy: 0.45,
     responseDelay: { min: 8000, max: 15000 },
@@ -95,7 +95,7 @@ const SIMULATED_FRIENDS_TEMPLATE = [
     completedLessons: 15
   },
   {
-    nickname: "GuidedStriver",
+    nickname: "QadianiQueen",
     difficulty: "weak",
     accuracy: 0.48,
     responseDelay: { min: 9000, max: 18000 },
