@@ -25,7 +25,7 @@ const greatestWomenLessons = [
     id: 2,
     title: "Maryam - Part 2",
     description: [
-      "Angel Jibril appeared to Maryam in human form while she was alone. Frightened, she sought Allah's protection. The angel announced Allah had chosen her to bear a miraculous blessed child.",
+      "Angel Jibra'il appeared to Maryam in human form while she was alone. Frightened, she sought Allah's protection. The angel announced Allah had chosen her to bear a miraculous blessed child.",
       "Maryam asked how she could have a child when no man had touched her. The angel explained Allah creates what He wills by simply saying 'Be' and it is.",
       "When the birth pains came, Maryam felt alone and distressed. Allah miraculously made a stream flow beneath her and dates fall from the palm tree above for nourishment and comfort."
     ],
@@ -146,7 +146,7 @@ const greatestWomenLessons = [
     description: [
       "During the Year of Sorrow, both Khadijah and Abu Talib died within months. The Prophet ﷺ lost his beloved wife and protective uncle, grieving deeply for his greatest supporter.",
       "Even after her death, the Prophet ﷺ honored Khadijah constantly. He sent meat to her friends and spoke of her virtues. When Aishah felt jealous, he explained no one could replace Khadijah.",
-      "Angel Jibril brought special greetings from Allah to Khadijah, giving her glad tidings of a palace in Paradise made entirely of pearls. Her legacy as Islam's first believer remains eternal."
+      "Angel Jibra'il brought special greetings from Allah to Khadijah, giving her glad tidings of a palace in Paradise made entirely of pearls. Her legacy as Islam's first believer remains eternal."
     ],
     evidence: {
       arabic: "إِنِّي قَدْ رُزِقْتُ حُبَّهَا",

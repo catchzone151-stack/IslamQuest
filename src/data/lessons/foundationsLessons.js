@@ -138,7 +138,7 @@ const foundationsLessons = [
     meaning: "The Noble Servants of Allah",
     description: [
       "Angels are noble beings created from light. Unlike humans, they never disobey Allah. They worship constantly without tiring, sleeping, or resting. Angels don't eat, drink, marry, or have children. Their numbers are beyond counting.",
-      "Well-known angels include Jibril who brought revelation, Mikail who controls rain and provision, Israfil who will blow the trumpet, and the Angel of Death. Angels of mercy pray for believers while angels of punishment execute justice.",
+      "Well-known angels include Jibra'il who brought revelation, Mikail who controls rain and provision, Israfil who will blow the trumpet, and the Angel of Death. Angels of mercy pray for believers while angels of punishment execute justice.",
       "Two angels sit on our shoulders recording every deed. Raqib writes good deeds, Atid writes bad deeds. They record everything we do, say, and intend. On Judgment Day, we'll see our complete record presented.",
       "Angels surround gatherings of remembrance and Qur'an study. The Prophet ﷺ said angels lower their wings for knowledge seekers. Believing in angels reminds us we're never alone and helps us be more conscious of Allah."
     ],
@@ -158,7 +158,7 @@ const foundationsLessons = [
     meaning: "The Divine Scriptures",
     description: [
       "Allah sent divine books throughout history to guide humanity. Major books include the Tawrah to Musa, Zabur to Dawud, Injil to Isa, and Qur'an to Muhammad ﷺ. All originally shared one message: worship One God.",
-      "The Qur'an is Allah's final, complete revelation. Revealed over twenty-three years through angel Jibril, it contains guidance for all life aspects. Unlike previous scriptures, the Qur'an is universal and timeless for all people.",
+      "The Qur'an is Allah's final, complete revelation. Revealed over twenty-three years through angel Jibra'il, it contains guidance for all life aspects. Unlike previous scriptures, the Qur'an is universal and timeless for all people.",
       "The Qur'an has been perfectly preserved in Arabic for over fourteen hundred years without change. Allah promises to protect it until Judgment Day. Muslims worldwide recite the exact same Qur'an. Millions have memorized it entirely.",
       "The Prophet ﷺ said the best are those who learn and teach Qur'an. It's not just a book on shelves but a living guide to read, understand, memorize, and live by faithfully every single day."
     ],

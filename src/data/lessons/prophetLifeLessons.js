@@ -183,8 +183,8 @@ const prophetLifeLessons = [
     id: 11,
     title: "The First Revelation",
     description: [
-      "On a Monday night in Ramadan, when Muhammad ﷺ was forty years old, Angel Jibril appeared in Cave Hira in his true form. The angel commanded, 'Read!' Muhammad ﷺ replied, 'I cannot read.'",
-      "Jibril embraced him tightly three times, each time commanding 'Read!' Finally he recited the first verses of Qur'an: 'Read in the name of your Lord who created...' These were the first words of divine revelation to Muhammad ﷺ.",
+      "On a Monday night in Ramadan, when Muhammad ﷺ was forty years old, Angel Jibra'il appeared in Cave Hira in his true form. The angel commanded, 'Read!' Muhammad ﷺ replied, 'I cannot read.'",
+      "Jibra'il embraced him tightly three times, each time commanding 'Read!' Finally he recited the first verses of Qur'an: 'Read in the name of your Lord who created...' These were the first words of divine revelation to Muhammad ﷺ.",
       "Trembling from this overwhelming experience, Muhammad ﷺ rushed home to Khadijah saying, 'Cover me! Cover me!' She comforted him, then took him to her cousin Waraqah, a Christian scholar who confirmed Muhammad ﷺ was Allah's chosen prophet."
     ],
     evidence: {
@@ -459,7 +459,7 @@ const prophetLifeLessons = [
     id: 27,
     title: "The Angel of the Mountains",
     description: [
-      "After Ta'if's rejection, Angel Jibril came with the Angel of the Mountains. They offered to crush Ta'if between its two mountains if the Prophet ﷺ wished. This was divine permission to punish those who harmed him so brutally.",
+      "After Ta'if's rejection, Angel Jibra'il came with the Angel of the Mountains. They offered to crush Ta'if between its two mountains if the Prophet ﷺ wished. This was divine permission to punish those who harmed him so brutally.",
       "Despite his bleeding wounds and broken heart, the Prophet ﷺ refused. He said, 'No, for I hope that Allah will bring forth from their descendants people who will worship Allah alone, associating nothing with Him in worship.'",
       "This moment showed the Prophet's ﷺ extraordinary mercy and foresight. He didn't seek revenge despite having divine permission. He hoped for future generations to accept Islam. His compassion for humanity exceeded his personal pain and suffering significantly."
     ],
@@ -476,7 +476,7 @@ const prophetLifeLessons = [
     id: 28,
     title: "The Night Journey - Isra",
     description: [
-      "During the Year of Sorrow, a miraculous event occurred. One night, Angel Jibril came with the Buraq, a blessed riding animal. The Prophet ﷺ was taken from Makkah to Al-Aqsa Mosque in Jerusalem in a single night—a journey taking weeks by caravan.",
+      "During the Year of Sorrow, a miraculous event occurred. One night, Angel Jibra'il came with the Buraq, a blessed riding animal. The Prophet ﷺ was taken from Makkah to Al-Aqsa Mosque in Jerusalem in a single night—a journey taking weeks by caravan.",
       "In Jerusalem, the Prophet ﷺ led all previous prophets in prayer. This gathering symbolized the unity of Allah's message throughout history and confirmed Muhammad's ﷺ position as the seal of prophets and final messenger to all humanity.",
       "The journey showed Allah honoring His messenger after Ta'if's humiliation. When worldly people rejected him, Allah elevated him to heights no human had reached. This trip strengthened the Prophet ﷺ and proved his truthfulness through this supernatural miracle."
     ],

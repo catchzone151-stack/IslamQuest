@@ -838,7 +838,7 @@ export const useChallengeStore = create((set, get) => ({
       },
       {
         question: "Which angel is responsible for blowing the trumpet on the Day of Judgment?",
-        options: ["Jibril", "Mikail", "Israfil", "Azrael"],
+        options: ["Jibra'il", "Mikail", "Israfil", "Azrael"],
         answer: 2
       },
       {
@@ -993,7 +993,7 @@ export const useChallengeStore = create((set, get) => ({
       },
       {
         question: "Which angel is responsible for rain and provisions?",
-        options: ["Jibril", "Mikail", "Israfil", "Malik"],
+        options: ["Jibra'il", "Mikail", "Israfil", "Malik"],
         answer: 1
       },
       {
@@ -1113,7 +1113,7 @@ export const useChallengeStore = create((set, get) => ({
       },
       {
         question: "Which angel is responsible for taking souls?",
-        options: ["Jibril", "Mikail", "Azrael (Malak al-Mawt)", "Israfil"],
+        options: ["Jibra'il", "Mikail", "Azrael (Malak al-Mawt)", "Israfil"],
         answer: 2
       },
       {

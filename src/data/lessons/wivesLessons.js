@@ -27,7 +27,7 @@ const wivesLessons = [
     description: [
       "The Prophet ﷺ showed tremendous loyalty to Khadijah after her death. He sent meat to her friends and praised her constantly, explaining her unique virtues to others.",
       "During the Year of Sorrow, Khadijah and Abu Talib both died. The Prophet ﷺ grieved deeply, losing his beloved wife and his protective uncle in the same year.",
-      "Allah sent greetings to Khadijah through Angel Jibril. The angel gave her glad tidings of a palace in Paradise made of pearls, showing her elevated status."
+      "Allah sent greetings to Khadijah through Angel Jibra'il. The angel gave her glad tidings of a palace in Paradise made of pearls, showing her elevated status."
     ],
     evidence: {
       arabic: "إِنِّي قَدْ رُزِقْتُ حُبَّهَا",
@@ -78,7 +78,7 @@ const wivesLessons = [
     description: [
       "Aishah narrated over two thousand hadiths, teaching companions and the next generation. Her house became a center of learning where students studied Islam from her.",
       "False accusations were spread against Aishah during the incident of Ifk. Allah revealed Quranic verses declaring her innocence, establishing her purity and warning against slander forever.",
-      "Angel Jibril sent greetings to Aishah through the Prophet ﷺ. The Prophet ﷺ passed away in her home, resting in her lap, on her appointed day."
+      "Angel Jibra'il sent greetings to Aishah through the Prophet ﷺ. The Prophet ﷺ passed away in her home, resting in her lap, on her appointed day."
     ],
     evidence: {
       arabic: "خُذُوا شَطْرَ دِينِكُمْ عَنْ هَذِهِ الْحُمَيْرَاءِ",

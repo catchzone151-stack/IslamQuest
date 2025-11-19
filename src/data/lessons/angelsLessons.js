@@ -6,18 +6,18 @@
 const angelsLessons = [
   {
     id: 1,
-    title: "Jibrīl (Gabriel)",
+    title: "Jibra'il (Gabriel)",
     description: [
-      "Jibrīl is the greatest angel, responsible for delivering Allah's revelation to all the prophets throughout history. He brought the Qur'an to Prophet Muhammad ﷺ over twenty-three years, teaching him word by word with perfect accuracy and divine wisdom.",
-      "The Prophet ﷺ saw Jibrīl in his true angelic form twice, with six hundred wings covering the horizon. He described Jibrīl's magnificent appearance as filling the entire sky, demonstrating the immense power and glory Allah gave to His chosen messenger angel.",
-      "Jibrīl also descended to earth in human form to teach the companions about Islam. He asked the Prophet ﷺ about faith, Islam, and excellence while the companions listened, teaching them their religion's foundations through questions and answers directly from Allah's messenger."
+      "Jibra'il is the greatest angel, responsible for delivering Allah's revelation to all the prophets throughout history. He brought the Qur'an to Prophet Muhammad ﷺ over twenty-three years, teaching him word by word with perfect accuracy and divine wisdom.",
+      "The Prophet ﷺ saw Jibra'il in his true angelic form twice, with six hundred wings covering the horizon. He described Jibra'il's magnificent appearance as filling the entire sky, demonstrating the immense power and glory Allah gave to His chosen messenger angel.",
+      "Jibra'il also descended to earth in human form to teach the companions about Islam. He asked the Prophet ﷺ about faith, Islam, and excellence while the companions listened, teaching them their religion's foundations through questions and answers directly from Allah's messenger."
     ],
     evidence: {
       arabic: "عَلَّمَهُ شَدِيدُ الْقُوَىٰ ذُو مِرَّةٍ فَاسْتَوَىٰ",
       translation: "Taught to him by one intense in strength - one of soundness. And he rose to his true form.",
       source: "Qur'an 53:5-6"
     },
-    keyLesson: "Jibrīl brought Allah's guidance to humanity, making him the bridge between the Divine and mankind through revelation.",
+    keyLesson: "Jibra'il brought Allah's guidance to humanity, making him the bridge between the Divine and mankind through revelation.",
     quizId: 1
   },
 
@@ -27,7 +27,7 @@ const angelsLessons = [
     description: [
       "Mīkā'īl is the angel responsible for distributing rain and provisions to all of Allah's creation. He controls the winds and clouds, sending rain to every corner of the earth exactly according to Allah's perfect wisdom and divine decree for sustaining life.",
       "Allah created Mīkā'īl to manage the natural world's sustenance, ensuring every creature receives exactly what Allah has decreed for them. He oversees the growth of crops, the flowing of rivers, and the distribution of resources throughout the earth with perfect precision.",
-      "The Prophet ﷺ taught us to seek Allah's protection by mentioning Mīkā'īl along with Jibrīl. This shows Mīkā'īl's high rank among the angels and his crucial role in Allah's creation, maintaining the balance and provision that sustains all living things on earth."
+      "The Prophet ﷺ taught us to seek Allah's protection by mentioning Mīkā'īl along with Jibra'il. This shows Mīkā'īl's high rank among the angels and his crucial role in Allah's creation, maintaining the balance and provision that sustains all living things on earth."
     ],
     evidence: {
       arabic: "مَن كَانَ عَدُوًّا لِّلَّهِ وَمَلَائِكَتِهِ وَرُسُلِهِ وَجِبْرِيلَ وَمِيكَالَ فَإِنَّ اللَّهَ عَدُوٌّ لِّلْكَافِرِينَ",
@@ -161,7 +161,7 @@ const angelsLessons = [
     id: 10,
     title: "Angel of the Mountains",
     description: [
-      "During the Prophet's ﷺ difficult journey to Taif, the people rejected him brutally, throwing stones until he bled and forcing him to leave their city. In his pain and sadness, Allah sent Jibrīl accompanied by the Angel of the Mountains to offer help and support to His beloved messenger.",
+      "During the Prophet's ﷺ difficult journey to Taif, the people rejected him brutally, throwing stones until he bled and forcing him to leave their city. In his pain and sadness, Allah sent Jibra'il accompanied by the Angel of the Mountains to offer help and support to His beloved messenger.",
       "The Angel of the Mountains asked permission to crush the people of Taif between two mountains as punishment for their cruelty and rejection of Allah's messenger. This powerful angel had the strength to destroy entire cities, waiting only for the Prophet's ﷺ command to bring down Allah's wrath upon the disbelievers.",
       "The Prophet ﷺ refused, choosing mercy over revenge. He said perhaps Allah would bring forth from their descendants people who would worship Allah alone. This beautiful response showed his compassion and hope, and indeed, many from Taif later accepted Islam and became devoted believers and companions."
     ],

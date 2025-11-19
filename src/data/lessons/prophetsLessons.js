@@ -276,7 +276,7 @@ const prophetsLessons = [
     meaning: "Ishmael",
     description: [
       "Ismail was the first son of Prophet Ibrahim. As a baby, he was left with his mother Hajar in the empty desert of Makkah. Allah's wisdom placed them there to establish His sacred house.",
-      "When baby Ismail cried from thirst, Hajar ran between Safa and Marwah seven times searching for water or help. Allah sent the angel Jibril who struck the ground, and Zamzam water gushed forth miraculously.",
+      "When baby Ismail cried from thirst, Hajar ran between Safa and Marwah seven times searching for water or help. Allah sent the angel Jibra'il who struck the ground, and Zamzam water gushed forth miraculously.",
       "Ismail grew up in Makkah as the Jurhum tribe settled near the blessed water. He learned their language and married from among them. He was patient, obedient, and loved by all who knew him.",
       "As a young man, Ismail was tested with the ultimate sacrifice when his father Ibrahim saw a dream to sacrifice him. Ismail's response showed perfect submission: 'Father, do what you are commanded.'"
     ],

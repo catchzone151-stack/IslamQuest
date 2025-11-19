@@ -123,7 +123,7 @@ export const EVENT_QUESTIONS = {
         "Tawheed, Salah, Sawm, Zakah, Hajj, and Dawah"
       ],
       correct: 0,
-      evidence: "Mentioned in Sahih Muslim - Hadith of Jibreel"
+      evidence: "Mentioned in Sahih Muslim - Hadith of Jibra'il"
     }
   ],
 
@@ -259,7 +259,7 @@ export const EVENT_QUESTIONS = {
       options: [
         "Israfil (AS)",
         "Mikail (AS)",
-        "Jibril (AS)",
+        "Jibra'il (AS)",
         "Azrael (AS)"
       ],
       correct: 0,
@@ -306,7 +306,7 @@ export const EVENT_QUESTIONS = {
       question: "Which angel is responsible for taking souls at the time of death?",
       options: [
         "The Angel of Death (commonly called Azrael, though not mentioned in Qur'an)",
-        "Jibril (AS)",
+        "Jibra'il (AS)",
         "Mikail (AS)",
         "Israfil (AS)"
       ],
