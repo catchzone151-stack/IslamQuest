@@ -38,6 +38,7 @@ Preferred communication style: Simple, everyday language.
 ### UI/UX Decisions
 - **Design**: Mobile-first responsive design with a bottom navigation pattern.
 - **Responsive Design (November 2025)**: Complete mobile-first audit with progressive enhancement for safe-area support. Edge-to-edge layout with 76px BottomNav clearance (exact nav bar height). CSS !important + env() safe-area-inset-bottom ensures proper spacing on iOS/Android notch devices. All modals support safe-area with fallback padding. Touch targets meet 44px accessibility minimum.
+- **Scroll-to-Top (Nov 19, 2025)**: Enhanced ScrollToTop component ensures all pages scroll to the top instantly on navigation. Handles window, document, body, and .screen containers for comprehensive coverage across all browsers and scroll contexts.
 - **Layout Architecture (November 2025)**: Comprehensive layout refactor eliminates viewport-based height issues and edge padding for APK builds:
   - **Zero viewport units**: All instances of 100vh, min-height: 100vh removed; replaced with height: 100% on html, body, #root to eliminate WebView issues
   - **Edge-to-edge Design (Nov 19, 2025)**: Removed all horizontal padding from `.screen` class wrapper to eliminate side borders. Individual content sections (headers, cards, carousels) have their own 16px horizontal padding for proper content spacing while maintaining flush edges.
