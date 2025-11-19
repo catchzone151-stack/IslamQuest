@@ -9,7 +9,7 @@ const STORAGE_KEY = "islamQuestDeveloper_v1";
 const APP_VERSION = "1.0.0-beta";
 
 export const useDeveloperStore = create((set, get) => ({
-  betaMode: false,
+  betaMode: true,
   showDeveloperMenu: false,
   appVersion: APP_VERSION,
 
@@ -130,13 +130,35 @@ export const useDeveloperStore = create((set, get) => ({
 
   loadFromStorage: () => {
     const saved = localStorage.getItem(STORAGE_KEY);
+    let betaModeValue = true; // Default to true for testing
+    
     if (saved) {
       try {
         const data = JSON.parse(saved);
-        set({ betaMode: data.betaMode || false });
+        betaModeValue = data.betaMode ?? true;
       } catch (error) {
         console.error("Failed to load developer settings:", error);
       }
     }
+    
+    // Always set the state, even if no saved data
+    set({ betaMode: betaModeValue });
+    
+    // 🤖 Initialize simulated friends if beta mode is enabled
+    if (betaModeValue) {
+      const friendsStore = useFriendsStore.getState();
+      friendsStore.initializeSimulatedFriends();
+    }
   },
 }));
+
+// 🤖 Initialize simulated friends immediately if beta mode is enabled by default
+if (useDeveloperStore.getState().betaMode) {
+  // Wait for friends store to be available, then initialize
+  setTimeout(() => {
+    const friendsStore = useFriendsStore.getState();
+    if (friendsStore.initializeSimulatedFriends) {
+      friendsStore.initializeSimulatedFriends();
+    }
+  }, 0);
+}
