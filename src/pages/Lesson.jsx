@@ -29,7 +29,9 @@ export default function Lesson() {
           background:
             "radial-gradient(circle at 20% 20%, #1a2337 0%, #000814 70%)",
           color: "white",
-          padding: "24px",
+          paddingLeft: "24px",
+          paddingRight: "24px",
+          paddingTop: "24px",
           textAlign: "center",
         }}
       >
@@ -71,8 +73,9 @@ export default function Lesson() {
         background:
           "radial-gradient(circle at 20% 20%, #1a2337 0%, #000814 70%)",
         color: "white",
-        padding: "20px",
-        paddingBottom: "40px",
+        paddingLeft: "20px",
+        paddingRight: "20px",
+        paddingTop: "20px",
         maxWidth: "480px",
         margin: "0 auto",
         position: "relative",

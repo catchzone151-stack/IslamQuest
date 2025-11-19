@@ -17,7 +17,9 @@ export default function BismillahScreen() {
         justifyContent: "center",
         alignItems: "center",
         textAlign: "center",
-        padding: "24px",
+        paddingLeft: "24px",
+        paddingRight: "24px",
+        paddingTop: "24px",
       }}
     >
       <motion.div

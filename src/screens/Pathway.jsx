@@ -109,7 +109,9 @@ export default function Pathway() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: "0 16px",
+        paddingLeft: "16px",
+        paddingRight: "16px",
+        paddingTop: "0",
         boxSizing: "border-box",
         position: "relative",
       }}

@@ -7,7 +7,9 @@ export default function ScreenWrapper({ children }) {
       style={{
         width: "100%",
         background: "var(--navy)",
-        padding: "clamp(12px, 3vw, 24px)",
+        paddingLeft: "clamp(12px, 3vw, 24px)",
+        paddingRight: "clamp(12px, 3vw, 24px)",
+        paddingTop: "clamp(12px, 3vw, 24px)",
         boxSizing: "border-box",
         overflowX: "hidden",
       }}

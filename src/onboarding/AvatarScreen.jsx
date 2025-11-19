@@ -36,7 +36,9 @@ export default function AvatarScreen() {
         flexDirection: "column",
         alignItems: "center",
         textAlign: "center",
-        padding: "24px",
+        paddingLeft: "24px",
+        paddingRight: "24px",
+        paddingTop: "24px",
         justifyContent: "center",
       }}
     >

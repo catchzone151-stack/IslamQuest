@@ -26,7 +26,9 @@ export default function NameScreen() {
         justifyContent: "center",
         alignItems: "center",
         textAlign: "center",
-        padding: "24px",
+        paddingLeft: "24px",
+        paddingRight: "24px",
+        paddingTop: "24px",
       }}
     >
       <h2 style={{ color: "#D4AF37", fontSize: "1.4rem" }}>

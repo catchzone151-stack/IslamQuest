@@ -69,7 +69,9 @@ export default function PathPage() {
         background:
           "radial-gradient(circle at 20% 20%, #1a2337 0%, #000814 70%)",
         color: "white",
-        padding: "32px 16px",
+        paddingLeft: "16px",
+        paddingRight: "16px",
+        paddingTop: "32px",
       }}
     >
       <h2
