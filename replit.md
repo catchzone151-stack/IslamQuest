@@ -42,9 +42,10 @@ Preferred communication style: Simple, everyday language.
   - **Zero min-height: 100vh**: All instances replaced with height: 100% on html, body, #root to eliminate black strips and extra scroll space
   - **Unified Screen Wrapper**: `.screen` and `.no-extra-space` classes applied universally across all 19+ page components, conditional renders, and fallback states
   - **Consistent Background**: CSS variable --navy aligned to #0a2a43 across App.css and index.css, ensuring navy background extends properly to bottom nav
-  - **Bottom Nav Clearance**: `.screen` class has `padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px))` ensuring content never hides behind fixed bottom navigation
+  - **Bottom Nav Clearance**: `.screen` class uses longhand padding properties with `padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px)) !important` ensuring content never hides behind fixed bottom navigation
+  - **No Inline Padding Overrides**: Removed inline `padding: 16` from Home.jsx and Challenge.jsx to prevent overriding CSS class padding-bottom
   - **Component-Level Spacing**: Home page pagination dots have 24px bottom margin for extra clearance
-  - **Verified Coverage**: Repo-wide search confirms zero problematic height values (min-height: 100vh, minHeight: "100vh", min-h-screen)
+  - **Verified Coverage**: Repo-wide search confirms zero problematic height values and zero inline padding overrides on .screen containers
   - **Components Updated**: ScreenContainer, ScreenWrapper, all onboarding screens, main pages, challenge screens, and CSS files cleaned
 - **Theming**: Consistent color palette using CSS variables: Navy (#0a2a43) for backgrounds, Gold for accents, Emerald Green for success, and Light gray for text.
 - **Animations**: GPU-optimized CSS and Framer Motion animations for smooth 60fps transitions and interactive elements.

@@ -190,7 +190,6 @@ export default function Challenge() {
 
   return (
     <div className="screen no-extra-space" style={{
-      padding: 16,
       background: "linear-gradient(to bottom, #081426, #0e2340)",
       color: "white",
     }}>
