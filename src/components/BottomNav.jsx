@@ -28,14 +28,14 @@ export default function BottomNav() {
         left: 0,
         right: 0,
         height: `${NAV_HEIGHT}px`,
-        background: "#0a2a43",
-        borderTop: "none",
+        background: "#0e2340",
+        borderTop: "1px solid #0e2340",
         boxShadow: "none",
         display: "flex",
         justifyContent: "space-around",
         alignItems: "center",
         zIndex: 1000,
-        paddingBottom: 0,
+        paddingBottom: "env(safe-area-inset-bottom)",
       }}
     >
       {tabs.map((tab) => {

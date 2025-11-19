@@ -37,13 +37,12 @@ Preferred communication style: Simple, everyday language.
 
 ### UI/UX Decisions
 - **Design**: Mobile-first responsive design with a bottom navigation pattern.
-- **Responsive Design (November 2025)**: Complete mobile-first audit with progressive enhancement for safe-area support. Edge-to-edge layout with 92px BottomNav clearance (76px nav + 16px breathing room). CSS !important + env() safe-area-inset-bottom ensures proper spacing on iOS/Android notch devices. All modals support safe-area with fallback padding. Touch targets meet 44px accessibility minimum.
+- **Responsive Design (November 2025)**: Complete mobile-first audit with progressive enhancement for safe-area support. Edge-to-edge layout with 76px BottomNav clearance (exact nav bar height). CSS !important + env() safe-area-inset-bottom ensures proper spacing on iOS/Android notch devices. All modals support safe-area with fallback padding. Touch targets meet 44px accessibility minimum.
 - **Layout Architecture (November 2025)**: Comprehensive layout refactor eliminates viewport-based height issues and edge padding for APK builds:
   - **Zero viewport units**: All instances of 100vh, min-height: 100vh removed; replaced with height: 100% on html, body, #root to eliminate WebView issues
   - **Edge-to-edge Design (Nov 19, 2025)**: Removed all horizontal padding from `.screen` class wrapper to eliminate side borders. Individual content sections (headers, cards, carousels) have their own 16px horizontal padding for proper content spacing while maintaining flush edges.
   - **App.css Import Fix (Nov 19, 2025)**: Added missing `import "./App.css"` in src/index.jsx to ensure `.screen` CSS rules actually load in bundle
-  - **Bottom Nav Clearance**: `.screen` class sets `padding-bottom: 92px` with `calc(92px + env(safe-area-inset-bottom, 0px))` for optimal spacing (76px nav + 16px gap)
-  - **Bottom Nav Fix (Nov 19, 2025)**: Fixed darker blue line at bottom by matching nav background to main navy (#0a2a43), removed nav paddingBottom, removed border for seamless integration
+  - **Bottom Nav Clearance**: `.screen` class sets `padding-bottom: 76px` with `calc(76px + env(safe-area-inset-bottom, 0px))` for flush nav bar alignment
   - **Consistent Background**: CSS variable --navy aligned to #0a2a43 across App.css and index.css, ensuring navy background extends edge-to-edge
   - **Components Updated**: ScreenContainer, ScreenWrapper, Home.jsx, all onboarding screens, main pages, challenge screens, EventModals.css optimized
 - **Theming**: Consistent color palette using CSS variables: Navy (#0a2a43) for backgrounds, Gold for accents, Emerald Green for success, and Light gray for text.
