@@ -61,7 +61,6 @@ body {
 .no-extra-space {
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding-bottom: 0;
   margin-bottom: 0;
 }
 
