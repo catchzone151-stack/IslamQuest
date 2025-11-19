@@ -65,6 +65,12 @@ body {
   margin-bottom: 0;
 }
 
+/* Combined selector to restore bottom nav clearance when both classes are used */
+.screen.no-extra-space {
+  padding-bottom: 70px;
+  padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px));
+}
+
 /* App root container safe-area support */
 .app-root-container {
   padding-bottom: 90px !important;
