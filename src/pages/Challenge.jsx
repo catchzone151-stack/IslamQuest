@@ -284,7 +284,7 @@ export default function Challenge() {
                   cursor: "pointer",
                   transition: "all 0.2s ease",
                   boxShadow: mode.glow,
-                  minHeight: 140,
+                  minHeight: 180,
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
@@ -297,18 +297,18 @@ export default function Challenge() {
                   e.currentTarget.style.transform = "translateY(0)";
                 }}
               >
-                <div style={{ fontSize: "2.5rem", marginBottom: 8, height: "60px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <div style={{ fontSize: "2.5rem", marginBottom: 8, height: "80px", display: "flex", alignItems: "center", justifyContent: "center" }}>
                   {mode.id === "speed_run" ? (
                     <img 
                       src={mascot_running} 
                       alt="Speed Run" 
-                      style={{ width: "auto", height: "18px", objectFit: "contain" }}
+                      style={{ width: "auto", height: "50px", objectFit: "contain" }}
                     />
                   ) : (
                     mode.icon
                   )}
                 </div>
-                <h4 style={{ color: "#fff", margin: "0 0 6px", fontSize: "1.05rem", fontWeight: 700 }}>
+                <h4 style={{ color: "#fff", margin: "0 0 6px", fontSize: "1.05rem", fontWeight: 700, lineHeight: 1.2 }}>
                   {mode.name}
                 </h4>
                 <p style={{ color: "rgba(255,255,255,0.9)", fontSize: "0.75rem", margin: 0, lineHeight: 1.3 }}>
