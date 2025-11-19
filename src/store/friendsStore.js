@@ -4,7 +4,7 @@ import { useProgressStore } from "./progressStore";
 import { useUserStore } from "./useUserStore";
 
 const STORAGE_KEY = "islamQuestFriends_v1";
-const SIMULATED_FRIENDS_KEY = "islamQuestSimulatedFriends_v1";
+const SIMULATED_FRIENDS_KEY = "islamQuestSimulatedFriends_v2";
 
 const QUICK_MESSAGES = [
   "masha'Allah you're flying 🚀",
