@@ -61,7 +61,9 @@ export default function DailyQuestGame() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          padding: "20px",
+          paddingLeft: "20px",
+          paddingRight: "20px",
+          paddingTop: "20px",
         }}
       >
         <div
@@ -201,7 +203,9 @@ export default function DailyQuestGame() {
       style={{
         background: "linear-gradient(135deg, #0B1E2D 0%, #1a3a52 100%)",
         color: "#ffffff",
-        padding: "20px",
+        paddingLeft: "20px",
+        paddingRight: "20px",
+        paddingTop: "20px",
       }}
     >
       {/* Header */}

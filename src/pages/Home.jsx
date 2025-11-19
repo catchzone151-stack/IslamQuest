@@ -159,7 +159,9 @@ export default function Home() {
       style={{
         background: "#0e2340",
         color: "white",
-        padding: 16,
+        paddingLeft: 16,
+        paddingRight: 16,
+        paddingTop: 16,
         overflowX: "hidden",
         position: "relative",
       }}

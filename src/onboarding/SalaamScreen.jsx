@@ -17,7 +17,9 @@ export default function SalaamScreen() {
         justifyContent: "center",
         alignItems: "center",
         textAlign: "center",
-        padding: 24,
+        paddingLeft: 24,
+        paddingRight: 24,
+        paddingTop: 24,
       }}
     >
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}>
