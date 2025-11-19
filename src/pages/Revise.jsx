@@ -148,8 +148,8 @@ export default function Revise() {
 
     return (
       <div
+        className="screen no-extra-space"
         style={{
-          minHeight: "100vh",
           background: "linear-gradient(135deg, #0B1E2D 0%, #1a3a52 100%)",
           color: "#ffffff",
           display: "flex",
@@ -303,8 +303,8 @@ export default function Revise() {
 
     return (
       <div
+        className="screen no-extra-space"
         style={{
-          minHeight: "100vh",
           background: "linear-gradient(135deg, #0B1E2D 0%, #1a3a52 100%)",
           color: "#ffffff",
           padding: "20px",

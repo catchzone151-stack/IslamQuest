@@ -155,13 +155,11 @@ export default function Home() {
 
   return (
     <div
-      className="page-transition"
+      className="screen no-extra-space page-transition"
       style={{
-        minHeight: "100vh",
         background: "#0e2340",
         color: "white",
         padding: 16,
-        paddingBottom: 90,
         overflowX: "hidden",
         position: "relative",
       }}

@@ -32,8 +32,8 @@ export default function Pathway() {
   if (!pathMeta || baseLessons.length === 0) {
     return (
       <div
+        className="screen no-extra-space"
         style={{
-          minHeight: "100vh",
           background: "linear-gradient(to bottom, #061326, #000814 80%)",
           color: "white",
           padding: "32px 20px",
@@ -101,8 +101,8 @@ export default function Pathway() {
   return (
     <div
       ref={scrollRef}
+      className="screen no-extra-space"
       style={{
-        minHeight: "100vh",
         maxHeight: "100vh",
         overflowY: "auto",
         background: "radial-gradient(circle at top, #0f2344 0%, #020815 70%)",
@@ -110,7 +110,7 @@ export default function Pathway() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: "0 16px 120px",
+        padding: "0 16px",
         boxSizing: "border-box",
         position: "relative",
       }}

@@ -211,7 +211,7 @@ export default function EventQuiz() {
   const progress = questions.length > 0 ? ((currentQuestionIndex + 1) / questions.length) * 100 : 0;
 
   return (
-    <div className="event-quiz-container">
+    <div className="screen no-extra-space event-quiz-container">
       {/* Quiz Screen */}
       {quizStarted && currentQuestion && (
         <>

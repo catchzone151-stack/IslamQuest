@@ -7,8 +7,8 @@ export default function BismillahScreen() {
 
   return (
     <div
+      className="screen no-extra-space"
       style={{
-        minHeight: "100vh",
         background:
           "linear-gradient(180deg, #0A1A2F 0%, #060D18 100%)",
         color: "white",

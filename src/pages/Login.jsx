@@ -55,7 +55,7 @@ export default function Login() {
   }
 
   return (
-    <div className="screen">
+    <div className="screen no-extra-space">
       <h1>Login / Sign Up</h1>
       <form>
         <input

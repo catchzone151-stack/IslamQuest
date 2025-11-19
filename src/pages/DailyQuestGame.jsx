@@ -54,8 +54,8 @@ export default function DailyQuestGame() {
 
     return (
       <div
+        className="screen no-extra-space"
         style={{
-          minHeight: "100vh",
           background: "linear-gradient(135deg, #0B1E2D 0%, #1a3a52 100%)",
           color: "#ffffff",
           display: "flex",
@@ -197,12 +197,11 @@ export default function DailyQuestGame() {
 
   return (
     <div
+      className="screen no-extra-space"
       style={{
-        minHeight: "100vh",
         background: "linear-gradient(135deg, #0B1E2D 0%, #1a3a52 100%)",
         color: "#ffffff",
         padding: "20px",
-        paddingBottom: "100px",
       }}
     >
       {/* Header */}

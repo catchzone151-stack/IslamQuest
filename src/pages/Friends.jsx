@@ -65,10 +65,8 @@ export default function Friends() {
   const totalRequests = incomingRequests.length + outgoingRequests.length;
 
   return (
-    <div style={{
-      minHeight: "100vh",
+    <div className="screen no-extra-space" style={{
       background: "#0B1E2D",
-      paddingBottom: 90,
     }}>
       {/* Header */}
       <div style={{

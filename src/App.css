@@ -1,6 +1,6 @@
 :root {
-  --navy: #0e2340;        /* background */
-  --navy-dark: #0e2340;   /* darker surfaces */
+  --navy: #0a2a43;        /* background */
+  --navy-dark: #0a2a43;   /* darker surfaces */
   --gold: #D4AF37;        /* accents */
   --green: #10B981;       /* emerald highlights */
   --text: #f3f4f6;        /* light text */
@@ -15,7 +15,7 @@ html {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  background: #0e2340;
+  background: #0a2a43;
   overscroll-behavior: none;
 }
 
@@ -24,7 +24,7 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  background: #0e2340;
+  background: #0a2a43;
   overscroll-behavior: none;
 }
 
@@ -33,7 +33,7 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  background: #0e2340;
+  background: #0a2a43;
 }
 
 /* 👇 KEY: this globally prevents content going under the fixed nav */
@@ -47,13 +47,22 @@ body {
 
 /* Main screen wrapper used on most pages */
 .screen {
-  min-height: 100vh;
+  background-color: #0a2a43;
+  min-height: 100%;
   padding: clamp(12px, 3vw, 24px);
-  padding-bottom: 90px;
-  padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: 70px;
+  padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px));
   max-width: 100%;
   overflow-x: hidden;
-  background: #0e2340;
+  box-sizing: border-box;
+}
+
+/* Prevents extra space and scroll issues */
+.no-extra-space {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-bottom: 0;
+  margin-bottom: 0;
 }
 
 /* App root container safe-area support */

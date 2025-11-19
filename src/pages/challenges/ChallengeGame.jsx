@@ -434,7 +434,7 @@ export default function ChallengeGame() {
 
   if (questions.length === 0) {
     return (
-      <div className="challenge-game-container">
+      <div className="screen no-extra-space challenge-game-container">
         <div className="challenge-loading">Loading questions...</div>
       </div>
     );
@@ -444,7 +444,7 @@ export default function ChallengeGame() {
   const progress = ((currentIndex + 1) / questions.length) * 100;
 
   return (
-    <div className="challenge-game-container">
+    <div className="screen no-extra-space challenge-game-container">
       {/* Header */}
       <div className="challenge-game-header">
         <div className="challenge-game-title">

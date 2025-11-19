@@ -64,8 +64,8 @@ export default function PathPage() {
 
   return (
     <div
+      className="screen no-extra-space"
       style={{
-        minHeight: "100vh",
         background:
           "radial-gradient(circle at 20% 20%, #1a2337 0%, #000814 70%)",
         color: "white",

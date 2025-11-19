@@ -83,7 +83,7 @@ export default function GlobalEvents() {
   };
 
   return (
-    <div className="global-events-container">
+    <div className="screen no-extra-space global-events-container">
       {/* Header */}
       <div className="events-header">
         <button className="back-btn" onClick={() => navigate("/challenge")}>

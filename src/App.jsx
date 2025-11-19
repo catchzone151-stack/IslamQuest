@@ -40,8 +40,8 @@ const LockDiagnostics = lazy(() => import("./pages/LockDiagnostics.jsx"));
 function LoadingScreen() {
   return (
     <div
+      className="screen no-extra-space"
       style={{
-        minHeight: "100vh",
         background: "radial-gradient(circle at 20% 20%, rgba(10,15,30,1) 0%, rgba(3,6,20,1) 70%)",
         color: "white",
         padding: "20px",
@@ -98,8 +98,8 @@ function LoadingScreen() {
 function PlaceholderQuizPage() {
   return (
     <div
+      className="screen no-extra-space"
       style={{
-        minHeight: "100vh",
         background:
           "radial-gradient(circle at 20% 20%, rgba(10,15,30,1) 0%, rgba(3,6,20,1) 70%)",
         color: "white",
@@ -191,8 +191,8 @@ export default function App() {
   if (!isHydrated) {
     return (
       <div
+        className="screen no-extra-space"
         style={{
-          minHeight: "100vh",
           background: "radial-gradient(circle at 20% 20%, #0a0f1e, #030614)",
           color: "white",
           display: "flex",
@@ -210,13 +210,11 @@ export default function App() {
       <BrowserRouter>
         <ScrollToTop />
         <div
-          className="app-root-container"
+          className="screen no-extra-space app-root-container"
           style={{
             background:
               "radial-gradient(circle at 20% 20%, rgba(10,15,30,1) 0%, rgba(3,6,20,1) 70%)",
-            minHeight: "100vh",
             color: "white",
-            paddingBottom: 90,
           }}
         >
           <Routes>

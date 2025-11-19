@@ -189,10 +189,8 @@ export default function Challenge() {
   };
 
   return (
-    <div style={{
-      minHeight: "100vh",
+    <div className="screen no-extra-space" style={{
       padding: 16,
-      paddingBottom: 90,
       background: "linear-gradient(to bottom, #081426, #0e2340)",
       color: "white",
     }}>

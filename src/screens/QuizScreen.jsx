@@ -121,7 +121,7 @@ const QuizScreen = () => {
 
   if (!quizData || quizData.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen text-center text-white">
+      <div className="screen no-extra-space flex flex-col items-center justify-center text-center text-white">
         <p>No quiz data found for this lesson.</p>
         <button
           className="mt-4 px-4 py-2 bg-[#F4C542] text-black rounded-xl"
@@ -137,7 +137,7 @@ const QuizScreen = () => {
     ((isQuizDone ? quizData.length : currentQ + 1) / quizData.length) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0A0F1E] to-[#030614] text-white flex flex-col">
+    <div className="screen no-extra-space bg-gradient-to-b from-[#0A0F1E] to-[#030614] text-white flex flex-col">
       <QuizHeader
         currentQ={currentQ}
         totalQ={quizData.length}

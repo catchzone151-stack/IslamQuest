@@ -5,7 +5,7 @@ export default function LockDiagnostics() {
   const { hasPremium, lockedLessons, lessonStates } = useProgressStore();
   
   return (
-    <div style={{ padding: "20px", background: "#0B1E2D", color: "white", minHeight: "100vh" }}>
+    <div className="screen no-extra-space" style={{ padding: "20px", background: "#0B1E2D", color: "white" }}>
       <h1>🔒 Lock Diagnostics</h1>
       
       <div style={{ background: "#1a2337", padding: "20px", borderRadius: "8px", marginBottom: "20px" }}>

@@ -1,9 +1,7 @@
 /* Challenge Game Container */
 .challenge-game-container {
-  min-height: 100vh;
   background: linear-gradient(to bottom, #081426, #0e2340);
   padding: 16px;
-  padding-bottom: 90px;
   color: white;
 }
 

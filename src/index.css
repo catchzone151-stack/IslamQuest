@@ -14,16 +14,16 @@ html {
 
 body {
   font-family: "Poppins", "Nunito", system-ui, sans-serif;
-  background: #0e2340;
+  background: #0a2a43;
   color: #fff;
-  min-height: 100vh;
+  height: 100%;
   -webkit-font-smoothing: antialiased;
   margin: 0;
 }
 
 /* Make sure our root fills the page */
 #root {
-  min-height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
 }
@@ -54,7 +54,6 @@ body {
   max-width: 480px;
   margin: 0 auto;
   text-align: center;
-  min-height: 100vh;
   overflow-y: auto;
   background: #e8faff;
 }
