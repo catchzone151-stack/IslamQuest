@@ -297,12 +297,12 @@ export default function Challenge() {
                   e.currentTarget.style.transform = "translateY(0)";
                 }}
               >
-                <div style={{ fontSize: "2.5rem", marginBottom: 8, minHeight: "60px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <div style={{ fontSize: "2.5rem", marginBottom: 8, height: "60px", display: "flex", alignItems: "center", justifyContent: "center" }}>
                   {mode.id === "speed_run" ? (
                     <img 
                       src={mascot_running} 
                       alt="Speed Run" 
-                      style={{ width: "60px", height: "60px", objectFit: "contain" }}
+                      style={{ width: "auto", height: "45px", objectFit: "contain" }}
                     />
                   ) : (
                     mode.icon
