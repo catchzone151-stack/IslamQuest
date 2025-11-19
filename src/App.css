@@ -50,8 +50,7 @@ body {
   background-color: #0a2a43;
   min-height: 100%;
   padding: clamp(12px, 3vw, 24px);
-  padding-bottom: 70px;
-  padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px));
   max-width: 100%;
   overflow-x: hidden;
   box-sizing: border-box;
@@ -61,7 +60,6 @@ body {
 .no-extra-space {
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding-bottom: 0;
   margin-bottom: 0;
 }
 

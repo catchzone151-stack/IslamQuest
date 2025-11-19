@@ -512,7 +512,7 @@ export default function Home() {
           display: "flex",
           justifyContent: "center",
           marginTop: 8,
-          marginBottom: 8,
+          marginBottom: 24,
         }}
       >
         {[0, 1, 2].map((i) => (
