@@ -151,14 +151,3 @@ export const useDeveloperStore = create((set, get) => ({
     }
   },
 }));
-
-// 🤖 Initialize simulated friends immediately if beta mode is enabled by default
-if (useDeveloperStore.getState().betaMode) {
-  // Wait for friends store to be available, then initialize
-  setTimeout(() => {
-    const friendsStore = useFriendsStore.getState();
-    if (friendsStore.initializeSimulatedFriends) {
-      friendsStore.initializeSimulatedFriends();
-    }
-  }, 0);
-}
