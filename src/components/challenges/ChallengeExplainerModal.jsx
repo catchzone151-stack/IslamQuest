@@ -1,4 +1,5 @@
 import ZaydChallenge from "../../assets/mascots/mascot_boss.webp";
+import mascot_running from "../../assets/mascots/mascot_running.webp";
 import "./ChallengeModals.css";
 
 export default function ChallengeExplainerModal({ mode, onStart, onCancel }) {
@@ -23,7 +24,15 @@ export default function ChallengeExplainerModal({ mode, onStart, onCancel }) {
             boxShadow: mode.glow
           }}
         >
-          {mode.icon}
+          {mode.id === "speed_run" ? (
+            <img 
+              src={mascot_running} 
+              alt="Speed Run" 
+              style={{ width: "50px", height: "auto" }}
+            />
+          ) : (
+            mode.icon
+          )}
         </div>
 
         {/* Title */}

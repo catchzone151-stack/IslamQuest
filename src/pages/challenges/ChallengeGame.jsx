@@ -5,6 +5,7 @@ import { useChallengeStore, CHALLENGE_MODES, BOSS_LEVEL } from "../../store/chal
 import { useProgressStore } from "../../store/progressStore";
 import { useModalStore, MODAL_TYPES } from "../../store/modalStore";
 import assets from "../../assets/assets";
+import mascot_running from "../../assets/mascots/mascot_running.webp";
 import "./ChallengeGame.css";
 
 // Helper function to normalize mode from any format to config object
@@ -448,7 +449,15 @@ export default function ChallengeGame() {
       {/* Header */}
       <div className="challenge-game-header">
         <div className="challenge-game-title">
-          <span style={{ fontSize: "1.5rem" }}>{mode?.icon}</span>
+          {mode?.id === "speed_run" ? (
+            <img 
+              src={mascot_running} 
+              alt="Speed Run" 
+              style={{ width: "40px", height: "auto" }}
+            />
+          ) : (
+            <span style={{ fontSize: "1.5rem" }}>{mode?.icon}</span>
+          )}
           <span>{mode?.name}</span>
         </div>
         {/* Countdown timer for modes with totalTime (Lightning Round, Boss, Speed Run) */}
