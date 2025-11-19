@@ -8,7 +8,9 @@ export default function ScreenContainer({ children }) {
       className="screen no-extra-space screen-container-root"
       style={{
         background: "var(--navy)",
-        padding: "clamp(12px, 3vw, 24px)",
+        paddingLeft: "clamp(12px, 3vw, 24px)",
+        paddingRight: "clamp(12px, 3vw, 24px)",
+        paddingTop: "clamp(12px, 3vw, 24px)",
         maxWidth: "100%",
         width: "100%",
         boxSizing: "border-box",
