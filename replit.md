@@ -37,13 +37,13 @@ Preferred communication style: Simple, everyday language.
 
 ### UI/UX Decisions
 - **Design**: Mobile-first responsive design with a bottom navigation pattern.
-- **Responsive Design (November 2025)**: Complete mobile-first audit with progressive enhancement for safe-area support. CSS-based fallback + enhancement pattern ensures 90-110px BottomNav clearance on ALL browsers (legacy + modern), with safe-area bonus on iOS/Android notch devices. Inline numeric fallbacks (90px, 110px) override with CSS !important + env() for safe-area-inset-bottom. All modals support safe-area with fallback padding. Touch targets meet 44px accessibility minimum.
-- **Layout Architecture (November 2025)**: Comprehensive layout refactor eliminates viewport-based height issues across entire app:
-  - **Zero min-height: 100vh**: All instances replaced with height: 100% on html, body, #root to eliminate black strips and extra scroll space
-  - **Unified Screen Wrapper**: `.screen` and `.no-extra-space` classes applied universally across all 19+ page components, conditional renders, and fallback states
+- **Responsive Design (November 2025)**: Complete mobile-first audit with progressive enhancement for safe-area support. CSS-based fallback + enhancement pattern ensures 100px BottomNav clearance on ALL browsers (legacy + modern), with safe-area bonus on iOS/Android notch devices. Inline numeric fallback (100px) overrides with CSS !important + env() for safe-area-inset-bottom. All modals support safe-area with fallback padding. Touch targets meet 44px accessibility minimum.
+- **Layout Architecture (November 2025)**: Comprehensive layout refactor eliminates viewport-based height issues across entire app for APK builds:
+  - **Zero viewport units**: All instances of 100vh, min-height: 100vh removed; replaced with height: 100% on html, body, #root to eliminate WebView issues
+  - **Unified Screen Wrapper**: `.screen` and `.no-extra-space` classes applied universally across all 19+ page components with 100px bottom padding for 76px nav bar
   - **Consistent Background**: CSS variable --navy aligned to #0a2a43 across App.css and index.css, ensuring navy background extends properly to bottom nav
-  - **Verified Coverage**: Repo-wide search confirms zero problematic height values (min-height: 100vh, minHeight: "100vh", min-h-screen)
-  - **Components Updated**: ScreenContainer, ScreenWrapper, all onboarding screens, main pages, challenge screens, and CSS files cleaned
+  - **Mobile Fixes (Nov 19, 2025)**: Removed maxHeight: 100vh from Pathway.jsx, replaced modal max-height: 90vh with 85% percentage, increased bottom padding from 70px to 100px for proper nav clearance
+  - **Components Updated**: ScreenContainer, ScreenWrapper, all onboarding screens, main pages, challenge screens, EventModals.css, and CSS files optimized
 - **Theming**: Consistent color palette using CSS variables: Navy (#0a2a43) for backgrounds, Gold for accents, Emerald Green for success, and Light gray for text.
 - **Animations**: GPU-optimized CSS and Framer Motion animations for smooth 60fps transitions and interactive elements.
 - **Loading UX**: Custom LoadingScreen with shimmer skeleton loaders and eager image preloading to prevent layout shifts and pop-in lag.
