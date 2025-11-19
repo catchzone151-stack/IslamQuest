@@ -9,11 +9,11 @@ const CHALLENGE_DURATION = 48 * 60 * 60 * 1000; // 48 hours in ms
 
 // Challenge modes with config
 export const CHALLENGE_MODES = {
-  MIND_DUEL: {
-    id: "mind_duel",
-    name: "Mind Duel",
+  MIND_BATTLE: {
+    id: "mind_battle",
+    name: "Mind Battle",
     icon: "🧠",
-    description: "8 challenging Islamic questions",
+    description: "8 questions",
     questionCount: 8,
     trackTime: true,
     rewards: { win: { xp: 100, coins: 20 }, lose: { xp: 20, coins: 0 }, draw: { xp: 50, coins: 0 } },

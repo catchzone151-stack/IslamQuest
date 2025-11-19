@@ -16,7 +16,7 @@ const getModeConfig = (modeInput) => {
     return modeInput;
   }
   
-  // String ID (like "mind_duel") - find by ID
+  // String ID (like "mind_battle") - find by ID
   if (typeof modeInput === 'string') {
     // First try: find by ID
     const foundById = Object.values(CHALLENGE_MODES).find(m => m.id === modeInput);
@@ -28,7 +28,7 @@ const getModeConfig = (modeInput) => {
       return CHALLENGE_MODES[modeKey];
     }
     
-    // Third try: if it's already a key like "MIND_DUEL"
+    // Third try: if it's already a key like "MIND_BATTLE"
     if (CHALLENGE_MODES[modeInput]) {
       return CHALLENGE_MODES[modeInput];
     }
