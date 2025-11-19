@@ -1,58 +1,27 @@
 import { useState, useEffect } from "react";
-import ZaydChallenge from "../../assets/mascots/mascot_dua.webp";
+import "../challenges/ChallengeModals.css";
 
 export default function DailyQuestCountdown({ onComplete }) {
   const [count, setCount] = useState(3);
 
   useEffect(() => {
-    if (count === 0) {
-      onComplete();
-      return;
+    if (count > 0) {
+      const timer = setTimeout(() => setCount(count - 1), 1000);
+      return () => clearTimeout(timer);
+    } else {
+      const timer = setTimeout(onComplete, 500);
+      return () => clearTimeout(timer);
     }
-
-    const timer = setTimeout(() => {
-      setCount(count - 1);
-    }, 1000);
-
-    return () => clearTimeout(timer);
   }, [count, onComplete]);
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        background: "rgba(0, 0, 0, 0.9)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 9999,
-        flexDirection: "column",
-      }}
-    >
-      {/* Zayd Mascot */}
-      <img
-        src={ZaydChallenge}
-        alt="Zayd"
-        style={{
-          width: "120px",
-          height: "auto",
-          marginBottom: "30px",
-          animation: "bounce 0.5s ease-in-out infinite",
-        }}
-      />
-
-      {/* Countdown number */}
-      <div
-        style={{
-          fontSize: "5rem",
-          fontWeight: 900,
-          color: "#D4AF37",
-          textShadow: "0 4px 20px rgba(212, 175, 55, 0.8)",
-          animation: "pulse 1s ease-in-out",
-        }}
-      >
-        {count === 0 ? "GO!" : count}
+    <div className="challenge-modal-overlay">
+      <div className="challenge-countdown-modal">
+        {count > 0 ? (
+          <div className="countdown-number">{count}</div>
+        ) : (
+          <div className="countdown-go">GO! 🚀</div>
+        )}
       </div>
     </div>
   );
