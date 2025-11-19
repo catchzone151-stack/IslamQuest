@@ -204,8 +204,8 @@ export default function Home() {
               <span
                 style={{
                   marginTop: 4,
-                  fontSize: "0.72rem",
-                  fontWeight: 600,
+                  fontSize: "0.85rem",
+                  fontWeight: 700,
                   color: "#ffd85a",
                 }}
               >
@@ -391,7 +391,10 @@ export default function Home() {
             gap: 14,
             paddingBottom: 8,
             scrollBehavior: "smooth",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
           }}
+          className="hide-scrollbar"
         >
           {paths.map((p, index) => {
             const gradient =
@@ -519,12 +522,12 @@ export default function Home() {
             key={i}
             onClick={() => goToPage(i)}
             style={{
-              width: 12,
-              height: 12,
+              width: 8,
+              height: 8,
               borderRadius: "50%",
               background: i === page ? "gold" : "#555",
               boxShadow: i === page ? "0 0 10px gold" : "none",
-              transform: i === page ? "scale(1.3)" : "scale(1)",
+              transform: i === page ? "scale(1.2)" : "scale(1)",
               transition: "all 0.25s ease",
               margin: "0 6px",
               cursor: "pointer",
@@ -639,6 +642,14 @@ export default function Home() {
           100% { box-shadow: 0 0 24px rgba(255,215,0,0.9); }
         }
 
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        
         ::-webkit-scrollbar { height: 6px; }
         ::-webkit-scrollbar-thumb {
           background: rgba(255,215,0,0.6);
