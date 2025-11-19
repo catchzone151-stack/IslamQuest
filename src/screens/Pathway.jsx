@@ -178,7 +178,7 @@ export default function Pathway() {
           }}
         >
           {numericPathId === 1
-            ? "As Salaam Alikum Wa Rahmatullah, We find the name... 🌙"
+            ? "Assalamu Alaikum wa Rahmatullah, We find the name... 🌙"
             : numericPathId === 2 
             ? "Let's strengthen your faith together 💪"
             : numericPathId === 3

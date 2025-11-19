@@ -36,7 +36,7 @@ export default function ChallengeResultsModal({
   };
 
   const getZaydMessage = () => {
-    if (result === "win") return "MashaAllah! You dominated that challenge!";
+    if (result === "win") return "masha'Allah! You dominated that challenge!";
     if (result === "lose") return "Don't give up! Learn from your mistakes!";
     if (result === "draw") return "Evenly matched! Both of you are strong!";
     return "Great effort!";

@@ -365,7 +365,7 @@ export default function Home() {
           letterSpacing: "0.5px",
         }}
       >
-        As salaam 'alaikum, {name || "Explorer"} 👋
+        Assalamu Alaikum wa Rahmatullah, {name || "Explorer"} 👋
       </p>
 
       {/*

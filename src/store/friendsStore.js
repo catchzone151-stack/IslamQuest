@@ -7,7 +7,7 @@ const STORAGE_KEY = "islamQuestFriends_v1";
 const SIMULATED_FRIENDS_KEY = "islamQuestSimulatedFriends_v1";
 
 const QUICK_MESSAGES = [
-  "MashaAllah you're flying 🚀",
+  "masha'Allah you're flying 🚀",
   "I'm catching up 👀",
   "Keep pushing 💪",
   "You can't beat my streak 🔥",
