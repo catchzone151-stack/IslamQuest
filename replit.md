@@ -43,8 +43,10 @@ Preferred communication style: Simple, everyday language.
   - **Edge-to-edge Design (Nov 19, 2025)**: Removed all horizontal padding from `.screen` class wrapper to eliminate side borders. Individual content sections (headers, cards, carousels) have their own 16px horizontal padding for proper content spacing while maintaining flush edges.
   - **App.css Import Fix (Nov 19, 2025)**: Added missing `import "./App.css"` in src/index.jsx to ensure `.screen` CSS rules actually load in bundle
   - **Bottom Nav Clearance**: `.screen` class sets `padding-bottom: 76px` with `calc(76px + env(safe-area-inset-bottom, 0px))` for flush nav bar alignment
+  - **Mascot Overlap Prevention (Nov 19, 2025)**: Fixed lesson pages where mascot (72px, positioned at top: 16px) overlapped with titles. Set title `marginTop: 100px` to ensure content starts below mascot (88px total height) with safe clearance.
+  - **Friend Card Overflow Fix (Nov 19, 2025)**: Added `overflow: hidden` to friend cards, optimized button spacing, and added `flexShrink: 0` to action buttons to prevent challenge/message buttons from extending outside container boundaries.
   - **Consistent Background**: CSS variable --navy aligned to #0a2a43 across App.css and index.css, ensuring navy background extends edge-to-edge
-  - **Components Updated**: ScreenContainer, ScreenWrapper, Home.jsx, all onboarding screens, main pages, challenge screens, EventModals.css optimized
+  - **Components Updated**: ScreenContainer, ScreenWrapper, Home.jsx, all onboarding screens, main pages, challenge screens, EventModals.css, Friends.jsx, Lesson.jsx optimized
 - **Theming**: Consistent color palette using CSS variables: Navy (#0a2a43) for backgrounds, Gold for accents, Emerald Green for success, and Light gray for text.
 - **Animations**: GPU-optimized CSS and Framer Motion animations for smooth 60fps transitions and interactive elements.
 - **Loading UX**: Custom LoadingScreen with shimmer skeleton loaders and eager image preloading to prevent layout shifts and pop-in lag.

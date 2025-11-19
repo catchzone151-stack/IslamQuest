@@ -106,7 +106,7 @@ export default function Lesson() {
           color: "#ffe99a",
           textAlign: "center",
           textShadow: "0 0 12px rgba(255,215,0,0.4)",
-          marginTop: "clamp(20px, 6vw, 40px)",
+          marginTop: "100px",
           marginBottom: "8px",
         }}
       >
