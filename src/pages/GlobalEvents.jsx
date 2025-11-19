@@ -89,7 +89,14 @@ export default function GlobalEvents() {
         <button className="back-btn" onClick={() => navigate("/challenge")}>
           ← Back
         </button>
-        <h1 className="events-title">🌍 Global Events</h1>
+        <h1 className="events-title">
+          <span style={{ 
+            WebkitBackgroundClip: 'unset', 
+            WebkitTextFillColor: 'unset',
+            marginRight: '8px' 
+          }}>🌍</span>
+          Global Events
+        </h1>
         <p className="events-subtitle">Compete with Muslims worldwide</p>
       </div>
 

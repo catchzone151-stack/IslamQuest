@@ -15,6 +15,11 @@ export default function ChallengeResultsModal({
 }) {
   const percentage = Math.round((score / totalQuestions) * 100);
   
+  // Handle mode as either string or object
+  const isBossLevel = mode === "boss_level" || mode?.id === "boss_level" || mode?.name?.includes("Boss");
+  const modeGradient = typeof mode === "object" ? mode.gradient : "linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)";
+  const modeGlow = typeof mode === "object" ? mode.glow : "0 0 20px rgba(212, 175, 55, 0.5)";
+  
   const getMessage = () => {
     if (result === "win") return "You Won! 🎉";
     if (result === "lose") return "Better luck next time! 💪";
@@ -30,9 +35,6 @@ export default function ChallengeResultsModal({
   };
 
   const getMascot = () => {
-    // Check if this is a boss level challenge (mode can be string or object)
-    const isBossLevel = mode === "boss_level" || mode?.id === "boss_level" || mode?.name === "Boss Level";
-    
     // Boss level shows appropriate mascot based on result
     if (isBossLevel) {
       if (result === "win") return mascotCongrats;
@@ -76,23 +78,27 @@ export default function ChallengeResultsModal({
         <div className="challenge-score-display">
           <div className="score-section">
             <span className="score-label">You</span>
-            <span className="score-value">{score}/{totalQuestions}</span>
-            <span className="score-percentage">{percentage}%</span>
+            <span className="score-value">{score ?? 0}/{totalQuestions}</span>
+            <span className="score-percentage">{percentage ?? 0}%</span>
           </div>
           
-          <div className="score-vs">VS</div>
-          
-          <div className="score-section">
-            <span className="score-label">{opponentName || "Opponent"}</span>
-            <span className="score-value">
-              {opponentScore !== null ? `${opponentScore}/${totalQuestions}` : "Pending"}
-            </span>
-            {opponentScore !== null && (
-              <span className="score-percentage">
-                {Math.round((opponentScore / totalQuestions) * 100)}%
-              </span>
-            )}
-          </div>
+          {!isBossLevel && (
+            <>
+              <div className="score-vs">VS</div>
+              
+              <div className="score-section">
+                <span className="score-label">{opponentName || "Opponent"}</span>
+                <span className="score-value">
+                  {opponentScore !== null && opponentScore !== undefined ? `${opponentScore}/${totalQuestions}` : "Pending"}
+                </span>
+                {opponentScore !== null && opponentScore !== undefined && (
+                  <span className="score-percentage">
+                    {Math.round((opponentScore / totalQuestions) * 100)}%
+                  </span>
+                )}
+              </div>
+            </>
+          )}
         </div>
 
         {/* Rewards Earned */}
@@ -117,8 +123,8 @@ export default function ChallengeResultsModal({
           className="challenge-btn-primary"
           onClick={onClose}
           style={{
-            background: mode.gradient,
-            boxShadow: mode.glow,
+            background: modeGradient,
+            boxShadow: modeGlow,
             marginTop: 12
           }}
         >
