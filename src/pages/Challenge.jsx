@@ -8,6 +8,7 @@ import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import { useDeveloperStore } from "../store/developerStore";
 import { getCurrentLevel } from "../utils/diamondLevels";
 import BossLevelMascot from "../assets/mascots/mascot_boss.webp";
+import mascot_running from "../assets/mascots/mascot_running.webp";
 
 export default function Challenge() {
   const navigate = useNavigate();
@@ -296,7 +297,17 @@ export default function Challenge() {
                   e.currentTarget.style.transform = "translateY(0)";
                 }}
               >
-                <div style={{ fontSize: "2.5rem", marginBottom: 8 }}>{mode.icon}</div>
+                <div style={{ fontSize: "2.5rem", marginBottom: 8 }}>
+                  {mode.id === "speed_run" ? (
+                    <img 
+                      src={mascot_running} 
+                      alt="Speed Run" 
+                      style={{ width: "60px", height: "auto" }}
+                    />
+                  ) : (
+                    mode.icon
+                  )}
+                </div>
                 <h4 style={{ color: "#fff", margin: "0 0 6px", fontSize: "1.05rem", fontWeight: 700 }}>
                   {mode.name}
                 </h4>
