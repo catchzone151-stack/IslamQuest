@@ -100,7 +100,6 @@ export default function Friends() {
           { id: "friends", label: "Friends", icon: Users },
           { id: "requests", label: "Requests", icon: UserPlus, badge: totalRequests },
           { id: "leaderboard", label: "Leaderboard", icon: Trophy },
-          { id: "activity", label: "Activity", icon: Activity },
         ].map((tab) => {
           const Icon = tab.icon;
           return (
@@ -187,9 +186,6 @@ export default function Friends() {
           />
         )}
 
-        {activeTab === "activity" && (
-          <ActivityTab activityFeed={activityFeed} />
-        )}
       </div>
 
       {/* Mini Profile Modal */}
@@ -329,7 +325,7 @@ function FriendCard({ friend, onViewProfile, onMessage, onChallenge }) {
         </div>
 
         {/* Info */}
-        <div style={{ flex: 1 }}>
+        <div style={{ flex: 1, textAlign: "left" }}>
           <div style={{ color: "#D4AF37", fontWeight: "600", fontSize: "1.1rem" }}>
             {friend.name}
           </div>

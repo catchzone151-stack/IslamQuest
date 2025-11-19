@@ -57,9 +57,9 @@ export const CHALLENGE_MODES = {
 
 export const BOSS_LEVEL = {
   id: "boss_level",
-  name: "Boss Level",
+  name: "The Boss Level",
   icon: "👑",
-  description: "Daily ultra-hard challenge - 12 questions in 30s",
+  description: "Daily ultra-hard challenge — 12 questions, 30 seconds",
   questionCount: 12,
   totalTime: 30,
   minLevel: 8,

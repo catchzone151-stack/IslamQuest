@@ -382,7 +382,7 @@ export default function Challenge() {
           </div>
 
           <p style={{ opacity: 0.95, lineHeight: 1.5, fontSize: "0.9rem", marginBottom: 12, position: "relative", zIndex: 1 }}>
-            {BOSS_LEVEL.description} • {BOSS_LEVEL.questionCount} ultra-hard questions • {BOSS_LEVEL.totalTime}s total
+            {BOSS_LEVEL.description}
           </p>
 
           <div style={{ 
