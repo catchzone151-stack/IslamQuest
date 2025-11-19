@@ -302,7 +302,7 @@ export default function Challenge() {
                     <img 
                       src={mascot_running} 
                       alt="Speed Run" 
-                      style={{ width: "auto", height: "35px", objectFit: "contain" }}
+                      style={{ width: "auto", height: "18px", objectFit: "contain" }}
                     />
                   ) : (
                     mode.icon
