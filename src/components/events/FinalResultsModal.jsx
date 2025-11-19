@@ -5,6 +5,7 @@ import { useUserStore } from "../../store/useUserStore";
 import { shallow } from "zustand/shallow";
 import assets from "../../assets/assets";
 import { LevelBadge } from "../LevelBadge";
+import { getAvatarImage } from "../../utils/avatarUtils";
 import "./EventModals.css";
 
 export default function FinalResultsModal({ event, onClose }) {
@@ -66,11 +67,6 @@ export default function FinalResultsModal({ event, onClose }) {
   };
   
   const zaydImage = assets.mascots.mascot_congratulation;
-  
-  // Helper to get avatar image from avatar key
-  const getAvatarImage = (avatarKey) => {
-    return assets.avatars[avatarKey] || assets.avatars.avatar_dino;
-  };
   
   // Handle missing entry (error state)
   if (!entry) {
@@ -138,13 +134,16 @@ export default function FinalResultsModal({ event, onClose }) {
                 >
                   <div className="leaderboard-rank">#{index + 1}</div>
                   <img
-                    src={getAvatarImage(isUser ? avatar : player.avatar)}
+                    src={getAvatarImage(
+                      isUser ? avatar : player.avatar,
+                      { userId: player.userId, nickname: isUser ? nickname : player.nickname }
+                    )}
                     alt={player.nickname}
                     className="leaderboard-avatar"
                   />
                   <div className="leaderboard-info">
                     <p className="leaderboard-name">{isUser ? nickname : player.nickname}</p>
-                    <LevelBadge xp={xp} size="small" />
+                    <LevelBadge xp={isUser ? xp : (player.xp || 0)} size="small" />
                   </div>
                   <div className="leaderboard-score">{player.score}/10</div>
                 </div>
@@ -159,7 +158,7 @@ export default function FinalResultsModal({ event, onClose }) {
             <div className="leaderboard-item user-item">
               <div className="leaderboard-rank">#{userRank}</div>
               <img
-                src={getAvatarImage(avatar)}
+                src={getAvatarImage(avatar, { userId: "current_user", nickname })}
                 alt={nickname}
                 className="leaderboard-avatar"
               />
@@ -218,7 +217,10 @@ export default function FinalResultsModal({ event, onClose }) {
                   >
                     <span className="compact-rank">#{index + 1}</span>
                     <img
-                      src={getAvatarImage(isUser ? avatar : player.avatar)}
+                      src={getAvatarImage(
+                        isUser ? avatar : player.avatar,
+                        { userId: player.userId, nickname: isUser ? nickname : player.nickname }
+                      )}
                       alt={player.nickname}
                       className="compact-avatar"
                     />

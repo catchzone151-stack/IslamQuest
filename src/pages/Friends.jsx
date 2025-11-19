@@ -4,6 +4,7 @@ import { useProgressStore } from "../store/progressStore";
 import { useNavigate } from "../hooks/useNavigate";
 import { Search, UserPlus, Users, Trophy, Activity, X, Send, Swords } from "lucide-react";
 import { LevelBadgeCompact } from "../components/LevelBadge";
+import { getAvatarImage } from "../utils/avatarUtils";
 
 export default function Friends() {
   const navigate = useNavigate();
@@ -304,23 +305,21 @@ function FriendCard({ friend, onViewProfile, onMessage, onChallenge }) {
     }}>
       <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
         {/* Avatar */}
-        <div
+        <img
+          src={getAvatarImage(friend.avatar, { userId: friend.id, nickname: friend.name })}
+          alt={friend.name}
           onClick={onViewProfile}
           style={{
             width: 60,
             height: 60,
             borderRadius: "50%",
-            background: "linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "1.8rem",
+            objectFit: "cover",
             cursor: "pointer",
+            border: "3px solid #D4AF37",
             boxShadow: "0 0 20px rgba(212, 175, 55, 0.4)",
+            flexShrink: 0,
           }}
-        >
-          🧑
-        </div>
+        />
 
         {/* Info */}
         <div style={{ flex: 1, textAlign: "left" }}>
@@ -451,18 +450,18 @@ function RequestCard({ request, type, onAccept, onDecline, onCancel }) {
       alignItems: "center",
     }}>
       <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-        <div style={{
-          width: 50,
-          height: 50,
-          borderRadius: "50%",
-          background: "linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: "1.5rem",
-        }}>
-          🧑
-        </div>
+        <img
+          src={getAvatarImage(request.avatar, { userId: request.id, nickname: request.name })}
+          alt={request.name}
+          style={{
+            width: 50,
+            height: 50,
+            borderRadius: "50%",
+            objectFit: "cover",
+            border: "2px solid #D4AF37",
+            flexShrink: 0,
+          }}
+        />
         <div>
           <div style={{ color: "#D4AF37", fontWeight: "600" }}>{request.name}</div>
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 4 }}>
@@ -584,18 +583,18 @@ function LeaderboardTab({ leaderboardTab, setLeaderboardTab, friendsLeaderboard,
             🏆 Friend of the Week
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 16, justifyContent: "center" }}>
-            <div style={{
-              width: 60,
-              height: 60,
-              borderRadius: "50%",
-              background: "linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "2rem",
-            }}>
-              🧑
-            </div>
+            <img
+              src={getAvatarImage(friendOfWeek.avatar, { userId: friendOfWeek.id, nickname: friendOfWeek.name })}
+              alt={friendOfWeek.name}
+              style={{
+                width: 60,
+                height: 60,
+                borderRadius: "50%",
+                objectFit: "cover",
+                border: "3px solid #D4AF37",
+                boxShadow: "0 0 15px rgba(212, 175, 55, 0.5)",
+              }}
+            />
             <div>
               <div style={{ color: "#D4AF37", fontWeight: "600", fontSize: "1.2rem" }}>
                 {friendOfWeek.name}
@@ -660,10 +659,23 @@ function LeaderboardTab({ leaderboardTab, setLeaderboardTab, friendsLeaderboard,
                   fontWeight: "bold",
                   color: isTop3 ? "#0B1E2D" : "#D4AF37",
                   fontSize: "1.2rem",
+                  flexShrink: 0,
                 }}>
                   {isTop3 ? medals[index] : index + 1}
                 </div>
-                <div style={{ flex: 1 }}>
+                <img
+                  src={getAvatarImage(user.avatar, { userId: user.id, nickname: user.name })}
+                  alt={user.name}
+                  style={{
+                    width: 50,
+                    height: 50,
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                    border: isTop3 ? "3px solid #D4AF37" : "2px solid rgba(212, 175, 55, 0.4)",
+                    flexShrink: 0,
+                  }}
+                />
+                <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ color: "#D4AF37", fontWeight: "600" }}>
                     {user.name}
                   </div>
@@ -802,20 +814,20 @@ function MiniProfileModal({ friend, onClose, onMessage, onChallenge, onRemove })
         </button>
 
         <div style={{ textAlign: "center", marginBottom: 24 }}>
-          <div style={{
-            width: 100,
-            height: 100,
-            borderRadius: "50%",
-            background: "linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)",
-            margin: "0 auto",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "3rem",
-            boxShadow: "0 0 30px rgba(212, 175, 55, 0.5)",
-          }}>
-            🧑
-          </div>
+          <img
+            src={getAvatarImage(friend.avatar, { userId: friend.id, nickname: friend.name })}
+            alt={friend.name}
+            style={{
+              width: 100,
+              height: 100,
+              borderRadius: "50%",
+              objectFit: "cover",
+              margin: "0 auto",
+              border: "4px solid #D4AF37",
+              boxShadow: "0 0 30px rgba(212, 175, 55, 0.5)",
+              display: "block",
+            }}
+          />
           <h2 style={{ color: "#D4AF37", marginTop: 16, fontSize: "1.5rem" }}>
             {friend.name}
           </h2>
