@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Globe } from "lucide-react";
 import { useNavigate } from "../hooks/useNavigate";
 import { useEventsStore } from "../store/eventsStore";
 import { useProgressStore } from "../store/progressStore";
@@ -95,10 +96,13 @@ export default function GlobalEvents() {
         </button>
         <h1 className="events-title">
           <span style={{ 
-            WebkitBackgroundClip: 'unset', 
-            WebkitTextFillColor: 'unset',
-            marginRight: '8px' 
-          }}>🌍</span>
+            display: 'inline-flex',
+            alignItems: 'center',
+            marginRight: '8px',
+            color: '#D4AF37'
+          }}>
+            <Globe size={24} />
+          </span>
           Global Events
         </h1>
         <p className="events-subtitle">Compete with Muslims worldwide</p>

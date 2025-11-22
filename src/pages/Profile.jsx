@@ -23,6 +23,8 @@ export default function Profile() {
     shieldCount,
     premiumStatus,
     familyMembers,
+    vibrationEnabled,
+    setVibrationEnabled,
     purchaseIndividual,
     purchaseFamily,
     addFamilyMember,
@@ -228,6 +230,43 @@ export default function Profile() {
             value={`${shieldCount}/3 🛡️`}
             color="#4fd5ff"
           />
+        </div>
+
+        {/* === Vibration Toggle === */}
+        <div
+          style={{
+            maxWidth: 400,
+            margin: "20px auto 0",
+            padding: "16px",
+            background: "linear-gradient(135deg, rgba(79, 213, 255, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%)",
+            border: "1px solid rgba(79, 213, 255, 0.3)",
+            borderRadius: 12,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <span style={{ color: "#4fd5ff", fontWeight: "600", fontSize: "0.95rem" }}>
+            🔊 Vibration (Haptics)
+          </span>
+          <button
+            onClick={() => setVibrationEnabled(!vibrationEnabled)}
+            style={{
+              background: vibrationEnabled
+                ? "linear-gradient(135deg, #10b981, #059669)"
+                : "rgba(255, 255, 255, 0.1)",
+              border: "1px solid rgba(79, 213, 255, 0.3)",
+              borderRadius: 20,
+              padding: "6px 14px",
+              color: vibrationEnabled ? "white" : "#4fd5ff",
+              fontWeight: "600",
+              cursor: "pointer",
+              fontSize: "0.85rem",
+              transition: "all 0.3s",
+            }}
+          >
+            {vibrationEnabled ? "ON" : "OFF"}
+          </button>
         </div>
 
         {/* === Add Freeze Button === */}

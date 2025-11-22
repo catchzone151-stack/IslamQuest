@@ -71,8 +71,22 @@ export default function Friends() {
     setShowMiniProfile(null);
   };
 
-  const friendsLeaderboard = getFriendsLeaderboard();
-  const globalLeaderboard = getGlobalLeaderboard();
+  let friendsLeaderboard = getFriendsLeaderboard();
+  let globalLeaderboard = getGlobalLeaderboard();
+
+  // Add current user to friends leaderboard with correct rank
+  const currentUser = {
+    id: "current_user",
+    name: currentUserName || "You",
+    avatar: currentUserAvatar,
+    xp: currentUserXP,
+    coins: currentUserCoins,
+    streak: currentUserStreak,
+  };
+  
+  // Insert current user and sort both leaderboards by XP descending
+  friendsLeaderboard = [currentUser, ...friendsLeaderboard].sort((a, b) => b.xp - a.xp);
+  globalLeaderboard = [currentUser, ...globalLeaderboard].sort((a, b) => b.xp - a.xp);
 
   const totalRequests = incomingRequests.length + outgoingRequests.length;
 
@@ -720,8 +734,8 @@ function LeaderboardTab({ leaderboardTab, setLeaderboardTab, friendsLeaderboard,
                     flexShrink: 0,
                   }}
                 />
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ color: "#D4AF37", fontWeight: "600" }}>
+                <div style={{ flex: 1, minWidth: 0, textAlign: "left" }}>
+                  <div style={{ color: "#D4AF37", fontWeight: "600", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {user.name}
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 4 }}>
