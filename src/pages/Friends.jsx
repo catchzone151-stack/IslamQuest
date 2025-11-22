@@ -161,7 +161,18 @@ export default function Friends() {
 
       {/* Tab Content */}
       <div style={{ padding: 16 }}>
-        {activeTab === "friends" && (
+        {activeTab === "friends" && isLoadingFriends && (
+          <div style={{
+            padding: "60px 20px",
+            textAlign: "center",
+            color: "#D4AF37"
+          }}>
+            <div style={{ fontSize: "2rem", marginBottom: "12px" }}>⏳</div>
+            <p style={{ fontSize: "1.1rem" }}>Loading friends...</p>
+          </div>
+        )}
+
+        {activeTab === "friends" && !isLoadingFriends && (
           <FriendsTab
             friends={friends}
             searchQuery={searchQuery}
@@ -183,7 +194,18 @@ export default function Friends() {
           />
         )}
 
-        {activeTab === "leaderboard" && (
+        {activeTab === "leaderboard" && isLoadingLeaderboard && (
+          <div style={{
+            padding: "60px 20px",
+            textAlign: "center",
+            color: "#D4AF37"
+          }}>
+            <div style={{ fontSize: "2rem", marginBottom: "12px" }}>⏳</div>
+            <p style={{ fontSize: "1.1rem" }}>Loading leaderboards...</p>
+          </div>
+        )}
+
+        {activeTab === "leaderboard" && !isLoadingLeaderboard && (
           <LeaderboardTab
             leaderboardTab={leaderboardTab}
             setLeaderboardTab={setLeaderboardTab}
