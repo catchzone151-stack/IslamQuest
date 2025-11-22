@@ -100,7 +100,7 @@ export default function DeveloperModal() {
                   className="dev-debug-value"
                   style={{ color: debugInfo.levelColor }}
                 >
-                  {debugInfo.level} {debugInfo.levelBadge}
+                  {debugInfo.level} 💎
                 </span>
               </div>
               <div className="dev-debug-item">
