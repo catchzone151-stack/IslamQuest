@@ -10,6 +10,9 @@ import { useDeveloperStore } from "../store/developerStore";
 import { getCurrentLevel } from "../utils/diamondLevels";
 import BossLevelMascot from "../assets/mascots/mascot_boss.webp";
 import mascot_running from "../assets/mascots/mascot_running.webp";
+import mascot_quiz from "../assets/mascots/mascot_quiz.webp";
+import mascot_power from "../assets/mascots/mascot_power.webp";
+import mascot_locked from "../assets/mascots/mascot_locked.webp";
 
 export default function Challenge() {
   const navigate = useNavigate();
@@ -269,11 +272,23 @@ export default function Challenge() {
         <div style={{
           display: "grid",
           gridTemplateColumns: "repeat(2, 1fr)",
-          gap: 12,
+          gap: 14,
           marginBottom: 20
         }}>
           {Object.keys(CHALLENGE_MODES).map((modeKey) => {
             const mode = CHALLENGE_MODES[modeKey];
+            let mascotImage = null;
+            
+            if (mode.id === "speed_run") {
+              mascotImage = mascot_running;
+            } else if (mode.id === "mind_battle") {
+              mascotImage = mascot_quiz;
+            } else if (mode.id === "lightning_round") {
+              mascotImage = mascot_power;
+            } else if (mode.id === "sudden_death") {
+              mascotImage = mascot_locked;
+            }
+            
             return (
               <div
                 key={mode.id}
@@ -281,11 +296,11 @@ export default function Challenge() {
                 style={{
                   background: mode.gradient,
                   borderRadius: 16,
-                  padding: "16px 12px",
+                  padding: "18px 12px",
                   cursor: "pointer",
                   transition: "all 0.2s ease",
                   boxShadow: mode.glow,
-                  minHeight: 180,
+                  minHeight: 220,
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
@@ -298,12 +313,12 @@ export default function Challenge() {
                   e.currentTarget.style.transform = "translateY(0)";
                 }}
               >
-                <div style={{ fontSize: "2.5rem", marginBottom: 8, height: "80px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  {mode.id === "speed_run" ? (
+                <div style={{ fontSize: "2.5rem", marginBottom: 8, height: "100px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  {mascotImage ? (
                     <img 
-                      src={mascot_running} 
-                      alt="Speed Run" 
-                      style={{ width: "auto", height: "50px", objectFit: "contain" }}
+                      src={mascotImage} 
+                      alt={mode.name} 
+                      style={{ width: "auto", height: "70px", objectFit: "contain" }}
                     />
                   ) : (
                     mode.icon
