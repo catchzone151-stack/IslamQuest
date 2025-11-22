@@ -1,0 +1,193 @@
+📌 REPLIT PROMPT — Implement Full Premium System + Lesson Locking (Duolingo-style), Premium-Only Paths, 75% Score Rule, Global Events Paywall, Premium Page, Profile Popup Fix, and Supabase-Ready Structure
+
+Please fully rebuild and unify the entire premium and lesson-locking system across the app. 
+Follow this EXACT specification, do not reuse old scattered logic, and ensure everything matches the Islam Quest theme, layout, and animations.
+
+────────────────────────────────────────────
+1️⃣ CENTRALISE ALL LESSON LOCKING
+────────────────────────────────────────────
+Create ONE unified source of truth inside progressStore:
+
+getLessonLockState(pathId, lessonIndex) → "unlocked" | "progressLocked" | "premiumLocked"
+applyLockingRules()
+isPremiumLocked(pathId, lessonIndex)
+canAccessLesson(pathId, lessonIndex)
+
+Remove all scattered or conflicting logic from:
+• Pathway.jsx
+• Lesson.jsx
+• Quiz completion
+• Old debug code
+• Any other components
+
+All lesson UI must call this unified logic.
+
+────────────────────────────────────────────
+2️⃣ FREE LESSON LIMITS (FINAL AND MANDATORY)
+────────────────────────────────────────────
+Apply the following EXACT free lesson limits:
+
+Paths 11–14 → PREMIUM ONLY (0 free lessons)
+Path 5 → 2 free
+Path 6 → 2 free
+Path 7 → 2 free
+ALL OTHER PATHS → 3 free
+
+Replace the entire FREE_LESSON_LIMITS object with:
+
+{
+  1: 3, 2: 3, 3: 3, 4: 3,
+  5: 2, 6: 2, 7: 2,
+  8: 3, 9: 3, 10: 3,
+  11: 0, 12: 0, 13: 0, 14: 0
+}
+
+Make sure lesson-locking checks premium limits FIRST.
+
+────────────────────────────────────────────
+3️⃣ PREMIUM-ONLY PATHS UI (VERY IMPORTANT)
+────────────────────────────────────────────
+Paths 11–14 (The Grave, Day of Judgement, Hellfire, Paradise) must:
+
+• Show a grey tinted overlay
+• Show a lock icon
+• Show “Premium Only”
+• Not allow even Lesson 1
+• Not allow path entry
+
+Tapping any of these paths should IMMEDIATELY open the Premium Page.
+
+No popups first.
+
+────────────────────────────────────────────
+4️⃣ MINIMUM SCORE RULE (REPLACE OLD LOGIC)
+────────────────────────────────────────────
+A lesson unlocks the next one ONLY IF:
+
+correctAnswers / totalQuestions >= 0.75
+
+Remove any hardcoded “3 out of 4” logic. 
+Use the 75% rule for ALL quizzes regardless of question count.
+
+────────────────────────────────────────────
+5️⃣ GLOBAL EVENTS MUST BE PREMIUM ONLY
+────────────────────────────────────────────
+If the user is NOT premium:
+• Tapping Global Events must open the Premium Page.
+
+If premium:
+• Allow access normally.
+
+Grey-tint the Global Events card if the user is not premium.
+
+────────────────────────────────────────────
+6️⃣ BUILD THE FULL PREMIUM PAGE (/premium)
+────────────────────────────────────────────
+Build a Duolingo-style full premium page using Islam Quest theme:
+
+• Fullscreen page
+• Mascot at top
+• Title: “Unlock All Lessons”
+• Subtitle: “Get lifetime access to all 14 learning paths”
+• Benefits list:
+   - Unlock all lessons
+   - Lifetime access
+   - No ads ever
+   - Works across devices
+   - Unlock Global Events
+   - Unlock 4 exclusive premium paths
+• Big CTA button → “Unlock All — £4.99”
+• Secondary CTA → “Family Access — £18 (6 users)”
+• Back button (X or arrow) at top-left
+• Restore Purchase link at bottom
+• Bright yellow glow around the container (existing style)
+• Fully mobile responsive
+• Consistent with existing challenge popup theme
+
+Premium page must update Zustand when purchase is simulated.
+
+────────────────────────────────────────────
+7️⃣ MAKE PREMIUM SYSTEM SUPABASE-READY
+────────────────────────────────────────────
+In userStore, add:
+
+premium: false,
+premiumType: null,
+premiumActivatedAt: null,
+
+And placeholder async functions:
+
+async purchasePremium()
+async restorePurchase()
+
+These should:
+• Update local Zustand state
+• Be ready for Supabase integration later
+DO NOT connect Stripe or IAP now.
+Just build the architecture to accept them later.
+
+────────────────────────────────────────────
+8️⃣ PROFILE PREMIUM POPUP — FIX & REBUILD
+────────────────────────────────────────────
+The Profile page has a premium popup. 
+Rebuild it with:
+
+• Same card UI as before
+• REMOVE “Not Now”
+• ADD a working X close button in top-right
+• Keep “Restore Purchase” (Apple requires this)
+• Use the updated benefits list
+• CTA “Unlock All — £4.99”
+• Smooth fade & scale animation
+• Theme-matched
+
+Popup CTA should open the full Premium Page.
+
+────────────────────────────────────────────
+9️⃣ HOOK UP ALL PREMIUM LOCK POINTS
+────────────────────────────────────────────
+Ensure the following all redirect to Premium Page when locked:
+
+• Premium-only lessons
+• Premium-only paths
+• Premium-only global events
+• Any feature behind paywall
+
+Remove ANY old modal/popups forcing the user to tap “Not Now”.
+
+Buttons must always work and redirect cleanly.
+
+────────────────────────────────────────────
+🔟 REMOVE ALL OLD LOGIC
+────────────────────────────────────────────
+Remove:
+• old premiumConfig logic
+• duplicate locking functions
+• outdated getLockReason branches
+• debug/unlock-all shortcuts
+• unused modals
+• old free lesson limit values
+• any bypass logic
+
+Ensure the system is CLEAN, unified, and consistent.
+
+────────────────────────────────────────────
+1️⃣1️⃣ FINAL EXPECTED OUTPUT
+────────────────────────────────────────────
+
+Replit must generate:
+• Updated progressStore.js (full replacement)
+• Updated premiumConfig.js (full replacement)
+• Updated Pathway.jsx to use new lock states
+• Updated Lesson components to obey new rules
+• Updated Premium page (/premium) full rebuild
+• Updated Profile premium popup UI logic
+• Updated navigation helpers for premium redirect
+• Updated Global Events entry logic
+• Grey-tinted UI states for locked paths/global events
+• Zustand premium flags + placeholder async purchase functions
+• All logic Supabase-ready, not connected yet
+• ZERO breaking of quiz, home, revise, challenge, or friends systems
+
+Everything must match the Islam Quest theme, spacing, typography, rounded styles, glow effects, and animations.
+Take your time. Do not rush. Verify everything before outputting code.
