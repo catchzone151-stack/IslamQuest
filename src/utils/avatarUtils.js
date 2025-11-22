@@ -51,10 +51,16 @@ const LEGACY_AVATAR_MAP = {
 export function getAvatarImage(avatarKey, options = {}) {
   const { userId, nickname, isDevCheck = true } = options;
   
-  // PRIORITY 0: If this is the current user, use their selected avatar first
+  // PRIORITY 0: FORCE current user to always use their selected avatar from store
+  // Ignore any avatarKey parameter - the store is the source of truth
   const { id: currentUserId, avatar: currentUserAvatar } = useUserStore.getState();
-  if (userId === currentUserId && currentUserAvatar && assets.avatars[currentUserAvatar]) {
-    return assets.avatars[currentUserAvatar];
+  if (userId === currentUserId) {
+    // Current user must have their selected avatar, always
+    if (currentUserAvatar && assets.avatars[currentUserAvatar]) {
+      return assets.avatars[currentUserAvatar];
+    }
+    // Fallback: return a valid default if no avatar is set
+    return assets.avatars[AVAILABLE_AVATARS[0]];
   }
   
   // PRIORITY 1: Check if this is the Dev account (The Dev NPC)
