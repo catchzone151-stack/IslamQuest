@@ -5,10 +5,11 @@ import { useUserStore } from "../store/useUserStore";
 import { useNavigate } from "../hooks/useNavigate";
 import { Search, UserPlus, Users, Trophy, Activity, X, Send, Swords } from "lucide-react";
 import { LevelBadgeCompact } from "../components/LevelBadge";
-import { applyAvatarOverride } from "../utils/avatarOverride";
+import { getAvatarImage } from "../utils/avatarUtils";
 
 export default function Friends() {
   const navigate = useNavigate();
+  const { id: currentUserId, avatar: currentUserAvatar } = useUserStore();
   const [activeTab, setActiveTab] = useState("friends");
   const [searchQuery, setSearchQuery] = useState("");
   const [showMiniProfile, setShowMiniProfile] = useState(null);
@@ -360,6 +361,7 @@ function FriendsTab({ friends, searchQuery, setSearchQuery, handleSearch, setSho
 }
 
 function FriendCard({ friend, onViewProfile, onMessage, onChallenge }) {
+  const { id: currentUserId, avatar: currentUserAvatar } = useUserStore();
   return (
     <div style={{
       background: "linear-gradient(135deg, rgba(26, 58, 82, 0.6) 0%, rgba(11, 30, 45, 0.8) 100%)",
@@ -372,7 +374,7 @@ function FriendCard({ friend, onViewProfile, onMessage, onChallenge }) {
       <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
         {/* Avatar */}
         <img
-          src={applyAvatarOverride(friend)}
+          src={getAvatarImage(friend.id === currentUserId ? currentUserAvatar : friend.avatar, { userId: friend.id, nickname: friend.name })}
           alt={friend.name}
           onClick={onViewProfile}
           style={{
@@ -514,6 +516,7 @@ function RequestsTab({ incomingRequests, outgoingRequests, acceptFriendRequest, 
 }
 
 function RequestCard({ request, type, onAccept, onDecline, onCancel }) {
+  const { id: currentUserId, avatar: currentUserAvatar } = useUserStore();
   return (
     <div style={{
       background: "linear-gradient(135deg, rgba(26, 58, 82, 0.6) 0%, rgba(11, 30, 45, 0.8) 100%)",
@@ -526,7 +529,7 @@ function RequestCard({ request, type, onAccept, onDecline, onCancel }) {
     }}>
       <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
         <img
-          src={applyAvatarOverride(request)}
+          src={getAvatarImage(request.id === currentUserId ? currentUserAvatar : request.avatar, { userId: request.id, nickname: request.name })}
           alt={request.name}
           style={{
             width: 50,
@@ -659,7 +662,7 @@ function LeaderboardTab({ leaderboardTab, setLeaderboardTab, friendsLeaderboard,
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 16, justifyContent: "center" }}>
             <img
-              src={applyAvatarOverride(friendOfWeek)}
+              src={getAvatarImage(friendOfWeek.id === currentUserId ? currentUserAvatar : friendOfWeek.avatar, { userId: friendOfWeek.id, nickname: friendOfWeek.name })}
               alt={friendOfWeek.name}
               style={{
                 width: 60,
@@ -740,7 +743,7 @@ function LeaderboardTab({ leaderboardTab, setLeaderboardTab, friendsLeaderboard,
                   {isTop3 ? medals[index] : rank}
                 </div>
                 <img
-                  src={applyAvatarOverride(user)}
+                  src={getAvatarImage(user.id === currentUserId ? currentUserAvatar : user.avatar, { userId: user.id, nickname: user.name })}
                   alt={user.name}
                   style={{
                     width: 50,
@@ -842,6 +845,7 @@ function ActivityTab({ activityFeed }) {
 }
 
 function MiniProfileModal({ friend, onClose, onMessage, onChallenge, onRemove }) {
+  const { id: currentUserId, avatar: currentUserAvatar } = useUserStore();
   const friendsSince = friend.addedAt ? new Date(friend.addedAt).toLocaleDateString() : "Recently";
 
   return (
@@ -891,7 +895,7 @@ function MiniProfileModal({ friend, onClose, onMessage, onChallenge, onRemove })
 
         <div style={{ textAlign: "center", marginBottom: 24 }}>
           <img
-            src={applyAvatarOverride(friend)}
+            src={getAvatarImage(friend.id === currentUserId ? currentUserAvatar : friend.avatar, { userId: friend.id, nickname: friend.name })}
             alt={friend.name}
             style={{
               width: 100,

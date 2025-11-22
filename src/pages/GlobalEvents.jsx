@@ -4,7 +4,8 @@ import { useNavigate } from "../hooks/useNavigate";
 import { useEventsStore } from "../store/eventsStore";
 import { useProgressStore } from "../store/progressStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
-import { applyAvatarOverride } from "../utils/avatarOverride";
+import { useUserStore } from "../store/useUserStore";
+import { getAvatarImage } from "../utils/avatarUtils";
 import "./GlobalEvents.css";
 
 export default function GlobalEvents() {
