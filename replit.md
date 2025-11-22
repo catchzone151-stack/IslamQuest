@@ -48,6 +48,14 @@ Preferred communication style: Simple, everyday language.
   - **Friend Card Overflow Fix (Nov 19, 2025)**: Added `overflow: hidden` to friend cards, optimized button spacing, and added `flexShrink: 0` to action buttons to prevent challenge/message buttons from extending outside container boundaries.
   - **Consistent Background**: CSS variable --navy aligned to #0a2a43 across App.css and index.css, ensuring navy background extends edge-to-edge
   - **Components Updated**: ScreenContainer, ScreenWrapper, Home.jsx, all onboarding screens, main pages, challenge screens, EventModals.css, Friends.jsx, Lesson.jsx optimized
+- **PathPage 3-Column Layout (November 22, 2025)**: Structured timeline display with section headings for learning paths:
+  - **LEFT Column (200px)**: Section headings (golden text, uppercase, left-aligned) positioned with absolute positioning to align vertically with first lesson circle of each section
+  - **MIDDLE Column**: Vertical golden timeline with lesson circles (64px height, 48px intra-section gap, 120px inter-section gap)
+  - **RIGHT Column**: Lesson titles aligned with circles
+  - **Alignment Logic**: Spacing constants (CIRCLE_HEIGHT=64px, INTRA_SECTION_GAP=48px, INTER_SECTION_GAP=120px) drive cumulative offset calculations; section headings use absolute positioning to prevent height drift
+  - **Section Configuration**: Paths 2, 3, 4 have SECTION_NAMES mappings; getSectionIndex() categorizes lessons by section
+  - **Safety**: Empty section guard prevents negative heights; constants ensure alignment stays synchronized with timeline
+  - **Scalability**: Works for any number of sections and varying lessons per section
 - **Theming**: Consistent color palette using CSS variables: Navy (#0a2a43) for backgrounds, Gold for accents, Emerald Green for success, and Light gray for text.
 - **Animations**: GPU-optimized CSS and Framer Motion animations for smooth 60fps transitions and interactive elements.
 - **Loading UX**: Custom LoadingScreen with shimmer skeleton loaders and eager image preloading to prevent layout shifts and pop-in lag.
