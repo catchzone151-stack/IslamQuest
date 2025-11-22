@@ -4,6 +4,8 @@ import { useDailyQuestStore } from "../store/dailyQuestStore";
 import { useAnalytics } from "../hooks/useAnalytics";
 import QuestionCard from "../components/quiz/QuestionCard";
 import assets from "../assets/assets";
+import SittingMascot from "../assets/mascots/mascot_sitting_v2.webp";
+import CongratsMascot from "../assets/mascots/mascot_congratulation.webp";
 
 export default function DailyQuestGame() {
   const navigate = useNavigate();
@@ -30,6 +32,12 @@ export default function DailyQuestGame() {
 
   const currentQuestion = questions[currentIndex];
   const totalQuestions = questions.length;
+
+  // Get mascot based on progress through quiz
+  const getMascot = () => {
+    if (currentIndex <= 2) return SittingMascot;
+    return CongratsMascot;
+  };
 
   const handleSelect = (optionIndex) => {
     setSelected(optionIndex);
@@ -271,7 +279,7 @@ export default function DailyQuestGame() {
       {/* Thinking Mascot */}
       <div style={{ textAlign: "center", marginBottom: "20px" }}>
         <img 
-          src={assets.mascots.mascot_pointing_v2} 
+          src={getMascot()} 
           alt="Mascot"
           style={{
             width: "80px",

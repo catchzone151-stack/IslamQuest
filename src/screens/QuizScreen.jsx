@@ -6,6 +6,8 @@ import { mascotQuizStates } from "../data/mascotQuizStates";
 import { useProgressStore } from "../store/progressStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import { useAnalytics } from "../hooks/useAnalytics";
+import SittingMascot from "../assets/mascots/mascot_sitting_v2.webp";
+import CongratsMascot from "../assets/mascots/mascot_congratulation.webp";
 
 import QuizHeader from "../components/quiz/QuizHeader";
 import QuestionCard from "../components/quiz/QuestionCard";
@@ -149,6 +151,12 @@ const QuizScreen = () => {
   const progress =
     ((isQuizDone ? quizData.length : currentQ + 1) / quizData.length) * 100;
 
+  // Get mascot based on progress through quiz
+  const getMascot = () => {
+    if (currentQ <= 2) return SittingMascot;
+    return CongratsMascot;
+  };
+
   return (
     <div className="screen no-extra-space bg-gradient-to-b from-[#0A0F1E] to-[#030614] text-white flex flex-col">
       <QuizHeader
@@ -156,6 +164,7 @@ const QuizScreen = () => {
         totalQ={quizData.length}
         mascotMood={mascotMood}
         isQuizDone={isQuizDone}
+        progressMascot={!isQuizDone ? getMascot() : mascotQuizStates[mascotMood]}
       />
 
       <div className="h-2 bg-gray-800 w-full">

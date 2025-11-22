@@ -1,8 +1,8 @@
 import React from "react";
 import { mascotQuizStates } from "../../data/mascotQuizStates";
 
-const QuizHeader = ({ currentQ, totalQ, mascotMood, isQuizDone = false }) => {
-  const mascotImg = mascotQuizStates[mascotMood] || mascotQuizStates.start;
+const QuizHeader = ({ currentQ, totalQ, mascotMood, isQuizDone = false, progressMascot = null }) => {
+  const mascotImg = progressMascot || mascotQuizStates[mascotMood] || mascotQuizStates.start;
 
   return (
     <div className="flex items-center justify-between px-4 pt-4 pb-3">

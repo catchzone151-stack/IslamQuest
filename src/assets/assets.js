@@ -14,7 +14,6 @@ import mascot_tasbih from "./mascots/mascot_tasbih.webp";
 import mascot_waving from "./mascots/mascot_waving.webp";
 
 // Additional mascot variants
-import mascot_sitting_v2 from "./mascots/mascot_sitting_v2.webp";
 import mascot_pointing_v2 from "./mascots/mascot_pointing_v2.webp";
 import mascot_teaching from "./mascots/mascot_pointing.webp";
 import mascot_quiz from "./mascots/mascot_quiz.webp";

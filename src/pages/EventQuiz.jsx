@@ -6,6 +6,8 @@ import { useProgressStore } from "../store/progressStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import { getEventQuestions } from "../data/eventQuestions";
 import assets from "../assets/assets";
+import SittingMascot from "../assets/mascots/mascot_sitting_v2.webp";
+import CongratsMascot from "../assets/mascots/mascot_congratulation.webp";
 import "./EventQuiz.css";
 
 export default function EventQuiz() {
@@ -210,6 +212,12 @@ export default function EventQuiz() {
   const currentQuestion = questions.length > 0 ? questions[currentQuestionIndex] : null;
   const progress = questions.length > 0 ? ((currentQuestionIndex + 1) / questions.length) * 100 : 0;
 
+  // Get mascot based on progress through quiz
+  const getMascot = () => {
+    if (currentQuestionIndex <= 2) return SittingMascot;
+    return CongratsMascot;
+  };
+
   return (
     <div className="screen no-extra-space event-quiz-container">
       {/* Quiz Screen */}
@@ -260,7 +268,7 @@ export default function EventQuiz() {
 
           {/* Mascot */}
           <div className="quiz-mascot">
-            <img src={assets.mascots.mascot_pointing_v2} alt="Mascot" />
+            <img src={getMascot()} alt="Mascot" />
           </div>
         </>
       )}
