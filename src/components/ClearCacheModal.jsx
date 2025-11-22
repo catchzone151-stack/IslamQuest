@@ -4,16 +4,20 @@ import assets from "../assets/assets";
 
 export default function ClearCacheModal({ onClose, onConfirm }) {
   const handleClear = () => {
-    // Clear localStorage
+    // Clear ALL storage
     localStorage.clear();
-    
-    // Clear sessionStorage
     sessionStorage.clear();
     
-    // Show success and close
-    alert("✅ Cache cleared! Your app has been reset.");
-    onConfirm?.();
-    onClose();
+    // Clear IndexedDB (used by some libraries)
+    if (window.indexedDB) {
+      indexedDB.databases?.().then(dbs => {
+        dbs.forEach(db => indexedDB.deleteDatabase(db.name));
+      });
+    }
+    
+    // Reset app with full page reload
+    alert("✅ Cache cleared! Restarting app...");
+    window.location.href = window.location.pathname;
   };
 
   return (
