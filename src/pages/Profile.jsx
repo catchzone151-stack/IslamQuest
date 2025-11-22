@@ -1,6 +1,7 @@
 // src/pages/Profile.jsx
 import React from "react";
 import ScreenContainer from "../components/ScreenContainer";
+import { useNavigate } from "../hooks/useNavigate";
 import { useUserStore } from "../store/useUserStore";
 import { useProgressStore } from "../store/progressStore";
 import { useDeveloperStore } from "../store/developerStore";
@@ -23,6 +24,7 @@ const extractAvatarKey = (path) => {
 };
 
 export default function Profile() {
+  const navigate = useNavigate();
   const { id: userId, name, avatar, setName, setAvatar } = useUserStore();
   const { 
     xp, 
@@ -243,43 +245,6 @@ export default function Profile() {
           />
         </div>
 
-        {/* === Vibration Toggle === */}
-        <div
-          style={{
-            maxWidth: 400,
-            margin: "20px auto 0",
-            padding: "16px",
-            background: "linear-gradient(135deg, rgba(79, 213, 255, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%)",
-            border: "1px solid rgba(79, 213, 255, 0.3)",
-            borderRadius: 12,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <span style={{ color: "#4fd5ff", fontWeight: "600", fontSize: "0.95rem" }}>
-            🔊 Vibration (Haptics)
-          </span>
-          <button
-            onClick={() => setVibrationEnabled(!vibrationEnabled)}
-            style={{
-              background: vibrationEnabled
-                ? "linear-gradient(135deg, #10b981, #059669)"
-                : "rgba(255, 255, 255, 0.1)",
-              border: "1px solid rgba(79, 213, 255, 0.3)",
-              borderRadius: 20,
-              padding: "6px 14px",
-              color: vibrationEnabled ? "white" : "#4fd5ff",
-              fontWeight: "600",
-              cursor: "pointer",
-              fontSize: "0.85rem",
-              transition: "all 0.3s",
-            }}
-          >
-            {vibrationEnabled ? "ON" : "OFF"}
-          </button>
-        </div>
-
         {/* === Add Freeze Button === */}
         <button
           onClick={() => showModal(MODAL_TYPES.PURCHASE_STREAK_FREEZE)}
@@ -324,105 +289,31 @@ export default function Profile() {
           </div>
         )}
 
-        {/* === Settings Section === */}
-        <div
+        {/* === Settings Button === */}
+        <button
+          onClick={() => navigate("/settings")}
           style={{
+            background: "linear-gradient(135deg, rgba(79, 213, 255, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%)",
+            border: "1px solid rgba(79, 213, 255, 0.3)",
+            borderRadius: 12,
+            padding: "14px 24px",
+            color: "#4fd5ff",
+            fontWeight: "600",
+            cursor: "pointer",
+            fontSize: "0.95rem",
+            marginTop: 20,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 8,
+            margin: "20px auto 0",
             maxWidth: 400,
-            margin: "32px auto 0",
-            padding: 20,
-            background: "rgba(79, 213, 255, 0.05)",
-            border: "1px solid rgba(79, 213, 255, 0.2)",
-            borderRadius: 16,
+            width: "100%",
           }}
         >
-          <h3
-            style={{
-              color: "#4fd5ff",
-              fontSize: "1.2rem",
-              fontWeight: 700,
-              marginBottom: 16,
-            }}
-          >
-            ⚙️ Settings
-          </h3>
-
-          {/* App Version */}
-          <div
-            style={{
-              background: "rgba(255, 255, 255, 0.03)",
-              padding: 14,
-              borderRadius: 12,
-              marginBottom: 12,
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <span style={{ color: "#cbd5e1", fontSize: "0.9rem" }}>
-              App Version
-            </span>
-            <span style={{ color: "#d4af37", fontSize: "0.9rem", fontWeight: 600 }}>
-              Islam Quest v1.0.0
-            </span>
-          </div>
-
-          {/* Clear Cache Button */}
-          <button
-            onClick={() => showModal(MODAL_TYPES.CLEAR_CACHE_CONFIRMATION)}
-            style={{
-              background: "rgba(239, 68, 68, 0.1)",
-              border: "1px solid rgba(239, 68, 68, 0.3)",
-              borderRadius: 12,
-              padding: "12px 16px",
-              color: "#ef4444",
-              fontWeight: "600",
-              fontSize: "0.9rem",
-              width: "100%",
-              cursor: "pointer",
-              marginBottom: 12,
-              transition: "all 0.2s ease",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = "rgba(239, 68, 68, 0.2)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = "rgba(239, 68, 68, 0.1)";
-            }}
-          >
-            🗑️ Clear Cache
-          </button>
-
-          {/* Rate App Button */}
-          <a
-            href="https://play.google.com/store"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ textDecoration: "none", display: "block" }}
-          >
-            <button
-              style={{
-                background: "linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(244, 208, 63, 0.1) 100%)",
-                border: "1px solid rgba(212, 175, 55, 0.3)",
-                borderRadius: 12,
-                padding: "12px 16px",
-                color: "#d4af37",
-                fontWeight: "600",
-                fontSize: "0.9rem",
-                width: "100%",
-                cursor: "pointer",
-                transition: "all 0.2s ease",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(244, 208, 63, 0.2) 100%)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(244, 208, 63, 0.1) 100%)";
-              }}
-            >
-              ⭐ Rate this App
-            </button>
-          </a>
-        </div>
+          <span>⚙️</span>
+          <span>Settings</span>
+        </button>
 
         {/* === Version Display (kept for logging) === */}
         <div

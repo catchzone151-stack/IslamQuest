@@ -31,6 +31,7 @@ const ChallengeGame = lazy(() => import("./pages/challenges/ChallengeGame.jsx"))
 const DailyQuestGame = lazy(() => import("./pages/DailyQuestGame.jsx"));
 const Friends = lazy(() => import("./pages/Friends.jsx"));
 const Profile = lazy(() => import("./pages/Profile.jsx"));
+const Settings = lazy(() => import("./pages/Settings.jsx"));
 const Revise = lazy(() => import("./pages/Revise.jsx"));
 const Login = lazy(() => import("./pages/Login.jsx"));
 const QuizScreen = lazy(() => import("./screens/QuizScreen.jsx"));
@@ -171,6 +172,7 @@ export default function App() {
       import("./pages/EventQuiz.jsx"),
       import("./pages/Friends.jsx"),
       import("./pages/Profile.jsx"),
+      import("./pages/Settings.jsx"),
       import("./pages/Revise.jsx"),
       import("./pages/Login.jsx"),
       import("./pages/LockDiagnostics.jsx"),
@@ -250,6 +252,7 @@ export default function App() {
                 <Route path="/events/:eventId" element={<Suspense fallback={<LoadingScreen />}><EventQuiz /></Suspense>} />
                 <Route path="/friends" element={<Suspense fallback={<LoadingScreen />}><Friends /></Suspense>} />
                 <Route path="/profile" element={<Suspense fallback={<LoadingScreen />}><Profile /></Suspense>} />
+                <Route path="/settings" element={<Suspense fallback={<LoadingScreen />}><Settings /></Suspense>} />
                 <Route path="/revise" element={<Suspense fallback={<LoadingScreen />}><Revise /></Suspense>} />
                 <Route path="/login" element={<Suspense fallback={<LoadingScreen />}><Login /></Suspense>} />
                 <Route path="/diagnostics" element={<Suspense fallback={<LoadingScreen />}><LockDiagnostics /></Suspense>} />
