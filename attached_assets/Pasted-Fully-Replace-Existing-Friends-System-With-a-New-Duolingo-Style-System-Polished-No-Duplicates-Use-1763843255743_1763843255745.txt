@@ -1,0 +1,337 @@
+Fully Replace Existing Friends System With a New Duolingo-Style System (Polished, No Duplicates, Username Search, Supabase-Ready)
+
+Please fully replace my existing friends system (including friendsStore.js, and any helper logic) with a brand-new system following these exact requirements.
+Do NOT reuse any old code.
+Do NOT depend on AI friends, dev tools, or beta leftovers.
+
+Take your time and ensure everything is clean, polished, bug-free, and perfectly matched to the Islam Quest theme, animations, modals, routing, and component conventions.
+
+✔️ CORE GOALS
+
+Create a complete Duolingo-style Friends System, matching my app’s:
+
+Theme (Islam Quest colours, spacing, card style, shadow, rounded corners)
+
+Popups / modals (same animation + style)
+
+UX flow
+
+Consistency across screens
+
+Framer Motion animations
+
+Tailwind usage
+
+File and component structure
+
+This system must be:
+
+Clean
+
+Predictable
+
+Scalable
+
+Local-first (Zustand + localStorage)
+
+100% Supabase ready later
+
+Duplicate-proof
+
+Username-based (not nickname)
+
+Fully polished and production-grade
+
+🧭 1. USER IDENTITY (FINAL MODEL)
+
+A user in this system has:
+
+{
+  id: string,            // local UUID now → Supabase user ID later
+  username: string,      // UNIQUE, lowercase, letters+numbers+underscore only
+  nickname: string,      // display name (can include emojis)
+  avatar: string,
+  xp: number,
+  streak: number,
+  lastActive: number
+}
+
+
+Rules:
+
+username is unique and never changeable once set.
+
+nickname is free, emojis allowed, can be changed anytime.
+
+Username length: min 3, max 20 characters.
+
+Username format: ^[a-z0-9_]+$
+
+Username suggestions (Duolingo-style):
+
+username_1
+
+username_01
+
+username_xyz
+
+🧭 2. ONBOARDING (ADD USERNAME STEP)
+
+Add a new screen after avatar selection:
+
+Onboarding Flow:
+
+Bismillah
+
+Salaam
+
+Nickname
+
+Avatar
+
+Username (NEW) ← This is where uniqueness + suggestions happen
+
+Dashboard
+
+Features:
+
+Username input
+
+Live validation
+
+If taken → show 3 suggestions the user can tap
+
+“Continue” only enabled when valid & unique
+
+Matches Islam Quest theme + animations
+
+🧭 3. FRIENDSHIP MODEL (ONE SOURCE OF TRUTH)
+
+Replace all friend-related arrays with one canonical array:
+
+friendships = [
+  {
+    id: string,
+    userId: string,         // requester
+    friendId: string,       // receiver
+    status: "pending" | "accepted" | "declined",
+    createdAt: number
+  }
+]
+
+
+Absolutely no duplicates allowed where:
+
+A pending request already exists
+
+An accepted relationship already exists
+
+Declined requests do NOT block future requests
+(Just like Duolingo.)
+
+🧭 4. FRIEND ACTIONS (FULL LIFE CYCLE)
+
+Replit must implement all of these:
+
+Send friend request
+
+Search users by username (case-insensitive)
+
+Validate:
+
+Cannot add yourself
+
+Cannot add existing friend
+
+Cannot send request if pending already exists
+
+If last entry was “declined” → allow new request
+
+Create a new record
+
+Accept request
+
+Change existing "pending" → "accepted"
+
+Decline request
+
+"pending" → "declined"
+
+Must allow sending again later
+
+Cancel sent request
+
+Delete the "pending" entry where the current user is requester
+
+Remove friend
+
+Delete any "accepted" entry between both users
+
+🧭 5. DERIVED SELECTORS (REQUIRED)
+
+Replit must generate functions:
+
+searchUsers(query)
+
+sentRequests
+
+receivedRequests
+
+allFriends
+
+isFriend(userId)
+
+canSendRequest(userId)
+
+areWeConnected(userId)
+
+getFriendship(userId)
+
+All computed from the ONE friendships array.
+
+🧭 6. FRIEND PROFILE PAGE
+
+(Use existing app style.)
+
+When clicking a friend:
+
+Show:
+
+Avatar
+
+Nickname
+
+@username
+
+XP
+
+Streak
+
+Last active
+
+“Remove Friend” button
+
+Animations + layout must follow the Islam Quest design system.
+
+🧭 7. UI / UX REQUIREMENTS
+Search Page
+
+Each result row shows:
+
+Avatar
+
+Nickname
+
+@username
+
+XP preview
+
+Streak preview
+
+Button: “Add”, “Pending”, or “Friends”
+
+Minimum 3 characters to start search.
+
+Error messages (toast or modal)
+
+Username too short
+
+Username invalid
+
+Username taken
+
+Already friends
+
+Request already sent
+
+Cannot add yourself
+
+No users found
+
+Match Islam Quest theme.
+
+Success prompts
+
+“Friend request sent!”
+
+“Friend request accepted.”
+
+“Removed friend.”
+
+“Request cancelled.”
+
+🧭 8. THEME + CONSISTENCY
+
+Every page, toast, modal, button, animation, and card must match:
+
+Same rounded corners
+
+Same spacing
+
+Same colours
+
+Same motion preset
+
+Same card style
+
+Same icons (Lucide/Heroicons)
+
+Same Islamic Quest UI language
+
+Do not change UX tone.
+
+🧭 9. SUPABASE-READY DESIGN
+
+Although storing is local-first now, the architecture MUST align perfectly with:
+
+Future Supabase tables:
+
+users
+friendships
+profiles (optional later)
+
+Rules to follow:
+
+Do NOT store derived data permanently
+
+Use IDs consistently
+
+Keep data normalised
+
+No nested friend arrays
+
+Local and Supabase schemas must match 1:1
+
+🧭 10. REMOVE LEGACY ITEMS
+
+Remove completely:
+
+Fake AI friends
+
+Dev-mode helpers
+
+Beta placeholders
+
+diagnostic routes
+
+WeakPool dev seeding
+
+Anything unlocked via debug mode
+
+System must be 100% production-ready.
+
+🧭 11. IMPLEMENTATION NOTES
+
+Use Zustand (create + persist)
+
+localStorage keys must be new + clean
+
+Avoid old naming conventions
+
+Keep functions simple and beginner-friendly
+
+Full file replacement is required
+
+No leftover or mixed logic
+
+END OF PROMPT — produce the full replacement system only when this prompt is pasted
