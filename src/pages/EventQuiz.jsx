@@ -260,7 +260,7 @@ export default function EventQuiz() {
 
           {/* Mascot */}
           <div className="quiz-mascot">
-            <img src={assets.mascots.mascot_dua} alt="Mascot" />
+            <img src={assets.mascots.mascot_pointing_v2} alt="Mascot" />
           </div>
         </>
       )}

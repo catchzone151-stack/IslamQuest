@@ -271,7 +271,7 @@ export default function DailyQuestGame() {
       {/* Thinking Mascot */}
       <div style={{ textAlign: "center", marginBottom: "20px" }}>
         <img 
-          src={assets.mascots.mascot_dua} 
+          src={assets.mascots.mascot_pointing_v2} 
           alt="Mascot"
           style={{
             width: "80px",

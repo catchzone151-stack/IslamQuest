@@ -5,7 +5,6 @@
 import mascot_boss from "./mascots/mascot_boss.webp";
 import mascot_congratulation from "./mascots/mascot_congratulation.webp";
 import mascot_defeated from "./mascots/mascot_defeated.webp";
-import mascot_dua from "./mascots/mascot_dua.webp";
 import mascot_onboarding from "./mascots/mascot_onboarding.webp";
 import mascot_pointing from "./mascots/mascot_pointing.webp";
 import mascot_reading from "./mascots/mascot_reading.webp";
@@ -18,7 +17,7 @@ import mascot_waving from "./mascots/mascot_waving.webp";
 import mascot_sitting_v2 from "./mascots/mascot_sitting_v2.webp";
 import mascot_pointing_v2 from "./mascots/mascot_pointing_v2.webp";
 import mascot_reading_v2 from "./mascots/mascot_reading_v2.webp";
-import mascot_teaching from "./mascots/mascot_teaching.webp";
+import mascot_teaching from "./mascots/mascot_pointing.webp";
 import mascot_quiz from "./mascots/mascot_quiz.webp";
 import mascot_scholar from "./mascots/mascot_scholar.webp";
 import mascot_locked from "./mascots/mascot_locked.webp";
@@ -63,7 +62,6 @@ const assets = {
     mascot_boss,
     mascot_congratulation,
     mascot_defeated,
-    mascot_dua,
     mascot_onboarding,
     mascot_pointing,
     mascot_reading,

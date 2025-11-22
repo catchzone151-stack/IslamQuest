@@ -352,7 +352,7 @@ export default function Revise() {
             
             {/* Thinking Mascot */}
             <img 
-              src={assets.mascots.mascot_dua} 
+              src={assets.mascots.mascot_pointing_v2} 
               alt="Mascot"
               style={{
                 width: "80px",
