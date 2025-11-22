@@ -54,19 +54,15 @@ export function getAvatarImage(avatarKey, options = {}) {
   // PRIORITY 0: FORCE current user to always use their selected avatar from store
   // Ignore any avatarKey parameter - the store is the source of truth
   const { id: currentUserId, avatar: currentUserAvatar } = useUserStore.getState();
-  console.log("🖼️ getAvatarImage - userId:", userId, "currentUserId:", currentUserId, "avatarKey:", avatarKey, "currentUserAvatar:", currentUserAvatar);
   
   if (userId === currentUserId) {
-    console.log("✅ IS CURRENT USER - returning:", currentUserAvatar);
     // Current user must have their selected avatar, always
     if (currentUserAvatar && assets.avatars[currentUserAvatar]) {
       return assets.avatars[currentUserAvatar];
     }
     // Fallback: return a valid default if no avatar is set
-    console.log("❌ No currentUserAvatar, using fallback:", AVAILABLE_AVATARS[0]);
     return assets.avatars[AVAILABLE_AVATARS[0]];
   }
-  console.log("ℹ️ NOT current user, continuing with normal flow");
   
   // PRIORITY 1: Check if this is the Dev account (The Dev NPC)
   if (isDevCheck && isDevAccount(userId, nickname)) {

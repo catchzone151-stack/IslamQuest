@@ -14,6 +14,13 @@ import ui_coin from "../assets/ui/ui_coin.webp";
 import ui_streak from "../assets/ui/ui_streak.webp";
 import ui_shield from "../assets/ui/ui_shield.webp";
 
+// Extract avatar key from full path (e.g., "/src/assets/avatars/avatar_robot.png.webp" -> "avatar_robot")
+const extractAvatarKey = (path) => {
+  if (!path) return null;
+  const file = path.split("/").pop();
+  return file.split(".")[0];
+};
+
 export default function Profile() {
   const { name, avatar, setName, setAvatar } = useUserStore();
   const { 
@@ -93,7 +100,7 @@ export default function Profile() {
           <button
             onClick={() => showModal(MODAL_TYPES.EDIT_AVATAR, {
               currentAvatar: avatar,
-              onSave: setAvatar
+              onSave: (selectedAvatar) => setAvatar(extractAvatarKey(selectedAvatar))
             })}
             style={{
               border: "none",
