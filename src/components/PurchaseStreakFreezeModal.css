@@ -1,0 +1,122 @@
+/* Streak Freeze Modal Styles */
+
+.streak-freeze-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.info-card {
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 8px;
+}
+
+.shield-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.shield-emoji {
+  font-size: 2.5rem;
+  flex-shrink: 0;
+}
+
+.shield-text {
+  text-align: left;
+}
+
+.shield-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #d4af37;
+  margin-bottom: 4px;
+}
+
+.shield-count {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  color: #cbd5e1;
+}
+
+.description {
+  font-size: 0.95rem;
+  color: #e2e8f0;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.cost-display {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.cost-amount {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #d4af37;
+}
+
+.balance-text {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  color: #cbd5e1;
+  text-align: center;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.btn-primary,
+.btn-secondary {
+  flex: 1;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  color: white;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #D4AF37, #FFA500);
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+  color: #0a2a43;
+  font-weight: 700;
+}
+
+.btn-primary:not(:disabled):active {
+  transform: scale(0.98);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary:active {
+  background: rgba(255, 255, 255, 0.15);
+}

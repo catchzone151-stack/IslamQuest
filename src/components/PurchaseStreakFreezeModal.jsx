@@ -1,7 +1,8 @@
 import React from "react";
 import { useProgressStore } from "../store/progressStore";
+import ModalBase from "./ModalBase";
 import assets from "../assets/assets";
-import "./events/EventModals.css";
+import "./PurchaseStreakFreezeModal.css";
 
 export default function PurchaseStreakFreezeModal({ onClose, onSuccess }) {
   const { coins, shieldCount, purchaseShield } = useProgressStore();
@@ -21,103 +22,60 @@ export default function PurchaseStreakFreezeModal({ onClose, onSuccess }) {
   };
 
   return (
-    <div className="event-modal-overlay" onClick={onClose}>
-      <div className="event-modal-card" onClick={(e) => e.stopPropagation()}>
-        <div className="event-modal-header">
-          <img
-            src={assets.mascots.mascot_waving}
-            alt="Mascot"
-            className="modal-mascot-large"
-            style={{
-              animation: "float 3s ease-in-out infinite"
-            }}
-          />
-        </div>
-
-        <div className="event-modal-content">
-          <h2 className="modal-title">Buy Streak Freeze</h2>
-          
-          <div style={{
-            background: "rgba(212, 175, 55, 0.1)",
-            borderRadius: "12px",
-            padding: "16px",
-            marginBottom: "16px",
-            border: "1px solid rgba(212, 175, 55, 0.3)"
-          }}>
-            <div style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "12px",
-              marginBottom: "12px"
-            }}>
-              <span style={{ fontSize: "2.5rem" }}>🛡️</span>
-              <div>
-                <div style={{ fontSize: "1.1rem", fontWeight: "600", color: "#d4af37" }}>
-                  Streak Freeze Shield
-                </div>
-                <div style={{ fontSize: "0.9rem", opacity: 0.8 }}>
-                  {shieldCount} / {MAX_SHIELDS} equipped
-                </div>
-              </div>
+    <ModalBase 
+      title="Buy Streak Freeze" 
+      onClose={onClose}
+      showMascot={assets.mascots.mascot_waving}
+      mascotAnimation="float"
+    >
+      <div className="streak-freeze-content">
+        {/* Shield Info Card */}
+        <div className="info-card">
+          <div className="shield-info">
+            <span className="shield-emoji">🛡️</span>
+            <div className="shield-text">
+              <div className="shield-title">Streak Freeze Shield</div>
+              <div className="shield-count">{shieldCount} / {MAX_SHIELDS} equipped</div>
             </div>
           </div>
-
-          <p className="modal-text">
-            Protect your streak for up to <strong>3 days</strong> if you miss a day!
-          </p>
-          <p className="modal-text">
-            A shield automatically activates when you miss a day, preserving your streak without breaking it.
-          </p>
-
-          <div style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "8px",
-            marginTop: "20px",
-            padding: "12px",
-            background: "rgba(16, 185, 129, 0.1)",
-            borderRadius: "8px",
-            fontSize: "1.1rem",
-            fontWeight: "600"
-          }}>
-            <span>💰</span>
-            <span style={{ color: "#d4af37" }}>100 coins</span>
-          </div>
-
-          <div style={{
-            marginTop: "12px",
-            fontSize: "0.85rem",
-            opacity: 0.7,
-            textAlign: "center"
-          }}>
-            Your balance: {coins} coins
-          </div>
         </div>
 
-        <div className="event-modal-actions">
+        {/* Description */}
+        <p className="description">
+          Protect your streak for up to <strong>3 days</strong> if you miss a day!
+        </p>
+        <p className="description">
+          A shield automatically activates when you miss a day, preserving your streak without breaking it.
+        </p>
+
+        {/* Cost Display */}
+        <div className="cost-display">
+          <span>💰</span>
+          <span className="cost-amount">100 coins</span>
+        </div>
+
+        {/* Balance */}
+        <div className="balance-text">
+          Your balance: {coins} coins
+        </div>
+
+        {/* Action Buttons */}
+        <div className="modal-actions">
           <button 
-            className="modal-btn-secondary" 
+            className="btn-secondary" 
             onClick={onClose}
-            style={{ flex: 1 }}
           >
             Cancel
           </button>
           <button 
-            className="modal-btn-primary" 
+            className="btn-primary" 
             onClick={handlePurchase}
             disabled={shieldCount >= MAX_SHIELDS || coins < SHIELD_COST}
-            style={{ 
-              flex: 1,
-              opacity: (shieldCount >= MAX_SHIELDS || coins < SHIELD_COST) ? 0.5 : 1,
-              cursor: (shieldCount >= MAX_SHIELDS || coins < SHIELD_COST) ? "not-allowed" : "pointer"
-            }}
           >
             {shieldCount >= MAX_SHIELDS ? "Max Shields" : `Buy for ${SHIELD_COST} 🪙`}
           </button>
         </div>
       </div>
-    </div>
+    </ModalBase>
   );
 }
