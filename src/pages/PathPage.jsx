@@ -103,6 +103,12 @@ export default function PathPage() {
       lessons: lessons.filter(lesson => getSectionIndex(pathId, lesson.id) === sectionIdx)
     };
   });
+  
+  // DEBUG: Log section grouping
+  console.log("🔍 DEBUG PathPage - pathId:", pathId);
+  console.log("🔍 Sections:", sections);
+  console.log("🔍 Grouped Lessons:", groupedLessons);
+  console.log("🔍 Total lessons:", lessons.length);
 
   return (
     <div
