@@ -95,9 +95,8 @@ export default function EventQuiz() {
   const handleCountdownComplete = () => {
     // Critical validations AFTER countdown but BEFORE quiz starts
     // This ensures atomicity: if checks fail, no coins lost
-    // In dev mode, skip this check to allow unlimited retries
-    // In production, this prevents duplicate entries and coin deductions
-    if (!import.meta.env.DEV && hasEntered(eventId)) {
+    // Prevent duplicate entries and coin deductions
+    if (hasEntered(eventId)) {
       alert("You've already entered this event!");
       navigate("/events");
       return;

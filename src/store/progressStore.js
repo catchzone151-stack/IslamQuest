@@ -111,6 +111,22 @@ export const useProgressStore = create((set, get) => ({
       }
       
       get().saveProgress(); // Persist the normalized locks, premium status, and migration flag
+    } else {
+      // 🔒 CRITICAL: For fresh installs (including post-storage-reset), ensure defaults exist and apply locking
+      console.log("🔒 Initializing premium locking for fresh install...");
+      
+      // Explicitly initialize default state for fresh install
+      const currentState = get();
+      if (!currentState.paths || currentState.paths.length === 0) {
+        set({ paths: DEFAULT_PATHS });
+      }
+      if (!currentState.lockedLessons || Object.keys(currentState.lockedLessons).length === 0) {
+        set({ lockedLessons: {} });
+      }
+      
+      // Now apply locking rules on initialized state
+      get().applyLockingRules();
+      get().saveProgress(); // Persist the initial locked state
     }
   },
 

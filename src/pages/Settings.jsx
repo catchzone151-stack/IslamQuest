@@ -130,31 +130,6 @@ export default function Settings() {
             </span>
           </div>
 
-          {/* Clear Cache Button */}
-          <button
-            onClick={() => showModal(MODAL_TYPES.CLEAR_CACHE_CONFIRMATION)}
-            style={{
-              background: "rgba(239, 68, 68, 0.1)",
-              border: "1px solid rgba(239, 68, 68, 0.3)",
-              borderRadius: 12,
-              padding: "12px 16px",
-              color: "#ef4444",
-              fontWeight: "600",
-              fontSize: "0.9rem",
-              width: "100%",
-              cursor: "pointer",
-              transition: "all 0.2s ease",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = "rgba(239, 68, 68, 0.2)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = "rgba(239, 68, 68, 0.1)";
-            }}
-          >
-            🗑️ Clear Cache
-          </button>
-
           {/* Rate App Button */}
           <a
             href="https://play.google.com/store"

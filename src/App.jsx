@@ -37,7 +37,6 @@ const Revise = lazy(() => import("./pages/Revise.jsx"));
 const Login = lazy(() => import("./pages/Login.jsx"));
 const QuizScreen = lazy(() => import("./screens/QuizScreen.jsx"));
 const GlobalEvents = lazy(() => import("./pages/GlobalEvents.jsx"));
-const EventQuiz = lazy(() => import("./pages/EventQuiz.jsx"));
 
 // 🌙 Loading Component for lazy routes
 function LoadingScreen() {
@@ -153,35 +152,73 @@ export default function App() {
 
   // 🔄 VERSIONED STORAGE RESET: Clear all legacy data on first production load
   useEffect(() => {
-    const currentVersion = localStorage.getItem("app_storage_version");
-    
-    if (currentVersion !== PRODUCTION_VERSION) {
-      console.log("🔄 Production migration: Clearing all legacy data...");
-      
-      // Get all localStorage keys
-      const keysToRemove = [];
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        // Keep only the new production namespace
-        if (key && !key.startsWith(PRODUCTION_VERSION)) {
-          keysToRemove.push(key);
-        }
+    try {
+      // Skip migration if it previously failed
+      const migrationFailed = sessionStorage.getItem("migration_failed");
+      if (migrationFailed) {
+        console.warn("⚠️ Skipping storage migration (previous failure)");
+        return;
       }
       
-      // Clear legacy keys
-      keysToRemove.forEach(key => localStorage.removeItem(key));
+      const currentVersion = localStorage.getItem("app_storage_version");
       
-      // Clear sessionStorage completely
-      sessionStorage.clear();
-      
-      // Set new version marker
-      localStorage.setItem("app_storage_version", PRODUCTION_VERSION);
-      
-      console.log("✅ Production migration complete. App will start fresh.");
-      
-      // Reload to ensure clean state
-      window.location.reload();
-      return;
+      if (currentVersion !== PRODUCTION_VERSION) {
+        console.log("🔄 Production migration: Clearing all legacy data...");
+        
+        let allKeysRemoved = true;
+        
+        // Get all localStorage keys
+        const keysToRemove = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          // Keep only the new production namespace
+          if (key && !key.startsWith(PRODUCTION_VERSION) && key !== "app_storage_version") {
+            keysToRemove.push(key);
+          }
+        }
+        
+        // Clear legacy keys
+        keysToRemove.forEach(key => {
+          try {
+            localStorage.removeItem(key);
+          } catch (e) {
+            console.warn(`Failed to remove key: ${key}`, e);
+            allKeysRemoved = false;
+          }
+        });
+        
+        // Clear sessionStorage completely
+        try {
+          sessionStorage.clear();
+        } catch (e) {
+          console.warn("Failed to clear sessionStorage", e);
+          allKeysRemoved = false;
+        }
+        
+        // Set new version marker
+        try {
+          localStorage.setItem("app_storage_version", PRODUCTION_VERSION);
+        } catch (e) {
+          console.error("Failed to set version marker", e);
+          allKeysRemoved = false;
+        }
+        
+        // Only reload if storage operations succeeded
+        if (allKeysRemoved) {
+          console.log("✅ Production migration complete. App will start fresh.");
+          window.location.reload();
+          return;
+        } else {
+          console.warn("⚠️ Storage migration partially failed. Continuing with current state.");
+          // Mark migration as failed to prevent future attempts
+          sessionStorage.setItem("migration_failed", "true");
+        }
+      }
+    } catch (error) {
+      // Fallback for private mode or localStorage errors
+      console.error("Storage reset failed:", error);
+      sessionStorage.setItem("migration_failed", "true");
+      // Continue app initialization with default state (no reload)
     }
   }, []);
 
@@ -268,7 +305,6 @@ export default function App() {
                 <Route path="/challenge/:challengeId" element={<Suspense fallback={<LoadingScreen />}><ChallengeGame /></Suspense>} />
                 <Route path="/daily-quest" element={<Suspense fallback={<LoadingScreen />}><DailyQuestGame /></Suspense>} />
                 <Route path="/events" element={<Suspense fallback={<LoadingScreen />}><GlobalEvents /></Suspense>} />
-                <Route path="/events/:eventId" element={<Suspense fallback={<LoadingScreen />}><EventQuiz /></Suspense>} />
                 <Route path="/friends" element={<Suspense fallback={<LoadingScreen />}><Friends /></Suspense>} />
                 <Route path="/friend/:userId" element={<Suspense fallback={<LoadingScreen />}><FriendProfile /></Suspense>} />
                 <Route path="/profile" element={<Suspense fallback={<LoadingScreen />}><Profile /></Suspense>} />
