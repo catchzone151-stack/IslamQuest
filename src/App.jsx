@@ -179,18 +179,6 @@ export default function App() {
     ]);
   }, []);
 
-  // 🛠️ DEV: Grant 5000 coins on first load (only in dev mode and after hydration)
-  useEffect(() => {
-    const isDev = import.meta.env.DEV;
-    if (!isDev || !isHydrated) return;
-    
-    const hasGrantedDevCoins = localStorage.getItem('dev_coins_granted_v2');
-    if (!hasGrantedDevCoins && coins < 100) {
-      grantCoins(5000);
-      localStorage.setItem('dev_coins_granted_v2', 'true');
-    }
-  }, [isHydrated, coins, grantCoins]);
-
   // ✅ Wait until Zustand store is rehydrated (prevents onboarding redirect)
   if (!isHydrated) {
     return (
