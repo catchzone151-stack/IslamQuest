@@ -53,7 +53,7 @@ export function getAvatarImage(avatarKey, options = {}) {
   
   // PRIORITY 0: Do not allow fallback/random avatar overrides for the real user
   const { id: currentUserId, avatar: currentUserAvatar } = useUserStore.getState();
-  if (avatarKey === currentUserAvatar || userId === currentUserId) {
+  if (currentUserAvatar && (avatarKey === currentUserAvatar || userId === currentUserId)) {
     return assets.avatars[currentUserAvatar];
   }
   
