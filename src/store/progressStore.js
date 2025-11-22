@@ -47,6 +47,9 @@ export const useProgressStore = create((set, get) => ({
   premiumStatus: "free", // "free" | "individual" | "family"
   familyPlanId: null, // For family plan sync (future Supabase feature)
   familyMembers: [], // Array of { id, name, avatar, xp } for family plan
+  
+  // 🔊 System Preferences
+  vibrationEnabled: true, // Haptic feedback toggle
 
   // 🌙 Learning Paths
   paths: DEFAULT_PATHS,
@@ -87,9 +90,19 @@ export const useProgressStore = create((set, get) => ({
       // Derive hasPremium from premiumStatus for backwards compatibility
       savedData.hasPremium = savedData.premiumStatus !== "free";
       
+      if (savedData.vibrationEnabled === undefined) {
+        savedData.vibrationEnabled = true;
+      }
+      
       set(savedData);
       get().saveProgress(); // Persist the normalized locks and premium status
     }
+  },
+
+  // 🔊 Toggle vibration
+  setVibrationEnabled: (enabled) => {
+    set({ vibrationEnabled: enabled });
+    get().saveProgress();
   },
   
   // 🔒 Normalize locks based on lesson completion

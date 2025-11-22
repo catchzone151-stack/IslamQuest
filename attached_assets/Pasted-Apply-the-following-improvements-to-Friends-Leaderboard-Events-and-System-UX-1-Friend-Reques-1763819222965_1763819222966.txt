@@ -1,0 +1,53 @@
+Apply the following improvements to Friends, Leaderboard, Events, and System UX:
+
+1. Friend Request Badge:
+   - Fix squashed badge for friend requests.
+   - Ensure proper padding, border-radius, and visibility for any 1–3 digit numbers.
+
+2. Friend Name Alignment:
+   - In FriendsTab and LeaderboardTab components, ensure usernames align cleanly:
+       • left-aligned text
+       • avatar + username spacing consistent
+       • no clipping or overflow
+       • responsive for long names
+
+3. Add USER to Friends Leaderboard:
+   - Ensure the logged-in user ALWAYS appears in the Friends Leaderboard list.
+   - Place the user in correct rank position based on XP.
+   - Make sure avatar, XP, and level reflect the centralized progress store.
+
+4. Avatar Consistency:
+   - Make sure the user’s chosen avatar appears consistently across:
+       • Friends list
+       • Leaderboard
+       • Global Events
+       • Challenges
+       • Any profile display
+   - Remove any fallback or random avatar logic.
+
+5. Global Events Icon Fix:
+   - Replace the incorrect white circular fallback icon with the correct world-globe icon.
+   - Ensure both:
+       • the Challenges page
+       • the Global Events page
+     use the exact SAME icon component or asset.
+
+6. Add Vibration/Haptic Feedback Toggle:
+   - Create a vibration toggle in settings (default ON).
+   - Create a small hook/function using navigator.vibrate:
+         vibrate(ms) { if (vibrationEnabled) navigator.vibrate(ms); }
+   - Trigger vibration on:
+         • correct quiz answers
+         • XP gain
+         • challenge wins
+         • boss hits
+   - Respect the toggle (ON = vibrate, OFF = silent).
+
+7. Add Offline Mode Detection:
+   - Detect if the device loses internet (navigator.onLine).
+   - When offline, show a styled banner or modal:
+         “No connection — some features may not work offline.”
+   - Hide the banner automatically when back online.
+
+Do not modify XP, coins, analytics, or previously completed logic.
+Keep all improvements consistent with the app’s theme.

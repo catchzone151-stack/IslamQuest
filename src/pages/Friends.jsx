@@ -34,7 +34,7 @@ export default function Friends() {
     getGlobalLeaderboard,
   } = useFriendsStore();
 
-  const { xp: currentUserXP } = useProgressStore();
+  const { xp: currentUserXP, coins: currentUserCoins, streak: currentUserStreak, avatar: currentUserAvatar, displayName: currentUserName } = useProgressStore();
 
   useEffect(() => {
     clearRequestsBadge();
@@ -144,13 +144,15 @@ export default function Friends() {
                     background: "#ef4444",
                     color: "white",
                     borderRadius: "50%",
-                    width: 20,
-                    height: 20,
+                    minWidth: 24,
+                    height: 24,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    fontSize: "0.7rem",
+                    fontSize: "0.75rem",
                     fontWeight: "bold",
+                    padding: "0 6px",
+                    lineHeight: 1,
                   }}>
                     {tab.badge}
                   </span>
