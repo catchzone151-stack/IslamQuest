@@ -195,6 +195,11 @@ export const useDailyQuestStore = create((set, get) => ({
 
     get().saveDailyQuest();
   },
+  
+  // Track daily quest completion for analytics
+  setQuestAnalyticsEvent: () => {
+    // Analytics event will be called from component using useAnalytics
+  },
 
   // Check if quest is available (user has completed lessons)
   isQuestAvailable: () => {

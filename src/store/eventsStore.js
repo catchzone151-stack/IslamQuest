@@ -239,6 +239,12 @@ export const useEventsStore = create(
           };
         });
         
+        // Grant XP and coins through progress store
+        const { addXPAndCoins } = useProgressStore.getState();
+        if (rewards) {
+          addXPAndCoins(rewards.xpReward, rewards.coinReward);
+        }
+        
         return rewards;
       },
       

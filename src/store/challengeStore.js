@@ -1224,9 +1224,8 @@ export const useChallengeStore = create((set, get) => ({
       }
     }
     
-    const { addXP, addCoins } = useProgressStore.getState();
-    addXP(rewards.xp);
-    addCoins(rewards.coins);
+    const { addXPAndCoins } = useProgressStore.getState();
+    addXPAndCoins(rewards.xp, rewards.coins);
     
     return rewards;
   },
