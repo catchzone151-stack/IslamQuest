@@ -151,41 +151,51 @@ export default function PathPage() {
           position: "relative",
         }}
       >
-        {/* LEFT COLUMN: Section Headings (aligned to first lesson of each section) */}
-        <div style={{ flex: "0 0 30%", minWidth: 0, paddingRight: "8px" }}>
-          {groupedLessons.map((section, sectionIdx) =>
-            section.lessons.map((lesson, lessonIdx) => (
-              <div
-                key={`left-${lesson.id}`}
-                style={{
-                  marginBottom: lessonIdx < section.lessons.length - 1 ? "48px" : "120px",
-                  minHeight: "20px",
-                }}
-              >
-                {/* Show section heading ONLY on first lesson of each section */}
-                {lessonIdx === 0 && section.name && (
-                  <div
-                    style={{
-                      fontSize: "0.9rem",
-                      fontWeight: 700,
-                      color: "#D4AF37",
-                      textAlign: "left",
-                      lineHeight: 1.25,
-                      wordWrap: "break-word",
-                      wordBreak: "break-word",
-                      overflowWrap: "break-word",
-                      hyphens: "auto",
-                      letterSpacing: "0.5px",
-                      textTransform: "uppercase",
-                      paddingTop: "8px",
-                    }}
-                  >
-                    {section.name}
-                  </div>
-                )}
+        {/* LEFT COLUMN: Section Headings */}
+        <div style={{ flex: "0 0 auto", minWidth: "140px", paddingRight: "12px" }}>
+          {groupedLessons.map((section, sectionIdx) => {
+            // For each section, calculate the first lesson of that section
+            const firstLessonOfSection = section.lessons[0];
+            if (!firstLessonOfSection || !section.name) return null;
+            
+            // Calculate spacing: all lessons in section before the heading
+            const lessonsBefore = section.lessons.reduce((total, lesson, idx) => {
+              if (idx === 0) return total; // Don't count first lesson spacing
+              return total + 64 + 48; // circle height + gap
+            }, 0);
+            
+            const sectionHeight = 
+              section.lessons.length * 64 + 
+              (section.lessons.length - 1) * 48 + 
+              120;
+
+            return (
+              <div key={`section-${sectionIdx}`} style={{ marginBottom: "120px" }}>
+                {/* Section Heading */}
+                <div
+                  style={{
+                    fontSize: "0.85rem",
+                    fontWeight: 700,
+                    color: "#D4AF37",
+                    textAlign: "left",
+                    lineHeight: 1.2,
+                    wordWrap: "break-word",
+                    wordBreak: "break-word",
+                    overflowWrap: "break-word",
+                    hyphens: "auto",
+                    letterSpacing: "0.5px",
+                    textTransform: "uppercase",
+                    paddingTop: "8px",
+                    marginBottom: "12px",
+                  }}
+                >
+                  {section.name}
+                </div>
+                {/* Spacer matching section height */}
+                <div style={{ height: `${sectionHeight - 20}px` }} />
               </div>
-            ))
-          )}
+            );
+          })}
         </div>
 
         {/* MIDDLE COLUMN: Timeline + Lesson Circles */}
