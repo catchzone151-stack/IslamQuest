@@ -152,17 +152,10 @@ export default function PathPage() {
         }}
       >
         {/* LEFT COLUMN: Section Headings */}
-        <div style={{ flex: "0 0 auto", minWidth: "140px", paddingRight: "12px" }}>
+        <div style={{ flex: "0 0 160px", paddingRight: "16px", display: "flex", flexDirection: "column" }}>
           {groupedLessons.map((section, sectionIdx) => {
-            // For each section, calculate the first lesson of that section
             const firstLessonOfSection = section.lessons[0];
             if (!firstLessonOfSection || !section.name) return null;
-            
-            // Calculate spacing: all lessons in section before the heading
-            const lessonsBefore = section.lessons.reduce((total, lesson, idx) => {
-              if (idx === 0) return total; // Don't count first lesson spacing
-              return total + 64 + 48; // circle height + gap
-            }, 0);
             
             const sectionHeight = 
               section.lessons.length * 64 + 
@@ -170,29 +163,31 @@ export default function PathPage() {
               120;
 
             return (
-              <div key={`section-${sectionIdx}`} style={{ marginBottom: "120px" }}>
+              <div key={`section-${sectionIdx}`} style={{ marginBottom: "120px", display: "flex", flexDirection: "column" }}>
                 {/* Section Heading */}
                 <div
                   style={{
-                    fontSize: "0.85rem",
+                    fontSize: "0.9rem",
                     fontWeight: 700,
                     color: "#D4AF37",
                     textAlign: "left",
-                    lineHeight: 1.2,
+                    lineHeight: 1.3,
                     wordWrap: "break-word",
                     wordBreak: "break-word",
                     overflowWrap: "break-word",
                     hyphens: "auto",
-                    letterSpacing: "0.5px",
+                    letterSpacing: "0.6px",
                     textTransform: "uppercase",
+                    minHeight: "30px",
+                    display: "flex",
+                    alignItems: "flex-start",
                     paddingTop: "8px",
-                    marginBottom: "12px",
                   }}
                 >
                   {section.name}
                 </div>
-                {/* Spacer matching section height */}
-                <div style={{ height: `${sectionHeight - 20}px` }} />
+                {/* Spacer - empty space for lesson circles in middle column */}
+                <div style={{ flex: "1", minHeight: `${sectionHeight - 40}px` }} />
               </div>
             );
           })}
