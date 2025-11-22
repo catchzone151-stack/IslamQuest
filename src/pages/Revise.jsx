@@ -187,7 +187,7 @@ export default function Revise() {
         >
           {/* Mascot */}
           <img 
-            src={passed ? assets.mascots.mascot_congratulation : assets.mascots.mascot_defeated} 
+            src={passed ? assets.mascots.mascot_congratulation : assets.mascots.mascot_sitting_v2} 
             alt="Mascot"
             style={{
               width: "100px",

@@ -8,7 +8,7 @@ export default function InsufficientCoinsModal({ onClose }) {
       <div className="event-modal-card" onClick={(e) => e.stopPropagation()}>
         <div className="event-modal-header">
           <img
-            src={assets.mascots.mascot_defeated}
+            src={assets.mascots.mascot_sitting_v2}
             alt="Mascot"
             className="modal-mascot-large"
           />

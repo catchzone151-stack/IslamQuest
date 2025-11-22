@@ -4,7 +4,7 @@
 // Using only the "1 Mascot" culturally authentic Islamic mascots
 import mascot_boss from "./mascots/mascot_boss.webp";
 import mascot_congratulation from "./mascots/mascot_congratulation.webp";
-import mascot_defeated from "./mascots/mascot_defeated.webp";
+import mascot_sitting_v2 from "./mascots/mascot_sitting_v2.webp";
 import mascot_onboarding from "./mascots/mascot_onboarding.webp";
 import mascot_pointing from "./mascots/mascot_pointing.webp";
 import mascot_reading from "./mascots/mascot_reading.webp";
@@ -60,7 +60,7 @@ const assets = {
     // New culturally authentic Islamic mascots
     mascot_boss,
     mascot_congratulation,
-    mascot_defeated,
+    mascot_sitting_v2,
     mascot_onboarding,
     mascot_pointing,
     mascot_reading,
@@ -69,7 +69,6 @@ const assets = {
     mascot_tasbih,
     mascot_waving,
     // Additional mascot variants
-    mascot_sitting_v2,
     mascot_pointing_v2,
     mascot_teaching,
     mascot_quiz,

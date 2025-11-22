@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useRewards } from "../../hooks/useRewards";
 import mascotCongrats from "../../assets/mascots/mascot_congratulation.webp";
-import mascotDefeated from "../../assets/mascots/mascot_defeated.webp";
+import mascotSittingV2 from "../../assets/mascots/mascot_sitting_v2.webp";
 import mascotBoss from "../../assets/mascots/mascot_boss.webp";
 import "./ChallengeModals.css";
 
@@ -68,7 +68,7 @@ export default function ChallengeResultsModal({
     // Boss level shows appropriate mascot based on result
     if (isBossLevel) {
       if (result === "win") return mascotCongrats;
-      if (result === "lose") return mascotDefeated;
+      if (result === "lose") return mascotSittingV2;
       return mascotBoss;
     }
     
