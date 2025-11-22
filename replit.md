@@ -7,6 +7,22 @@ Islam Quest is a mobile-first web application designed as a gamified Islamic lea
 Preferred communication style: Simple, everyday language.
 
 ## Recent Major Updates (November 22, 2025)
+### Premium System Rebuild (Complete Rewrite)
+- **Quiz Scoring Update**: Changed from hardcoded "3 out of 4" to universal 75% passing threshold (applies to all quizzes, daily quests, events)
+- **Supabase-Ready Fields**: Added `premium` (boolean), `premiumType` ("individual" | "family"), `premiumActivatedAt` (timestamp) to progressStore
+- **Unified Locking System**: New functions replace scattered logic:
+  - `getLessonLockState(pathId, lessonId)` → Returns "unlocked" | "progressLocked" | "premiumLocked"
+  - `isPremiumLocked(pathId, lessonId)` → Boolean premium paywall check
+  - `canAccessLesson(pathId, lessonId)` → Boolean UI/navigation check
+  - `applyLockingRules()` → Recalculates all locks based on current progress
+- **Premium Config**: Exact free lesson limits per path (paths 11-14 = 0 free lessons, paths 5-7 = 2, others = 3)
+- **Premium-Only Paths**: Paths 11-14 (The Grave, Day of Judgement, Hellfire, Paradise) require premium from lesson 1
+- **Global Events**: Now premium-only feature with grey overlay and premium redirect for free users
+- **Premium Page**: New `/premium` route with Duolingo-style design, two plan options (Individual £4.99, Family £18), and comprehensive benefits list
+- **UI Updates**: Grey overlays with lock icons on premium-only paths; updated Profile popup with X close button, updated benefits, and redirect to Premium page
+- **Async Purchase Functions**: `purchaseIndividual()` and `purchaseFamily()` now async for future payment integration
+- **Backwards Compatibility**: Maintained `hasPremium` and `premiumStatus` fields alongside new system
+
 ### New Friends System (Duolingo-Style)
 - **Complete Replacement**: Removed legacy AI friends system; implemented production-ready username-based friends system
 - **Username Onboarding**: Added new username selection step after avatar selection during onboarding
@@ -36,14 +52,21 @@ Preferred communication style: Simple, everyday language.
 
 ### Feature Specifications
 - **Content Structure**: 14 complete learning paths with lessons and quizzes, exclusively sourced from Qur'an and Sahih Hadith, each with standardized formatting.
-- **Progression Model**: XP and coin rewards, streak system, universal lesson locking for sequential progression, tiered freemium model, and a 10-level Diamond progression system.
-- **Quiz Logic (Updated November 22, 2025)**:
-  - **Lesson Quizzes**: Require 3/4 correct answers to pass and unlock next lesson. All lesson quizzes have exactly 4 questions.
-  - **Daily Quest**: Uses dynamic 60% threshold (Math.ceil(totalQuestions * 0.6)) with 5 questions.
-  - **Global Events**: Uses 75% threshold for congratulation mascot display with 10 questions.
-  - **Score Tracking**: progressStore tracks actual scores in bestScore field, preserves previous passes when recording failed attempts.
-  - **Mascot Display Rules**: pointing_v2 during all quiz gameplay, sitting_v2 for low scores (0-2/4), congratulation for passing scores (3-4/4).
-  - **Rewards**: Only awarded (XP/coins) and lessons only unlock when quiz is passed, but all attempts are recorded.
+- **Progression Model**: XP and coin rewards, streak system, universal lesson locking for sequential progression, comprehensive premium freemium model, and a 10-level Diamond progression system.
+- **Quiz Logic (Updated November 22, 2025 - Universal 75% Rule)**:
+  - **Universal Passing Threshold**: All quizzes now use 75% rule (changed from hardcoded 3/4) via `calculateResults()` in quizEngine.js
+  - **Lesson Quizzes**: Require 75% (3/4 for 4-question quizzes) to pass and unlock next lesson
+  - **Daily Quest**: Uses 75% threshold with 5 questions
+  - **Global Events**: Uses 75% threshold with 10 questions
+  - **Score Tracking**: progressStore tracks actual scores in bestScore field, preserves previous passes when recording failed attempts
+  - **Mascot Display Rules**: pointing_v2 during all quiz gameplay, sitting_v2 for low scores, congratulation for passing scores
+  - **Rewards**: Only awarded (XP/coins) and lessons only unlock when quiz is passed, but all attempts are recorded
+- **Premium Model (Rebuilt November 22, 2025)**:
+  - **Free Tier Limits**: Paths 1-4,8-10 (3 free lessons), Paths 5-7 (2 free lessons), Paths 11-14 (0 free lessons - premium-only)
+  - **Premium Plans**: Individual (£4.99/month), Family (£18/month for 6 users)
+  - **Premium Benefits**: All 14 paths, unlimited lessons, Global Events access, premium badge
+  - **Locking System**: Sequential progression + premium paywall (both apply, premium users still unlock sequentially)
+  - **Premium-Only Features**: Paths 11-14 (The Grave, Day of Judgement, Hellfire, Paradise) + Global Events
 - **Social Features**: Friend management, friends leaderboard (Friend of the Week), activity feed, and quick messaging.
 - **Gamification**:
     - **Friend Challenges**: 4 game modes (Mind Battle, Lightning Round, Speed Run, Sudden Death) with a 48-hour active window, questions from shared completed lessons, and rewards.
