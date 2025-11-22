@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { useProgressStore } from "./progressStore";
 import { useFriendsStore } from "./friendsStore";
-import { useDeveloperStore } from "./developerStore";
 import { getQuizForLesson } from "../data/quizEngine";
 
 const STORAGE_KEY = "islamQuestChallenges_v1";
@@ -161,47 +160,12 @@ export const useChallengeStore = create((set, get) => ({
     };
   },
 
-  // 🏗️ Build question pool from ALL completed lessons (or ALL lessons in beta mode)
+  // 🏗️ Build question pool from ALL completed lessons
   buildQuestionPool: () => {
-    const betaMode = useDeveloperStore.getState()?.betaMode;
     const { lessonStates } = useProgressStore.getState();
     const allQuestions = [];
     
-    // 🧪 BETA MODE: Pull from ALL lessons across ALL 14 paths
-    if (betaMode) {
-      // Iterate through all 14 learning paths
-      for (let pathId = 1; pathId <= 14; pathId++) {
-        // Get lesson count for each path (approximate max lessons per path)
-        const maxLessons = pathId === 1 ? 99 : pathId === 2 ? 17 : pathId === 3 ? 25 : 
-                          pathId === 4 ? 19 : pathId === 5 ? 11 : pathId === 6 ? 10 :
-                          pathId === 7 ? 4 : pathId === 8 ? 10 : pathId === 9 ? 5 :
-                          pathId === 10 ? 7 : pathId === 11 ? 5 : pathId === 12 ? 8 :
-                          pathId === 13 ? 7 : 8; // paradise (path 14) has 8 lessons
-        
-        // Pull questions from all lessons in this path
-        for (let lessonId = 1; lessonId <= maxLessons; lessonId++) {
-          try {
-            const quiz = getQuizForLesson(lessonId, pathId);
-            if (quiz && quiz.length > 0) {
-              allQuestions.push(...quiz.map(q => ({
-                question: q.text,
-                options: q.options,
-                answer: q.correctIndex,
-                difficulty: q.difficulty || "medium",
-                sourceLesson: `path${pathId}_lesson${lessonId}`
-              })));
-            }
-          } catch (error) {
-            // Skip lessons that don't have quizzes
-            continue;
-          }
-        }
-      }
-      
-      return allQuestions;
-    }
-    
-    // REGULAR MODE: Pull from completed lessons only
+    // Pull from completed lessons only
     Object.keys(lessonStates).forEach(lessonKey => {
       const lessonState = lessonStates[lessonKey];
       // Check if lesson is completed
@@ -223,20 +187,18 @@ export const useChallengeStore = create((set, get) => ({
   getQuestionPool: () => {
     const { questionPoolCache, cacheTimestamp } = get();
     const { lessonStates } = useProgressStore.getState();
-    const betaMode = useDeveloperStore.getState()?.betaMode;
     
-    // Check if cache is valid (rebuild if lesson states changed OR beta mode changed)
+    // Check if cache is valid (rebuild if lesson states changed)
     const currentLessonCount = Object.keys(lessonStates).filter(
       key => lessonStates[key]?.completed || lessonStates[key]?.passed
     ).length;
     
-    // Rebuild cache if invalid, empty, lesson count changed, or beta mode changed
+    // Rebuild cache if invalid, empty, or lesson count changed
     if (!questionPoolCache || !cacheTimestamp || 
-        questionPoolCache.lessonCount !== currentLessonCount ||
-        questionPoolCache.betaMode !== betaMode) {
+        questionPoolCache.lessonCount !== currentLessonCount) {
       const pool = get().buildQuestionPool();
       set({
-        questionPoolCache: { questions: pool, lessonCount: currentLessonCount, betaMode },
+        questionPoolCache: { questions: pool, lessonCount: currentLessonCount },
         cacheTimestamp: Date.now()
       });
       return pool;
@@ -270,19 +232,11 @@ export const useChallengeStore = create((set, get) => ({
 
   // Get shared completed lessons between two users
   getSharedLessons: (userId, friendId) => {
-    // 🤖 BETA MODE: Allow challenges on any quiz regardless of shared lessons
-    const betaMode = useDeveloperStore.getState()?.betaMode;
-    
     // Get current user's completed lessons
     const { lessonStates } = useProgressStore.getState();
     const currentUserCompletedLessons = Object.keys(lessonStates).filter(
       key => lessonStates[key]?.completed === true
     );
-    
-    if (betaMode) {
-      // In beta mode, return ALL user's completed lessons (bypass shared requirement)
-      return currentUserCompletedLessons;
-    }
     
     // Get friend's completed lessons from friendsStore
     // In LocalStorage mode, friends have a completedLessons array
@@ -317,21 +271,14 @@ export const useChallengeStore = create((set, get) => ({
   // Create a new challenge (Supabase-ready structure)
   createChallenge: (friendId, mode) => {
     const currentUserId = "current_user"; // Will be from auth later
-    const betaMode = useDeveloperStore.getState()?.betaMode;
     const sharedLessons = get().getSharedLessons(currentUserId, friendId);
     
-    // 🤖 BETA MODE: If no completed lessons, use fallback lesson IDs for testing
-    let lessonsToUse = sharedLessons;
-    if (betaMode && sharedLessons.length === 0) {
-      // Use first lesson from each path as fallback
-      lessonsToUse = [
-        "path1_lesson1", "path2_lesson1", "path3_lesson1", "path4_lesson1",
-        "path5_lesson1", "path6_lesson1", "path7_lesson1", "path8_lesson1"
-      ];
-    } else if (!betaMode && sharedLessons.length === 0) {
-      // In production mode, require shared lessons
+    // Require shared lessons
+    if (sharedLessons.length === 0) {
       return { success: false, error: "NO_SHARED_LESSONS" };
     }
+    
+    const lessonsToUse = sharedLessons;
 
     // Normalize mode to object (might be passed as string ID or object)
     let config;
@@ -1234,11 +1181,6 @@ export const useChallengeStore = create((set, get) => ({
 
   // Boss Level: Check if can play today
   canPlayBossToday: () => {
-    // 🧪 BETA MODE: Allow unlimited Boss Level plays for testing
-    if (useDeveloperStore.getState().betaMode) {
-      return true;
-    }
-    
     const today = new Date().toDateString();
     const { bossAttempts } = get();
     const todayAttempt = bossAttempts.find(a => 

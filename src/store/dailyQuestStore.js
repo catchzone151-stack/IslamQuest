@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { useProgressStore } from "./progressStore";
-import { useDeveloperStore } from "./developerStore";
 import {
   getQuizForLesson
 } from "../data/quizEngine";
@@ -142,16 +141,13 @@ export const useDailyQuestStore = create((set, get) => ({
   checkAndGenerateDailyQuest: () => {
     const today = getTodayGMT();
     const state = get();
-
-    // 🧪 BETA MODE: Always regenerate fresh questions for unlimited testing
-    const betaMode = useDeveloperStore.getState().betaMode;
     
-    // If already today's quest AND not in beta mode, no need to regenerate
-    if (isToday(state.date) && !betaMode) {
+    // If already today's quest, no need to regenerate
+    if (isToday(state.date)) {
       return true;
     }
 
-    // New day (or beta mode) - generate new quest
+    // New day - generate new quest
     const questions = generateDailyQuestions();
 
     if (questions.length === 0) {

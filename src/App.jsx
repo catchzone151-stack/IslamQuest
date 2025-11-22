@@ -12,9 +12,7 @@ import { ModalProvider, ModalRoot } from "./providers/ModalProvider.jsx";
 import { ShimmerCard, ShimmerImage } from "./components/ShimmerLoader.jsx";
 import { useUserStore } from "./store/useUserStore";
 import { useProgressStore } from "./store/progressStore";
-import { useDeveloperStore } from "./store/developerStore";
 import { preloadAllAssets } from "./utils/imagePreloader";
-import DeveloperModal from "./components/DeveloperModal";
 
 // ✅ Onboarding screens (loaded immediately for first-time users)
 import BismillahScreen from "./onboarding/BismillahScreen.jsx";
@@ -40,7 +38,6 @@ const Login = lazy(() => import("./pages/Login.jsx"));
 const QuizScreen = lazy(() => import("./screens/QuizScreen.jsx"));
 const GlobalEvents = lazy(() => import("./pages/GlobalEvents.jsx"));
 const EventQuiz = lazy(() => import("./pages/EventQuiz.jsx"));
-const LockDiagnostics = lazy(() => import("./pages/LockDiagnostics.jsx"));
 
 // 🌙 Loading Component for lazy routes
 function LoadingScreen() {
@@ -147,15 +144,46 @@ function PlaceholderQuizPage() {
   );
 }
 
+// 🔄 PRODUCTION STORAGE VERSION
+const PRODUCTION_VERSION = "iq_production_v1";
+
 export default function App() {
   const { hasOnboarded, isHydrated } = useUserStore();
   const { grantCoins, coins } = useProgressStore();
-  const { loadFromStorage } = useDeveloperStore();
 
-  // 🔧 Load developer settings from localStorage
+  // 🔄 VERSIONED STORAGE RESET: Clear all legacy data on first production load
   useEffect(() => {
-    loadFromStorage();
-  }, [loadFromStorage]);
+    const currentVersion = localStorage.getItem("app_storage_version");
+    
+    if (currentVersion !== PRODUCTION_VERSION) {
+      console.log("🔄 Production migration: Clearing all legacy data...");
+      
+      // Get all localStorage keys
+      const keysToRemove = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        // Keep only the new production namespace
+        if (key && !key.startsWith(PRODUCTION_VERSION)) {
+          keysToRemove.push(key);
+        }
+      }
+      
+      // Clear legacy keys
+      keysToRemove.forEach(key => localStorage.removeItem(key));
+      
+      // Clear sessionStorage completely
+      sessionStorage.clear();
+      
+      // Set new version marker
+      localStorage.setItem("app_storage_version", PRODUCTION_VERSION);
+      
+      console.log("✅ Production migration complete. App will start fresh.");
+      
+      // Reload to ensure clean state
+      window.location.reload();
+      return;
+    }
+  }, []);
 
   // 🚀 PERFORMANCE: Preload ALL assets and route modules IMMEDIATELY for instant Duolingo-style loading
   useEffect(() => {
@@ -178,7 +206,6 @@ export default function App() {
       import("./pages/Settings.jsx"),
       import("./pages/Revise.jsx"),
       import("./pages/Login.jsx"),
-      import("./pages/LockDiagnostics.jsx"),
     ]);
   }, []);
 
@@ -249,7 +276,6 @@ export default function App() {
                 <Route path="/settings" element={<Suspense fallback={<LoadingScreen />}><Settings /></Suspense>} />
                 <Route path="/revise" element={<Suspense fallback={<LoadingScreen />}><Revise /></Suspense>} />
                 <Route path="/login" element={<Suspense fallback={<LoadingScreen />}><Login /></Suspense>} />
-                <Route path="/diagnostics" element={<Suspense fallback={<LoadingScreen />}><LockDiagnostics /></Suspense>} />
 
                 {/* fallback */}
                 <Route path="*" element={<Suspense fallback={<LoadingScreen />}><Home /></Suspense>} />
@@ -266,9 +292,6 @@ export default function App() {
         
         {/* 🚪 Portal root for heavy modals */}
         <ModalRoot />
-        
-          {/* 🔧 Hidden Developer Menu (Beta Testing) */}
-          <DeveloperModal />
         </BrowserRouter>
       </ModalProvider>
     </ErrorBoundary>

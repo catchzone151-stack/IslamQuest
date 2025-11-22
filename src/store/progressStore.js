@@ -3,7 +3,6 @@ import { create } from "zustand";
 import { getCurrentLevel, checkLevelUp } from "../utils/diamondLevels";
 import { FREE_LESSON_LIMITS, PREMIUM_ONLY_PATHS, isPremiumOnlyPath } from "./premiumConfig";
 import { useModalStore, MODAL_TYPES } from "./modalStore";
-import { useDeveloperStore } from "./developerStore";
 
 const STORAGE_KEY = "islamQuestProgress_v4";
 
@@ -475,11 +474,6 @@ export const useProgressStore = create((set, get) => ({
   // 🔒 Central lesson unlock check (combines sequential + premium limits)
   // This is the NEW core function - use this everywhere!
   isLessonUnlocked: (pathId, lessonId) => {
-    // 🧪 BETA MODE: Unlock all lessons for testing
-    if (useDeveloperStore.getState().betaMode) {
-      return true;
-    }
-    
     const { lockedLessons, premiumStatus } = get();
     
     // Lesson 1 is always unlocked
@@ -516,11 +510,6 @@ export const useProgressStore = create((set, get) => ({
   // 🔒 NEW UNIFIED LOCKING SYSTEM (Spec-compliant)
   // Returns the lock state of a lesson: "unlocked" | "progressLocked" | "premiumLocked"
   getLessonLockState: (pathId, lessonId) => {
-    // 🧪 BETA MODE: Everything unlocked for testing
-    if (useDeveloperStore.getState().betaMode) {
-      return "unlocked";
-    }
-    
     const { lockedLessons, premium, premiumStatus } = get();
     const isUserPremium = premium || premiumStatus !== "free";
     

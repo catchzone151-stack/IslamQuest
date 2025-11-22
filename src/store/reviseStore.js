@@ -30,58 +30,6 @@ export const useReviseStore = create((set, get) => ({
       const data = JSON.parse(saved);
       set({ weakPool: data.weakPool || [] });
     }
-
-    // 🛠️ DEV: Auto-populate sample weak questions for testing
-    if (import.meta.env.DEV && get().weakPool.length === 0) {
-      get().populateSampleWeakQuestions();
-    }
-  },
-
-  // 🛠️ DEV ONLY: Populate sample wrong questions for testing
-  populateSampleWeakQuestions: () => {
-    const { lessonStates } = useProgressStore.getState();
-    const completedLessons = [];
-
-    // Iterate through nested lessonStates: { pathId: { lessonId: { passed: true } } }
-    Object.keys(lessonStates).forEach((pathId) => {
-      const pathState = lessonStates[pathId];
-      Object.keys(pathState).forEach((lessonId) => {
-        if (pathState[lessonId]?.passed) {
-          completedLessons.push({
-            pathId: parseInt(pathId),
-            lessonId: parseInt(lessonId),
-          });
-        }
-      });
-    });
-
-    if (completedLessons.length === 0) return;
-
-    const sampleQuestions = [];
-    // Take first 3 completed lessons and grab 2 questions from each
-    completedLessons.slice(0, 3).forEach(({ pathId, lessonId }) => {
-      const quizData = getQuizForLesson(lessonId, pathId);
-      // quizData is an array of questions, not an object with questions property
-      if (quizData && Array.isArray(quizData) && quizData.length > 0) {
-        quizData.slice(0, 2).forEach((q) => {
-          const questionId = getQuestionId(q, pathId, lessonId);
-          sampleQuestions.push({
-            id: questionId,
-            question: q.text,
-            options: q.options,
-            answer: q.correctIndex,
-            sourcePathId: pathId,
-            lessonId: lessonId,
-            lastSeen: new Date().toISOString(),
-          });
-        });
-      }
-    });
-
-    if (sampleQuestions.length > 0) {
-      set({ weakPool: sampleQuestions });
-      get().saveReviseData();
-    }
   },
 
   // Save to LocalStorage
