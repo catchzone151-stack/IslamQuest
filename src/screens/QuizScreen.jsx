@@ -37,7 +37,28 @@ const QuizScreen = () => {
   const [results, setResults] = useState(null);
 
   const applyQuizResults = useProgressStore((s) => s.applyQuizResults);
+  const getLessonLockState = useProgressStore((s) => s.getLessonLockState);
   const { showModal } = useModalStore();
+
+  // 🔒 PREMIUM GUARD: Block direct URL access to premium-locked quizzes
+  useEffect(() => {
+    if (!pathId || !lessonId) return;
+    
+    const numericPathId = parseInt(pathId, 10);
+    const numericLessonId = parseInt(lessonId, 10);
+    
+    // Check the specific lock state
+    const lockState = getLessonLockState(numericPathId, numericLessonId);
+    
+    // Only redirect to premium for actual premium locks
+    // For progress locks, redirect back to path view for normal progression
+    if (lockState === "premiumLocked") {
+      navigate("/premium", { replace: true });
+    } else if (lockState === "progressLocked") {
+      // Redirect back to path view for normal progression locks
+      navigate(`/path/${numericPathId}`, { replace: true });
+    }
+  }, [pathId, lessonId, getLessonLockState, navigate]);
 
   useEffect(() => {
     const raw = getQuizForLesson(lessonId, pathId) || [];

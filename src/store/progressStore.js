@@ -54,6 +54,7 @@ export const useProgressStore = create((set, get) => ({
   
   // 🔊 System Preferences
   vibrationEnabled: true, // Haptic feedback toggle
+  _premiumMigrationV1: false, // Internal: tracks if premium lock migration has run
 
   // 🌙 Learning Paths
   paths: DEFAULT_PATHS,
@@ -99,7 +100,18 @@ export const useProgressStore = create((set, get) => ({
       }
       
       set(savedData);
-      get().saveProgress(); // Persist the normalized locks and premium status
+      
+      // 🔒 MIGRATION: Recalculate all locks for premium system (Nov 2025 premium rebuild)
+      // This ensures legacy users who unlocked premium lessons before the premium
+      // system rebuild have their locks re-evaluated based on new premium rules
+      const needsMigration = !savedData._premiumMigrationV1;
+      if (needsMigration) {
+        console.log("🔒 Running premium system migration...");
+        get().applyLockingRules(); // Recalculate all locks
+        set({ _premiumMigrationV1: true }); // Mark migration as complete
+      }
+      
+      get().saveProgress(); // Persist the normalized locks, premium status, and migration flag
     }
   },
 

@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "../hooks/useNavigate";
 import { getLessonsForPath } from "../data/lessonLoader";
+import { useProgressStore } from "../store/progressStore";
 import zaydTeachingMascot from "../assets/mascots/mascot_sitting.webp";
 
 export default function Lesson() {
   const { pathId, lessonId } = useParams();
   const navigate = useNavigate();
+  const { getLessonLockState } = useProgressStore();
 
   // Get lessons for the current path
   const pathLessons = getLessonsForPath(pathId);
@@ -15,6 +17,26 @@ export default function Lesson() {
   const lesson = pathLessons.find(
     (l) => l.id === parseInt(lessonId, 10)
   );
+
+  // 🔒 PREMIUM GUARD: Block direct URL access to premium-locked lessons
+  useEffect(() => {
+    if (!pathId || !lessonId) return;
+    
+    const numericPathId = parseInt(pathId, 10);
+    const numericLessonId = parseInt(lessonId, 10);
+    
+    // Check the specific lock state
+    const lockState = getLessonLockState(numericPathId, numericLessonId);
+    
+    // Only redirect to premium for actual premium locks
+    // For progress locks, let the normal flow handle it (user stays on path view)
+    if (lockState === "premiumLocked") {
+      navigate("/premium", { replace: true });
+    } else if (lockState === "progressLocked") {
+      // Redirect back to path view for normal progression locks
+      navigate(`/path/${numericPathId}`, { replace: true });
+    }
+  }, [pathId, lessonId, getLessonLockState, navigate]);
 
   function handleBack() {
     if (pathId) navigate(`/path/${pathId}`);
