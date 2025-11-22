@@ -292,6 +292,16 @@ export default function ModalController() {
           />
         );
 
+      case MODAL_TYPES.CLEAR_CACHE_CONFIRMATION:
+        return (
+          <ClearCacheModal
+            onClose={hideModal}
+            onConfirm={() => {
+              modalData.onConfirm?.();
+            }}
+          />
+        );
+
       default:
         return null;
     }

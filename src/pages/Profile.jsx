@@ -324,7 +324,107 @@ export default function Profile() {
           </div>
         )}
 
-        {/* === Version Display === */}
+        {/* === Settings Section === */}
+        <div
+          style={{
+            maxWidth: 400,
+            margin: "32px auto 0",
+            padding: 20,
+            background: "rgba(79, 213, 255, 0.05)",
+            border: "1px solid rgba(79, 213, 255, 0.2)",
+            borderRadius: 16,
+          }}
+        >
+          <h3
+            style={{
+              color: "#4fd5ff",
+              fontSize: "1.2rem",
+              fontWeight: 700,
+              marginBottom: 16,
+            }}
+          >
+            ⚙️ Settings
+          </h3>
+
+          {/* App Version */}
+          <div
+            style={{
+              background: "rgba(255, 255, 255, 0.03)",
+              padding: 14,
+              borderRadius: 12,
+              marginBottom: 12,
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <span style={{ color: "#cbd5e1", fontSize: "0.9rem" }}>
+              App Version
+            </span>
+            <span style={{ color: "#d4af37", fontSize: "0.9rem", fontWeight: 600 }}>
+              Islam Quest v1.0.0
+            </span>
+          </div>
+
+          {/* Clear Cache Button */}
+          <button
+            onClick={() => showModal(MODAL_TYPES.CLEAR_CACHE_CONFIRMATION)}
+            style={{
+              background: "rgba(239, 68, 68, 0.1)",
+              border: "1px solid rgba(239, 68, 68, 0.3)",
+              borderRadius: 12,
+              padding: "12px 16px",
+              color: "#ef4444",
+              fontWeight: "600",
+              fontSize: "0.9rem",
+              width: "100%",
+              cursor: "pointer",
+              marginBottom: 12,
+              transition: "all 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "rgba(239, 68, 68, 0.2)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "rgba(239, 68, 68, 0.1)";
+            }}
+          >
+            🗑️ Clear Cache
+          </button>
+
+          {/* Rate App Button */}
+          <a
+            href="https://play.google.com/store"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none", display: "block" }}
+          >
+            <button
+              style={{
+                background: "linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(244, 208, 63, 0.1) 100%)",
+                border: "1px solid rgba(212, 175, 55, 0.3)",
+                borderRadius: 12,
+                padding: "12px 16px",
+                color: "#d4af37",
+                fontWeight: "600",
+                fontSize: "0.9rem",
+                width: "100%",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(244, 208, 63, 0.2) 100%)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(244, 208, 63, 0.1) 100%)";
+              }}
+            >
+              ⭐ Rate this App
+            </button>
+          </a>
+        </div>
+
+        {/* === Version Display (kept for logging) === */}
         <div
           style={{
             marginTop: 20,
