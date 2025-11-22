@@ -8,10 +8,10 @@ const companionsLessons = [
     id: 1,
     title: "Abu Bakr as-Siddiq",
     description: [
-      "Abu Bakr was the Prophet's ﷺ closest friend and the first adult man to accept Islam. He believed immediately without hesitation when the Prophet ﷺ shared the message. His instant faith earned him the title As-Siddiq, meaning The Truthful Believer.",
+      "Abu Bakr was the Prophet's ﷺ ﷺ closest friend and the first adult man to accept Islam. He believed immediately without hesitation when the Prophet ﷺ shared the message. His instant faith earned him the title As-Siddiq, meaning The Truthful Believer.",
       "When the Prophet ﷺ described his night journey to Jerusalem and ascension to Heaven, the disbelievers mocked him. Abu Bakr declared that if Muhammad ﷺ said it, then it must be true. His unwavering trust demonstrated perfect faith and loyalty to Allah's Messenger.",
       "Abu Bakr spent his entire wealth supporting Islam and freeing tortured Muslim slaves like Bilal. He accompanied the Prophet ﷺ during the dangerous migration to Madinah, risking his life. In the cave, he comforted the Prophet ﷺ when enemies surrounded them, showing complete courage and trust.",
-      "After the Prophet's ﷺ death, Abu Bakr became the first Caliph and united the Muslims during crisis. He fought against apostasy and compiled the Qur'an. The Prophet ﷺ said Abu Bakr's faith outweighed the entire community's faith. He died beloved by Allah and His Messenger."
+      "After the Prophet's ﷺ ﷺ death, Abu Bakr became the first Caliph and united the Muslims during crisis. He fought against apostasy and compiled the Qur'an. The Prophet ﷺ said Abu Bakr's faith outweighed the entire community's faith. He died beloved by Allah and His Messenger."
     ],
     evidence: {
       arabic: "وَسَيُجَنَّبُهَا الْأَتْقَى الَّذِي يُؤْتِي مَالَهُ يَتَزَكَّىٰ",
@@ -45,7 +45,7 @@ const companionsLessons = [
     title: "Uthman ibn Affan",
     description: [
       "Uthman was known for his modesty, generosity, and beautiful character. When he accepted Islam through Abu Bakr's invitation, his uncle punished him severely by tying him up. Despite torture, Uthman remained patient and steadfast, refusing to renounce his faith in Allah and His Messenger.",
-      "Uthman was so modest that even angels felt shy in his presence. The Prophet ﷺ said the angels showed modesty before Uthman. He was married to the Prophet's ﷺ daughter Ruqayyah, and after her death, he married another daughter, Umm Kulthum. This earned him the title Dhun-Nurayn, possessor of two lights.",
+      "Uthman was so modest that even angels felt shy in his presence. The Prophet ﷺ said the angels showed modesty before Uthman. He was married to the Prophet's ﷺ ﷺ daughter Ruqayyah, and after her death, he married another daughter, Umm Kulthum. This earned him the title Dhun-Nurayn, possessor of two lights.",
       "When Muslims needed funds for the Tabuk expedition, Uthman provided one-third of the entire army's equipment and supplies. He purchased the well of Rumah and made it free for all Muslims. The Prophet ﷺ said nothing Uthman did after that day would harm him, guaranteeing his place in Paradise.",
       "As the third Caliph, Uthman standardized the Qur'an into one official manuscript to preserve its authenticity. He was killed while reading Qur'an during his fast, dying as a shaheed and martyr. His blood dripped onto the verse 'Allah will suffice you against them,' showing his complete trust in Allah."
     ],
@@ -62,9 +62,9 @@ const companionsLessons = [
     id: 4,
     title: "Ali ibn Abi Talib",
     description: [
-      "Ali was the Prophet's ﷺ cousin, raised in his household from childhood. He accepted Islam at age ten, becoming the first young boy to believe. His early acceptance and upbringing in the Prophet's ﷺ home gave him deep knowledge and understanding of Islam's teachings from the very beginning.",
-      "On the night of Hijrah when enemies surrounded the Prophet's ﷺ house planning to kill him, Ali volunteered to sleep in his bed. This brave act risked his life to protect the Prophet ﷺ and deceive the assassins. His courage and willingness to sacrifice himself demonstrated his complete devotion and fearlessness.",
-      "Ali married the Prophet's ﷺ beloved daughter Fatimah, and their sons Hassan and Hussain were the grandsons the Prophet ﷺ loved dearly. The Prophet ﷺ said Ali was from him and he was from Ali. Their relationship represented the closest bonds of faith, family, and brotherhood in Islam.",
+      "Ali was the Prophet's ﷺ ﷺ cousin, raised in his household from childhood. He accepted Islam at age ten, becoming the first young boy to believe. His early acceptance and upbringing in the Prophet's ﷺ ﷺ home gave him deep knowledge and understanding of Islam's teachings from the very beginning.",
+      "On the night of Hijrah when enemies surrounded the Prophet's ﷺ ﷺ house planning to kill him, Ali volunteered to sleep in his bed. This brave act risked his life to protect the Prophet ﷺ and deceive the assassins. His courage and willingness to sacrifice himself demonstrated his complete devotion and fearlessness.",
+      "Ali married the Prophet's ﷺ ﷺ beloved daughter Fatimah, and their sons Hassan and Hussain were the grandsons the Prophet ﷺ loved dearly. The Prophet ﷺ said Ali was from him and he was from Ali. Their relationship represented the closest bonds of faith, family, and brotherhood in Islam.",
       "Known for his knowledge, bravery, and justice, Ali became the fourth Caliph during difficult times. He was a warrior in every battle except Tabuk, when the Prophet ﷺ left him in Madinah. The Prophet ﷺ told him he was to Muhammad ﷺ as Harun was to Musa, showing his high status and importance."
     ],
     evidence: {
@@ -136,7 +136,7 @@ const companionsLessons = [
     description: [
       "Abdullah ibn Mas'ud was short and thin with very skinny legs that people sometimes mocked. One day the wind blew and exposed his thin legs while he climbed a tree. Companions laughed but the Prophet ﷺ defended him, saying Abdullah's legs would weigh heavier than Mount Uhud on the Day of Judgment because of his righteous deeds.",
       "He was one of the earliest Muslims and among the first to publicly recite Qur'an at the Ka'bah despite danger. The Quraysh beat him severely for his bold recitation. His courage in proclaiming truth publicly, despite his physical weakness, demonstrated that faith gives strength beyond any bodily power or human intimidation.",
-      "The Prophet ﷺ gave Abdullah special permission to enter his private quarters anytime, showing complete trust and closeness. He learned Qur'an directly from the Prophet's ﷺ mouth and became one of the greatest Qur'an reciters. The Prophet ﷺ loved to hear him recite because his recitation was beautifully emotional and sincere.",
+      "The Prophet ﷺ gave Abdullah special permission to enter his private quarters anytime, showing complete trust and closeness. He learned Qur'an directly from the Prophet's ﷺ ﷺ mouth and became one of the greatest Qur'an reciters. The Prophet ﷺ loved to hear him recite because his recitation was beautifully emotional and sincere.",
       "Abdullah possessed deep knowledge of Qur'anic interpretation and Islamic jurisprudence. Umar ibn al-Khattab called him a treasure filled with knowledge. The Prophet ﷺ recommended learning Qur'an from four people, and Abdullah was among them. His scholarship and teaching preserved essential Islamic knowledge for all future generations of Muslims worldwide."
     ],
     evidence: {
@@ -154,8 +154,8 @@ const companionsLessons = [
     description: [
       "Abu Hurayrah accepted Islam during the Khaybar campaign and stayed constantly with the Prophet ﷺ afterward, never leaving his side. While other companions engaged in trade and business, Abu Hurayrah devoted every moment to learning. His stomach was often empty from hunger because he chose knowledge over earning worldly provisions.",
       "He narrated more hadiths than any other companion, preserving over five thousand narrations. The Prophet ﷺ made a special supplication for Abu Hurayrah's memory never to forget anything he learned. This blessed prayer was answered, and Abu Hurayrah could recall every word and action he witnessed with perfect accuracy throughout his long life.",
-      "Abu Hurayrah would worship all night, then wake his wife who would worship, then she would wake their daughter who would worship until dawn. Their entire household dedicated nights to prayer and devotion. Despite his poverty, he chose spiritual wealth over worldly comfort, finding richness in remembrance of Allah and knowledge of the Prophet's ﷺ teachings.",
-      "His dedication to preserving the Prophet's ﷺ words benefited all Muslims forever. Every hadith we read today about daily actions, manners, and worship likely comes from Abu Hurayrah. The Prophet ﷺ said whoever spreads knowledge after him will be rewarded. Abu Hurayrah continues receiving infinite rewards as millions benefit from his narrations daily until today."
+      "Abu Hurayrah would worship all night, then wake his wife who would worship, then she would wake their daughter who would worship until dawn. Their entire household dedicated nights to prayer and devotion. Despite his poverty, he chose spiritual wealth over worldly comfort, finding richness in remembrance of Allah and knowledge of the Prophet's ﷺ ﷺ teachings.",
+      "His dedication to preserving the Prophet's ﷺ ﷺ words benefited all Muslims forever. Every hadith we read today about daily actions, manners, and worship likely comes from Abu Hurayrah. The Prophet ﷺ said whoever spreads knowledge after him will be rewarded. Abu Hurayrah continues receiving infinite rewards as millions benefit from his narrations daily until today."
     ],
     evidence: {
       arabic: "اللَّهُمَّ حَبِّبْ عُبَيْدَكَ هَذَا وَأُمَّهُ إِلَى عِبَادِكَ الْمُؤْمِنِينَ وَحَبِّبْ إِلَيْهِمُ الْمُؤْمِنِينَ",
@@ -172,7 +172,7 @@ const companionsLessons = [
     description: [
       "Hudhayfah was known as the Keeper of Secrets because the Prophet ﷺ specifically confided in him about future hypocrites in the community. This tremendous trust showed Hudhayfah's wisdom and reliability. He never revealed these names, carrying this heavy knowledge with complete discretion and responsibility until his death, protecting the community's unity.",
       "His father Yaman was accidentally killed by Muslims during the Battle of Uhud in the confusion of combat. When Hudhayfah realized what happened, he immediately forgave them and asked Allah to forgive them too. He donated his father's blood money to charity. This incredible forgiveness during devastating grief demonstrated his profound faith and selflessness.",
-      "Hudhayfah possessed deep knowledge about the signs of hypocrisy and the trials that would afflict the Muslim community. He could identify false believers by their characteristics and actions. After the Prophet's ﷺ death, even Umar ibn al-Khattab would ask Hudhayfah to confirm he wasn't among the hypocrites, showing Hudhayfah's unique knowledge and Umar's deep humility.",
+      "Hudhayfah possessed deep knowledge about the signs of hypocrisy and the trials that would afflict the Muslim community. He could identify false believers by their characteristics and actions. After the Prophet's ﷺ ﷺ death, even Umar ibn al-Khattab would ask Hudhayfah to confirm he wasn't among the hypocrites, showing Hudhayfah's unique knowledge and Umar's deep humility.",
       "The Prophet ﷺ taught Hudhayfah special supplications to protect against trials and tribulations. He understood that knowing evil helps avoid it, while knowing good helps achieve it. His knowledge of both truth and falsehood made him invaluable for guiding Muslims away from deviation and toward righteousness and sincere faith in times of confusion."
     ],
     evidence: {
@@ -207,7 +207,7 @@ const companionsLessons = [
     title: "Abu Ubaydah ibn al-Jarrah",
     description: [
       "Abu Ubaydah was known for his trustworthiness, humility, and selflessness. The Prophet ﷺ called him 'Amin al-Ummah' meaning the Trustworthy One of this nation. This title placed him among the most reliable and honest companions. People trusted him completely with wealth, secrets, and responsibilities because his integrity was absolutely beyond question.",
-      "During the Battle of Uhud, two metal rings from the Prophet's ﷺ helmet became embedded in his blessed face from an enemy strike. Abu Ubaydah removed them with his own teeth, losing two of his front teeth in the process. He prioritized the Prophet's ﷺ wellbeing over his own, demonstrating ultimate love and sacrifice for Allah's Messenger despite personal pain and permanent injury.",
+      "During the Battle of Uhud, two metal rings from the Prophet's ﷺ ﷺ helmet became embedded in his blessed face from an enemy strike. Abu Ubaydah removed them with his own teeth, losing two of his front teeth in the process. He prioritized the Prophet's ﷺ ﷺ wellbeing over his own, demonstrating ultimate love and sacrifice for Allah's Messenger despite personal pain and permanent injury.",
       "Abu Ubaydah was so humble that when Umar appointed him as commander, he tried to decline the position. He lived simply despite his high rank and military achievements. He avoided seeking leadership, preferring to serve quietly. This humility made him even more beloved and respected by all who knew him and witnessed his sincerity.",
       "He led the Muslim conquest of Syria and became its governor. When plague struck, Umar ordered him to leave the infected area, but Abu Ubaydah refused to abandon his people. He died in the plague as a shaheed and martyr. The Prophet ﷺ had prophesied that every prophet has a trustworthy disciple, and Abu Ubaydah was his, showing his exceptional status."
     ],
@@ -243,7 +243,7 @@ const companionsLessons = [
     title: "Talha ibn Ubaydullah",
     description: [
       "Talha was absent during the Battle of Badr but insisted on giving his share of the war spoils to those who fought. This showed his selflessness and desire to support the cause even when he couldn't participate directly. The Prophet ﷺ still gave him a full reward as if he had fought, recognizing his sincere intention and generosity toward his fellow Muslims.",
-      "During the Battle of Uhud, Talha shielded the Prophet ﷺ with his own body when enemies surrounded him. Arrows struck Talha repeatedly as he used his hand to protect the Prophet's ﷺ face. His hand became paralyzed from defending Allah's Messenger. This ultimate sacrifice of his own body demonstrated his willingness to die protecting the Prophet ﷺ at all costs.",
+      "During the Battle of Uhud, Talha shielded the Prophet ﷺ with his own body when enemies surrounded him. Arrows struck Talha repeatedly as he used his hand to protect the Prophet's ﷺ ﷺ face. His hand became paralyzed from defending Allah's Messenger. This ultimate sacrifice of his own body demonstrated his willingness to die protecting the Prophet ﷺ at all costs.",
       "The Prophet ﷺ said that whoever wants to see a walking martyr should look at Talha, because of his tremendous sacrifice at Uhud. He was promised Paradise while still alive, being among the ten companions given this guarantee. Despite his wealth, he lived generously, constantly giving to the poor and supporting those in need without hesitation.",
       "Talha earned enormous wealth through trade but never hoarded it. He would distribute his entire income regularly to the poor and needy. Once he received seventy thousand gold coins and couldn't sleep until he had distributed every single coin to the deserving. His generosity and sacrifice made him a walking example of how wealth should be used for Allah's pleasure alone."
     ],
@@ -260,7 +260,7 @@ const companionsLessons = [
     id: 15,
     title: "Zubayr ibn al-Awwam",
     description: [
-      "Zubayr was the Prophet's ﷺ cousin and one of the earliest Muslims, accepting Islam at age sixteen. His uncle tortured him by hanging him in smoke to force him to renounce Islam. Despite the pain and his young age, Zubayr refused to abandon his faith. His early steadfastness showed courage beyond his years and unshakeable belief in Allah and His Messenger.",
+      "Zubayr was the Prophet's ﷺ ﷺ cousin and one of the earliest Muslims, accepting Islam at age sixteen. His uncle tortured him by hanging him in smoke to force him to renounce Islam. Despite the pain and his young age, Zubayr refused to abandon his faith. His early steadfastness showed courage beyond his years and unshakeable belief in Allah and His Messenger.",
       "At the Battle of Badr when only fourteen years old, Zubayr fought with exceptional bravery. The Prophet ﷺ said every prophet had a special disciple, and his disciple was Zubayr. This special designation showed Zubayr's closeness to the Prophet ﷺ and his vital role in defending Islam during its most vulnerable early period of establishment.",
       "Zubayr was extremely brave in battle, always fighting in the frontlines. At the Battle of Yarmouk, he charged alone through enemy lines repeatedly to inspire his troops. His body was covered with battle scars and wounds. The Prophet ﷺ promised him Paradise while he was still alive, making him one of the ten blessed companions guaranteed eternal reward.",
       "Despite his military career, Zubayr was also a successful merchant and farmer. He earned his wealth through honest hard work and trade. He employed his earnings to support his family and give charity generously. His son Abdullah later described how Zubayr's body had scars from every major battle, showing his continuous sacrifice and devotion to defending Islam throughout his entire life."
@@ -278,10 +278,10 @@ const companionsLessons = [
     id: 16,
     title: "Anas ibn Malik",
     description: [
-      "Anas's mother brought him to the Prophet ﷺ when he was ten years old, offering him as a servant. The Prophet ﷺ accepted him and made a special supplication for him. Anas served the Prophet ﷺ for ten years, accompanying him everywhere. He witnessed the Prophet's ﷺ daily life, manners, and habits more closely than almost anyone else in the Muslim community.",
-      "The Prophet ﷺ prayed for Anas to have abundant wealth, many children, and long life. All three prayers were completely answered. Anas lived over one hundred years, had numerous children and grandchildren, and owned vast orchards that produced fruit twice yearly. This showed how the Prophet's ﷺ blessed supplications always came true in beautiful and miraculous ways.",
-      "Anas narrated thousands of hadiths, preserving details about the Prophet's ﷺ daily life, appearance, and character. His narrations teach us how the Prophet ﷺ ate, dressed, slept, and interacted with family and companions. This intimate knowledge makes him one of the most important sources for understanding the Prophet's ﷺ beautiful example and applying it in our daily lives.",
-      "Despite serving the Prophet ﷺ for ten years, Anas said the Prophet ﷺ never scolded him or said 'Why did you do that?' even once. This demonstrated the Prophet's ﷺ perfect patience and kindness. Anas lived through the era of the Rightly Guided Caliphs and witnessed Islam's expansion, dying as one of the last surviving companions to see the Prophet ﷺ personally."
+      "Anas's mother brought him to the Prophet ﷺ when he was ten years old, offering him as a servant. The Prophet ﷺ accepted him and made a special supplication for him. Anas served the Prophet ﷺ for ten years, accompanying him everywhere. He witnessed the Prophet's ﷺ ﷺ daily life, manners, and habits more closely than almost anyone else in the Muslim community.",
+      "The Prophet ﷺ prayed for Anas to have abundant wealth, many children, and long life. All three prayers were completely answered. Anas lived over one hundred years, had numerous children and grandchildren, and owned vast orchards that produced fruit twice yearly. This showed how the Prophet's ﷺ ﷺ blessed supplications always came true in beautiful and miraculous ways.",
+      "Anas narrated thousands of hadiths, preserving details about the Prophet's ﷺ ﷺ daily life, appearance, and character. His narrations teach us how the Prophet ﷺ ate, dressed, slept, and interacted with family and companions. This intimate knowledge makes him one of the most important sources for understanding the Prophet's ﷺ ﷺ beautiful example and applying it in our daily lives.",
+      "Despite serving the Prophet ﷺ for ten years, Anas said the Prophet ﷺ never scolded him or said 'Why did you do that?' even once. This demonstrated the Prophet's ﷺ ﷺ perfect patience and kindness. Anas lived through the era of the Rightly Guided Caliphs and witnessed Islam's expansion, dying as one of the last surviving companions to see the Prophet ﷺ personally."
     ],
     evidence: {
       arabic: "اللَّهُمَّ أَكْثِرْ مَالَهُ وَوَلَدَهُ وَبَارِكْ لَهُ فِيمَا أَعْطَيْتَهُ",
@@ -296,17 +296,17 @@ const companionsLessons = [
     id: 17,
     title: "Abdullah ibn Umar",
     description: [
-      "Abdullah was the son of Umar ibn al-Khattab and one of the most knowledgeable companions. He meticulously followed the Prophet's ﷺ every action, even copying small habits like where the Prophet ﷺ stopped during travels. His extreme dedication to following the Sunnah made him a perfect example of how to imitate the Prophet ﷺ in all aspects of daily life.",
+      "Abdullah was the son of Umar ibn al-Khattab and one of the most knowledgeable companions. He meticulously followed the Prophet's ﷺ ﷺ every action, even copying small habits like where the Prophet ﷺ stopped during travels. His extreme dedication to following the Sunnah made him a perfect example of how to imitate the Prophet ﷺ in all aspects of daily life.",
       "He was known for his incredible piety and fear of Allah. Abdullah would fast frequently, pray most of the night, and weep during Qur'an recitation. He constantly gave charity and treated his family and servants with exceptional kindness. Despite his father being the powerful Caliph, Abdullah avoided worldly positions and leadership, preferring worship and teaching over authority and power.",
       "Abdullah narrated thousands of hadiths with careful accuracy, becoming one of the major sources of prophetic knowledge. Students traveled from distant lands to learn from him. He lived simply despite inheriting wealth from his father, spending most of his money on freeing slaves and helping the poor. His life embodied complete devotion to Islam's teachings in every detail.",
-      "The Prophet ﷺ praised Abdullah's righteousness and piety. Even though he was too young to fight in Badr and Uhud, he participated in all later battles with bravery. He lived a very long life, dying at age eighty-seven, continuing to teach and guide Muslims for decades after the Prophet's ﷺ death, preserving precious knowledge for all future generations of believers worldwide."
+      "The Prophet ﷺ praised Abdullah's righteousness and piety. Even though he was too young to fight in Badr and Uhud, he participated in all later battles with bravery. He lived a very long life, dying at age eighty-seven, continuing to teach and guide Muslims for decades after the Prophet's ﷺ ﷺ death, preserving precious knowledge for all future generations of believers worldwide."
     ],
     evidence: {
       arabic: "نِعْمَ الرَّجُلُ عَبْدُ اللَّهِ لَوْ كَانَ يُصَلِّي مِنَ اللَّيْلِ",
       translation: "Abdullah is an excellent man; if only he would pray at night.",
       source: "Sahih Bukhari 1122"
     },
-    keyLesson: "Meticulously following the Prophet's ﷺ example in all matters, combined with knowledge and piety, creates a blessed, impactful life.",
+    keyLesson: "Meticulously following the Prophet's ﷺ ﷺ example in all matters, combined with knowledge and piety, creates a blessed, impactful life.",
     quizId: 17
   },
 
@@ -351,8 +351,8 @@ const companionsLessons = [
     title: "Abu Ayyub al-Ansari",
     description: [
       "When the Prophet ﷺ first arrived in Madinah during the Hijrah, everyone wanted the honor of hosting him. The Prophet ﷺ let his camel walk freely, saying it was commanded by Allah. It stopped at Abu Ayyub's house. Abu Ayyub considered this the greatest blessing and honor of his entire life, feeling overwhelming joy and gratitude for hosting Allah's beloved Messenger.",
-      "Abu Ayyub insisted the Prophet ﷺ stay on the ground floor while he and his wife stayed upstairs. One night, they accidentally broke a water jug upstairs and used their only blanket to soak up the water, fearing even a drop might disturb the Prophet ﷺ sleeping below. This showed his extreme reverence, love, and care for the Prophet's ﷺ comfort and wellbeing.",
-      "The Prophet ﷺ lived in Abu Ayyub's home for seven months until the Prophet's mosque and homes were built. During this time, Abu Ayyub learned directly from the Prophet ﷺ and developed deep knowledge. He narrated many important hadiths. The blessing of hosting the Prophet ﷺ made his house a symbol of honor and his name eternally remembered with love and respect.",
+      "Abu Ayyub insisted the Prophet ﷺ stay on the ground floor while he and his wife stayed upstairs. One night, they accidentally broke a water jug upstairs and used their only blanket to soak up the water, fearing even a drop might disturb the Prophet ﷺ sleeping below. This showed his extreme reverence, love, and care for the Prophet's ﷺ ﷺ comfort and wellbeing.",
+      "The Prophet ﷺ lived in Abu Ayyub's home for seven months until the Prophet's ﷺ mosque and homes were built. During this time, Abu Ayyub learned directly from the Prophet ﷺ and developed deep knowledge. He narrated many important hadiths. The blessing of hosting the Prophet ﷺ made his house a symbol of honor and his name eternally remembered with love and respect.",
       "Abu Ayyub remained a warrior for Islam even in old age. He participated in the campaign to conquer Constantinople at age eighty, despite his advanced years and frail health. He died during this expedition and was buried at the city's walls. His grave became a blessed site. His lifelong dedication to jihad and serving Islam showed faith doesn't retire or weaken with age."
     ],
     evidence: {
@@ -370,7 +370,7 @@ const companionsLessons = [
     description: [
       "Mu'adh was one of the youngest companions but possessed exceptional knowledge and understanding of Islam. The Prophet ﷺ said Mu'adh was the most knowledgeable of his nation concerning halal and haram matters. Despite his youth, scholars and older companions would ask him religious questions. His deep understanding came from constant learning and devotion to studying with the Prophet ﷺ directly.",
       "The Prophet ﷺ sent Mu'adh as a governor and teacher to Yemen. Before he left, the Prophet ﷺ taught him how to judge between people using Qur'an first, then Sunnah, then ijtihad. This established the fundamental methodology for Islamic jurisprudence. Mu'adh's mission to Yemen spread Islam and knowledge successfully, showing his skills in both teaching and governance despite being very young.",
-      "Mu'adh loved the Prophet ﷺ deeply. When saying goodbye before the Yemen trip, he walked alongside the Prophet's ﷺ riding animal, not wanting to separate. The Prophet ﷺ told him they might never meet again in this world, and Mu'adh wept intensely. This emotional farewell showed the profound love and connection between the Prophet ﷺ and his devoted companions who treasured every moment together.",
+      "Mu'adh loved the Prophet ﷺ deeply. When saying goodbye before the Yemen trip, he walked alongside the Prophet's ﷺ ﷺ riding animal, not wanting to separate. The Prophet ﷺ told him they might never meet again in this world, and Mu'adh wept intensely. This emotional farewell showed the profound love and connection between the Prophet ﷺ and his devoted companions who treasured every moment together.",
       "The Prophet ﷺ said that on the Day of Judgment, scholars will be brought forward, and Mu'adh will be ahead of them by a stone's throw distance because of his superior knowledge. Despite this guaranteed status, Mu'adh remained humble and focused on teaching others. He died young in a plague, achieving martyrdom. His legacy of knowledge continues benefiting Muslims seeking to understand halal, haram, and proper Islamic jurisprudence."
     ],
     evidence: {
@@ -422,7 +422,7 @@ const companionsLessons = [
     id: 24,
     title: "Abu Dujanah",
     description: [
-      "Abu Dujanah was known for his exceptional bravery in battle. At the Battle of Uhud, the Prophet ﷺ held a sword and asked who would take it with its right. Many companions reached for it, but the Prophet ﷺ gave it to Abu Dujanah, who promised to use it until it bent from fighting. This special honor showed the Prophet's ﷺ trust in Abu Dujanah's courage and fighting skills.",
+      "Abu Dujanah was known for his exceptional bravery in battle. At the Battle of Uhud, the Prophet ﷺ held a sword and asked who would take it with its right. Many companions reached for it, but the Prophet ﷺ gave it to Abu Dujanah, who promised to use it until it bent from fighting. This special honor showed the Prophet's ﷺ ﷺ trust in Abu Dujanah's courage and fighting skills.",
       "Abu Dujanah had a red headband he wore only in battle. When companions saw this headband, they knew he would fight with extraordinary courage and fierceness. He would walk between the battle lines with a distinctive strut, showing confidence and fearlessness. The Prophet ﷺ said this walking style was detestable except in this specific situation, showing that confidence in battle for Allah's cause is praiseworthy.",
       "During Uhud, Abu Dujanah used his own body as a shield to protect the Prophet ﷺ from arrows. Arrows struck his back repeatedly as he covered the Prophet ﷺ with his body. He felt no pain because his only concern was protecting Allah's Messenger. This ultimate sacrifice showed his complete willingness to die defending the Prophet ﷺ without hesitation or fear of injury.",
       "Abu Dujanah continued fighting in many battles after Uhud, always demonstrating exceptional bravery and skill. He was eventually martyred at the Battle of Yamamah fighting false prophets who caused apostasy. His death as a shaheed crowned a life of courage and sacrifice. The red headband became a symbol of his legendary bravery, inspiring Muslims to fight courageously when defending truth and justice."
@@ -440,17 +440,17 @@ const companionsLessons = [
     id: 25,
     title: "Usama ibn Zayd",
     description: [
-      "Usama was the son of Zayd ibn Harithah, the Prophet's ﷺ adopted son and beloved companion. The Prophet ﷺ loved both father and son deeply, calling them his most beloved people. Usama grew up in the Prophet's ﷺ household, learning directly from him. This close upbringing gave Usama special knowledge and a unique understanding of the Prophet's ﷺ personal character and daily habits.",
+      "Usama was the son of Zayd ibn Harithah, the Prophet's ﷺ ﷺ adopted son and beloved companion. The Prophet ﷺ loved both father and son deeply, calling them his most beloved people. Usama grew up in the Prophet's ﷺ ﷺ household, learning directly from him. This close upbringing gave Usama special knowledge and a unique understanding of the Prophet's ﷺ ﷺ personal character and daily habits.",
       "Despite being only eighteen years old, the Prophet ﷺ appointed Usama as the commander of a major military expedition that included senior companions like Abu Bakr and Umar. Some questioned this appointment due to his youth, but the Prophet ﷺ defended it firmly. This showed that leadership in Islam is based on ability and wisdom, not age or seniority alone.",
       "Usama's father Zayd was martyred at the Battle of Mu'tah, dying as a shaheed while carrying the Muslim banner. This tremendous loss deeply affected Usama, but he remained patient and continued serving Islam faithfully. The Prophet ﷺ comforted him and continued showing him special love and care, helping him through grief while preparing him for future leadership responsibilities despite his young age.",
-      "The expedition Usama was to lead was the last military campaign the Prophet ﷺ organized before his death. After the Prophet ﷺ passed away, Abu Bakr insisted on sending Usama's army despite the difficult situation, honoring the Prophet's ﷺ final command. Usama successfully completed the mission, demonstrating his competence and justifying the Prophet's ﷺ trust in his abilities despite his youth and the controversial appointment that some had questioned."
+      "The expedition Usama was to lead was the last military campaign the Prophet ﷺ organized before his death. After the Prophet ﷺ passed away, Abu Bakr insisted on sending Usama's army despite the difficult situation, honoring the Prophet's ﷺ ﷺ final command. Usama successfully completed the mission, demonstrating his competence and justifying the Prophet's ﷺ ﷺ trust in his abilities despite his youth and the controversial appointment that some had questioned."
     ],
     evidence: {
       arabic: "أُسَامَةُ بْنُ زَيْدٍ أَحَبُّ النَّاسِ إِلَيَّ",
       translation: "Usama ibn Zayd is the most beloved of people to me.",
       source: "Sahih Bukhari 3730"
     },
-    keyLesson: "Youth combined with capability and the Prophet's ﷺ training makes one qualified for leadership regardless of age or experience.",
+    keyLesson: "Youth combined with capability and the Prophet's ﷺ ﷺ training makes one qualified for leadership regardless of age or experience.",
     quizId: 25
   },
 
@@ -459,8 +459,8 @@ const companionsLessons = [
     title: "Zayd ibn Thabit",
     description: [
       "Zayd was only eleven years old when the Prophet ﷺ migrated to Madinah. He was too young to fight in Badr but desperately wanted to join the Muslims. Instead, the Prophet ﷺ encouraged him to study and learn. Zayd dedicated himself to education, becoming one of the most knowledgeable companions. His disappointment at being too young for battle transformed into blessing through knowledge acquisition instead.",
-      "Zayd mastered numerous languages including Hebrew and Syriac within a remarkably short time. The Prophet ﷺ asked him to learn these languages to read and write correspondence with non-Arabs. Zayd learned Hebrew in just fifteen days, showing his exceptional intelligence and dedication. His linguistic abilities made him the Prophet's ﷺ personal translator and scribe for diplomatic communications with foreign leaders.",
-      "The Prophet ﷺ chose Zayd as one of his primary scribes to write down the Qur'anic revelations. Zayd would write the verses on various materials like parchment, leather, and stones. After the Prophet's ﷺ death, Abu Bakr tasked Zayd with collecting the Qur'an into one written volume. Later, Uthman chose him to lead the committee that standardized the official Qur'anic manuscript, showing universal trust in Zayd's accuracy and knowledge.",
+      "Zayd mastered numerous languages including Hebrew and Syriac within a remarkably short time. The Prophet ﷺ asked him to learn these languages to read and write correspondence with non-Arabs. Zayd learned Hebrew in just fifteen days, showing his exceptional intelligence and dedication. His linguistic abilities made him the Prophet's ﷺ ﷺ personal translator and scribe for diplomatic communications with foreign leaders.",
+      "The Prophet ﷺ chose Zayd as one of his primary scribes to write down the Qur'anic revelations. Zayd would write the verses on various materials like parchment, leather, and stones. After the Prophet's ﷺ ﷺ death, Abu Bakr tasked Zayd with collecting the Qur'an into one written volume. Later, Uthman chose him to lead the committee that standardized the official Qur'anic manuscript, showing universal trust in Zayd's accuracy and knowledge.",
       "Zayd was also a brilliant scholar of Islamic inheritance laws, which are mathematically complex. He became the primary reference for inheritance questions. His combination of Qur'anic knowledge, linguistic skills, and legal expertise made him invaluable. The Prophet ﷺ said Zayd was the most knowledgeable of his nation in inheritance laws. His contributions to preserving the Qur'an benefit every Muslim who reads it until the Day of Judgment."
     ],
     evidence: {
@@ -478,12 +478,12 @@ const companionsLessons = [
     description: [
       "Hafsa was the daughter of Umar ibn al-Khattab and wife of the Prophet ﷺ. She was married young but became a widow when her first husband died from battle wounds. Her father Umar worried about her future. The Prophet ﷺ married her, honoring Umar and giving Hafsa the blessing of being a Mother of the Believers, a title of tremendous honor and respect forever.",
       "Hafsa was known for her piety, knowledge, and devotion to worship. She would fast frequently and spend long nights in prayer. Like her father, she had a strong personality and deep fear of Allah. The Prophet ﷺ appreciated her intelligence and trusted her completely. She learned directly from him about Islamic rulings, especially those related to women's specific concerns and questions.",
-      "After the Prophet's ﷺ death, the official written copy of the Qur'an was entrusted to Hafsa for safekeeping. This tremendous responsibility showed the companions' complete trust in her reliability and carefulness. She guarded the precious manuscript with utmost care. When Uthman needed to make official copies, he borrowed it from Hafsa, and she preserved it until her death, fulfilling this critical duty perfectly.",
-      "Hafsa narrated numerous hadiths, teaching Islamic knowledge to many women and men. Her narrations provide valuable guidance about the Prophet's ﷺ private life and household rulings. She lived thirty-four years after the Prophet's ﷺ death, continuing to teach and guide Muslims. Her father Umar would consult her on various matters, showing respect for her opinions and knowledge despite being the powerful Caliph who ruled justly."
+      "After the Prophet's ﷺ ﷺ death, the official written copy of the Qur'an was entrusted to Hafsa for safekeeping. This tremendous responsibility showed the companions' complete trust in her reliability and carefulness. She guarded the precious manuscript with utmost care. When Uthman needed to make official copies, he borrowed it from Hafsa, and she preserved it until her death, fulfilling this critical duty perfectly.",
+      "Hafsa narrated numerous hadiths, teaching Islamic knowledge to many women and men. Her narrations provide valuable guidance about the Prophet's ﷺ ﷺ private life and household rulings. She lived thirty-four years after the Prophet's ﷺ ﷺ death, continuing to teach and guide Muslims. Her father Umar would consult her on various matters, showing respect for her opinions and knowledge despite being the powerful Caliph who ruled justly."
     ],
     evidence: {
       arabic: "النَّبِيُّ أَوْلَىٰ بِالْمُؤْمِنِينَ مِنْ أَنفُسِهِمْ ۖ وَأَزْوَاجُهُ أُمَّهَاتُهُمْ",
-      translation: "The Prophet is more worthy of the believers than themselves, and his wives are their mothers.",
+      translation: "The Prophet ﷺ is more worthy of the believers than themselves, and his wives are their mothers.",
       source: "Qur'an 33:6"
     },
     keyLesson: "Being entrusted with preserving Allah's revelation and teaching it demonstrates ultimate trust, honor, and eternal responsibility.",
@@ -494,8 +494,8 @@ const companionsLessons = [
     id: 28,
     title: "Zayd ibn Harithah",
     description: [
-      "Zayd was captured as a child and sold into slavery. He eventually became the Prophet's ﷺ servant. When Zayd's father finally found him years later and came to take him home, the Prophet ﷺ gave Zayd the choice. Zayd chose to stay with Muhammad ﷺ rather than return to his biological family. This decision showed the Prophet's ﷺ exceptional character that made people love him more than their own families.",
-      "The Prophet ﷺ was so moved by Zayd's loyalty that he adopted him as his son before adoption was prohibited. Zayd became known as Zayd ibn Muhammad ﷺ, the son of Muhammad ﷺ. When Islam later prohibited adoption giving the adopted person the adopter's name, Allah revealed verses about this. Zayd's name returned to Zayd ibn Harithah, but the Prophet's ﷺ love for him never decreased even slightly.",
+      "Zayd was captured as a child and sold into slavery. He eventually became the Prophet's ﷺ ﷺ servant. When Zayd's father finally found him years later and came to take him home, the Prophet ﷺ gave Zayd the choice. Zayd chose to stay with Muhammad ﷺ rather than return to his biological family. This decision showed the Prophet's ﷺ ﷺ exceptional character that made people love him more than their own families.",
+      "The Prophet ﷺ was so moved by Zayd's loyalty that he adopted him as his son before adoption was prohibited. Zayd became known as Zayd ibn Muhammad ﷺ, the son of Muhammad ﷺ. When Islam later prohibited adoption giving the adopted person the adopter's name, Allah revealed verses about this. Zayd's name returned to Zayd ibn Harithah, but the Prophet's ﷺ ﷺ love for him never decreased even slightly.",
       "Allah mentioned Zayd by name in the Qur'an when discussing the marriage to Zayd's ex-wife. He is the only companion named directly in the Qur'an. This unique honor elevated Zayd's status tremendously. Despite being a former slave, his faith and closeness to the Prophet ﷺ made him more honorable than nobility and wealth could ever achieve, showing Islam's true values and priorities.",
       "The Prophet ﷺ called Zayd the most beloved person to him. He appointed Zayd as commander of several important military expeditions, showing complete trust in his abilities. At the Battle of Mu'tah, Zayd carried the Muslim banner and was martyred while holding it. He died as a shaheed, and the Prophet ﷺ wept for him. Zayd's son Usama continued his legacy, also becoming beloved to the Prophet ﷺ deeply."
     ],
@@ -566,8 +566,8 @@ const companionsLessons = [
     id: 32,
     title: "Abu Sufyan ibn Harb",
     description: [
-      "Abu Sufyan was Islam's greatest enemy for years, leading Quraysh against Muslims in multiple battles. He organized the massive coalition at the Battle of the Trench trying to destroy Islam completely. As a wealthy, powerful leader, he had everything to lose by accepting Islam. His opposition was fierce, strategic, and persistent, making him the Prophet's ﷺ most formidable and dangerous adversary for many years.",
-      "When Makkah was about to be conquered, Abu Sufyan finally recognized the truth and accepted Islam. Despite years of enmity, the Prophet ﷺ welcomed him and honored him by declaring that whoever entered Abu Sufyan's house would be safe. This generous treatment showed the Prophet's ﷺ mercy and wisdom, turning a former arch-enemy into a sincere Muslim who would defend Islam courageously in future battles.",
+      "Abu Sufyan was Islam's greatest enemy for years, leading Quraysh against Muslims in multiple battles. He organized the massive coalition at the Battle of the Trench trying to destroy Islam completely. As a wealthy, powerful leader, he had everything to lose by accepting Islam. His opposition was fierce, strategic, and persistent, making him the Prophet's ﷺ ﷺ most formidable and dangerous adversary for many years.",
+      "When Makkah was about to be conquered, Abu Sufyan finally recognized the truth and accepted Islam. Despite years of enmity, the Prophet ﷺ welcomed him and honored him by declaring that whoever entered Abu Sufyan's house would be safe. This generous treatment showed the Prophet's ﷺ ﷺ mercy and wisdom, turning a former arch-enemy into a sincere Muslim who would defend Islam courageously in future battles.",
       "Abu Sufyan fought bravely at the Battle of Hunayn after his conversion, losing an eye during the fighting. At the Battle of Ta'if, he lost his other eye, becoming completely blind while defending Islam with courage. His transformation from Islam's fiercest enemy to a warrior who sacrificed his sight for Allah's cause showed that sincere repentance transforms people completely, erasing past sins through genuine change.",
       "His children included Mu'awiyah, who became a companion and later the Caliph, and his daughter Umm Habibah, who married the Prophet ﷺ and became a Mother of the Believers. Abu Sufyan's family went from leading opposition to leading the Muslim nation. His story shows Allah's mercy accepts anyone who sincerely repents, and past sins don't prevent future greatness when someone genuinely turns to Allah with a truthful heart."
     ],

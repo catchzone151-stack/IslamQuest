@@ -141,7 +141,7 @@ export const paradiseLessons = [
       translation: "In it are rivers of water never changing, rivers of milk never changing in taste, rivers of wine delightful to the drinkers, and rivers of purified honey. (Qur'an 47:15)",
       source: "Qur'an 47:15"
     },
-    keyLesson: "Paradise's rivers of water, milk, wine, and honey reward believers who sacrificed worldly pleasures for Allah. Al-Kawthar is the Prophet's special river, showing his honored position."
+    keyLesson: "Paradise's rivers of water, milk, wine, and honey reward believers who sacrificed worldly pleasures for Allah. Al-Kawthar is the Prophet's ﷺ special river, showing his honored position."
   },
   {
     id: 9,

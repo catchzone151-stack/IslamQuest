@@ -39,7 +39,7 @@ const prophetLifeLessons = [
       translation: "There has certainly come to you a Messenger from among yourselves.",
       source: "Qur'an 9:128"
     },
-    keyLesson: "The Prophet's ﷺ birth was blessed with miracles, showing his special status even before prophethood.",
+    keyLesson: "The Prophet's ﷺ ﷺ birth was blessed with miracles, showing his special status even before prophethood.",
     quizId: 2
   },
 
@@ -73,7 +73,7 @@ const prophetLifeLessons = [
       translation: "Did We not expand for you your breast?",
       source: "Qur'an 94:1"
     },
-    keyLesson: "Allah purified the Prophet's ﷺ heart from evil, preparing him to receive divine revelation and guide humanity.",
+    keyLesson: "Allah purified the Prophet's ﷺ ﷺ heart from evil, preparing him to receive divine revelation and guide humanity.",
     quizId: 4
   },
 
@@ -158,7 +158,7 @@ const prophetLifeLessons = [
       translation: "And when Abraham was raising the foundations of the House and Ishmael.",
       source: "Qur'an 2:127"
     },
-    keyLesson: "The Prophet's ﷺ wisdom and fairness prevented conflict, showing his leadership abilities even before prophethood.",
+    keyLesson: "The Prophet's ﷺ ﷺ wisdom and fairness prevented conflict, showing his leadership abilities even before prophethood.",
     quizId: 9
   },
 
@@ -175,7 +175,7 @@ const prophetLifeLessons = [
       translation: "Who remember Allah while standing, sitting, and lying on their sides and give thought to the creation of the heavens and the earth.",
       source: "Qur'an 3:191"
     },
-    keyLesson: "Solitude and reflection prepared the Prophet's ﷺ heart and mind to receive the tremendous responsibility of divine revelation.",
+    keyLesson: "Solitude and reflection prepared the Prophet's ﷺ ﷺ heart and mind to receive the tremendous responsibility of divine revelation.",
     quizId: 10
   },
 
@@ -289,7 +289,7 @@ const prophetLifeLessons = [
     id: 17,
     title: "Hamzah Accepts Islam",
     description: [
-      "Abu Jahl publicly insulted and physically harmed the Prophet ﷺ near Mount Safa. A slave woman witnessed this abuse and told Hamzah, the Prophet's ﷺ uncle, a brave and respected warrior feared throughout Makkah.",
+      "Abu Jahl publicly insulted and physically harmed the Prophet ﷺ near Mount Safa. A slave woman witnessed this abuse and told Hamzah, the Prophet's ﷺ ﷺ uncle, a brave and respected warrior feared throughout Makkah.",
       "Hamzah, returning from hunting, became furious. He went straight to Abu Jahl in the Ka'bah courtyard and struck him with his bow, challenging him to insult Muhammad ﷺ again. Hamzah then declared his acceptance of Islam publicly.",
       "Hamzah's Islam strengthened Muslims significantly. His courage and fighting skills provided protection. Muslims could now pray openly near the Ka'bah with less fear. Quraysh realized they could no longer abuse Muslims without consequence or retaliation."
     ],
@@ -340,7 +340,7 @@ const prophetLifeLessons = [
     id: 20,
     title: "The Social Boycott",
     description: [
-      "Unable to stop Islam through violence, Quraysh implemented a complete social and economic boycott against Banu Hashim and Banu Muttalib, the Prophet's ﷺ clans. They wrote an agreement forbidding all trade, marriage, or social contact with them.",
+      "Unable to stop Islam through violence, Quraysh implemented a complete social and economic boycott against Banu Hashim and Banu Muttalib, the Prophet's ﷺ ﷺ clans. They wrote an agreement forbidding all trade, marriage, or social contact with them.",
       "The Prophet ﷺ and his relatives were confined to a valley outside Makkah for three years. They faced extreme hunger, eating leaves and tree bark. Children's cries from hunger could be heard throughout Makkah at night.",
       "Despite severe hardship, neither the Prophet ﷺ nor his clan abandoned Islam or surrendered. They remained patient and steadfast. Some kind-hearted Makkans secretly smuggled food at night, risking punishment to help the suffering families isolated in the valley."
     ],
@@ -374,7 +374,7 @@ const prophetLifeLessons = [
     id: 22,
     title: "Death of Khadijah",
     description: [
-      "Shortly after the boycott ended, Khadijah, the Prophet's ﷺ beloved wife and greatest supporter, passed away. For twenty-five years, she had stood by him, believed in him when others rejected him, and comforted him through every hardship.",
+      "Shortly after the boycott ended, Khadijah, the Prophet's ﷺ ﷺ beloved wife and greatest supporter, passed away. For twenty-five years, she had stood by him, believed in him when others rejected him, and comforted him through every hardship.",
       "Khadijah was the first to believe, the first to pray, and the mother of all his children except Ibrahim. She spent her wealth supporting Islam and gave the Prophet ﷺ emotional strength when the entire world opposed him.",
       "Her death left the Prophet ﷺ deeply grieved. He never forgot her sacrifices, always speaking of her with love and respect. He called this year the 'Year of Sorrow' because of the tremendous personal losses he endured."
     ],
@@ -383,7 +383,7 @@ const prophetLifeLessons = [
       translation: "Indeed, Allah chose Adam and Noah and the family of Abraham and the family of Imran over the worlds.",
       source: "Qur'an 3:33"
     },
-    keyLesson: "Khadijah's unwavering support made her among the greatest women in history and the Prophet's ﷺ most beloved companion.",
+    keyLesson: "Khadijah's unwavering support made her among the greatest women in history and the Prophet's ﷺ ﷺ most beloved companion.",
     quizId: 22
   },
 
@@ -391,7 +391,7 @@ const prophetLifeLessons = [
     id: 23,
     title: "Death of Abu Talib",
     description: [
-      "Soon after Khadijah's death, Abu Talib, the Prophet's ﷺ uncle and protector, also passed away. Though Abu Talib never accepted Islam, he defended his nephew against Quraysh throughout his life out of family loyalty and love.",
+      "Soon after Khadijah's death, Abu Talib, the Prophet's ﷺ ﷺ uncle and protector, also passed away. Though Abu Talib never accepted Islam, he defended his nephew against Quraysh throughout his life out of family loyalty and love.",
       "The Prophet ﷺ desperately wanted Abu Talib to accept Islam before death. On his deathbed, with Quraysh leaders present, the Prophet ﷺ pleaded with him to say the Shahadah. But Abu Talib refused, fearing shame before Arabs, dying on his ancestral religion.",
       "After Abu Talib's death, the Prophet ﷺ lost his main tribal protection. Quraysh became bolder in their persecution, knowing no powerful guardian stood to defend him. This made the situation in Makkah increasingly dangerous for Muslims."
     ],
@@ -442,9 +442,9 @@ const prophetLifeLessons = [
     id: 26,
     title: "Addas the Christian Servant",
     description: [
-      "The garden belonged to two of the Prophet's ﷺ distant relatives from Quraysh. Moved by his condition, they sent their Christian servant Addas with grapes to help him. Addas was from Nineveh in Iraq, far from Arabia.",
+      "The garden belonged to two of the Prophet's ﷺ ﷺ distant relatives from Quraysh. Moved by his condition, they sent their Christian servant Addas with grapes to help him. Addas was from Nineveh in Iraq, far from Arabia.",
       "Before eating, the Prophet ﷺ said 'Bismillah,' which surprised Addas. When asked where he was from, the Prophet ﷺ mentioned that Yunus, a prophet from Nineveh, was his brother in prophethood. This amazed Addas deeply.",
-      "Addas realized Muhammad ﷺ was a true prophet. He kissed the Prophet's ﷺ hands and feet, accepting Islam immediately. Even in his darkest hour, the Prophet ﷺ continued calling people to Islam. This encounter brought comfort after Ta'if's brutal rejection."
+      "Addas realized Muhammad ﷺ was a true prophet. He kissed the Prophet's ﷺ ﷺ hands and feet, accepting Islam immediately. Even in his darkest hour, the Prophet ﷺ continued calling people to Islam. This encounter brought comfort after Ta'if's brutal rejection."
     ],
     evidence: {
       arabic: "وَمَا أَرْسَلْنَاكَ إِلَّا رَحْمَةً لِّلْعَالَمِينَ",
@@ -461,7 +461,7 @@ const prophetLifeLessons = [
     description: [
       "After Ta'if's rejection, Angel Jibra'il came with the Angel of the Mountains. They offered to crush Ta'if between its two mountains if the Prophet ﷺ wished. This was divine permission to punish those who harmed him so brutally.",
       "Despite his bleeding wounds and broken heart, the Prophet ﷺ refused. He said, 'No, for I hope that Allah will bring forth from their descendants people who will worship Allah alone, associating nothing with Him in worship.'",
-      "This moment showed the Prophet's ﷺ extraordinary mercy and foresight. He didn't seek revenge despite having divine permission. He hoped for future generations to accept Islam. His compassion for humanity exceeded his personal pain and suffering significantly."
+      "This moment showed the Prophet's ﷺ ﷺ extraordinary mercy and foresight. He didn't seek revenge despite having divine permission. He hoped for future generations to accept Islam. His compassion for humanity exceeded his personal pain and suffering significantly."
     ],
     evidence: {
       arabic: "وَمَا أَرْسَلْنَاكَ إِلَّا رَحْمَةً لِّلْعَالَمِينَ",
@@ -502,7 +502,7 @@ const prophetLifeLessons = [
       translation: "And he certainly saw him in another descent, at the Lote Tree of the Utmost Boundary.",
       source: "Qur'an 53:13-14"
     },
-    keyLesson: "The Mi'raj demonstrated the Prophet's ﷺ unique closeness to Allah and established prayer as Islam's pillar.",
+    keyLesson: "The Mi'raj demonstrated the Prophet's ﷺ ﷺ unique closeness to Allah and established prayer as Islam's pillar.",
     quizId: 29
   },
 
@@ -545,7 +545,7 @@ const prophetLifeLessons = [
     title: "Six Men from Yathrib",
     description: [
       "During Hajj, the Prophet ﷺ met six men from the Khazraj tribe of Yathrib (later Madinah). Unlike other tribes, they listened carefully to his message. Yathrib had Jewish tribes who spoke of a coming prophet, making these men receptive.",
-      "They recognized truth in the Prophet's ﷺ words and accepted Islam. Before returning to Yathrib, they promised to spread Islam among their people. They said their city was torn by war, and perhaps this prophet could unite them in peace.",
+      "They recognized truth in the Prophet's ﷺ ﷺ words and accepted Islam. Before returning to Yathrib, they promised to spread Islam among their people. They said their city was torn by war, and perhaps this prophet could unite them in peace.",
       "This meeting planted Islam's seed in Yathrib. These six men returned home and spoke enthusiastically about Islam. Within a year, Islam spread significantly in Yathrib, preparing the ground for Muslims' eventual migration and the establishment of Islamic state."
     ],
     evidence: {
@@ -614,7 +614,7 @@ const prophetLifeLessons = [
     description: [
       "Quraysh realized Muslims were escaping to Yathrib where they'd gain strength. They feared the Prophet ﷺ would unite Arabs against them. Leaders gathered at Dar al-Nadwa to plan his assassination before he could escape as well.",
       "They devised a plan: select one young man from each tribe to strike Muhammad ﷺ simultaneously. This would spread blood responsibility among all tribes, preventing Banu Hashim from seeking revenge against one specific tribe, avoiding tribal war while eliminating Islam's leader.",
-      "On the chosen night, young men surrounded the Prophet's ﷺ house, waiting for dawn to attack. But Allah informed His prophet of the plot through revelation. The Prophet ﷺ prepared to escape, trusting Allah's protection despite being completely surrounded by assassins."
+      "On the chosen night, young men surrounded the Prophet's ﷺ ﷺ house, waiting for dawn to attack. But Allah informed His prophet of the plot through revelation. The Prophet ﷺ prepared to escape, trusting Allah's protection despite being completely surrounded by assassins."
     ],
     evidence: {
       arabic: "وَإِذْ يَمْكُرُ بِكَ الَّذِينَ كَفَرُوا لِيُثْبِتُوكَ أَوْ يَقْتُلُوكَ أَوْ يُخْرِجُوكَ ۚ وَيَمْكُرُونَ وَيَمْكُرُ اللَّهُ ۖ وَاللَّهُ خَيْرُ الْمَاكِرِينَ",
@@ -630,7 +630,7 @@ const prophetLifeLessons = [
     title: "The Miraculous Escape",
     description: [
       "The Prophet ﷺ asked Ali to sleep in his bed wearing his green cloak as a decoy. That night, he walked through the assassins surrounding his house. Allah made them blind to his presence. He threw dust on their heads reciting Qur'an, walking past them completely unseen.",
-      "Ali bravely slept in the Prophet's ﷺ bed, risking his life. When assassins burst in at dawn, they found Ali instead of Muhammad ﷺ. Furious, they realized the Prophet ﷺ had escaped. They immediately organized search parties throughout Makkah and surrounding areas.",
+      "Ali bravely slept in the Prophet's ﷺ ﷺ bed, risking his life. When assassins burst in at dawn, they found Ali instead of Muhammad ﷺ. Furious, they realized the Prophet ﷺ had escaped. They immediately organized search parties throughout Makkah and surrounding areas.",
       "This escape showed Allah's protection clearly. Despite being surrounded, the Prophet ﷺ walked past armed men planning to kill him. His trust in Allah combined with practical planning saved his life and allowed Islam's continuation and eventual triumph over disbelief."
     ],
     evidence: {
@@ -655,7 +655,7 @@ const prophetLifeLessons = [
       translation: "When they were in the cave and he said to his companion, 'Do not grieve; indeed Allah is with us.'",
       source: "Qur'an 9:40"
     },
-    keyLesson: "Abu Bakr's sacrifice and the Prophet's ﷺ reassurance teach us that Allah is always with sincere believers.",
+    keyLesson: "Abu Bakr's sacrifice and the Prophet's ﷺ ﷺ reassurance teach us that Allah is always with sincere believers.",
     quizId: 38
   },
 
@@ -737,7 +737,7 @@ const prophetLifeLessons = [
     description: [
       "The Prophet ﷺ and his companions built Masjid Nabawi with their own hands. They carried bricks, mixed mud, and sang work songs together. The Prophet ﷺ worked alongside them, never considering himself above physical labor or too noble to serve.",
       "The mosque was simple: walls of mud and bricks, roof of palm branches, pillars of palm trunks. Despite its simplicity, it became the heart of Islamic civilization. Here, Muslims prayed, learned, judged disputes, planned strategies, and built their community of faith.",
-      "Rooms for the Prophet's ﷺ wives were built adjacent to the mosque. This mosque wasn't just for prayer but the center of all Islamic life: education, governance, social affairs, and spirituality. It represented Islam's holistic approach to life and worship."
+      "Rooms for the Prophet's ﷺ ﷺ wives were built adjacent to the mosque. This mosque wasn't just for prayer but the center of all Islamic life: education, governance, social affairs, and spirituality. It represented Islam's holistic approach to life and worship."
     ],
     evidence: {
       arabic: "فِي بُيُوتٍ أَذِنَ اللَّهُ أَن تُرْفَعَ وَيُذْكَرَ فِيهَا اسْمُهُ",
@@ -873,7 +873,7 @@ const prophetLifeLessons = [
     description: [
       "Muslims captured seventy Quraysh warriors. The Prophet ﷺ consulted companions about their fate. Abu Bakr suggested ransom, allowing families to retrieve prisoners. Umar suggested execution, as these men had tortured Muslims. The Prophet ﷺ chose mercy and accepted ransom.",
       "Prisoners were treated humanely. Muslims gave them food before eating themselves. Poor prisoners who could teach ten Muslims to read were freed without ransom. This educational exchange spread literacy and showed Islam valued knowledge even from enemies.",
-      "Allah revealed verses suggesting Umar's opinion was strategically wiser. However, the Prophet's ﷺ mercy demonstrated Islam's compassionate nature. This incident taught balance between justice and mercy, showing that kindness toward enemies can sometimes transform hearts more effectively than harshness."
+      "Allah revealed verses suggesting Umar's opinion was strategically wiser. However, the Prophet's ﷺ ﷺ mercy demonstrated Islam's compassionate nature. This incident taught balance between justice and mercy, showing that kindness toward enemies can sometimes transform hearts more effectively than harshness."
     ],
     evidence: {
       arabic: "مَا كَانَ لِنَبِيٍّ أَن يَكُونَ لَهُ أَسْرَىٰ حَتَّىٰ يُثْخِنَ فِي الْأَرْضِ",
@@ -941,7 +941,7 @@ const prophetLifeLessons = [
     description: [
       "Khalid ibn Walid saw the archers' post abandoned. He led cavalry around the mountain, attacking Muslims from behind. Complete chaos erupted. Muslims were surrounded, confused, fighting on two fronts. The certain victory transformed into near-disaster within moments.",
       "Rumors spread that the Prophet ﷺ was killed. Many Muslims lost heart and stopped fighting. The Prophet ﷺ was injured, his tooth broken, face bleeding. But he remained steadfast, calling Muslims to regroup. A small group of brave companions surrounded him, protecting him with their lives.",
-      "Hamzah was martyred, along with seventy companions. The Prophet's ﷺ uncle, Islam's lion, was killed and mutilated by Hind. Despite personal grief, the Prophet ﷺ led the surviving Muslims safely back to Madinah. Uhud was a painful loss after Badr's triumph and clear divine victory."
+      "Hamzah was martyred, along with seventy companions. The Prophet's ﷺ ﷺ uncle, Islam's lion, was killed and mutilated by Hind. Despite personal grief, the Prophet ﷺ led the surviving Muslims safely back to Madinah. Uhud was a painful loss after Badr's triumph and clear divine victory."
     ],
     evidence: {
       arabic: "وَلَا تَهِنُوا وَلَا تَحْزَنُوا وَأَنتُمُ الْأَعْلَوْنَ إِن كُنتُم مُّؤْمِنِينَ",
@@ -1128,7 +1128,7 @@ const prophetLifeLessons = [
     description: [
       "Quraysh sent negotiators. Suhay ibn Amr came with demands. After long discussions, they proposed a treaty: Muslims return this year without Umrah, come next year for three days only, ten-year peace, Muslims return any Makkan who escapes to Madinah without guardian permission.",
       "The terms seemed heavily favoring Quraysh. Many companions, especially Umar, felt humiliated. These conditions appeared to diminish Muslims after their growing strength. The Prophet ﷺ remained calm, seeing long-term benefits invisible to others, trusting Allah's wisdom beyond immediate appearances and emotions.",
-      "When Suhay's son Abu Jandal escaped torture and reached camp in chains, begging for protection, the treaty required his return to Quraysh. This heartbreaking moment tested Muslims' obedience. Despite personal anguish, they submitted to the agreement, trusting the Prophet's ﷺ judgment and Allah's greater plan."
+      "When Suhay's son Abu Jandal escaped torture and reached camp in chains, begging for protection, the treaty required his return to Quraysh. This heartbreaking moment tested Muslims' obedience. Despite personal anguish, they submitted to the agreement, trusting the Prophet's ﷺ ﷺ judgment and Allah's greater plan."
     ],
     evidence: {
       arabic: "إِنَّا فَتَحْنَا لَكَ فَتْحًا مُّبِينًا",
@@ -1217,7 +1217,7 @@ const prophetLifeLessons = [
     description: [
       "According to Hudaybiyyah treaty, Muslims could perform Umrah the following year. In 7 AH, the Prophet ﷺ led two thousand Muslims to Makkah peacefully. Quraysh evacuated the city for three days as agreed, watching Muslims from surrounding mountains with mixed emotions.",
       "Muslims entered Makkah in ihram, circled the Ka'bah, performed sa'i between Safa and Marwah, and completed Umrah peacefully. Quraysh witnessed Islamic brotherhood, discipline, and devotion. Many Makkans secretly admired what they saw, softening hearts toward Islam despite outward hostility remaining.",
-      "This peaceful Umrah demonstrated Islam's strength through spiritual discipline rather than military force. It fulfilled the Prophet's ﷺ dream, proved Hudaybiyyah treaty's wisdom, and planted seeds of Islam in Makkan hearts. Within a year, Makkah would open to Islam without bloodshed, validating this peaceful approach."
+      "This peaceful Umrah demonstrated Islam's strength through spiritual discipline rather than military force. It fulfilled the Prophet's ﷺ ﷺ dream, proved Hudaybiyyah treaty's wisdom, and planted seeds of Islam in Makkan hearts. Within a year, Makkah would open to Islam without bloodshed, validating this peaceful approach."
     ],
     evidence: {
       arabic: "لَقَدْ صَدَقَ اللَّهُ رَسُولَهُ الرُّؤْيَا بِالْحَقِّ",
@@ -1250,7 +1250,7 @@ const prophetLifeLessons = [
     title: "Quraysh Break the Treaty",
     description: [
       "Two years after Hudaybiyyah, Quraysh allied tribe attacked a Muslim-allied tribe, violating the ten-year treaty. Quraysh provided weapons and fighters. When the violated tribe sought Muslim protection, the treaty breach gave the Prophet ﷺ justification to march on Makkah without breaking his word.",
-      "Quraysh leaders realized their mistake and sent Abu Sufyan to Madinah to renew the treaty. He went to his daughter Umm Habibah, the Prophet's ﷺ wife, but she refused to let him sit on the Prophet's ﷺ mat. Even his own daughter prioritized Islam over father, showing faith transcends family bonds.",
+      "Quraysh leaders realized their mistake and sent Abu Sufyan to Madinah to renew the treaty. He went to his daughter Umm Habibah, the Prophet's ﷺ ﷺ wife, but she refused to let him sit on the Prophet's ﷺ ﷺ mat. Even his own daughter prioritized Islam over father, showing faith transcends family bonds.",
       "Abu Sufyan's attempts at reconciliation failed. The Prophet ﷺ prepared for Makkah's conquest in secrecy. He prayed that Quraysh wouldn't discover the plan until Muslims arrived, hoping to conquer without bloodshed. Allah answered this prayer, allowing strategic surprise that would minimize casualties and maximize mercy."
     ],
     evidence: {
@@ -1266,7 +1266,7 @@ const prophetLifeLessons = [
     id: 74,
     title: "The Conquest of Makkah",
     description: [
-      "In Ramadan, 8 AH, ten thousand Muslims marched toward Makkah. Abbas, the Prophet's ﷺ uncle, brought Abu Sufyan secretly to the Muslim camp. When Abu Sufyan saw the massive army, he realized resistance was hopeless. He accepted Islam, fearing destruction but also recognizing truth.",
+      "In Ramadan, 8 AH, ten thousand Muslims marched toward Makkah. Abbas, the Prophet's ﷺ ﷺ uncle, brought Abu Sufyan secretly to the Muslim camp. When Abu Sufyan saw the massive army, he realized resistance was hopeless. He accepted Islam, fearing destruction but also recognizing truth.",
       "The Prophet ﷺ promised safety for those who stayed home, sought Abu Sufyan's house, or entered the sanctuary. This generous amnesty prevented bloodshed. Muslims entered from four directions simultaneously. Only minimal resistance occurred in one sector where Khalid fought briefly, with few casualties overall.",
       "The Prophet ﷺ entered Makkah humbly, head bowed on his camel, reciting Qur'an. The city that expelled and tortured him now lay conquered beneath his authority. Instead of revenge, he declared general amnesty: 'Go, you are free.' This mercy conquered hearts more effectively than swords ever could."
     ],
@@ -1302,7 +1302,7 @@ const prophetLifeLessons = [
     description: [
       "After Makkah's conquest, Arab tribes recognized Islam's supremacy. Delegations came from across Arabia pledging allegiance and accepting Islam. The Year of Delegations saw Islam spread throughout the peninsula peacefully through conviction rather than force, fulfilling divine promise.",
       "Major tribes like Thaqif, who stoned the Prophet ﷺ at Ta'if years earlier, came seeking peace and accepting Islam. Former enemies became sincere believers. The transformation was remarkable—from universal rejection to universal acceptance within twenty-three years through perseverance and divine support.",
-      "By the Prophet's ﷺ final year, almost all Arabia was Muslim. The mission was nearly complete. The small persecuted community in Makkah had become a nation. The message of Tawhid replaced idol worship throughout Arabia, establishing foundation for Islam's spread beyond Arabia to the entire known world."
+      "By the Prophet's ﷺ ﷺ final year, almost all Arabia was Muslim. The mission was nearly complete. The small persecuted community in Makkah had become a nation. The message of Tawhid replaced idol worship throughout Arabia, establishing foundation for Islam's spread beyond Arabia to the entire known world."
     ],
     evidence: {
       arabic: "الْيَوْمَ أَكْمَلْتُ لَكُمْ دِينَكُمْ وَأَتْمَمْتُ عَلَيْكُمْ نِعْمَتِي وَرَضِيتُ لَكُمُ الْإِسْلَامَ دِينًا",
@@ -1332,9 +1332,9 @@ const prophetLifeLessons = [
 
   {
     id: 78,
-    title: "The Prophet's Passing",
+    title: "The Prophet's ﷺ Passing",
     description: [
-      "Three months after Farewell Hajj, the Prophet ﷺ fell ill. Despite intense fever, he continued leading prayers while he could. When unable to stand, he asked Abu Bakr to lead. The companions understood this indicated Abu Bakr should lead Muslims after the Prophet's ﷺ death eventually.",
+      "Three months after Farewell Hajj, the Prophet ﷺ fell ill. Despite intense fever, he continued leading prayers while he could. When unable to stand, he asked Abu Bakr to lead. The companions understood this indicated Abu Bakr should lead Muslims after the Prophet's ﷺ ﷺ death eventually.",
       "On Monday morning, 12 Rabi al-Awwal, the Prophet ﷺ briefly felt better. He smiled watching Muslims pray, his face radiating happiness at seeing his ummah united in worship. Then he returned to Aisha's room, rested his head on her lap, and looked toward heaven in his final moments.",
       "He whispered, 'Rather, the highest companion in Paradise,' choosing eternal life over worldly life. His blessed soul departed at midday. The companions were devastated. Umar denied it. Abu Bakr proclaimed, 'Whoever worshipped Muhammad ﷺ, Muhammad ﷺ is dead. Whoever worships Allah, Allah is Ever-Living, never dies.'"
     ],
@@ -1343,7 +1343,7 @@ const prophetLifeLessons = [
       translation: "Muhammad ﷺ is not but a messenger. Other messengers have passed on before him. So if he was to die or be killed, would you turn back on your heels?",
       source: "Qur'an 3:144"
     },
-    keyLesson: "The Prophet ﷺ was human and mortal; we worship Allah alone, following the Prophet's ﷺ perfect example forever.",
+    keyLesson: "The Prophet ﷺ was human and mortal; we worship Allah alone, following the Prophet's ﷺ ﷺ perfect example forever.",
     quizId: 78
   }
 ];

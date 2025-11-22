@@ -94,7 +94,7 @@ const graveLessons = [
     title: "Punishment of the Grave",
     description: [
       "The grave punishes those who died in disbelief or with major unrepented sins. The punishment includes tightness squeezing the body, scorching heat or freezing cold, beatings from iron rods, and terrifying visions of Hellfire.",
-      "Some people are punished for specific sins like backbiting, lying, not cleaning properly after using the bathroom, or abandoning prayer. The Prophet Muhammad ﷺ saw some of these punishments during his night journey and warned us about them.",
+      "Some people are punished for specific sins like backbiting, lying, not cleaning properly after using the bathroom, or abandoning prayer. The Prophet ﷺ Muhammad ﷺ saw some of these punishments during his night journey and warned us about them.",
       "This punishment continues until the Day of Judgment for disbelievers. For sinful believers, it may last until their sins are cleansed or until people's prayers and charity reach them. Repenting before death saves us from this torment."
     ],
     evidence: {
@@ -144,7 +144,7 @@ const graveLessons = [
     id: 9,
     title: "Visiting Graves (Adab)",
     description: [
-      "Visiting graves reminds us of death and the Hereafter, softening our hearts and reducing attachment to worldly things. The Prophet Muhammad ﷺ encouraged visiting graves to remember our inevitable end and prepare for it.",
+      "Visiting graves reminds us of death and the Hereafter, softening our hearts and reducing attachment to worldly things. The Prophet ﷺ Muhammad ﷺ encouraged visiting graves to remember our inevitable end and prepare for it.",
       "When visiting, we greet the deceased with peace: 'Peace be upon you, O inhabitants of the graves, from among the believers and Muslims. We will surely join you. We ask Allah for well-being for us and you.'",
       "We should make sincere prayers for the deceased, asking Allah to forgive them and grant them mercy. Visiting should increase our own good deeds and remind us to prepare for death. We must not wail loudly or act disrespectfully."
     ],
@@ -161,7 +161,7 @@ const graveLessons = [
     id: 10,
     title: "Protection from Punishment",
     description: [
-      "The Prophet Muhammad ﷺ taught us specific actions that protect from the grave's punishment. These include sincere faith in Allah, dying as a martyr, dying on Friday, dying while guarding Islam's borders, and reciting Surah Al-Mulk regularly.",
+      "The Prophet ﷺ Muhammad ﷺ taught us specific actions that protect from the grave's punishment. These include sincere faith in Allah, dying as a martyr, dying on Friday, dying while guarding Islam's borders, and reciting Surah Al-Mulk regularly.",
       "Seeking refuge from the grave's punishment in every prayer is essential. We should say after every prayer: 'O Allah, I seek refuge in You from the punishment of the grave and the trial of the Dajjal.'",
       "Living righteously protects us from punishment: praying five daily prayers properly, being honest, avoiding backbiting and gossip, cleaning properly after using the bathroom, honoring parents, and maintaining good character throughout life. Good deeds are our best shield."
     ],

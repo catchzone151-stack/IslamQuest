@@ -161,8 +161,8 @@ const angelsLessons = [
     id: 10,
     title: "Angel of the Mountains",
     description: [
-      "During the Prophet's ﷺ difficult journey to Taif, the people rejected him brutally, throwing stones until he bled and forcing him to leave their city. In his pain and sadness, Allah sent Jibra'il accompanied by the Angel of the Mountains to offer help and support to His beloved messenger.",
-      "The Angel of the Mountains asked permission to crush the people of Taif between two mountains as punishment for their cruelty and rejection of Allah's messenger. This powerful angel had the strength to destroy entire cities, waiting only for the Prophet's ﷺ command to bring down Allah's wrath upon the disbelievers.",
+      "During the Prophet's ﷺ ﷺ difficult journey to Taif, the people rejected him brutally, throwing stones until he bled and forcing him to leave their city. In his pain and sadness, Allah sent Jibra'il accompanied by the Angel of the Mountains to offer help and support to His beloved messenger.",
+      "The Angel of the Mountains asked permission to crush the people of Taif between two mountains as punishment for their cruelty and rejection of Allah's messenger. This powerful angel had the strength to destroy entire cities, waiting only for the Prophet's ﷺ ﷺ command to bring down Allah's wrath upon the disbelievers.",
       "The Prophet ﷺ refused, choosing mercy over revenge. He said perhaps Allah would bring forth from their descendants people who would worship Allah alone. This beautiful response showed his compassion and hope, and indeed, many from Taif later accepted Islam and became devoted believers and companions."
     ],
     evidence: {
@@ -170,7 +170,7 @@ const angelsLessons = [
       translation: "The Angel of the Mountains said, 'If you wish, I will bring together the two mountains upon them.' But the Prophet ﷺ said, 'No, for I hope that Allah will bring forth from their descendants people who will worship Allah alone.'",
       source: "Sahih Bukhari 3231"
     },
-    keyLesson: "Even powerful angels obey the Prophet's ﷺ wisdom and mercy, teaching us to choose forgiveness over revenge.",
+    keyLesson: "Even powerful angels obey the Prophet's ﷺ ﷺ wisdom and mercy, teaching us to choose forgiveness over revenge.",
     quizId: 10
   },
 

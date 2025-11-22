@@ -44,7 +44,7 @@ const greatestWomenLessons = [
     description: [
       "When Maryam brought baby Isa to her people, they accused her of wrongdoing. Instead of defending herself, she pointed to the infant in her arms with complete trust.",
       "Baby Isa spoke miraculously from the cradle, declaring he was Allah's servant. He announced Allah gave him scripture and prophethood, commanding him to pray and give charity throughout life.",
-      "Allah honored Maryam above all women of creation. The Prophet Muhammad ﷺ named her among the four greatest women ever. Her patience and purity remain eternal examples for believers."
+      "Allah honored Maryam above all women of creation. The Prophet ﷺ Muhammad ﷺ named her among the four greatest women ever. Her patience and purity remain eternal examples for believers."
     ],
     evidence: {
       arabic: "إِنَّ اللَّهَ اصْطَفَاكِ وَطَهَّرَكِ وَاصْطَفَاكِ عَلَىٰ نِسَاءِ الْعَالَمِينَ",
@@ -95,7 +95,7 @@ const greatestWomenLessons = [
     description: [
       "When Pharaoh discovered Asiyah's faith in Musa's God, his rage knew no bounds. He ordered her tortured brutally to force her to renounce belief and return to worshipping him.",
       "As they tortured her under the scorching sun, Asiyah raised her eyes to Heaven and made a beautiful supplication. She asked Allah for a house in Paradise near Him.",
-      "Allah took her soul before the boulder crushed her body, showing her the house He prepared in Paradise. The Prophet Muhammad ﷺ named her among the four best women ever created."
+      "Allah took her soul before the boulder crushed her body, showing her the house He prepared in Paradise. The Prophet ﷺ Muhammad ﷺ named her among the four best women ever created."
     ],
     evidence: {
       arabic: "رَبِّ ابْنِ لِي عِندَكَ بَيْتًا فِي الْجَنَّةِ وَنَجِّنِي مِن فِرْعَوْنَ وَعَمَلِهِ وَنَجِّنِي مِنَ الْقَوْمِ الظَّالِمِينَ",
@@ -161,9 +161,9 @@ const greatestWomenLessons = [
     id: 10,
     title: "Fatimah - Part 1",
     description: [
-      "Fatimah was the youngest daughter of the Prophet Muhammad ﷺ and Khadijah. The Prophet ﷺ loved her immensely, standing whenever she entered and kissing her forehead with tenderness.",
+      "Fatimah was the youngest daughter of the Prophet ﷺ Muhammad ﷺ and Khadijah. The Prophet ﷺ loved her immensely, standing whenever she entered and kissing her forehead with tenderness.",
       "She witnessed the persecution of her father in Makkah. Young Fatimah once removed harmful filth from his back while he prayed, showing courage beyond her years and deep love.",
-      "Fatimah married Ali ibn Abi Talib, the Prophet's cousin and close companion. Their marriage was simple and blessed. The Prophet ﷺ said she was the leader of all women in Paradise."
+      "Fatimah married Ali ibn Abi Talib, the Prophet's ﷺ cousin and close companion. Their marriage was simple and blessed. The Prophet ﷺ said she was the leader of all women in Paradise."
     ],
     evidence: {
       arabic: "فَاطِمَةُ سَيِّدَةُ نِسَاءِ أَهْلِ الْجَنَّةِ",
@@ -178,7 +178,7 @@ const greatestWomenLessons = [
     id: 11,
     title: "Fatimah - Part 2",
     description: [
-      "Despite being the Prophet's daughter, Fatimah lived in poverty. She ground grain by hand until her hands blistered. When she asked for a servant, the Prophet ﷺ taught her dhikr instead.",
+      "Despite being the Prophet's ﷺ daughter, Fatimah lived in poverty. She ground grain by hand until her hands blistered. When she asked for a servant, the Prophet ﷺ taught her dhikr instead.",
       "The Prophet ﷺ told her that glorifying Allah thirty-three times, praising Him thirty-three times, and magnifying Him thirty-four times after each prayer was better than any servant.",
       "Fatimah accepted his guidance completely, choosing spiritual wealth over worldly comfort. She lived simply, working hard with her own hands while maintaining patience and devotion to Allah always."
     ],

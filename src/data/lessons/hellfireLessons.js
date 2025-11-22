@@ -274,7 +274,7 @@ export const hellfireLessons = [
     title: "Intercession from Hellfire",
     quizId: 16,
     description: [
-      "The Prophet Muhammad ﷺ will intercede for certain sinful Muslims in Hellfire. Allah will accept this intercession and many believers will be saved by His mercy.",
+      "The Prophet ﷺ Muhammad ﷺ will intercede for certain sinful Muslims in Hellfire. Allah will accept this intercession and many believers will be saved by His mercy.",
       
       "However, there's absolutely no intercession for disbelievers who died in disbelief. Their punishment is permanent. No prophet, angel, or righteous person can help them escape.",
       
