@@ -7,6 +7,44 @@ import PurchaseModal from "../components/PurchaseModal";
 import PathMascot from "../assets/mascots/mascot_tasbih.webp";
 import { getLessonsForPath } from "../data/lessonLoader";
 
+// Map pathId to section names for each path
+const SECTION_NAMES = {
+  2: ["The Five Pillars of Islam", "The Six Pillars of Belief (Īmān)", "Living Islam"],
+  3: ["The Messenger's Early Life", "The Struggle in Makkah", "The Migration & Medina Years", "The Final Years"],
+  4: ["Fundamentals", "The Signs of the Hour", "The Grave & Resurrection"],
+  // Add section names for other paths as needed
+};
+
+// Helper to determine section index for a lesson
+const getSectionIndex = (pathId, lessonId) => {
+  const sections = SECTION_NAMES[pathId];
+  if (!sections) return 0;
+  
+  // For Foundations (pathId 2): Lessons 1-5 (section 0), 6-11 (section 1), 12-17 (section 2)
+  if (pathId === 2) {
+    if (lessonId <= 5) return 0;
+    if (lessonId <= 11) return 1;
+    return 2;
+  }
+  
+  // For Prophet's Life (pathId 3): Lessons 1-6 (section 0), 7-12 (section 1), 13-18 (section 2), 19-22 (section 3)
+  if (pathId === 3) {
+    if (lessonId <= 6) return 0;
+    if (lessonId <= 12) return 1;
+    if (lessonId <= 18) return 2;
+    return 3;
+  }
+  
+  // For Grave & Afterlife (pathId 4): Lessons 1-6 (section 0), 7-12 (section 1), 13-17 (section 2)
+  if (pathId === 4) {
+    if (lessonId <= 6) return 0;
+    if (lessonId <= 12) return 1;
+    return 2;
+  }
+  
+  return 0;
+};
+
 export default function PathPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -19,7 +57,6 @@ export default function PathPage() {
     purchaseIndividual,
     purchaseFamily,
     lessonStates, 
-    lockedLessons 
   } = useProgressStore();
 
   const [showModal, setShowModal] = useState(false);
@@ -28,7 +65,6 @@ export default function PathPage() {
 
   const path = paths.find((p) => p.id === pathId);
   const lessons = getLessonsForPath(pathId);
-  const totalLessons = lessons.length;
 
   const currentLessonId = (() => {
     const pathProgress = lessonStates[pathId] || {};
@@ -42,16 +78,13 @@ export default function PathPage() {
     const unlocked = isLessonUnlocked(pathId, lesson.id);
     
     if (!unlocked) {
-      // Check if it's premium-locked or sequentially-locked
       const freeLimit = FREE_LESSON_LIMITS[pathId] || 0;
       const isPremiumLocked = premiumStatus === "free" && lesson.id > freeLimit;
       
       if (isPremiumLocked) {
-        // Show premium purchase modal
         setShowModal(true);
         return;
       } else {
-        // Show sequential unlock message
         setPopupMsg("Complete the previous lesson to unlock this one!");
         setShowPopup(true);
         setTimeout(() => setShowPopup(false), 2500);
@@ -62,12 +95,20 @@ export default function PathPage() {
     navigate(`/lesson/${pathId}/${lesson.id}`);
   };
 
+  // Group lessons by section
+  const sections = SECTION_NAMES[pathId] || ["Learning Path"];
+  const groupedLessons = sections.map((sectionName, sectionIdx) => {
+    return {
+      name: sectionName,
+      lessons: lessons.filter(lesson => getSectionIndex(pathId, lesson.id) === sectionIdx)
+    };
+  });
+
   return (
     <div
       className="screen no-extra-space"
       style={{
-        background:
-          "radial-gradient(circle at 20% 20%, #1a2337 0%, #000814 70%)",
+        background: "radial-gradient(circle at 20% 20%, #1a2337 0%, #000814 70%)",
         color: "white",
         paddingLeft: "16px",
         paddingRight: "16px",
@@ -86,7 +127,7 @@ export default function PathPage() {
       </h2>
 
       {/* Avatar */}
-      <div style={{ display: "flex", justifyContent: "center" }}>
+      <div style={{ display: "flex", justifyContent: "center", marginBottom: "24px" }}>
         <img
           src={PathMascot}
           alt="Learning guide"
@@ -94,115 +135,166 @@ export default function PathPage() {
         />
       </div>
 
-      {/* Lessons Grid */}
+      {/* 3-Column Layout Container */}
       <div
         style={{
-          display: "grid",
-          gridTemplateColumns: "1fr",
-          gap: "12px",
-          maxWidth: "480px",
-          margin: "24px auto 0",
-          paddingLeft: "12px",
-          paddingRight: "12px",
+          maxWidth: "700px",
+          margin: "0 auto",
+          display: "flex",
+          gap: "24px",
+          position: "relative",
         }}
       >
-        {lessons.map((lesson) => {
-          const unlocked = isLessonUnlocked(pathId, lesson.id);
-          const isCurrent = lesson.id === currentLessonId;
-          const hasSection = lesson.section !== undefined;
-          
-          return (
-            <div key={lesson.id} style={{ display: "flex", gap: "16px", alignItems: "center", marginBottom: "8px" }}>
-              {/* Section heading on left if applicable */}
-              {hasSection && (
-                <div
-                  style={{
-                    flex: "0 0 40%",
-                    fontSize: "0.75rem",
-                    fontWeight: 700,
-                    color: "#FFD700",
-                    textAlign: "left",
-                    letterSpacing: "0.5px",
-                    wordWrap: "break-word",
-                    lineHeight: 1.3,
-                    paddingRight: "8px",
-                  }}
-                >
-                  {lesson.section}
-                </div>
-              )}
-              
-              {/* Lesson card */}
-              <div
-                onClick={() => handleLessonClick(lesson)}
-                style={{
-                  position: "relative",
-                  background: unlocked
-                    ? "linear-gradient(180deg, #FFD700 0%, #b89600 100%)"
-                    : "rgba(255,255,255,0.05)",
-                  color: unlocked ? "#000814" : "rgba(255,255,255,0.4)",
-                  borderRadius: "50%",
-                  width: "60px",
-                  height: "60px",
-                  minWidth: "60px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontWeight: "bold",
-                  fontSize: "1rem",
-                  cursor: "pointer",
-                  border: unlocked ? "2px solid #FFD700" : "2px solid #222",
-                  transition: "all 0.3s ease",
-                  animation: unlocked 
-                    ? (isCurrent ? "currentLessonPulse 2s ease-in-out infinite" : "goldPulse 2s ease-in-out infinite")
-                    : "none",
-                }}
-              >
-              <span
-                style={{
-                  opacity: unlocked ? 1 : 0.3,
-                  zIndex: 1,
-                  position: "relative",
-                }}
-              >
-                {lesson.id}
-              </span>
-
-              {!unlocked && (
-                <div
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    background:
-                      "linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.8) 100%)",
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <span style={{ color: "#FFD700", fontSize: "1.4rem" }}>🔒</span>
-                </div>
-              )}
-              </div>
-              
-              {/* Lesson title on right */}
+        {/* LEFT COLUMN: Section Headings */}
+        <div style={{ flex: "0 0 25%", minWidth: 0 }}>
+          {groupedLessons.map((section, sectionIdx) => (
+            <div key={sectionIdx} style={{ marginBottom: "120px" }}>
               <div
                 style={{
-                  flex: "0 0 30%",
-                  fontSize: "0.85rem",
-                  fontWeight: 600,
-                  color: "white",
+                  fontSize: "0.95rem",
+                  fontWeight: 700,
+                  color: "#D4AF37",
                   textAlign: "left",
+                  lineHeight: 1.2,
                   wordWrap: "break-word",
-                  lineHeight: 1.3,
+                  wordBreak: "break-word",
+                  overflowWrap: "break-word",
+                  letterSpacing: "0.3px",
+                  textTransform: "uppercase",
+                  paddingTop: "12px",
                 }}
               >
-                {lesson.title}
+                {section.name}
               </div>
             </div>
-          );
-        })}
+          ))}
+        </div>
+
+        {/* MIDDLE COLUMN: Timeline + Lesson Circles */}
+        <div
+          style={{
+            flex: "0 0 auto",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            position: "relative",
+          }}
+        >
+          {/* Vertical Timeline Line */}
+          <div
+            style={{
+              position: "absolute",
+              left: "50%",
+              top: "0",
+              bottom: "0",
+              width: "3px",
+              background: "linear-gradient(180deg, #D4AF37 0%, #b89600 100%)",
+              transform: "translateX(-50%)",
+              zIndex: 0,
+            }}
+          />
+
+          {/* Lesson Circles */}
+          {groupedLessons.map((section, sectionIdx) =>
+            section.lessons.map((lesson, lessonIdx) => {
+              const unlocked = isLessonUnlocked(pathId, lesson.id);
+              const isCurrent = lesson.id === currentLessonId;
+
+              return (
+                <div
+                  key={lesson.id}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    marginBottom: lessonIdx < section.lessons.length - 1 ? "48px" : "120px",
+                    position: "relative",
+                    zIndex: 1,
+                  }}
+                >
+                  <div
+                    onClick={() => handleLessonClick(lesson)}
+                    style={{
+                      position: "relative",
+                      background: unlocked
+                        ? "linear-gradient(180deg, #FFD700 0%, #b89600 100%)"
+                        : "rgba(255,255,255,0.05)",
+                      color: unlocked ? "#000814" : "rgba(255,255,255,0.4)",
+                      borderRadius: "50%",
+                      width: "64px",
+                      height: "64px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: "bold",
+                      fontSize: "1.1rem",
+                      cursor: "pointer",
+                      border: unlocked ? "3px solid #FFD700" : "2px solid #555",
+                      transition: "all 0.3s ease",
+                      animation: unlocked
+                        ? isCurrent
+                          ? "currentLessonPulse 2s ease-in-out infinite"
+                          : "goldPulse 2s ease-in-out infinite"
+                        : "none",
+                      boxShadow: isCurrent
+                        ? "0 0 30px rgba(255, 215, 0, 0.6), inset 0 0 20px rgba(255, 215, 0, 0.2)"
+                        : "none",
+                    }}
+                  >
+                    {!unlocked && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          inset: 0,
+                          background: "linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.8) 100%)",
+                          borderRadius: "50%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <span style={{ color: "#FFD700", fontSize: "1.4rem" }}>🔒</span>
+                      </div>
+                    )}
+                    <span style={{ position: "relative", zIndex: 2 }}>
+                      {lesson.id}
+                    </span>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+
+        {/* RIGHT COLUMN: Lesson Titles */}
+        <div style={{ flex: "1", minWidth: 0 }}>
+          {groupedLessons.map((section, sectionIdx) =>
+            section.lessons.map((lesson, lessonIdx) => (
+              <div
+                key={lesson.id}
+                style={{
+                  marginBottom: lessonIdx < section.lessons.length - 1 ? "48px" : "120px",
+                  paddingTop: "12px",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "1rem",
+                    fontWeight: 600,
+                    color: "white",
+                    textAlign: "left",
+                    lineHeight: 1.3,
+                    wordWrap: "break-word",
+                    wordBreak: "break-word",
+                    overflowWrap: "break-word",
+                  }}
+                >
+                  {lesson.title}
+                </div>
+              </div>
+            ))
+          )}
+        </div>
       </div>
 
       {showPopup && (
@@ -230,7 +322,6 @@ export default function PathPage() {
         <PurchaseModal
           onClose={() => setShowModal(false)}
           onPurchase={(planType) => {
-            // Call appropriate purchase function
             const result = planType === "individual" 
               ? purchaseIndividual()
               : purchaseFamily();
@@ -262,10 +353,10 @@ export default function PathPage() {
         
         @keyframes currentLessonPulse {
           0%, 100% { 
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); 
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6), inset 0 0 15px rgba(255, 215, 0, 0.2);
           }
           50% { 
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.5); 
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.5), inset 0 0 20px rgba(255, 215, 0, 0.3);
           }
         }
       `}</style>
