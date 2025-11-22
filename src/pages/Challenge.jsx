@@ -333,12 +333,14 @@ export default function Challenge() {
                     mode.icon
                   )}
                 </div>
-                <h4 style={{ color: "#fff", margin: "0 0 6px", fontSize: "1.05rem", fontWeight: 700, lineHeight: 1.2 }}>
-                  {mode.name}
-                </h4>
-                <p style={{ color: "rgba(255,255,255,0.9)", fontSize: "0.75rem", margin: 0, lineHeight: 1.3 }}>
-                  {mode.description}
-                </p>
+                <div style={{ minHeight: "60px", display: "flex", flexDirection: "column", justifyContent: "flex-start" }}>
+                  <h4 style={{ color: "#fff", margin: "0 0 6px", fontSize: "1.05rem", fontWeight: 700, lineHeight: 1.2 }}>
+                    {mode.name}
+                  </h4>
+                  <p style={{ color: "rgba(255,255,255,0.9)", fontSize: "0.75rem", margin: 0, lineHeight: 1.3 }}>
+                    {mode.description}
+                  </p>
+                </div>
               </div>
             );
           })}

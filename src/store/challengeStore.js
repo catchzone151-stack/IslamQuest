@@ -46,7 +46,7 @@ export const CHALLENGE_MODES = {
     id: "sudden_death",
     name: "Sudden Death",
     icon: "⚔️",
-    description: "Both players answer the same questions. The winner is the one who builds the longest chain of correct answers. One wrong answer breaks your chain. If both players end with the same chain length, it's a draw and rewards are split.",
+    description: "Build the longest chain of correct answers",
     questionCount: 25,
     trackTime: true,
     rewards: { win: { xp: 200, coins: 30 }, lose: { xp: 0, coins: 0 }, draw: { xp: 100, coins: 15 } },
