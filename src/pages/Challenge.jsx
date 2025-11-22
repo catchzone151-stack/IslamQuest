@@ -6,7 +6,6 @@ import { useChallengeStore, CHALLENGE_MODES, BOSS_LEVEL } from "../store/challen
 import { useProgressStore } from "../store/progressStore";
 import { useFriendsStore } from "../store/friendsStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
-import { useDeveloperStore } from "../store/developerStore";
 import { getCurrentLevel } from "../utils/diamondLevels";
 import BossLevelMascot from "../assets/mascots/mascot_boss.webp";
 import mascot_running from "../assets/mascots/mascot_running.webp";
@@ -57,17 +56,14 @@ export default function Challenge() {
     // If friend is already pre-selected (from Friends page), skip friend selector
     if (selectedFriend) {
       console.log('✅ Friend already selected, going to explainer');
-      // Check beta mode for shared lessons requirement
-      const betaMode = useDeveloperStore.getState().betaMode;
       
-      if (!betaMode) {
-        const shared = useChallengeStore.getState().getSharedLessons("current_user", selectedFriend.id);
-        if (shared.length === 0) {
-          showModal(MODAL_TYPES.NO_SHARED_LESSONS, {
-            friendName: selectedFriend.nickname || selectedFriend.name
-          });
-          return;
-        }
+      // Check shared lessons requirement
+      const shared = useChallengeStore.getState().getSharedLessons("current_user", selectedFriend.id);
+      if (shared.length === 0) {
+        showModal(MODAL_TYPES.NO_SHARED_LESSONS, {
+          friendName: selectedFriend.nickname || selectedFriend.name
+        });
+        return;
       }
       
       // Go straight to explainer
@@ -87,18 +83,13 @@ export default function Challenge() {
     friendRef.current = friend;
     setShowFriendSelector(false);
     
-    // 🤖 BETA MODE: Skip shared lessons check for testing
-    const betaMode = useDeveloperStore.getState().betaMode;
-    
-    if (!betaMode) {
-      // Check if they have shared lessons (only in production mode)
-      const shared = useChallengeStore.getState().getSharedLessons("current_user", friend.id);
-      if (shared.length === 0) {
-        showModal(MODAL_TYPES.NO_SHARED_LESSONS, {
-          friendName: friend.nickname || friend.name
-        });
-        return;
-      }
+    // Check if they have shared lessons
+    const shared = useChallengeStore.getState().getSharedLessons("current_user", friend.id);
+    if (shared.length === 0) {
+      showModal(MODAL_TYPES.NO_SHARED_LESSONS, {
+        friendName: friend.nickname || friend.name
+      });
+      return;
     }
     
     showModal(MODAL_TYPES.CHALLENGE_EXPLAINER, {
@@ -109,10 +100,8 @@ export default function Challenge() {
   };
 
   const handleBossClick = () => {
-    // 🧪 BETA MODE: Allow Boss Level access below Level 8 for testing
-    const betaMode = useDeveloperStore.getState().betaMode;
-    
-    if (level < BOSS_LEVEL.minLevel && !betaMode) {
+    // Check level requirement
+    if (level < BOSS_LEVEL.minLevel) {
       showModal(MODAL_TYPES.BOSS_LOCKED, {
         currentLevel: level,
         requiredLevel: BOSS_LEVEL.minLevel

@@ -11,7 +11,6 @@ import EditAvatarModal from './EditAvatarModal';
 import { ViewAllLevelsModal } from './ViewAllLevelsModal';
 import LevelDetailModal from './LevelDetailModal';
 import InviteFamilyMemberModal from './InviteFamilyMemberModal';
-import ClearCacheModal from './ClearCacheModal';
 
 import ChallengeExplainerModal from './challenges/ChallengeExplainerModal';
 import ChallengeCountdown from './challenges/ChallengeCountdown';
@@ -287,16 +286,6 @@ export default function ModalController() {
             onCancel={hideModal}
             onConfirm={() => {
               hideModal();
-              modalData.onConfirm?.();
-            }}
-          />
-        );
-
-      case MODAL_TYPES.CLEAR_CACHE_CONFIRMATION:
-        return (
-          <ClearCacheModal
-            onClose={hideModal}
-            onConfirm={() => {
               modalData.onConfirm?.();
             }}
           />

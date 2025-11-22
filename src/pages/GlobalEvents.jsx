@@ -62,33 +62,8 @@ export default function GlobalEvents() {
   }, [getTimeUntilResults]);
 
   const handleEventClick = (event) => {
-    const entered = hasEntered(event.id);
-    
-    // Check if user has enough coins
-    if (coins < 25) {
-      showModal(MODAL_TYPES.INSUFFICIENT_COINS);
-      return;
-    }
-    
-    // In dev mode, always allow quiz navigation (for testing)
-    // In production, block if already entered (unless results are unlocked)
-    if (!import.meta.env.DEV && entered && !resultsUnlocked) {
-      alert("You've already entered this event this week! Results unlock Thursday 22:00 GMT.");
-      return;
-    }
-    
-    // If results unlocked and user entered (production only), show results modal
-    if (!import.meta.env.DEV && resultsUnlocked && entered) {
-      setSelectedEvent(event);
-      showModal(MODAL_TYPES.EVENT_FINAL_RESULTS, {
-        event: event,
-        entry: getEntry(event.id)
-      });
-      return;
-    }
-    
-    // Navigate to event quiz (dev mode always goes here)
-    navigate(`/events/${event.id}`);
+    // Global Events are premium-only feature - show coming soon for everyone
+    showModal(MODAL_TYPES.RAMADAN_COMING_SOON);
   };
 
   return (
