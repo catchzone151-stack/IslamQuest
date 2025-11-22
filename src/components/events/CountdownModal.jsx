@@ -21,9 +21,9 @@ export default function CountdownModal({ onComplete }) {
   return (
     <div className="event-modal-overlay">
       <div className="countdown-modal">
-        {/* Zayd Animation */}
+        {/* Countdown Rocket */}
         <div className="countdown-mascot">
-          <img src={assets.mascots.mascot_pointing_v2} alt="Mascot" className="countdown-zayd" />
+          <img src={assets.mascots.mascot_countdown} alt="Countdown" className="countdown-rocket" />
         </div>
 
         {/* Countdown Number */}

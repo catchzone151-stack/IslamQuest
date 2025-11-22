@@ -20,6 +20,7 @@ import mascot_quiz from "./mascots/mascot_quiz.webp";
 import mascot_scholar from "./mascots/mascot_scholar.webp";
 import mascot_locked from "./mascots/mascot_locked.webp";
 import mascot_power from "./mascots/mascot_power.webp";
+import mascot_countdown from "./mascots/mascot_countdown.webp";
 
 // ============ AVATARS ============
 import avatar_man_lantern from "./avatars/avatar_man_lantern.webp";
@@ -72,6 +73,7 @@ const assets = {
     mascot_scholar,
     mascot_locked,
     mascot_power,
+    mascot_countdown,
   },
   avatars: {
     avatar_man_lantern,

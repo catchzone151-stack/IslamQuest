@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import assets from "../../assets/assets";
 import "./ChallengeModals.css";
 
 export default function ChallengeCountdown({ onComplete }) {
@@ -17,11 +18,12 @@ export default function ChallengeCountdown({ onComplete }) {
   return (
     <div className="challenge-modal-overlay">
       <div className="challenge-countdown-modal">
-        {count > 0 ? (
-          <div className="countdown-number">{count}</div>
-        ) : (
-          <div className="countdown-go">GO! 🚀</div>
-        )}
+        <div className="countdown-mascot">
+          <img src={assets.mascots.mascot_countdown} alt="Countdown" className="countdown-rocket" />
+        </div>
+        <div className="countdown-number">
+          {count > 0 ? count : "GO!"}
+        </div>
       </div>
     </div>
   );
