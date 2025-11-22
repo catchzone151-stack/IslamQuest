@@ -28,11 +28,11 @@ const prophetLifeLessons = [
 
   {
     id: 2,
-    title: "The Birth of Muhammad",
+    title: "The Birth of Muhammad ﷺ",
     description: [
       "Muhammad ﷺ was born on Monday, the 12th of Rabi al-Awwal in the Year of the Elephant. His father Abdullah had passed away before his birth. His mother Aminah raised him alone in Makkah with great love.",
       "On the night of his birth, miraculous signs appeared. His mother saw a light emanating from her that illuminated the palaces of Syria. The idols in the Ka'bah fell down, and light filled the earth.",
-      "His grandfather Abdul-Muttalib named him Muhammad, a name rarely used among Arabs. It means 'the praised one.' This name would later prove prophetic as he became the most praised person in human history."
+      "His grandfather Abdul-Muttalib named him Muhammad ﷺ, a name rarely used among Arabs. It means 'the praised one.' This name would later prove prophetic as he became the most praised person in human history."
     ],
     evidence: {
       arabic: "لَقَدْ جَاءَكُمْ رَسُولٌ مِّنْ أَنفُسِكُمْ",
