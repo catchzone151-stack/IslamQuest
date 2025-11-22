@@ -8,6 +8,7 @@ import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import ProfileCard from "../components/ProfileCard";
 import { LevelBadge } from "../components/LevelBadge";
 import { getCurrentLevel, getXPProgress } from "../utils/diamondLevels";
+import { LOCAL_VERSION, shouldShowUpdateBanner } from "../config/versionConfig";
 import ui_xp from "../assets/ui/ui_xp.webp";
 import ui_coin from "../assets/ui/ui_coin.webp";
 import ui_streak from "../assets/ui/ui_streak.webp";
@@ -252,6 +253,38 @@ export default function Profile() {
           <span>🛡️</span>
           <span>Add Streak Freeze</span>
         </button>
+
+        {/* === Update Banner === */}
+        {shouldShowUpdateBanner() && (
+          <div
+            style={{
+              maxWidth: 400,
+              margin: "20px auto 0",
+              padding: "16px",
+              background: "linear-gradient(135deg, rgba(79, 213, 255, 0.15) 0%, rgba(16, 185, 129, 0.15) 100%)",
+              border: "1px solid rgba(79, 213, 255, 0.4)",
+              borderRadius: 12,
+              color: "#4fd5ff",
+              fontSize: "0.95rem",
+              fontWeight: "600",
+              textAlign: "center",
+            }}
+          >
+            ✨ New update available!
+          </div>
+        )}
+
+        {/* === Version Display === */}
+        <div
+          style={{
+            marginTop: 20,
+            fontSize: "0.75rem",
+            color: "rgba(255,255,255,0.4)",
+            textAlign: "center",
+          }}
+        >
+          Version {LOCAL_VERSION}
+        </div>
 
         {/* === Premium Section === */}
         <div

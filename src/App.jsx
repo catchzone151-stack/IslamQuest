@@ -3,6 +3,7 @@ import React, { useEffect, Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // ✅ Critical imports (loaded immediately)
+import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import BottomNav from "./components/BottomNav.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 import ModalController from "./components/ModalController.jsx";
@@ -206,18 +207,19 @@ export default function App() {
   }
 
   return (
-    <ModalProvider>
-      <BrowserRouter>
-        <ScrollToTop />
-        <div
-          className="screen no-extra-space app-root-container"
-          style={{
-            background:
-              "radial-gradient(circle at 20% 20%, rgba(10,15,30,1) 0%, rgba(3,6,20,1) 70%)",
-            color: "white",
-          }}
-        >
-          <Routes>
+    <ErrorBoundary>
+      <ModalProvider>
+        <BrowserRouter>
+          <ScrollToTop />
+          <div
+            className="screen no-extra-space app-root-container"
+            style={{
+              background:
+                "radial-gradient(circle at 20% 20%, rgba(10,15,30,1) 0%, rgba(3,6,20,1) 70%)",
+              color: "white",
+            }}
+          >
+            <Routes>
             {!hasOnboarded ? (
               <>
                 {/* ✅ ONBOARDING FLOW */}
@@ -266,9 +268,10 @@ export default function App() {
         {/* 🚪 Portal root for heavy modals */}
         <ModalRoot />
         
-        {/* 🔧 Hidden Developer Menu (Beta Testing) */}
-        <DeveloperModal />
-      </BrowserRouter>
-    </ModalProvider>
+          {/* 🔧 Hidden Developer Menu (Beta Testing) */}
+          <DeveloperModal />
+        </BrowserRouter>
+      </ModalProvider>
+    </ErrorBoundary>
   );
 }
