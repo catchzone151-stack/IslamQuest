@@ -16,7 +16,6 @@ import mascot_waving from "./mascots/mascot_waving.webp";
 // Additional mascot variants
 import mascot_sitting_v2 from "./mascots/mascot_sitting_v2.webp";
 import mascot_pointing_v2 from "./mascots/mascot_pointing_v2.webp";
-import mascot_reading_v2 from "./mascots/mascot_reading_v2.webp";
 import mascot_teaching from "./mascots/mascot_pointing.webp";
 import mascot_quiz from "./mascots/mascot_quiz.webp";
 import mascot_scholar from "./mascots/mascot_scholar.webp";
@@ -72,7 +71,6 @@ const assets = {
     // Additional mascot variants
     mascot_sitting_v2,
     mascot_pointing_v2,
-    mascot_reading_v2,
     mascot_teaching,
     mascot_quiz,
     mascot_scholar,

@@ -53,4 +53,17 @@ Preferred communication style: Simple, everyday language.
 
 ### Asset Dependencies
 - **Media**: WebP images for all visual assets and SVG favicon. All assets are locally bundled.
-- **Mascots**: 19 culturally authentic Islamic mascot characters in WebP format, used across various app contexts (home, lessons, quizzes, challenges, onboarding, etc.).
+- **Mascots (November 22, 2025)**: 16 culturally authentic Islamic mascot characters in WebP format (60KB-209KB each):
+  - **Core Mascots** (10):
+    - `mascot_sitting.webp` - Home page, lesson pages, quiz states
+    - `mascot_running.webp` - Speed Run challenge mode
+    - `mascot_boss.webp` - Challenge and boss contexts
+    - `mascot_congratulation.webp` - Success celebrations
+    - `mascot_waving.webp` - Daily quests
+    - `mascot_pointing.webp` - Teaching contexts (renamed from teaching, Nov 22)
+    - `mascot_onboarding.webp` - Onboarding flow
+    - `mascot_defeated.webp` - Failure states
+    - `mascot_reading.webp` - Legacy mascot
+    - `mascot_tasbih.webp` - Spiritual contexts
+  - **Extended Variants** (6): sitting_v2, pointing_v2 (replaces dua), quiz, scholar, locked, power
+  - **Note**: `mascot_dua` removed and replaced with `mascot_pointing_v2` throughout codebase
