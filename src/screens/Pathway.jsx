@@ -316,7 +316,7 @@ export default function Pathway() {
         </div>
       </div>
 
-      {/* Lessons container + golden line */}
+      {/* Lessons container */}
       <div
         style={{
           width: "100%",
@@ -326,25 +326,6 @@ export default function Pathway() {
           marginTop: 10,
         }}
       >
-        {/* Golden trail */}
-        {lineHeight > 0 && (
-          <div
-            style={{
-              position: "absolute",
-              left: "50%",
-              top: lineTop,
-              transform: "translateX(-50%)",
-              width: 4,
-              height: lineHeight,
-              background:
-                "linear-gradient(to bottom, rgba(255,215,0,0.85), rgba(255,215,0,0.1))",
-              borderRadius: 999,
-              boxShadow: "0 0 12px rgba(255,215,0,0.4)",
-              zIndex: 0,
-            }}
-          />
-        )}
-
         {/* Lesson nodes + titles */}
         {lessons.map((lesson, i) => {
           const isActive = i === activeIndex;
