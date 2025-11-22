@@ -39,7 +39,6 @@ export const useProgressStore = create((set, get) => ({
   lastLogin: null,
   avatar: "default",
   displayName: "Student of Knowledge",
-  certificates: [],
   lessonStates: {},
   lockedLessons: {},
   hasPremium: false, // Deprecated: derived from premiumStatus, kept for backwards compatibility
@@ -374,20 +373,6 @@ export const useProgressStore = create((set, get) => ({
     get().saveProgress();
   },
 
-  // 🏆 Certificates
-  earnCertificate: (id, title) => {
-    const { certificates } = get();
-    if (!certificates.some((c) => c.id === id)) {
-      set({
-        certificates: [
-          ...certificates,
-          { id, title, earnedAt: new Date().toISOString() },
-        ],
-      });
-      get().saveProgress();
-    }
-  },
-
   // 📘 Path progress
   setPathProgress: (pathId, completedLessons, totalLessons) => {
     const { paths } = get();
@@ -427,7 +412,6 @@ export const useProgressStore = create((set, get) => ({
         : 0;
 
     get().setPathProgress(pathId, passedCount, path ? path.totalLessons : 0);
-    if (ratio === 1) get().earnCertificate(pathId, "Completed: " + path.title);
 
     // unlock next lesson
     get().unlockLesson(pathId, lessonId + 1);
@@ -616,7 +600,6 @@ export const useProgressStore = create((set, get) => ({
       needsRepairPrompt: false,
       brokenStreakValue: 0,
       xpMultiplier: 0,
-      certificates: [],
       lessonStates: {},
       lockedLessons: {},
       paths: DEFAULT_PATHS,

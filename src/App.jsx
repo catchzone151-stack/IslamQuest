@@ -153,7 +153,7 @@ export default function App() {
 
   // 🚀 PERFORMANCE: Preload ALL assets and route modules IMMEDIATELY for instant Duolingo-style loading
   useEffect(() => {
-    // Preload ALL 81+ images instantly (mascots, avatars, certificates, UI icons, everything)
+    // Preload ALL images instantly (mascots, avatars, UI icons, everything)
     preloadAllAssets();
     
     // Eagerly preload ALL route modules to avoid suspension on any navigation
