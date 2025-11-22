@@ -756,7 +756,7 @@ function LeaderboardTab({ leaderboardTab, setLeaderboardTab, friendsLeaderboard,
                   {isTop3 ? medals[index] : rank}
                 </div>
                 <img
-                  src={getAvatarImage(user.id === currentUserId ? freshUserAvatar : user.avatar, { userId: user.id, nickname: user.name })}
+                  src={getAvatarImage(user.avatar, { userId: user.id, nickname: user.name })}
                   alt={user.name}
                   style={{
                     width: 50,
