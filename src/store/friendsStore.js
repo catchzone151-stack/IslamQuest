@@ -121,6 +121,8 @@ export const useFriendsStore = create((set, get) => ({
 
   // 🤖 SIMULATED FRIENDS SYSTEM (Beta Mode Only)
   generateSimulatedFriends: () => {
+    const { id: currentUserId } = useUserStore.getState();
+    
     return SIMULATED_FRIENDS_TEMPLATE.map((template, index) => ({
       id: `simulated_${template.nickname.toLowerCase()}`,
       name: template.nickname,
@@ -137,7 +139,7 @@ export const useFriendsStore = create((set, get) => ({
       responseDelay: template.responseDelay,
       completedLessons: Array.from({ length: template.completedLessons }, (_, i) => `lesson_${i + 1}`),
       addedAt: new Date().toISOString(),
-    }));
+    })).filter(f => f.name !== useUserStore.getState().name);
   },
 
   initializeSimulatedFriends: () => {
@@ -308,7 +310,15 @@ export const useFriendsStore = create((set, get) => ({
   },
 
   getFriendsLeaderboard: () => {
-    const friends = get().friends;
+    const { id: currentUserId, avatar: currentUserAvatar, name: currentUserName } = useUserStore.getState();
+    const friends = get().friends.map(f => {
+      // Protect the real user from simulated overwrites
+      if (f.id === currentUserId) {
+        f.avatar = currentUserAvatar;
+        f.name = currentUserName || "You";
+      }
+      return f;
+    });
     return friends
       .map((f, index) => ({
         ...f,
@@ -330,16 +340,23 @@ export const useFriendsStore = create((set, get) => ({
     }
 
     // 🤖 Beta Mode: Show simulated friends + current user + The Dev
-    const friends = get().friends;
+    const { id: currentUserId, avatar: currentUserAvatar, name: currentUserName } = useUserStore.getState();
+    const friends = get().friends.map(f => {
+      // Protect the real user from simulated overwrites
+      if (f.id === currentUserId) {
+        f.avatar = currentUserAvatar;
+        f.name = currentUserName || "You";
+      }
+      return f;
+    });
     
     // Get current user data from progressStore
     const { xp, coins, level, streak } = useProgressStore.getState();
-    const { name, avatar, id: currentUserId } = useUserStore();
     
     const currentUser = {
       id: currentUserId,
-      name: name || 'You',
-      avatar: avatar || 'avatar1',
+      name: currentUserName || 'You',
+      avatar: currentUserAvatar,
       xp: xp || 0,
       coins: coins || 0,
       level: level || 1,

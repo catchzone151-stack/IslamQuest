@@ -1,0 +1,93 @@
+I need you to apply a 4-file stable patch. Do NOT change anything outside these exact edits. 
+Make these modifications safely and exactly as written:
+
+────────────────────────────────────────────
+1️⃣ FILE: src/store/useUserStore.js
+────────────────────────────────────────────
+
+Inside the persisted state object, ADD a permanent UUID for the user:
+
+Add this line directly under avatar:
+
+  id: crypto.randomUUID(),
+
+Also add a setter:
+
+  setId: (id) => set({ id }),
+
+Make sure id NEVER resets when resetOnboarding or resetUser is called. 
+Only name/avatar/hasOnboarded reset. ID must stay.
+
+Do NOT touch _setHydrated or onRehydrateStorage logic.
+
+────────────────────────────────────────────
+2️⃣ FILE: src/store/friendsStore.js
+────────────────────────────────────────────
+
+Before returning friends in getFriendsLeaderboard and getGlobalLeaderboard,
+ADD THIS PROTECTION:
+
+  const { id: currentUserId, avatar: currentUserAvatar, name: currentUserName } = useUserStore.getState();
+
+Immediately after building the friend lists, ADD:
+
+  // Protect the real user from simulated overwrites
+  if (f.id === currentUserId) {
+      f.avatar = currentUserAvatar;
+      f.name = currentUserName || "You";
+  }
+
+Also ensure in generateSimulatedFriends():
+Never generate a friend with the same id as currentUserId:
+
+At top of generateSimulatedFriends(), add:
+
+  const { id: currentUserId } = useUserStore.getState();
+
+And when mapping simulated friends, skip any whose template.nickname matches currentUserName.
+
+────────────────────────────────────────────
+3️⃣ FILE: src/store/developerStore.js
+────────────────────────────────────────────
+
+Inside getGlobalLeaderboard(), ensure current user ALWAYS overrides simulator:
+
+Replace currentUser creation with:
+
+  const { id: currentUserId, name: currentUserName, avatar: currentUserAvatar } = useUserStore.getState();
+
+  const currentUser = {
+    id: currentUserId,
+    name: currentUserName || "You",
+    avatar: currentUserAvatar,
+    xp,
+    coins,
+    level,
+    streak,
+    isCurrentUser: true
+  };
+
+Do NOT let simulated friends overwrite this object.
+
+────────────────────────────────────────────
+4️⃣ FILE: src/utils/avatarUtils.js
+────────────────────────────────────────────
+
+At the very top of getAvatarImage(), insert:
+
+  // Do not allow fallback/random avatar overrides for the real user
+  const { id: currentUserId, avatar: currentUserAvatar } = useUserStore.getState();
+  if (avatar === currentUserAvatar || userId === currentUserId) {
+      return `/avatars/${currentUserAvatar}.png`;
+  }
+
+Ensure the function returns the user's avatar FIRST before any random generator logic.
+
+────────────────────────────────────────────
+
+After all edits, reformat only if needed. 
+Do not remove any existing simulator users. 
+Do not rename files. 
+Do not modify unrelated parts.
+
+This patch is required and precise. Please apply exactly.

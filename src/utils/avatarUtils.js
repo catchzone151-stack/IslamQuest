@@ -1,4 +1,5 @@
 import assets from "../assets/assets";
+import { useUserStore } from "../store/useUserStore";
 
 // DEV avatar - EXCLUSIVE to "The Dev" NPC in global leaderboard
 export const DEV_AVATAR_KEY = "avatar_ninja_male";
@@ -49,6 +50,12 @@ const LEGACY_AVATAR_MAP = {
  */
 export function getAvatarImage(avatarKey, options = {}) {
   const { userId, nickname, isDevCheck = true } = options;
+  
+  // PRIORITY 0: Do not allow fallback/random avatar overrides for the real user
+  const { id: currentUserId, avatar: currentUserAvatar } = useUserStore.getState();
+  if (avatarKey === currentUserAvatar || userId === currentUserId) {
+    return `/avatars/${currentUserAvatar}.png`;
+  }
   
   // PRIORITY 1: Check if this is the Dev account (The Dev NPC)
   if (isDevCheck && isDevAccount(userId, nickname)) {

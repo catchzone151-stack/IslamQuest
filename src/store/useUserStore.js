@@ -8,6 +8,7 @@ export const useUserStore = create(
       // state
       name: "",
       avatar: null,
+      id: crypto.randomUUID(),
       hasOnboarded: false,
 
       // hydration flag (so router waits until store is loaded from storage)
@@ -16,6 +17,7 @@ export const useUserStore = create(
       // actions
       setName: (name) => set({ name }),
       setAvatar: (avatar) => set({ avatar }),
+      setId: (id) => set({ id }),
       completeOnboarding: () => set({ hasOnboarded: true }),
       resetUser: () => set({ name: "", avatar: null, hasOnboarded: false }),
       
