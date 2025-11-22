@@ -60,7 +60,7 @@ Preferred communication style: Simple, everyday language.
     - `mascot_boss.webp` - Challenge and boss contexts
     - `mascot_congratulation.webp` - Success celebrations
     - `mascot_waving.webp` - Daily quests
-    - `mascot_pointing.webp` - Teaching contexts (renamed from teaching, Nov 22)
+    - `mascot_pointing.webp` - Teaching contexts (replaced with new pointing/teaching pose, Nov 22)
     - `mascot_onboarding.webp` - Onboarding flow
     - `mascot_defeated.webp` - Failure states
     - `mascot_reading.webp` - Legacy mascot
