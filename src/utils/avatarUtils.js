@@ -54,7 +54,6 @@ export function getAvatarImage(avatarKey, options = {}) {
   // PRIORITY 0: FORCE current user to always use their selected avatar from store
   // Ignore any avatarKey parameter - the store is the source of truth
   const { id: currentUserId, avatar: currentUserAvatar } = useUserStore.getState();
-  
   if (userId === currentUserId) {
     // Current user must have their selected avatar, always
     if (currentUserAvatar && assets.avatars[currentUserAvatar]) {

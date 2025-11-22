@@ -7,7 +7,9 @@ export default function EditAvatarModal({ isOpen, onClose, currentAvatar, onSave
   const avatarList = Object.values(assets.avatars);
 
   const handleSelect = (avatar) => {
-    onSave(avatar);
+    // Extract avatar key from full path (e.g., "/src/assets/avatars/avatar_robot.png.webp" -> "avatar_robot")
+    const key = avatar.split("/").pop().split(".")[0];
+    onSave(key);
     onClose();
   };
 

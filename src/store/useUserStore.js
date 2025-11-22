@@ -2,9 +2,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-// TEMPORARY: Clear corrupted avatar data from localStorage
-localStorage.removeItem("iq-user-v2");
-
 export const useUserStore = create(
   persist(
     (set, get) => ({

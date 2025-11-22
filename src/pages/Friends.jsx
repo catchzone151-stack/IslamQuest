@@ -10,7 +10,6 @@ import { getAvatarImage } from "../utils/avatarUtils";
 export default function Friends() {
   const navigate = useNavigate();
   const { id: currentUserId, name: currentUserName2, avatar: freshUserAvatar } = useUserStore();
-  console.log("🔍 Friends.jsx - currentUserId:", currentUserId, "freshUserAvatar:", freshUserAvatar);
   const [activeTab, setActiveTab] = useState("friends");
   const [searchQuery, setSearchQuery] = useState("");
   const [showMiniProfile, setShowMiniProfile] = useState(null);
