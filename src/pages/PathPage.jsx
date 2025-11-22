@@ -104,11 +104,23 @@ export default function PathPage() {
     };
   });
   
-  // DEBUG: Log section grouping
-  console.log("🔍 DEBUG PathPage - pathId:", pathId);
-  console.log("🔍 Sections:", sections);
-  console.log("🔍 Grouped Lessons:", groupedLessons);
-  console.log("🔍 Total lessons:", lessons.length);
+  // Calculate section heights and cumulative offsets for LEFT column alignment
+  const sectionHeights = groupedLessons.map(section => {
+    const lessonCount = section.lessons.length;
+    // Each lesson: 64px circle + 48px gap (except last lesson in section)
+    return lessonCount * 64 + (lessonCount - 1) * 48;
+  });
+  
+  const cumulativeOffsets = groupedLessons.map((_, sectionIdx) => {
+    if (sectionIdx === 0) return 0; // First section starts at top
+    
+    // Sum all previous section heights + 120px inter-section gaps
+    let offset = 0;
+    for (let i = 0; i < sectionIdx; i++) {
+      offset += sectionHeights[i] + 120; // section height + gap after section
+    }
+    return offset;
+  });
 
   return (
     <div
@@ -160,19 +172,18 @@ export default function PathPage() {
           justifyContent: "flex-start"
         }}>
           {groupedLessons.map((section, sectionIdx) => {
-            const sectionHeight = 
-              section.lessons.length * 64 + 
-              (section.lessons.length - 1) * 48 + 
-              120;
+            // Calculate spacer height: height of all previous section's lessons + gap
+            const spacerHeight = sectionIdx === 0 
+              ? 0 
+              : sectionHeights[sectionIdx - 1] + 120; // previous section's lessons + inter-section gap
 
             return (
-              <div 
-                key={`section-${sectionIdx}`} 
-                style={{ 
-                  marginBottom: "120px",
-                  width: "100%",
-                }}
-              >
+              <React.Fragment key={`section-${sectionIdx}`}>
+                {/* Spacer to push heading down to align with first circle of this section */}
+                {sectionIdx > 0 && (
+                  <div style={{ height: `${spacerHeight}px` }} />
+                )}
+                
                 {/* Section Heading */}
                 <div
                   style={{
@@ -188,12 +199,12 @@ export default function PathPage() {
                     letterSpacing: "0.6px",
                     textTransform: "uppercase",
                     paddingRight: "12px",
-                    marginBottom: "16px",
+                    width: "100%",
                   }}
                 >
                   {section.name}
                 </div>
-              </div>
+              </React.Fragment>
             );
           })}
         </div>
