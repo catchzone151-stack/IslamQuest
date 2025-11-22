@@ -20,6 +20,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "../hooks/useNavigate";
+import { Footprints } from "lucide-react";
 
 import { useProgressStore } from "../store/progressStore";
 import { useUserStore } from "../store/useUserStore";
@@ -482,7 +483,7 @@ export default function Home() {
                   {completed} / {total} Lessons
                 </div>
 
-                {/* Paw print badge, pulsing */}
+                {/* Footprints badge, pulsing */}
                 <div
                   style={{
                     position: "absolute",
@@ -497,7 +498,12 @@ export default function Home() {
                     animation: "pawPulse 2.2s infinite ease-in-out",
                   }}
                 >
-                  <span style={{ fontSize: 22 }}>🐾</span>
+                  <Footprints 
+                    size={20} 
+                    strokeWidth={2.5}
+                    color="#FFD700"
+                    style={{ filter: "drop-shadow(0 0 3px rgba(255,215,0,0.4))" }}
+                  />
                 </div>
               </div>
             );
