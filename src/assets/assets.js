@@ -14,6 +14,16 @@ import mascot_sitting from "./mascots/mascot_sitting.webp";
 import mascot_tasbih from "./mascots/mascot_tasbih.webp";
 import mascot_waving from "./mascots/mascot_waving.webp";
 
+// Additional mascot variants
+import mascot_sitting_v2 from "./mascots/mascot_sitting_v2.webp";
+import mascot_pointing_v2 from "./mascots/mascot_pointing_v2.webp";
+import mascot_reading_v2 from "./mascots/mascot_reading_v2.webp";
+import mascot_teaching from "./mascots/mascot_teaching.webp";
+import mascot_quiz from "./mascots/mascot_quiz.webp";
+import mascot_scholar from "./mascots/mascot_scholar.webp";
+import mascot_locked from "./mascots/mascot_locked.webp";
+import mascot_power from "./mascots/mascot_power.webp";
+
 // ============ AVATARS ============
 import avatar_man_lantern from "./avatars/avatar_man_lantern.webp";
 import avatar_man_tasbih from "./avatars/avatar_man_tasbih.webp";
@@ -61,6 +71,15 @@ const assets = {
     mascot_sitting,
     mascot_tasbih,
     mascot_waving,
+    // Additional mascot variants
+    mascot_sitting_v2,
+    mascot_pointing_v2,
+    mascot_reading_v2,
+    mascot_teaching,
+    mascot_quiz,
+    mascot_scholar,
+    mascot_locked,
+    mascot_power,
   },
   avatars: {
     avatar_man_lantern,
