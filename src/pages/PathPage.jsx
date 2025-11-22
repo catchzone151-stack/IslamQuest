@@ -104,22 +104,11 @@ export default function PathPage() {
     };
   });
   
-  // Calculate section heights and cumulative offsets for LEFT column alignment
+  // Calculate section heights for LEFT column alignment
   const sectionHeights = groupedLessons.map(section => {
     const lessonCount = section.lessons.length;
     // Each lesson: 64px circle + 48px gap (except last lesson in section)
     return lessonCount * 64 + (lessonCount - 1) * 48;
-  });
-  
-  const cumulativeOffsets = groupedLessons.map((_, sectionIdx) => {
-    if (sectionIdx === 0) return 0; // First section starts at top
-    
-    // Sum all previous section heights + 120px inter-section gaps
-    let offset = 0;
-    for (let i = 0; i < sectionIdx; i++) {
-      offset += sectionHeights[i] + 120; // section height + gap after section
-    }
-    return offset;
   });
 
   return (
