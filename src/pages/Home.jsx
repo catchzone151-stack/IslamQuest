@@ -51,6 +51,9 @@ export default function Home() {
   // Which "page" of the carousel we're on (0 / 1 / 2)
   const [page, setPage] = useState(0);
 
+  // Ramadan countdown state
+  const [ramadanCountdown, setRamadanCountdown] = useState("");
+
   // Modal store
   const { showModal } = useModalStore();
 
@@ -88,6 +91,33 @@ export default function Home() {
       showModal(MODAL_TYPES.REPAIR_STREAK);
     }
   }, [needsRepairPrompt, showModal]);
+
+  // Ramadan countdown timer (updates every minute)
+  useEffect(() => {
+    const calculateRamadanCountdown = () => {
+      const now = new Date();
+      const ramadanDate = new Date(2026, 1, 18, 0, 0, 0); // Feb 18, 2026, 00:00 local time
+      const diff = ramadanDate - now;
+      
+      if (diff <= 0) {
+        setRamadanCountdown("Ramadan Mubarak! 🌙");
+        return;
+      }
+      
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      
+      setRamadanCountdown(`Ramadan begins in ${days} days, ${hours} hours`);
+    };
+    
+    // Calculate immediately
+    calculateRamadanCountdown();
+    
+    // Update every minute
+    const interval = setInterval(calculateRamadanCountdown, 60 * 1000);
+    
+    return () => clearInterval(interval);
+  }, []);
 
   /**
    * Sync carousel scroll -> page indicator dots
@@ -513,6 +543,111 @@ export default function Home() {
 
       {/*
        * ===============================================================
+       * RAMADAN COUNTDOWN WIDGET
+       * ===============================================================
+       */}
+      <div
+        onClick={() => showModal(MODAL_TYPES.RAMADAN_COMING_SOON)}
+        style={{
+          margin: "16px 16px 12px 16px",
+          padding: "16px",
+          height: "130px",
+          background: "#0a2a43",
+          border: "2px solid rgba(255, 215, 0, 0.3)",
+          borderRadius: "18px",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 215, 0, 0.15)",
+          cursor: "pointer",
+          transition: "transform 0.3s ease, box-shadow 0.3s ease",
+          animation: "ramadanFloat 3s ease-in-out infinite",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}
+      >
+        {/* Title */}
+        <div
+          style={{
+            fontSize: "1rem",
+            fontWeight: 700,
+            color: "#FFD700",
+            marginBottom: 6,
+            textAlign: "center",
+          }}
+        >
+          🌙 Ramadan Countdown
+        </div>
+
+        {/* Calendar Grid for February 2026 */}
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            gap: "4px",
+            fontSize: "0.6rem",
+            marginBottom: 6,
+          }}
+        >
+          {/* Day headers */}
+          {["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"].map((day) => (
+            <div
+              key={day}
+              style={{
+                width: "20px",
+                textAlign: "center",
+                color: "#8ea2c8",
+                fontWeight: 600,
+              }}
+            >
+              {day}
+            </div>
+          ))}
+          
+          {/* Empty spaces for days before Feb 1 (Feb 2026 starts on Sunday) */}
+          {[...Array(6)].map((_, i) => (
+            <div key={`empty-${i}`} style={{ width: "20px" }} />
+          ))}
+          
+          {/* Days of February 2026 */}
+          {[...Array(28)].map((_, i) => {
+            const day = i + 1;
+            const isRamadan = day === 18;
+            return (
+              <div
+                key={day}
+                style={{
+                  width: "20px",
+                  height: "20px",
+                  textAlign: "center",
+                  lineHeight: "20px",
+                  background: isRamadan ? "#FFD700" : "transparent",
+                  color: isRamadan ? "#000814" : "#8ea2c8",
+                  borderRadius: "4px",
+                  fontWeight: isRamadan ? 700 : 400,
+                  boxShadow: isRamadan ? "0 0 8px rgba(255, 215, 0, 0.6)" : "none",
+                }}
+              >
+                {day}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Countdown Timer */}
+        <div
+          style={{
+            fontSize: "0.85rem",
+            fontWeight: 600,
+            color: "#FFD700",
+            textAlign: "center",
+          }}
+        >
+          {ramadanCountdown}
+        </div>
+      </div>
+
+      {/*
+       * ===============================================================
        * PAGE DOTS
        * ===============================================================
        */}
@@ -558,6 +693,15 @@ export default function Home() {
 
         .page-transition {
           animation: fadeSlideIn 520ms cubic-bezier(.16,.84,.44,1) both;
+        }
+
+        @keyframes ramadanFloat {
+          0%, 100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-3px);
+          }
         }
 
         @keyframes fadeSlideIn {

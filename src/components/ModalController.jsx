@@ -302,6 +302,88 @@ export default function ModalController() {
           />
         );
 
+      case MODAL_TYPES.RAMADAN_COMING_SOON:
+        return (
+          <div
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 10000,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: 'rgba(0, 0, 0, 0.75)',
+              backdropFilter: 'blur(4px)',
+            }}
+            onClick={hideModal}
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: 'linear-gradient(135deg, #0a2a43 0%, #000814 100%)',
+                border: '2px solid rgba(255, 215, 0, 0.4)',
+                borderRadius: '24px',
+                padding: '32px 24px',
+                maxWidth: '400px',
+                width: '90%',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 215, 0, 0.2)',
+                textAlign: 'center',
+                animation: 'modalScaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              }}
+            >
+              {/* Moon Icon */}
+              <div style={{ fontSize: '3.5rem', marginBottom: '16px' }}>🌙</div>
+
+              {/* Title */}
+              <h2
+                style={{
+                  fontSize: '1.4rem',
+                  fontWeight: 700,
+                  color: '#FFD700',
+                  margin: '0 0 12px 0',
+                }}
+              >
+                Ramadan Mode Coming Soon
+              </h2>
+
+              {/* Subtitle */}
+              <p
+                style={{
+                  fontSize: '0.95rem',
+                  color: '#e8e8e8',
+                  margin: '0 0 24px 0',
+                  lineHeight: 1.5,
+                }}
+              >
+                Launching with Global Events, in shā' Allāh ✨
+              </p>
+
+              {/* OK Button */}
+              <button
+                onClick={hideModal}
+                style={{
+                  width: '100%',
+                  padding: '14px',
+                  background: 'linear-gradient(135deg, #FFD700 0%, #b89600 100%)',
+                  border: 'none',
+                  borderRadius: '12px',
+                  color: '#000814',
+                  fontSize: '1rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 12px rgba(255, 215, 0, 0.4)',
+                  transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                }}
+                onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.96)'}
+                onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        );
+
       default:
         return null;
     }
