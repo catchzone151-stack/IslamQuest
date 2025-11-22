@@ -13,7 +13,7 @@ const foundationsLessons = [
     arabic: "الشَّهَادَة",
     meaning: "The Declaration of Faith",
     description: [
-      "The Shahadah is Islam's foundation. When we declare 'There is no god but Allah, and Muhammad is His Messenger,' we testify Allah alone deserves worship. This opens the door to Islam.",
+      "The Shahadah is Islam's foundation. When we declare 'There is no god but Allah, and Muhammad ﷺ is His Messenger,' we testify Allah alone deserves worship. This opens the door to Islam.",
       "The declaration requires belief in the heart, understanding of meaning, and sincere action. We reject all false gods and obey Allah's commands. Without this belief, worship has no meaning.",
       "The Prophet ﷺ taught that whoever sincerely says the Shahadah and dies upon it will enter Paradise. It purifies the heart, gives life purpose, and frees us from slavery to creation.",
       "Every Muslim should renew their Shahadah daily, reflecting on its deep meaning. From morning until night, this declaration defines who we are as believers and guides our entire lives."
@@ -184,7 +184,7 @@ const foundationsLessons = [
     ],
     evidence: {
       arabic: "مَّا كَانَ مُحَمَّدٌ أَبَا أَحَدٍ مِّن رِّجَالِكُمْ وَلَٰكِن رَّسُولَ اللَّهِ وَخَاتَمَ النَّبِيِّينَ",
-      translation: "Muhammad is not the father of any of your men, but he is the Messenger of Allah and the Seal of the Prophets.",
+      translation: "Muhammad ﷺ is not the father of any of your men, but he is the Messenger of Allah and the Seal of the Prophets.",
       source: "Qur'an 33:40"
     },
     reflection: "How can you follow the example of the Prophet ﷺ in your daily life?",

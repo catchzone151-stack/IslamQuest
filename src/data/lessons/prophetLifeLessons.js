@@ -132,7 +132,7 @@ const prophetLifeLessons = [
     id: 8,
     title: "Marriage to Khadijah",
     description: [
-      "Khadijah bint Khuwaylid was a wealthy, noble, and honorable businesswoman. Impressed by Muhammad's ﷺ honesty and trustworthiness, she hired him to manage her trade caravan to Syria when he was twenty-five years old.",
+      "Khadijah bint Khuwaylid was a wealthy, noble, and honorable businesswoman. Impressed by Muhammad ﷺ's ﷺ honesty and trustworthiness, she hired him to manage her trade caravan to Syria when he was twenty-five years old.",
       "Her servant Maysarah accompanied Muhammad ﷺ and witnessed his exceptional character and integrity. The business trip was extremely successful. Maysarah told Khadijah about miracles he saw, including clouds shading Muhammad ﷺ from desert heat.",
       "Khadijah, forty years old, proposed marriage to Muhammad ﷺ through a relative. He accepted, and they married. She supported him completely, bearing his children and becoming his greatest supporter. Their marriage lasted twenty-five blessed years."
     ],
@@ -238,7 +238,7 @@ const prophetLifeLessons = [
     id: 14,
     title: "Opposition Begins",
     description: [
-      "Quraysh leaders rejected Islam, fearing it would destroy their wealth, power, and social status. They couldn't deny Muhammad's ﷺ honesty and character, so they called him a magician, poet, and madman instead.",
+      "Quraysh leaders rejected Islam, fearing it would destroy their wealth, power, and social status. They couldn't deny Muhammad ﷺ's ﷺ honesty and character, so they called him a magician, poet, and madman instead.",
       "They offered him wealth, kingship, and beautiful women if he would stop preaching. Muhammad ﷺ refused everything, saying even if they placed the sun in his right hand and moon in his left, he wouldn't abandon this message.",
       "Quraysh tried different tactics: bribery, threats, mockery, and lies. They spread rumors and discouraged people from listening. Despite all opposition, the Prophet ﷺ remained patient and continued calling people to worship Allah alone."
     ],
@@ -477,7 +477,7 @@ const prophetLifeLessons = [
     title: "The Night Journey - Isra",
     description: [
       "During the Year of Sorrow, a miraculous event occurred. One night, Angel Jibra'il came with the Buraq, a blessed riding animal. The Prophet ﷺ was taken from Makkah to Al-Aqsa Mosque in Jerusalem in a single night—a journey taking weeks by caravan.",
-      "In Jerusalem, the Prophet ﷺ led all previous prophets in prayer. This gathering symbolized the unity of Allah's message throughout history and confirmed Muhammad's ﷺ position as the seal of prophets and final messenger to all humanity.",
+      "In Jerusalem, the Prophet ﷺ led all previous prophets in prayer. This gathering symbolized the unity of Allah's message throughout history and confirmed Muhammad ﷺ's ﷺ position as the seal of prophets and final messenger to all humanity.",
       "The journey showed Allah honoring His messenger after Ta'if's humiliation. When worldly people rejected him, Allah elevated him to heights no human had reached. This trip strengthened the Prophet ﷺ and proved his truthfulness through this supernatural miracle."
     ],
     evidence: {
@@ -511,7 +511,7 @@ const prophetLifeLessons = [
     title: "Return and Mockery",
     description: [
       "When the Prophet ﷺ told Quraysh about his night journey, they mocked him viciously. They said it was impossible to travel to Jerusalem and back in one night. Some Muslims with weak faith even left Islam over this story.",
-      "Abu Bakr was asked about the journey. Without hesitation, he said, 'If Muhammad said it, then it's true.' From that day, he was called As-Siddiq, 'The Truthful.' His unwavering belief strengthened other Muslims during this test of faith.",
+      "Abu Bakr was asked about the journey. Without hesitation, he said, 'If Muhammad ﷺ said it, then it's true.' From that day, he was called As-Siddiq, 'The Truthful.' His unwavering belief strengthened other Muslims during this test of faith.",
       "The Prophet ﷺ described Jerusalem's details perfectly, though he'd never been there before. He even told them about a caravan returning to Makkah and when it would arrive. Everything occurred exactly as he described, proving his truthfulness miraculously."
     ],
     evidence: {
@@ -1160,7 +1160,7 @@ const prophetLifeLessons = [
     id: 68,
     title: "Signing the Treaty",
     description: [
-      "The treaty was written. When the scribe wrote 'Muhammad, Messenger of Allah,' Suhay objected, refusing to acknowledge prophethood. The Prophet ﷺ told Ali to erase it and write 'Muhammad son of Abdullah' instead. Ali refused emotionally. The Prophet ﷺ erased it himself—a lesson in humility.",
+      "The treaty was written. When the scribe wrote 'Muhammad ﷺ, Messenger of Allah,' Suhay objected, refusing to acknowledge prophethood. The Prophet ﷺ told Ali to erase it and write 'Muhammad ﷺ son of Abdullah' instead. Ali refused emotionally. The Prophet ﷺ erased it himself—a lesson in humility.",
       "This treaty seemed like defeat but was actually a brilliant victory. The ten-year peace allowed Islam to spread without war. Tribes observed Muslims safely. Many converted. Within two years, Islam grew more than the previous twenty years combined, proving the treaty's wisdom beyond initial appearance.",
       "The Qur'an called Hudaybiyyah a 'clear victory.' Companions didn't understand initially, but time proved Allah's wisdom. Sometimes apparent humiliation serves greater purposes. Patience and trust in divine planning leads to outcomes beyond human strategic thinking and immediate emotional reactions to disappointing circumstances."
     ],
@@ -1336,11 +1336,11 @@ const prophetLifeLessons = [
     description: [
       "Three months after Farewell Hajj, the Prophet ﷺ fell ill. Despite intense fever, he continued leading prayers while he could. When unable to stand, he asked Abu Bakr to lead. The companions understood this indicated Abu Bakr should lead Muslims after the Prophet's ﷺ death eventually.",
       "On Monday morning, 12 Rabi al-Awwal, the Prophet ﷺ briefly felt better. He smiled watching Muslims pray, his face radiating happiness at seeing his ummah united in worship. Then he returned to Aisha's room, rested his head on her lap, and looked toward heaven in his final moments.",
-      "He whispered, 'Rather, the highest companion in Paradise,' choosing eternal life over worldly life. His blessed soul departed at midday. The companions were devastated. Umar denied it. Abu Bakr proclaimed, 'Whoever worshipped Muhammad, Muhammad is dead. Whoever worships Allah, Allah is Ever-Living, never dies.'"
+      "He whispered, 'Rather, the highest companion in Paradise,' choosing eternal life over worldly life. His blessed soul departed at midday. The companions were devastated. Umar denied it. Abu Bakr proclaimed, 'Whoever worshipped Muhammad ﷺ, Muhammad ﷺ is dead. Whoever worships Allah, Allah is Ever-Living, never dies.'"
     ],
     evidence: {
       arabic: "وَمَا مُحَمَّدٌ إِلَّا رَسُولٌ قَدْ خَلَتْ مِن قَبْلِهِ الرُّسُلُ ۚ أَفَإِن مَّاتَ أَوْ قُتِلَ انقَلَبْتُمْ عَلَىٰ أَعْقَابِكُمْ",
-      translation: "Muhammad is not but a messenger. Other messengers have passed on before him. So if he was to die or be killed, would you turn back on your heels?",
+      translation: "Muhammad ﷺ is not but a messenger. Other messengers have passed on before him. So if he was to die or be killed, would you turn back on your heels?",
       source: "Qur'an 3:144"
     },
     keyLesson: "The Prophet ﷺ was human and mortal; we worship Allah alone, following the Prophet's ﷺ perfect example forever.",

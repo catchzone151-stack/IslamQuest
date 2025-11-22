@@ -60,7 +60,7 @@ const graveLessons = [
     title: "Questioning (Munkar & Nakīr)",
     description: [
       "Two angels named Munkar and Nakīr come to question every person in the grave shortly after burial. They ask three critical questions: Who is your Lord? What is your religion? Who is your Prophet?",
-      "The believer who lived with sincere faith answers confidently and correctly: My Lord is Allah, my religion is Islam, and my Prophet is Muhammad. The angels make the grave spacious, comfortable, and filled with light.",
+      "The believer who lived with sincere faith answers confidently and correctly: My Lord is Allah, my religion is Islam, and my Prophet is Muhammad ﷺ. The angels make the grave spacious, comfortable, and filled with light.",
       "The hypocrite and disbeliever struggle to answer, saying they don't know or just followed others blindly. The angels make their grave tight and dark, squeezing them painfully. This is the beginning of their grave's punishment."
     ],
     evidence: {

@@ -25,7 +25,7 @@ const endTimesLessons = [
     id: 2,
     title: "Imam Mahdi",
     description: [
-      "The Mahdi will be a righteous leader from the Prophet's ﷺ family who appears during a time of great oppression and injustice. His name will be Muhammad ibn Abdullah like the Prophet ﷺ.",
+      "The Mahdi will be a righteous leader from the Prophet's ﷺ family who appears during a time of great oppression and injustice. His name will be Muhammad ﷺ ibn Abdullah like the Prophet ﷺ.",
       "He will unite the Muslims and establish justice throughout the earth. People will live in peace and prosperity under his leadership. Wealth will be distributed fairly and no one will be in need.",
       "The Mahdi will rule for seven years according to authentic hadith. During his time, Prophet ʿĪsā will descend from Heaven and they will pray together, with ʿĪsā praying behind the Mahdi."
     ],

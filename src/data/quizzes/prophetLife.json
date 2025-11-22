@@ -78,7 +78,7 @@
         "answer": 0
       },
       {
-        "question": "What does the name 'Muhammad' mean?",
+        "question": "What does the name 'Muhammad ﷺ' mean?",
         "options": [
           "The leader",
           "The trustworthy",
@@ -93,7 +93,7 @@
     "lessonId": 3,
     "questions": [
       {
-        "question": "Who was Muhammad's ﷺ foster mother in the desert?",
+        "question": "Who was Muhammad ﷺ's ﷺ foster mother in the desert?",
         "options": [
           "Aminah",
           "Halimah as-Sa'diyah",
@@ -183,7 +183,7 @@
     "lessonId": 5,
     "questions": [
       {
-        "question": "At what age did Muhammad's ﷺ mother Aminah pass away?",
+        "question": "At what age did Muhammad ﷺ's ﷺ mother Aminah pass away?",
         "options": [
           "When he was four",
           "When he was six",
@@ -203,7 +203,7 @@
         "answer": 1
       },
       {
-        "question": "Who became Muhammad's ﷺ guardian after Abdul-Muttalib died?",
+        "question": "Who became Muhammad ﷺ's ﷺ guardian after Abdul-Muttalib died?",
         "options": [
           "Abu Jahl",
           "Abu Sufyan",
@@ -638,7 +638,7 @@
           "La ilaha illallah",
           "Ahad, Ahad (One, One)",
           "Allahu Akbar",
-          "Muhammad Rasulullah"
+          "Muhammad ﷺ Rasulullah"
         ],
         "answer": 1
       },
@@ -2196,7 +2196,7 @@
         "question": "What verse was revealed after this?",
         "options": [
           "Don't fight",
-          "Muhammad is only a messenger; if he dies will you turn back?",
+          "Muhammad ﷺ is only a messenger; if he dies will you turn back?",
           "Victory is guaranteed",
           "Never trust anyone"
         ],
@@ -3022,7 +3022,7 @@
         "options": [
           "The date",
           "The location",
-          "Writing 'Muhammad, Messenger of Allah' - refused to acknowledge prophethood",
+          "Writing 'Muhammad ﷺ, Messenger of Allah' - refused to acknowledge prophethood",
           "The terms"
         ],
         "answer": 2
@@ -3030,10 +3030,10 @@
       {
         "question": "What did the Prophet ﷺ tell Ali to write instead?",
         "options": [
-          "Muhammad the Leader",
-          "Muhammad son of Abdullah",
-          "Muhammad the Prophet",
-          "Muhammad the Truthful"
+          "Muhammad ﷺ the Leader",
+          "Muhammad ﷺ son of Abdullah",
+          "Muhammad ﷺ the Prophet",
+          "Muhammad ﷺ the Truthful"
         ],
         "answer": 1
       },
@@ -3502,7 +3502,7 @@
         "options": [
           "Don't be sad",
           "He will come back",
-          "Whoever worshipped Muhammad, he is dead; whoever worships Allah, Allah is Ever-Living",
+          "Whoever worshipped Muhammad ﷺ, he is dead; whoever worships Allah, Allah is Ever-Living",
           "We must choose a new prophet"
         ],
         "answer": 2
