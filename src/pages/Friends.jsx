@@ -5,7 +5,7 @@ import { useUserStore } from "../store/useUserStore";
 import { useNavigate } from "../hooks/useNavigate";
 import { Search, UserPlus, Users, Trophy, Activity, X, Send, Swords } from "lucide-react";
 import { LevelBadgeCompact } from "../components/LevelBadge";
-import { getAvatarImage } from "../utils/avatarUtils";
+import { applyAvatarOverride } from "../utils/avatarOverride";
 
 export default function Friends() {
   const navigate = useNavigate();
@@ -360,10 +360,6 @@ function FriendsTab({ friends, searchQuery, setSearchQuery, handleSearch, setSho
 }
 
 function FriendCard({ friend, onViewProfile, onMessage, onChallenge }) {
-  const { avatar: userAvatar } = useUserStore();
-  // For friend cards, display friend's avatar (not current user)
-  const displayAvatar = friend.id === "current_user" ? userAvatar : friend.avatar;
-  
   return (
     <div style={{
       background: "linear-gradient(135deg, rgba(26, 58, 82, 0.6) 0%, rgba(11, 30, 45, 0.8) 100%)",
@@ -376,7 +372,7 @@ function FriendCard({ friend, onViewProfile, onMessage, onChallenge }) {
       <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
         {/* Avatar */}
         <img
-          src={getAvatarImage(displayAvatar, { userId: friend.id, nickname: friend.name })}
+          src={applyAvatarOverride(friend)}
           alt={friend.name}
           onClick={onViewProfile}
           style={{
@@ -530,7 +526,7 @@ function RequestCard({ request, type, onAccept, onDecline, onCancel }) {
     }}>
       <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
         <img
-          src={getAvatarImage(request.avatar, { userId: request.id, nickname: request.name })}
+          src={applyAvatarOverride(request)}
           alt={request.name}
           style={{
             width: 50,
@@ -663,7 +659,7 @@ function LeaderboardTab({ leaderboardTab, setLeaderboardTab, friendsLeaderboard,
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 16, justifyContent: "center" }}>
             <img
-              src={getAvatarImage(friendOfWeek.avatar, { userId: friendOfWeek.id, nickname: friendOfWeek.name })}
+              src={applyAvatarOverride(friendOfWeek)}
               alt={friendOfWeek.name}
               style={{
                 width: 60,
@@ -712,11 +708,6 @@ function LeaderboardTab({ leaderboardTab, setLeaderboardTab, friendsLeaderboard,
             const medals = ["🥇", "🥈", "🥉"];
             const rank = index + 1;
             
-            // Ensure current user always uses fresh avatar from userStore
-            const displayAvatar = user.id === "current_user" 
-              ? useUserStore.getState().avatar 
-              : user.avatar;
-            
             return (
               <div
                 key={user.id}
@@ -749,7 +740,7 @@ function LeaderboardTab({ leaderboardTab, setLeaderboardTab, friendsLeaderboard,
                   {isTop3 ? medals[index] : rank}
                 </div>
                 <img
-                  src={getAvatarImage(displayAvatar, { userId: user.id, nickname: user.name })}
+                  src={applyAvatarOverride(user)}
                   alt={user.name}
                   style={{
                     width: 50,
@@ -900,7 +891,7 @@ function MiniProfileModal({ friend, onClose, onMessage, onChallenge, onRemove })
 
         <div style={{ textAlign: "center", marginBottom: 24 }}>
           <img
-            src={getAvatarImage(friend.id === "current_user" ? useUserStore.getState().avatar : friend.avatar, { userId: friend.id, nickname: friend.name })}
+            src={applyAvatarOverride(friend)}
             alt={friend.name}
             style={{
               width: 100,
