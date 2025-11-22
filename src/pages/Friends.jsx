@@ -98,8 +98,13 @@ export default function Friends() {
   const fullFriendsList = [...cleanedFriendsList, currentUser].sort((a, b) => b.xp - a.xp);
   const fullGlobalList = [...cleanedGlobalList, currentUser].sort((a, b) => b.xp - a.xp);
   
-  friendsLeaderboard = fullFriendsList;
-  globalLeaderboard = fullGlobalList;
+  // FORCE OVERRIDE: Ensure current user's avatar is always their selected avatar
+  friendsLeaderboard = fullFriendsList.map(user => 
+    user.id === currentUserId ? { ...user, avatar: freshUserAvatar } : user
+  );
+  globalLeaderboard = fullGlobalList.map(user => 
+    user.id === currentUserId ? { ...user, avatar: freshUserAvatar } : user
+  );
 
   const totalRequests = incomingRequests.length + outgoingRequests.length;
 
