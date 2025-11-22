@@ -21,6 +21,16 @@ export default function Lesson() {
     else navigate(-1);
   }
 
+  // Wire exit confirmation when navigating away from lesson
+  function handleExit() {
+    const { showModal, MODAL_TYPES } = require("../store/modalStore");
+    const { useModalStore } = require("../store/modalStore");
+    const store = useModalStore.getState();
+    store.showModal("EXIT_CONFIRMATION", {
+      onConfirm: () => handleBack()
+    });
+  }
+
   if (!lesson) {
     return (
       <div

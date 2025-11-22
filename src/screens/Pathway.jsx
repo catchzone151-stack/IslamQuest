@@ -8,7 +8,7 @@ import { useUserStore } from "../store/useUserStore";
 import { getLessonsForPath } from "../data/lessonLoader.js";
 
 // Mascots
-import PathMascot from "../assets/mascots/mascot_tasbih.webp";
+import CompletionMascot from "../assets/mascots/mascot_congratulation.webp";
 
 export default function Pathway() {
   const { pathId } = useParams();
@@ -118,7 +118,7 @@ export default function Pathway() {
         }}
       >
         <img
-          src={PathMascot}
+          src={CompletionMascot}
           alt="Completed"
           style={{
             width: 120,
