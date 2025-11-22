@@ -1,7 +1,7 @@
 // src/store/progressStore.js
 import { create } from "zustand";
 import { getCurrentLevel, checkLevelUp } from "../utils/diamondLevels";
-import { FREE_LESSON_LIMITS } from "./premiumConfig";
+import { FREE_LESSON_LIMITS, PREMIUM_ONLY_PATHS, isPremiumOnlyPath } from "./premiumConfig";
 import { useModalStore, MODAL_TYPES } from "./modalStore";
 import { useDeveloperStore } from "./developerStore";
 
@@ -45,7 +45,10 @@ export const useProgressStore = create((set, get) => ({
   hasPremium: false, // Deprecated: derived from premiumStatus, kept for backwards compatibility
   
   // 💳 Premium System (Supabase-ready)
-  premiumStatus: "free", // "free" | "individual" | "family"
+  premium: false, // New: Simple boolean for premium status
+  premiumType: null, // null | "individual" | "family"
+  premiumActivatedAt: null, // Timestamp when premium was activated
+  premiumStatus: "free", // "free" | "individual" | "family" (kept for backwards compatibility)
   familyPlanId: null, // For family plan sync (future Supabase feature)
   familyMembers: [], // Array of { id, name, avatar, xp } for family plan
   
@@ -498,23 +501,114 @@ export const useProgressStore = create((set, get) => ({
     return get().isLessonUnlocked(pathId, lessonId);
   },
 
-  // 💳 Premium unlock (updates both premiumStatus and hasPremium)
+  // 🔒 NEW UNIFIED LOCKING SYSTEM (Spec-compliant)
+  // Returns the lock state of a lesson: "unlocked" | "progressLocked" | "premiumLocked"
+  getLessonLockState: (pathId, lessonId) => {
+    // 🧪 BETA MODE: Everything unlocked for testing
+    if (useDeveloperStore.getState().betaMode) {
+      return "unlocked";
+    }
+    
+    const { lockedLessons, premium, premiumStatus } = get();
+    const isUserPremium = premium || premiumStatus !== "free";
+    
+    // Lesson 1 is always unlocked (except for premium-only paths)
+    if (lessonId === 1) {
+      // Check if path itself is premium-only
+      if (isPremiumOnlyPath(pathId) && !isUserPremium) {
+        return "premiumLocked";
+      }
+      return "unlocked";
+    }
+    
+    // Check sequential progress lock FIRST
+    const isSequentiallyUnlocked = !!(
+      lockedLessons[pathId] &&
+      lockedLessons[pathId][lessonId] &&
+      lockedLessons[pathId][lessonId].unlocked
+    );
+    
+    if (!isSequentiallyUnlocked) {
+      return "progressLocked"; // Must complete previous lessons first
+    }
+    
+    // Check premium paywall limits
+    if (!isUserPremium) {
+      const freeLimit = FREE_LESSON_LIMITS[pathId] || 0;
+      if (lessonId > freeLimit) {
+        return "premiumLocked"; // Beyond free tier limit
+      }
+    }
+    
+    return "unlocked";
+  },
+
+  // 🔒 Check if lesson is locked due to premium paywall
+  isPremiumLocked: (pathId, lessonId) => {
+    const lockState = get().getLessonLockState(pathId, lessonId);
+    return lockState === "premiumLocked";
+  },
+
+  // 🔒 Check if user can access a lesson (for UI/navigation)
+  canAccessLesson: (pathId, lessonId) => {
+    const lockState = get().getLessonLockState(pathId, lessonId);
+    return lockState === "unlocked";
+  },
+
+  // 🔒 Apply locking rules (recalculate all locks based on current progress)
+  applyLockingRules: () => {
+    const { lessonStates } = get();
+    const locks = {};
+    
+    // For each path, unlock lessons based on completion
+    for (let pathId = 1; pathId <= 14; pathId++) {
+      locks[pathId] = {};
+      const pathState = lessonStates[pathId] || {};
+      const passedLessons = Object.keys(pathState)
+        .filter(lessonId => pathState[lessonId]?.passed)
+        .map(Number)
+        .sort((a, b) => a - b);
+      
+      // Find the highest completed lesson
+      const maxCompleted = passedLessons.length > 0 ? Math.max(...passedLessons) : 0;
+      
+      // Unlock all lessons up to and including the next lesson after max completed
+      for (let lessonId = 1; lessonId <= maxCompleted + 1; lessonId++) {
+        locks[pathId][lessonId] = { unlocked: true };
+      }
+    }
+    
+    set({ lockedLessons: locks });
+    get().saveProgress();
+  },
+
+  // 💳 Premium unlock (updates all premium fields)
   unlockPremium: (planType = "individual") => {
+    const now = Date.now();
     set({ 
-      premiumStatus: planType, // "individual" or "family"
-      hasPremium: true,
+      premium: true,
+      premiumType: planType,
+      premiumActivatedAt: now,
+      premiumStatus: planType, // backwards compatibility
+      hasPremium: true, // backwards compatibility
     });
     get().saveProgress();
   },
 
-  // 💳 PLACEHOLDER: Purchase Individual Plan (£4.99)
-  // Later: integrate with payment provider (Stripe/RevenueCat)
-  purchaseIndividual: () => {
-    // Simulate payment success
+  // 💳 ASYNC PLACEHOLDER: Purchase Individual Plan (£4.99)
+  // Later: integrate with payment provider (Stripe/RevenueCat/Supabase)
+  purchaseIndividual: async () => {
+    const now = Date.now();
+    // Simulate async payment (will be real API call later)
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
     // Clear family data when switching to individual plan
     set({ 
-      premiumStatus: "individual",
-      hasPremium: true,
+      premium: true,
+      premiumType: "individual",
+      premiumActivatedAt: now,
+      premiumStatus: "individual", // backwards compatibility
+      hasPremium: true, // backwards compatibility
       familyPlanId: null,
       familyMembers: [],
     });
@@ -522,16 +616,22 @@ export const useProgressStore = create((set, get) => ({
     return { success: true, plan: "individual" };
   },
 
-  // 💳 PLACEHOLDER: Purchase Family Plan (£18 for 6 users)
+  // 💳 ASYNC PLACEHOLDER: Purchase Family Plan (£18 for 6 users)
   // Later: integrate with payment provider + Supabase for family sync
-  purchaseFamily: () => {
+  purchaseFamily: async () => {
+    const now = Date.now();
     // Generate random family plan ID (will come from Supabase later)
     const familyId = `family_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
-    // Simulate payment success
+    // Simulate async payment (will be real API call later)
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
     set({ 
-      premiumStatus: "family",
-      hasPremium: true,
+      premium: true,
+      premiumType: "family",
+      premiumActivatedAt: now,
+      premiumStatus: "family", // backwards compatibility
+      hasPremium: true, // backwards compatibility
       familyPlanId: familyId,
       familyMembers: [], // Owner can invite up to 5 members
     });

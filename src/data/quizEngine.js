@@ -89,10 +89,14 @@ export const getQuizForLesson = (lessonId, pathId = 1) => {
 };
 
 // Calculate results, XP, and coins
+// Uses 75% passing threshold (changed from hardcoded 3/4)
 export const calculateResults = (answers) => {
   const total = answers.length;
   const correct = answers.filter((a) => a.correct).length;
-  const passed = correct >= 3;
+  
+  // 75% passing threshold (universal rule)
+  const passingThreshold = total * 0.75;
+  const passed = correct >= passingThreshold;
 
   // XP / Coins system
   const baseXP = correct * 20;
