@@ -4,6 +4,7 @@ import { useNavigate } from "../../hooks/useNavigate";
 import { useChallengeStore, CHALLENGE_MODES, BOSS_LEVEL } from "../../store/challengeStore";
 import { useProgressStore } from "../../store/progressStore";
 import { useModalStore, MODAL_TYPES } from "../../store/modalStore";
+import { useAnalytics } from "../../hooks/useAnalytics";
 import assets from "../../assets/assets";
 import mascot_running from "../../assets/mascots/mascot_running.webp";
 import "./ChallengeGame.css";
@@ -43,6 +44,7 @@ export default function ChallengeGame() {
   const navigate = useNavigate();
   const { challengeId } = useParams();
   const { showModal } = useModalStore();
+  const analytics = useAnalytics();
   
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -85,6 +87,13 @@ export default function ChallengeGame() {
 
   useEffect(() => {
     console.log('🎮 Loading challenge questions', { isBoss, challengeId, mode });
+    
+    // Track challenge started for analytics
+    if (isBoss) {
+      analytics('challenge_started', { mode: 'boss_level' });
+    } else if (challenge && mode) {
+      analytics('challenge_started', { mode: mode.id, opponent: challenge.opponentId });
+    }
     
     // Start tracking time when game begins
     startTimeRef.current = Date.now();
@@ -340,6 +349,11 @@ export default function ChallengeGame() {
       useChallengeStore.getState().saveBossAttempt(finalScore, finalAnswers);
       const result = finalScore >= BOSS_LEVEL.questionCount * 0.6 ? "win" : "lose";
       useChallengeStore.getState().awardRewards("boss_level", result);
+      
+      // Track boss level completion for analytics
+      if (result === "win") {
+        analytics('boss_win', { score: finalScore, total: BOSS_LEVEL.questionCount });
+      }
     } else if (challenge) {
       const currentUserId = "current_user";
       const isChallenger = challenge.challengerId === currentUserId;
@@ -364,6 +378,11 @@ export default function ChallengeGame() {
           rewardType = "win";
         }
         useChallengeStore.getState().awardRewards(updatedChallenge.mode, rewardType);
+        
+        // Track challenge outcome for analytics
+        if (rewardType === "win") {
+          analytics('challenge_won', { mode: updatedChallenge.mode, opponent: updatedChallenge.opponentId });
+        }
       }
     }
 

@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "../hooks/useNavigate";
 import { useDailyQuestStore } from "../store/dailyQuestStore";
+import { useAnalytics } from "../hooks/useAnalytics";
 import QuestionCard from "../components/quiz/QuestionCard";
 import assets from "../assets/assets";
 
 export default function DailyQuestGame() {
   const navigate = useNavigate();
   const { questions, completeDailyQuest, getQuestStatus } = useDailyQuestStore();
+  const analytics = useAnalytics();
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selected, setSelected] = useState(null);
@@ -44,6 +46,15 @@ export default function DailyQuestGame() {
     } else {
       const correctCount = newAnswers.filter(a => a.correct).length;
       completeDailyQuest(correctCount);
+      
+      // Track daily quest completion for analytics
+      analytics('daily_quiz_completed', {
+        score: correctCount,
+        total: totalQuestions,
+        xpEarned: 60,
+        coinsEarned: 20
+      });
+      
       setShowResults(true);
     }
   };

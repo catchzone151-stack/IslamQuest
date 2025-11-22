@@ -5,6 +5,7 @@ import { getQuizForLesson, calculateResults } from "../data/quizEngine";
 import { mascotQuizStates } from "../data/mascotQuizStates";
 import { useProgressStore } from "../store/progressStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
+import { useAnalytics } from "../hooks/useAnalytics";
 
 import QuizHeader from "../components/quiz/QuizHeader";
 import QuestionCard from "../components/quiz/QuestionCard";
@@ -23,6 +24,7 @@ const shuffleQuestion = (q) => {
 const QuizScreen = () => {
   const { pathId, lessonId } = useParams();
   const navigate = useNavigate();
+  const analytics = useAnalytics();
 
   const [quizData, setQuizData] = useState([]);
   const [currentQ, setCurrentQ] = useState(0);
@@ -85,6 +87,17 @@ const QuizScreen = () => {
       parseInt(pathId),
       parseInt(lessonId)
     );
+    
+    // Track quiz completion for analytics
+    analytics('quiz_completed', {
+      pathId: parseInt(pathId),
+      lessonId: parseInt(lessonId),
+      score: res.correct,
+      total: res.total,
+      passed: res.passed,
+      xpEarned: res.xp,
+      coinsEarned: res.coins
+    });
     
     setIsQuizDone(true);
     setMascotMood(res.passed ? "pass" : "fail");

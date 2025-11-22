@@ -36,6 +36,10 @@ export default function Friends() {
 
   useEffect(() => {
     clearRequestsBadge();
+    // Simulate leaderboard loading
+    setIsLoadingLeaderboard(true);
+    const timer = setTimeout(() => setIsLoadingLeaderboard(false), 800);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleSearch = (e) => {

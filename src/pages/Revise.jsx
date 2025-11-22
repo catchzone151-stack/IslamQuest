@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import ScreenContainer from "../components/ScreenContainer";
 import { useReviseStore } from "../store/reviseStore";
 import { useProgressStore } from "../store/progressStore";
+import { useAnalytics } from "../hooks/useAnalytics";
 import QuestionCard from "../components/quiz/QuestionCard";
 import assets from "../assets/assets";
 
@@ -23,6 +24,7 @@ export default function Revise() {
   } = useReviseStore();
 
   const { addXPAndCoins } = useProgressStore();
+  const analytics = useAnalytics();
 
   // Load revise data on mount
   useEffect(() => {
@@ -104,12 +106,25 @@ export default function Revise() {
 
       if (totalXP > 0) {
         addXPAndCoins(totalXP, 0);
+        analytics('revision_completed', {
+          mode: 'mistakes',
+          score: correctCount,
+          total: totalQuestions,
+          xpEarned: totalXP
+        });
       }
     } else if (mode === "smart") {
       // Rewards for smart mode
       const xp = 25;
       const coins = 10;
       addXPAndCoins(xp, coins);
+      analytics('revision_completed', {
+        mode: 'smart',
+        score: correctCount,
+        total: totalQuestions,
+        xpEarned: xp,
+        coinsEarned: coins
+      });
     }
 
     setShowResults(true);
