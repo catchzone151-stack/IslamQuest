@@ -161,10 +161,20 @@ export default function Lesson() {
           borderRadius: "14px",
           padding: "16px",
           marginBottom: "16px",
+          wordWrap: "break-word",
+          overflowWrap: "break-word",
+          wordBreak: "break-word",
         }}
       >
         {lesson.description?.map((para, i) => (
-          <p key={i} style={{ marginBottom: "12px" }}>
+          <p key={i} style={{ 
+            marginBottom: "12px",
+            wordWrap: "break-word",
+            overflowWrap: "break-word",
+            wordBreak: "break-word",
+            hyphens: "auto",
+            overflow: "hidden",
+          }}>
             {para}
           </p>
         ))}
