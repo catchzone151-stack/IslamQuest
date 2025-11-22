@@ -9,7 +9,7 @@ import { getAvatarImage } from "../utils/avatarUtils";
 
 export default function Friends() {
   const navigate = useNavigate();
-  const { id: currentUserId, avatar: currentUserAvatar } = useUserStore();
+  const { id: currentUserId, name: currentUserName2, avatar: freshUserAvatar } = useUserStore();
   const [activeTab, setActiveTab] = useState("friends");
   const [searchQuery, setSearchQuery] = useState("");
   const [showMiniProfile, setShowMiniProfile] = useState(null);
@@ -37,7 +37,6 @@ export default function Friends() {
   } = useFriendsStore();
 
   const { xp: currentUserXP, coins: currentUserCoins, streak: currentUserStreak, displayName: currentUserName } = useProgressStore();
-  const { name: currentUserName2, avatar: currentUserAvatar } = useUserStore();
 
   useEffect(() => {
     clearRequestsBadge();
@@ -74,9 +73,6 @@ export default function Friends() {
     setShowMiniProfile(null);
   };
 
-  // Get current user id and avatar from userStore
-  const { avatar: freshUserAvatar, id: currentUserId } = useUserStore();
-  
   let friendsLeaderboard = getFriendsLeaderboard();
   let globalLeaderboard = getGlobalLeaderboard();
 
@@ -349,6 +345,8 @@ function FriendsTab({ friends, searchQuery, setSearchQuery, handleSearch, setSho
             <FriendCard
               key={friend.id}
               friend={friend}
+              currentUserId={currentUserId}
+              freshUserAvatar={freshUserAvatar}
               onViewProfile={() => setShowMiniProfile(friend)}
               onMessage={() => setShowMessageModal(friend)}
               onChallenge={() => onChallenge(friend.id)}
@@ -360,8 +358,7 @@ function FriendsTab({ friends, searchQuery, setSearchQuery, handleSearch, setSho
   );
 }
 
-function FriendCard({ friend, onViewProfile, onMessage, onChallenge }) {
-  const { id: currentUserId, avatar: currentUserAvatar } = useUserStore();
+function FriendCard({ friend, currentUserId, freshUserAvatar, onViewProfile, onMessage, onChallenge }) {
   return (
     <div style={{
       background: "linear-gradient(135deg, rgba(26, 58, 82, 0.6) 0%, rgba(11, 30, 45, 0.8) 100%)",
@@ -374,7 +371,7 @@ function FriendCard({ friend, onViewProfile, onMessage, onChallenge }) {
       <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
         {/* Avatar */}
         <img
-          src={getAvatarImage(friend.id === currentUserId ? currentUserAvatar : friend.avatar, { userId: friend.id, nickname: friend.name })}
+          src={getAvatarImage(friend.id === currentUserId ? freshUserAvatar : friend.avatar, { userId: friend.id, nickname: friend.name })}
           alt={friend.name}
           onClick={onViewProfile}
           style={{
@@ -515,8 +512,7 @@ function RequestsTab({ incomingRequests, outgoingRequests, acceptFriendRequest, 
   );
 }
 
-function RequestCard({ request, type, onAccept, onDecline, onCancel }) {
-  const { id: currentUserId, avatar: currentUserAvatar } = useUserStore();
+function RequestCard({ request, type, currentUserId, freshUserAvatar, onAccept, onDecline, onCancel }) {
   return (
     <div style={{
       background: "linear-gradient(135deg, rgba(26, 58, 82, 0.6) 0%, rgba(11, 30, 45, 0.8) 100%)",
@@ -529,7 +525,7 @@ function RequestCard({ request, type, onAccept, onDecline, onCancel }) {
     }}>
       <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
         <img
-          src={getAvatarImage(request.id === currentUserId ? currentUserAvatar : request.avatar, { userId: request.id, nickname: request.name })}
+          src={getAvatarImage(request.id === currentUserId ? freshUserAvatar : request.avatar, { userId: request.id, nickname: request.name })}
           alt={request.name}
           style={{
             width: 50,
@@ -662,7 +658,7 @@ function LeaderboardTab({ leaderboardTab, setLeaderboardTab, friendsLeaderboard,
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 16, justifyContent: "center" }}>
             <img
-              src={getAvatarImage(friendOfWeek.id === currentUserId ? currentUserAvatar : friendOfWeek.avatar, { userId: friendOfWeek.id, nickname: friendOfWeek.name })}
+              src={getAvatarImage(friendOfWeek.id === currentUserId ? freshUserAvatar : friendOfWeek.avatar, { userId: friendOfWeek.id, nickname: friendOfWeek.name })}
               alt={friendOfWeek.name}
               style={{
                 width: 60,
@@ -743,7 +739,7 @@ function LeaderboardTab({ leaderboardTab, setLeaderboardTab, friendsLeaderboard,
                   {isTop3 ? medals[index] : rank}
                 </div>
                 <img
-                  src={getAvatarImage(user.id === currentUserId ? currentUserAvatar : user.avatar, { userId: user.id, nickname: user.name })}
+                  src={getAvatarImage(user.id === currentUserId ? freshUserAvatar : user.avatar, { userId: user.id, nickname: user.name })}
                   alt={user.name}
                   style={{
                     width: 50,
@@ -844,8 +840,7 @@ function ActivityTab({ activityFeed }) {
   );
 }
 
-function MiniProfileModal({ friend, onClose, onMessage, onChallenge, onRemove }) {
-  const { id: currentUserId, avatar: currentUserAvatar } = useUserStore();
+function MiniProfileModal({ friend, currentUserId, freshUserAvatar, onClose, onMessage, onChallenge, onRemove }) {
   const friendsSince = friend.addedAt ? new Date(friend.addedAt).toLocaleDateString() : "Recently";
 
   return (
@@ -895,7 +890,7 @@ function MiniProfileModal({ friend, onClose, onMessage, onChallenge, onRemove })
 
         <div style={{ textAlign: "center", marginBottom: 24 }}>
           <img
-            src={getAvatarImage(friend.id === currentUserId ? currentUserAvatar : friend.avatar, { userId: friend.id, nickname: friend.name })}
+            src={getAvatarImage(friend.id === currentUserId ? freshUserAvatar : friend.avatar, { userId: friend.id, nickname: friend.name })}
             alt={friend.name}
             style={{
               width: 100,
