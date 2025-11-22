@@ -152,30 +152,32 @@ export default function PathPage() {
         }}
       >
         {/* LEFT COLUMN: Section Headings (aligned to first lesson of each section) */}
-        <div style={{ flex: "0 0 25%", minWidth: 0 }}>
+        <div style={{ flex: "0 0 30%", minWidth: 0, paddingRight: "8px" }}>
           {groupedLessons.map((section, sectionIdx) =>
             section.lessons.map((lesson, lessonIdx) => (
               <div
                 key={`left-${lesson.id}`}
                 style={{
                   marginBottom: lessonIdx < section.lessons.length - 1 ? "48px" : "120px",
-                  paddingTop: "12px",
+                  minHeight: "20px",
                 }}
               >
                 {/* Show section heading ONLY on first lesson of each section */}
-                {lessonIdx === 0 && (
+                {lessonIdx === 0 && section.name && (
                   <div
                     style={{
-                      fontSize: "0.95rem",
+                      fontSize: "0.9rem",
                       fontWeight: 700,
                       color: "#D4AF37",
                       textAlign: "left",
-                      lineHeight: 1.2,
+                      lineHeight: 1.25,
                       wordWrap: "break-word",
                       wordBreak: "break-word",
                       overflowWrap: "break-word",
-                      letterSpacing: "0.3px",
+                      hyphens: "auto",
+                      letterSpacing: "0.5px",
                       textTransform: "uppercase",
+                      paddingTop: "8px",
                     }}
                   >
                     {section.name}
