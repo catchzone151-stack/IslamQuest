@@ -52,7 +52,7 @@ export default function PathPage() {
 
   const { 
     paths, 
-    isLessonUnlocked, 
+    canAccessLesson, 
     premiumStatus, 
     purchaseIndividual,
     purchaseFamily,
@@ -75,7 +75,7 @@ export default function PathPage() {
   })();
 
   const handleLessonClick = (lesson) => {
-    const unlocked = isLessonUnlocked(pathId, lesson.id);
+    const unlocked = canAccessLesson(pathId, lesson.id);
     
     if (!unlocked) {
       const freeLimit = FREE_LESSON_LIMITS[pathId] || 0;
@@ -243,7 +243,7 @@ export default function PathPage() {
           {/* Lesson Circles */}
           {groupedLessons.map((section, sectionIdx) =>
             section.lessons.map((lesson, lessonIdx) => {
-              const unlocked = isLessonUnlocked(pathId, lesson.id);
+              const unlocked = canAccessLesson(pathId, lesson.id);
               const isCurrent = lesson.id === currentLessonId;
 
               return (

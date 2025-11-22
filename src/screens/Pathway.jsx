@@ -21,7 +21,7 @@ export default function Pathway() {
   const numericPathId = Number(pathId);
   const [showCompletion, setShowCompletion] = React.useState(false);
 
-  const { paths, lessonStates, isLessonUnlocked, premium, premiumStatus } = useProgressStore();
+  const { paths, lessonStates, canAccessLesson, premium, premiumStatus } = useProgressStore();
   const { id: userId, avatar } = useUserStore();
   
   const isUserPremium = premium || premiumStatus !== "free";
@@ -71,12 +71,12 @@ export default function Pathway() {
   }
 
   // Build lesson states (completed / locked)
-  // 🔒 Using universal locking system via isLessonUnlocked()
+  // 🔒 Using NEW unified locking system via canAccessLesson()
   const pathLessonState = lessonStates?.[numericPathId] || {};
   const lessons = baseLessons.map((lesson) => {
     const isCompleted = !!pathLessonState[lesson.id]?.passed;
-    // Use the universal isLessonUnlocked function instead of lockedUntil
-    const unlocked = isLessonUnlocked(numericPathId, lesson.id);
+    // Use the NEW canAccessLesson function from unified locking system
+    const unlocked = canAccessLesson(numericPathId, lesson.id);
     const isLocked = !unlocked;
 
     return { ...lesson, isCompleted, isLocked };
@@ -100,6 +100,12 @@ export default function Pathway() {
   }, [numericPathId, totalLessons]);
 
   const handleLessonClick = (lesson) => {
+    // Block access to premium-only paths for free users
+    if (isPathPremiumOnly && !isUserPremium) {
+      navigate("/premium");
+      return;
+    }
+    
     if (lesson.isLocked) return;
     navigate(`/path/${pathId}/lesson/${lesson.id}`);
   };
