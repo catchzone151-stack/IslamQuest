@@ -127,38 +127,34 @@ export default function ChallengeResultsModal({
             )}
           </div>
           
-          {!isBossLevel && (
-            <>
-              <div className="score-vs">VS</div>
-              
-              <div className="score-section">
-                <span className="score-label" style={{ 
-                  wordBreak: "break-word",
-                  maxWidth: "120px",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "normal",
-                  lineHeight: "1.2"
-                }}>{opponentName || "Opponent"}</span>
-                {isSuddenDeath ? (
-                  <span className="score-value" style={{ wordBreak: "break-word" }}>
-                    {opponentChain !== null && opponentChain !== undefined ? `Chain: ${opponentChain}` : "Pending"}
+          <div className="score-vs">VS</div>
+          
+          <div className="score-section">
+            <span className="score-label" style={{ 
+              wordBreak: "break-word",
+              maxWidth: "120px",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "normal",
+              lineHeight: "1.2"
+            }}>{isBossLevel ? "The Boss 👑" : (opponentName || "Opponent")}</span>
+            {isSuddenDeath ? (
+              <span className="score-value" style={{ wordBreak: "break-word" }}>
+                {opponentChain !== null && opponentChain !== undefined ? `Chain: ${opponentChain}` : "Pending"}
+              </span>
+            ) : (
+              <>
+                <span className="score-value" style={{ wordBreak: "break-word" }}>
+                  {opponentScore !== null && opponentScore !== undefined ? `${opponentScore}/${opponentTotal}` : "—"}
+                </span>
+                {opponentScore !== null && opponentScore !== undefined && (
+                  <span className="score-percentage">
+                    {opponentTotal > 0 ? Math.round((opponentScore / opponentTotal) * 100) : 0}%
                   </span>
-                ) : (
-                  <>
-                    <span className="score-value" style={{ wordBreak: "break-word" }}>
-                      {opponentScore !== null && opponentScore !== undefined ? `${opponentScore}/${opponentTotal}` : "Pending"}
-                    </span>
-                    {opponentScore !== null && opponentScore !== undefined && (
-                      <span className="score-percentage">
-                        {opponentTotal > 0 ? Math.round((opponentScore / opponentTotal) * 100) : 0}%
-                      </span>
-                    )}
-                  </>
                 )}
-              </div>
-            </>
-          )}
+              </>
+            )}
+          </div>
         </div>
 
         {/* Rewards Earned */}
