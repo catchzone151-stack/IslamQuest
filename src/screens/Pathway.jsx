@@ -9,6 +9,7 @@ import { getLessonsForPath } from "../data/lessonLoader.js";
 
 // Mascots
 import CompletionMascot from "../assets/mascots/mascot_congratulation.webp";
+import mascot_sitting from "../assets/mascots/mascot_sitting.webp";
 
 export default function Pathway() {
   const { pathId } = useParams();
@@ -259,7 +260,7 @@ export default function Pathway() {
         }}
       >
         <img
-          src={PathMascot}
+          src={mascot_sitting}
           alt="Learning guide"
           style={{
             width: 70,
