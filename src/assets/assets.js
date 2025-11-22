@@ -25,13 +25,11 @@ import mascot_power from "./mascots/mascot_power.webp";
 import avatar_man_lantern from "./avatars/avatar_man_lantern.webp";
 import avatar_man_tasbih from "./avatars/avatar_man_tasbih.webp";
 import avatar_man_cup from "./avatars/avatar_man_cup.webp";
-import avatar_man_pencil from "./avatars/avatar_man_pencil.webp";
 import avatar_man_spoon from "./avatars/avatar_man_spoon.webp";
 import avatar_man_soccer from "./avatars/avatar_man_soccer.webp";
 import avatar_woman_hijab_book from "./avatars/avatar_woman_hijab_book.webp";
 import avatar_woman_hijab_dua from "./avatars/avatar_woman_hijab_dua.webp";
 import avatar_woman_hijab_tasbih from "./avatars/avatar_woman_hijab_tasbih.webp";
-import avatar_woman_hijab_pen from "./avatars/avatar_woman_hijab_pen.webp";
 import avatar_woman_hijab_studying from "./avatars/avatar_woman_hijab_studying.webp";
 import avatar_woman_hijab_beads from "./avatars/avatar_woman_hijab_beads.webp";
 import avatar_woman_niqab from "./avatars/avatar_woman_niqab.webp";
@@ -79,13 +77,11 @@ const assets = {
     avatar_man_lantern,
     avatar_man_tasbih,
     avatar_man_cup,
-    avatar_man_pencil,
     avatar_man_spoon,
     avatar_man_soccer,
     avatar_woman_hijab_book,
     avatar_woman_hijab_dua,
     avatar_woman_hijab_tasbih,
-    avatar_woman_hijab_pen,
     avatar_woman_hijab_studying,
     avatar_woman_hijab_beads,
     avatar_woman_niqab,
