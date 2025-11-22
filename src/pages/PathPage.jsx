@@ -226,6 +226,20 @@ export default function PathPage() {
             position: "relative",
           }}
         >
+          {/* Vertical Timeline Line */}
+          <div
+            style={{
+              position: "absolute",
+              left: "50%",
+              top: "0",
+              bottom: "0",
+              width: "3px",
+              background: "linear-gradient(180deg, #D4AF37 0%, #b89600 100%)",
+              transform: "translateX(-50%)",
+              zIndex: 0,
+            }}
+          />
+
           {/* Lesson Circles */}
           {groupedLessons.map((section, sectionIdx) =>
             section.lessons.map((lesson, lessonIdx) => {
