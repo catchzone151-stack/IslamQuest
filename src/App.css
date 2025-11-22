@@ -70,6 +70,16 @@ body {
   padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
 }
 
+/* Onboarding screens - remove bottom padding */
+.onboarding-screen {
+  padding: 0 !important;
+  margin: 0 !important;
+  min-height: 100vh;
+  width: 100%;
+  background: #0a2a43;
+  overflow: hidden;
+}
+
 /* App root container safe-area support */
 .app-root-container {
   padding-bottom: 90px !important;
