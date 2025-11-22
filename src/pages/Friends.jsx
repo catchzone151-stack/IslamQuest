@@ -5,10 +5,11 @@ import { useUserStore } from "../store/useUserStore";
 import { useProgressStore } from "../store/progressStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, UserPlus, Users, Send, X, Check, Clock, Trophy, Flame } from "lucide-react";
+import { Search, UserPlus, Users, Send, X, Check, Clock, Trophy, Flame, MessageCircle, Swords, Globe } from "lucide-react";
 import { LevelBadgeCompact } from "../components/LevelBadge";
 import { getAvatarImage } from "../utils/avatarUtils";
 import { getCurrentLevel } from "../utils/diamondLevels";
+import QuickMessageModal from "../components/QuickMessageModal";
 
 export default function Friends() {
   const navigate = useNavigate();
@@ -29,13 +30,16 @@ export default function Friends() {
     canSendRequest,
     getFriendship,
     updateCurrentUserData,
-    initializeUser
+    initializeUser,
+    users
   } = useFriendsStore();
 
   const [activeTab, setActiveTab] = useState("friends");
+  const [leaderboardTab, setLeaderboardTab] = useState("friends");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [quickMessageFriend, setQuickMessageFriend] = useState(null);
 
   // Initialize current user in friends store on mount
   useEffect(() => {
@@ -49,7 +53,7 @@ export default function Friends() {
         streak: currentUserStreak
       });
     }
-  }, [currentUserId, username]); // Only run on mount or when user changes
+  }, [currentUserId, username]);
 
   // Update current user data when XP/streak changes
   useEffect(() => {
@@ -71,6 +75,22 @@ export default function Friends() {
   const friends = getAllFriends();
   const sentRequests = getSentRequests();
   const receivedRequests = getReceivedRequests();
+
+  // Get friends leaderboard (sorted by XP, then streak, then nickname)
+  const friendsLeaderboard = [...friends].sort((a, b) => {
+    if (b.xp !== a.xp) return b.xp - a.xp;
+    if (b.streak !== a.streak) return b.streak - a.streak;
+    return a.nickname.localeCompare(b.nickname);
+  });
+
+  // Get global leaderboard (all users except current user, sorted by XP)
+  const globalLeaderboard = users
+    .filter(u => u.id !== currentUserId)
+    .sort((a, b) => {
+      if (b.xp !== a.xp) return b.xp - a.xp;
+      if (b.streak !== a.streak) return b.streak - a.streak;
+      return a.nickname.localeCompare(b.nickname);
+    });
 
   const handleSendRequest = (userId) => {
     const result = sendFriendRequest(userId);
@@ -137,6 +157,28 @@ export default function Friends() {
     return "add";
   };
 
+  const handleChallengeFriend = (friend) => {
+    const friendLevel = getCurrentLevel(friend.xp);
+    navigate("/challenge", { 
+      state: { 
+        preselectedFriend: {
+          id: friend.id,
+          name: friend.nickname,
+          nickname: friend.nickname,
+          username: friend.username,
+          avatar: friend.avatar,
+          xp: friend.xp,
+          streak: friend.streak,
+          level: friendLevel.level
+        }
+      }
+    });
+  };
+
+  const handleQuickMessage = (friend) => {
+    setQuickMessageFriend(friend);
+  };
+
   const totalRequests = sentRequests.length + receivedRequests.length;
 
   return (
@@ -161,7 +203,7 @@ export default function Friends() {
           Friends
         </h1>
 
-        {/* Tabs */}
+        {/* Main Tabs */}
         <div style={{
           display: "flex",
           gap: "8px",
@@ -173,6 +215,12 @@ export default function Friends() {
             icon={<Users size={18} />}
             label="Friends"
             count={friends.length}
+          />
+          <TabButton
+            active={activeTab === "leaderboard"}
+            onClick={() => setActiveTab("leaderboard")}
+            icon={<Trophy size={18} />}
+            label="Leaderboard"
           />
           <TabButton
             active={activeTab === "requests"}
@@ -223,6 +271,94 @@ export default function Friends() {
                       badgeColor="#10b981"
                     />
                   ))}
+                </div>
+              )}
+            </motion.div>
+          )}
+
+          {/* Leaderboard Tab */}
+          {activeTab === "leaderboard" && (
+            <motion.div
+              key="leaderboard"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+            >
+              {/* Leaderboard Sub-tabs */}
+              <div style={{
+                display: "flex",
+                gap: "8px",
+                marginBottom: "20px",
+                background: "rgba(14, 22, 37, 0.6)",
+                padding: "8px",
+                borderRadius: "12px"
+              }}>
+                <SubTabButton
+                  active={leaderboardTab === "friends"}
+                  onClick={() => setLeaderboardTab("friends")}
+                  label="Friends"
+                  icon={<Users size={16} />}
+                />
+                <SubTabButton
+                  active={leaderboardTab === "global"}
+                  onClick={() => setLeaderboardTab("global")}
+                  label="Global"
+                  icon={<Globe size={16} />}
+                />
+              </div>
+
+              {/* Friends Leaderboard */}
+              {leaderboardTab === "friends" && (
+                <div>
+                  {friendsLeaderboard.length === 0 ? (
+                    <EmptyState
+                      icon={<Trophy size={48} />}
+                      title="No friends to rank"
+                      message="Add friends to see their rankings"
+                      action={{
+                        label: "Add Friends",
+                        onClick: () => setActiveTab("search")
+                      }}
+                    />
+                  ) : (
+                    <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                      {friendsLeaderboard.map((friend, index) => (
+                        <LeaderboardCard
+                          key={friend.id}
+                          user={friend}
+                          rank={index + 1}
+                          onChallenge={() => handleChallengeFriend(friend)}
+                          onQuickMessage={() => handleQuickMessage(friend)}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Global Leaderboard */}
+              {leaderboardTab === "global" && (
+                <div>
+                  {globalLeaderboard.length === 0 ? (
+                    <EmptyState
+                      icon={<Globe size={48} />}
+                      title="No users to rank"
+                      message="Global leaderboard is empty"
+                    />
+                  ) : (
+                    <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                      {globalLeaderboard.map((user, index) => (
+                        <GlobalLeaderboardCard
+                          key={user.id}
+                          user={user}
+                          rank={index + 1}
+                          currentUserId={currentUserId}
+                          isFriend={isFriend(user.id)}
+                          onUserClick={() => handleUserClick(user.id)}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </motion.div>
@@ -384,6 +520,14 @@ export default function Friends() {
           )}
         </AnimatePresence>
       </div>
+
+      {/* Quick Message Modal */}
+      {quickMessageFriend && (
+        <QuickMessageModal
+          friend={quickMessageFriend}
+          onClose={() => setQuickMessageFriend(null)}
+        />
+      )}
     </div>
   );
 }
@@ -395,7 +539,7 @@ function TabButton({ active, onClick, icon, label, count, badge }) {
       onClick={onClick}
       style={{
         flex: 1,
-        padding: "12px 16px",
+        padding: "12px 12px",
         background: active ? "rgba(212, 175, 55, 0.2)" : "transparent",
         border: "none",
         borderBottom: active ? "2px solid #D4AF37" : "2px solid transparent",
@@ -406,7 +550,7 @@ function TabButton({ active, onClick, icon, label, count, badge }) {
         gap: "4px",
         cursor: "pointer",
         position: "relative",
-        fontSize: "0.85rem",
+        fontSize: "0.75rem",
         fontWeight: active ? "600" : "500",
         transition: "all 0.2s ease"
       }}
@@ -415,10 +559,10 @@ function TabButton({ active, onClick, icon, label, count, badge }) {
         {icon}
         {count !== undefined && (
           <span style={{
-            fontSize: "0.75rem",
+            fontSize: "0.7rem",
             background: active ? "#D4AF37" : "#555",
             color: active ? "#0A1A2F" : "#ccc",
-            padding: "2px 6px",
+            padding: "2px 5px",
             borderRadius: "10px",
             fontWeight: "600"
           }}>
@@ -439,6 +583,311 @@ function TabButton({ active, onClick, icon, label, count, badge }) {
         }} />
       )}
     </button>
+  );
+}
+
+function SubTabButton({ active, onClick, label, icon }) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        flex: 1,
+        padding: "10px 16px",
+        background: active ? "rgba(212, 175, 55, 0.2)" : "transparent",
+        border: active ? "1px solid #D4AF37" : "1px solid transparent",
+        borderRadius: "8px",
+        color: active ? "#D4AF37" : "#888",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "6px",
+        cursor: "pointer",
+        fontSize: "0.9rem",
+        fontWeight: active ? "600" : "500",
+        transition: "all 0.2s ease"
+      }}
+    >
+      {icon}
+      <span>{label}</span>
+    </button>
+  );
+}
+
+function LeaderboardCard({ user, rank, onChallenge, onQuickMessage }) {
+  const avatarSrc = getAvatarImage(user.avatar);
+  const userLevel = getCurrentLevel(user.xp);
+  
+  const getRankClass = () => {
+    if (rank === 1) return "gold";
+    if (rank === 2) return "silver";
+    if (rank === 3) return "bronze";
+    return "";
+  };
+
+  const rankClass = getRankClass();
+  const borderColor = rankClass === "gold" ? "#d4af37" : 
+                      rankClass === "silver" ? "#c0c0c0" : 
+                      rankClass === "bronze" ? "#cd7f32" : 
+                      "rgba(212, 175, 55, 0.3)";
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: rank * 0.05 }}
+      style={{
+        background: rankClass === "gold" ? "linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(255, 215, 0, 0.2) 100%)" :
+                    rankClass === "silver" ? "linear-gradient(135deg, rgba(192, 192, 192, 0.2) 0%, rgba(169, 169, 169, 0.1) 100%)" :
+                    rankClass === "bronze" ? "linear-gradient(135deg, rgba(205, 127, 50, 0.2) 0%, rgba(184, 115, 51, 0.1) 100%)" :
+                    "rgba(14, 22, 37, 0.6)",
+        border: `2px solid ${borderColor}`,
+        borderRadius: "14px",
+        padding: "12px",
+        display: "flex",
+        alignItems: "center",
+        gap: "12px",
+        boxShadow: rankClass === "gold" ? "0 0 20px rgba(212, 175, 55, 0.4)" :
+                   rankClass === "silver" ? "0 0 15px rgba(192, 192, 192, 0.3)" :
+                   "none"
+      }}
+    >
+      {/* Rank */}
+      <div style={{
+        minWidth: "40px",
+        color: "#D4AF37",
+        fontSize: "1.1rem",
+        fontWeight: "700",
+        textAlign: "center"
+      }}>
+        #{rank}
+      </div>
+
+      {/* Avatar */}
+      <div style={{
+        width: "48px",
+        height: "48px",
+        borderRadius: "50%",
+        border: `2px solid ${borderColor}`,
+        overflow: "hidden",
+        flexShrink: 0,
+        background: "#0E1625",
+        boxShadow: rankClass ? `0 0 10px ${borderColor}` : "none"
+      }}>
+        <img
+          src={avatarSrc}
+          alt={user.nickname}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover"
+          }}
+        />
+      </div>
+
+      {/* User Info */}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "2px" }}>
+          <p style={{
+            color: "white",
+            fontWeight: "600",
+            fontSize: "0.95rem",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            margin: 0
+          }}>
+            {user.nickname}
+          </p>
+          <LevelBadgeCompact level={userLevel} size="tiny" />
+        </div>
+        <p style={{
+          color: "#aaa",
+          fontSize: "0.8rem",
+          marginBottom: "4px",
+          margin: 0
+        }}>
+          @{user.username}
+        </p>
+        <div style={{
+          display: "flex",
+          gap: "10px",
+          fontSize: "0.75rem",
+          color: "#888"
+        }}>
+          <span style={{ display: "flex", alignItems: "center", gap: "3px" }}>
+            <Trophy size={11} color="#D4AF37" />
+            {user.xp.toLocaleString()}
+          </span>
+          <span style={{ display: "flex", alignItems: "center", gap: "3px" }}>
+            <Flame size={11} color="#ef4444" />
+            {user.streak}
+          </span>
+        </div>
+      </div>
+
+      {/* Action Buttons */}
+      <div style={{ display: "flex", gap: "6px" }}>
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={onChallenge}
+          style={{
+            width: "40px",
+            height: "40px",
+            borderRadius: "50%",
+            background: "rgba(239, 68, 68, 0.2)",
+            border: "1px solid #ef4444",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "pointer",
+            transition: "all 0.2s ease"
+          }}
+        >
+          <Swords size={18} color="#ef4444" />
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={onQuickMessage}
+          style={{
+            width: "40px",
+            height: "40px",
+            borderRadius: "50%",
+            background: "rgba(16, 185, 129, 0.2)",
+            border: "1px solid #10b981",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "pointer",
+            transition: "all 0.2s ease"
+          }}
+        >
+          <MessageCircle size={18} color="#10b981" />
+        </motion.button>
+      </div>
+    </motion.div>
+  );
+}
+
+function GlobalLeaderboardCard({ user, rank, currentUserId, isFriend, onUserClick }) {
+  const avatarSrc = getAvatarImage(user.avatar);
+  const userLevel = getCurrentLevel(user.xp);
+  
+  const getRankClass = () => {
+    if (rank === 1) return "gold";
+    if (rank === 2) return "silver";
+    if (rank === 3) return "bronze";
+    return "";
+  };
+
+  const rankClass = getRankClass();
+  const borderColor = rankClass === "gold" ? "#d4af37" : 
+                      rankClass === "silver" ? "#c0c0c0" : 
+                      rankClass === "bronze" ? "#cd7f32" : 
+                      "rgba(212, 175, 55, 0.3)";
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: Math.min(rank * 0.03, 0.5) }}
+      onClick={isFriend ? onUserClick : undefined}
+      style={{
+        background: rankClass === "gold" ? "linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(255, 215, 0, 0.2) 100%)" :
+                    rankClass === "silver" ? "linear-gradient(135deg, rgba(192, 192, 192, 0.2) 0%, rgba(169, 169, 169, 0.1) 100%)" :
+                    rankClass === "bronze" ? "linear-gradient(135deg, rgba(205, 127, 50, 0.2) 0%, rgba(184, 115, 51, 0.1) 100%)" :
+                    "rgba(14, 22, 37, 0.6)",
+        border: `1px solid ${borderColor}`,
+        borderRadius: "10px",
+        padding: "10px",
+        display: "flex",
+        alignItems: "center",
+        gap: "10px",
+        cursor: isFriend ? "pointer" : "default",
+        boxShadow: rankClass === "gold" ? "0 0 20px rgba(212, 175, 55, 0.4)" :
+                   rankClass === "silver" ? "0 0 15px rgba(192, 192, 192, 0.3)" :
+                   "none"
+      }}
+    >
+      {/* Rank */}
+      <div style={{
+        minWidth: "35px",
+        color: rankClass ? borderColor : "#94a3b8",
+        fontSize: "0.9rem",
+        fontWeight: "600",
+        textAlign: "center"
+      }}>
+        #{rank}
+      </div>
+
+      {/* Avatar */}
+      <div style={{
+        width: "36px",
+        height: "36px",
+        borderRadius: "50%",
+        border: `2px solid ${borderColor}`,
+        overflow: "hidden",
+        flexShrink: 0,
+        background: "#0E1625"
+      }}>
+        <img
+          src={avatarSrc}
+          alt={user.nickname}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover"
+          }}
+        />
+      </div>
+
+      {/* User Info */}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <p style={{
+          color: "#e2e8f0",
+          fontWeight: "600",
+          fontSize: "0.9rem",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+          margin: 0,
+          marginBottom: "2px"
+        }}>
+          {user.nickname}
+        </p>
+        <div style={{
+          display: "flex",
+          gap: "8px",
+          fontSize: "0.7rem",
+          color: "#888"
+        }}>
+          <span style={{ display: "flex", alignItems: "center", gap: "3px" }}>
+            <Trophy size={10} color="#D4AF37" />
+            {user.xp.toLocaleString()}
+          </span>
+          <span style={{ display: "flex", alignItems: "center", gap: "3px" }}>
+            <Flame size={10} color="#ef4444" />
+            {user.streak}
+          </span>
+        </div>
+      </div>
+
+      {/* Friend Badge */}
+      {isFriend && (
+        <div style={{
+          padding: "4px 8px",
+          background: "rgba(16, 185, 129, 0.2)",
+          border: "1px solid #10b981",
+          borderRadius: "6px",
+          color: "#10b981",
+          fontSize: "0.7rem",
+          fontWeight: "600"
+        }}>
+          Friend
+        </div>
+      )}
+    </motion.div>
   );
 }
 

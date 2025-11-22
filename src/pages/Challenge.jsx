@@ -20,7 +20,7 @@ export default function Challenge() {
   
   const { xp } = useProgressStore();
   const level = getCurrentLevel(xp).level;
-  const { friends } = useFriendsStore();
+  const friends = useFriendsStore(state => state.getAllFriends?.() || []);
   const { loadFromStorage } = useChallengeStore();
   const { showModal } = useModalStore();
 
@@ -59,7 +59,7 @@ export default function Challenge() {
         const shared = useChallengeStore.getState().getSharedLessons("current_user", selectedFriend.id);
         if (shared.length === 0) {
           showModal(MODAL_TYPES.NO_SHARED_LESSONS, {
-            friendName: selectedFriend.name
+            friendName: selectedFriend.nickname || selectedFriend.name
           });
           return;
         }
@@ -90,7 +90,7 @@ export default function Challenge() {
       const shared = useChallengeStore.getState().getSharedLessons("current_user", friend.id);
       if (shared.length === 0) {
         showModal(MODAL_TYPES.NO_SHARED_LESSONS, {
-          friendName: friend.name
+          friendName: friend.nickname || friend.name
         });
         return;
       }
@@ -447,7 +447,14 @@ export default function Challenge() {
                 {friends.map(friend => (
                   <div
                     key={friend.id}
-                    onClick={() => handleFriendSelect(friend)}
+                    onClick={() => handleFriendSelect({
+                      id: friend.id,
+                      name: friend.nickname,
+                      nickname: friend.nickname,
+                      avatar: friend.avatar,
+                      xp: friend.xp,
+                      streak: friend.streak
+                    })}
                     style={{
                       background: "rgba(255,255,255,0.05)",
                       border: "1px solid rgba(255,255,255,0.1)",
@@ -477,9 +484,9 @@ export default function Challenge() {
                         👤
                       </div>
                       <div>
-                        <div style={{ color: "#fff", fontWeight: 600 }}>{friend.name}</div>
+                        <div style={{ color: "#fff", fontWeight: 600 }}>{friend.nickname}</div>
                         <div style={{ color: "#94a3b8", fontSize: "0.85rem" }}>
-                          Level {friend.level || 1} • {friend.xp} XP
+                          @{friend.username} • {friend.xp.toLocaleString()} XP
                         </div>
                       </div>
                     </div>
