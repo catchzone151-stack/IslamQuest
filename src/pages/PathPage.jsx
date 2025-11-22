@@ -104,11 +104,30 @@ export default function PathPage() {
     };
   });
   
-  // Calculate section heights for LEFT column alignment
+  // Spacing constants (must match timeline circle layout)
+  const CIRCLE_HEIGHT = 64; // px
+  const INTRA_SECTION_GAP = 48; // px between lessons in same section
+  const INTER_SECTION_GAP = 120; // px between sections
+  
+  // Calculate section heights and cumulative offsets for LEFT column alignment
   const sectionHeights = groupedLessons.map(section => {
     const lessonCount = section.lessons.length;
-    // Each lesson: 64px circle + 48px gap (except last lesson in section)
-    return lessonCount * 64 + (lessonCount - 1) * 48;
+    // Safety: prevent negative heights if section has no lessons
+    if (lessonCount === 0) return 0;
+    // Each lesson: circle height + gap (except last lesson in section)
+    return lessonCount * CIRCLE_HEIGHT + (lessonCount - 1) * INTRA_SECTION_GAP;
+  });
+  
+  // Calculate cumulative offsets for absolute positioning
+  const cumulativeOffsets = groupedLessons.map((_, sectionIdx) => {
+    if (sectionIdx === 0) return 0; // First section starts at top
+    
+    // Sum all previous section heights + inter-section gaps
+    let offset = 0;
+    for (let i = 0; i < sectionIdx; i++) {
+      offset += sectionHeights[i] + INTER_SECTION_GAP;
+    }
+    return offset;
   });
 
   return (
@@ -155,45 +174,36 @@ export default function PathPage() {
         {/* LEFT COLUMN: Section Headings */}
         <div style={{ 
           flex: "0 0 200px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-          justifyContent: "flex-start"
+          position: "relative",
         }}>
           {groupedLessons.map((section, sectionIdx) => {
-            // Calculate spacer height: height of all previous section's lessons + gap
-            const spacerHeight = sectionIdx === 0 
-              ? 0 
-              : sectionHeights[sectionIdx - 1] + 120; // previous section's lessons + inter-section gap
+            // Use calculated cumulative offset for absolute positioning
+            const topOffset = cumulativeOffsets[sectionIdx];
 
             return (
-              <React.Fragment key={`section-${sectionIdx}`}>
-                {/* Spacer to push heading down to align with first circle of this section */}
-                {sectionIdx > 0 && (
-                  <div style={{ height: `${spacerHeight}px` }} />
-                )}
-                
-                {/* Section Heading */}
-                <div
-                  style={{
-                    fontSize: "0.95rem",
-                    fontWeight: 700,
-                    color: "#D4AF37",
-                    textAlign: "left",
-                    lineHeight: 1.4,
-                    wordWrap: "break-word",
-                    wordBreak: "break-word",
-                    overflowWrap: "break-word",
-                    hyphens: "auto",
-                    letterSpacing: "0.6px",
-                    textTransform: "uppercase",
-                    paddingRight: "12px",
-                    width: "100%",
-                  }}
-                >
-                  {section.name}
-                </div>
-              </React.Fragment>
+              <div
+                key={`section-${sectionIdx}`}
+                style={{
+                  position: "absolute",
+                  top: `${topOffset}px`,
+                  left: 0,
+                  right: 0,
+                  fontSize: "0.95rem",
+                  fontWeight: 700,
+                  color: "#D4AF37",
+                  textAlign: "left",
+                  lineHeight: 1.4,
+                  wordWrap: "break-word",
+                  wordBreak: "break-word",
+                  overflowWrap: "break-word",
+                  hyphens: "auto",
+                  letterSpacing: "0.6px",
+                  textTransform: "uppercase",
+                  paddingRight: "12px",
+                }}
+              >
+                {section.name}
+              </div>
             );
           })}
         </div>
