@@ -100,7 +100,7 @@ export const useDeveloperStore = create((set, get) => ({
   },
 
   getDebugInfo: () => {
-    const { xp, coins, streak, level, levelColor, levelBadge, lessonStates } = useProgressStore.getState();
+    const { xp, coins, streak, level, levelColor, lessonStates } = useProgressStore.getState();
     const { hasCompletedOnboarding } = useUserStore.getState();
     
     const completedLessons = Object.values(lessonStates).filter(
@@ -113,7 +113,6 @@ export const useDeveloperStore = create((set, get) => ({
       streak,
       level,
       levelColor,
-      levelBadge,
       completedLessons,
       hasCompletedOnboarding,
       appVersion: APP_VERSION,
