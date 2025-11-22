@@ -87,11 +87,12 @@ const buttonHoverStyle = {
 
 class RewardModal extends React.Component {
   state = {
-    hover: false,
+    hoverContinue: false,
+    hoverRetry: false,
   };
 
   render() {
-    const { xp, coins, mascotImg, onContinue } = this.props;
+    const { score, totalQ, xp, coins, mascotImg, onContinue, onRetry, passed } = this.props;
 
     return (
       <>
@@ -108,31 +109,60 @@ class RewardModal extends React.Component {
           <div style={modalStyle}>
             <img src={mascotImg} alt="Zayd" style={mascotStyle} />
 
-            <h2 style={titleStyle}>MASHAA ALLAH!</h2>
-            <p style={messageStyle}>You unlocked the next lesson! Keep going strong.</p>
+            <h2 style={titleStyle}>
+              {passed ? "MASHAA ALLAH!" : "Try Again!"}
+            </h2>
+            <p style={messageStyle}>
+              {passed 
+                ? "You unlocked the next lesson!" 
+                : "You need at least 3 correct answers to unlock the next lesson."}
+            </p>
 
-            <div style={rewardsRowStyle}>
-              <div style={rewardItemStyle}>
-                <img src={xpIcon} alt="XP" style={iconStyle} />
-                <span>+{xp}</span>
-              </div>
-              <div style={rewardItemStyle}>
-                <img src={coinIcon} alt="Coins" style={iconStyle} />
-                <span>+{coins}</span>
-              </div>
+            <div style={{...messageStyle, fontSize: "18px", fontWeight: 700, color: "#FACC15", marginBottom: "12px"}}>
+              Score: {score}/{totalQ}
             </div>
 
-            <button
-              style={{
-                ...buttonStyle,
-                ...(this.state.hover ? buttonHoverStyle : {}),
-              }}
-              onMouseEnter={() => this.setState({ hover: true })}
-              onMouseLeave={() => this.setState({ hover: false })}
-              onClick={onContinue}
-            >
-              Continue Learning →
-            </button>
+            {passed && (
+              <div style={rewardsRowStyle}>
+                <div style={rewardItemStyle}>
+                  <img src={xpIcon} alt="XP" style={iconStyle} />
+                  <span>+{xp}</span>
+                </div>
+                <div style={rewardItemStyle}>
+                  <img src={coinIcon} alt="Coins" style={iconStyle} />
+                  <span>+{coins}</span>
+                </div>
+              </div>
+            )}
+
+            <div style={{display: "flex", gap: "12px", justifyContent: "center"}}>
+              {!passed && onRetry && (
+                <button
+                  style={{
+                    ...buttonStyle,
+                    backgroundColor: "#10B981",
+                    ...(this.state.hoverRetry ? {...buttonHoverStyle, backgroundColor: "#34D399"} : {}),
+                  }}
+                  onMouseEnter={() => this.setState({ hoverRetry: true })}
+                  onMouseLeave={() => this.setState({ hoverRetry: false })}
+                  onClick={onRetry}
+                >
+                  Try Again
+                </button>
+              )}
+              
+              <button
+                style={{
+                  ...buttonStyle,
+                  ...(this.state.hoverContinue ? buttonHoverStyle : {}),
+                }}
+                onMouseEnter={() => this.setState({ hoverContinue: true })}
+                onMouseLeave={() => this.setState({ hoverContinue: false })}
+                onClick={onContinue}
+              >
+                {passed ? "Continue Learning →" : "Back to Path"}
+              </button>
+            </div>
           </div>
         </div>
       </>

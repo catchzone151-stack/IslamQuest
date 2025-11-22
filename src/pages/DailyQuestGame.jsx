@@ -3,7 +3,7 @@ import { useNavigate } from "../hooks/useNavigate";
 import { useDailyQuestStore } from "../store/dailyQuestStore";
 import { useAnalytics } from "../hooks/useAnalytics";
 import QuestionCard from "../components/quiz/QuestionCard";
-import assets from "../assets/assets";
+import PointingMascot from "../assets/mascots/mascot_pointing_v2.webp";
 import SittingMascot from "../assets/mascots/mascot_sitting_v2.webp";
 import CongratsMascot from "../assets/mascots/mascot_congratulation.webp";
 
@@ -32,12 +32,6 @@ export default function DailyQuestGame() {
 
   const currentQuestion = questions[currentIndex];
   const totalQuestions = questions.length;
-
-  // Get mascot based on progress through quiz
-  const getMascot = () => {
-    if (currentIndex <= 2) return SittingMascot;
-    return CongratsMascot;
-  };
 
   const handleSelect = (optionIndex) => {
     setSelected(optionIndex);
@@ -69,7 +63,9 @@ export default function DailyQuestGame() {
 
   if (showResults) {
     const correctCount = answers.filter(a => a.correct).length;
-    const passed = correctCount >= totalQuestions * 0.5;
+    // Use dynamic 60% threshold based on actual question count
+    const passThreshold = Math.ceil(totalQuestions * 0.6);
+    const passed = correctCount >= passThreshold;
 
     return (
       <div
@@ -106,7 +102,7 @@ export default function DailyQuestGame() {
               marginBottom: "20px",
             }}
           >
-            {passed ? "Fantastic Work! 🎉" : "Good Effort! 💪"}
+            {passed ? "MASHAA ALLAH! 🎉" : "Try Again! 💪"}
           </h1>
 
           {/* Score */}
@@ -157,7 +153,7 @@ export default function DailyQuestGame() {
 
           {/* Mascot */}
           <img 
-            src={passed ? assets.mascots.mascot_congratulation : assets.mascots.mascot_sitting_v2} 
+            src={passed ? CongratsMascot : SittingMascot} 
             alt="Mascot"
             style={{
               width: "100px",
@@ -276,10 +272,10 @@ export default function DailyQuestGame() {
         </div>
       </div>
 
-      {/* Thinking Mascot */}
+      {/* Mascot - Always show pointing_v2 during quiz */}
       <div style={{ textAlign: "center", marginBottom: "20px" }}>
         <img 
-          src={getMascot()} 
+          src={PointingMascot} 
           alt="Mascot"
           style={{
             width: "80px",

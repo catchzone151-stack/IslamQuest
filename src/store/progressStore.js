@@ -400,37 +400,48 @@ export const useProgressStore = create((set, get) => ({
   },
 
   // ✅ Quiz results
-  applyQuizResults: (payload, pathId, lessonId) => {
+  applyQuizResults: (payload, pathId, lessonId, passed = true, score = null) => {
     if (!payload) return;
     const { xp, coins } = payload;
-    if (xp) get().addXP(xp);
-    if (coins) get().addCoins(coins);
-
+    
+    // Always record attempt in lessonStates (for tracking/analytics)
     set((state) => {
       const lessonStates = { ...(state.lessonStates || {}) };
       const pathState = { ...(lessonStates[pathId] || {}) };
-      pathState[lessonId] = { passed: true, bestScore: 1 };
+      const currentState = pathState[lessonId] || { passed: false, bestScore: 0 };
+      
+      // Update state: preserve previous pass status, update best score
+      pathState[lessonId] = { 
+        passed: passed || currentState.passed, // Once passed, always passed
+        bestScore: score !== null ? Math.max(score, currentState.bestScore || 0) : currentState.bestScore
+      };
       lessonStates[pathId] = pathState;
       return { lessonStates };
     });
-
-    const path = get().paths.find((x) => x.id === pathId);
-    const passedCount = Object.values(get().lessonStates[pathId] || {}).filter(
-      (x) => x.passed
-    ).length;
-
-    const ratio =
-      path && path.totalLessons > 0
-        ? Math.min(1, passedCount / path.totalLessons)
-        : 0;
-
-    get().setPathProgress(pathId, passedCount, path ? path.totalLessons : 0);
-
-    // unlock next lesson
-    get().unlockLesson(pathId, lessonId + 1);
     
-    // 🛡️ Mark day as complete for streak tracking
-    get().markDayComplete();
+    // Only award XP/coins, update progress, and unlock if passed
+    if (passed) {
+      if (xp) get().addXP(xp);
+      if (coins) get().addCoins(coins);
+
+      const path = get().paths.find((x) => x.id === pathId);
+      const passedCount = Object.values(get().lessonStates[pathId] || {}).filter(
+        (x) => x.passed
+      ).length;
+
+      const ratio =
+        path && path.totalLessons > 0
+          ? Math.min(1, passedCount / path.totalLessons)
+          : 0;
+
+      get().setPathProgress(pathId, passedCount, path ? path.totalLessons : 0);
+
+      // unlock next lesson
+      get().unlockLesson(pathId, lessonId + 1);
+      
+      // 🛡️ Mark day as complete for streak tracking
+      get().markDayComplete();
+    }
     
     get().saveProgress();
   },

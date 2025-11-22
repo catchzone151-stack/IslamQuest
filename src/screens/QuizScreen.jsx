@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "../hooks/useNavigate";
 import { getQuizForLesson, calculateResults } from "../data/quizEngine";
-import { mascotQuizStates } from "../data/mascotQuizStates";
 import { useProgressStore } from "../store/progressStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import { useAnalytics } from "../hooks/useAnalytics";
+import PointingMascot from "../assets/mascots/mascot_pointing_v2.webp";
 import SittingMascot from "../assets/mascots/mascot_sitting_v2.webp";
 import CongratsMascot from "../assets/mascots/mascot_congratulation.webp";
 
@@ -64,7 +64,6 @@ const QuizScreen = () => {
 
     setSelected(index);
     setAnswers(updatedAnswers);
-    setMascotMood(isCorrect ? "correct" : "incorrect");
 
     setTimeout(() => {
       const isLast = currentQ === quizData.length - 1;
@@ -73,7 +72,6 @@ const QuizScreen = () => {
       } else {
         setCurrentQ((prev) => prev + 1);
         setSelected(null);
-        setMascotMood("thinking");
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     }, 900);
@@ -83,11 +81,13 @@ const QuizScreen = () => {
     const res = calculateResults(finalAnswers);
     setResults(res);
     
-    // Apply quiz results (unlocks next lesson, awards XP/coins, updates progress)
+    // Apply quiz results with score tracking
     applyQuizResults(
       { xp: res.xp, coins: res.coins },
       parseInt(pathId),
-      parseInt(lessonId)
+      parseInt(lessonId),
+      res.passed,
+      res.correct // Pass actual score for tracking
     );
     
     // Track quiz completion for analytics
@@ -97,12 +97,14 @@ const QuizScreen = () => {
       score: res.correct,
       total: res.total,
       passed: res.passed,
-      xpEarned: res.xp,
-      coinsEarned: res.coins
+      xpEarned: res.passed ? res.xp : 0,
+      coinsEarned: res.passed ? res.coins : 0
     });
     
     setIsQuizDone(true);
-    setMascotMood(res.passed ? "pass" : "fail");
+    
+    // Get correct mascot based on score
+    const mascotImg = res.passed ? CongratsMascot : SittingMascot;
     
     // Show reward modal
     showModal(MODAL_TYPES.REWARD, {
@@ -111,7 +113,7 @@ const QuizScreen = () => {
       xp: res.xp,
       coins: res.coins,
       passed: res.passed,
-      mascotImg: mascotQuizStates[res.passed ? "pass" : "fail"],
+      mascotImg: mascotImg,
       onRetry: handleRetry,
       onContinue: handleContinue
     });
@@ -151,20 +153,14 @@ const QuizScreen = () => {
   const progress =
     ((isQuizDone ? quizData.length : currentQ + 1) / quizData.length) * 100;
 
-  // Get mascot based on progress through quiz
-  const getMascot = () => {
-    if (currentQ <= 2) return SittingMascot;
-    return CongratsMascot;
-  };
-
   return (
     <div className="screen no-extra-space bg-gradient-to-b from-[#0A0F1E] to-[#030614] text-white flex flex-col">
       <QuizHeader
         currentQ={currentQ}
         totalQ={quizData.length}
-        mascotMood={mascotMood}
+        mascotMood="thinking"
         isQuizDone={isQuizDone}
-        progressMascot={!isQuizDone ? getMascot() : mascotQuizStates[mascotMood]}
+        progressMascot={PointingMascot}
       />
 
       <div className="h-2 bg-gray-800 w-full">

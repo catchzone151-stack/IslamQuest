@@ -1,19 +1,24 @@
 import React from "react";
 import { useEventsStore } from "../../store/eventsStore";
-import assets from "../../assets/assets";
+import SittingMascot from "../../assets/mascots/mascot_sitting_v2.webp";
+import CongratsMascot from "../../assets/mascots/mascot_congratulation.webp";
 import "./EventModals.css";
 
 export default function ProvisionalResultsModal({ event, score, totalQuestions, onClose }) {
   const { getEntry } = useEventsStore();
   const entry = getEntry(event.id);
   const provisionalRank = entry?.provisionalRank || "?";
+  
+  // Events have 10 questions, use 75% threshold (8/10) for congratulation mascot
+  const passed = score >= Math.ceil(totalQuestions * 0.75);
+  const mascotImg = passed ? CongratsMascot : SittingMascot;
 
   return (
     <div className="event-modal-overlay">
       <div className="event-modal provisional-modal">
         {/* Zayd Header */}
         <div className="modal-mascot-header">
-          <img src={assets.mascots.mascot_congratulation} alt="Mascot" className="modal-zayd bounce" />
+          <img src={mascotImg} alt="Mascot" className="modal-zayd bounce" />
         </div>
 
         {/* Title */}
