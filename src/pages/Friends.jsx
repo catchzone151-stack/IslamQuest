@@ -73,15 +73,15 @@ export default function Friends() {
     setShowMiniProfile(null);
   };
 
-  // Get fresh avatar from userStore for current user
-  const { avatar: freshUserAvatar } = useUserStore.getState();
+  // Get current user id and avatar from userStore
+  const { avatar: freshUserAvatar, id: currentUserId } = useUserStore();
   
   let friendsLeaderboard = getFriendsLeaderboard();
   let globalLeaderboard = getGlobalLeaderboard();
 
-  // Build clean current user object with fresh avatar from store
+  // Build clean current user object with fresh avatar and real user id from store
   const currentUser = {
-    id: "current_user",
+    id: currentUserId,
     name: currentUserName2 || currentUserName || "You",
     avatar: freshUserAvatar,
     xp: currentUserXP,
@@ -91,10 +91,10 @@ export default function Friends() {
   
   // Filter out duplicates of current user (by id or name)
   const cleanedFriendsList = (friendsLeaderboard || []).filter(
-    f => f.id !== currentUser.id && f.id !== "current_user" && f.name !== currentUser.name
+    f => f.id !== currentUser.id && f.name !== currentUser.name
   );
   const cleanedGlobalList = (globalLeaderboard || []).filter(
-    g => g.id !== currentUser.id && g.id !== "current_user" && g.name !== currentUser.name
+    g => g.id !== currentUser.id && g.name !== currentUser.name
   );
 
   // Combine with current user and sort both leaderboards by XP descending

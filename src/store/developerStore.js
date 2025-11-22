@@ -53,7 +53,7 @@ export const useDeveloperStore = create((set, get) => ({
   },
 
   resetOnboarding: () => {
-    useUserStore.getState().resetOnboarding();
+    useUserStore().resetOnboarding();
   },
 
   resetFullProgress: () => {
@@ -63,7 +63,7 @@ export const useDeveloperStore = create((set, get) => ({
 
     // Reset all stores
     useProgressStore.getState().resetAllProgress?.();
-    useUserStore.getState().resetOnboarding();
+    useUserStore().resetOnboarding();
     
     // Reset challenges (check if method exists)
     const challengeStore = useChallengeStore.getState();
@@ -101,7 +101,7 @@ export const useDeveloperStore = create((set, get) => ({
 
   getDebugInfo: () => {
     const { xp, coins, streak, level, levelColor, lessonStates } = useProgressStore.getState();
-    const { hasCompletedOnboarding } = useUserStore.getState();
+    const { hasCompletedOnboarding } = useUserStore();
     
     const completedLessons = Object.values(lessonStates).filter(
       state => state?.completed === true

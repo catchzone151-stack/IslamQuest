@@ -334,10 +334,10 @@ export const useFriendsStore = create((set, get) => ({
     
     // Get current user data from progressStore
     const { xp, coins, level, streak } = useProgressStore.getState();
-    const { name, avatar } = useUserStore.getState();
+    const { name, avatar, id: currentUserId } = useUserStore();
     
     const currentUser = {
-      id: 'current_user',
+      id: currentUserId,
       name: name || 'You',
       avatar: avatar || 'avatar1',
       xp: xp || 0,
