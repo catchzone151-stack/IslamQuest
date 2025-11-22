@@ -320,7 +320,7 @@ export default function Challenge() {
                       alt={mode.name} 
                       style={{ 
                         width: "auto", 
-                        height: mode.id === "mind_battle" ? "60px" : mode.id === "lightning_round" ? "78px" : "70px", 
+                        height: mode.id === "mind_battle" ? "50px" : mode.id === "lightning_round" ? "85px" : "70px", 
                         objectFit: "contain" 
                       }}
                     />
