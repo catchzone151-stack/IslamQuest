@@ -27,6 +27,13 @@ Preferred communication style: Simple, everyday language.
 ### Feature Specifications
 - **Content Structure**: 14 complete learning paths with lessons and quizzes, exclusively sourced from Qur'an and Sahih Hadith, each with standardized formatting.
 - **Progression Model**: XP and coin rewards, streak system, universal lesson locking for sequential progression, tiered freemium model, and a 10-level Diamond progression system.
+- **Quiz Logic (Updated November 22, 2025)**:
+  - **Lesson Quizzes**: Require 3/4 correct answers to pass and unlock next lesson. All lesson quizzes have exactly 4 questions.
+  - **Daily Quest**: Uses dynamic 60% threshold (Math.ceil(totalQuestions * 0.6)) with 5 questions.
+  - **Global Events**: Uses 75% threshold for congratulation mascot display with 10 questions.
+  - **Score Tracking**: progressStore tracks actual scores in bestScore field, preserves previous passes when recording failed attempts.
+  - **Mascot Display Rules**: pointing_v2 during all quiz gameplay, sitting_v2 for low scores (0-2/4), congratulation for passing scores (3-4/4).
+  - **Rewards**: Only awarded (XP/coins) and lessons only unlock when quiz is passed, but all attempts are recorded.
 - **Social Features**: Friend management, friends leaderboard (Friend of the Week), activity feed, and quick messaging.
 - **Gamification**:
     - **Friend Challenges**: 4 game modes (Mind Battle, Lightning Round, Speed Run, Sudden Death) with a 48-hour active window, questions from shared completed lessons, and rewards.
