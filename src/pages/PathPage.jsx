@@ -145,39 +145,45 @@ export default function PathPage() {
           position: "relative",
         }}
       >
-        {/* LEFT COLUMN: Section Headings (only on first lesson of each section) */}
+        {/* LEFT COLUMN: Section Headings */}
         <div style={{ flex: "0 0 25%", minWidth: 0 }}>
-          {groupedLessons.map((section, sectionIdx) =>
-            section.lessons.map((lesson, lessonIdx) => (
-              <div
-                key={`left-${section.name}-${lessonIdx}`}
-                style={{
-                  marginBottom: lessonIdx < section.lessons.length - 1 ? "48px" : "120px",
-                }}
-              >
-                {/* Show section heading ONLY on first lesson of each section */}
-                {lessonIdx === 0 && (
-                  <div
-                    style={{
-                      fontSize: "0.95rem",
-                      fontWeight: 700,
-                      color: "#D4AF37",
-                      textAlign: "left",
-                      lineHeight: 1.2,
-                      wordWrap: "break-word",
-                      wordBreak: "break-word",
-                      overflowWrap: "break-word",
-                      letterSpacing: "0.3px",
-                      textTransform: "uppercase",
-                      paddingTop: "12px",
-                    }}
-                  >
-                    {section.name}
-                  </div>
-                )}
+          {groupedLessons.map((section, sectionIdx) => {
+            // Calculate height for this section's lessons
+            const sectionHeight =
+              section.lessons.length * 64 + // circles
+              (section.lessons.length - 1) * 48 + // gaps between lessons
+              120; // gap after section
+            
+            return (
+              <div key={`section-${sectionIdx}`}>
+                {/* Section Heading */}
+                <div
+                  style={{
+                    fontSize: "0.95rem",
+                    fontWeight: 700,
+                    color: "#D4AF37",
+                    textAlign: "left",
+                    lineHeight: 1.2,
+                    wordWrap: "break-word",
+                    wordBreak: "break-word",
+                    overflowWrap: "break-word",
+                    letterSpacing: "0.3px",
+                    textTransform: "uppercase",
+                    paddingTop: "12px",
+                    marginBottom: "16px",
+                  }}
+                >
+                  {section.name}
+                </div>
+                {/* Spacer to match section height in middle/right columns */}
+                <div
+                  style={{
+                    height: `${sectionHeight}px`,
+                  }}
+                />
               </div>
-            ))
-          )}
+            );
+          })}
         </div>
 
         {/* MIDDLE COLUMN: Timeline + Lesson Circles */}
