@@ -9,6 +9,7 @@ import ProfileCard from "../components/ProfileCard";
 import { LevelBadge } from "../components/LevelBadge";
 import { getCurrentLevel, getXPProgress } from "../utils/diamondLevels";
 import { LOCAL_VERSION, shouldShowUpdateBanner } from "../config/versionConfig";
+import { getAvatarImage } from "../utils/avatarUtils";
 import ui_xp from "../assets/ui/ui_xp.webp";
 import ui_coin from "../assets/ui/ui_coin.webp";
 import ui_streak from "../assets/ui/ui_streak.webp";
@@ -22,7 +23,7 @@ const extractAvatarKey = (path) => {
 };
 
 export default function Profile() {
-  const { name, avatar, setName, setAvatar } = useUserStore();
+  const { id: userId, name, avatar, setName, setAvatar } = useUserStore();
   const { 
     xp, 
     coins, 
@@ -44,6 +45,9 @@ export default function Profile() {
   const currentLevel = getCurrentLevel(xp);
   const xpProgress = getXPProgress(xp);
   const progress = xpProgress.percentage;
+  
+  // Get the avatar image path from the stored key
+  const avatarImage = avatar ? getAvatarImage(avatar, { userId }) : "/default-avatar.png";
 
   return (
     <ScreenContainer>
@@ -109,7 +113,7 @@ export default function Profile() {
             }}
           >
             <img
-              src={avatar || "/default-avatar.png"}
+              src={avatarImage}
               alt="Avatar"
               loading="eager"
               style={{
