@@ -40,14 +40,6 @@ import avatar_rabbit from "./avatars/avatar_rabbit.png.webp";
 import avatar_robot from "./avatars/avatar_robot.png.webp";
 import avatar_unicorn from "./avatars/avatar_unicorn.png.webp";
 
-// ============ CERTIFICATES ============
-import certificate_allahs_names from "./certificates/certificate_allahs_names.webp";
-import certificate_four_greatest_women from "./certificates/certificate_four_greatest_women.webp";
-import certificate_life_of_muhammad from "./certificates/certificate_life_of_muhammad.webp";
-import certificate_six_pillars from "./certificates/certificate_six_pillars.webp";
-import certificate_stories_of_prophets from "./certificates/certificate_stories_of_prophets.webp";
-import certificate_ten_promised_paradise from "./certificates/certificate_ten_promised_paradise.webp";
-
 // ============ UI ============
 import ui_coin from "./ui/ui_coin.webp";
 import ui_shield from "./ui/ui_shield.webp";
@@ -95,14 +87,6 @@ const assets = {
     avatar_rabbit,
     avatar_robot,
     avatar_unicorn,
-  },
-  certificates: {
-    certificate_allahs_names,
-    certificate_four_greatest_women,
-    certificate_life_of_muhammad,
-    certificate_six_pillars,
-    certificate_stories_of_prophets,
-    certificate_ten_promised_paradise,
   },
   ui: {
     ui_coin,
