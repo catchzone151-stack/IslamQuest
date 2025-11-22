@@ -98,40 +98,66 @@ export default function PathPage() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))",
-          gap: "16px",
-          maxWidth: "600px",
-          margin: "24px auto",
+          gridTemplateColumns: "1fr",
+          gap: "12px",
+          maxWidth: "480px",
+          margin: "24px auto 0",
+          paddingLeft: "12px",
+          paddingRight: "12px",
         }}
       >
         {lessons.map((lesson) => {
           const unlocked = isLessonUnlocked(pathId, lesson.id);
           const isCurrent = lesson.id === currentLessonId;
+          const hasSection = lesson.section !== undefined;
+          
           return (
-            <div
-              key={lesson.id}
-              onClick={() => handleLessonClick(lesson)}
-              style={{
-                position: "relative",
-                background: unlocked
-                  ? "linear-gradient(180deg, #FFD700 0%, #b89600 100%)"
-                  : "rgba(255,255,255,0.05)",
-                color: unlocked ? "#000814" : "rgba(255,255,255,0.4)",
-                borderRadius: "16px",
-                height: "100px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontWeight: "bold",
-                fontSize: "1.1rem",
-                cursor: "pointer",
-                border: unlocked ? "2px solid #FFD700" : "2px solid #222",
-                transition: "all 0.3s ease",
-                animation: unlocked 
-                  ? (isCurrent ? "currentLessonPulse 2s ease-in-out infinite" : "goldPulse 2s ease-in-out infinite")
-                  : "none",
-              }}
-            >
+            <div key={lesson.id} style={{ display: "flex", gap: "16px", alignItems: "center", marginBottom: "8px" }}>
+              {/* Section heading on left if applicable */}
+              {hasSection && (
+                <div
+                  style={{
+                    flex: "0 0 40%",
+                    fontSize: "0.75rem",
+                    fontWeight: 700,
+                    color: "#FFD700",
+                    textAlign: "left",
+                    letterSpacing: "0.5px",
+                    wordWrap: "break-word",
+                    lineHeight: 1.3,
+                    paddingRight: "8px",
+                  }}
+                >
+                  {lesson.section}
+                </div>
+              )}
+              
+              {/* Lesson card */}
+              <div
+                onClick={() => handleLessonClick(lesson)}
+                style={{
+                  position: "relative",
+                  background: unlocked
+                    ? "linear-gradient(180deg, #FFD700 0%, #b89600 100%)"
+                    : "rgba(255,255,255,0.05)",
+                  color: unlocked ? "#000814" : "rgba(255,255,255,0.4)",
+                  borderRadius: "50%",
+                  width: "60px",
+                  height: "60px",
+                  minWidth: "60px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontWeight: "bold",
+                  fontSize: "1rem",
+                  cursor: "pointer",
+                  border: unlocked ? "2px solid #FFD700" : "2px solid #222",
+                  transition: "all 0.3s ease",
+                  animation: unlocked 
+                    ? (isCurrent ? "currentLessonPulse 2s ease-in-out infinite" : "goldPulse 2s ease-in-out infinite")
+                    : "none",
+                }}
+              >
               <span
                 style={{
                   opacity: unlocked ? 1 : 0.3,
@@ -139,7 +165,7 @@ export default function PathPage() {
                   position: "relative",
                 }}
               >
-                Lesson {lesson.id}
+                {lesson.id}
               </span>
 
               {!unlocked && (
@@ -149,29 +175,31 @@ export default function PathPage() {
                     inset: 0,
                     background:
                       "linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.8) 100%)",
-                    borderRadius: "16px",
+                    borderRadius: "50%",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                   }}
                 >
-                  <span style={{ color: "#FFD700", fontSize: "1.8rem" }}>🔒</span>
+                  <span style={{ color: "#FFD700", fontSize: "1.4rem" }}>🔒</span>
                 </div>
               )}
-
-              {isCurrent && (
-                <img
-                  src={PathMascot}
-                  alt="Current lesson"
-                  style={{
-                    position: "absolute",
-                    top: "-40px",
-                    width: "60px",
-                    height: "60px",
-                    animation: "bounce 2s infinite",
-                  }}
-                />
-              )}
+              </div>
+              
+              {/* Lesson title on right */}
+              <div
+                style={{
+                  flex: "0 0 30%",
+                  fontSize: "0.85rem",
+                  fontWeight: 600,
+                  color: "white",
+                  textAlign: "left",
+                  wordWrap: "break-word",
+                  lineHeight: 1.3,
+                }}
+              >
+                {lesson.title}
+              </div>
             </div>
           );
         })}
