@@ -13,6 +13,8 @@ export default function Friends() {
   const [showMiniProfile, setShowMiniProfile] = useState(null);
   const [showMessageModal, setShowMessageModal] = useState(null);
   const [leaderboardTab, setLeaderboardTab] = useState("friends");
+  const [isLoadingFriends, setIsLoadingFriends] = useState(true);
+  const [isLoadingLeaderboard, setIsLoadingLeaderboard] = useState(true);
 
   const {
     friends,
