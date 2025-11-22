@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import assets from "../../assets/assets";
+import mascotCountdown from "../../assets/mascots/mascot_countdown.webp";
 import "./EventModals.css";
 
 export default function CountdownModal({ onComplete }) {
@@ -23,7 +23,7 @@ export default function CountdownModal({ onComplete }) {
       <div className="countdown-modal">
         {/* Countdown Rocket */}
         <div className="countdown-mascot">
-          <img src={assets.mascots.mascot_countdown} alt="Countdown" className="countdown-rocket" />
+          <img src={mascotCountdown} alt="Countdown Rocket" className="countdown-rocket" />
         </div>
 
         {/* Countdown Number */}

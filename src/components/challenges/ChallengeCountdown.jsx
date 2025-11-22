@@ -1,13 +1,9 @@
 import { useState, useEffect } from "react";
-import assets from "../../assets/assets";
+import mascotCountdown from "../../assets/mascots/mascot_countdown.webp";
 import "./ChallengeModals.css";
 
 export default function ChallengeCountdown({ onComplete }) {
   const [count, setCount] = useState(3);
-
-  useEffect(() => {
-    console.log('🚀 Countdown component loaded, rocket image:', assets.mascots.mascot_countdown);
-  }, []);
 
   useEffect(() => {
     if (count > 0) {
@@ -24,11 +20,9 @@ export default function ChallengeCountdown({ onComplete }) {
       <div className="challenge-countdown-modal">
         <div className="countdown-mascot">
           <img 
-            src={assets.mascots.mascot_countdown} 
+            src={mascotCountdown}
             alt="Countdown Rocket" 
             className="countdown-rocket"
-            onError={(e) => console.error('❌ Failed to load rocket image:', e)}
-            onLoad={() => console.log('✅ Rocket image loaded successfully')}
           />
         </div>
         <div className="countdown-number">
