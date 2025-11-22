@@ -129,6 +129,13 @@ export default function PathPage() {
     }
     return offset;
   });
+  
+  // Calculate total layout height to set LEFT column min-height
+  const totalLayoutHeight = groupedLessons.reduce((total, _, sectionIdx) => {
+    if (sectionIdx === 0) return sectionHeights[0];
+    // Add previous section height + gap
+    return total + sectionHeights[sectionIdx] + INTER_SECTION_GAP;
+  }, 0);
 
   return (
     <div
@@ -175,6 +182,7 @@ export default function PathPage() {
         <div style={{ 
           flex: "0 0 200px",
           position: "relative",
+          minHeight: `${totalLayoutHeight}px`,
         }}>
           {groupedLessons.map((section, sectionIdx) => {
             // Use calculated cumulative offset for absolute positioning
