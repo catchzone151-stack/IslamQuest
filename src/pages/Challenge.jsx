@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
+import { Globe } from "lucide-react";
 import { useNavigate } from "../hooks/useNavigate";
 import { useChallengeStore, CHALLENGE_MODES, BOSS_LEVEL } from "../store/challengeStore";
 import { useProgressStore } from "../store/progressStore";
@@ -230,7 +231,7 @@ export default function Challenge() {
       }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <span style={{ fontSize: "2rem" }}>🌍</span>
+            <Globe size={28} style={{ color: "#D4AF37" }} />
             <h2 style={{ color: "#d4af37", margin: 0, fontSize: "1.3rem", fontWeight: 700 }}>
               Global Events
             </h2>

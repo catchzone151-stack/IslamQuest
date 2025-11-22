@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useFriendsStore } from "../store/friendsStore";
 import { useProgressStore } from "../store/progressStore";
+import { useUserStore } from "../store/useUserStore";
 import { useNavigate } from "../hooks/useNavigate";
 import { Search, UserPlus, Users, Trophy, Activity, X, Send, Swords } from "lucide-react";
 import { LevelBadgeCompact } from "../components/LevelBadge";
@@ -34,7 +35,8 @@ export default function Friends() {
     getGlobalLeaderboard,
   } = useFriendsStore();
 
-  const { xp: currentUserXP, coins: currentUserCoins, streak: currentUserStreak, avatar: currentUserAvatar, displayName: currentUserName } = useProgressStore();
+  const { xp: currentUserXP, coins: currentUserCoins, streak: currentUserStreak, displayName: currentUserName } = useProgressStore();
+  const { name: currentUserName2, avatar: currentUserAvatar } = useUserStore();
 
   useEffect(() => {
     clearRequestsBadge();
@@ -74,10 +76,10 @@ export default function Friends() {
   let friendsLeaderboard = getFriendsLeaderboard();
   let globalLeaderboard = getGlobalLeaderboard();
 
-  // Add current user to friends leaderboard with correct rank
+  // Add current user to both leaderboards with correct rank and avatar from userStore
   const currentUser = {
     id: "current_user",
-    name: currentUserName || "You",
+    name: currentUserName2 || currentUserName || "You",
     avatar: currentUserAvatar,
     xp: currentUserXP,
     coins: currentUserCoins,
@@ -85,7 +87,8 @@ export default function Friends() {
   };
   
   // Insert current user and sort both leaderboards by XP descending
-  friendsLeaderboard = [currentUser, ...friendsLeaderboard].sort((a, b) => b.xp - a.xp);
+  const leaderboardWithUser = [currentUser, ...friendsLeaderboard].sort((a, b) => b.xp - a.xp);
+  friendsLeaderboard = leaderboardWithUser;
   globalLeaderboard = [currentUser, ...globalLeaderboard].sort((a, b) => b.xp - a.xp);
 
   const totalRequests = incomingRequests.length + outgoingRequests.length;
