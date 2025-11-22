@@ -1,121 +1,154 @@
 import { useState, useEffect } from "react";
-import { useFriendsStore } from "../store/friendsStore";
-import { useProgressStore } from "../store/progressStore";
-import { useUserStore } from "../store/useUserStore";
 import { useNavigate } from "../hooks/useNavigate";
-import { Search, UserPlus, Users, Trophy, Activity, X, Send, Swords } from "lucide-react";
+import { useFriendsStore } from "../store/friendsStore";
+import { useUserStore } from "../store/useUserStore";
+import { useProgressStore } from "../store/progressStore";
+import { useModalStore, MODAL_TYPES } from "../store/modalStore";
+import { motion, AnimatePresence } from "framer-motion";
+import { Search, UserPlus, Users, Send, X, Check, Clock, Trophy, Flame } from "lucide-react";
 import { LevelBadgeCompact } from "../components/LevelBadge";
 import { getAvatarImage } from "../utils/avatarUtils";
+import { getCurrentLevel } from "../utils/diamondLevels";
 
 export default function Friends() {
   const navigate = useNavigate();
-  const { id: currentUserId, name: currentUserName2, avatar: freshUserAvatar } = useUserStore();
-  const [activeTab, setActiveTab] = useState("friends");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [showMiniProfile, setShowMiniProfile] = useState(null);
-  const [showMessageModal, setShowMessageModal] = useState(null);
-  const [leaderboardTab, setLeaderboardTab] = useState("friends");
-  const [isLoadingFriends, setIsLoadingFriends] = useState(true);
-  const [isLoadingLeaderboard, setIsLoadingLeaderboard] = useState(true);
-
+  const { id: currentUserId, name, avatar, username } = useUserStore();
+  const { xp: currentUserXP, streak: currentUserStreak } = useProgressStore();
+  const { showModal } = useModalStore();
+  
   const {
-    friends,
-    incomingRequests,
-    outgoingRequests,
-    activityFeed,
-    friendOfWeek,
-    clearRequestsBadge,
+    getAllFriends,
+    getSentRequests,
+    getReceivedRequests,
+    searchUsers,
     sendFriendRequest,
     acceptFriendRequest,
     declineFriendRequest,
-    cancelOutgoingRequest,
-    removeFriend,
-    sendMessage,
-    sendChallenge,
-    getFriendsLeaderboard,
-    getGlobalLeaderboard,
+    cancelSentRequest,
+    isFriend,
+    canSendRequest,
+    getFriendship,
+    updateCurrentUserData,
+    initializeUser
   } = useFriendsStore();
 
-  const { xp: currentUserXP, coins: currentUserCoins, streak: currentUserStreak, displayName: currentUserName } = useProgressStore();
+  const [activeTab, setActiveTab] = useState("friends");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
 
+  // Initialize current user in friends store on mount
   useEffect(() => {
-    clearRequestsBadge();
-    // Simulate friends and leaderboard loading
-    setIsLoadingFriends(true);
-    setIsLoadingLeaderboard(true);
-    const friendsTimer = setTimeout(() => setIsLoadingFriends(false), 500);
-    const leaderboardTimer = setTimeout(() => setIsLoadingLeaderboard(false), 800);
-    return () => {
-      clearTimeout(friendsTimer);
-      clearTimeout(leaderboardTimer);
-    };
-  }, []);
+    if (currentUserId && username) {
+      initializeUser({
+        id: currentUserId,
+        username,
+        nickname: name,
+        avatar,
+        xp: currentUserXP,
+        streak: currentUserStreak
+      });
+    }
+  }, [currentUserId, username]); // Only run on mount or when user changes
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      sendFriendRequest(searchQuery.trim());
-      setSearchQuery("");
+  // Update current user data when XP/streak changes
+  useEffect(() => {
+    updateCurrentUserData({ xp: currentUserXP, streak: currentUserStreak });
+  }, [currentUserXP, currentUserStreak, updateCurrentUserData]);
+
+  // Handle search
+  useEffect(() => {
+    if (searchQuery.trim().length >= 3) {
+      setIsSearching(true);
+      const results = searchUsers(searchQuery.trim());
+      setSearchResults(results);
+      setIsSearching(false);
+    } else {
+      setSearchResults([]);
+    }
+  }, [searchQuery, searchUsers]);
+
+  const friends = getAllFriends();
+  const sentRequests = getSentRequests();
+  const receivedRequests = getReceivedRequests();
+
+  const handleSendRequest = (userId) => {
+    const result = sendFriendRequest(userId);
+    if (result.success) {
+      showModal(MODAL_TYPES.SUCCESS, {
+        message: result.message
+      });
+    } else {
+      showModal(MODAL_TYPES.ERROR, {
+        message: result.error
+      });
     }
   };
 
-  const handleSendMessage = (friendId, message) => {
-    sendMessage(friendId, message);
-    setShowMessageModal(null);
-  };
-
-  const handleChallenge = (friendId) => {
-    const friend = friends.find(f => f.id === friendId);
-    if (friend) {
-      // Navigate to Challenge page with friend pre-selected
-      navigate("/challenge", { state: { preselectedFriend: friend } });
+  const handleAcceptRequest = (requestId) => {
+    const result = acceptFriendRequest(requestId);
+    if (result.success) {
+      showModal(MODAL_TYPES.SUCCESS, {
+        message: result.message
+      });
+    } else {
+      showModal(MODAL_TYPES.ERROR, {
+        message: result.error
+      });
     }
-    setShowMiniProfile(null);
   };
 
-  let friendsLeaderboard = getFriendsLeaderboard();
-  let globalLeaderboard = getGlobalLeaderboard();
-
-  // Build clean current user object with fresh avatar and real user id from store
-  const currentUser = {
-    id: currentUserId,
-    name: currentUserName2 || currentUserName || "You",
-    avatar: freshUserAvatar,
-    xp: currentUserXP,
-    coins: currentUserCoins,
-    streak: currentUserStreak,
+  const handleDeclineRequest = (requestId) => {
+    const result = declineFriendRequest(requestId);
+    if (result.success) {
+      // Silent success for decline
+    } else {
+      showModal(MODAL_TYPES.ERROR, {
+        message: result.error
+      });
+    }
   };
-  
-  // Filter out duplicates of current user (by id or name)
-  const cleanedFriendsList = (friendsLeaderboard || []).filter(
-    f => f.id !== currentUser.id && f.name !== currentUser.name
-  );
-  const cleanedGlobalList = (globalLeaderboard || []).filter(
-    g => g.id !== currentUser.id && g.name !== currentUser.name
-  );
 
-  // Combine with current user and sort both leaderboards by XP descending
-  const fullFriendsList = [...cleanedFriendsList, currentUser].sort((a, b) => b.xp - a.xp);
-  const fullGlobalList = [...cleanedGlobalList, currentUser].sort((a, b) => b.xp - a.xp);
-  
-  // FORCE OVERRIDE: Ensure current user's avatar is always their selected avatar
-  friendsLeaderboard = fullFriendsList.map(user => 
-    user.id === currentUserId ? { ...user, avatar: freshUserAvatar } : user
-  );
-  globalLeaderboard = fullGlobalList.map(user => 
-    user.id === currentUserId ? { ...user, avatar: freshUserAvatar } : user
-  );
+  const handleCancelRequest = (requestId) => {
+    const result = cancelSentRequest(requestId);
+    if (result.success) {
+      showModal(MODAL_TYPES.SUCCESS, {
+        message: result.message
+      });
+    } else {
+      showModal(MODAL_TYPES.ERROR, {
+        message: result.error
+      });
+    }
+  };
 
-  const totalRequests = incomingRequests.length + outgoingRequests.length;
+  const handleUserClick = (userId) => {
+    if (isFriend(userId)) {
+      navigate(`/friend/${userId}`);
+    }
+  };
+
+  const getButtonState = (userId) => {
+    if (isFriend(userId)) return "friends";
+    const friendship = getFriendship(userId);
+    if (friendship?.status === "pending") {
+      return friendship.userId === currentUserId ? "sent" : "received";
+    }
+    return "add";
+  };
+
+  const totalRequests = sentRequests.length + receivedRequests.length;
 
   return (
     <div className="screen no-extra-space" style={{
       background: "#0B1E2D",
+      minHeight: "100vh",
+      paddingBottom: "80px"
     }}>
       {/* Header */}
       <div style={{
         background: "linear-gradient(135deg, #0B1E2D 0%, #1a3a52 100%)",
-        padding: "20px 20px 16px",
+        padding: "20px 20px 0",
         borderBottom: "1px solid rgba(212, 175, 55, 0.2)",
       }}>
         <h1 style={{
@@ -123,1011 +156,594 @@ export default function Friends() {
           fontSize: "1.8rem",
           fontWeight: "bold",
           textAlign: "center",
-          textShadow: "0 0 20px rgba(212, 175, 55, 0.5)",
-          margin: 0,
+          marginBottom: "20px"
         }}>
-          Friends 🤝
+          Friends
         </h1>
-      </div>
 
-      {/* Tabs */}
-      <div style={{
-        display: "flex",
-        gap: 8,
-        padding: "16px 16px 0",
-        overflowX: "auto",
-        borderBottom: "1px solid rgba(212, 175, 55, 0.2)",
-      }}>
-        {[
-          { id: "friends", label: "Friends", icon: Users },
-          { id: "requests", label: "Requests", icon: UserPlus, badge: totalRequests },
-          { id: "leaderboard", label: "Leaderboard", icon: Trophy },
-        ].map((tab) => {
-          const Icon = tab.icon;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              style={{
-                flex: 1,
-                minWidth: 100,
-                padding: "12px 16px",
-                background: activeTab === tab.id
-                  ? "linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)"
-                  : "rgba(212, 175, 55, 0.1)",
-                border: "none",
-                borderRadius: "12px 12px 0 0",
-                color: activeTab === tab.id ? "#0B1E2D" : "#D4AF37",
-                fontWeight: "600",
-                fontSize: "0.9rem",
-                cursor: "pointer",
-                transition: "all 0.3s",
-                position: "relative",
-                boxShadow: activeTab === tab.id
-                  ? "0 0 20px rgba(212, 175, 55, 0.4)"
-                  : "none",
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
-                <Icon size={16} />
-                {tab.label}
-                {tab.badge > 0 && (
-                  <span style={{
-                    background: "#ef4444",
-                    color: "white",
-                    borderRadius: "50%",
-                    minWidth: 24,
-                    height: 24,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "0.75rem",
-                    fontWeight: "bold",
-                    padding: "0 6px",
-                    lineHeight: 1,
-                  }}>
-                    {tab.badge}
-                  </span>
-                )}
-              </div>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Tab Content */}
-      <div style={{ padding: 16 }}>
-        {activeTab === "friends" && isLoadingFriends && (
-          <div style={{
-            padding: "60px 20px",
-            textAlign: "center",
-            color: "#D4AF37"
-          }}>
-            <div style={{ fontSize: "2rem", marginBottom: "12px" }}>⏳</div>
-            <p style={{ fontSize: "1.1rem" }}>Loading friends...</p>
-          </div>
-        )}
-
-        {activeTab === "friends" && !isLoadingFriends && (
-          <FriendsTab
-            currentUserId={currentUserId}
-            freshUserAvatar={freshUserAvatar}
-            friends={friends}
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            handleSearch={handleSearch}
-            setShowMiniProfile={setShowMiniProfile}
-            setShowMessageModal={setShowMessageModal}
-            onChallenge={handleChallenge}
-
-          />
-        )}
-
-        {activeTab === "requests" && (
-          <RequestsTab
-            currentUserId={currentUserId}
-            freshUserAvatar={freshUserAvatar}
-            incomingRequests={incomingRequests}
-            outgoingRequests={outgoingRequests}
-            acceptFriendRequest={acceptFriendRequest}
-            declineFriendRequest={declineFriendRequest}
-            cancelOutgoingRequest={cancelOutgoingRequest}
-
-          />
-        )}
-
-        {activeTab === "leaderboard" && isLoadingLeaderboard && (
-          <div style={{
-            padding: "60px 20px",
-            textAlign: "center",
-            color: "#D4AF37"
-          }}>
-            <div style={{ fontSize: "2rem", marginBottom: "12px" }}>⏳</div>
-            <p style={{ fontSize: "1.1rem" }}>Loading leaderboards...</p>
-          </div>
-        )}
-
-        {activeTab === "leaderboard" && !isLoadingLeaderboard && (
-          <LeaderboardTab
-            currentUserId={currentUserId}
-            freshUserAvatar={freshUserAvatar}
-            leaderboardTab={leaderboardTab}
-            setLeaderboardTab={setLeaderboardTab}
-            friendsLeaderboard={friendsLeaderboard}
-            globalLeaderboard={globalLeaderboard}
-            currentUserXP={currentUserXP}
-            friendOfWeek={friendOfWeek}
-
-          />
-        )}
-
-      </div>
-
-      {/* Mini Profile Modal */}
-      {showMiniProfile && (
-        <MiniProfileModal
-          friend={showMiniProfile}
-          currentUserId={currentUserId}
-          freshUserAvatar={freshUserAvatar}
-          onClose={() => setShowMiniProfile(null)}
-          onMessage={() => {
-            setShowMessageModal(showMiniProfile);
-            setShowMiniProfile(null);
-          }}
-          onChallenge={() => handleChallenge(showMiniProfile.id)}
-          onRemove={() => {
-            if (window.confirm(`Remove ${showMiniProfile.name} from your friends?`)) {
-              removeFriend(showMiniProfile.id);
-              setShowMiniProfile(null);
-            }
-          }}
-        />
-      )}
-
-      {/* Quick Messages Modal */}
-      {showMessageModal && (
-        <QuickMessagesModal
-          friend={showMessageModal}
-          onClose={() => setShowMessageModal(null)}
-          onSend={(message) => handleSendMessage(showMessageModal.id, message)}
-        />
-      )}
-    </div>
-  );
-}
-
-function FriendsTab({ friends, searchQuery, setSearchQuery, handleSearch, currentUserId, freshUserAvatar, setShowMiniProfile, setShowMessageModal, onChallenge }) {
-  return (
-    <>
-      {/* Search Bar */}
-      <form onSubmit={handleSearch} style={{ marginBottom: 12 }}>
+        {/* Tabs */}
         <div style={{
           display: "flex",
-          gap: 8,
-          background: "rgba(212, 175, 55, 0.1)",
-          padding: 12,
-          borderRadius: 16,
-          border: "1px solid rgba(212, 175, 55, 0.3)",
+          gap: "8px",
+          justifyContent: "center"
         }}>
-          <Search size={20} color="#D4AF37" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by nickname..."
-            style={{
-              flex: 1,
-              background: "transparent",
-              border: "none",
-              color: "#f3f4f6",
-              outline: "none",
-              fontSize: "1rem",
-            }}
+          <TabButton
+            active={activeTab === "friends"}
+            onClick={() => setActiveTab("friends")}
+            icon={<Users size={18} />}
+            label="Friends"
+            count={friends.length}
           />
-          <button
-            type="submit"
-            style={{
-              background: "linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)",
-              border: "none",
-              borderRadius: 12,
-              padding: "8px 16px",
-              color: "#0B1E2D",
-              fontWeight: "600",
-              cursor: "pointer",
-              boxShadow: "0 0 15px rgba(212, 175, 55, 0.3)",
-            }}
-          >
-            Add
-          </button>
-        </div>
-      </form>
-
-      {/* Friends List */}
-      {friends.length === 0 ? (
-        <div style={{
-          textAlign: "center",
-          padding: "60px 20px",
-          color: "#D4AF37",
-        }}>
-          <div style={{ fontSize: "4rem", marginBottom: 16 }}>👋</div>
-          <p style={{ fontSize: "1.2rem", fontWeight: "600" }}>Add your first friend 🌙</p>
-          <p style={{ color: "rgba(212, 175, 55, 0.7)", marginTop: 8 }}>
-            Search for friends above to get started!
-          </p>
-        </div>
-      ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          {friends.map((friend) => {
-            return (
-              <FriendCard
-                key={friend.id}
-                friend={friend}
-                currentUserId={currentUserId}
-                freshUserAvatar={freshUserAvatar}
-                onViewProfile={() => setShowMiniProfile(friend)}
-                onMessage={() => setShowMessageModal(friend)}
-                onChallenge={() => onChallenge(friend.id)}
-              />
-            );
-          })}
-        </div>
-      )}
-    </>
-  );
-}
-
-function FriendCard({ friend, currentUserId, freshUserAvatar, onViewProfile, onMessage, onChallenge }) {
-  return (
-    <div style={{
-      background: "linear-gradient(135deg, rgba(26, 58, 82, 0.6) 0%, rgba(11, 30, 45, 0.8) 100%)",
-      borderRadius: 16,
-      padding: 16,
-      border: "1px solid rgba(212, 175, 55, 0.2)",
-      boxShadow: "0 4px 15px rgba(0, 0, 0, 0.3)",
-      overflow: "hidden",
-    }}>
-      <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-        {/* Avatar */}
-        <img
-          src={getAvatarImage(friend.id === currentUserId ? freshUserAvatar : friend.avatar, { userId: friend.id, nickname: friend.name })}
-          alt={friend.name}
-          onClick={onViewProfile}
-          style={{
-            width: 60,
-            height: 60,
-            borderRadius: "50%",
-            objectFit: "cover",
-            cursor: "pointer",
-            border: "3px solid #D4AF37",
-            boxShadow: "0 0 20px rgba(212, 175, 55, 0.4)",
-            flexShrink: 0,
-          }}
-        />
-
-        {/* Info */}
-        <div style={{ flex: 1, textAlign: "left", minWidth: 0 }}>
-          <div style={{ 
-            color: "#D4AF37", 
-            fontWeight: "600", 
-            fontSize: "1.1rem",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-          }}>
-            {friend.name}
-          </div>
-          <div style={{ 
-            display: "flex", 
-            alignItems: "center", 
-            gap: 8, 
-            marginTop: 8,
-            flexWrap: "wrap",
-          }}>
-            <LevelBadgeCompact xp={friend.xp} size={20} />
-            <span style={{ color: "rgba(212, 175, 55, 0.7)", fontSize: "0.85rem" }}>
-              • {friend.xp} XP • {friend.streak} day streak 🔥
-            </span>
-          </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
-          <button
-            onClick={onChallenge}
-            style={{
-              background: "rgba(239, 68, 68, 0.2)",
-              border: "1px solid rgba(239, 68, 68, 0.5)",
-              borderRadius: 12,
-              padding: "8px 10px",
-              color: "#ef4444",
-              cursor: "pointer",
-              fontSize: "1.2rem",
-              flexShrink: 0,
-            }}
-            title="Challenge"
-          >
-            ⚔️
-          </button>
-          <button
-            onClick={onMessage}
-            style={{
-              background: "rgba(212, 175, 55, 0.2)",
-              border: "1px solid rgba(212, 175, 55, 0.5)",
-              borderRadius: 12,
-              padding: "8px 10px",
-              color: "#D4AF37",
-              cursor: "pointer",
-              fontSize: "1.2rem",
-              flexShrink: 0,
-            }}
-            title="Message"
-          >
-            💬
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function RequestsTab({ incomingRequests, outgoingRequests, currentUserId, freshUserAvatar, acceptFriendRequest, declineFriendRequest, cancelOutgoingRequest }) {
-  const hasRequests = incomingRequests.length > 0 || outgoingRequests.length > 0;
-
-  if (!hasRequests) {
-    return (
-      <div style={{
-        textAlign: "center",
-        padding: "60px 20px",
-        color: "#D4AF37",
-      }}>
-        <div style={{ fontSize: "4rem", marginBottom: 16 }}>🌙</div>
-        <p style={{ fontSize: "1.2rem", fontWeight: "600" }}>No new friend requests</p>
-      </div>
-    );
-  }
-
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-      {/* Incoming Requests */}
-      {incomingRequests.length > 0 && (
-        <div>
-          <h3 style={{ color: "#D4AF37", marginBottom: 12, fontSize: "1.1rem" }}>
-            Incoming Requests ({incomingRequests.length})
-          </h3>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {incomingRequests.map((request) => (
-              <RequestCard
-                key={request.id}
-                request={request}
-                type="incoming"
-                currentUserId={currentUserId}
-                freshUserAvatar={freshUserAvatar}
-                onAccept={() => acceptFriendRequest(request.id)}
-                onDecline={() => declineFriendRequest(request.id)}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Outgoing Requests */}
-      {outgoingRequests.length > 0 && (
-        <div>
-          <h3 style={{ color: "#D4AF37", marginBottom: 12, fontSize: "1.1rem" }}>
-            Outgoing Requests ({outgoingRequests.length})
-          </h3>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {outgoingRequests.map((request) => (
-              <RequestCard
-                key={request.id}
-                request={request}
-                type="outgoing"
-                currentUserId={currentUserId}
-                freshUserAvatar={freshUserAvatar}
-                onCancel={() => cancelOutgoingRequest(request.id)}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function RequestCard({ request, type, currentUserId, freshUserAvatar, onAccept, onDecline, onCancel }) {
-  return (
-    <div style={{
-      background: "linear-gradient(135deg, rgba(26, 58, 82, 0.6) 0%, rgba(11, 30, 45, 0.8) 100%)",
-      borderRadius: 16,
-      padding: 16,
-      border: "1px solid rgba(212, 175, 55, 0.2)",
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-    }}>
-      <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-        <img
-          src={getAvatarImage(request.id === currentUserId ? freshUserAvatar : request.avatar, { userId: request.id, nickname: request.name })}
-          alt={request.name}
-          style={{
-            width: 50,
-            height: 50,
-            borderRadius: "50%",
-            objectFit: "cover",
-            border: "2px solid #D4AF37",
-            flexShrink: 0,
-          }}
-        />
-        <div>
-          <div style={{ color: "#D4AF37", fontWeight: "600" }}>{request.name}</div>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 4 }}>
-            <LevelBadgeCompact xp={request.xp} size={18} />
-            <span style={{ color: "rgba(212, 175, 55, 0.7)", fontSize: "0.85rem" }}>
-              {request.xp} XP
-            </span>
-          </div>
+          <TabButton
+            active={activeTab === "requests"}
+            onClick={() => setActiveTab("requests")}
+            icon={<Send size={18} />}
+            label="Requests"
+            count={totalRequests}
+            badge={receivedRequests.length > 0}
+          />
+          <TabButton
+            active={activeTab === "search"}
+            onClick={() => setActiveTab("search")}
+            icon={<Search size={18} />}
+            label="Search"
+          />
         </div>
       </div>
 
-      <div style={{ display: "flex", gap: 8 }}>
-        {type === "incoming" ? (
-          <>
-            <button
-              onClick={onAccept}
-              style={{
-                background: "linear-gradient(135deg, #10B981 0%, #059669 100%)",
-                border: "none",
-                borderRadius: 12,
-                padding: "8px 16px",
-                color: "white",
-                fontWeight: "600",
-                cursor: "pointer",
-              }}
+      {/* Content */}
+      <div style={{ padding: "16px" }}>
+        <AnimatePresence mode="wait">
+          {/* Friends Tab */}
+          {activeTab === "friends" && (
+            <motion.div
+              key="friends"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
             >
-              ✅ Accept
-            </button>
-            <button
-              onClick={onDecline}
-              style={{
-                background: "rgba(239, 68, 68, 0.2)",
-                border: "1px solid rgba(239, 68, 68, 0.5)",
-                borderRadius: 12,
-                padding: "8px 16px",
-                color: "#ef4444",
-                fontWeight: "600",
-                cursor: "pointer",
-              }}
-            >
-              ❌
-            </button>
-          </>
-        ) : (
-          <button
-            onClick={onCancel}
-            style={{
-              background: "rgba(239, 68, 68, 0.2)",
-              border: "1px solid rgba(239, 68, 68, 0.5)",
-              borderRadius: 12,
-              padding: "8px 16px",
-              color: "#ef4444",
-              fontWeight: "600",
-              cursor: "pointer",
-            }}
-          >
-            Cancel
-          </button>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function LeaderboardTab({ leaderboardTab, setLeaderboardTab, friendsLeaderboard, globalLeaderboard, currentUserId, freshUserAvatar, currentUserXP, friendOfWeek }) {
-  const activeLeaderboard = leaderboardTab === "friends" ? friendsLeaderboard : globalLeaderboard;
-
-  return (
-    <>
-      {/* Sub-tabs */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
-        <button
-          onClick={() => setLeaderboardTab("friends")}
-          style={{
-            flex: 1,
-            padding: "12px",
-            background: leaderboardTab === "friends"
-              ? "linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)"
-              : "rgba(212, 175, 55, 0.1)",
-            border: "none",
-            borderRadius: 12,
-            color: leaderboardTab === "friends" ? "#0B1E2D" : "#D4AF37",
-            fontWeight: "600",
-            cursor: "pointer",
-          }}
-        >
-          🏅 Friends
-        </button>
-        <button
-          onClick={() => setLeaderboardTab("global")}
-          style={{
-            flex: 1,
-            padding: "12px",
-            background: leaderboardTab === "global"
-              ? "linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)"
-              : "rgba(212, 175, 55, 0.1)",
-            border: "none",
-            borderRadius: 12,
-            color: leaderboardTab === "global" ? "#0B1E2D" : "#D4AF37",
-            fontWeight: "600",
-            cursor: "pointer",
-          }}
-        >
-          🌍 Global
-        </button>
-      </div>
-
-      {/* Friend of the Week */}
-      {leaderboardTab === "friends" && friendOfWeek && (
-        <div style={{
-          background: "linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(244, 208, 63, 0.1) 100%)",
-          borderRadius: 16,
-          padding: 20,
-          marginBottom: 20,
-          border: "2px solid #D4AF37",
-          boxShadow: "0 0 30px rgba(212, 175, 55, 0.4)",
-        }}>
-          <div style={{ textAlign: "center", color: "#D4AF37", fontWeight: "600", marginBottom: 12 }}>
-            🏆 Friend of the Week
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 16, justifyContent: "center" }}>
-            <img
-              src={getAvatarImage(friendOfWeek.id === currentUserId ? freshUserAvatar : friendOfWeek.avatar, { userId: friendOfWeek.id, nickname: friendOfWeek.name })}
-              alt={friendOfWeek.name}
-              style={{
-                width: 60,
-                height: 60,
-                borderRadius: "50%",
-                objectFit: "cover",
-                border: "3px solid #D4AF37",
-                boxShadow: "0 0 15px rgba(212, 175, 55, 0.5)",
-              }}
-            />
-            <div>
-              <div style={{ color: "#D4AF37", fontWeight: "600", fontSize: "1.2rem" }}>
-                {friendOfWeek.name}
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 6 }}>
-                <LevelBadgeCompact xp={friendOfWeek.xp} size={22} />
-                <span style={{ color: "rgba(212, 175, 55, 0.7)" }}>
-                  {friendOfWeek.xp} XP
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Header */}
-      <h3 style={{ color: "#D4AF37", marginBottom: 16, fontSize: "1.1rem" }}>
-        {leaderboardTab === "friends" 
-          ? "🏅 Your friends ranked by XP this week"
-          : "🌍 Global Leaderboard"}
-      </h3>
-
-      {/* Leaderboard */}
-      {activeLeaderboard.length === 0 ? (
-        <div style={{
-          textAlign: "center",
-          padding: "60px 20px",
-          color: "#D4AF37",
-        }}>
-          <p style={{ fontSize: "1.2rem" }}>No friends yet! Add some to see the leaderboard.</p>
-        </div>
-      ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          {activeLeaderboard.slice(0, 12).map((user, index) => {
-            const isTop3 = index < 3;
-            const medals = ["🥇", "🥈", "🥉"];
-            const rank = index + 1;
-            
-            return (
-              <div
-                key={user.id}
-                style={{
-                  background: isTop3
-                    ? "linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(244, 208, 63, 0.2) 100%)"
-                    : "linear-gradient(135deg, rgba(26, 58, 82, 0.6) 0%, rgba(11, 30, 45, 0.8) 100%)",
-                  borderRadius: 16,
-                  padding: 16,
-                  border: isTop3 ? "2px solid #D4AF37" : "1px solid rgba(212, 175, 55, 0.2)",
-                  boxShadow: isTop3 ? "0 0 25px rgba(212, 175, 55, 0.4)" : "0 4px 15px rgba(0, 0, 0, 0.3)",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 16,
-                }}
-              >
-                <div style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: "50%",
-                  background: isTop3 ? "#D4AF37" : "rgba(212, 175, 55, 0.3)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontWeight: "bold",
-                  color: isTop3 ? "#0B1E2D" : "#D4AF37",
-                  fontSize: "1.2rem",
-                  flexShrink: 0,
-                }}>
-                  {isTop3 ? medals[index] : rank}
-                </div>
-                <img
-                  src={getAvatarImage(user.avatar, { userId: user.id, nickname: user.name })}
-                  alt={user.name}
-                  style={{
-                    width: 50,
-                    height: 50,
-                    borderRadius: "50%",
-                    objectFit: "cover",
-                    border: isTop3 ? "3px solid #D4AF37" : "2px solid rgba(212, 175, 55, 0.4)",
-                    flexShrink: 0,
+              {friends.length === 0 ? (
+                <EmptyState
+                  icon={<Users size={48} />}
+                  title="No friends yet"
+                  message="Search for users to add friends"
+                  action={{
+                    label: "Search Users",
+                    onClick: () => setActiveTab("search")
                   }}
                 />
-                <div style={{ flex: 1, minWidth: 0, textAlign: "left" }}>
-                  <div style={{ color: "#D4AF37", fontWeight: "600", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                    {user.name}
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 4 }}>
-                    <LevelBadgeCompact xp={user.xp} size={20} />
-                    <span style={{ color: "rgba(212, 175, 55, 0.7)", fontSize: "0.9rem" }}>
-                      {user.xp} XP
-                    </span>
+              ) : (
+                <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                  {friends.map(friend => (
+                    <UserCard
+                      key={friend.id}
+                      user={friend}
+                      onClick={() => handleUserClick(friend.id)}
+                      badge="Friends"
+                      badgeColor="#10b981"
+                    />
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          )}
+
+          {/* Requests Tab */}
+          {activeTab === "requests" && (
+            <motion.div
+              key="requests"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+            >
+              {/* Received Requests */}
+              {receivedRequests.length > 0 && (
+                <div style={{ marginBottom: "24px" }}>
+                  <h3 style={{
+                    color: "#D4AF37",
+                    fontSize: "1rem",
+                    fontWeight: "600",
+                    marginBottom: "12px"
+                  }}>
+                    Received ({receivedRequests.length})
+                  </h3>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                    {receivedRequests.map(request => (
+                      <RequestCard
+                        key={request.id}
+                        user={request}
+                        type="received"
+                        onAccept={() => handleAcceptRequest(request.requestId)}
+                        onDecline={() => handleDeclineRequest(request.requestId)}
+                      />
+                    ))}
                   </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+              )}
 
-      {/* Zayd Mascot */}
-      <div style={{
-        textAlign: "center",
-        marginTop: 20,
-        color: "rgba(212, 175, 55, 0.7)",
-        fontSize: "0.9rem",
-      }}>
-        <span style={{ fontSize: "2rem" }}>👑</span>
-        <div style={{ marginTop: 8 }}>Keep climbing the ranks!</div>
-      </div>
-    </>
-  );
-}
+              {/* Sent Requests */}
+              {sentRequests.length > 0 && (
+                <div>
+                  <h3 style={{
+                    color: "#D4AF37",
+                    fontSize: "1rem",
+                    fontWeight: "600",
+                    marginBottom: "12px"
+                  }}>
+                    Sent ({sentRequests.length})
+                  </h3>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                    {sentRequests.map(request => (
+                      <RequestCard
+                        key={request.id}
+                        user={request}
+                        type="sent"
+                        onCancel={() => handleCancelRequest(request.requestId)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
 
-function ActivityTab({ activityFeed }) {
-  const shouldShowZayd = (index) => (index + 1) % 5 === 0;
-
-  if (activityFeed.length === 0) {
-    return (
-      <div style={{
-        textAlign: "center",
-        padding: "60px 20px",
-        color: "#D4AF37",
-      }}>
-        <div style={{ fontSize: "4rem", marginBottom: 16 }}>📊</div>
-        <p style={{ fontSize: "1.2rem", fontWeight: "600" }}>No activity yet</p>
-        <p style={{ color: "rgba(212, 175, 55, 0.7)", marginTop: 8 }}>
-          Friend activity will appear here!
-        </p>
-      </div>
-    );
-  }
-
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-      {activityFeed.map((activity, index) => (
-        <div key={activity.id}>
-          <div style={{
-            background: "linear-gradient(135deg, rgba(26, 58, 82, 0.6) 0%, rgba(11, 30, 45, 0.8) 100%)",
-            borderRadius: 16,
-            padding: 16,
-            border: "1px solid rgba(212, 175, 55, 0.2)",
-          }}>
-            <div style={{ color: "#D4AF37", fontSize: "0.95rem" }}>
-              {activity.message}
-            </div>
-            <div style={{ color: "rgba(212, 175, 55, 0.5)", fontSize: "0.8rem", marginTop: 8 }}>
-              {new Date(activity.timestamp).toLocaleTimeString()}
-            </div>
-          </div>
-
-          {/* Zayd appears every 5 activities */}
-          {shouldShowZayd(index) && (
-            <div style={{
-              background: "linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(244, 208, 63, 0.1) 100%)",
-              borderRadius: 16,
-              padding: 16,
-              marginTop: 12,
-              border: "1px solid rgba(212, 175, 55, 0.3)",
-              textAlign: "center",
-            }}>
-              <div style={{ fontSize: "2rem", marginBottom: 8 }}>🧑‍🏫</div>
-              <div style={{ color: "#D4AF37", fontWeight: "600" }}>
-                Keep going team!
-              </div>
-            </div>
+              {totalRequests === 0 && (
+                <EmptyState
+                  icon={<Send size={48} />}
+                  title="No pending requests"
+                  message="Friend requests will appear here"
+                />
+              )}
+            </motion.div>
           )}
-        </div>
-      ))}
+
+          {/* Search Tab */}
+          {activeTab === "search" && (
+            <motion.div
+              key="search"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+            >
+              {/* Search Input */}
+              <div style={{
+                position: "relative",
+                marginBottom: "20px"
+              }}>
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search by username..."
+                  style={{
+                    width: "100%",
+                    padding: "14px 44px 14px 16px",
+                    borderRadius: "12px",
+                    border: "2px solid rgba(212, 175, 55, 0.3)",
+                    background: "rgba(14, 22, 37, 0.6)",
+                    color: "white",
+                    fontSize: "1rem",
+                    outline: "none"
+                  }}
+                />
+                <Search
+                  size={20}
+                  color="#888"
+                  style={{
+                    position: "absolute",
+                    right: "14px",
+                    top: "50%",
+                    transform: "translateY(-50%)"
+                  }}
+                />
+              </div>
+
+              {/* Search Results */}
+              {searchQuery.trim().length < 3 ? (
+                <div style={{
+                  textAlign: "center",
+                  color: "#888",
+                  padding: "40px 20px"
+                }}>
+                  <Search size={48} color="#555" style={{ marginBottom: "16px" }} />
+                  <p>Enter at least 3 characters to search</p>
+                </div>
+              ) : searchResults.length === 0 ? (
+                <EmptyState
+                  icon={<Search size={48} />}
+                  title="No users found"
+                  message={`No results for "${searchQuery}"`}
+                />
+              ) : (
+                <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                  {searchResults.map(user => {
+                    const buttonState = getButtonState(user.id);
+                    return (
+                      <UserCard
+                        key={user.id}
+                        user={user}
+                        onClick={buttonState === "friends" ? () => handleUserClick(user.id) : undefined}
+                        action={
+                          buttonState === "add" ? (
+                            <ActionButton
+                              onClick={() => handleSendRequest(user.id)}
+                              icon={<UserPlus size={16} />}
+                              label="Add"
+                              color="#10b981"
+                            />
+                          ) : buttonState === "sent" ? (
+                            <StatusBadge icon={<Clock size={14} />} label="Pending" color="#f59e0b" />
+                          ) : buttonState === "friends" ? (
+                            <StatusBadge icon={<Check size={14} />} label="Friends" color="#10b981" />
+                          ) : null
+                        }
+                      />
+                    );
+                  })}
+                </div>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
 
-function MiniProfileModal({ friend, currentUserId, freshUserAvatar, onClose, onMessage, onChallenge, onRemove }) {
-  const friendsSince = friend.addedAt ? new Date(friend.addedAt).toLocaleDateString() : "Recently";
+// Helper Components
+function TabButton({ active, onClick, icon, label, count, badge }) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        flex: 1,
+        padding: "12px 16px",
+        background: active ? "rgba(212, 175, 55, 0.2)" : "transparent",
+        border: "none",
+        borderBottom: active ? "2px solid #D4AF37" : "2px solid transparent",
+        color: active ? "#D4AF37" : "#888",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "4px",
+        cursor: "pointer",
+        position: "relative",
+        fontSize: "0.85rem",
+        fontWeight: active ? "600" : "500",
+        transition: "all 0.2s ease"
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+        {icon}
+        {count !== undefined && (
+          <span style={{
+            fontSize: "0.75rem",
+            background: active ? "#D4AF37" : "#555",
+            color: active ? "#0A1A2F" : "#ccc",
+            padding: "2px 6px",
+            borderRadius: "10px",
+            fontWeight: "600"
+          }}>
+            {count}
+          </span>
+        )}
+      </div>
+      <span>{label}</span>
+      {badge && (
+        <div style={{
+          position: "absolute",
+          top: "8px",
+          right: "8px",
+          width: "8px",
+          height: "8px",
+          background: "#ef4444",
+          borderRadius: "50%"
+        }} />
+      )}
+    </button>
+  );
+}
+
+function UserCard({ user, onClick, action, badge, badgeColor }) {
+  const avatarSrc = getAvatarImage(user.avatar);
+  const userLevel = getCurrentLevel(user.xp);
 
   return (
-    <div style={{
-      position: "fixed",
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      background: "rgba(0, 0, 0, 0.8)",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      zIndex: 1000,
-      padding: 20,
-    }}>
+    <motion.div
+      whileHover={onClick ? { scale: 1.02 } : {}}
+      whileTap={onClick ? { scale: 0.98 } : {}}
+      onClick={onClick}
+      style={{
+        background: "rgba(14, 22, 37, 0.6)",
+        border: "1px solid rgba(212, 175, 55, 0.3)",
+        borderRadius: "12px",
+        padding: "14px",
+        display: "flex",
+        alignItems: "center",
+        gap: "12px",
+        cursor: onClick ? "pointer" : "default"
+      }}
+    >
+      {/* Avatar */}
       <div style={{
-        background: "linear-gradient(135deg, #1a3a52 0%, #0B1E2D 100%)",
-        borderRadius: 24,
-        padding: 32,
-        maxWidth: 400,
-        width: "100%",
-        border: "2px solid rgba(212, 175, 55, 0.3)",
-        boxShadow: "0 0 40px rgba(212, 175, 55, 0.3)",
-        position: "relative",
+        width: "56px",
+        height: "56px",
+        borderRadius: "50%",
+        border: "2px solid #D4AF37",
+        overflow: "hidden",
+        flexShrink: 0,
+        background: "#0E1625"
       }}>
-        <button
-          onClick={onClose}
-          style={{
-            position: "absolute",
-            top: 16,
-            right: 16,
-            background: "rgba(239, 68, 68, 0.2)",
-            border: "1px solid rgba(239, 68, 68, 0.5)",
-            borderRadius: "50%",
-            width: 32,
-            height: 32,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            color: "#ef4444",
-          }}
-        >
-          <X size={18} />
-        </button>
-
-        <div style={{ textAlign: "center", marginBottom: 24 }}>
-          <img
-            src={getAvatarImage(friend.id === currentUserId ? freshUserAvatar : friend.avatar, { userId: friend.id, nickname: friend.name })}
-            alt={friend.name}
-            style={{
-              width: 100,
-              height: 100,
-              borderRadius: "50%",
-              objectFit: "cover",
-              margin: "0 auto",
-              border: "4px solid #D4AF37",
-              boxShadow: "0 0 30px rgba(212, 175, 55, 0.5)",
-              display: "block",
-            }}
-          />
-          <h2 style={{ color: "#D4AF37", marginTop: 16, fontSize: "1.5rem" }}>
-            {friend.name}
-          </h2>
-        </div>
-
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: 16,
-          marginBottom: 24,
-        }}>
-          <div style={{
-            background: "rgba(212, 175, 55, 0.1)",
-            padding: 16,
-            borderRadius: 12,
-            textAlign: "center",
-            border: "1px solid rgba(212, 175, 55, 0.2)",
-          }}>
-            <div style={{ color: "#D4AF37", fontSize: "1.5rem", fontWeight: "bold" }}>
-              {friend.xp}
-            </div>
-            <div style={{ color: "rgba(212, 175, 55, 0.7)", fontSize: "0.85rem", marginTop: 4 }}>
-              Total XP
-            </div>
-          </div>
-          <div style={{
-            background: "rgba(212, 175, 55, 0.1)",
-            padding: 16,
-            borderRadius: 12,
-            textAlign: "center",
-            border: "1px solid rgba(212, 175, 55, 0.2)",
-          }}>
-            <div style={{ color: "#D4AF37", fontSize: "1.5rem", fontWeight: "bold" }}>
-              {friend.streak} 🔥
-            </div>
-            <div style={{ color: "rgba(212, 175, 55, 0.7)", fontSize: "0.85rem", marginTop: 4 }}>
-              Day Streak
-            </div>
-          </div>
-        </div>
-
-        <div style={{
-          color: "rgba(212, 175, 55, 0.7)",
-          fontSize: "0.9rem",
-          textAlign: "center",
-          marginBottom: 24,
-        }}>
-          Friends since: {friendsSince}
-        </div>
-
-        <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
-          <button
-            onClick={onChallenge}
-            style={{
-              flex: 1,
-              background: "linear-gradient(135deg, rgba(239, 68, 68, 0.3) 0%, rgba(220, 38, 38, 0.2) 100%)",
-              border: "1px solid rgba(239, 68, 68, 0.5)",
-              borderRadius: 12,
-              padding: "12px",
-              color: "#ef4444",
-              fontWeight: "600",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 8,
-            }}
-          >
-            <Swords size={18} />
-            Challenge
-          </button>
-          <button
-            onClick={onMessage}
-            style={{
-              flex: 1,
-              background: "linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)",
-              border: "none",
-              borderRadius: 12,
-              padding: "12px",
-              color: "#0B1E2D",
-              fontWeight: "600",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 8,
-              boxShadow: "0 0 20px rgba(212, 175, 55, 0.3)",
-            }}
-          >
-            <Send size={18} />
-            Message
-          </button>
-        </div>
-
-        {/* Remove Friend Button */}
-        <button
-          onClick={onRemove}
+        <img
+          src={avatarSrc}
+          alt={user.nickname}
           style={{
             width: "100%",
-            background: "transparent",
-            border: "none",
-            color: "rgba(239, 68, 68, 0.7)",
-            fontSize: "0.9rem",
+            height: "100%",
+            objectFit: "cover"
+          }}
+        />
+      </div>
+
+      {/* User Info */}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
+          <p style={{
+            color: "white",
+            fontWeight: "600",
+            fontSize: "1rem",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap"
+          }}>
+            {user.nickname}
+          </p>
+          <LevelBadgeCompact level={userLevel} size="small" />
+        </div>
+        <p style={{
+          color: "#aaa",
+          fontSize: "0.85rem",
+          marginBottom: "6px"
+        }}>
+          @{user.username}
+        </p>
+        <div style={{
+          display: "flex",
+          gap: "12px",
+          fontSize: "0.8rem",
+          color: "#888"
+        }}>
+          <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+            <Trophy size={12} color="#D4AF37" />
+            {user.xp.toLocaleString()}
+          </span>
+          <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+            <Flame size={12} color="#ef4444" />
+            {user.streak}
+          </span>
+        </div>
+      </div>
+
+      {/* Action or Badge */}
+      {badge ? (
+        <div style={{
+          padding: "6px 12px",
+          background: `${badgeColor}22`,
+          border: `1px solid ${badgeColor}`,
+          borderRadius: "8px",
+          color: badgeColor,
+          fontSize: "0.8rem",
+          fontWeight: "600"
+        }}>
+          {badge}
+        </div>
+      ) : action}
+    </motion.div>
+  );
+}
+
+function RequestCard({ user, type, onAccept, onDecline, onCancel }) {
+  const avatarSrc = getAvatarImage(user.avatar);
+  const userLevel = getCurrentLevel(user.xp);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      style={{
+        background: "rgba(14, 22, 37, 0.6)",
+        border: "1px solid rgba(212, 175, 55, 0.3)",
+        borderRadius: "12px",
+        padding: "14px",
+        display: "flex",
+        alignItems: "center",
+        gap: "12px"
+      }}
+    >
+      {/* Avatar */}
+      <div style={{
+        width: "56px",
+        height: "56px",
+        borderRadius: "50%",
+        border: "2px solid #D4AF37",
+        overflow: "hidden",
+        flexShrink: 0,
+        background: "#0E1625"
+      }}>
+        <img
+          src={avatarSrc}
+          alt={user.nickname}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover"
+          }}
+        />
+      </div>
+
+      {/* User Info */}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
+          <p style={{
+            color: "white",
+            fontWeight: "600",
+            fontSize: "1rem"
+          }}>
+            {user.nickname}
+          </p>
+          <LevelBadgeCompact level={userLevel} size="small" />
+        </div>
+        <p style={{
+          color: "#aaa",
+          fontSize: "0.85rem"
+        }}>
+          @{user.username}
+        </p>
+      </div>
+
+      {/* Actions */}
+      {type === "received" ? (
+        <div style={{ display: "flex", gap: "8px" }}>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={onAccept}
+            style={{
+              padding: "8px 12px",
+              background: "rgba(16, 185, 129, 0.2)",
+              border: "1px solid #10b981",
+              borderRadius: "8px",
+              color: "#10b981",
+              cursor: "pointer",
+              fontWeight: "600",
+              fontSize: "0.85rem"
+            }}
+          >
+            <Check size={16} />
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={onDecline}
+            style={{
+              padding: "8px 12px",
+              background: "rgba(239, 68, 68, 0.2)",
+              border: "1px solid #ef4444",
+              borderRadius: "8px",
+              color: "#ef4444",
+              cursor: "pointer",
+              fontWeight: "600",
+              fontSize: "0.85rem"
+            }}
+          >
+            <X size={16} />
+          </motion.button>
+        </div>
+      ) : (
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={onCancel}
+          style={{
+            padding: "8px 16px",
+            background: "rgba(239, 68, 68, 0.2)",
+            border: "1px solid #ef4444",
+            borderRadius: "8px",
+            color: "#ef4444",
             cursor: "pointer",
-            padding: "8px",
-            textDecoration: "underline",
+            fontWeight: "600",
+            fontSize: "0.85rem"
           }}
         >
-          Remove Friend
-        </button>
-      </div>
+          Cancel
+        </motion.button>
+      )}
+    </motion.div>
+  );
+}
+
+function ActionButton({ onClick, icon, label, color }) {
+  return (
+    <motion.button
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      onClick={onClick}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "6px",
+        padding: "8px 16px",
+        background: `${color}22`,
+        border: `1px solid ${color}`,
+        borderRadius: "8px",
+        color,
+        cursor: "pointer",
+        fontWeight: "600",
+        fontSize: "0.85rem"
+      }}
+    >
+      {icon}
+      <span>{label}</span>
+    </motion.button>
+  );
+}
+
+function StatusBadge({ icon, label, color }) {
+  return (
+    <div style={{
+      display: "flex",
+      alignItems: "center",
+      gap: "4px",
+      padding: "6px 12px",
+      background: `${color}22`,
+      border: `1px solid ${color}`,
+      borderRadius: "8px",
+      color,
+      fontSize: "0.8rem",
+      fontWeight: "600"
+    }}>
+      {icon}
+      <span>{label}</span>
     </div>
   );
 }
 
-function QuickMessagesModal({ friend, onClose, onSend }) {
-  const { quickMessages } = useFriendsStore();
-
-  const handleSend = (message) => {
-    onSend(message);
-    window.alert(`Message sent to ${friend.name}: "${message}" ✅`);
-  };
-
+function EmptyState({ icon, title, message, action }) {
   return (
     <div style={{
-      position: "fixed",
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      background: "rgba(0, 0, 0, 0.8)",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      zIndex: 1000,
-      padding: 20,
+      textAlign: "center",
+      padding: "60px 20px",
+      color: "#888"
     }}>
-      <div style={{
-        background: "linear-gradient(135deg, #1a3a52 0%, #0B1E2D 100%)",
-        borderRadius: 24,
-        padding: 24,
-        maxWidth: 400,
-        width: "100%",
-        border: "2px solid rgba(212, 175, 55, 0.3)",
-        boxShadow: "0 0 40px rgba(212, 175, 55, 0.3)",
-        position: "relative",
-        maxHeight: "80vh",
-        overflowY: "auto",
+      <div style={{ marginBottom: "16px", opacity: 0.5 }}>
+        {icon}
+      </div>
+      <h3 style={{
+        color: "#D4AF37",
+        fontSize: "1.2rem",
+        fontWeight: "600",
+        marginBottom: "8px"
       }}>
-        <button
-          onClick={onClose}
+        {title}
+      </h3>
+      <p style={{ marginBottom: "20px" }}>{message}</p>
+      {action && (
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={action.onClick}
           style={{
-            position: "absolute",
-            top: 16,
-            right: 16,
-            background: "rgba(239, 68, 68, 0.2)",
-            border: "1px solid rgba(239, 68, 68, 0.5)",
-            borderRadius: "50%",
-            width: 32,
-            height: 32,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            color: "#ef4444",
+            padding: "12px 24px",
+            background: "#D4AF37",
+            color: "#0A1A2F",
+            border: "none",
+            borderRadius: "12px",
+            fontWeight: "600",
+            fontSize: "1rem",
+            cursor: "pointer"
           }}
         >
-          <X size={18} />
-        </button>
-
-        <h3 style={{ color: "#D4AF37", marginBottom: 16, fontSize: "1.2rem" }}>
-          Send a message to {friend.name}
-        </h3>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          {quickMessages.map((message, index) => (
-            <button
-              key={index}
-              onClick={() => handleSend(message)}
-              style={{
-                background: "rgba(212, 175, 55, 0.1)",
-                border: "1px solid rgba(212, 175, 55, 0.3)",
-                borderRadius: 12,
-                padding: "12px 16px",
-                color: "#D4AF37",
-                textAlign: "left",
-                cursor: "pointer",
-                transition: "all 0.3s",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "rgba(212, 175, 55, 0.2)";
-                e.currentTarget.style.boxShadow = "0 0 15px rgba(212, 175, 55, 0.3)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "rgba(212, 175, 55, 0.1)";
-                e.currentTarget.style.boxShadow = "none";
-              }}
-            >
-              {message}
-            </button>
-          ))}
-        </div>
-      </div>
+          {action.label}
+        </motion.button>
+      )}
     </div>
   );
 }

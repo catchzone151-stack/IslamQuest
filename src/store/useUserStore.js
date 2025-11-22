@@ -7,6 +7,7 @@ export const useUserStore = create(
     (set, get) => ({
       // state
       name: "",
+      username: null,
       avatar: null,
       id: crypto.randomUUID(),
       hasOnboarded: false,
@@ -16,13 +17,14 @@ export const useUserStore = create(
 
       // actions
       setName: (name) => set({ name }),
+      setUsername: (username) => set({ username }),
       setAvatar: (avatar) => set({ avatar }),
       setId: (id) => set({ id }),
       completeOnboarding: () => set({ hasOnboarded: true }),
-      resetUser: () => set({ name: "", avatar: null, hasOnboarded: false }),
+      resetUser: () => set({ name: "", username: null, avatar: null, hasOnboarded: false }),
       
       // 🛠️ Reset onboarding state (for developer/testing purposes)
-      resetOnboarding: () => set({ name: "", avatar: null, hasOnboarded: false }),
+      resetOnboarding: () => set({ name: "", username: null, avatar: null, hasOnboarded: false }),
 
       // internal: set hydrated after rehydrate finishes
       _setHydrated: () => set({ isHydrated: true }),

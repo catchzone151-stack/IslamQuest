@@ -1,10 +1,20 @@
 # Islam Quest - Educational Mobile Web App
 
 ## Overview
-Islam Quest is a mobile-first web application designed as a gamified Islamic learning platform. Its core purpose is to provide an interactive and engaging educational experience, guiding users through structured learning paths that cover fundamental Islamic beliefs, stories of prophets, and essential knowledge. The project aims to make Islamic education accessible and foster continuous learning and spiritual growth through features like a friendly mascot (Zayd), an achievement system, customizable avatars, and quiz-based assessments.
+Islam Quest is a mobile-first web application designed as a gamified Islamic learning platform. Its core purpose is to provide an interactive and engaging educational experience, guiding users through structured learning paths that cover fundamental Islamic beliefs, stories of prophets, and essential knowledge. The project aims to make Islamic education accessible and foster continuous learning and spiritual growth through features like a friendly mascot (Zayd), an achievement system, customizable avatars, quiz-based assessments, and a complete social friends system.
 
 ## User Preferences
 Preferred communication style: Simple, everyday language.
+
+## Recent Major Updates (November 22, 2025)
+### New Friends System (Duolingo-Style)
+- **Complete Replacement**: Removed legacy AI friends system; implemented production-ready username-based friends system
+- **Username Onboarding**: Added new username selection step after avatar selection during onboarding
+- **User Identity Model**: Users now have unique usernames (3-20 chars, lowercase letters/numbers/underscore), plus display nicknames
+- **Friendship Architecture**: Single source of truth with `friendships` array (Supabase-ready design)
+- **Core Features**: Send/accept/decline/cancel friend requests; search users by username; friend profiles; remove friends
+- **UI Components**: Three-tab interface (Friends, Requests, Search) with Islam Quest theming
+- **No Legacy Code**: Removed all simulated friends, beta helpers, and dev tools from friends system
 
 ## System Architecture
 

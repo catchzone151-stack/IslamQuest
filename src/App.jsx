@@ -21,6 +21,7 @@ import BismillahScreen from "./onboarding/BismillahScreen.jsx";
 import SalaamScreen from "./onboarding/SalaamScreen.jsx";
 import NameScreen from "./onboarding/NameScreen.jsx";
 import AvatarScreen from "./onboarding/AvatarScreen.jsx";
+import UsernameScreen from "./onboarding/UsernameScreen.jsx";
 
 // 🚀 LAZY LOADED ROUTES - Split bundle for proper hydration
 const Home = lazy(() => import("./pages/Home"));
@@ -30,6 +31,7 @@ const Challenge = lazy(() => import("./pages/Challenge.jsx"));
 const ChallengeGame = lazy(() => import("./pages/challenges/ChallengeGame.jsx"));
 const DailyQuestGame = lazy(() => import("./pages/DailyQuestGame.jsx"));
 const Friends = lazy(() => import("./pages/Friends.jsx"));
+const FriendProfile = lazy(() => import("./pages/FriendProfile"));
 const Profile = lazy(() => import("./pages/Profile.jsx"));
 const Settings = lazy(() => import("./pages/Settings.jsx"));
 const Revise = lazy(() => import("./pages/Revise.jsx"));
@@ -222,6 +224,7 @@ export default function App() {
                 <Route path="/onboarding/salaam" element={<SalaamScreen />} />
                 <Route path="/onboarding/name" element={<NameScreen />} />
                 <Route path="/onboarding/avatar" element={<AvatarScreen />} />
+                <Route path="/onboarding/username" element={<UsernameScreen />} />
                 {/* Fallback — always go to Bismillah if not onboarded */}
                 <Route path="*" element={<BismillahScreen />} />
               </>
@@ -239,6 +242,7 @@ export default function App() {
                 <Route path="/events" element={<Suspense fallback={<LoadingScreen />}><GlobalEvents /></Suspense>} />
                 <Route path="/events/:eventId" element={<Suspense fallback={<LoadingScreen />}><EventQuiz /></Suspense>} />
                 <Route path="/friends" element={<Suspense fallback={<LoadingScreen />}><Friends /></Suspense>} />
+                <Route path="/friend/:userId" element={<Suspense fallback={<LoadingScreen />}><FriendProfile /></Suspense>} />
                 <Route path="/profile" element={<Suspense fallback={<LoadingScreen />}><Profile /></Suspense>} />
                 <Route path="/settings" element={<Suspense fallback={<LoadingScreen />}><Settings /></Suspense>} />
                 <Route path="/revise" element={<Suspense fallback={<LoadingScreen />}><Revise /></Suspense>} />

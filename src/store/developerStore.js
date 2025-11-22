@@ -16,31 +16,11 @@ export const useDeveloperStore = create((set, get) => ({
   toggleBetaMode: () => {
     const newBetaMode = !get().betaMode;
     set({ betaMode: newBetaMode });
-    
-    // 🤖 Handle simulated friends based on beta mode
-    const friendsStore = useFriendsStore.getState();
-    if (newBetaMode) {
-      // Turning beta mode ON - initialize simulated friends
-      friendsStore.initializeSimulatedFriends();
-    } else {
-      // Turning beta mode OFF - cleanup simulated friends
-      friendsStore.cleanupSimulatedFriends();
-    }
-    
     get().saveToStorage();
   },
 
   setBetaMode: (enabled) => {
     set({ betaMode: enabled });
-    
-    // 🤖 Handle simulated friends based on beta mode
-    const friendsStore = useFriendsStore.getState();
-    if (enabled) {
-      friendsStore.initializeSimulatedFriends();
-    } else {
-      friendsStore.cleanupSimulatedFriends();
-    }
-    
     get().saveToStorage();
   },
 
@@ -85,16 +65,11 @@ export const useDeveloperStore = create((set, get) => ({
       useDailyQuestStore.setState({ date: null, questions: [], completed: false, rewardGiven: false });
     }
     
-    // Reset friends (clear all friends and requests)
-    localStorage.removeItem("islamQuestFriends_v1");
-    useFriendsStore.setState({ 
-      friends: [], 
-      incomingRequests: [], 
-      outgoingRequests: [], 
-      activityFeed: [], 
-      friendOfWeek: null, 
-      hasUnseenRequests: false 
-    });
+    // Reset friends (clear all data)
+    const friendsStore = useFriendsStore.getState();
+    if (friendsStore.clearAllData) {
+      friendsStore.clearAllData();
+    }
 
     alert("✅ All progress has been reset!");
   },
@@ -142,11 +117,5 @@ export const useDeveloperStore = create((set, get) => ({
     
     // Always set the state, even if no saved data
     set({ betaMode: betaModeValue });
-    
-    // 🤖 Initialize simulated friends if beta mode is enabled
-    if (betaModeValue) {
-      const friendsStore = useFriendsStore.getState();
-      friendsStore.initializeSimulatedFriends();
-    }
   },
 }));

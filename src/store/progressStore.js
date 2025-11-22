@@ -38,7 +38,8 @@ export const useProgressStore = create((set, get) => ({
   level: 1, // Diamond level (1-10)
   lastLogin: null,
   avatar: "default",
-  displayName: "Student of Knowledge",
+  username: null, // Unique username (set during onboarding)
+  displayName: "Student of Knowledge", // Display name / nickname
   lessonStates: {},
   lockedLessons: {},
   hasPremium: false, // Deprecated: derived from premiumStatus, kept for backwards compatibility

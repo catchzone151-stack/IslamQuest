@@ -14,7 +14,7 @@ const avatars = Object.values(avatarContext)
 
 export default function AvatarScreen() {
   const navigate = useNavigate();
-  const { setAvatar, completeOnboarding } = useUserStore();
+  const { setAvatar } = useUserStore();
   const [selected, setSelected] = useState(null);
 
   const sortedAvatars = useMemo(() => avatars.sort(), []);
@@ -22,8 +22,7 @@ export default function AvatarScreen() {
   const handleContinue = () => {
     if (!selected) return;
     setAvatar(selected);
-    completeOnboarding();
-    navigate("/"); // go to Home
+    navigate("/onboarding/username");
   };
 
   return (
