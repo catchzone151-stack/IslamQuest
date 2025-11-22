@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { useRewards } from "../../hooks/useRewards";
 import mascotCongrats from "../../assets/mascots/mascot_congratulation.webp";
 import mascotSittingV2 from "../../assets/mascots/mascot_sitting_v2.webp";
+import mascotDefeated from "../../assets/mascots/mascot_defeated.webp";
 import mascotBoss from "../../assets/mascots/mascot_boss.webp";
 import "./ChallengeModals.css";
 
@@ -17,6 +18,8 @@ export default function ChallengeResultsModal({
   opponentScore,
   answeredCount, // Number of questions answered by user (for Speed Run)
   opponentAnsweredCount, // Number of questions answered by opponent (for Speed Run)
+  userChain, // Longest chain for Sudden Death
+  opponentChain, // Opponent's longest chain for Sudden Death
   onApplyRewards,
   onClose 
 }) {
@@ -37,8 +40,12 @@ export default function ChallengeResultsModal({
       onClose();
     }
   };
-  // For Speed Run, use answered count; otherwise use total questions
+  // Determine mode types
   const isSpeedRun = mode === "speed_run" || mode?.id === "speed_run";
+  const isSuddenDeath = mode === "sudden_death" || mode?.id === "sudden_death";
+  const isBossLevel = mode === "boss_level" || mode?.id === "boss_level" || mode?.name?.includes("Boss");
+  
+  // For Speed Run, use answered count; otherwise use total questions
   const userTotal = isSpeedRun && answeredCount ? answeredCount : totalQuestions;
   const opponentTotal = isSpeedRun && opponentAnsweredCount ? opponentAnsweredCount : totalQuestions;
   
@@ -46,7 +53,6 @@ export default function ChallengeResultsModal({
   const percentage = userTotal > 0 ? Math.round((score / userTotal) * 100) : 0;
   
   // Handle mode as either string or object
-  const isBossLevel = mode === "boss_level" || mode?.id === "boss_level" || mode?.name?.includes("Boss");
   const modeGradient = typeof mode === "object" ? mode.gradient : "linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)";
   const modeGlow = typeof mode === "object" ? mode.glow : "0 0 20px rgba(212, 175, 55, 0.5)";
   
@@ -75,8 +81,9 @@ export default function ChallengeResultsModal({
     // Regular challenges show result-based mascots
     if (result === "win") return mascotCongrats;
     if (result === "lose") return mascotDefeated;
+    if (result === "draw") return mascotSittingV2;
     
-    // For draws in regular challenges, show congratulation (friendly)
+    // Default fallback
     return mascotCongrats;
   };
 
@@ -108,8 +115,16 @@ export default function ChallengeResultsModal({
         <div className="challenge-score-display" style={{ minHeight: "100px" }}>
           <div className="score-section">
             <span className="score-label">You</span>
-            <span className="score-value" style={{ wordBreak: "break-word" }}>{score ?? 0}/{userTotal}</span>
-            <span className="score-percentage">{percentage ?? 0}%</span>
+            {isSuddenDeath ? (
+              <>
+                <span className="score-value" style={{ wordBreak: "break-word" }}>Chain: {userChain ?? 0}</span>
+              </>
+            ) : (
+              <>
+                <span className="score-value" style={{ wordBreak: "break-word" }}>{score ?? 0}/{userTotal}</span>
+                <span className="score-percentage">{percentage ?? 0}%</span>
+              </>
+            )}
           </div>
           
           {!isBossLevel && (
@@ -125,13 +140,21 @@ export default function ChallengeResultsModal({
                   whiteSpace: "normal",
                   lineHeight: "1.2"
                 }}>{opponentName || "Opponent"}</span>
-                <span className="score-value" style={{ wordBreak: "break-word" }}>
-                  {opponentScore !== null && opponentScore !== undefined ? `${opponentScore}/${opponentTotal}` : "Pending"}
-                </span>
-                {opponentScore !== null && opponentScore !== undefined && (
-                  <span className="score-percentage">
-                    {opponentTotal > 0 ? Math.round((opponentScore / opponentTotal) * 100) : 0}%
+                {isSuddenDeath ? (
+                  <span className="score-value" style={{ wordBreak: "break-word" }}>
+                    {opponentChain !== null && opponentChain !== undefined ? `Chain: ${opponentChain}` : "Pending"}
                   </span>
+                ) : (
+                  <>
+                    <span className="score-value" style={{ wordBreak: "break-word" }}>
+                      {opponentScore !== null && opponentScore !== undefined ? `${opponentScore}/${opponentTotal}` : "Pending"}
+                    </span>
+                    {opponentScore !== null && opponentScore !== undefined && (
+                      <span className="score-percentage">
+                        {opponentTotal > 0 ? Math.round((opponentScore / opponentTotal) * 100) : 0}%
+                      </span>
+                    )}
+                  </>
                 )}
               </div>
             </>

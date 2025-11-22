@@ -45,11 +45,11 @@ export const CHALLENGE_MODES = {
   SUDDEN_DEATH: {
     id: "sudden_death",
     name: "Sudden Death",
-    icon: "⛓️",
-    description: "25 questions - one wrong ends the game, fastest time wins draws",
+    icon: "⚔️",
+    description: "Both players answer the same questions. The winner is the one who builds the longest chain of correct answers. One wrong answer breaks your chain. If both players end with the same chain length, it's a draw and rewards are split.",
     questionCount: 25,
     trackTime: true,
-    rewards: { win: { xp: 200, coins: 30 }, lose: { xp: 25, coins: 0 } },
+    rewards: { win: { xp: 200, coins: 30 }, lose: { xp: 0, coins: 0 }, draw: { xp: 100, coins: 15 } },
     gradient: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
     glow: "0 0 20px rgba(239, 68, 68, 0.5)"
   }
@@ -66,6 +66,22 @@ export const BOSS_LEVEL = {
   rewards: { win: { xp: 500, coins: 100 }, lose: { xp: 50, coins: 0 } },
   gradient: "linear-gradient(135deg, #1e3a5f 0%, #0f1c2e 100%)",
   glow: "0 0 30px rgba(30, 58, 95, 0.7)"
+};
+
+// Helper function to calculate longest chain of correct answers
+export const calculateLongestChain = (answers) => {
+  if (!answers || answers.length === 0) return 0;
+  let longest = 0;
+  let current = 0;
+  answers.forEach(a => {
+    if (a.correct) {
+      current++;
+      longest = Math.max(longest, current);
+    } else {
+      current = 0;
+    }
+  });
+  return longest;
 };
 
 export const useChallengeStore = create((set, get) => ({
@@ -473,23 +489,33 @@ export const useChallengeStore = create((set, get) => ({
     set(state => ({
       challenges: state.challenges.map(c => {
         if (c.id === challengeId) {
+          let updatedChallenge = { ...c };
+          
+          // Update the current player's data
           if (isChallenger) {
-            return {
-              ...c,
-              challengerScore: score,
-              challengerAnswers: answers,
-              challengerTime: completionTime,
-              status: c.opponentScore !== null ? "completed" : "active"
-            };
+            updatedChallenge.challengerScore = score;
+            updatedChallenge.challengerAnswers = answers;
+            updatedChallenge.challengerTime = completionTime;
+            updatedChallenge.status = c.opponentScore !== null ? "completed" : "active";
           } else {
-            return {
-              ...c,
-              opponentScore: score,
-              opponentAnswers: answers,
-              opponentTime: completionTime,
-              status: c.challengerScore !== null ? "completed" : "active"
-            };
+            updatedChallenge.opponentScore = score;
+            updatedChallenge.opponentAnswers = answers;
+            updatedChallenge.opponentTime = completionTime;
+            updatedChallenge.status = c.challengerScore !== null ? "completed" : "active";
           }
+          
+          // For Sudden Death, always recalculate both chains from answers
+          const modeId = typeof c.mode === 'string' ? c.mode : c.mode?.id;
+          if (modeId === 'sudden_death') {
+            updatedChallenge.challengerChain = updatedChallenge.challengerAnswers 
+              ? calculateLongestChain(updatedChallenge.challengerAnswers) 
+              : 0;
+            updatedChallenge.opponentChain = updatedChallenge.opponentAnswers 
+              ? calculateLongestChain(updatedChallenge.opponentAnswers) 
+              : 0;
+          }
+          
+          return updatedChallenge;
         }
         return c;
       })
@@ -504,20 +530,49 @@ export const useChallengeStore = create((set, get) => ({
     if (!challenge) return;
 
     let winner = null;
-    if (challenge.challengerScore > challenge.opponentScore) {
-      winner = challenge.challengerId;
-    } else if (challenge.opponentScore > challenge.challengerScore) {
-      winner = challenge.opponentId;
-    } else {
-      // Scores are equal - check if it's a time-based mode (Mind Battle, Sudden Death)
-      const mode = Object.values(CHALLENGE_MODES).find(m => m.id === challenge.mode);
-      if (mode?.trackTime && challenge.challengerTime !== null && challenge.opponentTime !== null) {
-        // Fastest time wins
-        winner = challenge.challengerTime < challenge.opponentTime 
-          ? challenge.challengerId 
-          : challenge.opponentId;
+    
+    // Normalize mode to check if it's Sudden Death
+    const modeId = typeof challenge.mode === 'string' ? challenge.mode : challenge.mode?.id;
+    const isSuddenDeath = modeId === 'sudden_death';
+    
+    if (isSuddenDeath) {
+      // Sudden Death: ALWAYS compare chain lengths first (ignore scores)
+      // Ensure both chains are calculated from answers if missing
+      let challengerChain = challenge.challengerChain;
+      let opponentChain = challenge.opponentChain;
+      
+      if (challengerChain === null || challengerChain === undefined) {
+        challengerChain = challenge.challengerAnswers ? calculateLongestChain(challenge.challengerAnswers) : 0;
+      }
+      if (opponentChain === null || opponentChain === undefined) {
+        opponentChain = challenge.opponentAnswers ? calculateLongestChain(challenge.opponentAnswers) : 0;
+      }
+      
+      if (challengerChain > opponentChain) {
+        winner = challenge.challengerId;
+      } else if (opponentChain > challengerChain) {
+        winner = challenge.opponentId;
       } else {
+        // Equal chains - this is a draw (no time tiebreaker for Sudden Death)
         winner = "draw";
+      }
+    } else {
+      // For other modes, use score comparison
+      if (challenge.challengerScore > challenge.opponentScore) {
+        winner = challenge.challengerId;
+      } else if (challenge.opponentScore > challenge.challengerScore) {
+        winner = challenge.opponentId;
+      } else {
+        // Scores are equal - check if it's a time-based mode (Mind Battle)
+        const mode = Object.values(CHALLENGE_MODES).find(m => m.id === modeId);
+        if (mode?.trackTime && challenge.challengerTime !== null && challenge.opponentTime !== null) {
+          // Fastest time wins
+          winner = challenge.challengerTime < challenge.opponentTime 
+            ? challenge.challengerId 
+            : challenge.opponentId;
+        } else {
+          winner = "draw";
+        }
       }
     }
     

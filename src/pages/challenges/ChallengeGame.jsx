@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "../../hooks/useNavigate";
-import { useChallengeStore, CHALLENGE_MODES, BOSS_LEVEL } from "../../store/challengeStore";
+import { useChallengeStore, CHALLENGE_MODES, BOSS_LEVEL, calculateLongestChain } from "../../store/challengeStore";
 import { useModalStore, MODAL_TYPES } from "../../store/modalStore";
 import { useRewards } from "../../hooks/useRewards";
 import { useAnalytics } from "../../hooks/useAnalytics";
@@ -259,10 +259,13 @@ export default function ChallengeGame() {
 
       const updatedAnswers = [...answers, newAnswer];
       setAnswers(updatedAnswers);
+      
+      // Calculate and update longest chain from all answers
+      const longestChain = calculateLongestChain(updatedAnswers);
+      setChainLength(longestChain);
 
       if (!isCorrect) {
-        // Chain broken!
-        setChainLength(updatedAnswers.length);
+        // Chain broken! End game
         setGameEnded(true);
         setTimeout(() => handleGameComplete(updatedAnswers), 1500);
       } else {
@@ -277,7 +280,6 @@ export default function ChallengeGame() {
             }
           } else {
             // Completed all questions successfully!
-            setChainLength(updatedAnswers.length);
             setGameEnded(true);
             setTimeout(() => handleGameComplete(updatedAnswers), 1500);
           }
@@ -439,6 +441,13 @@ export default function ChallengeGame() {
     const userAnsweredCount = isSpeedRun ? finalAnswers.length : questions.length;
     const opponentAnsweredCount = isSpeedRun && challenge?.opponentAnswers ? challenge.opponentAnswers.length : questions.length;
     
+    // For Sudden Death, get chain lengths (recalculate from answers to ensure accuracy)
+    const isSuddenDeath = mode?.id === "sudden_death";
+    const userChain = isSuddenDeath ? calculateLongestChain(finalAnswers) : null;
+    const opponentChain = isSuddenDeath 
+      ? (challenge?.opponentAnswers ? calculateLongestChain(challenge.opponentAnswers) : null)
+      : null;
+    
     showModal(MODAL_TYPES.CHALLENGE_RESULTS, {
       mode,
       score: finalScore,
@@ -451,6 +460,8 @@ export default function ChallengeGame() {
       coinsEarned: rewards.coins,
       opponentName: isBoss ? "Boss" : challenge?.opponentId,
       opponentScore: challenge?.opponentScore,
+      userChain,
+      opponentChain,
       onApplyRewards: (rewardData) => addRewards(rewardData),
       onClose: () => navigate("/challenge")
     });
