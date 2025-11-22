@@ -152,42 +152,47 @@ export default function PathPage() {
         }}
       >
         {/* LEFT COLUMN: Section Headings */}
-        <div style={{ flex: "0 0 160px", paddingRight: "16px", display: "flex", flexDirection: "column" }}>
+        <div style={{ 
+          flex: "0 0 200px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          justifyContent: "flex-start"
+        }}>
           {groupedLessons.map((section, sectionIdx) => {
-            const firstLessonOfSection = section.lessons[0];
-            if (!firstLessonOfSection || !section.name) return null;
-            
             const sectionHeight = 
               section.lessons.length * 64 + 
               (section.lessons.length - 1) * 48 + 
               120;
 
             return (
-              <div key={`section-${sectionIdx}`} style={{ marginBottom: "120px", display: "flex", flexDirection: "column" }}>
+              <div 
+                key={`section-${sectionIdx}`} 
+                style={{ 
+                  marginBottom: "120px",
+                  width: "100%",
+                }}
+              >
                 {/* Section Heading */}
                 <div
                   style={{
-                    fontSize: "0.9rem",
+                    fontSize: "0.95rem",
                     fontWeight: 700,
                     color: "#D4AF37",
                     textAlign: "left",
-                    lineHeight: 1.3,
+                    lineHeight: 1.4,
                     wordWrap: "break-word",
                     wordBreak: "break-word",
                     overflowWrap: "break-word",
                     hyphens: "auto",
                     letterSpacing: "0.6px",
                     textTransform: "uppercase",
-                    minHeight: "30px",
-                    display: "flex",
-                    alignItems: "flex-start",
-                    paddingTop: "8px",
+                    paddingRight: "12px",
+                    marginBottom: "16px",
                   }}
                 >
                   {section.name}
                 </div>
-                {/* Spacer - empty space for lesson circles in middle column */}
-                <div style={{ flex: "1", minHeight: `${sectionHeight - 40}px` }} />
               </div>
             );
           })}
