@@ -86,6 +86,16 @@ Preferred communication style: Simple, everyday language.
 - **Asset Management**: Centralized `assets.js` for optimized WebP images.
 - **Development & Deployment**: Vite for development and production builds.
 
+## Cleanup Status (November 22, 2025)
+
+### Badge & Certificate System - COMPLETELY REMOVED ✅
+- **Removed Files**: `src/assets/certificates/`, `src/assets/.originals_backup/`, badge/certificate components
+- **Removed Logic**: `earnCertificate()` function, badge award triggers, badge modal types
+- **Store Cleanup**: progressStore, modalStore, eventsStore all verified clean
+- **Route Cleanup**: No badge/certificate routes found in Router (routing done in App.jsx)
+- **Asset Cleanup**: public folder clean (no badge/cert assets)
+- **Status**: System completely purged, zero badge/certificate references remaining
+
 ## External Dependencies
 
 ### Third-Party Services
