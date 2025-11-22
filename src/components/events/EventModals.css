@@ -207,9 +207,9 @@
 }
 
 .countdown-mascot {
-  width: 120px;
-  height: 120px;
-  animation: spin 3s linear infinite;
+  width: 150px;
+  height: 150px;
+  margin-bottom: 20px;
 }
 
 @keyframes spin {
@@ -217,10 +217,11 @@
   to { transform: rotate(360deg); }
 }
 
-.countdown-zayd {
+.countdown-rocket {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  filter: drop-shadow(0 8px 20px rgba(212, 175, 55, 0.4));
 }
 
 .countdown-number {
@@ -229,12 +230,7 @@
   background: linear-gradient(180deg, #fff 0%, #d4af37 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: countdownPulse 1s ease-in-out infinite;
-}
-
-@keyframes countdownPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+  text-shadow: 0 0 40px rgba(212, 175, 55, 0.6);
 }
 
 .countdown-message {
