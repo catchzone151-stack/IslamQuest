@@ -20,19 +20,24 @@ export default function Challenge() {
   
   const { xp } = useProgressStore();
   const level = getCurrentLevel(xp).level;
-  const friends = useFriendsStore(state => state.getAllFriends?.() || []);
+  const getAllFriends = useFriendsStore(state => state.getAllFriends);
   const { loadFromStorage } = useChallengeStore();
   const { showModal } = useModalStore();
 
   const [selectedMode, setSelectedMode] = useState(null);
   const [selectedFriend, setSelectedFriend] = useState(null);
   const [showFriendSelector, setShowFriendSelector] = useState(false);
+  const [friends, setFriends] = useState([]);
   
   // Use ref to ensure we always have the latest friend value
   const friendRef = useRef(null);
 
   useEffect(() => {
     loadFromStorage();
+    
+    // Get friends list
+    const friendsList = getAllFriends?.() || [];
+    setFriends(friendsList);
     
     // Check if friend was pre-selected from Friends page
     if (location.state?.preselectedFriend) {
@@ -41,7 +46,7 @@ export default function Challenge() {
       setSelectedFriend(friend);
       friendRef.current = friend;
     }
-  }, [location.state]);
+  }, [location.state, getAllFriends]);
 
   const handleModeClick = (modeKey) => {
     const mode = CHALLENGE_MODES[modeKey];
