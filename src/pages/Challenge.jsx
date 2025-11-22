@@ -318,7 +318,11 @@ export default function Challenge() {
                     <img 
                       src={mascotImage} 
                       alt={mode.name} 
-                      style={{ width: "auto", height: "70px", objectFit: "contain" }}
+                      style={{ 
+                        width: "auto", 
+                        height: mode.id === "mind_battle" ? "60px" : mode.id === "lightning_round" ? "78px" : "70px", 
+                        objectFit: "contain" 
+                      }}
                     />
                   ) : (
                     mode.icon
