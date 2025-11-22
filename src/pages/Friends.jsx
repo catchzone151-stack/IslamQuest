@@ -205,6 +205,8 @@ export default function Friends() {
 
         {activeTab === "friends" && !isLoadingFriends && (
           <FriendsTab
+            currentUserId={currentUserId}
+            freshUserAvatar={freshUserAvatar}
             friends={friends}
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
@@ -212,16 +214,20 @@ export default function Friends() {
             setShowMiniProfile={setShowMiniProfile}
             setShowMessageModal={setShowMessageModal}
             onChallenge={handleChallenge}
+
           />
         )}
 
         {activeTab === "requests" && (
           <RequestsTab
+            currentUserId={currentUserId}
+            freshUserAvatar={freshUserAvatar}
             incomingRequests={incomingRequests}
             outgoingRequests={outgoingRequests}
             acceptFriendRequest={acceptFriendRequest}
             declineFriendRequest={declineFriendRequest}
             cancelOutgoingRequest={cancelOutgoingRequest}
+
           />
         )}
 
@@ -238,12 +244,15 @@ export default function Friends() {
 
         {activeTab === "leaderboard" && !isLoadingLeaderboard && (
           <LeaderboardTab
+            currentUserId={currentUserId}
+            freshUserAvatar={freshUserAvatar}
             leaderboardTab={leaderboardTab}
             setLeaderboardTab={setLeaderboardTab}
             friendsLeaderboard={friendsLeaderboard}
             globalLeaderboard={globalLeaderboard}
             currentUserXP={currentUserXP}
             friendOfWeek={friendOfWeek}
+
           />
         )}
 
@@ -253,6 +262,8 @@ export default function Friends() {
       {showMiniProfile && (
         <MiniProfileModal
           friend={showMiniProfile}
+          currentUserId={currentUserId}
+          freshUserAvatar={freshUserAvatar}
           onClose={() => setShowMiniProfile(null)}
           onMessage={() => {
             setShowMessageModal(showMiniProfile);
@@ -280,7 +291,7 @@ export default function Friends() {
   );
 }
 
-function FriendsTab({ friends, searchQuery, setSearchQuery, handleSearch, setShowMiniProfile, setShowMessageModal, onChallenge }) {
+function FriendsTab({ friends, searchQuery, setSearchQuery, handleSearch, currentUserId, freshUserAvatar, setShowMiniProfile, setShowMessageModal, onChallenge }) {
   return (
     <>
       {/* Search Bar */}
@@ -341,17 +352,19 @@ function FriendsTab({ friends, searchQuery, setSearchQuery, handleSearch, setSho
         </div>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          {friends.map((friend) => (
-            <FriendCard
-              key={friend.id}
-              friend={friend}
-              currentUserId={currentUserId}
-              freshUserAvatar={freshUserAvatar}
-              onViewProfile={() => setShowMiniProfile(friend)}
-              onMessage={() => setShowMessageModal(friend)}
-              onChallenge={() => onChallenge(friend.id)}
-            />
-          ))}
+          {friends.map((friend) => {
+            return (
+              <FriendCard
+                key={friend.id}
+                friend={friend}
+                currentUserId={currentUserId}
+                freshUserAvatar={freshUserAvatar}
+                onViewProfile={() => setShowMiniProfile(friend)}
+                onMessage={() => setShowMessageModal(friend)}
+                onChallenge={() => onChallenge(friend.id)}
+              />
+            );
+          })}
         </div>
       )}
     </>
@@ -452,7 +465,7 @@ function FriendCard({ friend, currentUserId, freshUserAvatar, onViewProfile, onM
   );
 }
 
-function RequestsTab({ incomingRequests, outgoingRequests, acceptFriendRequest, declineFriendRequest, cancelOutgoingRequest }) {
+function RequestsTab({ incomingRequests, outgoingRequests, currentUserId, freshUserAvatar, acceptFriendRequest, declineFriendRequest, cancelOutgoingRequest }) {
   const hasRequests = incomingRequests.length > 0 || outgoingRequests.length > 0;
 
   if (!hasRequests) {
@@ -482,6 +495,8 @@ function RequestsTab({ incomingRequests, outgoingRequests, acceptFriendRequest, 
                 key={request.id}
                 request={request}
                 type="incoming"
+                currentUserId={currentUserId}
+                freshUserAvatar={freshUserAvatar}
                 onAccept={() => acceptFriendRequest(request.id)}
                 onDecline={() => declineFriendRequest(request.id)}
               />
@@ -502,6 +517,8 @@ function RequestsTab({ incomingRequests, outgoingRequests, acceptFriendRequest, 
                 key={request.id}
                 request={request}
                 type="outgoing"
+                currentUserId={currentUserId}
+                freshUserAvatar={freshUserAvatar}
                 onCancel={() => cancelOutgoingRequest(request.id)}
               />
             ))}
@@ -600,7 +617,7 @@ function RequestCard({ request, type, currentUserId, freshUserAvatar, onAccept, 
   );
 }
 
-function LeaderboardTab({ leaderboardTab, setLeaderboardTab, friendsLeaderboard, globalLeaderboard, currentUserXP, friendOfWeek }) {
+function LeaderboardTab({ leaderboardTab, setLeaderboardTab, friendsLeaderboard, globalLeaderboard, currentUserId, freshUserAvatar, currentUserXP, friendOfWeek }) {
   const activeLeaderboard = leaderboardTab === "friends" ? friendsLeaderboard : globalLeaderboard;
 
   return (

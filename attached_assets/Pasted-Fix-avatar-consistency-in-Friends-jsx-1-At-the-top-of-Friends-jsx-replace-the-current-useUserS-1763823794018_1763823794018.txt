@@ -1,0 +1,83 @@
+Fix avatar consistency in Friends.jsx.
+
+1. At the top of Friends.jsx, replace the current useUserStore line with this single version:
+
+   const { id: currentUserId, name: currentUserName2, avatar: freshUserAvatar } = useUserStore();
+
+   (Remove any older/dead duplicated references if Replit shows multiple instances.)
+
+2. Go to each child component where avatars are rendered:
+   - FriendCard
+   - RequestCard
+   - MiniProfileModal
+   - LeaderboardTab (leaderboard rows)
+   - Friend of the Week display
+
+   In ALL avatar <img> tags, ensure the src uses this logic:
+
+       src={getAvatarImage(
+         userOrFriend.id === currentUserId ? freshUserAvatar : userOrFriend.avatar,
+         { userId: userOrFriend.id, nickname: userOrFriend.name }
+       )}
+
+   Apply this exact logic to:
+     friend.avatar
+     request.avatar
+     user.avatar
+     friendOfWeek.avatar
+
+3. Pass currentUserId and freshUserAvatar consistently as props:
+
+   In FriendsTab:
+     <FriendCard
+       ...
+       currentUserId={currentUserId}
+       freshUserAvatar={freshUserAvatar}
+     />
+
+   In RequestsTab:
+     <RequestCard
+       ...
+       currentUserId={currentUserId}
+       freshUserAvatar={freshUserAvatar}
+     />
+
+   In MiniProfileModal:
+     <MiniProfileModal
+       ...
+       currentUserId={currentUserId}
+       freshUserAvatar={freshUserAvatar}
+     />
+
+4. In the LeaderboardTab (inside Friends.jsx):
+   Update the leaderboard avatar logic:
+
+       src={getAvatarImage(
+         user.id === currentUserId ? freshUserAvatar : user.avatar,
+         { userId: user.id, nickname: user.name }
+       )}
+
+5. Ensure no simulator overwrites the current user:
+   Your currentUser object at the top is correct:
+
+       const currentUser = {
+         id: currentUserId,
+         name: currentUserName2 || currentUserName || "You",
+         avatar: freshUserAvatar,
+         xp: currentUserXP,
+         coins: currentUserCoins,
+         streak: currentUserStreak,
+       };
+
+   Leave this part as-is.
+
+After applying this patch, your avatar will:
+ - Always show YOUR selected profile avatar
+ - Never get replaced by simulator data
+ - Never change when switching tabs
+ - Always display correctly across:
+     • Friends list
+     • Requests
+     • Friend of the Week
+     • Leaderboard (friends & global)
+     • MiniProfile
