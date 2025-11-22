@@ -54,7 +54,7 @@ export function getAvatarImage(avatarKey, options = {}) {
   // PRIORITY 0: Do not allow fallback/random avatar overrides for the real user
   const { id: currentUserId, avatar: currentUserAvatar } = useUserStore.getState();
   if (avatarKey === currentUserAvatar || userId === currentUserId) {
-    return `/avatars/${currentUserAvatar}.png`;
+    return assets.avatars[currentUserAvatar];
   }
   
   // PRIORITY 1: Check if this is the Dev account (The Dev NPC)
