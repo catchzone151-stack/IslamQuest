@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "../hooks/useNavigate";
 import { useProgressStore } from "../store/progressStore";
 import { useUserStore } from "../store/useUserStore";
+import { getAvatarImage } from "../utils/avatarUtils";
 
 // Lesson data loader
 import { getLessonsForPath } from "../data/lessonLoader.js";
@@ -19,7 +20,7 @@ export default function Pathway() {
   const [showCompletion, setShowCompletion] = React.useState(false);
 
   const { paths, lessonStates, isLessonUnlocked } = useProgressStore();
-  const { avatar } = useUserStore();
+  const { id: userId, avatar } = useUserStore();
 
   // Check if all lessons are completed
   React.useEffect(() => {
@@ -98,7 +99,8 @@ export default function Pathway() {
     navigate(`/path/${pathId}/lesson/${lesson.id}`);
   };
 
-  const avatarSrc = avatar && avatar !== "default" ? avatar : null;
+  // Get the correct avatar image from the stored key
+  const avatarSrc = avatar && avatar !== "default" ? getAvatarImage(avatar, { userId }) : null;
 
   // If all lessons completed, show completion screen
   if (showCompletion && completedCount === totalLessons && totalLessons > 0) {
