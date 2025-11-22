@@ -26,6 +26,8 @@ import InsufficientCoinsModal from './events/InsufficientCoinsModal';
 
 import DailyQuestExplainerModal from './dailyquest/DailyQuestExplainerModal';
 
+import ExitConfirmationModal from './ExitConfirmationModal';
+
 export default function ModalController() {
   const { activeModal, modalData, hideModal, replaceModal } = useModalStore();
 
@@ -274,6 +276,17 @@ export default function ModalController() {
             onStart={() => {
               hideModal();
               modalData.onStart?.();
+            }}
+          />
+        );
+
+      case MODAL_TYPES.EXIT_CONFIRMATION:
+        return (
+          <ExitConfirmationModal
+            onCancel={hideModal}
+            onConfirm={() => {
+              hideModal();
+              modalData.onConfirm?.();
             }}
           />
         );

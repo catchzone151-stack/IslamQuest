@@ -217,6 +217,8 @@
   color: #d4af37;
   text-shadow: 0 0 30px rgba(212, 175, 55, 0.8);
   animation: countdownPulse 0.8s ease;
+  transform-origin: 50% 50%;
+  transform: translate(0, 0) rotate(0deg) scale(1);
 }
 
 .countdown-go {
@@ -229,9 +231,9 @@
 }
 
 @keyframes countdownPulse {
-  0% { transform: scale(0.5); opacity: 0; }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); opacity: 1; }
+  0% { transform: translate(0, 0) scale(0.5) rotate(0deg); opacity: 0; }
+  50% { transform: translate(0, 0) scale(1.2) rotate(180deg); }
+  100% { transform: translate(0, 0) scale(1) rotate(360deg); opacity: 1; }
 }
 
 @keyframes countdownGo {

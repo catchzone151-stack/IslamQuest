@@ -1,6 +1,8 @@
 import React from "react";
+import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 
 export default function ExitConfirmationModal({ onConfirm, onCancel }) {
+  const { showModal } = useModalStore();
   return (
     <div
       style={{
