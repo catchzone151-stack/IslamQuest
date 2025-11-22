@@ -347,6 +347,10 @@ function FriendsTab({ friends, searchQuery, setSearchQuery, handleSearch, setSho
 }
 
 function FriendCard({ friend, onViewProfile, onMessage, onChallenge }) {
+  const { avatar: userAvatar } = useUserStore();
+  // For friend cards, display friend's avatar (not current user)
+  const displayAvatar = friend.id === "current_user" ? userAvatar : friend.avatar;
+  
   return (
     <div style={{
       background: "linear-gradient(135deg, rgba(26, 58, 82, 0.6) 0%, rgba(11, 30, 45, 0.8) 100%)",
@@ -359,7 +363,7 @@ function FriendCard({ friend, onViewProfile, onMessage, onChallenge }) {
       <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
         {/* Avatar */}
         <img
-          src={getAvatarImage(friend.avatar, { userId: friend.id, nickname: friend.name })}
+          src={getAvatarImage(displayAvatar, { userId: friend.id, nickname: friend.name })}
           alt={friend.name}
           onClick={onViewProfile}
           style={{
@@ -726,7 +730,7 @@ function LeaderboardTab({ leaderboardTab, setLeaderboardTab, friendsLeaderboard,
                   {isTop3 ? medals[index] : index + 1}
                 </div>
                 <img
-                  src={getAvatarImage(user.avatar, { userId: user.id, nickname: user.name })}
+                  src={getAvatarImage(user.id === "current_user" ? useUserStore.getState().avatar : user.avatar, { userId: user.id, nickname: user.name })}
                   alt={user.name}
                   style={{
                     width: 50,
@@ -877,7 +881,7 @@ function MiniProfileModal({ friend, onClose, onMessage, onChallenge, onRemove })
 
         <div style={{ textAlign: "center", marginBottom: 24 }}>
           <img
-            src={getAvatarImage(friend.avatar, { userId: friend.id, nickname: friend.name })}
+            src={getAvatarImage(friend.id === "current_user" ? useUserStore.getState().avatar : friend.avatar, { userId: friend.id, nickname: friend.name })}
             alt={friend.name}
             style={{
               width: 100,

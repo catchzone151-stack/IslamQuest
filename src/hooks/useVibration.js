@@ -5,12 +5,17 @@ export function useVibration() {
 
   const vibrate = (pattern) => {
     if (!vibrationEnabled) return;
-    if (!navigator.vibrate) return;
     
-    try {
-      navigator.vibrate(pattern);
-    } catch (e) {
-      console.warn("Vibration API not available:", e);
+    // Desktop fallback for testing
+    if (navigator.vibrate) {
+      try {
+        navigator.vibrate(pattern);
+      } catch (e) {
+        console.warn("Vibration API not available:", e);
+      }
+    } else {
+      // Desktop fallback: log to console
+      console.log("HAPTIC (desktop fallback): vibrate", pattern);
     }
   };
 
