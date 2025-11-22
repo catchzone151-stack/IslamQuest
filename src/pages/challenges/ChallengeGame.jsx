@@ -2,8 +2,8 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "../../hooks/useNavigate";
 import { useChallengeStore, CHALLENGE_MODES, BOSS_LEVEL } from "../../store/challengeStore";
-import { useProgressStore } from "../../store/progressStore";
 import { useModalStore, MODAL_TYPES } from "../../store/modalStore";
+import { useRewards } from "../../hooks/useRewards";
 import { useAnalytics } from "../../hooks/useAnalytics";
 import assets from "../../assets/assets";
 import mascot_running from "../../assets/mascots/mascot_running.webp";
@@ -44,6 +44,7 @@ export default function ChallengeGame() {
   const navigate = useNavigate();
   const { challengeId } = useParams();
   const { showModal } = useModalStore();
+  const { addRewards } = useRewards();
   const analytics = useAnalytics();
   
   const [questions, setQuestions] = useState([]);
@@ -446,8 +447,11 @@ export default function ChallengeGame() {
       opponentAnsweredCount: opponentAnsweredCount,
       result,
       rewards,
+      xpEarned: rewards.xp,
+      coinsEarned: rewards.coins,
       opponentName: isBoss ? "Boss" : challenge?.opponentId,
       opponentScore: challenge?.opponentScore,
+      onApplyRewards: (rewardData) => addRewards(rewardData),
       onClose: () => navigate("/challenge")
     });
   };

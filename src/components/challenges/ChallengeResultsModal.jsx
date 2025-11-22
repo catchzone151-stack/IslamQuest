@@ -1,3 +1,5 @@
+import { useRef } from "react";
+import { useRewards } from "../../hooks/useRewards";
 import mascotCongrats from "../../assets/mascots/mascot_congratulation.webp";
 import mascotDefeated from "../../assets/mascots/mascot_defeated.webp";
 import mascotBoss from "../../assets/mascots/mascot_boss.webp";
@@ -9,12 +11,32 @@ export default function ChallengeResultsModal({
   totalQuestions,
   result, // "win", "lose", "draw"
   rewards,
+  xpEarned,
+  coinsEarned,
   opponentName,
   opponentScore,
   answeredCount, // Number of questions answered by user (for Speed Run)
   opponentAnsweredCount, // Number of questions answered by opponent (for Speed Run)
+  onApplyRewards,
   onClose 
 }) {
+  const { addRewards } = useRewards();
+  const hasAppliedRewards = useRef(false);
+  
+  const handleClose = () => {
+    // Apply rewards exactly once when closing
+    if (!hasAppliedRewards.current) {
+      hasAppliedRewards.current = true;
+      const rewardData = { xp: xpEarned || rewards?.xp || 0, coins: coinsEarned || rewards?.coins || 0 };
+      addRewards(rewardData);
+      if (onApplyRewards) {
+        onApplyRewards(rewardData);
+      }
+    }
+    if (onClose) {
+      onClose();
+    }
+  };
   // For Speed Run, use answered count; otherwise use total questions
   const isSpeedRun = mode === "speed_run" || mode?.id === "speed_run";
   const userTotal = isSpeedRun && answeredCount ? answeredCount : totalQuestions;
@@ -136,7 +158,7 @@ export default function ChallengeResultsModal({
         {/* Close Button */}
         <button 
           className="challenge-btn-primary"
-          onClick={onClose}
+          onClick={handleClose}
           style={{
             background: modeGradient,
             boxShadow: modeGlow,
