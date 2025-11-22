@@ -7,7 +7,7 @@ import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import BottomNav from "./components/BottomNav.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 import ModalController from "./components/ModalController.jsx";
-import { useOnlineStatus } from "./hooks/useOnlineStatus";
+import OfflineConnectionBanner from "./components/OfflineConnectionBanner.jsx";
 import { ModalProvider, ModalRoot } from "./providers/ModalProvider.jsx";
 import { ShimmerCard, ShimmerImage } from "./components/ShimmerLoader.jsx";
 import { useUserStore } from "./store/useUserStore";
@@ -37,34 +37,6 @@ const QuizScreen = lazy(() => import("./screens/QuizScreen.jsx"));
 const GlobalEvents = lazy(() => import("./pages/GlobalEvents.jsx"));
 const EventQuiz = lazy(() => import("./pages/EventQuiz.jsx"));
 const LockDiagnostics = lazy(() => import("./pages/LockDiagnostics.jsx"));
-
-// 🌐 Offline Connection Banner
-function OfflineConnectionBanner() {
-  const isOnline = useOnlineStatus();
-
-  if (isOnline) return null;
-
-  return (
-    <div
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        background: "linear-gradient(135deg, rgba(239, 68, 68, 0.95) 0%, rgba(220, 38, 38, 0.95) 100%)",
-        color: "white",
-        padding: "12px 16px",
-        textAlign: "center",
-        fontSize: "0.95rem",
-        fontWeight: "600",
-        zIndex: 9998,
-        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
-      }}
-    >
-      ⚠️ No connection — some features may not work offline
-    </div>
-  );
-}
 
 // 🌙 Loading Component for lazy routes
 function LoadingScreen() {
@@ -237,6 +209,7 @@ export default function App() {
 
   return (
     <ErrorBoundary>
+      <OfflineConnectionBanner />
       <ModalProvider>
         <BrowserRouter>
           <ScrollToTop />
