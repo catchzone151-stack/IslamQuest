@@ -152,10 +152,38 @@ export default function App() {
 
   // 🔄 VERSIONED STORAGE RESET: Clear all legacy data on first production load
   useEffect(() => {
+    // Module-level flag for storage failure (survives even when localStorage fails)
+    if (!window.__iq_storage_available_checked) {
+      window.__iq_storage_available_checked = false;
+    }
+    if (window.__iq_migration_failed) {
+      console.warn("⚠️ Skipping storage migration (storage unavailable)");
+      return;
+    }
+    
+    // Capability probe: check if localStorage is available
+    const isStorageAvailable = () => {
+      try {
+        const testKey = "__iq_storage_test__";
+        localStorage.setItem(testKey, "1");
+        localStorage.removeItem(testKey);
+        return true;
+      } catch (e) {
+        console.error("localStorage not available:", e);
+        window.__iq_migration_failed = true;
+        return false;
+      }
+    };
+    
+    if (!isStorageAvailable()) {
+      console.warn("⚠️ Storage migration skipped: localStorage unavailable (private mode?)");
+      return;
+    }
+    
     try {
-      // Skip migration if it previously failed
-      const migrationFailed = sessionStorage.getItem("migration_failed");
-      if (migrationFailed) {
+      // Skip migration if it previously failed (persist across sessions)
+      const migrationFailed = localStorage.getItem("iq_migration_failed");
+      if (migrationFailed === "true") {
         console.warn("⚠️ Skipping storage migration (previous failure)");
         return;
       }
@@ -210,14 +238,22 @@ export default function App() {
           return;
         } else {
           console.warn("⚠️ Storage migration partially failed. Continuing with current state.");
-          // Mark migration as failed to prevent future attempts
-          sessionStorage.setItem("migration_failed", "true");
+          // Mark migration as failed to prevent infinite retry loops
+          try {
+            localStorage.setItem("iq_migration_failed", "true");
+          } catch (e) {
+            console.error("Cannot persist migration failure flag", e);
+          }
         }
       }
     } catch (error) {
       // Fallback for private mode or localStorage errors
       console.error("Storage reset failed:", error);
-      sessionStorage.setItem("migration_failed", "true");
+      try {
+        localStorage.setItem("iq_migration_failed", "true");
+      } catch (e) {
+        // Silently fail - app will continue with defaults
+      }
       // Continue app initialization with default state (no reload)
     }
   }, []);
@@ -237,7 +273,6 @@ export default function App() {
       import("./pages/challenges/ChallengeGame.jsx"),
       import("./pages/DailyQuestGame.jsx"),
       import("./pages/GlobalEvents.jsx"),
-      import("./pages/EventQuiz.jsx"),
       import("./pages/Friends.jsx"),
       import("./pages/Profile.jsx"),
       import("./pages/Settings.jsx"),

@@ -7,6 +7,17 @@ Islam Quest is a mobile-first web application designed as a gamified Islamic lea
 Preferred communication style: Simple, everyday language.
 
 ## Recent Major Updates (November 22, 2025)
+
+### ✅ Production Launch Cleanup (Complete - November 22, 2025)
+- **All Dev/Beta Infrastructure Removed**: Deleted developerStore.js, DeveloperModal, debug routes, betaMode checks, test bypasses, and developer menu triggers
+- **Versioned Storage Migration**: Implemented "iq_production_v1" namespace with automatic legacy data cleanup and error handling for restricted storage environments
+- **Premium System Hardening**: 
+  - Removed EventQuiz preload to prevent premium bypass via deep links
+  - Added `locksReady` flag gating all lock accessors during hydration
+  - Storage capability probe with window-level fallback for private mode browsers
+- **Global Events**: Temporarily disabled with "Coming Soon Ramadan 2025" modal (premium feature)
+- **Production Guards**: Clean codebase with no dev bypasses, test modes, or debug UI - ready for public deployment
+
 ### Premium System Rebuild (Complete Rewrite)
 - **Quiz Scoring Update**: Changed from hardcoded "3 out of 4" to universal 75% passing threshold (applies to all quizzes, daily quests, events)
 - **Supabase-Ready Fields**: Added `premium` (boolean), `premiumType` ("individual" | "family"), `premiumActivatedAt` (timestamp) to progressStore

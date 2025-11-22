@@ -57,6 +57,9 @@ export const useProgressStore = create((set, get) => ({
 
   // 🌙 Learning Paths
   paths: DEFAULT_PATHS,
+  
+  // 🔒 Lock Readiness Flag
+  locksReady: false, // Gates lock checks until applyLockingRules completes
 
   // 🧠 Save & Load
   saveProgress: () => {
@@ -110,6 +113,7 @@ export const useProgressStore = create((set, get) => ({
         set({ _premiumMigrationV1: true }); // Mark migration as complete
       }
       
+      set({ locksReady: true }); // Mark locks as ready
       get().saveProgress(); // Persist the normalized locks, premium status, and migration flag
     } else {
       // 🔒 CRITICAL: For fresh installs (including post-storage-reset), ensure defaults exist and apply locking
@@ -126,6 +130,7 @@ export const useProgressStore = create((set, get) => ({
       
       // Now apply locking rules on initialized state
       get().applyLockingRules();
+      set({ locksReady: true }); // Mark locks as ready
       get().saveProgress(); // Persist the initial locked state
     }
   },
@@ -487,9 +492,21 @@ export const useProgressStore = create((set, get) => ({
     get().saveProgress();
   },
 
+  // 🔒 CRITICAL: Ensure locks are ready before any access
+  // Returns false if locks aren't ready, otherwise true
+  ensureLocksReady: () => {
+    const { locksReady } = get();
+    return locksReady;
+  },
+
   // 🔒 Central lesson unlock check (combines sequential + premium limits)
   // This is the NEW core function - use this everywhere!
   isLessonUnlocked: (pathId, lessonId) => {
+    // Gate all lock checks until hydration completes
+    if (!get().ensureLocksReady()) {
+      return false; // Safe default: locked during hydration
+    }
+    
     const { lockedLessons, premiumStatus } = get();
     
     // Lesson 1 is always unlocked
@@ -526,7 +543,13 @@ export const useProgressStore = create((set, get) => ({
   // 🔒 NEW UNIFIED LOCKING SYSTEM (Spec-compliant)
   // Returns the lock state of a lesson: "unlocked" | "progressLocked" | "premiumLocked"
   getLessonLockState: (pathId, lessonId) => {
-    const { lockedLessons, premium, premiumStatus } = get();
+    const { lockedLessons, premium, premiumStatus, locksReady } = get();
+    
+    // CRITICAL: During initialization, assume all lessons are locked until locks are computed
+    if (!locksReady) {
+      return "progressLocked"; // Safe default during hydration
+    }
+    
     const isUserPremium = premium || premiumStatus !== "free";
     
     // Lesson 1 is always unlocked (except for premium-only paths)
@@ -562,12 +585,18 @@ export const useProgressStore = create((set, get) => ({
 
   // 🔒 Check if lesson is locked due to premium paywall
   isPremiumLocked: (pathId, lessonId) => {
+    if (!get().ensureLocksReady()) {
+      return false; // Safe default during hydration
+    }
     const lockState = get().getLessonLockState(pathId, lessonId);
     return lockState === "premiumLocked";
   },
 
   // 🔒 Check if user can access a lesson (for UI/navigation)
   canAccessLesson: (pathId, lessonId) => {
+    if (!get().ensureLocksReady()) {
+      return false; // Safe default: no access during hydration
+    }
     const lockState = get().getLessonLockState(pathId, lessonId);
     return lockState === "unlocked";
   },
@@ -595,7 +624,7 @@ export const useProgressStore = create((set, get) => ({
       }
     }
     
-    set({ lockedLessons: locks });
+    set({ lockedLessons: locks, locksReady: true });
     get().saveProgress();
   },
 
