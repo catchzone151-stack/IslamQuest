@@ -73,23 +73,36 @@ export default function Friends() {
     setShowMiniProfile(null);
   };
 
+  // Get fresh avatar from userStore for current user
+  const { avatar: freshUserAvatar } = useUserStore.getState();
+  
   let friendsLeaderboard = getFriendsLeaderboard();
   let globalLeaderboard = getGlobalLeaderboard();
 
-  // Add current user to both leaderboards with correct rank and avatar from userStore
+  // Build clean current user object with fresh avatar from store
   const currentUser = {
     id: "current_user",
     name: currentUserName2 || currentUserName || "You",
-    avatar: currentUserAvatar,
+    avatar: freshUserAvatar,
     xp: currentUserXP,
     coins: currentUserCoins,
     streak: currentUserStreak,
   };
   
-  // Insert current user and sort both leaderboards by XP descending
-  const leaderboardWithUser = [currentUser, ...friendsLeaderboard].sort((a, b) => b.xp - a.xp);
-  friendsLeaderboard = leaderboardWithUser;
-  globalLeaderboard = [currentUser, ...globalLeaderboard].sort((a, b) => b.xp - a.xp);
+  // Filter out duplicates of current user (by id or name)
+  const cleanedFriendsList = (friendsLeaderboard || []).filter(
+    f => f.id !== currentUser.id && f.id !== "current_user" && f.name !== currentUser.name
+  );
+  const cleanedGlobalList = (globalLeaderboard || []).filter(
+    g => g.id !== currentUser.id && g.id !== "current_user" && g.name !== currentUser.name
+  );
+
+  // Combine with current user and sort both leaderboards by XP descending
+  const fullFriendsList = [...cleanedFriendsList, currentUser].sort((a, b) => b.xp - a.xp);
+  const fullGlobalList = [...cleanedGlobalList, currentUser].sort((a, b) => b.xp - a.xp);
+  
+  friendsLeaderboard = fullFriendsList;
+  globalLeaderboard = fullGlobalList;
 
   const totalRequests = incomingRequests.length + outgoingRequests.length;
 
@@ -697,6 +710,12 @@ function LeaderboardTab({ leaderboardTab, setLeaderboardTab, friendsLeaderboard,
           {activeLeaderboard.slice(0, 12).map((user, index) => {
             const isTop3 = index < 3;
             const medals = ["🥇", "🥈", "🥉"];
+            const rank = index + 1;
+            
+            // Ensure current user always uses fresh avatar from userStore
+            const displayAvatar = user.id === "current_user" 
+              ? useUserStore.getState().avatar 
+              : user.avatar;
             
             return (
               <div
@@ -727,10 +746,10 @@ function LeaderboardTab({ leaderboardTab, setLeaderboardTab, friendsLeaderboard,
                   fontSize: "1.2rem",
                   flexShrink: 0,
                 }}>
-                  {isTop3 ? medals[index] : index + 1}
+                  {isTop3 ? medals[index] : rank}
                 </div>
                 <img
-                  src={getAvatarImage(user.id === "current_user" ? useUserStore.getState().avatar : user.avatar, { userId: user.id, nickname: user.name })}
+                  src={getAvatarImage(displayAvatar, { userId: user.id, nickname: user.name })}
                   alt={user.name}
                   style={{
                     width: 50,
