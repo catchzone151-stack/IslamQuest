@@ -179,14 +179,15 @@ export default function PathPage() {
         }}
       >
         {/* LEFT COLUMN: Section Headings */}
-        <div style={{ 
-          flex: "0 0 200px",
-          position: "relative",
-          minHeight: `${totalLayoutHeight}px`,
-        }}>
+        <div
+          style={{
+            flex: "0 0 200px",
+            position: "relative",
+            minHeight: `${totalLayoutHeight}px`,
+          }}
+        >
           {groupedLessons.map((section, sectionIdx) => {
-            // Use calculated cumulative offset for absolute positioning
-            const topOffset = cumulativeOffsets[sectionIdx];
+            const topOffset = cumulativeOffsets[sectionIdx]; // The correct aligned vertical position
 
             return (
               <div
@@ -201,12 +202,11 @@ export default function PathPage() {
                   color: "#D4AF37",
                   textAlign: "left",
                   lineHeight: 1.4,
+                  overflowWrap: "break-word",
                   wordWrap: "break-word",
                   wordBreak: "break-word",
-                  overflowWrap: "break-word",
-                  hyphens: "auto",
-                  letterSpacing: "0.6px",
                   textTransform: "uppercase",
+                  letterSpacing: "0.6px",
                   paddingRight: "12px",
                 }}
               >
@@ -226,20 +226,6 @@ export default function PathPage() {
             position: "relative",
           }}
         >
-          {/* Vertical Timeline Line */}
-          <div
-            style={{
-              position: "absolute",
-              left: "50%",
-              top: "0",
-              bottom: "0",
-              width: "3px",
-              background: "linear-gradient(180deg, #D4AF37 0%, #b89600 100%)",
-              transform: "translateX(-50%)",
-              zIndex: 0,
-            }}
-          />
-
           {/* Lesson Circles */}
           {groupedLessons.map((section, sectionIdx) =>
             section.lessons.map((lesson, lessonIdx) => {
