@@ -51,9 +51,9 @@ const LEGACY_AVATAR_MAP = {
 export function getAvatarImage(avatarKey, options = {}) {
   const { userId, nickname, isDevCheck = true } = options;
   
-  // PRIORITY 0: Do not allow fallback/random avatar overrides for the real user
+  // PRIORITY 0: If this is the current user, use their selected avatar first
   const { id: currentUserId, avatar: currentUserAvatar } = useUserStore.getState();
-  if (currentUserAvatar && (avatarKey === currentUserAvatar || userId === currentUserId)) {
+  if (userId === currentUserId && currentUserAvatar && assets.avatars[currentUserAvatar]) {
     return assets.avatars[currentUserAvatar];
   }
   
