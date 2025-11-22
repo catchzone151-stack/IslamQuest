@@ -147,27 +147,43 @@ export default function PathPage() {
       >
         {/* LEFT COLUMN: Section Headings */}
         <div style={{ flex: "0 0 25%", minWidth: 0 }}>
-          {groupedLessons.map((section, sectionIdx) => (
-            <div key={sectionIdx} style={{ marginBottom: "120px" }}>
-              <div
-                style={{
-                  fontSize: "0.95rem",
-                  fontWeight: 700,
-                  color: "#D4AF37",
-                  textAlign: "left",
-                  lineHeight: 1.2,
-                  wordWrap: "break-word",
-                  wordBreak: "break-word",
-                  overflowWrap: "break-word",
-                  letterSpacing: "0.3px",
-                  textTransform: "uppercase",
-                  paddingTop: "12px",
+          {groupedLessons.map((section, sectionIdx) => {
+            // Calculate total height for this section: circles + spacing between them + final gap
+            const sectionHeight = 
+              section.lessons.length * 64 + 
+              (section.lessons.length - 1) * 48 + 
+              120;
+            
+            return (
+              <div 
+                key={sectionIdx} 
+                style={{ 
+                  height: `${sectionHeight}px`,
+                  display: "flex",
+                  flexDirection: "column",
                 }}
               >
-                {section.name}
+                <div
+                  style={{
+                    fontSize: "0.95rem",
+                    fontWeight: 700,
+                    color: "#D4AF37",
+                    textAlign: "left",
+                    lineHeight: 1.2,
+                    wordWrap: "break-word",
+                    wordBreak: "break-word",
+                    overflowWrap: "break-word",
+                    letterSpacing: "0.3px",
+                    textTransform: "uppercase",
+                    paddingTop: "12px",
+                    flex: "0 0 auto",
+                  }}
+                >
+                  {section.name}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* MIDDLE COLUMN: Timeline + Lesson Circles */}
