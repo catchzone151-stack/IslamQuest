@@ -24,10 +24,14 @@ export default function GlobalEvents() {
   
   const [timeLeft, setTimeLeft] = useState("");
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [isLoadingEvents, setIsLoadingEvents] = useState(true);
 
-  // Check for week reset on mount
+  // Check for week reset on mount and set loading state
   useEffect(() => {
+    setIsLoadingEvents(true);
     checkWeekReset();
+    const timer = setTimeout(() => setIsLoadingEvents(false), 600);
+    return () => clearTimeout(timer);
   }, [checkWeekReset]);
 
   // Update countdown timer
@@ -127,7 +131,20 @@ export default function GlobalEvents() {
         </p>
       </div>
 
+      {/* Loading State */}
+      {isLoadingEvents && (
+        <div style={{
+          padding: "40px 20px",
+          textAlign: "center",
+          color: "#D4AF37"
+        }}>
+          <div style={{ fontSize: "2rem", marginBottom: "12px" }}>⏳</div>
+          <p>Loading events...</p>
+        </div>
+      )}
+
       {/* Event Cards Grid */}
+      {!isLoadingEvents && (
       <div className="events-grid">
         {events.map((event) => {
           const entered = hasEntered(event.id);
@@ -174,6 +191,7 @@ export default function GlobalEvents() {
           );
         })}
       </div>
+      )}
     </div>
   );
 }

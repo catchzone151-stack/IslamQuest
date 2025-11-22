@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useEventsStore, EMPTY_LEADERBOARD } from "../../store/eventsStore";
 import { useProgressStore } from "../../store/progressStore";
 import { useUserStore } from "../../store/useUserStore";
+import { useAnalytics } from "../../hooks/useAnalytics";
 import { shallow } from "zustand/shallow";
 import assets from "../../assets/assets";
 import { LevelBadge } from "../LevelBadge";
@@ -17,8 +18,9 @@ export default function FinalResultsModal({ event, onClose }) {
     return wid ? (state.leaderboards[wid]?.[event.id] ?? EMPTY_LEADERBOARD) : EMPTY_LEADERBOARD;
   });
   
-  const { addXP, addCoins, xp } = useProgressStore();
+  const { addXPAndCoins, xp } = useProgressStore();
   const { nickname, avatar } = useUserStore();
+  const analytics = useAnalytics();
   
   const [showFullLeaderboard, setShowFullLeaderboard] = useState(false);
   const hasInitialized = useRef(false);
@@ -48,13 +50,21 @@ export default function FinalResultsModal({ event, onClose }) {
       const rewards = grantRewardsForEvent(event.id, userRank);
       
       if (rewards) {
-        addXP(rewards.xpReward);
-        addCoins(rewards.coinReward);
+        addXPAndCoins(rewards.xpReward, rewards.coinReward);
+        
+        // Track event reward for analytics
+        analytics('event_reward', {
+          eventId: event.id,
+          eventName: event.name,
+          userRank,
+          xpEarned: rewards.xpReward,
+          coinsEarned: rewards.coinReward
+        });
       }
     }
     
     hasInitialized.current = true;
-  }, [event.id, entry, hasLeaderboard, userRank, addXP, addCoins]);
+  }, [event.id, entry, hasLeaderboard, userRank, addXPAndCoins, analytics]);
   
   // Get Zayd message based on rank
   const getZaydMessage = () => {
