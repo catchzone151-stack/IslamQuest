@@ -1,5 +1,6 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { useRewards } from "../../hooks/useRewards";
+import { useVibration } from "../../hooks/useVibration";
 import mascotCongrats from "../../assets/mascots/mascot_congratulation.webp";
 import mascotSittingV2 from "../../assets/mascots/mascot_sitting_v2.webp";
 import mascotDefeated from "../../assets/mascots/mascot_defeated.webp";
@@ -24,7 +25,19 @@ export default function ChallengeResultsModal({
   onClose 
 }) {
   const { addRewards } = useRewards();
+  const { vibrate } = useVibration();
   const hasAppliedRewards = useRef(false);
+  
+  // Trigger haptic feedback when modal appears
+  useEffect(() => {
+    if (result === "win") {
+      vibrate([100, 50, 100, 50, 100]); // Victory pattern
+    } else if (result === "lose") {
+      vibrate([200, 100, 200]); // Failure pattern
+    } else {
+      vibrate([100, 50, 100]); // Draw pattern
+    }
+  }, [result, vibrate]);
   
   const handleClose = () => {
     // Apply rewards exactly once when closing
@@ -177,7 +190,10 @@ export default function ChallengeResultsModal({
         {/* Close Button */}
         <button 
           className="challenge-btn-primary"
-          onClick={handleClose}
+          onClick={() => {
+            vibrate(50);
+            handleClose();
+          }}
           style={{
             background: modeGradient,
             boxShadow: modeGlow,

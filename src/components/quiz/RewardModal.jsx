@@ -1,6 +1,7 @@
 // src/components/quiz/RewardModal.jsx
 
-import React from "react";
+import React, { useEffect } from "react";
+import { useVibration } from "../../hooks/useVibration";
 import xpIcon from "../../assets/ui/ui_xp.webp";
 import coinIcon from "../../assets/ui/ui_coin.webp";
 
@@ -85,88 +86,105 @@ const buttonHoverStyle = {
   transform: "translateY(-1px)",
 };
 
-class RewardModal extends React.Component {
-  state = {
-    hoverContinue: false,
-    hoverRetry: false,
-  };
+function RewardModalContent({ score, totalQ, xp, coins, mascotImg, onContinue, onRetry, passed }) {
+  const { vibrate } = useVibration();
+  const [hoverContinue, setHoverContinue] = React.useState(false);
+  const [hoverRetry, setHoverRetry] = React.useState(false);
 
-  render() {
-    const { score, totalQ, xp, coins, mascotImg, onContinue, onRetry, passed } = this.props;
+  // Trigger haptic feedback when modal appears
+  useEffect(() => {
+    if (passed) {
+      vibrate([100, 50, 100, 50, 100]); // Victory pattern
+    } else {
+      vibrate([200, 100, 200]); // Failure pattern
+    }
+  }, [passed, vibrate]);
 
-    return (
-      <>
-        <style>
-          {`
-          @keyframes iq-bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
-          }
-        `}
-        </style>
+  return (
+    <>
+      <style>
+        {`
+        @keyframes iq-bounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-6px); }
+        }
+      `}
+      </style>
 
-        <div style={overlayStyle}>
-          <div style={modalStyle}>
-            <img src={mascotImg} alt="Zayd" style={mascotStyle} />
+      <div style={overlayStyle}>
+        <div style={modalStyle}>
+          <img src={mascotImg} alt="Mascot" style={mascotStyle} />
 
-            <h2 style={titleStyle}>
-              {passed ? "MASHAA ALLAH!" : "Try Again!"}
-            </h2>
-            <p style={messageStyle}>
-              {passed 
-                ? "You unlocked the next lesson!" 
-                : "You need at least 3 correct answers to unlock the next lesson."}
-            </p>
+          <h2 style={titleStyle}>
+            {passed ? "Mashaa Allah!" : "Keep trying!"}
+          </h2>
 
-            <div style={{...messageStyle, fontSize: "18px", fontWeight: 700, color: "#FACC15", marginBottom: "12px"}}>
-              Score: {score}/{totalQ}
-            </div>
+          <p style={messageStyle}>
+            {passed
+              ? `You scored ${score} out of ${totalQ}. Well done!`
+              : `You scored ${score} out of ${totalQ}. Let's improve!`}
+          </p>
 
-            {passed && (
-              <div style={rewardsRowStyle}>
+          {passed && (xp > 0 || coins > 0) && (
+            <div style={rewardsRowStyle}>
+              {xp > 0 && (
                 <div style={rewardItemStyle}>
                   <img src={xpIcon} alt="XP" style={iconStyle} />
-                  <span>+{xp}</span>
+                  <span>+{xp} XP</span>
                 </div>
+              )}
+              {coins > 0 && (
                 <div style={rewardItemStyle}>
                   <img src={coinIcon} alt="Coins" style={iconStyle} />
-                  <span>+{coins}</span>
+                  <span>+{coins} Coins</span>
                 </div>
-              </div>
-            )}
-
-            <div style={{display: "flex", gap: "12px", justifyContent: "center"}}>
-              {!passed && onRetry && (
-                <button
-                  style={{
-                    ...buttonStyle,
-                    backgroundColor: "#10B981",
-                    ...(this.state.hoverRetry ? {...buttonHoverStyle, backgroundColor: "#34D399"} : {}),
-                  }}
-                  onMouseEnter={() => this.setState({ hoverRetry: true })}
-                  onMouseLeave={() => this.setState({ hoverRetry: false })}
-                  onClick={onRetry}
-                >
-                  Try Again
-                </button>
               )}
-              
+            </div>
+          )}
+
+          <div style={{ display: "flex", gap: "10px", marginTop: "8px" }}>
+            {!passed && onRetry && (
               <button
                 style={{
                   ...buttonStyle,
-                  ...(this.state.hoverContinue ? buttonHoverStyle : {}),
+                  ...(hoverRetry ? buttonHoverStyle : {}),
                 }}
-                onMouseEnter={() => this.setState({ hoverContinue: true })}
-                onMouseLeave={() => this.setState({ hoverContinue: false })}
-                onClick={onContinue}
+                onMouseEnter={() => setHoverRetry(true)}
+                onMouseLeave={() => setHoverRetry(false)}
+                onClick={() => {
+                  vibrate(50);
+                  onRetry();
+                }}
               >
-                {passed ? "Continue Learning →" : "Back to Path"}
+                Retry Quiz
               </button>
-            </div>
+            )}
+            {onContinue && (
+              <button
+                style={{
+                  ...buttonStyle,
+                  ...(hoverContinue ? buttonHoverStyle : {}),
+                }}
+                onMouseEnter={() => setHoverContinue(true)}
+                onMouseLeave={() => setHoverContinue(false)}
+                onClick={() => {
+                  vibrate(50);
+                  onContinue();
+                }}
+              >
+                Continue
+              </button>
+            )}
           </div>
         </div>
-      </>
-    );
+      </div>
+    </>
+  );
+}
+
+class RewardModal extends React.Component {
+  render() {
+    return <RewardModalContent {...this.props} />;
   }
 }
 
