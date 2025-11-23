@@ -21,7 +21,9 @@ export default function AvatarScreen() {
 
   const handleContinue = () => {
     if (!selected) return;
-    setAvatar(selected);
+    // Extract avatar key from full path (e.g., "/src/assets/avatars/avatar_robot.png.webp" -> "avatar_robot")
+    const avatarKey = selected.split("/").pop().split(".")[0];
+    setAvatar(avatarKey);
     navigate("/onboarding/username");
   };
 
