@@ -6,7 +6,7 @@
 const wivesLessons = [
   {
     id: 1,
-    title: "Khadijah bint Khuwaylid",
+    title: "Khadijah bint Khuwaylid - Part 1",
     description: [
       "Khadijah was a wealthy businesswoman known for wisdom and honor. She hired Muhammad ﷺ for his trustworthiness. Their marriage began after successful trade journeys together.",
       "She became the first believer when revelation came to Muhammad ﷺ. Khadijah comforted and reassured him of Allah's protection during difficult early persecution years.",
@@ -57,7 +57,7 @@ const wivesLessons = [
 
   {
     id: 4,
-    title: "Aishah bint Abu Bakr",
+    title: "Aishah bint Abu Bakr - Part 1",
     description: [
       "Aishah was Abu Bakr's daughter and became the Prophet's ﷺ ﷺ most beloved wife. The Prophet ﷺ received more revelation in her company than with any other wife.",
       "She was extremely intelligent with remarkable memory. Aishah memorized the Quran and understood it deeply. Senior companions came to her to learn Islamic rulings and hadith.",
