@@ -46,6 +46,9 @@ export default function Home() {
   const { name } = useUserStore();
   const { premium, premiumStatus } = useProgressStore();
   const isUserPremium = premium || premiumStatus !== "free";
+  
+  // Debug logging
+  console.log("🔍 Premium Status Debug:", { premium, premiumStatus, isUserPremium });
 
   // Horizontal scroll ref for the learning path cards
   const carouselRef = useRef(null);
