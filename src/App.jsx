@@ -37,6 +37,7 @@ const Revise = lazy(() => import("./pages/Revise.jsx"));
 const Login = lazy(() => import("./pages/Login.jsx"));
 const QuizScreen = lazy(() => import("./screens/QuizScreen.jsx"));
 const GlobalEvents = lazy(() => import("./pages/GlobalEvents.jsx"));
+const ResetPremium = lazy(() => import("./pages/ResetPremium.jsx"));
 
 // 🌙 Loading Component for lazy routes
 function LoadingScreen() {
@@ -347,6 +348,7 @@ export default function App() {
                 <Route path="/settings" element={<Suspense fallback={<LoadingScreen />}><Settings /></Suspense>} />
                 <Route path="/revise" element={<Suspense fallback={<LoadingScreen />}><Revise /></Suspense>} />
                 <Route path="/login" element={<Suspense fallback={<LoadingScreen />}><Login /></Suspense>} />
+                <Route path="/reset-premium" element={<Suspense fallback={<LoadingScreen />}><ResetPremium /></Suspense>} />
 
                 {/* fallback */}
                 <Route path="*" element={<Suspense fallback={<LoadingScreen />}><Home /></Suspense>} />
