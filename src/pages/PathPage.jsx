@@ -263,7 +263,11 @@ export default function PathPage() {
                   }}
                 >
                   <div
-                    onClick={() => handleLessonClick(lesson)}
+                    onClick={(e) => {
+                      console.log('🎯 CIRCLE CLICKED! Lesson:', lesson.id);
+                      e.stopPropagation();
+                      handleLessonClick(lesson);
+                    }}
                     style={{
                       position: "relative",
                       background: unlocked
@@ -289,6 +293,7 @@ export default function PathPage() {
                       boxShadow: isCurrent
                         ? "0 0 30px rgba(255, 215, 0, 0.6), inset 0 0 20px rgba(255, 215, 0, 0.2)"
                         : "none",
+                      pointerEvents: "auto",
                     }}
                   >
                     {!unlocked && (
