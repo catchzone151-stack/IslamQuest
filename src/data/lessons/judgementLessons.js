@@ -102,7 +102,7 @@ const judgementLessons = [
       translation: "It may be that your Lord will raise you to a praised station (the station of intercession).",
       source: "Qur'an 17:79"
     },
-    keyLesson: "The Prophet ﷺ Muhammad ﷺ will be granted the honored station of intercession, helping his followers through Allah's permission and mercy.",
+    keyLesson: "The Prophet Muhammad ﷺ will be granted the honored station of intercession, helping his followers through Allah's permission and mercy.",
     quizId: 6
   },
 
@@ -110,9 +110,9 @@ const judgementLessons = [
     id: 7,
     title: "The Pond (Al-Kawthar)",
     description: [
-      "The Prophet ﷺ Muhammad ﷺ will have a massive pond called Al-Kawthar on the Day of Judgment. Its water is whiter than milk, sweeter than honey, and more fragrant than musk. Drinking from it once quenches thirst forever.",
+      "The Prophet Muhammad ﷺ will have a massive pond called Al-Kawthar on the Day of Judgment. Its water is whiter than milk, sweeter than honey, and more fragrant than musk. Drinking from it once quenches thirst forever.",
       "The pond is vast, with distances between corners taking a month to travel. Cups numbering like the stars in the sky line its edges. The water comes directly from the river in Paradise that Allah gave specifically to the Prophet ﷺ.",
-      "Only the Prophet's ﷺ ﷺ true followers will be allowed to drink from it. Those who changed the religion or abandoned Islamic practices after him will be driven away. The Prophet ﷺ will watch sadly as some who claimed to follow him are blocked from drinking."
+      "Only the Prophet's ﷺ true followers will be allowed to drink from it. Those who changed the religion or abandoned Islamic practices after him will be driven away. The Prophet ﷺ will watch sadly as some who claimed to follow him are blocked from drinking."
     ],
     evidence: {
       arabic: "إِنَّا أَعْطَيْنَاكَ الْكَوْثَرَ",

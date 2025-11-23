@@ -10,7 +10,7 @@ const wivesLessons = [
     description: [
       "Khadijah was a wealthy businesswoman known for wisdom and honor. She hired Muhammad ﷺ for his trustworthiness. Their marriage began after successful trade journeys together.",
       "She became the first believer when revelation came to Muhammad ﷺ. Khadijah comforted and reassured him of Allah's protection during difficult early persecution years.",
-      "All the Prophet's ﷺ ﷺ children except Ibrahim were born to Khadijah. He never forgot her devotion and praised her throughout his life, even after her death."
+      "All the Prophet's ﷺ children except Ibrahim were born to Khadijah. He never forgot her devotion and praised her throughout his life, even after her death."
     ],
     evidence: {
       arabic: "خَيْرُ نِسَائِهَا مَرْيَمُ، وَخَيْرُ نِسَائِهَا خَدِيجَةُ",
@@ -34,7 +34,7 @@ const wivesLessons = [
       translation: "I have been granted her love.",
       source: "Sahih Muslim 2435"
     },
-    keyLesson: "The Prophet's ﷺ ﷺ enduring loyalty to Khadijah teaches us to honor and remember those who supported us.",
+    keyLesson: "The Prophet's ﷺ enduring loyalty to Khadijah teaches us to honor and remember those who supported us.",
     quizId: 2
   },
 
@@ -59,7 +59,7 @@ const wivesLessons = [
     id: 4,
     title: "Aishah bint Abu Bakr - Part 1",
     description: [
-      "Aishah was Abu Bakr's daughter and became the Prophet's ﷺ ﷺ most beloved wife. The Prophet ﷺ received more revelation in her company than with any other wife.",
+      "Aishah was Abu Bakr's daughter and became the Prophet's ﷺ most beloved wife. The Prophet ﷺ received more revelation in her company than with any other wife.",
       "She was extremely intelligent with remarkable memory. Aishah memorized the Quran and understood it deeply. Senior companions came to her to learn Islamic rulings and hadith.",
       "Aishah and the Prophet ﷺ loved each other deeply. He would race with her and show affection. When asked whom he loved most, he said Aishah."
     ],
@@ -144,7 +144,7 @@ const wivesLessons = [
     id: 9,
     title: "Zaynab bint Jahsh",
     description: [
-      "Zaynab bint Jahsh was the Prophet's ﷺ ﷺ cousin. Allah arranged her marriage to him through divine revelation after her divorce. Quranic verses abolished pre-Islamic adoption practices.",
+      "Zaynab bint Jahsh was the Prophet's ﷺ cousin. Allah arranged her marriage to him through divine revelation after her divorce. Quranic verses abolished pre-Islamic adoption practices.",
       "Zaynab was pious, generous, and skilled in leather crafts. She earned money through her skills and gave everything away in charity, more than all other wives.",
       "The Prophet ﷺ told his wives the longest hand would join him first in death. Zaynab died first, fulfilling this prophecy through her unmatched generosity and charitable giving."
     ],
@@ -214,7 +214,7 @@ const wivesLessons = [
     description: [
       "Maymunah was the last wife the Prophet ﷺ married. She offered herself in marriage, and Allah revealed a verse allowing this privilege. She was known for piety.",
       "Maymunah was Khalid ibn al-Walid's maternal aunt and related to prominent companions. Her marriage strengthened ties between the Prophet ﷺ and important Muslim families.",
-      "She was generous and dedicated to worship. Maymunah narrated many hadiths about the Prophet's ﷺ ﷺ private life. She lived many years after his death, teaching and narrating."
+      "She was generous and dedicated to worship. Maymunah narrated many hadiths about the Prophet's ﷺ private life. She lived many years after his death, teaching and narrating."
     ],
     evidence: {
       arabic: "وَامْرَأَةً مُؤْمِنَةً إِنْ وَهَبَتْ نَفْسَهَا لِلنَّبِيِّ",
