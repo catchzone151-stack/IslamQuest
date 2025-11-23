@@ -560,15 +560,37 @@ export default function Pathway() {
                     }}
                   />
                 ) : (
-                  <span
+                  <div
                     style={{
-                      fontWeight: 700,
-                      color: lesson.isLocked ? "#666" : "#fff",
-                      fontSize: "1rem",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
                     }}
                   >
-                    {lesson.id}
-                  </span>
+                    <span
+                      style={{
+                        fontWeight: 700,
+                        color: lesson.isLocked ? "#666" : "#fff",
+                        fontSize: "1rem",
+                      }}
+                    >
+                      {lesson.id}
+                    </span>
+                    {lesson.part && (
+                      <span
+                        style={{
+                          fontWeight: 500,
+                          color: lesson.isLocked ? "#666" : "#ccc",
+                          fontSize: "0.65rem",
+                          marginTop: "2px",
+                          letterSpacing: "0.3px",
+                        }}
+                      >
+                        {lesson.part}
+                      </span>
+                    )}
+                  </div>
                 )}
 
                 {lesson.isLocked && (
