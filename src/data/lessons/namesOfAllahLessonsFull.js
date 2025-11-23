@@ -1387,17 +1387,17 @@ const namesOfAllahLessonsFull = [
   },
   {
     id: 100,
-    title: "Ar-Rasheed",
-    arabic: "الرَّشِيد",
-    meaning: "The Guide to the Right Path",
+    title: "Ad-Dayyan",
+    arabic: "الديّان",
+    meaning: "The Recompenser / The Supreme Judge",
     description: [
-      "Ar-Rasheed means Allah guides with wisdom and helps us choose rightly.",
-      "He teaches through signs, people, and our hearts when we seek truth.",
-      "His guidance leads to success in this world and the next.",
-      "We should ask Ar-Rasheed for wisdom before making decisions."
+      "Ad-Dayyan is an Islamic name for Allah, meaning 'The Recompenser' or 'The Supreme Judge'. It refers to His role as the ultimate judge who will reward or punish people for their deeds, based on perfect justice.",
+      "The name has not appeared in the Qur'an but is mentioned in the Sunnah (sayings and actions of the Prophet Muhammad ﷺ).",
+      "Allah is the one who will perfectly recompense His servants on the Day of Judgement—rewarding good deeds and punishing bad ones, or pardoning them according to His will.",
+      "This name embodies His perfect justice, meaning He will reward good deeds and punish bad ones according to His will with fairness and wisdom."
     ],
-    reflection: "What choice do you need Allah’s wisdom for today?",
-    quizId: "ar_rasheed_quiz"
+    reflection: "How does knowing Allah is Ad-Dayyan inspire you to be more just and accountable in your actions?",
+    quizId: "ad_dayyan_quiz"
   },
   {
     id: 101,

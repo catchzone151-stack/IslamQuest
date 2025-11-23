@@ -4458,44 +4458,44 @@
     "lessonId": 100,
     "questions": [
       {
-        "question": "What does 'Ar-Rasheed' mean?",
+        "question": "What does 'Ad-Dayyan' mean?",
         "options": [
+          "The Recompenser / The Supreme Judge",
           "The Guide to the Right Path",
-          "The Misguider",
-          "The Confused",
-          "The Lost"
+          "The Most Merciful",
+          "The Provider"
         ],
         "answer": 0
       },
       {
-        "question": "How does Allah guide?",
+        "question": "Where is the name 'Ad-Dayyan' mentioned?",
         "options": [
-          "Randomly",
-          "With wisdom",
-          "Carelessly",
-          "Never"
+          "Only in the Qur'an",
+          "In the Sunnah (sayings and actions of the Prophet Muhammad ﷺ)",
+          "In the Torah",
+          "It is not an Islamic name"
         ],
         "answer": 1
       },
       {
-        "question": "Where does Allah's guidance lead?",
+        "question": "What will Allah do on the Day of Judgement as Ad-Dayyan?",
         "options": [
-          "To confusion",
-          "To darkness",
-          "To success in this world and the next",
-          "Nowhere"
+          "Forgive everyone automatically",
+          "Ignore people's deeds",
+          "Perfectly recompense people for their deeds with justice",
+          "Punish everyone equally"
         ],
         "answer": 2
       },
       {
-        "question": "When should we ask Ar-Rasheed for wisdom?",
+        "question": "What does the name Ad-Dayyan embody?",
         "options": [
-          "Never",
-          "Only on Fridays",
-          "Before making decisions",
-          "Only when lost"
+          "Chaos and confusion",
+          "Perfect justice and fairness",
+          "Only mercy without justice",
+          "Random judgment"
         ],
-        "answer": 2
+        "answer": 1
       }
     ]
   },
