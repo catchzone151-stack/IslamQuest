@@ -7,13 +7,27 @@ import MainMascot from "../assets/mascots/mascot_sitting.webp";
 
 const Premium = () => {
   const navigate = useNavigate();
-  const { premium, premiumType, purchaseIndividual } = useProgressStore();
+  const { premium, premiumType, purchaseIndividual, purchaseFamily } = useProgressStore();
   const [loading, setLoading] = useState(false);
 
-  const handlePurchase = async () => {
+  const handleIndividualPurchase = async () => {
     setLoading(true);
     try {
       await purchaseIndividual();
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
+    } catch (error) {
+      console.error("Purchase failed:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleFamilyPurchase = async () => {
+    setLoading(true);
+    try {
+      await purchaseFamily();
       setTimeout(() => {
         navigate("/");
       }, 1000);
@@ -52,12 +66,12 @@ const Premium = () => {
           </h1>
           
           <p className="text-gray-300 mb-6 text-sm">
-            Plan: {premiumType === "family" ? "Family Plan (6 users)" : "Lifetime Access"}
+            Plan: {premiumType === "family" ? "Family Plan (6 users)" : "Individual Plan"}
           </p>
 
           <button
             onClick={() => navigate("/")}
-            className="iq-premium-btn"
+            className="premium-btn"
           >
             Back to Home
           </button>
@@ -76,109 +90,132 @@ const Premium = () => {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="w-full max-w-[520px] text-white"
       >
-        {/* Hero Section */}
-        <img
-          src={MainMascot}
-          alt="Mascot"
-          className="w-24 h-24 mx-auto mb-5"
-          style={{
-            filter: "drop-shadow(0 4px 8px rgba(255,215,0,0.2))"
-          }}
-        />
-        
-        <h1 
-          className="text-3xl font-bold mb-3 text-center"
-          style={{
-            background: "linear-gradient(135deg, #FFD700, #FFA500)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-          }}
-        >
-          Unlock IslamQuest
-        </h1>
-        
-        <p className="text-center text-sm text-gray-300 mb-1">
-          Lifetime access to all 14 learning paths.
-        </p>
-        <p className="text-center text-sm text-gray-300 mb-6">
-          No ads — All updates — Works across devices.
-        </p>
+        <div className="premium-container">
+          <img src={MainMascot} className="premium-mascot" alt="Mascot" />
 
-        {/* Main Premium Card */}
-        <div className="iq-premium-card">
-          <h2 
-            className="text-2xl font-bold text-center mb-1"
-            style={{ color: "#FFD700" }}
-          >
-            Lifetime Access
-          </h2>
-          
-          <div className="iq-premium-price">
-            £4.99 (one-time)
+          <h1 className="premium-title">Unlock Your Full Potential</h1>
+
+          <p className="premium-subtitle">
+            Lifetime access • No ads • All learning paths • Works across devices
+          </p>
+
+          {/* INDIVIDUAL PLAN */}
+          <div className="premium-card">
+            <h2 className="premium-plan-title">Individual</h2>
+            <div className="premium-price">£4.99 — One-time</div>
+
+            <ul className="premium-list">
+              <li>✔ All 14 Learning Paths</li>
+              <li>✔ Unlimited Lessons</li>
+              <li>✔ Global Events Access</li>
+              <li>✔ No Ads Ever</li>
+              <li>✔ Works Across Devices</li>
+            </ul>
+
+            <button 
+              className="premium-btn"
+              onClick={handleIndividualPurchase}
+              disabled={loading}
+            >
+              {loading ? "Processing..." : "Unlock Individual — £4.99"}
+            </button>
           </div>
 
-          <ul className="iq-premium-list">
-            <li>✔ All 14 Learning Paths</li>
-            <li>✔ Unlimited Lessons</li>
-            <li>✔ Global Events Access</li>
-            <li>✔ No Ads Ever</li>
-            <li>✔ Works Across Devices</li>
-          </ul>
+          {/* FAMILY PLAN */}
+          <div className="premium-card">
+            <h2 className="premium-plan-title">Family (Up to 6 Users)</h2>
+            <div className="premium-price">£18 — One-time</div>
 
-          <button 
-            className="iq-premium-btn"
-            onClick={handlePurchase}
-            disabled={loading}
-          >
-            {loading ? "Processing..." : "Unlock Forever — £4.99"}
-          </button>
+            <ul className="premium-list">
+              <li>✔ All Individual Benefits</li>
+              <li>✔ 6 Linked Accounts</li>
+              <li>✔ Perfect for parents & children</li>
+            </ul>
 
-          <div className="iq-premium-soon">
-            Family plan coming soon
+            <button 
+              className="premium-btn"
+              onClick={handleFamilyPurchase}
+              disabled={loading}
+            >
+              {loading ? "Processing..." : "Unlock Family — £18"}
+            </button>
+
+            <div className="premium-coming-soon">* More family features coming soon *</div>
           </div>
+
+          <p className="premium-footer">
+            Secure payment • Instant access • Lifetime unlock
+          </p>
         </div>
-
-        {/* Footer */}
-        <p className="iq-premium-footer">
-          Secure purchase • Instant access • Lifetime unlock
-        </p>
       </motion.div>
 
       <style>{`
-        .iq-premium-card {
+        .premium-container {
+          text-align: center;
+          padding: 20px;
+          max-width: 480px;
+          margin: 0 auto;
+        }
+
+        .premium-mascot {
+          width: 120px;
+          margin: 0 auto 10px;
+          display: block;
+        }
+
+        .premium-title {
+          color: #FFD700;
+          font-size: 1.9rem;
+          margin-bottom: 6px;
+        }
+
+        .premium-subtitle {
+          color: #cfd6e1;
+          font-size: 0.9rem;
+          margin-bottom: 20px;
+          line-height: 1.4rem;
+        }
+
+        .premium-card {
           background: #0b1e36;
           border: 3px solid #FFD700;
           border-radius: 24px;
-          padding: 22px;
+          padding: 20px;
+          margin: 14px auto;
           box-shadow: 0 0 18px rgba(255,215,0,0.28);
-          margin-top: 18px;
+          width: 100%;
+          max-width: 360px;
         }
 
-        .iq-premium-price {
-          margin-top: 6px;
-          text-align: center;
-          font-size: 1rem;
+        .premium-plan-title {
           color: #FFD700;
-          font-weight: 600;
+          font-size: 1.3rem;
+          margin-bottom: 4px;
         }
 
-        .iq-premium-list {
+        .premium-price {
+          color: #FFD700;
+          font-size: 1rem;
+          font-weight: 600;
+          margin-bottom: 12px;
+        }
+
+        .premium-list {
           list-style: none;
           padding: 0;
-          margin: 14px 0;
-          color: #fff;
+          margin-bottom: 16px;
           font-size: 0.9rem;
-          line-height: 1.8rem;
+          line-height: 1.6rem;
+          color: #fff;
+          text-align: left;
         }
 
-        .iq-premium-list li {
+        .premium-list li {
           padding-left: 4px;
         }
 
-        .iq-premium-btn {
+        .premium-btn {
           width: 100%;
           padding: 14px;
           background: linear-gradient(90deg, #FFD700, #FFB700);
@@ -188,33 +225,30 @@ const Premium = () => {
           font-weight: 700;
           font-size: 1rem;
           box-shadow: 0 0 12px rgba(255,215,0,0.4);
-          margin-top: 8px;
           cursor: pointer;
           transition: all 0.2s ease;
         }
 
-        .iq-premium-btn:hover {
+        .premium-btn:hover {
           transform: scale(1.02);
           box-shadow: 0 0 16px rgba(255,215,0,0.5);
         }
 
-        .iq-premium-btn:disabled {
+        .premium-btn:disabled {
           opacity: 0.7;
           cursor: not-allowed;
         }
 
-        .iq-premium-soon {
+        .premium-coming-soon {
           margin-top: 10px;
-          text-align: center;
           font-size: 0.8rem;
           color: #d0d0d0;
         }
 
-        .iq-premium-footer {
-          margin-top: 30px;
-          text-align: center;
+        .premium-footer {
+          margin-top: 24px;
           font-size: 0.75rem;
-          color: #aeaeae;
+          color: #9ea5b0;
         }
       `}</style>
     </div>
