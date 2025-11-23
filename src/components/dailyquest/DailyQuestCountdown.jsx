@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import mascotCountdown from "../../assets/mascots/mascot_countdown.webp";
 import "../challenges/ChallengeModals.css";
 
 export default function DailyQuestCountdown({ onComplete }) {
@@ -17,11 +18,16 @@ export default function DailyQuestCountdown({ onComplete }) {
   return (
     <div className="challenge-modal-overlay">
       <div className="challenge-countdown-modal">
-        {count > 0 ? (
-          <div className="countdown-number">{count}</div>
-        ) : (
-          <div className="countdown-go">GO! 🚀</div>
-        )}
+        <div className="countdown-mascot">
+          <img 
+            src={mascotCountdown}
+            alt="Countdown Rocket" 
+            className="countdown-rocket"
+          />
+        </div>
+        <div className="countdown-number">
+          {count > 0 ? count : "GO!"}
+        </div>
       </div>
     </div>
   );
