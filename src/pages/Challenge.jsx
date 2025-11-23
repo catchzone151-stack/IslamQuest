@@ -6,6 +6,7 @@ import { useChallengeStore, CHALLENGE_MODES, BOSS_LEVEL } from "../store/challen
 import { useProgressStore } from "../store/progressStore";
 import { useFriendsStore } from "../store/friendsStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
+import { useVibration } from "../hooks/useVibration";
 import { getCurrentLevel } from "../utils/diamondLevels";
 import BossLevelMascot from "../assets/mascots/mascot_boss.webp";
 import mascot_running from "../assets/mascots/mascot_running.webp";
@@ -16,6 +17,7 @@ import mascot_locked from "../assets/mascots/mascot_locked.webp";
 export default function Challenge() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { vibrate } = useVibration();
   
   const { xp, premium, premiumStatus } = useProgressStore();
   const isUserPremium = premium || premiumStatus !== "free";
@@ -49,6 +51,7 @@ export default function Challenge() {
   }, [location.state, getAllFriends]);
 
   const handleModeClick = (modeKey) => {
+    vibrate(50); // Haptic feedback on mode selection
     const mode = CHALLENGE_MODES[modeKey];
     setSelectedMode(mode);
     
@@ -80,6 +83,7 @@ export default function Challenge() {
   };
 
   const handleFriendSelect = (friend) => {
+    vibrate(50); // Haptic feedback on friend selection
     setSelectedFriend(friend);
     friendRef.current = friend;
     setShowFriendSelector(false);
@@ -101,6 +105,7 @@ export default function Challenge() {
   };
 
   const handleBossClick = () => {
+    vibrate(50); // Haptic feedback on boss click
     // Check level requirement
     if (level < BOSS_LEVEL.minLevel) {
       showModal(MODAL_TYPES.BOSS_LOCKED, {
