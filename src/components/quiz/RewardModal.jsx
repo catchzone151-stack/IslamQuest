@@ -142,7 +142,7 @@ function RewardModalContent({ score, totalQ, xp, coins, mascotImg, onContinue, o
             </div>
           )}
 
-          <div style={{ display: "flex", gap: "10px", marginTop: "8px" }}>
+          <div style={{ display: "flex", gap: "10px", marginTop: "8px", justifyContent: "center" }}>
             {!passed && onRetry && (
               <button
                 style={{
