@@ -6,16 +6,24 @@ export function useVibration() {
   const vibrate = (pattern) => {
     if (!vibrationEnabled) return;
     
-    // Desktop fallback for testing
-    if (navigator.vibrate) {
-      try {
-        navigator.vibrate(pattern);
-      } catch (e) {
-        console.warn("Vibration API not available:", e);
+    try {
+      // Check for vibration API (standard and webkit prefixed)
+      const vibrationAPI = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+      
+      if (vibrationAPI) {
+        // Call on navigator object to maintain context
+        if (navigator.vibrate) {
+          navigator.vibrate(pattern);
+        } else if (navigator.webkitVibrate) {
+          navigator.webkitVibrate(pattern);
+        } else if (navigator.mozVibrate) {
+          navigator.mozVibrate(pattern);
+        } else if (navigator.msVibrate) {
+          navigator.msVibrate(pattern);
+        }
       }
-    } else {
-      // Desktop fallback: log to console
-      console.log("HAPTIC (desktop fallback): vibrate", pattern);
+    } catch (e) {
+      // Silently fail - vibration API may not be available on all devices
     }
   };
 
