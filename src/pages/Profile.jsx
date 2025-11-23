@@ -174,7 +174,7 @@ export default function Profile() {
 
         {/* View All Levels Button */}
         <button
-          onClick={() => showModal(MODAL_TYPES.VIEW_ALL_LEVELS)}
+          onClick={() => showModal(MODAL_TYPES.VIEW_ALL_LEVELS, { currentXP: xp })}
           style={{
             background: "linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(244, 208, 63, 0.1) 100%)",
             border: "1px solid rgba(212, 175, 55, 0.4)",

@@ -133,7 +133,7 @@ export default function ModalController() {
       case MODAL_TYPES.VIEW_ALL_LEVELS:
         return (
           <ViewAllLevelsModal
-            isOpen={true}
+            currentXP={modalData?.currentXP ?? 0}
             onClose={hideModal}
           />
         );

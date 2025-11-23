@@ -8,6 +8,12 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Major Updates (November 23, 2025)
 
+### ✅ Diamond Level Modal Fix (Complete - November 23, 2025)
+- **ViewAllLevelsModal Glitch Fixed**: Resolved runtime crash when clicking "View All Levels" button
+- **Root Cause**: ViewAllLevelsModal requires `currentXP` prop but ModalController was passing `isOpen` instead, and Profile page wasn't passing XP data
+- **Solution**: Updated ModalController to use optional chaining `modalData?.currentXP ?? 0` and Profile page to pass `{ currentXP: xp }` when showing modal
+- **Impact**: Diamond levels modal now displays correctly with accurate XP progress and level information
+
 ### ✅ Premium UI/UX Polish (Complete - November 23, 2025)
 - **Lock Overlays**: Added visual grey overlays with Lock icons to premium-only paths (11-14) on Home carousel, indicating "Premium Only" status
 - **Global Events Locking**: Conditional grey overlay shows "Premium Only" for non-premium users; premium users see normal countdown; clicking triggers premium modal for free users
