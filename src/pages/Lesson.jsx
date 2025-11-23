@@ -3,12 +3,14 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "../hooks/useNavigate";
 import { getLessonsForPath } from "../data/lessonLoader";
 import { useProgressStore } from "../store/progressStore";
+import { useVibration } from "../hooks/useVibration";
 import zaydTeachingMascot from "../assets/mascots/mascot_sitting.webp";
 
 export default function Lesson() {
   const { pathId, lessonId } = useParams();
   const navigate = useNavigate();
   const { getLessonLockState } = useProgressStore();
+  const { vibrate } = useVibration();
 
   // Get lessons for the current path
   const pathLessons = getLessonsForPath(pathId);
@@ -276,7 +278,10 @@ export default function Lesson() {
         }}
       >
         <button
-          onClick={handleBack}
+          onClick={() => {
+            vibrate(50);
+            handleBack();
+          }}
           style={{
             flex: 1,
             background:
@@ -293,7 +298,10 @@ export default function Lesson() {
         </button>
 
         <button
-          onClick={() => navigate(`/path/${pathId}/quiz/${lessonId}`)}
+          onClick={() => {
+            vibrate(50);
+            navigate(`/path/${pathId}/quiz/${lessonId}`);
+          }}
           style={{
             flex: 1,
             backgroundColor: "#ffd88a",
