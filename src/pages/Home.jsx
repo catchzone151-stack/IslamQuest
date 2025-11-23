@@ -226,7 +226,7 @@ export default function Home() {
           display: "grid",
           gridTemplateColumns: "1fr auto 1fr",
           alignItems: "center",
-          marginBottom: 8,
+          marginBottom: 18,
           columnGap: 8,
           padding: "16px 16px 0 16px",
         }}
@@ -372,7 +372,7 @@ export default function Home() {
        * TITLE + SMALL GREETING
        * ===============================================================
        */}
-      <div style={{ textAlign: "center", marginBottom: 6, padding: "0 16px" }}>
+      <div style={{ textAlign: "center", marginBottom: 14, padding: "0 16px" }}>
         <h1
           className="title-shimmer"
           style={{
@@ -388,7 +388,7 @@ export default function Home() {
         style={{
           textAlign: "center",
           fontSize: "1.15rem",
-          margin: "6px 16px 14px 16px",
+          margin: "6px 16px 20px 16px",
           fontWeight: "800",
           color: "#FFD700",
           textShadow: "0 2px 8px rgba(212, 175, 55, 0.4)",
@@ -629,8 +629,8 @@ export default function Home() {
         }}
         style={{
           width: "100%",
-          marginTop: 20,
-          marginBottom: 30,
+          marginTop: 32,
+          marginBottom: 12,
           background: "#0a2a43",
           borderRadius: 22,
           padding: "14px 16px",
