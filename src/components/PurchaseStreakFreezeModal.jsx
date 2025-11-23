@@ -6,7 +6,7 @@ import "./PurchaseStreakFreezeModal.css";
 
 export default function PurchaseStreakFreezeModal({ onClose, onSuccess }) {
   const { coins, shieldCount, purchaseShield } = useProgressStore();
-  const SHIELD_COST = 100;
+  const SHIELD_COST = 250;
   const MAX_SHIELDS = 3;
 
   const handlePurchase = () => {
@@ -17,7 +17,7 @@ export default function PurchaseStreakFreezeModal({ onClose, onSuccess }) {
     } else if (result.reason === "max") {
       alert("You already have the maximum streak protection equipped.");
     } else if (result.reason === "insufficient_coins") {
-      alert("Not enough coins! You need 100 coins to buy a Streak Freeze.");
+      alert("Not enough coins! You need 250 coins to buy a Streak Freeze.");
     }
   };
 
@@ -51,7 +51,7 @@ export default function PurchaseStreakFreezeModal({ onClose, onSuccess }) {
         {/* Cost Display */}
         <div className="cost-display">
           <span>💰</span>
-          <span className="cost-amount">100 coins</span>
+          <span className="cost-amount">250 coins</span>
         </div>
 
         {/* Balance */}
