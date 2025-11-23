@@ -20,12 +20,13 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "../hooks/useNavigate";
-import { Footprints } from "lucide-react";
+import { Footprints, Lock } from "lucide-react";
 
-import { useProgressStore } from "../store/progressStore";
+import { useProgressStore, ensureLocksReady } from "../store/progressStore";
 import { useUserStore } from "../store/useUserStore";
 import { useDailyQuestStore } from "../store/dailyQuestStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
+import { isPremiumOnlyPath } from "../store/premiumConfig";
 
 // Components
 import DailyQuestCard from "../components/dailyquest/DailyQuestCard";
@@ -43,6 +44,8 @@ export default function Home() {
   // Navigation
   const navigate = useNavigate();
   const { name } = useUserStore();
+  const { premium, premiumStatus } = useProgressStore();
+  const isUserPremium = premium || premiumStatus !== "free";
 
   // Horizontal scroll ref for the learning path cards
   const carouselRef = useRef(null);
@@ -161,10 +164,23 @@ export default function Home() {
 
   /**
    * On click of a path card:
-   * - All paths are unlocked/available for launch
-   * - Navigate to /pathway/:id
+   * - Ensure locks are ready (prevent race conditions)
+   * - Check if path is premium-locked
+   * - If locked, show premium paywall modal
+   * - Otherwise navigate to /pathway/:id
    */
   const handlePathClick = (p) => {
+    // Ensure locks are initialized before checking
+    ensureLocksReady();
+    
+    // Check if path is premium-locked
+    const isPremiumPath = isPremiumOnlyPath(p.id);
+    if (isPremiumPath && !isUserPremium) {
+      // Show premium paywall modal instead of navigating
+      showModal(MODAL_TYPES.PURCHASE);
+      return;
+    }
+    
     navigate(`/path/${p.id}`);
   };
 
@@ -419,7 +435,10 @@ export default function Home() {
             const completed = p.completedLessons || 0;
             const total = p.totalLessons || 0;
             const isFull = total > 0 && completed >= total;
-
+            
+            // Check if path is premium-locked
+            const isPremiumPath = isPremiumOnlyPath(p.id);
+            const isLocked = isPremiumPath && !isUserPremium;
 
             return (
               <div
@@ -447,6 +466,43 @@ export default function Home() {
                   e.currentTarget.style.transform = "scale(1)";
                 }}
               >
+                {/* Grey lock overlay for premium-only paths */}
+                {isLocked && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      background: "rgba(30, 30, 30, 0.85)",
+                      borderRadius: 18,
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      zIndex: 10,
+                      gap: 8,
+                    }}
+                  >
+                    <Lock 
+                      size={32} 
+                      color="#D4AF37" 
+                      strokeWidth={2.5}
+                      style={{ filter: "drop-shadow(0 0 4px rgba(212,175,55,0.5))" }}
+                    />
+                    <span
+                      style={{
+                        fontSize: "0.75rem",
+                        color: "#D4AF37",
+                        fontWeight: 700,
+                        textShadow: "0 2px 4px rgba(0,0,0,0.5)",
+                      }}
+                    >
+                      Premium Only
+                    </span>
+                  </div>
+                )}
                 {/* Title of the path */}
                 <h3
                   style={{
@@ -558,7 +614,7 @@ export default function Home() {
 
       {/*
        * ===============================================================
-       * RAMADAN COUNTDOWN WIDGET (3-Segment Pill)
+       * RAMADAN COUNTDOWN WIDGET (3-Segment Pill) / GLOBAL EVENTS
        * ===============================================================
        */}
       <div
@@ -574,8 +630,43 @@ export default function Home() {
           boxShadow: "0 0 12px rgba(255,215,0,0.18)",
           cursor: "pointer",
           animation: "floatY 3.5s ease-in-out infinite",
+          position: "relative",
         }}
       >
+        {/* Grey lock overlay for Global Events (Coming Soon / Premium) */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: "rgba(30, 30, 30, 0.75)",
+            borderRadius: 22,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 10,
+            gap: 8,
+          }}
+        >
+          <Lock 
+            size={28} 
+            color="#D4AF37" 
+            strokeWidth={2.5}
+            style={{ filter: "drop-shadow(0 0 4px rgba(212,175,55,0.5))" }}
+          />
+          <span
+            style={{
+              fontSize: "0.9rem",
+              color: "#D4AF37",
+              fontWeight: 700,
+              textShadow: "0 2px 4px rgba(0,0,0,0.5)",
+            }}
+          >
+            Coming Soon Ramadan 2025
+          </span>
+        </div>
         {/* Title */}
         <div
           style={{
