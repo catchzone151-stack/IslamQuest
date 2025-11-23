@@ -22,7 +22,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "../hooks/useNavigate";
 import { Footprints, Lock } from "lucide-react";
 
-import { useProgressStore, ensureLocksReady } from "../store/progressStore";
+import { useProgressStore } from "../store/progressStore";
 import { useUserStore } from "../store/useUserStore";
 import { useDailyQuestStore } from "../store/dailyQuestStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
@@ -73,6 +73,7 @@ export default function Home() {
     paths,
     triggerDailyStudy,
     checkStreakOnAppOpen,
+    ensureLocksReady,
   } = useProgressStore();
 
   // Load Daily Quest state from localStorage on mount
