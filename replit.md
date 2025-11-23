@@ -10,10 +10,11 @@ Preferred communication style: Simple, everyday language.
 
 ### ✅ Premium UI/UX Polish (Complete - November 23, 2025)
 - **Lock Overlays**: Added visual grey overlays with Lock icons to premium-only paths (11-14) on Home carousel, indicating "Premium Only" status
-- **Global Events Overlay**: Added "Coming Soon Ramadan 2025" overlay to Global Events widget, consistent with temporary disable status
+- **Global Events Locking**: Conditional grey overlay shows "Premium Only" for non-premium users; premium users see normal countdown; clicking triggers premium modal for free users
+- **Ramadan Countdown**: Fully visible for all users (no lock overlay); shows accurate countdown to Ramadan 2026
 - **Premium Page Redesign**: Complete redesign from full-screen to compact modal-style (~520px centered), featuring sitting mascot, glassmorphism, stacked pricing cards, and gold gradient buttons matching modal theme
-- **Navigation Blocking**: Implemented proper premium gating with `ensureLocksReady()` check - clicking locked paths now shows premium paywall modal (MODAL_TYPES.PURCHASE) instead of allowing navigation
-- **Production Guards**: Premium paths properly gated with modal system, no bypass routes
+- **Navigation Blocking**: Implemented proper premium gating with `ensureLocksReady()` check - clicking locked paths/events shows premium paywall modal (MODAL_TYPES.PURCHASE) instead of allowing navigation
+- **Multi-Layer Protection**: Premium paths (11-14) blocked at Home click handler AND Pathway page with full-screen premium overlay; GlobalEvents page has premium overlay; no bypass routes
 
 ### ✅ Production Launch Cleanup (Complete - November 22, 2025)
 - **All Dev/Beta Infrastructure Removed**: Deleted developerStore.js, DeveloperModal, debug routes, betaMode checks, test bypasses, and developer menu triggers
