@@ -214,9 +214,9 @@ export default function ChallengeGame() {
     
     // Haptic feedback for matching
     if (isCorrect) {
-      vibrate([50, 30, 50]); // Success pattern
+      vibrate([100, 50, 100, 50, 100]); // Success pattern
     } else {
-      vibrate(200); // Error buzz
+      vibrate([200, 100, 200]); // Failure pattern
     }
     
     setMatches([...matches, { left: leftIdx, right: rightIdx, correct: isCorrect }]);

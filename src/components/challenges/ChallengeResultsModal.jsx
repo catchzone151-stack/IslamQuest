@@ -35,7 +35,8 @@ export default function ChallengeResultsModal({
     } else if (result === "lose") {
       vibrate([200, 100, 200]); // Failure pattern
     } else {
-      vibrate([100, 50, 100]); // Draw pattern
+      // Draw - use selection pattern (neutral outcome)
+      vibrate(50);
     }
   }, [result, vibrate]);
   

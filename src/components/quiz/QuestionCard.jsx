@@ -1,5 +1,5 @@
 import React from "react";
-import { useVibration } from "../hooks/useVibration";
+import { useVibration } from "../../hooks/useVibration";
 
 const QuestionCard = React.memo(({
   question,

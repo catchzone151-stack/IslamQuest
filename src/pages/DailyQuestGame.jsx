@@ -46,9 +46,9 @@ export default function DailyQuestGame() {
 
     // Haptic feedback based on answer correctness
     if (isCorrect) {
-      vibrate([50, 30, 50]); // Success pattern
+      vibrate([100, 50, 100, 50, 100]); // Success pattern
     } else {
-      vibrate(200); // Error buzz
+      vibrate([200, 100, 200]); // Failure pattern
     }
 
     if (currentIndex < totalQuestions - 1) {
