@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Crown, Check } from "lucide-react";
+import { Crown } from "lucide-react";
 import { useProgressStore } from "../store/progressStore";
 import MainMascot from "../assets/mascots/mascot_sitting.webp";
 
@@ -35,13 +35,7 @@ const Premium = () => {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="w-full max-w-[480px] rounded-3xl p-6 text-center"
-          style={{
-            background: "rgba(15, 25, 45, 0.95)",
-            border: "2px solid rgba(212, 175, 55, 0.3)",
-            boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
-            backdropFilter: "blur(10px)",
-          }}
+          className="w-full max-w-[480px] text-center"
         >
           <img
             src={MainMascot}
@@ -60,36 +54,10 @@ const Premium = () => {
           <p className="text-gray-300 mb-6 text-sm">
             Plan: {premiumType === "family" ? "Family Plan (6 users)" : "Lifetime Access"}
           </p>
-          
-          <div className="space-y-2 mb-6">
-            {[
-              "All 14 learning paths unlocked",
-              "Unlimited lessons",
-              "Global Events access",
-              "No ads ever"
-            ].map((text, idx) => (
-              <div 
-                key={idx} 
-                className="flex items-center gap-2 text-left bg-white/5 rounded-xl p-3"
-              >
-                <div className="w-8 h-8 rounded-lg bg-[var(--gold)]/20 flex items-center justify-center flex-shrink-0">
-                  <Check size={16} className="text-[var(--gold)]" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-white text-sm">{text}</p>
-                </div>
-              </div>
-            ))}
-          </div>
 
           <button
             onClick={() => navigate("/")}
-            className="w-full py-3 rounded-xl font-semibold transition-all"
-            style={{
-              background: "linear-gradient(135deg, #D4AF37, #FFD700)",
-              color: "#0a0f1e",
-              boxShadow: "0 4px 12px rgba(212, 175, 55, 0.3)",
-            }}
+            className="iq-premium-btn"
           >
             Back to Home
           </button>
@@ -108,90 +76,147 @@ const Premium = () => {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="w-full max-w-[520px] rounded-3xl p-6 text-white"
-        style={{
-          background: "rgba(15, 25, 45, 0.95)",
-          border: "2px solid rgba(212, 175, 55, 0.3)",
-          boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
-          backdropFilter: "blur(10px)",
-        }}
+        className="w-full max-w-[520px] text-white"
       >
         {/* Hero Section */}
         <img
           src={MainMascot}
           alt="Mascot"
           className="w-24 h-24 mx-auto mb-5"
+          style={{
+            filter: "drop-shadow(0 4px 8px rgba(255,215,0,0.2))"
+          }}
         />
         
-        <h1 className="text-2xl font-bold mb-2 text-center text-[var(--gold)]">
-          Unlock Your Full Potential
+        <h1 
+          className="text-3xl font-bold mb-3 text-center"
+          style={{
+            background: "linear-gradient(135deg, #FFD700, #FFA500)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}
+        >
+          Unlock IslamQuest
         </h1>
         
+        <p className="text-center text-sm text-gray-300 mb-1">
+          Lifetime access to all 14 learning paths.
+        </p>
         <p className="text-center text-sm text-gray-300 mb-6">
-          Lifetime access. No ads. All learning paths.
+          No ads — All updates — Works across devices.
         </p>
 
         {/* Main Premium Card */}
-        <div
-          className="rounded-3xl p-5 mb-5"
-          style={{
-            background: "rgba(10, 15, 30, 0.8)",
-            border: "2px solid rgba(212, 175, 55, 0.4)",
-            boxShadow: "0 0 18px rgba(255, 215, 0, 0.2)",
-          }}
-        >
-          <h2 className="text-xl font-bold text-[var(--gold)] mb-1 text-center">
+        <div className="iq-premium-card">
+          <h2 
+            className="text-2xl font-bold text-center mb-1"
+            style={{ color: "#FFD700" }}
+          >
             Lifetime Access
           </h2>
           
-          <p className="text-center text-gray-300 text-sm mb-4">
-            £4.99 — One-time
-          </p>
-
-          <div className="space-y-2 mb-4">
-            {[
-              "All 14 learning paths unlocked",
-              "Unlimited lessons",
-              "Global Events access",
-              "No ads ever",
-              "Works across devices"
-            ].map((text, idx) => (
-              <div key={idx} className="flex items-start gap-2">
-                <Check size={16} className="text-[var(--gold)] mt-0.5 flex-shrink-0" />
-                <p className="text-sm text-gray-200">{text}</p>
-              </div>
-            ))}
+          <div className="iq-premium-price">
+            £4.99 (one-time)
           </div>
 
-          <p className="text-xs text-center text-gray-400 italic mt-4">
-            Knowledge is light. May Allah make it easy for you.
-          </p>
+          <ul className="iq-premium-list">
+            <li>✔ All 14 Learning Paths</li>
+            <li>✔ Unlimited Lessons</li>
+            <li>✔ Global Events Access</li>
+            <li>✔ No Ads Ever</li>
+            <li>✔ Works Across Devices</li>
+          </ul>
+
+          <button 
+            className="iq-premium-btn"
+            onClick={handlePurchase}
+            disabled={loading}
+          >
+            {loading ? "Processing..." : "Unlock Forever — £4.99"}
+          </button>
+
+          <div className="iq-premium-soon">
+            Family plan coming soon
+          </div>
         </div>
 
-        {/* Main Button */}
-        <button
-          onClick={handlePurchase}
-          disabled={loading}
-          className="w-full py-3.5 rounded-2xl font-bold text-base transition-all mb-3"
-          style={{
-            background: "#FFD700",
-            color: "#0a0f1e",
-            boxShadow: "0 0 12px rgba(255, 215, 0, 0.4)",
-          }}
-        >
-          {loading ? "Processing..." : "Unlock Forever — £4.99"}
-        </button>
-
-        {/* Secondary Link */}
-        <p className="text-center text-gray-400 text-xs mb-4">
-          Family plan coming soon
-        </p>
-
         {/* Footer */}
-        <p className="text-center text-xs text-gray-500">
+        <p className="iq-premium-footer">
           Secure purchase • Instant access • Lifetime unlock
         </p>
       </motion.div>
+
+      <style>{`
+        .iq-premium-card {
+          background: #0b1e36;
+          border: 3px solid #FFD700;
+          border-radius: 24px;
+          padding: 22px;
+          box-shadow: 0 0 18px rgba(255,215,0,0.28);
+          margin-top: 18px;
+        }
+
+        .iq-premium-price {
+          margin-top: 6px;
+          text-align: center;
+          font-size: 1rem;
+          color: #FFD700;
+          font-weight: 600;
+        }
+
+        .iq-premium-list {
+          list-style: none;
+          padding: 0;
+          margin: 14px 0;
+          color: #fff;
+          font-size: 0.9rem;
+          line-height: 1.8rem;
+        }
+
+        .iq-premium-list li {
+          padding-left: 4px;
+        }
+
+        .iq-premium-btn {
+          width: 100%;
+          padding: 14px;
+          background: linear-gradient(90deg, #FFD700, #FFB700);
+          border: none;
+          border-radius: 14px;
+          color: #0a1a2f;
+          font-weight: 700;
+          font-size: 1rem;
+          box-shadow: 0 0 12px rgba(255,215,0,0.4);
+          margin-top: 8px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .iq-premium-btn:hover {
+          transform: scale(1.02);
+          box-shadow: 0 0 16px rgba(255,215,0,0.5);
+        }
+
+        .iq-premium-btn:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+        }
+
+        .iq-premium-soon {
+          margin-top: 10px;
+          text-align: center;
+          font-size: 0.8rem;
+          color: #d0d0d0;
+        }
+
+        .iq-premium-footer {
+          margin-top: 30px;
+          text-align: center;
+          font-size: 0.75rem;
+          color: #aeaeae;
+        }
+      `}</style>
     </div>
   );
 };
