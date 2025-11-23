@@ -12,6 +12,7 @@ export default function DailyQuestExplainerModal({ onStart, onCancel }) {
         justifyContent: "center",
         zIndex: 9999,
         padding: "20px",
+        paddingTop: "15vh",
       }}
       onClick={onCancel}
     >
