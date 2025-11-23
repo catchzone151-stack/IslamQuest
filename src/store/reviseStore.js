@@ -168,17 +168,19 @@ export const useReviseStore = create((set, get) => ({
       return null;
     }
 
-    // Filter to only paths with mistakes (unless all paths are perfect)
+    // 🎯 NEW: Prioritize paths with mistakes, but if none exist, return any active path
     const pathsWithMistakes = activePaths.filter((p) => p.wrongQuestions > 0);
 
-    // If all paths are perfect, return null (no weak path)
-    if (pathsWithMistakes.length === 0) {
-      return null;
+    // If there are paths with mistakes, return the weakest one
+    if (pathsWithMistakes.length > 0) {
+      return pathsWithMistakes.reduce((weakest, current) =>
+        current.mistakeDensity > weakest.mistakeDensity ? current : weakest
+      );
     }
 
-    // Return path with highest mistake density
-    return pathsWithMistakes.reduce((weakest, current) =>
-      current.mistakeDensity > weakest.mistakeDensity ? current : weakest
+    // If all paths are perfect (no mistakes), return the path with most completed lessons
+    return activePaths.reduce((best, current) =>
+      current.completedLessons > best.completedLessons ? current : best
     );
   },
 
