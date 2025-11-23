@@ -75,6 +75,7 @@ const assets = {
     mascot_locked,
     mascot_power,
     mascot_countdown,
+    mascot_streak_freeze,
   },
   avatars: {
     avatar_man_lantern,

@@ -25,7 +25,7 @@ export default function PurchaseStreakFreezeModal({ onClose, onSuccess }) {
     <ModalBase 
       title="Buy Streak Freeze" 
       onClose={onClose}
-      showMascot={assets.mascots.mascot_waving}
+      showMascot={assets.mascots.mascot_streak_freeze}
       mascotAnimation="float"
     >
       <div className="streak-freeze-content">
