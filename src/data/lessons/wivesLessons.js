@@ -57,8 +57,7 @@ const wivesLessons = [
 
   {
     id: 4,
-    title: "Aishah bint Abu Bakr",
-    part: "Part 1",
+    title: "Aishah bint Abu Bakr - Part 1",
     description: [
       "Aishah was Abu Bakr's daughter and became the Prophet's ﷺ ﷺ most beloved wife. The Prophet ﷺ received more revelation in her company than with any other wife.",
       "She was extremely intelligent with remarkable memory. Aishah memorized the Quran and understood it deeply. Senior companions came to her to learn Islamic rulings and hadith.",
@@ -75,8 +74,7 @@ const wivesLessons = [
 
   {
     id: 5,
-    title: "Aishah bint Abu Bakr",
-    part: "Part 2",
+    title: "Aishah bint Abu Bakr - Part 2",
     description: [
       "Aishah narrated over two thousand hadiths, teaching companions and the next generation. Her house became a center of learning where students studied Islam from her.",
       "False accusations were spread against Aishah during the incident of Ifk. Allah revealed Quranic verses declaring her innocence, establishing her purity and warning against slander forever.",
