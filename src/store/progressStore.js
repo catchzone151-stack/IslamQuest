@@ -543,7 +543,7 @@ export const useProgressStore = create((set, get) => ({
   // 🔒 NEW UNIFIED LOCKING SYSTEM (Spec-compliant)
   // Returns the lock state of a lesson: "unlocked" | "progressLocked" | "premiumLocked"
   getLessonLockState: (pathId, lessonId) => {
-    const { lockedLessons, premium, premiumStatus, locksReady } = get();
+    const { lockedLessons, premium, premiumStatus, locksReady, lessonStates } = get();
     
     // CRITICAL: During initialization, assume all lessons are locked until locks are computed
     if (!locksReady) {
@@ -557,6 +557,31 @@ export const useProgressStore = create((set, get) => ({
       // Check if path itself is premium-only
       if (isPremiumOnlyPath(pathId) && !isUserPremium) {
         return "premiumLocked";
+      }
+      return "unlocked";
+    }
+    
+    // 🎯 NEW: Check if path is fully completed - if so, unlock all lessons for replay
+    const pathLessonCounts = {
+      1: 104, 2: 17, 3: 22, 4: 17, 5: 13, 6: 10, 7: 4, 8: 10,
+      9: 10, 10: 17, 11: 6, 12: 7, 13: 6, 14: 6
+    };
+    const totalLessons = pathLessonCounts[pathId] || 0;
+    const pathState = lessonStates[pathId] || {};
+    const completedCount = Object.keys(pathState)
+      .filter(id => pathState[id]?.passed)
+      .length;
+    
+    const isPathCompleted = completedCount === totalLessons && totalLessons > 0;
+    
+    // If path is completed, all lessons are unlocked (premium check still applies)
+    if (isPathCompleted) {
+      // Still check premium paywall for completed paths
+      if (!isUserPremium) {
+        const freeLimit = FREE_LESSON_LIMITS[pathId] || 0;
+        if (lessonId > freeLimit) {
+          return "premiumLocked";
+        }
       }
       return "unlocked";
     }
@@ -606,6 +631,24 @@ export const useProgressStore = create((set, get) => ({
     const { lessonStates } = get();
     const locks = {};
     
+    // Helper: Get total lessons for each path
+    const pathLessonCounts = {
+      1: 104, // Names of Allah
+      2: 17,  // Foundations
+      3: 22,  // Prophets
+      4: 17,  // Prophet's Life
+      5: 13,  // Wives
+      6: 10,  // Ten Promised
+      7: 4,   // Four Women
+      8: 10,  // Companions
+      9: 10,  // Angels
+      10: 17, // End Times
+      11: 6,  // The Grave
+      12: 7,  // Judgement
+      13: 6,  // Hellfire
+      14: 6,  // Paradise
+    };
+    
     // For each path, unlock lessons based on completion
     for (let pathId = 1; pathId <= 14; pathId++) {
       locks[pathId] = {};
@@ -615,12 +658,20 @@ export const useProgressStore = create((set, get) => ({
         .map(Number)
         .sort((a, b) => a - b);
       
-      // Find the highest completed lesson
-      const maxCompleted = passedLessons.length > 0 ? Math.max(...passedLessons) : 0;
+      const totalLessons = pathLessonCounts[pathId] || 0;
+      const completedCount = passedLessons.length;
       
-      // Unlock all lessons up to and including the next lesson after max completed
-      for (let lessonId = 1; lessonId <= maxCompleted + 1; lessonId++) {
-        locks[pathId][lessonId] = { unlocked: true };
+      // 🎯 NEW: If path is fully completed, unlock ALL lessons for replay
+      if (completedCount === totalLessons && totalLessons > 0) {
+        for (let lessonId = 1; lessonId <= totalLessons; lessonId++) {
+          locks[pathId][lessonId] = { unlocked: true };
+        }
+      } else {
+        // Standard sequential unlocking: unlock up to next lesson
+        const maxCompleted = passedLessons.length > 0 ? Math.max(...passedLessons) : 0;
+        for (let lessonId = 1; lessonId <= maxCompleted + 1; lessonId++) {
+          locks[pathId][lessonId] = { unlocked: true };
+        }
       }
     }
     
