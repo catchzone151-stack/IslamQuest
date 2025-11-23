@@ -75,34 +75,26 @@ export default function PathPage() {
   })();
 
   const handleLessonClick = (lesson) => {
-    const unlocked = canAccessLesson(pathId, lesson.id);
     const freeLimit = FREE_LESSON_LIMITS[pathId] || 0;
     
-    console.log('🔍 Lesson Click Debug:', {
-      pathId,
-      lessonId: lesson.id,
-      unlocked,
-      premiumStatus,
-      freeLimit,
-      isPremiumLocked: premiumStatus === "free" && lesson.id > freeLimit
-    });
-    
-    if (!unlocked) {
-      const isPremiumLocked = premiumStatus === "free" && lesson.id > freeLimit;
-      
-      if (isPremiumLocked) {
-        console.log('🔒 Showing premium modal for lesson', lesson.id);
-        setShowModal(true);
-        return;
-      } else {
-        console.log('⏳ Showing progress lock popup for lesson', lesson.id);
-        setPopupMsg("Complete the previous lesson to unlock this one!");
-        setShowPopup(true);
-        setTimeout(() => setShowPopup(false), 2500);
-        return;
-      }
+    // FIRST: Check premium paywall (even for sequentially unlocked lessons)
+    if (premiumStatus === "free" && lesson.id > freeLimit) {
+      console.log('🔒 Premium paywall triggered for lesson', lesson.id);
+      setShowModal(true);
+      return;
     }
     
+    // SECOND: Check sequential progression lock
+    const unlocked = canAccessLesson(pathId, lesson.id);
+    if (!unlocked) {
+      console.log('⏳ Progress lock: must complete previous lesson first');
+      setPopupMsg("Complete the previous lesson to unlock this one!");
+      setShowPopup(true);
+      setTimeout(() => setShowPopup(false), 2500);
+      return;
+    }
+    
+    // All checks passed - navigate to lesson
     console.log('✅ Navigating to lesson', lesson.id);
     navigate(`/lesson/${pathId}/${lesson.id}`);
   };
