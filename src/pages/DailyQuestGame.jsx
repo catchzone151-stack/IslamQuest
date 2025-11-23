@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "../hooks/useNavigate";
 import { useDailyQuestStore } from "../store/dailyQuestStore";
 import { useAnalytics } from "../hooks/useAnalytics";
+import { useVibration } from "../hooks/useVibration";
 import QuestionCard from "../components/quiz/QuestionCard";
 import PointingMascot from "../assets/mascots/mascot_pointing_v2.webp";
 import SittingMascot from "../assets/mascots/mascot_sitting_v2.webp";
@@ -11,6 +12,7 @@ export default function DailyQuestGame() {
   const navigate = useNavigate();
   const { questions, completeDailyQuest, getQuestStatus } = useDailyQuestStore();
   const analytics = useAnalytics();
+  const { vibrate } = useVibration();
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selected, setSelected] = useState(null);
@@ -41,6 +43,13 @@ export default function DailyQuestGame() {
     const isCorrect = selected === currentQuestion.correctIndex;
     const newAnswers = [...answers, { questionIndex: currentIndex, correct: isCorrect }];
     setAnswers(newAnswers);
+
+    // Haptic feedback based on answer correctness
+    if (isCorrect) {
+      vibrate([50, 30, 50]); // Success pattern
+    } else {
+      vibrate(200); // Error buzz
+    }
 
     if (currentIndex < totalQuestions - 1) {
       setCurrentIndex(currentIndex + 1);

@@ -5,6 +5,7 @@ import { useChallengeStore, CHALLENGE_MODES, BOSS_LEVEL, calculateLongestChain }
 import { useModalStore, MODAL_TYPES } from "../../store/modalStore";
 import { useRewards } from "../../hooks/useRewards";
 import { useAnalytics } from "../../hooks/useAnalytics";
+import { useVibration } from "../../hooks/useVibration";
 import assets from "../../assets/assets";
 import mascot_running from "../../assets/mascots/mascot_running.webp";
 import "./ChallengeGame.css";
@@ -46,6 +47,7 @@ export default function ChallengeGame() {
   const { showModal } = useModalStore();
   const { addRewards } = useRewards();
   const analytics = useAnalytics();
+  const { vibrate } = useVibration();
   
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -210,6 +212,13 @@ export default function ChallengeGame() {
     const currentQ = questions[currentIndex];
     const isCorrect = rightIdx === currentQ.answer;
     
+    // Haptic feedback for matching
+    if (isCorrect) {
+      vibrate([50, 30, 50]); // Success pattern
+    } else {
+      vibrate(200); // Error buzz
+    }
+    
     setMatches([...matches, { left: leftIdx, right: rightIdx, correct: isCorrect }]);
     setSelectedAnswer(isCorrect ? rightIdx : -1);
     
@@ -242,6 +251,7 @@ export default function ChallengeGame() {
   const handleAnswerSelect = (answerIndex) => {
     if (selectedAnswer !== null || gameEnded) return;
     
+    vibrate(50); // Quick haptic feedback on answer selection
     setSelectedAnswer(answerIndex);
     selectedAnswerRef.current = answerIndex;
 

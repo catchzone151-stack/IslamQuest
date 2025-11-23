@@ -4,6 +4,7 @@ import { useNavigate } from "../hooks/useNavigate";
 import { useEventsStore } from "../store/eventsStore";
 import { useProgressStore } from "../store/progressStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
+import { useVibration } from "../hooks/useVibration";
 import { getEventQuestions } from "../data/eventQuestions";
 import PointingMascot from "../assets/mascots/mascot_pointing_v2.webp";
 import "./EventQuiz.css";
@@ -14,6 +15,7 @@ export default function EventQuiz() {
   const { getEvents, enterEvent, hasEntered } = useEventsStore();
   const { coins, removeCoins } = useProgressStore();
   const { showModal } = useModalStore();
+  const { vibrate } = useVibration();
   
   const events = getEvents();
   const event = events.find(e => e.id === eventId);
@@ -158,6 +160,13 @@ export default function EventQuiz() {
       selectedAnswer: answer,
       correct: isCorrect
     };
+    
+    // Haptic feedback based on answer correctness
+    if (isCorrect) {
+      vibrate([50, 30, 50]); // Success pattern
+    } else {
+      vibrate(200); // Error buzz
+    }
     
     // Build complete answers array
     const updatedAnswers = [...userAnswers, newAnswer];

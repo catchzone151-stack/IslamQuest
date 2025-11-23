@@ -1,4 +1,5 @@
 import React from "react";
+import { useVibration } from "../hooks/useVibration";
 
 const QuestionCard = React.memo(({
   question,
@@ -7,6 +8,7 @@ const QuestionCard = React.memo(({
   currentQ,
   totalQ,
 }) => {
+  const { vibrate } = useVibration();
   if (!question) return null;
 
   const wrapper = {
@@ -83,7 +85,10 @@ const QuestionCard = React.memo(({
             <button
               key={index}
               onClick={() => {
-                if (selected === null) onSelect(index);
+                if (selected === null) {
+                  vibrate(50); // Quick haptic feedback on answer selection
+                  onSelect(index);
+                }
               }}
               disabled={selected !== null}
               style={style}
