@@ -309,6 +309,7 @@ export default function PathPage() {
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
+                          pointerEvents: "none",
                         }}
                       >
                         <span style={{ color: "#FFD700", fontSize: "1.4rem" }}>🔒</span>
