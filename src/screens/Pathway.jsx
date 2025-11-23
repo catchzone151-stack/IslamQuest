@@ -5,7 +5,8 @@ import { useProgressStore } from "../store/progressStore";
 import { useUserStore } from "../store/useUserStore";
 import { getAvatarImage } from "../utils/avatarUtils";
 import { Lock, Crown } from "lucide-react";
-import { isPremiumOnlyPath } from "../store/premiumConfig";
+import { isPremiumOnlyPath, FREE_LESSON_LIMITS } from "../store/premiumConfig";
+import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 
 // Lesson data loader
 import { getLessonsForPath } from "../data/lessonLoader.js";
@@ -23,6 +24,7 @@ export default function Pathway() {
 
   const { paths, lessonStates, canAccessLesson, premium, premiumStatus } = useProgressStore();
   const { id: userId, avatar } = useUserStore();
+  const { showModal } = useModalStore();
   
   const isUserPremium = premium || premiumStatus !== "free";
   const isPathPremiumOnly = isPremiumOnlyPath(numericPathId);
@@ -100,13 +102,31 @@ export default function Pathway() {
   }, [numericPathId, totalLessons]);
 
   const handleLessonClick = (lesson) => {
-    // Block access to premium-only paths for free users
-    if (isPathPremiumOnly && !isUserPremium) {
-      navigate("/premium");
+    console.log('🎯 Lesson clicked:', lesson.id, 'locked:', lesson.isLocked);
+    
+    // FIRST: Check premium paywall (even for sequentially unlocked lessons)
+    const freeLimit = FREE_LESSON_LIMITS[numericPathId] || 0;
+    if (!isUserPremium && lesson.id > freeLimit) {
+      console.log('🔒 Premium paywall triggered - showing modal');
+      showModal(MODAL_TYPES.PURCHASE);
       return;
     }
     
-    if (lesson.isLocked) return;
+    // Block access to premium-only paths for free users (lesson 1 of premium paths)
+    if (isPathPremiumOnly && !isUserPremium) {
+      console.log('🔒 Premium-only path - showing modal');
+      showModal(MODAL_TYPES.PURCHASE);
+      return;
+    }
+    
+    // SECOND: Check sequential lock (must complete previous lesson)
+    if (lesson.isLocked) {
+      console.log('⏳ Sequential lock - must complete previous lesson');
+      return;
+    }
+    
+    // All checks passed - navigate
+    console.log('✅ Navigating to lesson');
     navigate(`/path/${pathId}/lesson/${lesson.id}`);
   };
 
@@ -557,6 +577,7 @@ export default function Pathway() {
                       position: "absolute",
                       fontSize: "1.4rem",
                       color: "rgba(255,255,255,0.85)",
+                      pointerEvents: "none",
                     }}
                   >
                     🔒
