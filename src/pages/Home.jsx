@@ -641,42 +641,6 @@ export default function Home() {
           position: "relative",
         }}
       >
-        {/* Grey lock overlay for Global Events (Premium Only) */}
-        {!isUserPremium && (
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              background: "rgba(30, 30, 30, 0.75)",
-              borderRadius: 22,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              zIndex: 10,
-              gap: 8,
-            }}
-          >
-            <Lock 
-              size={28} 
-              color="#D4AF37" 
-              strokeWidth={2.5}
-              style={{ filter: "drop-shadow(0 0 4px rgba(212,175,55,0.5))" }}
-            />
-            <span
-              style={{
-                fontSize: "0.9rem",
-                color: "#D4AF37",
-                fontWeight: 700,
-                textShadow: "0 2px 4px rgba(0,0,0,0.5)",
-              }}
-            >
-              Premium Only
-            </span>
-          </div>
-        )}
         {/* Title */}
         <div
           style={{

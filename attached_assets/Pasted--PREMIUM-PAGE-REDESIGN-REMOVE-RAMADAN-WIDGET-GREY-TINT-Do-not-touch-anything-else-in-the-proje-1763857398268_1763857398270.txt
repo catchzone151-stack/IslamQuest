@@ -1,0 +1,114 @@
+📌 PREMIUM PAGE REDESIGN + REMOVE RAMADAN WIDGET GREY TINT
+(Do not touch anything else in the project.)
+
+────────────────────────────────────────────
+1) UPDATE: /src/pages/Premium.jsx
+────────────────────────────────────────────
+
+Please COMPLETELY REPLACE the existing Premium.jsx layout
+(but keep the imports and premium logic)
+with the following visual redesign:
+
+DESIGN GOALS:
+- Apple-style premium layout
+- Soft gold glow
+- Navy background
+- Hero mascot at top
+- One main plan only: “Lifetime Access – £4.99”
+- Small secondary link: “Family plan coming soon”
+- Premium Islamic tone: clean, elegant, spiritual
+- Soft rounded cards (20–24px)
+- Smooth spacing + centered layout
+- One glowing gold button
+
+LAYOUT SPEC:
+
+1. TOP SECTION (HERO)
+--------------------------------
+Centered mascot (use your current premium mascot image)
+Large gold title:
+   “Unlock Your Full Potential”
+Small subtitle:
+   “Lifetime access. No ads. All learning paths.”
+
+2. MAIN PREMIUM CARD
+--------------------------------
+Full-width rounded card with:
+- Navy background
+- Gold border
+- Soft glow (0 0 18px rgba(255,215,0,0.2))
+- Padding: 22px
+- Margin-top: 18px
+
+Inside card:
+- Big plan title:
+    “Lifetime Access”
+- Price:
+    “£4.99 — One-time”
+- Mini checklist with gold ticks:
+    • All 14 learning paths unlocked
+    • Unlimited lessons
+    • Global Events access
+    • No ads ever
+    • Works across devices
+- Small dua-style spiritual line:
+    “Knowledge is light. May Allah make it easy for you.”
+
+3. MAIN BUTTON
+--------------------------------
+Replace current buttons with ONE gold button:
+- Full width
+- Background: #FFD700
+- Text: navy
+- Padding: 14px
+- Border-radius: 14px
+- Glow: 0 0 12px rgba(255,215,0,0.4)
+- Text: “Unlock Forever — £4.99”
+
+This button must keep your existing “unlock premium” logic.
+
+4. SECONDARY LINK (TINY)
+--------------------------------
+Below the button add:
+   “Family plan coming soon”
+grey text, 0.8rem, centered.
+
+5. FOOTER
+--------------------------------
+Centered, tiny:
+   “Secure purchase • Instant access • Lifetime unlock”
+
+────────────────────────────────────────────
+2) REMOVE THE GREY TINT FROM RAMADAN WIDGET
+────────────────────────────────────────────
+
+In /src/pages/Home.jsx:
+
+Locate your Ramadan countdown widget JSX.
+
+REMOVE ANY of the following if present:
+- grey overlay backgrounds
+- opacity layers
+- “Premium only” conditions affecting the widget
+
+Specifically:
+❌ Remove any conditional that checks for `!premium`
+❌ Remove any tint wrapper like:
+   background: "rgba(0,0,0,0.4)"
+❌ Remove any opacity: 0.4 / reduced brightness
+
+The Ramadan widget must ALWAYS show in full color,
+regardless of premium status.
+
+DO NOT modify:
+- daily quest
+- progress
+- streak repair
+- onboarding
+- carousel
+- premium lock logic for paths
+
+Only remove grey tint around the countdown widget.
+
+────────────────────────────────────────────
+END OF PATCH
