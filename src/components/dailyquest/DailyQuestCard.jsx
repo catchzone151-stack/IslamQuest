@@ -35,7 +35,6 @@ export default function DailyQuestCard() {
   };
 
   const handleCountdownComplete = () => {
-    setShowCountdown(false);
     navigate("/daily-quest");
   };
 
