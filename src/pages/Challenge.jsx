@@ -456,7 +456,7 @@ export default function Challenge() {
             />
             <div>
               <h2 style={{ color: level >= BOSS_LEVEL.minLevel ? "#d4af37" : "#94a3b8", margin: "0 0 4px", fontSize: "1.4rem", fontWeight: 700 }}>
-                Boss Level Challenge the Dev
+                Boss Level: Challenge the Dev
               </h2>
               <p style={{ color: level >= BOSS_LEVEL.minLevel ? "#10b981" : "#6b7280", margin: 0, fontSize: "0.85rem", fontWeight: 600 }}>
                 {useChallengeStore.getState().canPlayBossToday() ? "✓ Available Today" : "⏰ Played Today"}
