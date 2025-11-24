@@ -57,6 +57,7 @@ export default function Home() {
   const [mascotTaps, setMascotTaps] = useState(0);
   const [showSparkle, setShowSparkle] = useState(false);
   const tapTimeoutRef = useRef(null);
+  const sparkleTimeoutRef = useRef(null);
 
   // Ramadan countdown state (3-segment: months/weeks/days)
   const [ramadanStats, setRamadanStats] = useState({
@@ -212,9 +213,14 @@ export default function Home() {
       // Award +1 XP using the same method as normal XP
       addXP(1);
       
+      // Clear any existing sparkle timeout
+      if (sparkleTimeoutRef.current) {
+        clearTimeout(sparkleTimeoutRef.current);
+      }
+      
       // Show sparkle animation
       setShowSparkle(true);
-      setTimeout(() => setShowSparkle(false), 500);
+      sparkleTimeoutRef.current = setTimeout(() => setShowSparkle(false), 500);
       
       // Reset tap counter
       setMascotTaps(0);
@@ -225,6 +231,20 @@ export default function Home() {
       }, 3500);
     }
   };
+
+  /**
+   * 🎉 Easter Egg: Cleanup timeouts on unmount
+   */
+  useEffect(() => {
+    return () => {
+      if (tapTimeoutRef.current) {
+        clearTimeout(tapTimeoutRef.current);
+      }
+      if (sparkleTimeoutRef.current) {
+        clearTimeout(sparkleTimeoutRef.current);
+      }
+    };
+  }, []);
 
   /**
    * Card gradients — one per learning path (index-based)
