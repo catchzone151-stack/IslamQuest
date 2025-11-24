@@ -5,7 +5,7 @@
 //  QUIZ DATA – Import from JSON
 // ---------------------------------------------------------------------
 
-import namesOfAllah ﷻQuizzesData from './quizzes/namesOfAllah ﷻ.json';
+import namesOfAllahQuizzesData from './quizzes/namesOfAllah.json';
 import foundationsQuizzesData from './quizzes/foundations.json';
 import prophetsQuizzesData from './quizzes/prophets.json';
 import prophetLifeQuizzesData from './quizzes/prophetLife.json';
@@ -31,7 +31,7 @@ export const getQuizForLesson = (lessonId, pathId = 1) => {
   // Load the correct quiz data based on pathId
   switch (parseInt(pathId)) {
     case 1:
-      quizzesData = namesOfAllah ﷻQuizzesData;
+      quizzesData = namesOfAllahQuizzesData;
       break;
     case 2:
       quizzesData = foundationsQuizzesData;
@@ -73,7 +73,7 @@ export const getQuizForLesson = (lessonId, pathId = 1) => {
       quizzesData = paradiseQuizzesData;
       break;
     default:
-      quizzesData = namesOfAllah ﷻQuizzesData;
+      quizzesData = namesOfAllahQuizzesData;
   }
   
   const quizData = quizzesData.find(q => q.lessonId === parseInt(lessonId));

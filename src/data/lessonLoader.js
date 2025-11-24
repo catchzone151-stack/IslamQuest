@@ -1,5 +1,5 @@
 // src/data/lessonLoader.js
-import namesOfAllah ﷻLessonsFull from "./lessons/namesOfAllah ﷻLessonsFull.js";
+import namesOfAllahLessonsFull from "./lessons/namesOfAllahLessonsFull.js";
 import foundationsLessons from "./lessons/foundationsLessons.js";
 import prophetsLessons from "./lessons/prophetsLessons.js";
 import prophetLifeLessons from "./lessons/prophetLifeLessons.js";
@@ -26,7 +26,7 @@ export function getLessonsForPath(pathId) {
 
   switch (numericId) {
     case 1:
-      lessons = namesOfAllah ﷻLessonsFull;
+      lessons = namesOfAllahLessonsFull;
       break;
     case 2:
       lessons = foundationsLessons;
