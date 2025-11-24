@@ -8,17 +8,15 @@ import mascot_welldone from "./mascots/mascot_welldone.webp";
 import mascot_sitting_v2 from "./mascots/mascot_sitting_v2.webp";
 import mascot_onboarding from "./mascots/mascot_onboarding.webp";
 import mascot_pointing from "./mascots/mascot_pointing.webp";
-import mascot_reading from "./mascots/mascot_reading.webp";
 import mascot_running from "./mascots/mascot_running.webp";
 import mascot_sitting from "./mascots/mascot_sitting.webp";
 import mascot_tasbih from "./mascots/mascot_tasbih.webp";
 import mascot_waving from "./mascots/mascot_waving.webp";
+import mascot_defeated from "./mascots/mascot_defeated.webp";
 
 // Additional mascot variants
 import mascot_pointing_v2 from "./mascots/mascot_pointing_v2.webp";
-import mascot_teaching from "./mascots/mascot_pointing.webp";
 import mascot_quiz from "./mascots/mascot_quiz.webp";
-import mascot_scholar from "./mascots/mascot_scholar.webp";
 import mascot_locked from "./mascots/mascot_locked.webp";
 import mascot_power from "./mascots/mascot_power.webp";
 import mascot_countdown from "./mascots/mascot_countdown.webp";
@@ -73,23 +71,19 @@ import ui_xp from "./ui/ui_xp.webp";
 // ============ EXPORT ============
 const assets = {
   mascots: {
-    // New culturally authentic Islamic mascots
     mascot_boss,
     mascot_congratulation,
     mascot_welldone,
     mascot_sitting_v2,
     mascot_onboarding,
     mascot_pointing,
-    mascot_reading,
     mascot_running,
     mascot_sitting,
     mascot_tasbih,
     mascot_waving,
-    // Additional mascot variants
+    mascot_defeated,
     mascot_pointing_v2,
-    mascot_teaching,
     mascot_quiz,
-    mascot_scholar,
     mascot_locked,
     mascot_power,
     mascot_countdown,
