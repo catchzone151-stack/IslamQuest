@@ -1,0 +1,135 @@
+You are upgrading IslamQuest to Phase 3 · Step 1 (Supabase WRITE Sync).
+
+Make the following modifications to **progressStore.js** only.
+
+━━━━━━━━━━━━━━━━━━━━━━
+1) ADD THESE IMPORTS AT THE TOP
+━━━━━━━━━━━━━━━━━━━━━━
+Add directly under existing imports:
+
+import { supabase } from "../supabaseClient";
+import CryptoJS from "crypto-js";
+
+━━━━━━━━━━━━━━━━━━━━━━
+2) ADD ENCRYPTION HELPERS (BEFORE create())
+━━━━━━━━━━━━━━━━━━━━━━
+
+const ENCRYPTION_KEY = "IQ_SYNC_V1";
+
+function encryptJSON(obj) {
+  try {
+    return CryptoJS.AES.encrypt(JSON.stringify(obj), ENCRYPTION_KEY).toString();
+  } catch (e) {
+    console.error("Encryption failed:", e);
+    return null;
+  }
+}
+
+function decryptJSON(cipher) {
+  try {
+    const bytes = CryptoJS.AES.decrypt(cipher, ENCRYPTION_KEY);
+    return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+  } catch (e) {
+    console.error("Decryption failed:", e);
+    return null;
+  }
+}
+
+━━━━━━━━━━━━━━━━━━━━━━
+3) ADD A SERIALIZER INSIDE create() (before return)
+━━━━━━━━━━━━━━━━━━━━━━
+
+serializeForSupabase: () => {
+  const state = get();
+
+  return {
+    xp: state.xp,
+    coins: state.coins,
+    streak: state.streak,
+    level: state.level,
+    avatar: state.avatar,
+    username: state.username,
+    display_name: state.displayName,
+    premium: state.premium,
+    premium_type: state.premiumType,
+    premium_activated_at: state.premiumActivatedAt,
+    family_plan_id: state.familyPlanId,
+    lesson_states: encryptJSON(state.lessonStates),
+    locked_lessons: encryptJSON(state.lockedLessons),
+    paths: encryptJSON(state.paths),
+    reviewMistakesUnlocked: state.reviewMistakesUnlocked,
+    smartRevisionUnlocked: state.smartRevisionUnlocked,
+    updated_at: new Date().toISOString()
+  };
+},
+
+getLastUpdatedAt: () => {
+  const ts = localStorage.getItem("iq_last_cloud_sync");
+  return ts ? Number(ts) : 0;
+},
+
+setLastUpdatedAt: (ts) => {
+  localStorage.setItem("iq_last_cloud_sync", String(ts));
+},
+
+━━━━━━━━━━━━━━━━━━━━━━
+4) ADD THE WRITE SYNC FUNCTION
+━━━━━━━━━━━━━━━━━━━━━━
+
+syncToSupabase: async () => {
+  try {
+    const user = await supabase.auth.getUser();
+    if (!user || !user.data || !user.data.user) return;
+
+    const userId = user.data.user.id;
+
+    const payload = get().serializeForSupabase();
+    const last = get().getLastUpdatedAt();
+    const now = Date.now();
+
+    // avoid excessive calls
+    if (now - last < 5000) return;
+
+    // write
+    const { error } = await supabase
+      .from("profiles")
+      .update(payload)
+      .eq("id", userId);
+
+    if (!error) {
+      get().setLastUpdatedAt(now);
+      console.log("✅ Synced to Supabase");
+    } else {
+      console.log("❌ Sync error:", error);
+    }
+
+  } catch (err) {
+    console.log("❌ Sync failed:", err);
+  }
+},
+
+━━━━━━━━━━━━━━━━━━━━━━
+5) ADD AUTO-SYNC TRIGGER
+━━━━━━━━━━━━━━━━━━━━━━
+
+After EVERY:
+- addXP
+- addCoins
+- applyQuizResults
+- unlockLesson
+- unlockPremium
+- purchaseIndividual
+- purchaseFamily
+
+ADD:
+
+setTimeout(() => get().syncToSupabase(), 50);
+
+━━━━━━━━━━━━━━━━━━━━━━
+6) DO NOT MODIFY ANYTHING ELSE
+━━━━━━━━━━━━━━━━━━━━━━
+
+━━━━━━━━━━━━━━━━━━━━━━
+This completes Phase 3 · Step 1.
+Do not create login yet. Do not create restore yet.
+Phase 3 · Step 2 will handle cloud → device restore.

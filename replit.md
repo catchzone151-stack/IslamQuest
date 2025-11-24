@@ -19,7 +19,7 @@ The application includes 14 complete learning paths with lessons and quizzes, ex
 The premium model offers free tier limits (0-3 free lessons depending on the path) and premium plans (Individual £4.99/month, Family £18/month) for access to all 14 paths, unlimited lessons, Global Events, and a premium badge. Paths 11-14 and Global Events are premium-only. Social features include friend management, a friends leaderboard, an activity feed, and quick messaging. Gamification elements comprise four friend challenge modes (Mind Battle, Lightning Round, Speed Run, Sudden Death), a daily Boss Level (pulls questions from the last third of all 14 paths combined), weekly Global Events, Daily Quests, and a Streak Freeze system. The Revise tab features two modes: Review Mistakes (unlocks after first quiz mistake) and Smart Revision (unlocks after completing 40 lessons), with intelligent migration logic for existing users. The application supports customizable avatars, with 32 selectable options plus 2 hidden ninja avatars reserved for special accounts. An Easter Egg on the Home page awards +1 XP when the mascot is tapped 5 times within 3.5 seconds, accompanied by a sparkle animation on the XP counter.
 
 ### System Design Choices
-Authentication is planned with Supabase Auth, currently using LocalStorage for temporary persistence. Asset management is centralized via `assets.js` for optimized WebP images. Development and deployment use Vite.
+**Supabase Integration Status**: Phase 3 Step 1 complete (WRITE sync implemented). Anonymous auth and device fingerprinting ready. The progressStore now automatically syncs to Supabase cloud on all state changes (XP, coins, quiz completion, lesson unlocks, premium purchases) with 5-second throttling and AES encryption for sensitive data. Sync will activate once Supabase database tables are created (Phase 2). Asset management is centralized via `assets.js` for optimized WebP images. Development and deployment use Vite.
 
 ## External Dependencies
 
@@ -30,6 +30,7 @@ Authentication is planned with Supabase Auth, currently using LocalStorage for t
 - **UI & Animation**: `framer-motion`, `lucide-react`, `react-router-dom`.
 - **State Management**: `zustand`.
 - **Build Tool**: `vite`.
+- **Encryption**: `crypto-js` (AES encryption for cloud sync).
 
 ### Asset Dependencies
 - **Media**: All visual assets are locally bundled WebP images and an SVG favicon.

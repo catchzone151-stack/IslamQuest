@@ -3,6 +3,8 @@ import { create } from "zustand";
 import { getCurrentLevel, checkLevelUp } from "../utils/diamondLevels";
 import { FREE_LESSON_LIMITS, PREMIUM_ONLY_PATHS, isPremiumOnlyPath } from "./premiumConfig";
 import { useModalStore, MODAL_TYPES } from "./modalStore";
+import { supabase } from "../lib/supabaseClient";
+import CryptoJS from "crypto-js";
 
 const STORAGE_KEY = "islamQuestProgress_v4";
 
@@ -22,6 +24,27 @@ const DEFAULT_PATHS = [
   { id: 13, title: "Hellfire", progress: 0, totalLessons: 19, completedLessons: 0, status: "available" },
   { id: 14, title: "Paradise", progress: 0, totalLessons: 20, completedLessons: 0, status: "available" },
 ];
+
+const ENCRYPTION_KEY = "IQ_SYNC_V1";
+
+function encryptJSON(obj) {
+  try {
+    return CryptoJS.AES.encrypt(JSON.stringify(obj), ENCRYPTION_KEY).toString();
+  } catch (e) {
+    console.error("Encryption failed:", e);
+    return null;
+  }
+}
+
+function decryptJSON(cipher) {
+  try {
+    const bytes = CryptoJS.AES.decrypt(cipher, ENCRYPTION_KEY);
+    return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+  } catch (e) {
+    console.error("Decryption failed:", e);
+    return null;
+  }
+}
 
 export const useProgressStore = create((set, get) => ({
   // 🪙 Base user stats
@@ -409,11 +432,13 @@ export const useProgressStore = create((set, get) => ({
     }
     
     get().saveProgress();
+    setTimeout(() => get().syncToSupabase(), 50);
   },
 
   addCoins: (amount) => {
     set((s) => ({ coins: s.coins + amount }));
     get().saveProgress();
+    setTimeout(() => get().syncToSupabase(), 50);
   },
 
   // Combined helper for XP and coins (used by Daily Quest, Revise, etc.)
@@ -499,6 +524,7 @@ export const useProgressStore = create((set, get) => ({
     }
     
     get().saveProgress();
+    setTimeout(() => get().syncToSupabase(), 50);
   },
 
   // 🔒 Lock/Unlock
@@ -509,6 +535,7 @@ export const useProgressStore = create((set, get) => ({
     updated[pathId][lessonId] = { unlocked: true };
     set({ lockedLessons: updated });
     get().saveProgress();
+    setTimeout(() => get().syncToSupabase(), 50);
   },
 
   // 🔒 CRITICAL: Ensure locks are ready before any access
@@ -709,6 +736,7 @@ export const useProgressStore = create((set, get) => ({
       hasPremium: true, // backwards compatibility
     });
     get().saveProgress();
+    setTimeout(() => get().syncToSupabase(), 50);
   },
 
   // 💳 ASYNC PLACEHOLDER: Purchase Individual Plan (£4.99)
@@ -729,6 +757,7 @@ export const useProgressStore = create((set, get) => ({
       familyMembers: [],
     });
     get().saveProgress();
+    setTimeout(() => get().syncToSupabase(), 50);
     return { success: true, plan: "individual" };
   },
 
@@ -752,6 +781,7 @@ export const useProgressStore = create((set, get) => ({
       familyMembers: [], // Owner can invite up to 5 members
     });
     get().saveProgress();
+    setTimeout(() => get().syncToSupabase(), 50);
     return { success: true, plan: "family", familyId };
   },
 
@@ -927,8 +957,71 @@ export const useProgressStore = create((set, get) => ({
     window.location.reload();
   },
 
-  // Supabase sync functions (Phase 1: empty placeholders)
-  syncToSupabase: async () => {},
+  serializeForSupabase: () => {
+    const state = get();
+
+    return {
+      xp: state.xp,
+      coins: state.coins,
+      streak: state.streak,
+      level: state.level,
+      avatar: state.avatar,
+      username: state.username,
+      display_name: state.displayName,
+      premium: state.premium,
+      premium_type: state.premiumType,
+      premium_activated_at: state.premiumActivatedAt,
+      family_plan_id: state.familyPlanId,
+      lesson_states: encryptJSON(state.lessonStates),
+      locked_lessons: encryptJSON(state.lockedLessons),
+      paths: encryptJSON(state.paths),
+      reviewMistakesUnlocked: state.reviewMistakesUnlocked,
+      smartRevisionUnlocked: state.smartRevisionUnlocked,
+      updated_at: new Date().toISOString()
+    };
+  },
+
+  getLastUpdatedAt: () => {
+    const ts = localStorage.getItem("iq_last_cloud_sync");
+    return ts ? Number(ts) : 0;
+  },
+
+  setLastUpdatedAt: (ts) => {
+    localStorage.setItem("iq_last_cloud_sync", String(ts));
+  },
+
+  syncToSupabase: async () => {
+    try {
+      const user = await supabase.auth.getUser();
+      if (!user || !user.data || !user.data.user) return;
+
+      const userId = user.data.user.id;
+
+      const payload = get().serializeForSupabase();
+      const last = get().getLastUpdatedAt();
+      const now = Date.now();
+
+      // avoid excessive calls
+      if (now - last < 5000) return;
+
+      // write
+      const { error } = await supabase
+        .from("profiles")
+        .update(payload)
+        .eq("id", userId);
+
+      if (!error) {
+        get().setLastUpdatedAt(now);
+        console.log("✅ Synced to Supabase");
+      } else {
+        console.log("❌ Sync error:", error);
+      }
+
+    } catch (err) {
+      console.log("❌ Sync failed:", err);
+    }
+  },
+
   loadFromSupabase: async () => {},
 }));
 
