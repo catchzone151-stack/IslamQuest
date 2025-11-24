@@ -481,6 +481,9 @@ export const useProgressStore = create((set, get) => ({
       
       // 🛡️ Mark day as complete for streak tracking
       get().markDayComplete();
+      
+      // 📚 Check and unlock Smart Revision if 40 lessons completed
+      get().checkAndUnlockSmartRevision();
     }
     
     get().saveProgress();

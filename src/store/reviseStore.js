@@ -71,6 +71,10 @@ export const useReviseStore = create((set, get) => ({
         lastSeen: new Date().toISOString(),
       };
       set({ weakPool: [...state.weakPool, newQuestion] });
+      
+      // 🔓 Unlock Review Mistakes when first mistake is saved
+      const { unlockReviewMistakes } = useProgressStore.getState();
+      unlockReviewMistakes();
     }
 
     get().saveReviseData();
