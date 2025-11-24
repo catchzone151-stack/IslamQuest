@@ -9,7 +9,7 @@ const tenPromisedLessons = [
     id: 1,
     title: "Abu Bakr as-Siddiq",
     description: [
-      "Abu Bakr was the Prophet's ﷺ closest companion and first adult man to accept Islam. He believed immediately, showing unwavering trust in Allah's message through hardships.",
+      "Abu Bakr was the Prophet's ﷺ closest companion and first adult man to accept Islam. He believed immediately, showing unwavering trust in Allah ﷻ's message through hardships.",
       "When the Prophet ﷺ described his Night Journey, people mocked him. Abu Bakr believed instantly, earning the title 'As-Siddiq' meaning 'The Truthful One.' He freed enslaved Muslims.",
       "As first Caliph, Abu Bakr united Muslims during crisis. He preserved the Quran and expanded Islam. The Prophet ﷺ said Paradise yearns for Abu Bakr."
     ],
@@ -18,7 +18,7 @@ const tenPromisedLessons = [
       translation: "And the one who brought the truth and believed in it.",
       source: "Qur'an 39:33"
     },
-    keyLesson: "True friendship means believing, supporting, and sacrificing everything for Allah and His messenger.",
+    keyLesson: "True friendship means believing, supporting, and sacrificing everything for Allah ﷻ and His messenger.",
     quizId: 1
   },
 
@@ -32,10 +32,10 @@ const tenPromisedLessons = [
     ],
     evidence: {
       arabic: "يَا أَيُّهَا النَّبِيُّ حَسْبُكَ اللَّهُ وَمَنِ اتَّبَعَكَ مِنَ الْمُؤْمِنِينَ",
-      translation: "O Prophet, sufficient for you is Allah and whoever follows you of the believers.",
+      translation: "O Prophet, sufficient for you is Allah ﷻ and whoever follows you of the believers.",
       source: "Qur'an 8:64"
     },
-    keyLesson: "True leadership combines strength with justice, and power with humility before Allah.",
+    keyLesson: "True leadership combines strength with justice, and power with humility before Allah ﷻ.",
     quizId: 2
   },
 
@@ -52,7 +52,7 @@ const tenPromisedLessons = [
       translation: "Whoever equips the Army of Hardship will have Paradise.",
       source: "Sahih Bukhari 2778"
     },
-    keyLesson: "Generosity for Allah's sake and modesty in character are marks of true nobility and faith.",
+    keyLesson: "Generosity for Allah ﷻ's sake and modesty in character are marks of true nobility and faith.",
     quizId: 3
   },
 
@@ -69,7 +69,7 @@ const tenPromisedLessons = [
       translation: "You are to me like Harun was to Musa, except there will be no prophet after me.",
       source: "Sahih Bukhari 4416"
     },
-    keyLesson: "True courage means sacrificing yourself for Allah's cause and protecting those who carry His message.",
+    keyLesson: "True courage means sacrificing yourself for Allah ﷻ's cause and protecting those who carry His message.",
     quizId: 4
   },
 
@@ -78,7 +78,7 @@ const tenPromisedLessons = [
     title: "Talhah ibn Ubaydullah",
     description: [
       "Talhah accepted Islam early through Abu Bakr's invitation and faced severe torture for his faith. Despite brutal persecution, he remained steadfast and never renounced Islam whatsoever.",
-      "At the Battle of Uhud, when enemies surrounded the Prophet ﷺ, Talhah used his body as a shield. He received over seventy wounds protecting the beloved Messenger of Allah.",
+      "At the Battle of Uhud, when enemies surrounded the Prophet ﷺ, Talhah used his body as a shield. He received over seventy wounds protecting the beloved Messenger of Allah ﷻ.",
       "The Prophet ﷺ said, 'Paradise became obligatory for Talhah today.' Known for generosity, Talhah distributed his entire wealth to the poor, keeping nothing for himself despite riches."
     ],
     evidence: {
@@ -86,7 +86,7 @@ const tenPromisedLessons = [
       translation: "Talhah has become deserving of Paradise.",
       source: "Sahih Bukhari"
     },
-    keyLesson: "Protecting others and sacrificing your comfort for Allah's sake guarantees eternal reward.",
+    keyLesson: "Protecting others and sacrificing your comfort for Allah ﷻ's sake guarantees eternal reward.",
     quizId: 5
   },
 
@@ -112,7 +112,7 @@ const tenPromisedLessons = [
     title: "Abd al-Rahman ibn Awf",
     description: [
       "Abd al-Rahman was a successful merchant who accepted Islam early and endured persecution. When he migrated to Madinah with nothing, he refused charity and requested the marketplace instead.",
-      "Through hard work and Allah's blessings, he rebuilt his wealth quickly. He once donated an entire caravan of 700 camels loaded with supplies for the Muslim army without hesitation.",
+      "Through hard work and Allah ﷻ's blessings, he rebuilt his wealth quickly. He once donated an entire caravan of 700 camels loaded with supplies for the Muslim army without hesitation.",
       "Despite immense wealth, Abd al-Rahman lived simply and gave generously. He supported widows, orphans, and the poor throughout his life. The Prophet ﷺ praised his sincere charitable spending."
     ],
     evidence: {
@@ -120,7 +120,7 @@ const tenPromisedLessons = [
       translation: "How excellent is righteous wealth for a righteous person.",
       source: "Musnad Ahmad"
     },
-    keyLesson: "Wealth is a test, and righteous people use it generously for Allah's cause without attachment or pride.",
+    keyLesson: "Wealth is a test, and righteous people use it generously for Allah ﷻ's cause without attachment or pride.",
     quizId: 7
   },
 
@@ -137,7 +137,7 @@ const tenPromisedLessons = [
       translation: "Shoot! May my father and mother be sacrificed for you.",
       source: "Sahih Bukhari 4055"
     },
-    keyLesson: "Standing firm in faith despite family pressure and defending Islam earns Allah's pleasure and acceptance of your prayers.",
+    keyLesson: "Standing firm in faith despite family pressure and defending Islam earns Allah ﷻ's pleasure and acceptance of your prayers.",
     quizId: 8
   },
 
@@ -147,7 +147,7 @@ const tenPromisedLessons = [
     description: [
       "Saeed accepted Islam before the Prophet ﷺ even entered Dar al-Arqam to teach secretly. He and his wife Fatimah were among the earliest Muslims, showing incredible courage.",
       "When Umar discovered them reading Quran and struck his sister, their steadfastness helped lead to Umar's conversion to Islam. Saeed participated in all major battles except Badr.",
-      "Once falsely accused of stealing land, Saeed made a powerful supplication against the liar. He prayed that if she was lying, Allah would blind her. Both blindness and punishment came exactly as prayed."
+      "Once falsely accused of stealing land, Saeed made a powerful supplication against the liar. He prayed that if she was lying, Allah ﷻ would blind her. Both blindness and punishment came exactly as prayed."
     ],
     evidence: {
       arabic: "عَشَرَةٌ فِي الْجَنَّةِ",

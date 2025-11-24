@@ -183,7 +183,7 @@ export default function Pathway() {
             lineHeight: 1.5,
           }}
         >
-          Masha'Allah! You have mastered all lessons in this path.
+          Masha'Allah ﷻ! You have mastered all lessons in this path.
         </p>
 
         <button
@@ -446,7 +446,7 @@ export default function Pathway() {
             : numericPathId === 8
             ? "Discover the greatest Companions of the Prophet ﷺ ⭐"
             : numericPathId === 9
-            ? "Meet the noble Angels of Allah ✨"
+            ? "Meet the noble Angels of Allah ﷻ ✨"
             : numericPathId === 10
             ? "Prepare for the Signs of the Hour ⏳"
             : numericPathId === 11

@@ -3,12 +3,12 @@ import { X, Send } from "lucide-react";
 
 const QUICK_MESSAGES = [
   { id: 1, text: "Assalamu alaikum! 👋", emoji: "👋" },
-  { id: 2, text: "May Allah bless you! 🤲", emoji: "🤲" },
-  { id: 3, text: "JazakAllah Khair! 🌟", emoji: "🌟" },
+  { id: 2, text: "May Allah ﷻ bless you! 🤲", emoji: "🤲" },
+  { id: 3, text: "JazakAllah ﷻ Khair! 🌟", emoji: "🌟" },
   { id: 4, text: "Keep up the great work! 💪", emoji: "💪" },
   { id: 5, text: "Let's learn together! 📚", emoji: "📚" },
   { id: 6, text: "Challenge me again! ⚔️", emoji: "⚔️" },
-  { id: 7, text: "MashaAllah! Amazing progress! 🎯", emoji: "🎯" },
+  { id: 7, text: "MashaAllah ﷻ! Amazing progress! 🎯", emoji: "🎯" },
   { id: 8, text: "See you in Jannah! 🌙", emoji: "🌙" }
 ];
 

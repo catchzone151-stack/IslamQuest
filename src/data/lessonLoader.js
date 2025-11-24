@@ -1,5 +1,5 @@
 // src/data/lessonLoader.js
-import namesOfAllahLessonsFull from "./lessons/namesOfAllahLessonsFull.js";
+import namesOfAllah ﷻLessonsFull from "./lessons/namesOfAllah ﷻLessonsFull.js";
 import foundationsLessons from "./lessons/foundationsLessons.js";
 import prophetsLessons from "./lessons/prophetsLessons.js";
 import prophetLifeLessons from "./lessons/prophetLifeLessons.js";
@@ -26,7 +26,7 @@ export function getLessonsForPath(pathId) {
 
   switch (numericId) {
     case 1:
-      lessons = namesOfAllahLessonsFull;
+      lessons = namesOfAllah ﷻLessonsFull;
       break;
     case 2:
       lessons = foundationsLessons;
@@ -76,7 +76,7 @@ export function getLessonsForPath(pathId) {
     ...lesson,
     id: index + 1,
     unlocked: index === 0, // first lesson always unlocked
-    premium: numericId === 1 && index + 1 > 10, // Names of Allah premium flag (lesson 11+)
+    premium: numericId === 1 && index + 1 > 10, // Names of Allah ﷻ premium flag (lesson 11+)
   }));
 }
 

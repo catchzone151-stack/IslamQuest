@@ -655,7 +655,7 @@ export const useChallengeStore = create((set, get) => ({
       },
       {
         question: "What does 'Islam' mean?",
-        options: ["Peace", "Submission to Allah", "Both peace and submission", "Faith"],
+        options: ["Peace", "Submission to Allah ﷻ", "Both peace and submission", "Faith"],
         answer: 2,
         difficulty: "hard"
       },
@@ -673,7 +673,7 @@ export const useChallengeStore = create((set, get) => ({
       },
       {
         question: "What is the meaning of 'Bismillah'?",
-        options: ["In the name of Allah", "Praise be to Allah", "Allah is Great", "There is no god but Allah"],
+        options: ["In the name of Allah ﷻ", "Praise be to Allah ﷻ", "Allah ﷻ is Great", "There is no god but Allah ﷻ"],
         answer: 0,
         difficulty: "hard"
       },
@@ -724,7 +724,7 @@ export const useChallengeStore = create((set, get) => ({
     // Pool of 90 ultra-hard Islamic questions
     const questionPool = [
       {
-        question: "Which name of Allah means 'The All-Knowing'?",
+        question: "Which name of Allah ﷻ means 'The All-Knowing'?",
         options: ["Al-Aleem", "Al-Hakeem", "Al-Baseer", "Al-Samee"],
         answer: 0
       },
@@ -739,7 +739,7 @@ export const useChallengeStore = create((set, get) => ({
         answer: 1
       },
       {
-        question: "Which companion was known as 'The Sword of Allah'?",
+        question: "Which companion was known as 'The Sword of Allah ﷻ'?",
         options: ["Ali ibn Abi Talib", "Umar ibn al-Khattab", "Khalid ibn al-Walid", "Abu Bakr as-Siddiq"],
         answer: 2
       },
@@ -909,7 +909,7 @@ export const useChallengeStore = create((set, get) => ({
         answer: 1
       },
       {
-        question: "Which prophet is known as 'Kalimullah' (The one who spoke to Allah)?",
+        question: "Which prophet is known as 'Kalimullah' (The one who spoke to Allah ﷻ)?",
         options: ["Ibrahim ﷺ", "Musa ﷺ", "Isa ﷺ", "Muhammad ﷺ"],
         answer: 1
       },
@@ -939,7 +939,7 @@ export const useChallengeStore = create((set, get) => ({
         answer: 2
       },
       {
-        question: "What was the first thing created by Allah according to hadith?",
+        question: "What was the first thing created by Allah ﷻ according to hadith?",
         options: ["The Throne", "The Pen", "Light", "Water"],
         answer: 1
       },
@@ -1054,7 +1054,7 @@ export const useChallengeStore = create((set, get) => ({
         answer: 2
       },
       {
-        question: "Which surah is entirely about the Oneness of Allah?",
+        question: "Which surah is entirely about the Oneness of Allah ﷻ?",
         options: ["Al-Fatiha", "Al-Ikhlas", "Al-Nas", "Al-Falaq"],
         answer: 1
       },
@@ -1069,7 +1069,7 @@ export const useChallengeStore = create((set, get) => ({
         answer: 1
       },
       {
-        question: "How many types of Tawheed (Oneness of Allah) are there?",
+        question: "How many types of Tawheed (Oneness of Allah ﷻ) are there?",
         options: ["1", "2", "3", "4"],
         answer: 2
       },
@@ -1124,7 +1124,7 @@ export const useChallengeStore = create((set, get) => ({
         answer: 1
       },
       {
-        question: "Which surah contains the famous verse 'Allah does not burden a soul beyond what it can bear'?",
+        question: "Which surah contains the famous verse 'Allah ﷻ does not burden a soul beyond what it can bear'?",
         options: ["Al-Baqarah", "Aal-e-Imran", "An-Nisa", "Al-An'am"],
         answer: 0
       },

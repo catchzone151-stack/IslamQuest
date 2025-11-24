@@ -8,16 +8,16 @@ const greatestWomenLessons = [
     id: 1,
     title: "Maryam - Part 1",
     description: [
-      "Maryam's mother dedicated her unborn child to Allah's service. When Maryam was born, her mother accepted Allah's plan with gratitude and named her Maryam, meaning devoted servant.",
-      "Maryam grew up in the temple under Prophet Zakariyyah's care. She devoted herself to worship and prayer. Allah provided her with miraculous sustenance from Heaven that amazed Zakariyyah greatly.",
-      "Whenever Zakariyyah visited Maryam's chamber, he found fresh food with her. When he asked where it came from, Maryam replied it was from Allah who provides without limit."
+      "Maryam's mother dedicated her unborn child to Allah ﷻ's service. When Maryam was born, her mother accepted Allah ﷻ's plan with gratitude and named her Maryam, meaning devoted servant.",
+      "Maryam grew up in the temple under Prophet Zakariyyah's care. She devoted herself to worship and prayer. Allah ﷻ provided her with miraculous sustenance from Heaven that amazed Zakariyyah greatly.",
+      "Whenever Zakariyyah visited Maryam's chamber, he found fresh food with her. When he asked where it came from, Maryam replied it was from Allah ﷻ who provides without limit."
     ],
     evidence: {
       arabic: "كُلَّمَا دَخَلَ عَلَيْهَا زَكَرِيَّا الْمِحْرَابَ وَجَدَ عِندَهَا رِزْقًا ۖ قَالَ يَا مَرْيَمُ أَنَّىٰ لَكِ هَٰذَا ۖ قَالَتْ هُوَ مِنْ عِندِ اللَّهِ ۖ إِنَّ اللَّهَ يَرْزُقُ مَن يَشَاءُ بِغَيْرِ حِسَابٍ",
-      translation: "Whenever Zakariyyah entered upon her in the prayer chamber, he found with her provision. He said, 'O Maryam, from where is this?' She said, 'It is from Allah. Indeed, Allah provides for whom He wills without account.'",
+      translation: "Whenever Zakariyyah entered upon her in the prayer chamber, he found with her provision. He said, 'O Maryam, from where is this?' She said, 'It is from Allah ﷻ. Indeed, Allah ﷻ provides for whom He wills without account.'",
       source: "Qur'an 3:37"
     },
-    keyLesson: "Pure devotion to Allah from childhood brings His miraculous blessings and provisions beyond human understanding.",
+    keyLesson: "Pure devotion to Allah ﷻ from childhood brings His miraculous blessings and provisions beyond human understanding.",
     quizId: 1
   },
 
@@ -25,16 +25,16 @@ const greatestWomenLessons = [
     id: 2,
     title: "Maryam - Part 2",
     description: [
-      "Angel Jibra'il appeared to Maryam in human form while she was alone. Frightened, she sought Allah's protection. The angel announced Allah had chosen her to bear a miraculous blessed child.",
-      "Maryam asked how she could have a child when no man had touched her. The angel explained Allah creates what He wills by simply saying 'Be' and it is.",
-      "When the birth pains came, Maryam felt alone and distressed. Allah miraculously made a stream flow beneath her and dates fall from the palm tree above for nourishment and comfort."
+      "Angel Jibra'il appeared to Maryam in human form while she was alone. Frightened, she sought Allah ﷻ's protection. The angel announced Allah ﷻ had chosen her to bear a miraculous blessed child.",
+      "Maryam asked how she could have a child when no man had touched her. The angel explained Allah ﷻ creates what He wills by simply saying 'Be' and it is.",
+      "When the birth pains came, Maryam felt alone and distressed. Allah ﷻ miraculously made a stream flow beneath her and dates fall from the palm tree above for nourishment and comfort."
     ],
     evidence: {
       arabic: "فَنَادَاهَا مِن تَحْتِهَا أَلَّا تَحْزَنِي قَدْ جَعَلَ رَبُّكِ تَحْتَكِ سَرِيًّا وَهُزِّي إِلَيْكِ بِجِذْعِ النَّخْلَةِ تُسَاقِطْ عَلَيْكِ رُطَبًا جَنِيًّا",
       translation: "But he called her from below her, 'Do not grieve; your Lord has provided beneath you a stream. And shake toward you the trunk of the palm tree; it will drop upon you ripe, fresh dates.'",
       source: "Qur'an 19:24-25"
     },
-    keyLesson: "Allah provides comfort and sustenance during our most difficult trials when we trust in His wisdom and plan.",
+    keyLesson: "Allah ﷻ provides comfort and sustenance during our most difficult trials when we trust in His wisdom and plan.",
     quizId: 2
   },
 
@@ -43,15 +43,15 @@ const greatestWomenLessons = [
     title: "Maryam - Part 3",
     description: [
       "When Maryam brought baby Isa to her people, they accused her of wrongdoing. Instead of defending herself, she pointed to the infant in her arms with complete trust.",
-      "Baby Isa spoke miraculously from the cradle, declaring he was Allah's servant. He announced Allah gave him scripture and prophethood, commanding him to pray and give charity throughout life.",
-      "Allah honored Maryam above all women of creation. The Prophet Muhammad ﷺ named her among the four greatest women ever. Her patience and purity remain eternal examples for believers."
+      "Baby Isa spoke miraculously from the cradle, declaring he was Allah ﷻ's servant. He announced Allah ﷻ gave him scripture and prophethood, commanding him to pray and give charity throughout life.",
+      "Allah ﷻ honored Maryam above all women of creation. The Prophet Muhammad ﷺ named her among the four greatest women ever. Her patience and purity remain eternal examples for believers."
     ],
     evidence: {
       arabic: "إِنَّ اللَّهَ اصْطَفَاكِ وَطَهَّرَكِ وَاصْطَفَاكِ عَلَىٰ نِسَاءِ الْعَالَمِينَ",
-      translation: "Indeed, Allah has chosen you and purified you and chosen you above the women of the worlds.",
+      translation: "Indeed, Allah ﷻ has chosen you and purified you and chosen you above the women of the worlds.",
       source: "Qur'an 3:42"
     },
-    keyLesson: "Patience during false accusations and complete trust in Allah's defense brings honor in this life and the next.",
+    keyLesson: "Patience during false accusations and complete trust in Allah ﷻ's defense brings honor in this life and the next.",
     quizId: 3
   },
 
@@ -59,16 +59,16 @@ const greatestWomenLessons = [
     id: 4,
     title: "Asiyah - Part 1",
     description: [
-      "Asiyah was married to Pharaoh, history's most arrogant tyrant who claimed divinity. Despite living in a palace of disbelief and oppression, she secretly believed in the One True Allah.",
-      "She witnessed Pharaoh's cruelty daily but maintained her faith hidden in her heart. Asiyah saw through his false claims of godhood and recognized only Allah deserves worship and submission.",
-      "Living surrounded by luxury and power, Asiyah chose truth over comfort. Her faith remained firm while everyone around her worshipped Pharaoh. She awaited Allah's help patiently and quietly."
+      "Asiyah was married to Pharaoh, history's most arrogant tyrant who claimed divinity. Despite living in a palace of disbelief and oppression, she secretly believed in the One True Allah ﷻ.",
+      "She witnessed Pharaoh's cruelty daily but maintained her faith hidden in her heart. Asiyah saw through his false claims of godhood and recognized only Allah ﷻ deserves worship and submission.",
+      "Living surrounded by luxury and power, Asiyah chose truth over comfort. Her faith remained firm while everyone around her worshipped Pharaoh. She awaited Allah ﷻ's help patiently and quietly."
     ],
     evidence: {
       arabic: "وَضَرَبَ اللَّهُ مَثَلًا لِّلَّذِينَ آمَنُوا امْرَأَتَ فِرْعَوْنَ",
-      translation: "And Allah presents an example of those who believed: the wife of Pharaoh.",
+      translation: "And Allah ﷻ presents an example of those who believed: the wife of Pharaoh.",
       source: "Qur'an 66:11"
     },
-    keyLesson: "True faith can flourish even in the most hostile environments when the heart remains devoted to Allah alone.",
+    keyLesson: "True faith can flourish even in the most hostile environments when the heart remains devoted to Allah ﷻ alone.",
     quizId: 4
   },
 
@@ -77,15 +77,15 @@ const greatestWomenLessons = [
     title: "Asiyah - Part 2",
     description: [
       "When baby Musa was found in the river, Asiyah's heart filled with love for him. She convinced Pharaoh to spare the baby and let her raise him in the palace.",
-      "Asiyah cared for Musa with tenderness and love, not knowing he would become the prophet who would challenge her husband's tyranny. Allah placed mercy in her heart for His chosen messenger.",
-      "Through her compassion, Allah's plan unfolded perfectly. Musa grew in Pharaoh's own palace, protected and nurtured. Asiyah's kindness helped preserve the life of Allah's future prophet and liberator."
+      "Asiyah cared for Musa with tenderness and love, not knowing he would become the prophet who would challenge her husband's tyranny. Allah ﷻ placed mercy in her heart for His chosen messenger.",
+      "Through her compassion, Allah ﷻ's plan unfolded perfectly. Musa grew in Pharaoh's own palace, protected and nurtured. Asiyah's kindness helped preserve the life of Allah ﷻ's future prophet and liberator."
     ],
     evidence: {
       arabic: "وَقَالَتِ امْرَأَتُ فِرْعَوْنَ قُرَّتُ عَيْنٍ لِّي وَلَكَ ۖ لَا تَقْتُلُوهُ عَسَىٰ أَن يَنفَعَنَا أَوْ نَتَّخِذَهُ وَلَدًا",
       translation: "And the wife of Pharaoh said, 'He will be a comfort to me and you. Do not kill him; perhaps he may benefit us, or we may adopt him as a son.'",
       source: "Qur'an 28:9"
     },
-    keyLesson: "Allah uses compassionate hearts as instruments of His divine plan, even in the homes of His greatest enemies.",
+    keyLesson: "Allah ﷻ uses compassionate hearts as instruments of His divine plan, even in the homes of His greatest enemies.",
     quizId: 5
   },
 
@@ -94,8 +94,8 @@ const greatestWomenLessons = [
     title: "Asiyah - Part 3",
     description: [
       "When Pharaoh discovered Asiyah's faith in Musa's God, his rage knew no bounds. He ordered her tortured brutally to force her to renounce belief and return to worshipping him.",
-      "As they tortured her under the scorching sun, Asiyah raised her eyes to Heaven and made a beautiful supplication. She asked Allah for a house in Paradise near Him.",
-      "Allah took her soul before the boulder crushed her body, showing her the house He prepared in Paradise. The Prophet Muhammad ﷺ named her among the four best women ever created."
+      "As they tortured her under the scorching sun, Asiyah raised her eyes to Heaven and made a beautiful supplication. She asked Allah ﷻ for a house in Paradise near Him.",
+      "Allah ﷻ took her soul before the boulder crushed her body, showing her the house He prepared in Paradise. The Prophet Muhammad ﷺ named her among the four best women ever created."
     ],
     evidence: {
       arabic: "رَبِّ ابْنِ لِي عِندَكَ بَيْتًا فِي الْجَنَّةِ وَنَجِّنِي مِن فِرْعَوْنَ وَعَمَلِهِ وَنَجِّنِي مِنَ الْقَوْمِ الظَّالِمِينَ",
@@ -127,16 +127,16 @@ const greatestWomenLessons = [
     id: 8,
     title: "Khadijah - Part 2",
     description: [
-      "When revelation first came to Muhammad ﷺ in the cave, he returned home trembling and fearful. Khadijah immediately comforted him, declaring Allah would never disgrace someone so noble.",
+      "When revelation first came to Muhammad ﷺ in the cave, he returned home trembling and fearful. Khadijah immediately comforted him, declaring Allah ﷻ would never disgrace someone so noble.",
       "Khadijah became the very first person to accept Islam, believing instantly without doubt or hesitation. She supported him completely during the difficult early years when Muslims faced brutal persecution.",
       "She spent her entire wealth supporting Islam and feeding poor Muslims during the boycott years. Khadijah never wavered in her faith or support, standing as Islam's first and strongest pillar."
     ],
     evidence: {
       arabic: "كَلَّا وَاللَّهِ مَا يُخْزِيكَ اللَّهُ أَبَدًا إِنَّكَ لَتَصِلُ الرَّحِمَ وَتَحْمِلُ الْكَلَّ وَتَكْسِبُ الْمَعْدُومَ وَتَقْرِي الضَّيْفَ وَتُعِينُ عَلَى نَوَائِبِ الْحَقِّ",
-      translation: "No! By Allah, Allah will never disgrace you. You maintain family ties, support the weak, give to the poor, honor guests, and help those afflicted by calamity.",
+      translation: "No! By Allah ﷻ, Allah ﷻ will never disgrace you. You maintain family ties, support the weak, give to the poor, honor guests, and help those afflicted by calamity.",
       source: "Sahih Bukhari 3"
     },
-    keyLesson: "Immediate belief and unwavering support during the hardest trials make one beloved to Allah and His messenger forever.",
+    keyLesson: "Immediate belief and unwavering support during the hardest trials make one beloved to Allah ﷻ and His messenger forever.",
     quizId: 8
   },
 
@@ -146,14 +146,14 @@ const greatestWomenLessons = [
     description: [
       "During the Year of Sorrow, both Khadijah and Abu Talib died within months. The Prophet ﷺ lost his beloved wife and protective uncle, grieving deeply for his greatest supporter.",
       "Even after her death, the Prophet ﷺ honored Khadijah constantly. He sent meat to her friends and spoke of her virtues. When Aishah felt jealous, he explained no one could replace Khadijah.",
-      "Angel Jibra'il brought special greetings from Allah to Khadijah, giving her glad tidings of a palace in Paradise made entirely of pearls. Her legacy as Islam's first believer remains eternal."
+      "Angel Jibra'il brought special greetings from Allah ﷻ to Khadijah, giving her glad tidings of a palace in Paradise made entirely of pearls. Her legacy as Islam's first believer remains eternal."
     ],
     evidence: {
       arabic: "إِنِّي قَدْ رُزِقْتُ حُبَّهَا",
       translation: "I have been granted her love.",
       source: "Sahih Muslim 2435"
     },
-    keyLesson: "True love and loyalty in marriage, especially for Allah's sake, continue beyond death and earn eternal rewards in Paradise.",
+    keyLesson: "True love and loyalty in marriage, especially for Allah ﷻ's sake, continue beyond death and earn eternal rewards in Paradise.",
     quizId: 9
   },
 
@@ -179,15 +179,15 @@ const greatestWomenLessons = [
     title: "Fatimah - Part 2",
     description: [
       "Despite being the Prophet's ﷺ daughter, Fatimah lived in poverty. She ground grain by hand until her hands blistered. When she asked for a servant, the Prophet ﷺ taught her dhikr instead.",
-      "The Prophet ﷺ told her that glorifying Allah thirty-three times, praising Him thirty-three times, and magnifying Him thirty-four times after each prayer was better than any servant.",
-      "Fatimah accepted his guidance completely, choosing spiritual wealth over worldly comfort. She lived simply, working hard with her own hands while maintaining patience and devotion to Allah always."
+      "The Prophet ﷺ told her that glorifying Allah ﷻ thirty-three times, praising Him thirty-three times, and magnifying Him thirty-four times after each prayer was better than any servant.",
+      "Fatimah accepted his guidance completely, choosing spiritual wealth over worldly comfort. She lived simply, working hard with her own hands while maintaining patience and devotion to Allah ﷻ always."
     ],
     evidence: {
       arabic: "أَلَا أَدُلُّكُمَا عَلَى مَا هُوَ خَيْرٌ لَكُمَا مِنْ خَادِمٍ؟",
       translation: "Shall I not guide you to something better for you than a servant?",
       source: "Sahih Bukhari 5362"
     },
-    keyLesson: "Remembrance of Allah is more valuable than worldly comfort, and patience through hardship brings eternal rewards beyond measure.",
+    keyLesson: "Remembrance of Allah ﷻ is more valuable than worldly comfort, and patience through hardship brings eternal rewards beyond measure.",
     quizId: 11
   },
 
@@ -204,7 +204,7 @@ const greatestWomenLessons = [
       translation: "Are you not pleased that you will be the leader of the believing women or the leader of the women of this nation?",
       source: "Sahih Bukhari 3624"
     },
-    keyLesson: "Living with knowledge, piety, and complete devotion to Allah makes one a timeless role model for all future generations.",
+    keyLesson: "Living with knowledge, piety, and complete devotion to Allah ﷻ makes one a timeless role model for all future generations.",
     quizId: 12
   }
 ];

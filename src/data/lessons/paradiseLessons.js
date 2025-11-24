@@ -4,18 +4,18 @@ export const paradiseLessons = [
     title: "Introduction to Paradise",
     quizId: 1,
     description: [
-      "Paradise (Jannah) is the eternal home Allah prepared for believers who do righteous deeds. It offers infinite joy, beauty, and peace beyond imagination.",
+      "Paradise (Jannah) is the eternal home Allah ﷻ prepared for believers who do righteous deeds. It offers infinite joy, beauty, and peace beyond imagination.",
       
       "No eye has seen, no ear heard, no mind conceived Paradise's beauty. Even the lowest rank surpasses the entire world's pleasures combined.",
       
-      "Paradise is gained through Allah's mercy combined with sincere faith and good actions. The Prophet ﷺ taught that mercy covers us when we believe and strive."
+      "Paradise is gained through Allah ﷻ's mercy combined with sincere faith and good actions. The Prophet ﷺ taught that mercy covers us when we believe and strive."
     ],
     evidence: {
       arabic: "وَسَارِعُوا إِلَىٰ مَغْفِرَةٍ مِّن رَّبِّكُمْ وَجَنَّةٍ عَرْضُهَا السَّمَاوَاتُ وَالْأَرْضُ أُعِدَّتْ لِلْمُتَّقِينَ",
       translation: "And hasten to forgiveness from your Lord and a Paradise as wide as the heavens and earth, prepared for the righteous. (Qur'an 3:133)",
       source: "Qur'an 3:133"
     },
-    keyLesson: "Paradise is an eternal reward beyond imagination, prepared by Allah for those who believe and do good. It is gained through Allah's mercy combined with sincere faith and righteous action."
+    keyLesson: "Paradise is an eternal reward beyond imagination, prepared by Allah ﷻ for those who believe and do good. It is gained through Allah ﷻ's mercy combined with sincere faith and righteous action."
   },
   {
     id: 2,
@@ -26,7 +26,7 @@ export const paradiseLessons = [
       
       "Other names include Jannat Al-Firdaws (highest Paradise), Jannat 'Adn (Gardens of Eternity), and Jannat An-Na'eem (Gardens of Delight). Each reveals different perfection aspects.",
       
-      "Allah uses different names to help us understand and desire Paradise. Knowing these names increases our motivation to work toward this ultimate eternal goal."
+      "Allah ﷻ uses different names to help us understand and desire Paradise. Knowing these names increases our motivation to work toward this ultimate eternal goal."
     ],
     evidence: {
       arabic: "لَهُمْ دَارُ السَّلَامِ عِندَ رَبِّهِمْ",
@@ -40,18 +40,18 @@ export const paradiseLessons = [
     title: "The Creation of Paradise",
     quizId: 3,
     description: [
-      "Allah created Paradise before creating humanity, preparing it for those who believe and worship Him alone. It already exists right now, complete and waiting.",
+      "Allah ﷻ created Paradise before creating humanity, preparing it for those who believe and worship Him alone. It already exists right now, complete and waiting.",
       
       "Paradise's soil is pure musk, its buildings are gold and silver bricks, and its pebbles are pearls and precious jewels. Even basic elements surpass Earth's beauty.",
       
-      "Allah created Paradise demonstrating His generosity, mercy, and power. Its existence now proves Allah's promise is real and certain, motivating us to prepare through worship."
+      "Allah ﷻ created Paradise demonstrating His generosity, mercy, and power. Its existence now proves Allah ﷻ's promise is real and certain, motivating us to prepare through worship."
     ],
     evidence: {
       arabic: "عَرْضُهَا كَعَرْضِ السَّمَاءِ وَالْأَرْضِ",
       translation: "Its width is like the width of the heavens and the earth. (Sahih Muslim 2825)",
       source: "Sahih Muslim 2825"
     },
-    keyLesson: "Paradise already exists, created by Allah from the finest and most beautiful materials imaginable. Its reality right now proves that Allah's promise is certain and true."
+    keyLesson: "Paradise already exists, created by Allah ﷻ from the finest and most beautiful materials imaginable. Its reality right now proves that Allah ﷻ's promise is certain and true."
   },
   {
     id: 4,
@@ -69,7 +69,7 @@ export const paradiseLessons = [
       translation: "And those who feared their Lord will be led to Paradise in groups until, when they reach it while its gates have been opened... (Qur'an 39:73)",
       source: "Qur'an 39:73"
     },
-    keyLesson: "Paradise has eight wide gates, each for those who excelled in specific worship. This teaches us to excel in all types of good deeds and worship Allah in diverse ways."
+    keyLesson: "Paradise has eight wide gates, each for those who excelled in specific worship. This teaches us to excel in all types of good deeds and worship Allah ﷻ in diverse ways."
   },
   {
     id: 5,
@@ -84,10 +84,10 @@ export const paradiseLessons = [
     ],
     evidence: {
       arabic: "مَنْ قَالَ لَا إِلَهَ إِلَّا اللَّهُ وَكَفَرَ بِمَا يُعْبَدُ مِنْ دُونِ اللَّهِ حَرُمَ مَالُهُ وَدَمُهُ وَحِسَابُهُ عَلَى اللَّهِ",
-      translation: "Whoever says 'There is no god but Allah' and rejects all that is worshipped besides Allah, his wealth and blood are sacred, and his reckoning is with Allah. (Sahih Muslim 23)",
+      translation: "Whoever says 'There is no god but Allah ﷻ' and rejects all that is worshipped besides Allah ﷻ, his wealth and blood are sacred, and his reckoning is with Allah ﷻ. (Sahih Muslim 23)",
       source: "Sahih Muslim 23"
     },
-    keyLesson: "The key to Paradise is sincere faith in Allah's oneness combined with righteous actions. Faith without deeds is incomplete, and deeds without faith are worthless."
+    keyLesson: "The key to Paradise is sincere faith in Allah ﷻ's oneness combined with righteous actions. Faith without deeds is incomplete, and deeds without faith are worthless."
   },
   {
     id: 6,
@@ -96,7 +96,7 @@ export const paradiseLessons = [
     description: [
       "Even the person with the lowest Paradise rank will receive blessings beyond imagination. The Prophet ﷺ described a kingdom ten times Earth's size with all treasures.",
       
-      "When this person sees his gifts, he'll think he received the greatest blessing. But Allah will tell him he has the same and ten times more.",
+      "When this person sees his gifts, he'll think he received the greatest blessing. But Allah ﷻ will tell him he has the same and ten times more.",
       
       "If this is the lowest rank, imagine the higher levels' blessings. Even struggling believers who barely enter Paradise will experience eternal joy beyond wildest dreams."
     ],
@@ -105,25 +105,25 @@ export const paradiseLessons = [
       translation: "Indeed, the lowest rank in Paradise will have a kingdom extending as far as he can see for a thousand years. (Sahih Muslim 189)",
       source: "Sahih Muslim 189"
     },
-    keyLesson: "Even the lowest rank in Paradise includes unimaginable blessings—a kingdom ten times the size of Earth. This shows Allah's infinite generosity to all believers, even the weakest in faith."
+    keyLesson: "Even the lowest rank in Paradise includes unimaginable blessings—a kingdom ten times the size of Earth. This shows Allah ﷻ's infinite generosity to all believers, even the weakest in faith."
   },
   {
     id: 7,
     title: "The Highest Paradise - Firdaws",
     quizId: 7,
     description: [
-      "Jannat Al-Firdaws is the highest, most magnificent Paradise level located directly beneath Allah's Throne. It's reserved for those who strived hardest in worshiping Allah.",
+      "Jannat Al-Firdaws is the highest, most magnificent Paradise level located directly beneath Allah ﷻ's Throne. It's reserved for those who strived hardest in worshiping Allah ﷻ.",
       
       "From Firdaws flow the four main Paradise rivers spreading throughout different levels below. Firdaws people include prophets, the truthful, martyrs, and the most righteous.",
       
-      "The Prophet ﷺ taught us to specifically ask for Al-Firdaws Al-A'lā when requesting Paradise. Allah loves when His servants ask Him for the best of everything."
+      "The Prophet ﷺ taught us to specifically ask for Al-Firdaws Al-A'lā when requesting Paradise. Allah ﷻ loves when His servants ask Him for the best of everything."
     ],
     evidence: {
       arabic: "فَإِذَا سَأَلْتُمُ اللَّهَ الْجَنَّةَ فَاسْأَلُوهُ الْفِرْدَوْسَ فَإِنَّهُ أَوْسَطُ الْجَنَّةِ وَأَعْلَى الْجَنَّةِ وَفَوْقَهُ عَرْشُ الرَّحْمَنِ",
-      translation: "When you ask Allah for Paradise, ask Him for Firdaws, for it is the middle and highest part of Paradise, and above it is the Throne of the Most Merciful. (Sahih Bukhari 2790)",
+      translation: "When you ask Allah ﷻ for Paradise, ask Him for Firdaws, for it is the middle and highest part of Paradise, and above it is the Throne of the Most Merciful. (Sahih Bukhari 2790)",
       source: "Sahih Bukhari 2790"
     },
-    keyLesson: "Firdaws is the highest Paradise beneath Allah's Throne. We should always aim for the highest levels by excelling in worship and asking Allah specifically for Firdaws."
+    keyLesson: "Firdaws is the highest Paradise beneath Allah ﷻ's Throne. We should always aim for the highest levels by excelling in worship and asking Allah ﷻ specifically for Firdaws."
   },
   {
     id: 8,
@@ -132,7 +132,7 @@ export const paradiseLessons = [
     description: [
       "Paradise contains rivers of pure water never becoming stale, rivers of milk never changing in taste, rivers of purified honey, and rivers of wine causing no harm.",
       
-      "These rivers are gifts for the righteous who avoided Allah's prohibitions. Believers sacrificed worldly pleasures for Allah and will receive far better versions eternally in Paradise.",
+      "These rivers are gifts for the righteous who avoided Allah ﷻ's prohibitions. Believers sacrificed worldly pleasures for Allah ﷻ and will receive far better versions eternally in Paradise.",
       
       "The most special river is Al-Kawthar, given to Prophet Muhammad ﷺ. Its water is whiter than milk, sweeter than honey, and whoever drinks never thirsts again."
     ],
@@ -141,7 +141,7 @@ export const paradiseLessons = [
       translation: "In it are rivers of water never changing, rivers of milk never changing in taste, rivers of wine delightful to the drinkers, and rivers of purified honey. (Qur'an 47:15)",
       source: "Qur'an 47:15"
     },
-    keyLesson: "Paradise's rivers of water, milk, wine, and honey reward believers who sacrificed worldly pleasures for Allah. Al-Kawthar is the Prophet's ﷺ special river, showing his honored position."
+    keyLesson: "Paradise's rivers of water, milk, wine, and honey reward believers who sacrificed worldly pleasures for Allah ﷻ. Al-Kawthar is the Prophet's ﷺ special river, showing his honored position."
   },
   {
     id: 9,
@@ -152,11 +152,11 @@ export const paradiseLessons = [
       
       "Some palaces are so transparent people can see through them completely. The higher the Paradise level, the more magnificent the palaces become, shining like bright stars.",
       
-      "These palaces are earned through specific good deeds. Whoever builds a mosque for Allah will receive a Paradise palace. Good character and righteous acts also earn palaces."
+      "These palaces are earned through specific good deeds. Whoever builds a mosque for Allah ﷻ will receive a Paradise palace. Good character and righteous acts also earn palaces."
     ],
     evidence: {
       arabic: "مَنْ بَنَى مَسْجِدًا يَبْتَغِي بِهِ وَجْهَ اللَّهِ بَنَى اللَّهُ لَهُ مِثْلَهُ فِي الْجَنَّةِ",
-      translation: "Whoever builds a mosque seeking Allah's pleasure, Allah will build for him something similar to it in Paradise. (Sahih Bukhari 450)",
+      translation: "Whoever builds a mosque seeking Allah ﷻ's pleasure, Allah ﷻ will build for him something similar to it in Paradise. (Sahih Bukhari 450)",
       source: "Sahih Bukhari 450"
     },
     keyLesson: "Paradise's palaces are made from gold, silver, and precious jewels, each earned through specific good deeds. Building mosques, good character, and righteous actions earn us magnificent homes in Paradise."
@@ -204,9 +204,9 @@ export const paradiseLessons = [
     description: [
       "Paradise offers not just physical pleasures but perfect companionship. Believers enjoy the company of prophets, the truthful, martyrs, and the righteous without any conflicts.",
       
-      "Allah will remove all grudges and ill feelings from hearts. Former enemies who forgave each other become close friends, sitting on thrones facing each other in harmony.",
+      "Allah ﷻ will remove all grudges and ill feelings from hearts. Former enemies who forgave each other become close friends, sitting on thrones facing each other in harmony.",
       
-      "The best companionship is with believing family members. Parents reunite with children, spouses stay together, and friends meet again. Believers thank Allah eternally for guiding loved ones."
+      "The best companionship is with believing family members. Parents reunite with children, spouses stay together, and friends meet again. Believers thank Allah ﷻ eternally for guiding loved ones."
     ],
     evidence: {
       arabic: "وَنَزَعْنَا مَا فِي صُدُورِهِم مِّنْ غِلٍّ إِخْوَانًا عَلَىٰ سُرُرٍ مُّتَقَابِلِينَ",
@@ -220,7 +220,7 @@ export const paradiseLessons = [
     title: "Families in Paradise",
     quizId: 13,
     description: [
-      "Believing families will be reunited in Paradise, even if their righteousness levels differed. Allah will elevate family members to the highest level achieved by any member.",
+      "Believing families will be reunited in Paradise, even if their righteousness levels differed. Allah ﷻ will elevate family members to the highest level achieved by any member.",
       
       "The Qur'an promises that those who believed and whose offspring followed them in faith will be joined by their descendants. This reunion eliminates separation's worldly pain.",
       
@@ -238,7 +238,7 @@ export const paradiseLessons = [
     title: "Hoor al-'Ayn",
     quizId: 14,
     description: [
-      "Allah will grant believing men and women spouses in Paradise of perfect beauty, character, and purity called Hoor al-'Ayn. These are special Paradise creations possessing indescribable beauty.",
+      "Allah ﷻ will grant believing men and women spouses in Paradise of perfect beauty, character, and purity called Hoor al-'Ayn. These are special Paradise creations possessing indescribable beauty.",
       
       "The Hoor al-'Ayn are described as pure, modest, and loving only their spouses. For believing women, they'll receive the best of spouses who love and honor them perfectly.",
       
@@ -249,7 +249,7 @@ export const paradiseLessons = [
       translation: "In them are women limiting [their] glances, untouched before them by man or jinn. (Qur'an 55:56)",
       source: "Qur'an 55:56"
     },
-    keyLesson: "Allah will grant believers spouses of perfect beauty and character in Paradise. These relationships will bring only joy and love without any worldly problems or imperfections."
+    keyLesson: "Allah ﷻ will grant believers spouses of perfect beauty and character in Paradise. These relationships will bring only joy and love without any worldly problems or imperfections."
   },
   {
     id: 15,
@@ -258,7 +258,7 @@ export const paradiseLessons = [
     description: [
       "Paradise has special gatherings called markets where people meet not to buy or sell, but to socialize and receive gifts. The Prophet ﷺ described a Friday market.",
       
-      "In these markets, people will meet friends, talk, and enjoy each other's company. Allah will provide gifts and increase their beauty each time they attend these gatherings.",
+      "In these markets, people will meet friends, talk, and enjoy each other's company. Allah ﷻ will provide gifts and increase their beauty each time they attend these gatherings.",
       
       "These markets represent perfect social gatherings without worldly markets' problems. There's no competition, jealousy, exhaustion, or disappointment. Everyone receives exactly what makes them happy and satisfied."
     ],
@@ -267,7 +267,7 @@ export const paradiseLessons = [
       translation: "Indeed, in Paradise there is a market which they will come to every Friday. (Sahih Muslim 2833)",
       source: "Sahih Muslim 2833"
     },
-    keyLesson: "Paradise has special markets where people gather for socializing and receiving gifts from Allah. These gatherings bring joy and increase beauty without any worldly problems like competition or exhaustion."
+    keyLesson: "Paradise has special markets where people gather for socializing and receiving gifts from Allah ﷻ. These gatherings bring joy and increase beauty without any worldly problems like competition or exhaustion."
   },
   {
     id: 16,
@@ -289,39 +289,39 @@ export const paradiseLessons = [
   },
   {
     id: 17,
-    title: "Seeing Allah's Face",
+    title: "Seeing Allah ﷻ's Face",
     quizId: 17,
     description: [
-      "The greatest Paradise blessing, surpassing all other joys, will be seeing Allah's Noble Face. This vision will happen regularly like gazing at the full moon clearly.",
+      "The greatest Paradise blessing, surpassing all other joys, will be seeing Allah ﷻ's Noble Face. This vision will happen regularly like gazing at the full moon clearly.",
       
       "When believers see their Lord, all other Paradise joys will seem small by comparison. This vision fills them with indescribable happiness, peace, and complete overwhelming satisfaction.",
       
-      "The Prophet ﷺ said believers will see Allah without any difficulty or crowding. This ultimate blessing is reserved for those who maintained Tawheed and sincerely worshiped Allah alone."
+      "The Prophet ﷺ said believers will see Allah ﷻ without any difficulty or crowding. This ultimate blessing is reserved for those who maintained Tawheed and sincerely worshiped Allah ﷻ alone."
     ],
     evidence: {
       arabic: "وُجُوهٌ يَوْمَئِذٍ نَّاضِرَةٌ ۝ إِلَىٰ رَبِّهَا نَاظِرَةٌ",
       translation: "Faces that Day will be radiant, looking at their Lord. (Qur'an 75:22-23)",
       source: "Qur'an 75:22-23"
     },
-    keyLesson: "The greatest Paradise blessing is seeing Allah's Noble Face. This surpasses all other joys and brings indescribable happiness and satisfaction to believers who worshiped Allah alone."
+    keyLesson: "The greatest Paradise blessing is seeing Allah ﷻ's Noble Face. This surpasses all other joys and brings indescribable happiness and satisfaction to believers who worshiped Allah ﷻ alone."
   },
   {
     id: 18,
-    title: "The Speech of Allah",
+    title: "The Speech of Allah ﷻ",
     quizId: 18,
     description: [
-      "Allah will speak directly to the Paradise people without any intermediary. He'll greet them with peace, saying 'Salāmun'—bringing them immense honor, joy, and satisfaction.",
+      "Allah ﷻ will speak directly to the Paradise people without any intermediary. He'll greet them with peace, saying 'Salāmun'—bringing them immense honor, joy, and satisfaction.",
       
-      "This direct communication with Allah is one of Paradise's greatest honors. Believers will hear their Lord's voice speaking words of pleasure, approval, and eternal welcome to them.",
+      "This direct communication with Allah ﷻ is one of Paradise's greatest honors. Believers will hear their Lord's voice speaking words of pleasure, approval, and eternal welcome to them.",
       
-      "The Qur'an says Allah will tell Paradise people, 'Peace be upon you for what you patiently endured. Excellent is the final home.' This divine greeting brings complete satisfaction."
+      "The Qur'an says Allah ﷻ will tell Paradise people, 'Peace be upon you for what you patiently endured. Excellent is the final home.' This divine greeting brings complete satisfaction."
     ],
     evidence: {
       arabic: "سَلَامٌ قَوْلًا مِّن رَّبٍّ رَّحِيمٍ",
       translation: "Peace, a word from a Merciful Lord. (Qur'an 36:58)",
       source: "Qur'an 36:58"
     },
-    keyLesson: "Allah will speak directly to Paradise people, greeting them with peace. This divine communication is one of the greatest honors, bringing immense joy and satisfaction to believers."
+    keyLesson: "Allah ﷻ will speak directly to Paradise people, greeting them with peace. This divine communication is one of the greatest honors, bringing immense joy and satisfaction to believers."
   },
   {
     id: 19,
@@ -346,17 +346,17 @@ export const paradiseLessons = [
     title: "Reflection and Preparation",
     quizId: 20,
     description: [
-      "Learning about Paradise should motivate us to work harder toward pleasing Allah through sincere worship, good character, and helping others in need every day of our lives.",
+      "Learning about Paradise should motivate us to work harder toward pleasing Allah ﷻ through sincere worship, good character, and helping others in need every day of our lives.",
       
-      "We should regularly remember Paradise and ask Allah to grant us Firdaws. Making dua for Paradise keeps our hearts attached to this ultimate eternal goal and reward.",
+      "We should regularly remember Paradise and ask Allah ﷻ to grant us Firdaws. Making dua for Paradise keeps our hearts attached to this ultimate eternal goal and reward.",
       
-      "The path to Paradise requires sincere faith, righteous actions, avoiding sins, repenting when we make mistakes, and being patient with life's tests. May Allah grant us all Paradise."
+      "The path to Paradise requires sincere faith, righteous actions, avoiding sins, repenting when we make mistakes, and being patient with life's tests. May Allah ﷻ grant us all Paradise."
     ],
     evidence: {
       arabic: "وَالَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ أُولَٰئِكَ أَصْحَابُ الْجَنَّةِ ۖ هُمْ فِيهَا خَالِدُونَ",
       translation: "And those who believe and do righteous deeds - those are the companions of Paradise; they will abide therein eternally. (Qur'an 2:82)",
       source: "Qur'an 2:82"
     },
-    keyLesson: "Learning about Paradise motivates us to work toward pleasing Allah through sincere faith, righteous actions, and avoiding sins. We should regularly ask Allah to grant us Firdaws."
+    keyLesson: "Learning about Paradise motivates us to work toward pleasing Allah ﷻ through sincere faith, righteous actions, and avoiding sins. We should regularly ask Allah ﷻ to grant us Firdaws."
   }
 ];

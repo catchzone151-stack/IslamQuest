@@ -7,7 +7,7 @@ import { useModalStore, MODAL_TYPES } from "./modalStore";
 const STORAGE_KEY = "islamQuestProgress_v4";
 
 const DEFAULT_PATHS = [
-  { id: 1, title: "Names of Allah", progress: 0, totalLessons: 104, completedLessons: 0, status: "available" },
+  { id: 1, title: "Names of Allah ﷻ", progress: 0, totalLessons: 104, completedLessons: 0, status: "available" },
   { id: 2, title: "Foundations of Islam", progress: 0, totalLessons: 17, completedLessons: 0, status: "available" },
   { id: 3, title: "Stories of Prophets", progress: 0, totalLessons: 47, completedLessons: 0, status: "available" },
   { id: 4, title: "Life of Muhammad ﷺ", progress: 0, totalLessons: 78, completedLessons: 0, status: "available" },
