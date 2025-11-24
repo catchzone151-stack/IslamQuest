@@ -1022,7 +1022,86 @@ export const useProgressStore = create((set, get) => ({
     }
   },
 
-  loadFromSupabase: async () => {},
+  loadFromSupabase: async () => {
+    try {
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth || !auth.user) {
+        console.log("No Supabase user logged in.");
+        return;
+      }
+
+      const userId = auth.user.id;
+
+      // Load cloud row
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", userId)
+        .single();
+
+      if (error || !data) {
+        console.log("No cloud profile found or error:", error);
+        return;
+      }
+
+      // Decrypt encrypted JSON fields
+      const lessonStates = data.lesson_states ? decryptJSON(data.lesson_states) : {};
+      const lockedLessons = data.locked_lessons ? decryptJSON(data.locked_lessons) : {};
+      const paths = data.paths ? decryptJSON(data.paths) : null;
+
+      const cloudTs = new Date(data.updated_at).getTime();
+      const localTs = get().getLastUpdatedAt();
+
+      // Choose freshest source
+      const shouldOverwriteLocal = cloudTs > localTs;
+
+      if (!shouldOverwriteLocal) {
+        console.log("Local data newer → keeping device data.");
+        return;
+      }
+
+      // Build final restored state
+      const restored = {
+        xp: data.xp ?? get().xp,
+        coins: data.coins ?? get().coins,
+        streak: data.streak ?? get().streak,
+        level: data.level ?? get().level,
+        avatar: data.avatar ?? get().avatar,
+        username: data.username ?? get().username,
+        displayName: data.display_name ?? get().displayName,
+
+        premium: data.premium ?? false,
+        premiumType: data.premium_type ?? null,
+        premiumActivatedAt: data.premium_activated_at ?? null,
+        premiumStatus: data.premium_type ?? "free",
+        hasPremium: data.premium ?? false,
+
+        familyPlanId: data.family_plan_id ?? null,
+
+        lessonStates: lessonStates || {},
+        lockedLessons: lockedLessons || get().lockedLessons,
+        paths: paths || get().paths,
+
+        reviewMistakesUnlocked: data.reviewMistakesUnlocked ?? false,
+        smartRevisionUnlocked: data.smartRevisionUnlocked ?? false,
+      };
+
+      // Apply restored state
+      set(restored);
+      get().saveProgress();
+
+      // Mark restore time
+      get().setLastUpdatedAt(Date.now());
+
+      console.log("✅ Restored from Supabase (cloud → device)");
+    } catch (err) {
+      console.log("❌ loadFromSupabase failed:", err);
+    }
+  },
 }));
 
 useProgressStore.getState().loadProgress();
+
+setTimeout(() => {
+  useProgressStore.getState().loadFromSupabase();
+}, 300);
