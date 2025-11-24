@@ -316,7 +316,11 @@ export const useEventsStore = create(
       // Utility functions
       areResultsUnlocked,
       getTimeUntilResults,
-      getEvents: () => EVENTS
+      getEvents: () => EVENTS,
+
+      // Supabase sync functions (Phase 1: empty placeholders)
+      syncToSupabase: async () => {},
+      loadFromSupabase: async () => {},
     }),
     {
       name: "islam-quest-events",

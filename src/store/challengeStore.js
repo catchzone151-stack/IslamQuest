@@ -1340,5 +1340,9 @@ export const useChallengeStore = create((set, get) => ({
       (c.challengerId === currentUserId || c.opponentId === currentUserId) &&
       (c.status === "completed" || c.status === "expired")
     );
-  }
+  },
+
+  // Supabase sync functions (Phase 1: empty placeholders)
+  syncToSupabase: async () => {},
+  loadFromSupabase: async () => {},
 }));

@@ -235,4 +235,8 @@ export const useDailyQuestStore = create((set, get) => ({
 
     return "unavailable"; // No completed lessons
   },
+
+  // Supabase sync functions (Phase 1: empty placeholders)
+  syncToSupabase: async () => {},
+  loadFromSupabase: async () => {},
 }));

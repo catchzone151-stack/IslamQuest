@@ -330,7 +330,11 @@ export const useFriendsStore = create(
           users: [],
           friendships: []
         });
-      }
+      },
+
+      // Supabase sync functions (Phase 1: empty placeholders)
+      syncToSupabase: async () => {},
+      loadFromSupabase: async () => {},
     }),
     {
       name: STORAGE_KEY,

@@ -926,6 +926,10 @@ export const useProgressStore = create((set, get) => ({
     localStorage.clear();
     window.location.reload();
   },
+
+  // Supabase sync functions (Phase 1: empty placeholders)
+  syncToSupabase: async () => {},
+  loadFromSupabase: async () => {},
 }));
 
 useProgressStore.getState().loadProgress();

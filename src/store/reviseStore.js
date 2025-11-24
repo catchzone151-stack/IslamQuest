@@ -233,4 +233,8 @@ export const useReviseStore = create((set, get) => ({
     const shuffled = shuffle(allQuestions);
     return shuffled.slice(0, Math.min(8, shuffled.length));
   },
+
+  // Supabase sync functions (Phase 1: empty placeholders)
+  syncToSupabase: async () => {},
+  loadFromSupabase: async () => {},
 }));
