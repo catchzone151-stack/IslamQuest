@@ -29,14 +29,13 @@ export const HIDDEN_NINJA_AVATARS = [NINJA_MALE_KEY, NINJA_FEMALE_KEY];
 // ═══════════════════════════════════════════════════════════════════
 
 export const AVAILABLE_AVATARS = [
-  // Male avatars (10 total)
+  // Male avatars (9 total) - removed avatar_man_welldone (now a mascot)
   "avatar_man_lantern",
   "avatar_man_tasbih",
   "avatar_man_cup",
   "avatar_man_spoon",
   "avatar_man_soccer",
   "avatar_man_sunglasses",
-  "avatar_man_welldone",
   "avatar_man_construction",
   "avatar_man_thumbsup",
   "avatar_man_scholar",

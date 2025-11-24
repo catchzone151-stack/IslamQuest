@@ -4,6 +4,7 @@
 // Using only the "1 Mascot" culturally authentic Islamic mascots
 import mascot_boss from "./mascots/mascot_boss.webp";
 import mascot_congratulation from "./mascots/mascot_congratulation.webp";
+import mascot_welldone from "./mascots/mascot_welldone.webp";
 import mascot_sitting_v2 from "./mascots/mascot_sitting_v2.webp";
 import mascot_onboarding from "./mascots/mascot_onboarding.webp";
 import mascot_pointing from "./mascots/mascot_pointing.webp";
@@ -31,7 +32,6 @@ import avatar_man_cup from "./avatars/avatar_man_cup.webp";
 import avatar_man_spoon from "./avatars/avatar_man_spoon.webp";
 import avatar_man_soccer from "./avatars/avatar_man_soccer.webp";
 import avatar_man_sunglasses from "./avatars/avatar_man_sunglasses.webp";
-import avatar_man_welldone from "./avatars/avatar_man_welldone.webp";
 import avatar_man_construction from "./avatars/avatar_man_construction.webp";
 import avatar_man_thumbsup from "./avatars/avatar_man_thumbsup.webp";
 import avatar_man_scholar from "./avatars/avatar_man_scholar.webp";
@@ -76,6 +76,7 @@ const assets = {
     // New culturally authentic Islamic mascots
     mascot_boss,
     mascot_congratulation,
+    mascot_welldone,
     mascot_sitting_v2,
     mascot_onboarding,
     mascot_pointing,
@@ -102,7 +103,6 @@ const assets = {
     avatar_man_spoon,
     avatar_man_soccer,
     avatar_man_sunglasses,
-    avatar_man_welldone,
     avatar_man_construction,
     avatar_man_thumbsup,
     avatar_man_scholar,

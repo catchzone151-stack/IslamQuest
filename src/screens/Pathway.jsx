@@ -12,7 +12,7 @@ import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import { getLessonsForPath } from "../data/lessonLoader.js";
 
 // Mascots
-import CompletionMascot from "../assets/mascots/mascot_congratulation.webp";
+import CompletionMascot from "../assets/mascots/mascot_welldone.webp";
 import mascot_sitting from "../assets/mascots/mascot_sitting.webp";
 
 export default function Pathway() {
