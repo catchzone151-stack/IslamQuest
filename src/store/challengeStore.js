@@ -3,6 +3,22 @@ import { useProgressStore } from "./progressStore";
 import { useFriendsStore } from "./friendsStore";
 import { getQuizForLesson } from "../data/quizEngine";
 
+// Import all quiz data for Boss Level
+import namesOfAllahQuizzesData from '../data/quizzes/namesOfAllah.json';
+import foundationsQuizzesData from '../data/quizzes/foundations.json';
+import prophetsQuizzesData from '../data/quizzes/prophets.json';
+import prophetLifeQuizzesData from '../data/quizzes/prophetLife.json';
+import wivesQuizzesData from '../data/quizzes/wivesQuizzes.json';
+import tenPromisedQuizzesData from '../data/quizzes/tenPromisedQuizzes.json';
+import greatestWomenQuizzesData from '../data/quizzes/greatestWomenQuizzes.json';
+import companionsQuizzesData from '../data/quizzes/companionsQuizzes.json';
+import angelsQuizzesData from '../data/quizzes/angelsQuizzes.json';
+import endTimesQuizzesData from '../data/quizzes/endTimesQuizzes.json';
+import graveQuizzesData from '../data/quizzes/graveQuizzes.json';
+import judgementQuizzesData from '../data/quizzes/judgementQuizzes.json';
+import hellfireQuizzesData from '../data/quizzes/hellfireQuizzes.json';
+import paradiseQuizzesData from '../data/quizzes/paradiseQuizzes.json';
+
 const STORAGE_KEY = "islamQuestChallenges_v1";
 const CHALLENGE_DURATION = 48 * 60 * 60 * 1000; // 48 hours in ms
 
@@ -686,34 +702,83 @@ export const useChallengeStore = create((set, get) => ({
     ];
   },
 
-  // Get questions for Boss Level (from ALL completed lessons - hardest tier only)
+  // 🎯 Build Boss Level question pool from last third of ALL paths
+  getBossLevelQuestionPool: () => {
+    const allPathsData = [
+      namesOfAllahQuizzesData,      // Path 1
+      foundationsQuizzesData,        // Path 2
+      prophetsQuizzesData,           // Path 3
+      prophetLifeQuizzesData,        // Path 4
+      wivesQuizzesData,              // Path 5
+      tenPromisedQuizzesData,        // Path 6
+      greatestWomenQuizzesData,      // Path 7
+      companionsQuizzesData,         // Path 8
+      angelsQuizzesData,             // Path 9
+      endTimesQuizzesData,           // Path 10
+      graveQuizzesData,              // Path 11
+      judgementQuizzesData,          // Path 12
+      hellfireQuizzesData,           // Path 13
+      paradiseQuizzesData            // Path 14
+    ];
+
+    const bossPool = [];
+
+    // For each path, extract last third of questions
+    allPathsData.forEach((pathData, pathIndex) => {
+      // Flatten all questions from all lessons in this path
+      const allPathQuestions = [];
+      pathData.forEach(lessonData => {
+        if (lessonData.questions && Array.isArray(lessonData.questions)) {
+          lessonData.questions.forEach(q => {
+            allPathQuestions.push({
+              question: q.question,
+              options: q.options,
+              answer: q.answer,
+              difficulty: 'hard', // Mark all Boss Level questions as hard
+              sourcePath: pathIndex + 1,
+              sourceLesson: lessonData.lessonId
+            });
+          });
+        }
+      });
+
+      // Calculate last third
+      const totalQuestions = allPathQuestions.length;
+      const lastThirdStart = Math.ceil(totalQuestions * 2 / 3); // Start at 66.67%
+      const lastThirdQuestions = allPathQuestions.slice(lastThirdStart);
+
+      // Add to boss pool
+      bossPool.push(...lastThirdQuestions);
+    });
+
+    return bossPool;
+  },
+
+  // Get questions for Boss Level (from last third of ALL paths)
   getBossLevelQuestions: () => {
-    // 🎯 NEW SYSTEM: Pull from user's completed lessons (hardest questions only)
-    let allQuestions = get().getQuestionPool();
-    
-    // Filter for HARD difficulty only (highest tier)
-    let hardQuestions = allQuestions.filter(q => q.difficulty === 'hard');
+    // 🎯 NEW SYSTEM: Pull from last third of all paths (automatically hard difficulty)
+    let allQuestions = get().getBossLevelQuestionPool();
     
     // 🚫 Remove recently shown questions
-    hardQuestions = get().filterRecentQuestions(hardQuestions);
+    allQuestions = get().filterRecentQuestions(allQuestions);
     
     // If pool is too small, expand with variations
     const targetCount = BOSS_LEVEL.questionCount || 12;
-    if (hardQuestions.length < targetCount) {
-      // If no hard questions, use fallback pool
-      if (hardQuestions.length === 0) {
-        hardQuestions = get().getBossLevelFallbackQuestions();
+    if (allQuestions.length < targetCount) {
+      // If no questions available, use fallback pool
+      if (allQuestions.length === 0) {
+        allQuestions = get().getBossLevelFallbackQuestions();
       } else {
         // Expand pool with variations
-        hardQuestions = get().expandQuestionPool(hardQuestions, targetCount);
+        allQuestions = get().expandQuestionPool(allQuestions, targetCount);
       }
     }
     
-    // Shuffle and select
-    const shuffled = hardQuestions.sort(() => Math.random() - 0.5);
+    // Shuffle and select (KEEP EXISTING LOGIC)
+    const shuffled = allQuestions.sort(() => Math.random() - 0.5);
     const selected = shuffled.slice(0, targetCount);
     
-    // 📝 Track shown questions
+    // 📝 Track shown questions (KEEP EXISTING LOGIC)
     selected.forEach(q => get().trackShownQuestion(q.question));
     
     return selected;
