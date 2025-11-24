@@ -55,6 +55,10 @@ export const useProgressStore = create((set, get) => ({
   vibrationEnabled: true, // Haptic feedback toggle
   _premiumMigrationV1: false, // Internal: tracks if premium lock migration has run
 
+  // 📚 Revise Feature Unlocks
+  reviewMistakesUnlocked: false, // Unlocks after first mistake
+  smartRevisionUnlocked: false, // Unlocks after 40 completed lessons
+
   // 🌙 Learning Paths
   paths: DEFAULT_PATHS,
   
@@ -807,6 +811,41 @@ export const useProgressStore = create((set, get) => ({
     set({ lockedLessons: {} });
     get().saveProgress();
   },
+
+  // 📚 Get total completed lessons across all paths
+  getTotalCompletedLessons: () => {
+    const { lessonStates } = get();
+    let total = 0;
+    
+    Object.keys(lessonStates).forEach(pathId => {
+      const pathState = lessonStates[pathId] || {};
+      const passedCount = Object.values(pathState).filter(lesson => lesson.passed).length;
+      total += passedCount;
+    });
+    
+    return total;
+  },
+
+  // 📚 Unlock Review Mistakes (called when first mistake is saved)
+  unlockReviewMistakes: () => {
+    const { reviewMistakesUnlocked } = get();
+    if (!reviewMistakesUnlocked) {
+      set({ reviewMistakesUnlocked: true });
+      get().saveProgress();
+    }
+  },
+
+  // 📚 Check and unlock Smart Revision if 40 lessons completed
+  checkAndUnlockSmartRevision: () => {
+    const { smartRevisionUnlocked } = get();
+    if (smartRevisionUnlocked) return; // Already unlocked
+    
+    const totalCompleted = get().getTotalCompletedLessons();
+    if (totalCompleted >= 40) {
+      set({ smartRevisionUnlocked: true });
+      get().saveProgress();
+    }
+  },
   
   // 🧹 Reset all progress to default (for developer/testing purposes)
   resetAllProgress: () => {
@@ -829,6 +868,8 @@ export const useProgressStore = create((set, get) => ({
       familyPlanId: null,
       familyMembers: [],
       hasPremium: false,
+      reviewMistakesUnlocked: false,
+      smartRevisionUnlocked: false,
     });
     get().saveProgress();
   },
