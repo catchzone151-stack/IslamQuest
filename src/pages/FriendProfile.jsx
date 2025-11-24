@@ -63,7 +63,7 @@ export default function FriendProfile() {
   }
 
   const userLevel = getCurrentLevel(user.xp);
-  const avatarSrc = getAvatarImage(user.avatar);
+  const avatarSrc = getAvatarImage(user.avatar, { userId: user.id, nickname: user.nickname });
 
   return (
     <div className="screen no-extra-space" style={{

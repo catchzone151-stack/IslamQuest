@@ -624,7 +624,7 @@ function SubTabButton({ active, onClick, label, icon }) {
 }
 
 function LeaderboardCard({ user, rank, onChallenge, onQuickMessage }) {
-  const avatarSrc = getAvatarImage(user.avatar);
+  const avatarSrc = getAvatarImage(user.avatar, { userId: user.id, nickname: user.nickname });
   const userLevel = getCurrentLevel(user.xp);
   
   const getRankClass = () => {
@@ -781,7 +781,7 @@ function LeaderboardCard({ user, rank, onChallenge, onQuickMessage }) {
 }
 
 function GlobalLeaderboardCard({ user, rank, currentUserId, isFriend, onUserClick }) {
-  const avatarSrc = getAvatarImage(user.avatar);
+  const avatarSrc = getAvatarImage(user.avatar, { userId: user.id, nickname: user.nickname });
   const userLevel = getCurrentLevel(user.xp);
   const isPermanentEntry = user.isPermanent === true;
   
@@ -916,7 +916,7 @@ function GlobalLeaderboardCard({ user, rank, currentUserId, isFriend, onUserClic
 }
 
 function UserCard({ user, onClick, action, badge, badgeColor }) {
-  const avatarSrc = getAvatarImage(user.avatar);
+  const avatarSrc = getAvatarImage(user.avatar, { userId: user.id, nickname: user.nickname });
   const userLevel = getCurrentLevel(user.xp);
 
   return (
@@ -1014,7 +1014,7 @@ function UserCard({ user, onClick, action, badge, badgeColor }) {
 }
 
 function RequestCard({ user, type, onAccept, onDecline, onCancel }) {
-  const avatarSrc = getAvatarImage(user.avatar);
+  const avatarSrc = getAvatarImage(user.avatar, { userId: user.id, nickname: user.nickname });
   const userLevel = getCurrentLevel(user.xp);
 
   return (
