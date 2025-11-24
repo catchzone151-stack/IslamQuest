@@ -1,10 +1,12 @@
 import React from "react";
 import assets from "../assets/assets";
+import { AVAILABLE_AVATARS } from "../utils/avatarUtils";
 
 export default function EditAvatarModal({ isOpen, onClose, currentAvatar, onSave }) {
   if (!isOpen) return null;
 
-  const avatarList = Object.values(assets.avatars);
+  // Only show AVAILABLE_AVATARS (excludes hidden ninja avatars)
+  const avatarList = AVAILABLE_AVATARS.map(key => assets.avatars[key]);
 
   const handleSelect = (avatar) => {
     // Extract avatar key from full path (e.g., "/src/assets/avatars/avatar_robot.png.webp" -> "avatar_robot")
