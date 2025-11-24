@@ -556,7 +556,7 @@ export default function Pathway() {
                       width: "85%",
                       height: "85%",
                       borderRadius: "50%",
-                      objectFit: "cover",
+                      objectFit: "contain",
                     }}
                   />
                 ) : (

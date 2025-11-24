@@ -99,7 +99,7 @@ export default function Profile() {
                 height: 100,
                 borderRadius: "50%",
                 border: "3px solid #FFD700",
-                objectFit: "cover",
+                objectFit: "contain",
               }}
             />
           </button>

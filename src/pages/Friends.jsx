@@ -689,7 +689,7 @@ function LeaderboardCard({ user, rank, onChallenge, onQuickMessage }) {
           style={{
             width: "100%",
             height: "100%",
-            objectFit: "cover"
+            objectFit: "contain"
           }}
         />
       </div>
@@ -849,7 +849,7 @@ function GlobalLeaderboardCard({ user, rank, currentUserId, isFriend, onUserClic
           style={{
             width: "100%",
             height: "100%",
-            objectFit: "cover"
+            objectFit: "contain"
           }}
         />
       </div>
@@ -951,7 +951,7 @@ function UserCard({ user, onClick, action, badge, badgeColor }) {
           style={{
             width: "100%",
             height: "100%",
-            objectFit: "cover"
+            objectFit: "contain"
           }}
         />
       </div>
@@ -1047,7 +1047,7 @@ function RequestCard({ user, type, onAccept, onDecline, onCancel }) {
           style={{
             width: "100%",
             height: "100%",
-            objectFit: "cover"
+            objectFit: "contain"
           }}
         />
       </div>
