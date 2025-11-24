@@ -83,9 +83,19 @@ export default function Friends() {
     return a.nickname.localeCompare(b.nickname);
   });
 
-  // Get global leaderboard (all users except current user, sorted by XP)
-  const globalLeaderboard = users
-    .filter(u => u.id !== currentUserId)
+  // 🔹 THE DEV - Permanent Global Leaderboard Entry
+  const THE_DEV_ENTRY = {
+    id: 'the_dev_permanent',
+    username: 'thedev',
+    nickname: 'The Dev',
+    avatar: 'avatar_ninja_male',
+    xp: 168542,
+    streak: 365,
+    isPermanent: true
+  };
+
+  // Get global leaderboard (all users except current user + The Dev, sorted by XP)
+  const globalLeaderboard = [THE_DEV_ENTRY, ...users.filter(u => u.id !== currentUserId)]
     .sort((a, b) => {
       if (b.xp !== a.xp) return b.xp - a.xp;
       if (b.streak !== a.streak) return b.streak - a.streak;
@@ -773,6 +783,7 @@ function LeaderboardCard({ user, rank, onChallenge, onQuickMessage }) {
 function GlobalLeaderboardCard({ user, rank, currentUserId, isFriend, onUserClick }) {
   const avatarSrc = getAvatarImage(user.avatar);
   const userLevel = getCurrentLevel(user.xp);
+  const isPermanentEntry = user.isPermanent === true;
   
   const getRankClass = () => {
     if (rank === 1) return "gold";
@@ -792,7 +803,7 @@ function GlobalLeaderboardCard({ user, rank, currentUserId, isFriend, onUserClic
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: Math.min(rank * 0.03, 0.5) }}
-      onClick={isFriend ? onUserClick : undefined}
+      onClick={!isPermanentEntry && isFriend ? onUserClick : undefined}
       style={{
         background: rankClass === "gold" ? "linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(255, 215, 0, 0.2) 100%)" :
                     rankClass === "silver" ? "linear-gradient(135deg, rgba(192, 192, 192, 0.2) 0%, rgba(169, 169, 169, 0.1) 100%)" :
@@ -804,10 +815,11 @@ function GlobalLeaderboardCard({ user, rank, currentUserId, isFriend, onUserClic
         display: "flex",
         alignItems: "center",
         gap: "10px",
-        cursor: isFriend ? "pointer" : "default",
+        cursor: !isPermanentEntry && isFriend ? "pointer" : "default",
         boxShadow: rankClass === "gold" ? "0 0 20px rgba(212, 175, 55, 0.4)" :
                    rankClass === "silver" ? "0 0 15px rgba(192, 192, 192, 0.3)" :
-                   "none"
+                   "none",
+        opacity: isPermanentEntry ? 0.95 : 1
       }}
     >
       {/* Rank */}
@@ -873,8 +885,20 @@ function GlobalLeaderboardCard({ user, rank, currentUserId, isFriend, onUserClic
         </div>
       </div>
 
-      {/* Friend Badge */}
-      {isFriend && (
+      {/* Friend Badge or Dev Badge */}
+      {isPermanentEntry ? (
+        <div style={{
+          padding: "4px 8px",
+          background: "rgba(139, 92, 246, 0.2)",
+          border: "1px solid #8b5cf6",
+          borderRadius: "6px",
+          color: "#a78bfa",
+          fontSize: "0.7rem",
+          fontWeight: "600"
+        }}>
+          👑 Dev
+        </div>
+      ) : isFriend ? (
         <div style={{
           padding: "4px 8px",
           background: "rgba(16, 185, 129, 0.2)",
@@ -886,7 +910,7 @@ function GlobalLeaderboardCard({ user, rank, currentUserId, isFriend, onUserClic
         }}>
           Friend
         </div>
-      )}
+      ) : null}
     </motion.div>
   );
 }
