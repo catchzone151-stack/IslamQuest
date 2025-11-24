@@ -105,7 +105,19 @@ export const useProgressStore = create((set, get) => ({
         savedData.vibrationEnabled = true;
       }
       
+      // 📚 MIGRATION: Initialize Revise unlock flags if missing
+      if (savedData.reviewMistakesUnlocked === undefined) {
+        savedData.reviewMistakesUnlocked = false;
+      }
+      if (savedData.smartRevisionUnlocked === undefined) {
+        savedData.smartRevisionUnlocked = false;
+      }
+      
       set(savedData);
+      
+      // 📚 MIGRATION: Recalculate Revise unlock states from existing data
+      // This ensures legacy users get unlocks based on their existing progress
+      get().migrateReviseUnlocks();
       
       // 🔒 MIGRATION: Recalculate all locks for premium system (Nov 2025 premium rebuild)
       // This ensures legacy users who unlocked premium lessons before the premium
@@ -846,6 +858,38 @@ export const useProgressStore = create((set, get) => ({
     const totalCompleted = get().getTotalCompletedLessons();
     if (totalCompleted >= 40) {
       set({ smartRevisionUnlocked: true });
+      get().saveProgress();
+    }
+  },
+
+  // 📚 MIGRATION: Recalculate Revise unlock states from existing data
+  // Called during loadProgress to ensure legacy users get unlocks
+  migrateReviseUnlocks: () => {
+    const { reviewMistakesUnlocked, smartRevisionUnlocked } = get();
+    let needsSave = false;
+    
+    // Check Review Mistakes: unlock if weak pool exists in reviseStore
+    if (!reviewMistakesUnlocked) {
+      const reviseData = localStorage.getItem("islamQuestRevise");
+      if (reviseData) {
+        const parsed = JSON.parse(reviseData);
+        if (parsed.weakPool && parsed.weakPool.length > 0) {
+          set({ reviewMistakesUnlocked: true });
+          needsSave = true;
+        }
+      }
+    }
+    
+    // Check Smart Revision: unlock if 40+ lessons completed
+    if (!smartRevisionUnlocked) {
+      const totalCompleted = get().getTotalCompletedLessons();
+      if (totalCompleted >= 40) {
+        set({ smartRevisionUnlocked: true });
+        needsSave = true;
+      }
+    }
+    
+    if (needsSave) {
       get().saveProgress();
     }
   },

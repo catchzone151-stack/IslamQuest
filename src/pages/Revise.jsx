@@ -23,7 +23,7 @@ export default function Revise() {
     updateLastSeen,
   } = useReviseStore();
 
-  const { addXPAndCoins } = useProgressStore();
+  const { addXPAndCoins, reviewMistakesUnlocked, smartRevisionUnlocked } = useProgressStore();
   const analytics = useAnalytics();
 
   // Load revise data on mount
@@ -403,30 +403,30 @@ export default function Revise() {
 
         {/* Review Mistakes Card */}
         <div
-          onClick={hasWeakQuestions ? startMistakesReview : null}
+          onClick={reviewMistakesUnlocked && hasWeakQuestions ? startMistakesReview : null}
           style={{
-            background: hasWeakQuestions
+            background: reviewMistakesUnlocked && hasWeakQuestions
               ? "linear-gradient(145deg, rgba(212,175,55,0.2), rgba(16,185,129,0.1))"
               : "linear-gradient(145deg, rgba(107,114,128,0.2), rgba(75,85,99,0.1))",
-            border: `2px solid ${hasWeakQuestions ? "rgba(212,175,55,0.5)" : "rgba(107,114,128,0.3)"}`,
+            border: `2px solid ${reviewMistakesUnlocked && hasWeakQuestions ? "rgba(212,175,55,0.5)" : "rgba(107,114,128,0.3)"}`,
             borderRadius: 20,
             padding: 24,
             marginBottom: 20,
-            cursor: hasWeakQuestions ? "pointer" : "not-allowed",
+            cursor: reviewMistakesUnlocked && hasWeakQuestions ? "pointer" : "not-allowed",
             transition: "all 0.3s ease",
-            boxShadow: hasWeakQuestions
+            boxShadow: reviewMistakesUnlocked && hasWeakQuestions
               ? "0 8px 20px rgba(212,175,55,0.2)"
               : "0 4px 10px rgba(0,0,0,0.1)",
-            opacity: hasWeakQuestions ? 1 : 0.6,
+            opacity: reviewMistakesUnlocked && hasWeakQuestions ? 1 : 0.6,
           }}
           onMouseEnter={(e) => {
-            if (hasWeakQuestions) {
+            if (reviewMistakesUnlocked && hasWeakQuestions) {
               e.currentTarget.style.transform = "scale(1.02)";
               e.currentTarget.style.boxShadow = "0 12px 30px rgba(212,175,55,0.3)";
             }
           }}
           onMouseLeave={(e) => {
-            if (hasWeakQuestions) {
+            if (reviewMistakesUnlocked && hasWeakQuestions) {
               e.currentTarget.style.transform = "scale(1)";
               e.currentTarget.style.boxShadow = "0 8px 20px rgba(212,175,55,0.2)";
             }
@@ -472,7 +472,7 @@ export default function Revise() {
             </div>
             <div
               style={{
-                background: hasWeakQuestions
+                background: reviewMistakesUnlocked && hasWeakQuestions
                   ? "rgba(212,175,55,0.2)"
                   : "rgba(107,114,128,0.2)",
                 borderRadius: "50%",
@@ -485,11 +485,11 @@ export default function Revise() {
                 flexShrink: 0,
               }}
             >
-              {hasWeakQuestions ? weakPool.length : "🔒"}
+              {reviewMistakesUnlocked && hasWeakQuestions ? weakPool.length : "🔒"}
             </div>
           </div>
 
-          {!hasWeakQuestions && (
+          {!reviewMistakesUnlocked && (
             <div
               style={{
                 marginTop: 15,
@@ -500,7 +500,22 @@ export default function Revise() {
                 opacity: 0.8,
               }}
             >
-              💡 Complete some lessons and get questions wrong to build your revision pool!
+              💡 Get your first question wrong in any quiz to unlock this feature!
+            </div>
+          )}
+          
+          {reviewMistakesUnlocked && !hasWeakQuestions && (
+            <div
+              style={{
+                marginTop: 15,
+                padding: 12,
+                background: "rgba(255,255,255,0.05)",
+                borderRadius: 10,
+                fontSize: "0.85rem",
+                opacity: 0.8,
+              }}
+            >
+              🎉 No mistakes to review! You've mastered all your weak areas!
             </div>
           )}
         </div>
@@ -526,35 +541,38 @@ export default function Revise() {
 // ============================================
 function SmartRevisionCard({ onStart }) {
   const { getWeakestPath } = useReviseStore();
+  const { smartRevisionUnlocked, getTotalCompletedLessons } = useProgressStore();
   const weakestPath = getWeakestPath();
 
   const hasWeakestPath = weakestPath !== null && weakestPath.totalQuestions > 0;
+  const totalCompleted = getTotalCompletedLessons();
+  const isActive = smartRevisionUnlocked && hasWeakestPath;
 
   return (
     <div
-      onClick={hasWeakestPath ? onStart : null}
+      onClick={isActive ? onStart : null}
       style={{
-        background: hasWeakestPath
+        background: isActive
           ? "linear-gradient(145deg, rgba(59,130,246,0.2), rgba(147,51,234,0.1))"
           : "linear-gradient(145deg, rgba(107,114,128,0.2), rgba(75,85,99,0.1))",
-        border: `2px solid ${hasWeakestPath ? "rgba(59,130,246,0.5)" : "rgba(107,114,128,0.3)"}`,
+        border: `2px solid ${isActive ? "rgba(59,130,246,0.5)" : "rgba(107,114,128,0.3)"}`,
         borderRadius: 20,
         padding: 24,
-        cursor: hasWeakestPath ? "pointer" : "not-allowed",
+        cursor: isActive ? "pointer" : "not-allowed",
         transition: "all 0.3s ease",
-        boxShadow: hasWeakestPath
+        boxShadow: isActive
           ? "0 8px 20px rgba(59,130,246,0.2)"
           : "0 4px 10px rgba(0,0,0,0.1)",
-        opacity: hasWeakestPath ? 1 : 0.6,
+        opacity: isActive ? 1 : 0.6,
       }}
       onMouseEnter={(e) => {
-        if (hasWeakestPath) {
+        if (isActive) {
           e.currentTarget.style.transform = "scale(1.02)";
           e.currentTarget.style.boxShadow = "0 12px 30px rgba(59,130,246,0.3)";
         }
       }}
       onMouseLeave={(e) => {
-        if (hasWeakestPath) {
+        if (isActive) {
           e.currentTarget.style.transform = "scale(1)";
           e.currentTarget.style.boxShadow = "0 8px 20px rgba(59,130,246,0.2)";
         }
@@ -566,7 +584,7 @@ function SmartRevisionCard({ onStart }) {
             style={{
               fontSize: "1.3rem",
               fontWeight: 700,
-              color: hasWeakestPath ? "#3B82F6" : "#9CA3AF",
+              color: isActive ? "#3B82F6" : "#9CA3AF",
               margin: "0 0 8px",
             }}
           >
@@ -580,7 +598,7 @@ function SmartRevisionCard({ onStart }) {
               lineHeight: 1.5,
             }}
           >
-            {hasWeakestPath
+            {isActive
               ? `Revise your weakest topic: ${weakestPath.title}`
               : "Revise your weakest topics intelligently."}
           </p>
@@ -602,7 +620,7 @@ function SmartRevisionCard({ onStart }) {
         </div>
         <div
           style={{
-            background: hasWeakestPath
+            background: isActive
               ? "rgba(59,130,246,0.2)"
               : "rgba(107,114,128,0.2)",
             borderRadius: "50%",
@@ -615,11 +633,11 @@ function SmartRevisionCard({ onStart }) {
             flexShrink: 0,
           }}
         >
-          {hasWeakestPath ? "🎓" : "🔒"}
+          {isActive ? "🎓" : "🔒"}
         </div>
       </div>
 
-      {hasWeakestPath && weakestPath.wrongQuestions > 0 && (
+      {isActive && weakestPath.wrongQuestions > 0 && (
         <div
           style={{
             marginTop: 15,
@@ -634,7 +652,7 @@ function SmartRevisionCard({ onStart }) {
         </div>
       )}
 
-      {!hasWeakestPath && (
+      {!smartRevisionUnlocked && (
         <div
           style={{
             marginTop: 15,
@@ -645,7 +663,22 @@ function SmartRevisionCard({ onStart }) {
             opacity: 0.8,
           }}
         >
-          💡 Complete some learning paths to unlock smart revision!
+          💡 Complete 40 lessons to unlock Smart Revision! ({totalCompleted}/40)
+        </div>
+      )}
+
+      {smartRevisionUnlocked && !hasWeakestPath && (
+        <div
+          style={{
+            marginTop: 15,
+            padding: 12,
+            background: "rgba(255,255,255,0.05)",
+            borderRadius: 10,
+            fontSize: "0.85rem",
+            opacity: 0.8,
+          }}
+        >
+          🎉 Keep learning! Complete more lessons to build your revision pack.
         </div>
       )}
     </div>
