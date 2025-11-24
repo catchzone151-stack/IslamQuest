@@ -38,15 +38,27 @@ export const useFriendsStore = create((set, get) => ({
         .eq("user_id", userId)
         .eq("status", "accepted");
 
-      if (friendsErr) throw friendsErr;
+      // Handle case where tables don't exist yet
+      if (friendsErr) {
+        console.warn("Friends table not ready:", friendsErr.message);
+        set({
+          friends: [],
+          sentRequests: [],
+          receivedRequests: [],
+          users: [],
+          loading: false,
+          error: null
+        });
+        return;
+      }
 
-      const formattedFriends = friendsData.map((row) => ({
-        id: row.profiles.id,
-        username: row.profiles.username,
-        nickname: row.profiles.display_name,
-        avatar: row.profiles.avatar,
-        xp: row.profiles.xp,
-        streak: row.profiles.streak ?? 0,
+      const formattedFriends = (friendsData || []).map((row) => ({
+        id: row.profiles?.id || "",
+        username: row.profiles?.username || "",
+        nickname: row.profiles?.display_name || "User",
+        avatar: row.profiles?.avatar || "default",
+        xp: row.profiles?.xp || 0,
+        streak: row.profiles?.streak ?? 0,
       }));
 
       // 2️⃣ Load sent (pending)
@@ -56,15 +68,13 @@ export const useFriendsStore = create((set, get) => ({
         .eq("user_id", userId)
         .eq("status", "pending");
 
-      if (sentErr) throw sentErr;
-
-      const formattedSent = sent.map((row) => ({
+      const formattedSent = (sent || []).map((row) => ({
         requestId: row.id,
-        id: row.profiles.id,
-        username: row.profiles.username,
-        nickname: row.profiles.display_name,
-        avatar: row.profiles.avatar,
-        xp: row.profiles.xp,
+        id: row.profiles?.id || "",
+        username: row.profiles?.username || "",
+        nickname: row.profiles?.display_name || "User",
+        avatar: row.profiles?.avatar || "default",
+        xp: row.profiles?.xp || 0,
       }));
 
       // 3️⃣ Load received (pending)
@@ -74,15 +84,13 @@ export const useFriendsStore = create((set, get) => ({
         .eq("friend_id", userId)
         .eq("status", "pending");
 
-      if (receivedErr) throw receivedErr;
-
-      const formattedReceived = received.map((row) => ({
+      const formattedReceived = (received || []).map((row) => ({
         requestId: row.id,
-        id: row.profiles.id,
-        username: row.profiles.username,
-        nickname: row.profiles.display_name,
-        avatar: row.profiles.avatar,
-        xp: row.profiles.xp,
+        id: row.profiles?.id || "",
+        username: row.profiles?.username || "",
+        nickname: row.profiles?.display_name || "User",
+        avatar: row.profiles?.avatar || "default",
+        xp: row.profiles?.xp || 0,
       }));
 
       // 4️⃣ Load all users (for search)
@@ -98,8 +106,16 @@ export const useFriendsStore = create((set, get) => ({
         loading: false
       });
     } catch (err) {
-      console.error("loadAll error:", err);
-      set({ loading: false, error: "Failed to load friends data." });
+      console.warn("loadAll error:", err);
+      // Set empty state instead of crashing the page
+      set({
+        friends: [],
+        sentRequests: [],
+        receivedRequests: [],
+        users: [],
+        loading: false,
+        error: null
+      });
     }
   },
 
@@ -243,6 +259,47 @@ export const useFriendsStore = create((set, get) => ({
   isFriend: (userId) => {
     const { friends } = get();
     return friends.some((f) => f.id === userId);
+  },
+
+  canSendRequest: (userId) => {
+    const { friends, sentRequests, receivedRequests } = get();
+    // Can't send if already friends
+    if (friends.some((f) => f.id === userId)) return false;
+    // Can't send if already sent
+    if (sentRequests.some((r) => r.id === userId)) return false;
+    // Can't send if they already sent you one
+    if (receivedRequests.some((r) => r.id === userId)) return false;
+    return true;
+  },
+
+  getFriendship: (userId) => {
+    const { friends, sentRequests, receivedRequests } = get();
+    if (friends.some((f) => f.id === userId)) return { status: "accepted" };
+    if (sentRequests.some((r) => r.id === userId)) return { status: "sent" };
+    if (receivedRequests.some((r) => r.id === userId)) return { status: "received" };
+    return { status: "none" };
+  },
+
+  updateCurrentUserData: async (userData) => {
+    // This function updates the current user's data in the users array
+    // Called when XP/streak changes to keep leaderboard accurate
+    const { users } = get();
+    const { data: auth } = await supabase.auth.getUser();
+    
+    if (!auth || !auth.user) return;
+    
+    const userId = auth.user.id;
+    const updatedUsers = users.map(u => 
+      u.id === userId ? { ...u, ...userData } : u
+    );
+    
+    set({ users: updatedUsers });
+  },
+
+  initializeUser: async (userId, userData) => {
+    // Initialize user in the system (if needed for first-time setup)
+    // For now, this is a no-op since loadAll handles everything
+    return;
   },
 
   getAllFriends: () => get().friends,
