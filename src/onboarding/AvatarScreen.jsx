@@ -3,14 +3,17 @@ import { useNavigate } from "../hooks/useNavigate";
 import { useUserStore } from "../store/useUserStore";
 import { motion } from "framer-motion";
 import assets from "../assets/assets";
+import { AVAILABLE_AVATARS } from "../utils/avatarUtils";
 
 export default function AvatarScreen() {
   const navigate = useNavigate();
   const { setAvatar } = useUserStore();
   const [selected, setSelected] = useState(null);
 
-  // Use avatars from assets.js in the defined order (male → female → rest)
-  const sortedAvatars = useMemo(() => Object.values(assets.avatars), []);
+  // 3 sections without labels
+  const section1 = useMemo(() => AVAILABLE_AVATARS.slice(0, 12).map(key => assets.avatars[key]), []);
+  const section2 = useMemo(() => AVAILABLE_AVATARS.slice(12, 25).map(key => assets.avatars[key]), []);
+  const section3 = useMemo(() => AVAILABLE_AVATARS.slice(25).map(key => assets.avatars[key]), []);
 
   const handleContinue = () => {
     if (!selected) return;
@@ -45,47 +48,139 @@ export default function AvatarScreen() {
 
       <div
         style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(90px, 1fr))",
-          gap: 16,
+          display: "flex",
+          flexDirection: "column",
+          gap: "16px",
           width: "90%",
           maxWidth: 360,
-          justifyItems: "center",
         }}
       >
-        {sortedAvatars.map((src, i) => (
-          <motion.button
-            key={src}
-            onClick={() => setSelected(src)}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.05 }}
-            whileHover={{ scale: 1.05, filter: "brightness(1.1)" }}
-            whileTap={{ scale: 0.95 }}
-            style={{
-              width: 90,
-              height: 90,
-              borderRadius: "50%",
-              padding: 0,
-              border:
-                selected === src
-                  ? "3px solid #D4AF37"
-                  : "2px solid transparent",
-              background: "#0E1625",
-              overflow: "hidden",
-              cursor: "pointer",
-            }}
-          >
-            <motion.img
-              src={src}
-              alt="Avatar"
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4 }}
-            />
-          </motion.button>
-        ))}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(90px, 1fr))",
+            gap: 16,
+            justifyItems: "center",
+          }}
+        >
+          {section1.map((src, i) => (
+            <motion.button
+              key={src}
+              onClick={() => setSelected(src)}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.05 }}
+              whileHover={{ scale: 1.05, filter: "brightness(1.1)" }}
+              whileTap={{ scale: 0.95 }}
+              style={{
+                width: 90,
+                height: 90,
+                borderRadius: "50%",
+                padding: 0,
+                border:
+                  selected === src
+                    ? "3px solid #D4AF37"
+                    : "2px solid transparent",
+                background: "#0E1625",
+                overflow: "hidden",
+                cursor: "pointer",
+              }}
+            >
+              <motion.img
+                src={src}
+                alt="Avatar"
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4 }}
+              />
+            </motion.button>
+          ))}
+        </div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(90px, 1fr))",
+            gap: 16,
+            justifyItems: "center",
+          }}
+        >
+          {section2.map((src, i) => (
+            <motion.button
+              key={src}
+              onClick={() => setSelected(src)}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: (12 + i) * 0.05 }}
+              whileHover={{ scale: 1.05, filter: "brightness(1.1)" }}
+              whileTap={{ scale: 0.95 }}
+              style={{
+                width: 90,
+                height: 90,
+                borderRadius: "50%",
+                padding: 0,
+                border:
+                  selected === src
+                    ? "3px solid #D4AF37"
+                    : "2px solid transparent",
+                background: "#0E1625",
+                overflow: "hidden",
+                cursor: "pointer",
+              }}
+            >
+              <motion.img
+                src={src}
+                alt="Avatar"
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4 }}
+              />
+            </motion.button>
+          ))}
+        </div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(90px, 1fr))",
+            gap: 16,
+            justifyItems: "center",
+          }}
+        >
+          {section3.map((src, i) => (
+            <motion.button
+              key={src}
+              onClick={() => setSelected(src)}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: (25 + i) * 0.05 }}
+              whileHover={{ scale: 1.05, filter: "brightness(1.1)" }}
+              whileTap={{ scale: 0.95 }}
+              style={{
+                width: 90,
+                height: 90,
+                borderRadius: "50%",
+                padding: 0,
+                border:
+                  selected === src
+                    ? "3px solid #D4AF37"
+                    : "2px solid transparent",
+                background: "#0E1625",
+                overflow: "hidden",
+                cursor: "pointer",
+              }}
+            >
+              <motion.img
+                src={src}
+                alt="Avatar"
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4 }}
+              />
+            </motion.button>
+          ))}
+        </div>
       </div>
 
       <motion.button

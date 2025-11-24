@@ -29,7 +29,7 @@ export const HIDDEN_NINJA_AVATARS = [NINJA_MALE_KEY, NINJA_FEMALE_KEY];
 // ═══════════════════════════════════════════════════════════════════
 
 export const AVAILABLE_AVATARS = [
-  // Male avatars (9 total) - removed avatar_man_welldone (now a mascot)
+  // Section 1: Male avatars + cartoon, neon, pixel (12 total)
   "avatar_man_lantern",
   "avatar_man_tasbih",
   "avatar_man_cup",
@@ -39,16 +39,16 @@ export const AVAILABLE_AVATARS = [
   "avatar_man_construction",
   "avatar_man_thumbsup",
   "avatar_man_scholar",
-  // Female avatars (16 total) - NINJA_FEMALE removed from this list
+  "avatar_woman_cartoon",
+  "avatar_woman_neon",
+  "avatar_woman_pixel",
+  // Section 2: Remaining female avatars (13 total)
   "avatar_woman_hijab_book",
   "avatar_woman_hijab_dua",
   "avatar_woman_hijab_tasbih",
   "avatar_woman_hijab_studying",
   "avatar_woman_hijab_beads",
   "avatar_woman_niqab",
-  "avatar_woman_cartoon",
-  "avatar_woman_pixel",
-  "avatar_woman_neon",
   "avatar_woman_crown",
   "avatar_woman_cooking",
   "avatar_woman_elder_cane",
@@ -56,7 +56,7 @@ export const AVAILABLE_AVATARS = [
   "avatar_woman_hijab_pink",
   "avatar_woman_hijab_tan",
   "avatar_woman_hijab_purse",
-  // Other avatars (6 total)
+  // Section 3: Other avatars (6 total)
   "avatar_dino",
   "avatar_fox",
   "avatar_panda",
