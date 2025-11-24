@@ -10,7 +10,6 @@ import mascot_onboarding from "./mascots/mascot_onboarding.webp";
 import mascot_pointing from "./mascots/mascot_pointing.webp";
 import mascot_running from "./mascots/mascot_running.webp";
 import mascot_sitting from "./mascots/mascot_sitting.webp";
-import mascot_tasbih from "./mascots/mascot_tasbih.webp";
 import mascot_waving from "./mascots/mascot_waving.webp";
 import mascot_defeated from "./mascots/mascot_defeated.webp";
 
@@ -79,7 +78,6 @@ const assets = {
     mascot_pointing,
     mascot_running,
     mascot_sitting,
-    mascot_tasbih,
     mascot_waving,
     mascot_defeated,
     mascot_pointing_v2,
