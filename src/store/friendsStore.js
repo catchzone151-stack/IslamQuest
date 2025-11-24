@@ -1,348 +1,252 @@
+// src/store/friendsStore.js
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { supabase } from "../lib/supabaseClient";
 
-const STORAGE_KEY = "islamQuestFriends_v3";
+export const useFriendsStore = create((set, get) => ({
+  friends: [],                 // confirmed friends
+  sentRequests: [],            // requests you sent (pending)
+  receivedRequests: [],        // requests you received (pending)
+  users: [],                   // cached searchable users
+  loading: false,
+  error: null,
 
-// Generate unique ID (will be replaced by Supabase UUID later)
-const generateId = () => `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  // ----------------------------------------------------------
+  // LOAD FRIENDS + REQUESTS
+  // ----------------------------------------------------------
+  loadAll: async () => {
+    try {
+      set({ loading: true, error: null });
 
-// Validate username format
-const isValidUsername = (username) => {
-  if (!username || username.length < 3 || username.length > 20) return false;
-  return /^[a-z0-9_]+$/.test(username);
-};
-
-// Generate username suggestions
-const generateUsernameSuggestions = (baseUsername) => {
-  const clean = baseUsername.toLowerCase().replace(/[^a-z0-9_]/g, '');
-  const base = clean || 'user';
-  return [
-    `${base}_${Math.floor(Math.random() * 100)}`,
-    `${base}_${String(Math.floor(Math.random() * 100)).padStart(2, '0')}`,
-    `${base}_${Math.random().toString(36).substr(2, 3)}`
-  ];
-};
-
-export const useFriendsStore = create(
-  persist(
-    (set, get) => ({
-      // Core data
-      currentUserId: null,
-      users: [], // All registered users in the system
-      friendships: [], // Single source of truth for all friendships
-      
-      // Initialize current user
-      initializeUser: (userData) => {
-        const { id, username, nickname, avatar, xp, streak } = userData;
-        const existingUser = get().users.find(u => u.id === id);
-        
-        if (!existingUser) {
-          set(state => ({
-            currentUserId: id,
-            users: [...state.users, {
-              id,
-              username: username.toLowerCase(),
-              nickname,
-              avatar,
-              xp: xp || 0,
-              streak: streak || 0,
-              lastActive: Date.now()
-            }]
-          }));
-        } else {
-          // Update existing user
-          set(state => ({
-            currentUserId: id,
-            users: state.users.map(u => 
-              u.id === id 
-                ? { ...u, nickname, avatar, xp: xp || u.xp, streak: streak || u.streak, lastActive: Date.now() }
-                : u
-            )
-          }));
-        }
-      },
-      
-      // Check if username is available
-      isUsernameAvailable: (username) => {
-        const normalized = username.toLowerCase();
-        return !get().users.some(u => u.username === normalized);
-      },
-      
-      // Get username suggestions
-      getUsernameSuggestions: (baseUsername) => {
-        return generateUsernameSuggestions(baseUsername);
-      },
-      
-      // Validate username
-      validateUsername: (username) => {
-        if (!isValidUsername(username)) {
-          return { valid: false, error: "Username must be 3-20 characters (letters, numbers, underscore only)" };
-        }
-        if (!get().isUsernameAvailable(username)) {
-          return { valid: false, error: "Username already taken" };
-        }
-        return { valid: true };
-      },
-      
-      // Search users by username
-      searchUsers: (query) => {
-        if (!query || query.length < 3) return [];
-        const normalized = query.toLowerCase();
-        const currentUserId = get().currentUserId;
-        
-        return get().users
-          .filter(u => 
-            u.id !== currentUserId && 
-            (u.username.includes(normalized) || u.nickname.toLowerCase().includes(normalized))
-          )
-          .slice(0, 20); // Limit results
-      },
-      
-      // Get friendship between two users
-      getFriendship: (userId) => {
-        const currentUserId = get().currentUserId;
-        if (!currentUserId) return null;
-        
-        return get().friendships.find(f => 
-          (f.userId === currentUserId && f.friendId === userId) ||
-          (f.userId === userId && f.friendId === currentUserId)
-        );
-      },
-      
-      // Check if users are connected (any relationship exists)
-      areWeConnected: (userId) => {
-        return !!get().getFriendship(userId);
-      },
-      
-      // Check if user is a friend
-      isFriend: (userId) => {
-        const friendship = get().getFriendship(userId);
-        return friendship?.status === 'accepted';
-      },
-      
-      // Check if can send request
-      canSendRequest: (userId) => {
-        const currentUserId = get().currentUserId;
-        if (!currentUserId || userId === currentUserId) return false;
-        
-        const friendship = get().getFriendship(userId);
-        
-        // No existing relationship or already friends - can send
-        if (!friendship) return true;
-        
-        // Already friends or pending - cannot send
-        if (friendship.status === 'accepted' || friendship.status === 'pending') return false;
-        
-        return false;
-      },
-      
-      // Get sent requests
-      getSentRequests: () => {
-        const currentUserId = get().currentUserId;
-        if (!currentUserId) return [];
-        
-        return get().friendships
-          .filter(f => f.userId === currentUserId && f.status === 'pending')
-          .map(f => {
-            const user = get().users.find(u => u.id === f.friendId);
-            return user ? { ...user, requestId: f.id, createdAt: f.createdAt } : null;
-          })
-          .filter(Boolean);
-      },
-      
-      // Get received requests
-      getReceivedRequests: () => {
-        const currentUserId = get().currentUserId;
-        if (!currentUserId) return [];
-        
-        return get().friendships
-          .filter(f => f.friendId === currentUserId && f.status === 'pending')
-          .map(f => {
-            const user = get().users.find(u => u.id === f.userId);
-            return user ? { ...user, requestId: f.id, createdAt: f.createdAt } : null;
-          })
-          .filter(Boolean);
-      },
-      
-      // Get all friends
-      getAllFriends: () => {
-        const currentUserId = get().currentUserId;
-        if (!currentUserId) return [];
-        
-        return get().friendships
-          .filter(f => f.status === 'accepted' && (f.userId === currentUserId || f.friendId === currentUserId))
-          .map(f => {
-            const friendId = f.userId === currentUserId ? f.friendId : f.userId;
-            const user = get().users.find(u => u.id === friendId);
-            return user ? { ...user, friendshipId: f.id, since: f.createdAt } : null;
-          })
-          .filter(Boolean)
-          .sort((a, b) => b.xp - a.xp); // Sort by XP
-      },
-      
-      // Send friend request
-      sendFriendRequest: (userId) => {
-        const currentUserId = get().currentUserId;
-        if (!currentUserId) {
-          return { success: false, error: "You must be logged in" };
-        }
-        
-        if (userId === currentUserId) {
-          return { success: false, error: "You cannot add yourself" };
-        }
-        
-        const targetUser = get().users.find(u => u.id === userId);
-        if (!targetUser) {
-          return { success: false, error: "User not found" };
-        }
-        
-        if (!get().canSendRequest(userId)) {
-          const friendship = get().getFriendship(userId);
-          if (friendship?.status === 'accepted') {
-            return { success: false, error: "Already friends" };
-          }
-          if (friendship?.status === 'pending') {
-            return { success: false, error: "Request already sent" };
-          }
-        }
-        
-        // Create new request (declined requests are already deleted)
-        const newFriendship = {
-          id: generateId(),
-          userId: currentUserId,
-          friendId: userId,
-          status: 'pending',
-          createdAt: Date.now()
-        };
-        
-        set(state => ({
-          friendships: [...state.friendships, newFriendship]
-        }));
-        
-        return { success: true, message: "Friend request sent!" };
-      },
-      
-      // Accept friend request
-      acceptFriendRequest: (requestId) => {
-        const friendship = get().friendships.find(f => f.id === requestId);
-        if (!friendship || friendship.status !== 'pending') {
-          return { success: false, error: "Request not found" };
-        }
-        
-        const currentUserId = get().currentUserId;
-        if (friendship.friendId !== currentUserId) {
-          return { success: false, error: "Cannot accept this request" };
-        }
-        
-        set(state => ({
-          friendships: state.friendships.map(f => 
-            f.id === requestId 
-              ? { ...f, status: 'accepted' }
-              : f
-          )
-        }));
-        
-        return { success: true, message: "Friend request accepted!" };
-      },
-      
-      // Decline friend request (deletes the request to allow future requests)
-      declineFriendRequest: (requestId) => {
-        const friendship = get().friendships.find(f => f.id === requestId);
-        if (!friendship || friendship.status !== 'pending') {
-          return { success: false, error: "Request not found" };
-        }
-        
-        const currentUserId = get().currentUserId;
-        if (friendship.friendId !== currentUserId) {
-          return { success: false, error: "Cannot decline this request" };
-        }
-        
-        // Delete the request to allow future requests
-        set(state => ({
-          friendships: state.friendships.filter(f => f.id !== requestId)
-        }));
-        
-        return { success: true, message: "Friend request declined" };
-      },
-      
-      // Cancel sent request
-      cancelSentRequest: (requestId) => {
-        const friendship = get().friendships.find(f => f.id === requestId);
-        if (!friendship || friendship.status !== 'pending') {
-          return { success: false, error: "Request not found" };
-        }
-        
-        const currentUserId = get().currentUserId;
-        if (friendship.userId !== currentUserId) {
-          return { success: false, error: "Cannot cancel this request" };
-        }
-        
-        set(state => ({
-          friendships: state.friendships.filter(f => f.id !== requestId)
-        }));
-        
-        return { success: true, message: "Request cancelled" };
-      },
-      
-      // Remove friend
-      removeFriend: (userId) => {
-        const friendship = get().getFriendship(userId);
-        if (!friendship || friendship.status !== 'accepted') {
-          return { success: false, error: "Not friends with this user" };
-        }
-        
-        set(state => ({
-          friendships: state.friendships.filter(f => f.id !== friendship.id)
-        }));
-        
-        return { success: true, message: "Friend removed" };
-      },
-      
-      // Get user by ID
-      getUserById: (userId) => {
-        return get().users.find(u => u.id === userId);
-      },
-      
-      // Get user by username
-      getUserByUsername: (username) => {
-        const normalized = username.toLowerCase();
-        return get().users.find(u => u.username === normalized);
-      },
-      
-      // Update current user data (when XP/streak changes)
-      updateCurrentUserData: (data) => {
-        const currentUserId = get().currentUserId;
-        if (!currentUserId) return;
-        
-        set(state => ({
-          users: state.users.map(u => 
-            u.id === currentUserId 
-              ? { ...u, ...data, lastActive: Date.now() }
-              : u
-          )
-        }));
-      },
-      
-      // Clear all data (for testing)
-      clearAllData: () => {
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth || !auth.user) {
         set({
-          currentUserId: null,
+          friends: [],
+          sentRequests: [],
+          receivedRequests: [],
           users: [],
-          friendships: []
+          loading: false
         });
-      },
+        return;
+      }
 
-      // Supabase sync functions (Phase 1: empty placeholders)
-      syncToSupabase: async () => {},
-      loadFromSupabase: async () => {},
-    }),
-    {
-      name: STORAGE_KEY,
-      partialize: (state) => ({
-        currentUserId: state.currentUserId,
-        users: state.users,
-        friendships: state.friendships
-      })
+      const userId = auth.user.id;
+
+      // 1️⃣ Load accepted friendships (two-way)
+      const { data: friendsData, error: friendsErr } = await supabase
+        .from("friends")
+        .select("friend_id, profiles:friend_id (id, username, display_name, avatar, xp)")
+        .eq("user_id", userId)
+        .eq("status", "accepted");
+
+      if (friendsErr) throw friendsErr;
+
+      const formattedFriends = friendsData.map((row) => ({
+        id: row.profiles.id,
+        username: row.profiles.username,
+        nickname: row.profiles.display_name,
+        avatar: row.profiles.avatar,
+        xp: row.profiles.xp,
+        streak: row.profiles.streak ?? 0,
+      }));
+
+      // 2️⃣ Load sent (pending)
+      const { data: sent, error: sentErr } = await supabase
+        .from("friends")
+        .select("id, friend_id, profiles:friend_id (id, username, display_name, avatar, xp)")
+        .eq("user_id", userId)
+        .eq("status", "pending");
+
+      if (sentErr) throw sentErr;
+
+      const formattedSent = sent.map((row) => ({
+        requestId: row.id,
+        id: row.profiles.id,
+        username: row.profiles.username,
+        nickname: row.profiles.display_name,
+        avatar: row.profiles.avatar,
+        xp: row.profiles.xp,
+      }));
+
+      // 3️⃣ Load received (pending)
+      const { data: received, error: receivedErr } = await supabase
+        .from("friends")
+        .select("id, user_id, profiles:user_id (id, username, display_name, avatar, xp)")
+        .eq("friend_id", userId)
+        .eq("status", "pending");
+
+      if (receivedErr) throw receivedErr;
+
+      const formattedReceived = received.map((row) => ({
+        requestId: row.id,
+        id: row.profiles.id,
+        username: row.profiles.username,
+        nickname: row.profiles.display_name,
+        avatar: row.profiles.avatar,
+        xp: row.profiles.xp,
+      }));
+
+      // 4️⃣ Load all users (for search)
+      const { data: userRows } = await supabase
+        .from("profiles")
+        .select("id, username, display_name, avatar, xp");
+
+      set({
+        friends: formattedFriends,
+        sentRequests: formattedSent,
+        receivedRequests: formattedReceived,
+        users: userRows || [],
+        loading: false
+      });
+    } catch (err) {
+      console.error("loadAll error:", err);
+      set({ loading: false, error: "Failed to load friends data." });
     }
-  )
-);
+  },
+
+  // ----------------------------------------------------------
+  // SEARCH USERS
+  // ----------------------------------------------------------
+  searchUsers: (query) => {
+    const { users } = get();
+    const q = query.toLowerCase();
+    return users.filter((u) => u.username.toLowerCase().includes(q));
+  },
+
+  // ----------------------------------------------------------
+  // SEND A FRIEND REQUEST
+  // ----------------------------------------------------------
+  sendFriendRequest: async (targetUserId) => {
+    try {
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth || !auth.user)
+        return { success: false, error: "Not logged in" };
+
+      const userId = auth.user.id;
+
+      if (userId === targetUserId) {
+        return { success: false, error: "You cannot add yourself" };
+      }
+
+      // Insert pending request
+      const { error } = await supabase.from("friends").insert({
+        user_id: userId,
+        friend_id: targetUserId,
+        status: "pending",
+      });
+
+      if (error) {
+        if (error.code === "23505") {
+          return { success: false, error: "Already friends or request pending" };
+        }
+        throw error;
+      }
+
+      await get().loadAll();
+      return { success: true, message: "Friend request sent" };
+    } catch (err) {
+      console.error("sendFriendRequest error:", err);
+      return { success: false, error: "Failed to send friend request" };
+    }
+  },
+
+  // ----------------------------------------------------------
+  // ACCEPT FRIEND REQUEST
+  // ----------------------------------------------------------
+  acceptFriendRequest: async (requestId) => {
+    try {
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth || !auth.user)
+        return { success: false, error: "Not logged in" };
+
+      const userId = auth.user.id;
+
+      // Get original request
+      const { data: req } = await supabase
+        .from("friends")
+        .select("*")
+        .eq("id", requestId)
+        .single();
+
+      if (!req) return { success: false, error: "Request not found" };
+
+      // Mark the original request as accepted
+      await supabase
+        .from("friends")
+        .update({ status: "accepted" })
+        .eq("id", requestId);
+
+      // Create reverse friendship row
+      await supabase.from("friends").insert({
+        user_id: userId,
+        friend_id: req.user_id,
+        status: "accepted",
+      });
+
+      await get().loadAll();
+      return { success: true, message: "Friend added!" };
+    } catch (err) {
+      console.error("acceptFriendRequest error:", err);
+      return { success: false, error: "Failed to accept request" };
+    }
+  },
+
+  // ----------------------------------------------------------
+  // DECLINE REQUEST
+  // ----------------------------------------------------------
+  declineFriendRequest: async (requestId) => {
+    try {
+      await supabase.from("friends").delete().eq("id", requestId);
+      await get().loadAll();
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: "Failed to decline request" };
+    }
+  },
+
+  // ----------------------------------------------------------
+  // CANCEL SENT REQUEST
+  // ----------------------------------------------------------
+  cancelSentRequest: async (requestId) => {
+    try {
+      await supabase.from("friends").delete().eq("id", requestId);
+      await get().loadAll();
+      return { success: true, message: "Request cancelled" };
+    } catch (err) {
+      return { success: false, error: "Failed to cancel request" };
+    }
+  },
+
+  // ----------------------------------------------------------
+  // REMOVE FRIEND (removes both sides)
+  // ----------------------------------------------------------
+  removeFriend: async (friendId) => {
+    try {
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth || !auth.user) return;
+
+      const userId = auth.user.id;
+
+      await supabase
+        .from("friends")
+        .delete()
+        .or(`and(user_id.eq.${userId}, friend_id.eq.${friendId}), and(user_id.eq.${friendId}, friend_id.eq.${userId})`);
+
+      await get().loadAll();
+    } catch (err) {
+      console.error("removeFriend error:", err);
+    }
+  },
+
+  // ----------------------------------------------------------
+  // UTILS
+  // ----------------------------------------------------------
+  isFriend: (userId) => {
+    const { friends } = get();
+    return friends.some((f) => f.id === userId);
+  },
+
+  getAllFriends: () => get().friends,
+  getSentRequests: () => get().sentRequests,
+  getReceivedRequests: () => get().receivedRequests,
+
+}));

@@ -1,85 +1,119 @@
+// src/pages/Login.jsx
 import { useState } from "react";
-import { supabase } from "../lib/supabase";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { supabase } from "../lib/supabaseClient";
+import { useUserStore } from "../store/useUserStore";
+import { useProgressStore } from "../store/progressStore";
 
 export default function Login() {
+  const navigate = useNavigate();
+  const { setHasOnboarded, setDisplayName, setHandle, setAvatar } = useUserStore();
+  const loadFromSupabase = useProgressStore((s) => s.loadFromSupabase);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  async function handleLogin(e) {
-    e.preventDefault();
-
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
-      setMessage(error.message);
-    } else {
-      setMessage("✅ Logged in successfully!");
-    }
-  }
-
-  async function handleSignup(e) {
-    e.preventDefault();
-
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-
-    if (error) {
-      setMessage(error.message);
+  const handleLogin = async () => {
+    setErrorMsg("");
+    if (!email || !password) {
+      setErrorMsg("Please enter email and password.");
       return;
     }
 
-    // ✅ Fix: use data.user OR data.session?.user
-    const user = data.user ?? data.session?.user;
+    setLoading(true);
 
-    if (user) {
-      const { error: profileError } = await supabase
-        .from("profiles")
-        .insert([{ id: user.id }]);
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email.trim().toLowerCase(),
+      password,
+    });
 
-      if (profileError) {
-        console.error("Profile insert error:", profileError);
-        setMessage(
-          "Signed up, but error creating profile: " + profileError.message,
-        );
-        return;
-      }
+    if (error) {
+      setErrorMsg(error.message || "Login failed.");
+      setLoading(false);
+      return;
     }
 
-    setMessage("✅ Sign-up successful!");
-  }
+    // Load cloud data (XP, coins, streak, premium, username etc)
+    await loadFromSupabase();
+
+    // Pull profile row
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", data.user.id)
+      .single();
+
+    if (profile) {
+      setDisplayName(profile.display_name || "Student");
+      setHandle(profile.handle || null);
+      setAvatar(profile.avatar || "default");
+    }
+
+    // Skip onboarding forever
+    setHasOnboarded(true);
+
+    setLoading(false);
+    navigate("/");
+  };
 
   return (
-    <div className="screen no-extra-space">
-      <h1>Login / Sign Up</h1>
-      <form>
+    <div
+      className="min-h-screen flex flex-col justify-center px-6 pb-20"
+      style={{
+        background:
+          "radial-gradient(circle at 20% 20%, rgba(10,15,30,1) 0%, rgba(3,6,20,1) 70%)",
+      }}
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-md mx-auto text-center"
+      >
+        <h1 className="text-2xl font-bold text-[var(--gold)] mb-4">
+          Log In
+        </h1>
+
         <input
+          className="w-full px-4 py-3 rounded-xl bg-[#0b1e36] text-white mb-3 border border-gray-700"
+          placeholder="Email address"
           type="email"
-          placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          style={{ display: "block", marginBottom: "10px", padding: "8px" }}
         />
+
         <input
-          type="password"
+          className="w-full px-4 py-3 rounded-xl bg-[#0b1e36] text-white mb-4 border border-gray-700"
           placeholder="Password"
+          type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          style={{ display: "block", marginBottom: "10px", padding: "8px" }}
         />
 
-        <button onClick={handleLogin} style={{ marginRight: "10px" }}>
-          Login
-        </button>
-        <button onClick={handleSignup}>Sign Up</button>
-      </form>
+        {errorMsg && (
+          <p className="text-red-400 text-sm mb-3">{errorMsg}</p>
+        )}
 
-      {message && <p>{message}</p>}
+        <button
+          className="w-full py-3 rounded-xl font-bold text-[#0a1a2f]"
+          style={{
+            background: "linear-gradient(90deg, #FFD700, #FFB700)",
+          }}
+          onClick={handleLogin}
+          disabled={loading}
+        >
+          {loading ? "Loading..." : "Log In"}
+        </button>
+
+        <p
+          className="mt-6 text-gray-400 text-sm underline cursor-pointer"
+          onClick={() => navigate("/onboarding/bismillah")}
+        >
+          Create new account
+        </p>
+      </motion.div>
     </div>
   );
 }
