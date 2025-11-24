@@ -58,9 +58,9 @@ export default function AvatarScreen() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(90px, 1fr))",
+            gridTemplateColumns: "repeat(6, 90px)",
             gap: 16,
-            justifyItems: "center",
+            justifyContent: "center",
           }}
         >
           {section1.map((src, i) => (
@@ -100,9 +100,9 @@ export default function AvatarScreen() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(90px, 1fr))",
+            gridTemplateColumns: "repeat(7, 90px)",
             gap: 16,
-            justifyItems: "center",
+            justifyContent: "center",
           }}
         >
           {section2.map((src, i) => (
@@ -142,9 +142,9 @@ export default function AvatarScreen() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(90px, 1fr))",
+            gridTemplateColumns: "repeat(6, 90px)",
             gap: 16,
-            justifyItems: "center",
+            justifyContent: "center",
           }}
         >
           {section3.map((src, i) => (

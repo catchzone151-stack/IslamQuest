@@ -48,8 +48,9 @@ export default function EditAvatarModal({ isOpen, onClose, currentAvatar, onSave
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, 80px)",
+            gridTemplateColumns: "repeat(6, 80px)",
             gap: "10px",
+            justifyContent: "center",
           }}
         >
           {section1.map((a, i) => (
@@ -82,8 +83,9 @@ export default function EditAvatarModal({ isOpen, onClose, currentAvatar, onSave
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, 80px)",
+            gridTemplateColumns: "repeat(7, 80px)",
             gap: "10px",
+            justifyContent: "center",
           }}
         >
           {section2.map((a, i) => (
@@ -116,8 +118,9 @@ export default function EditAvatarModal({ isOpen, onClose, currentAvatar, onSave
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, 80px)",
+            gridTemplateColumns: "repeat(6, 80px)",
             gap: "10px",
+            justifyContent: "center",
           }}
         >
           {section3.map((a, i) => (
