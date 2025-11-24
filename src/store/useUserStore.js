@@ -15,6 +15,10 @@ export const useUserStore = create(
       // hydration flag (so router waits until store is loaded from storage)
       isHydrated: false,
 
+      // Supabase fields
+      userId: null,
+      deviceId: null,
+
       // actions
       setName: (name) => set({ name }),
       setUsername: (username) => set({ username }),
@@ -28,6 +32,13 @@ export const useUserStore = create(
 
       // internal: set hydrated after rehydrate finishes
       _setHydrated: () => set({ isHydrated: true }),
+
+      // Supabase actions
+      setUserId: (id) => set({ userId: id }),
+      setDeviceId: (id) => set({ deviceId: id }),
+
+      syncToSupabase: async () => {},
+      loadFromSupabase: async () => {},
     }),
     {
       name: "iq-user-v2", // localStorage key
