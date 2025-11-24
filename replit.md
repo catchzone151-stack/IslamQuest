@@ -16,7 +16,7 @@ The frontend is built with React 18.2, Vite, JavaScript, and React Router DOM v7
 
 ### Feature Specifications
 The application includes 14 complete learning paths with lessons and quizzes, exclusively sourced from Qur'an and Sahih Hadith. The progression model incorporates XP and coin rewards, a streak system, universal lesson locking for sequential progress, a comprehensive freemium model, and a 10-level Diamond progression system. All quizzes, daily quests, and global events require a 75% passing threshold.
-The premium model offers free tier limits (0-3 free lessons depending on the path) and premium plans (Individual £4.99/month, Family £18/month) for access to all 14 paths, unlimited lessons, Global Events, and a premium badge. Paths 11-14 and Global Events are premium-only. Social features include friend management, a friends leaderboard, an activity feed, and quick messaging. Gamification elements comprise four friend challenge modes (Mind Battle, Lightning Round, Speed Run, Sudden Death), a daily Boss Level, weekly Global Events, Daily Quests, and a Streak Freeze system. The application also supports customizable avatars, with 34 unique options available.
+The premium model offers free tier limits (0-3 free lessons depending on the path) and premium plans (Individual £4.99/month, Family £18/month) for access to all 14 paths, unlimited lessons, Global Events, and a premium badge. Paths 11-14 and Global Events are premium-only. Social features include friend management, a friends leaderboard, an activity feed, and quick messaging. Gamification elements comprise four friend challenge modes (Mind Battle, Lightning Round, Speed Run, Sudden Death), a daily Boss Level, weekly Global Events, Daily Quests, and a Streak Freeze system. The application supports customizable avatars, with 32 selectable options plus 2 hidden ninja avatars reserved for special accounts.
 
 ### System Design Choices
 Authentication is planned with Supabase Auth, currently using LocalStorage for temporary persistence. Asset management is centralized via `assets.js` for optimized WebP images. Development and deployment use Vite.
@@ -33,4 +33,5 @@ Authentication is planned with Supabase Auth, currently using LocalStorage for t
 
 ### Asset Dependencies
 - **Media**: All visual assets are locally bundled WebP images and an SVG favicon.
-- **Mascots**: 17 culturally authentic Islamic mascot characters in WebP format, used across various UI contexts.
+- **Mascots**: 16 culturally authentic Islamic mascot characters in WebP format, all actively used across various UI contexts (recently optimized - removed 4 unused mascots).
+- **Avatars**: 34 total avatar options (32 selectable by users + 2 hidden ninja avatars for special accounts).
