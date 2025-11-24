@@ -13,6 +13,7 @@ import { ShimmerCard, ShimmerImage } from "./components/ShimmerLoader.jsx";
 import { useUserStore } from "./store/useUserStore";
 import { useProgressStore } from "./store/progressStore";
 import { preloadAllAssets } from "./utils/imagePreloader";
+import { useModalStore, MODAL_TYPES } from "./store/modalStore";
 
 // ✅ Onboarding screens (loaded immediately for first-time users)
 import BismillahScreen from "./onboarding/BismillahScreen.jsx";
@@ -280,6 +281,40 @@ export default function App() {
       import("./pages/Revise.jsx"),
       import("./pages/Login.jsx"),
     ]);
+  }, []);
+
+  // 🔙 GLOBAL BACK BUTTON HANDLER: Intercept physical phone back button
+  useEffect(() => {
+    const { showModal } = useModalStore.getState();
+    
+    // Push initial state when app loads (creates back history entry)
+    window.history.pushState({ isAppEntry: true }, '', window.location.href);
+    
+    const handleBackButton = (event) => {
+      // Prevent default browser back behavior
+      event.preventDefault();
+      
+      // Push another state to prevent actual navigation
+      window.history.pushState({ isAppEntry: true }, '', window.location.href);
+      
+      // Show custom exit confirmation modal
+      showModal(MODAL_TYPES.EXIT_CONFIRMATION, {
+        onConfirm: () => {
+          // User confirmed - actually exit the app
+          // For web apps, this will go back or close if opened as PWA
+          window.history.go(-2); // Go back twice (past our dummy states)
+        },
+        // onCancel is handled by hideModal in ModalController (stays in app)
+      });
+    };
+    
+    // Listen for popstate (back button press)
+    window.addEventListener('popstate', handleBackButton);
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('popstate', handleBackButton);
+    };
   }, []);
 
   // ✅ Wait until Zustand store is rehydrated (prevents onboarding redirect)

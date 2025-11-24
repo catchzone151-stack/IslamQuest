@@ -30,26 +30,16 @@ export default function ExitConfirmationModal({ onConfirm, onCancel }) {
           boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
         }}
       >
-        <h2
-          style={{
-            color: "#FFD700",
-            fontSize: "1.2rem",
-            fontWeight: 700,
-            marginBottom: "12px",
-          }}
-        >
-          Exit Islam Quest?
-        </h2>
-
         <p
           style={{
-            color: "rgba(255,255,255,0.8)",
-            fontSize: "0.95rem",
-            marginBottom: "24px",
+            color: "rgba(255,255,255,0.9)",
+            fontSize: "1.05rem",
+            marginBottom: "28px",
             lineHeight: "1.5",
+            fontWeight: 500,
           }}
         >
-          Are you sure you want to exit Islam Quest?
+          Are you sure you want to exit?
         </p>
 
         <div
@@ -106,7 +96,7 @@ export default function ExitConfirmationModal({ onConfirm, onCancel }) {
               e.currentTarget.style.boxShadow = "0 4px 12px rgba(212, 175, 55, 0.3)";
             }}
           >
-            Exit
+            Yes
           </button>
         </div>
       </div>

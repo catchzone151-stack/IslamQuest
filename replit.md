@@ -8,6 +8,15 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Major Updates (November 24, 2025)
 
+### ✅ Physical Back Button Handler (Complete - November 24, 2025)
+- **Global Exit Confirmation**: Implemented app-wide back button interception to prevent accidental exits
+- **Custom Modal**: Shows IslamQuest-themed confirmation modal matching all existing modal styles (no system alerts)
+- **Message**: Simple "Are you sure you want to exit?" with "Yes" and "Cancel" buttons
+- **Behavior**: Physical phone back button no longer immediately closes app; shows confirmation modal first
+- **Coverage**: Applied globally across all screens and routes (onboarding and main app)
+- **Auto-save**: Progress continues to auto-save as normal (no changes to existing save behavior)
+- **Implementation**: Uses browser History API to intercept popstate events and manage navigation state
+
 ### ✅ 12 New Avatars Added (Complete - November 24, 2025)
 - **New Male Avatars (5)**: Sunglasses waving, "Well done!" sign holder, construction worker, crown with thumbs up, scholar with book
 - **New Female Avatars (7)**: Crown (black hijab), cooking with spoon, elder with cane, HAWA text hijab, pink hijab, tan hijab, yellow hijab with purse
