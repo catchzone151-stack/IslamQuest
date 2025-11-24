@@ -1,0 +1,115 @@
+// src/lib/userProfile.js
+import { supabase } from "./supabaseClient";
+import { useProgressStore } from "../store/progressStore";
+
+// 🔥 FIELDS STORED IN SUPABASE
+// (Matches our agreed recommendations)
+function serializeProgress(state) {
+  return {
+    xp: state.xp,
+    coins: state.coins,
+    streak: state.streak,
+    shield_count: state.shieldCount,
+    avatar: state.avatar,
+    username: state.username,
+    display_name: state.displayName,
+
+    premium_type: state.premiumType,
+    premium_activated_at: state.premiumActivatedAt,
+    family_plan_id: state.familyPlanId,
+    family_members: state.familyMembers,
+
+    lesson_states: state.lessonStates,
+    locked_lessons: state.lockedLessons,
+    completed_lessons: state.getTotalCompletedLessons(),
+
+    vibration_enabled: state.vibrationEnabled,
+    last_login: new Date().toISOString(),
+  };
+}
+
+// 🔥 RESTORE FROM SUPABASE INTO ZUSTAND
+function hydrateLocal(progress) {
+  const set = useProgressStore.setState;
+
+  set({
+    xp: progress.xp ?? 0,
+    coins: progress.coins ?? 0,
+    streak: progress.streak ?? 0,
+    shieldCount: progress.shield_count ?? 0,
+    avatar: progress.avatar ?? "default",
+    username: progress.username ?? null,
+    displayName: progress.display_name ?? "Student of Knowledge",
+
+    premium: progress.premium_type !== "free",
+    premiumType: progress.premium_type ?? null,
+    premiumActivatedAt: progress.premium_activated_at ?? null,
+    premiumStatus: progress.premium_type ?? "free",
+    hasPremium: progress.premium_type !== "free",
+
+    familyPlanId: progress.family_plan_id ?? null,
+    familyMembers: progress.family_members ?? [],
+
+    lessonStates: progress.lesson_states ?? {},
+    lockedLessons: progress.locked_lessons ?? {},
+
+    vibrationEnabled: progress.vibration_enabled ?? true,
+  });
+
+  // Recalculate everything
+  const get = useProgressStore.getState;
+  get().applyLockingRules();
+  get().saveProgress();
+}
+
+// 🔥 SYNC: LOCAL → SUPABASE
+export async function syncToSupabase(userId) {
+  if (!userId) return;
+
+  const state = useProgressStore.getState();
+  const payload = serializeProgress(state);
+
+  const { error } = await supabase
+    .from("profiles")
+    .upsert({ id: userId, ...payload });
+
+  if (error) {
+    console.warn("Supabase sync failed (will retry next launch):", error.message);
+  }
+}
+
+// 🔥 SYNC: SUPABASE → LOCAL (restore)
+export async function loadFromSupabase(userId) {
+  if (!userId) return;
+
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", userId)
+    .single();
+
+  if (error) {
+    console.warn("No remote profile yet:", error.message);
+    return;
+  }
+
+  hydrateLocal(data);
+}
+
+// 🔥 AUTO-CREATE PROFILE ON FIRST LAUNCH
+export async function ensureProfile(userId) {
+  if (!userId) return null;
+
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("id", userId)
+    .single();
+
+  if (data) return userId; // Already exists
+
+  // Create new empty profile
+  await supabase.from("profiles").insert({ id: userId });
+
+  return userId;
+}
