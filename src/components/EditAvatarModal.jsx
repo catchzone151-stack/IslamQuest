@@ -48,7 +48,7 @@ export default function EditAvatarModal({ isOpen, onClose, currentAvatar, onSave
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(6, 80px)",
+            gridTemplateColumns: "repeat(auto-fit, minmax(70px, 80px))",
             gap: "10px",
             justifyContent: "center",
           }}
@@ -83,7 +83,7 @@ export default function EditAvatarModal({ isOpen, onClose, currentAvatar, onSave
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(7, 80px)",
+            gridTemplateColumns: "repeat(auto-fit, minmax(70px, 80px))",
             gap: "10px",
             justifyContent: "center",
           }}
@@ -118,7 +118,7 @@ export default function EditAvatarModal({ isOpen, onClose, currentAvatar, onSave
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(6, 80px)",
+            gridTemplateColumns: "repeat(auto-fit, minmax(70px, 80px))",
             gap: "10px",
             justifyContent: "center",
           }}

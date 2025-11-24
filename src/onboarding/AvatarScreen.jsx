@@ -51,15 +51,16 @@ export default function AvatarScreen() {
           display: "flex",
           flexDirection: "column",
           gap: "16px",
-          width: "90%",
-          maxWidth: 360,
+          width: "100%",
+          maxWidth: "min(90vw, 600px)",
+          padding: "0 16px",
         }}
       >
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(6, 90px)",
-            gap: 16,
+            gridTemplateColumns: "repeat(auto-fit, minmax(70px, 1fr))",
+            gap: 12,
             justifyContent: "center",
           }}
         >
@@ -73,8 +74,9 @@ export default function AvatarScreen() {
               whileHover={{ scale: 1.05, filter: "brightness(1.1)" }}
               whileTap={{ scale: 0.95 }}
               style={{
-                width: 90,
-                height: 90,
+                width: "100%",
+                aspectRatio: "1",
+                maxWidth: "90px",
                 borderRadius: "50%",
                 padding: 0,
                 border:
@@ -100,8 +102,8 @@ export default function AvatarScreen() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(7, 90px)",
-            gap: 16,
+            gridTemplateColumns: "repeat(auto-fit, minmax(70px, 1fr))",
+            gap: 12,
             justifyContent: "center",
           }}
         >
@@ -115,8 +117,9 @@ export default function AvatarScreen() {
               whileHover={{ scale: 1.05, filter: "brightness(1.1)" }}
               whileTap={{ scale: 0.95 }}
               style={{
-                width: 90,
-                height: 90,
+                width: "100%",
+                aspectRatio: "1",
+                maxWidth: "90px",
                 borderRadius: "50%",
                 padding: 0,
                 border:
@@ -142,8 +145,8 @@ export default function AvatarScreen() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(6, 90px)",
-            gap: 16,
+            gridTemplateColumns: "repeat(auto-fit, minmax(70px, 1fr))",
+            gap: 12,
             justifyContent: "center",
           }}
         >
@@ -157,8 +160,9 @@ export default function AvatarScreen() {
               whileHover={{ scale: 1.05, filter: "brightness(1.1)" }}
               whileTap={{ scale: 0.95 }}
               style={{
-                width: 90,
-                height: 90,
+                width: "100%",
+                aspectRatio: "1",
+                maxWidth: "90px",
                 borderRadius: "50%",
                 padding: 0,
                 border:
