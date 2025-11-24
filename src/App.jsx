@@ -14,6 +14,8 @@ import { useUserStore } from "./store/useUserStore";
 import { useProgressStore } from "./store/progressStore";
 import { preloadAllAssets } from "./utils/imagePreloader";
 import { useModalStore, MODAL_TYPES } from "./store/modalStore";
+import { supabase } from "./lib/supabaseClient";
+import { getDeviceFingerprint } from "./lib/deviceFingerprint";
 
 // ✅ Onboarding screens (loaded immediately for first-time users)
 import BismillahScreen from "./onboarding/BismillahScreen.jsx";
@@ -258,6 +260,32 @@ export default function App() {
       }
       // Continue app initialization with default state (no reload)
     }
+  }, []);
+
+  // 🔐 SUPABASE: Initialize anonymous auth on app start
+  useEffect(() => {
+    async function initAuth() {
+      const { userId, setUserId, setDeviceId } = useUserStore.getState();
+
+      // Always register device fingerprint
+      const fp = getDeviceFingerprint();
+      setDeviceId(fp);
+
+      // If already logged in → restore
+      const session = await supabase.auth.getSession();
+      if (session?.data?.session?.user) {
+        setUserId(session.data.session.user.id);
+        return;
+      }
+
+      // Otherwise create anonymous user
+      const { data, error } = await supabase.auth.signInAnonymously();
+      if (data?.user) {
+        setUserId(data.user.id);
+      }
+    }
+
+    initAuth();
   }, []);
 
   // 🚀 PERFORMANCE: Preload ALL assets and route modules IMMEDIATELY for instant Duolingo-style loading
