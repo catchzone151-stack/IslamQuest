@@ -39,16 +39,17 @@ export const AVAILABLE_AVATARS = [
   "avatar_man_construction",
   "avatar_man_thumbsup",
   "avatar_man_scholar",
-  // Female avatars (16 total) - NINJA_FEMALE removed from this list
+  // Women avatars - cartoon/neon/pixel styles (3 total)
+  "avatar_woman_cartoon",
+  "avatar_woman_pixel",
+  "avatar_woman_neon",
+  // Female avatars - hijab/traditional styles (13 total) - NINJA_FEMALE removed from this list
   "avatar_woman_hijab_book",
   "avatar_woman_hijab_dua",
   "avatar_woman_hijab_tasbih",
   "avatar_woman_hijab_studying",
   "avatar_woman_hijab_beads",
   "avatar_woman_niqab",
-  "avatar_woman_cartoon",
-  "avatar_woman_pixel",
-  "avatar_woman_neon",
   "avatar_woman_crown",
   "avatar_woman_cooking",
   "avatar_woman_elder_cane",
