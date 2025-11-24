@@ -85,7 +85,7 @@ export default function Friends() {
 
   // 🔹 THE DEV - Permanent Global Leaderboard Entry
   const THE_DEV_ENTRY = {
-    id: 'the_dev_permanent',
+    id: 'the_dev_npc',
     username: 'thedev',
     nickname: 'The Dev',
     avatar: 'avatar_ninja_male',

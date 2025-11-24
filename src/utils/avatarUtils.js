@@ -91,8 +91,8 @@ export function getAvatarImage(avatarKey, options = {}) {
   // PRIORITY 3: STRICT ENFORCEMENT - Prevent ANY non-Dev user from using Dev avatar
   // This ensures avatar_ninja_male is EXCLUSIVE to The Dev NPC only
   if (properKey === DEV_AVATAR_KEY && !isDevAccount(userId, nickname)) {
-    // Safety: Assign random avatar instead of allowing Dev avatar for non-Dev users
-    properKey = getRandomAvatar();
+    // Safety: Assign deterministic avatar instead of allowing Dev avatar for non-Dev users
+    properKey = getRandomAvatar(userId);
   }
   
   // PRIORITY 4: Return avatar if it exists
@@ -100,9 +100,9 @@ export function getAvatarImage(avatarKey, options = {}) {
     return assets.avatars[properKey];
   }
   
-  // PRIORITY 5: If no valid avatar, assign random avatar (fallback)
-  const randomKey = getRandomAvatar();
-  return assets.avatars[randomKey];
+  // PRIORITY 5: If no valid avatar, assign deterministic avatar (fallback)
+  const deterministicKey = getRandomAvatar(userId);
+  return assets.avatars[deterministicKey];
 }
 
 /**
@@ -117,12 +117,26 @@ export function isDevAccount(userId, nickname) {
 }
 
 /**
- * Get a random avatar key from available avatars (excluding Dev avatar)
- * @returns {string} Random avatar key
+ * Get a deterministic avatar key based on userId (NOT random!)
+ * Uses userId as seed to ensure same user always gets same avatar
+ * @param {string} userId - User ID to use as seed
+ * @returns {string} Deterministic avatar key
  */
-export function getRandomAvatar() {
-  const randomIndex = Math.floor(Math.random() * AVAILABLE_AVATARS.length);
-  return AVAILABLE_AVATARS[randomIndex];
+export function getRandomAvatar(userId = null) {
+  if (!userId) {
+    // Fallback: return first avatar if no userId provided
+    return AVAILABLE_AVATARS[0];
+  }
+  
+  // Create deterministic seed from userId
+  let seed = 0;
+  for (let i = 0; i < userId.length; i++) {
+    seed += userId.charCodeAt(i);
+  }
+  
+  // Use seed to get consistent avatar index
+  const avatarIndex = seed % AVAILABLE_AVATARS.length;
+  return AVAILABLE_AVATARS[avatarIndex];
 }
 
 /**
@@ -157,7 +171,7 @@ export function assignAvatarsToUsers(users, options = {}) {
     }
     // Prevent non-Dev from using Dev avatar
     else if (currentAvatar === DEV_AVATAR_KEY) {
-      properAvatarKey = getRandomAvatar();
+      properAvatarKey = getRandomAvatar(userId);
     }
     // If no avatar or invalid avatar, assign random
     else if (!currentAvatar || !assets.avatars[currentAvatar]) {
