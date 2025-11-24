@@ -53,6 +53,11 @@ export default function Home() {
   // Which "page" of the carousel we're on (0 / 1 / 2)
   const [page, setPage] = useState(0);
 
+  // 🎉 Easter Egg: Mascot tap counter
+  const [mascotTaps, setMascotTaps] = useState(0);
+  const [showSparkle, setShowSparkle] = useState(false);
+  const tapTimeoutRef = useRef(null);
+
   // Ramadan countdown state (3-segment: months/weeks/days)
   const [ramadanStats, setRamadanStats] = useState({
     months: "--",
@@ -74,6 +79,7 @@ export default function Home() {
     triggerDailyStudy,
     checkStreakOnAppOpen,
     ensureLocksReady,
+    addXP,
   } = useProgressStore();
 
   // Load Daily Quest state from localStorage on mount
@@ -186,6 +192,41 @@ export default function Home() {
   };
 
   /**
+   * 🎉 Easter Egg: Handle mascot tap
+   * - Count taps within 3.5 second window
+   * - Award +1 XP on 5th tap
+   * - Show sparkle animation on XP counter
+   */
+  const handleMascotTap = () => {
+    // Clear existing timeout
+    if (tapTimeoutRef.current) {
+      clearTimeout(tapTimeoutRef.current);
+    }
+
+    // Increment tap count
+    const newTapCount = mascotTaps + 1;
+    setMascotTaps(newTapCount);
+
+    // Check if we've hit 5 taps
+    if (newTapCount === 5) {
+      // Award +1 XP using the same method as normal XP
+      addXP(1);
+      
+      // Show sparkle animation
+      setShowSparkle(true);
+      setTimeout(() => setShowSparkle(false), 500);
+      
+      // Reset tap counter
+      setMascotTaps(0);
+    } else {
+      // Set timeout to reset counter after 3.5 seconds of inactivity
+      tapTimeoutRef.current = setTimeout(() => {
+        setMascotTaps(0);
+      }, 3500);
+    }
+  };
+
+  /**
    * Card gradients — one per learning path (index-based)
    * Order aligns with your 14 paths in progressStore.
    */
@@ -244,6 +285,7 @@ export default function Home() {
                 flexDirection: "column",
                 alignItems: "center",
                 minWidth: 40,
+                position: "relative",
               }}
             >
               <img
@@ -258,9 +300,52 @@ export default function Home() {
                   fontSize: "0.85rem",
                   fontWeight: 700,
                   color: "#ffd85a",
+                  position: "relative",
                 }}
               >
                 {typeof value === "number" ? value.toLocaleString() : value}
+                {/* 🎉 Easter Egg: Sparkle animation on XP counter */}
+                {i === 1 && showSparkle && (
+                  <>
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        fontSize: "1.5rem",
+                        animation: "sparkle 0.5s ease-out",
+                        pointerEvents: "none",
+                      }}
+                    >
+                      ✨
+                    </span>
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: "-10px",
+                        right: "-10px",
+                        fontSize: "1rem",
+                        animation: "sparkle 0.5s ease-out 0.1s",
+                        pointerEvents: "none",
+                      }}
+                    >
+                      ✨
+                    </span>
+                    <span
+                      style={{
+                        position: "absolute",
+                        bottom: "-10px",
+                        left: "-10px",
+                        fontSize: "1rem",
+                        animation: "sparkle 0.5s ease-out 0.2s",
+                        pointerEvents: "none",
+                      }}
+                    >
+                      ✨
+                    </span>
+                  </>
+                )}
               </span>
             </div>
           ))}
@@ -272,6 +357,7 @@ export default function Home() {
             src={MainMascot}
             alt="Main Mascot"
             loading="eager"
+            onClick={handleMascotTap}
             style={{
               width: 100,
               height: 100,
@@ -279,6 +365,8 @@ export default function Home() {
               margin: "0 auto",
               willChange: "transform",
               transform: "translateZ(0)",
+              cursor: "pointer",
+              userSelect: "none",
             }}
           />
         </div>
@@ -732,6 +820,21 @@ export default function Home() {
         @keyframes fadeSlideIn {
           from { opacity: 0; transform: translateY(12px); }
           to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes sparkle {
+          0% {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.5);
+          }
+          50% {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.2);
+          }
+          100% {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(1);
+          }
         }
 
         @keyframes bounceYSmooth {
