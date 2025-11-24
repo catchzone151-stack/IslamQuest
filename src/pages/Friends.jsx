@@ -90,7 +90,7 @@ export default function Friends() {
     nickname: 'The Dev',
     avatar: 'avatar_ninja_male',
     xp: 168542,
-    streak: 365,
+    streak: 82,
     isPermanent: true
   };
 
