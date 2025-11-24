@@ -1,4 +1,4 @@
-const namesOfAllah ﷻLessonsFull = [
+const namesOfAllahLessonsFull = [
   {
     id: 1,
     title: "Allah ﷻ",
@@ -1457,4 +1457,4 @@ const namesOfAllah ﷻLessonsFull = [
   }
   ];
 
-  export default namesOfAllah ﷻLessonsFull;
+  export default namesOfAllahLessonsFull;
