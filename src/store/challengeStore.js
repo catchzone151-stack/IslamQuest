@@ -742,9 +742,9 @@ export const useChallengeStore = create((set, get) => ({
         }
       });
 
-      // Calculate last third
+      // Calculate last third (ensure at least ceil(totalQuestions/3) items)
       const totalQuestions = allPathQuestions.length;
-      const lastThirdStart = Math.ceil(totalQuestions * 2 / 3); // Start at 66.67%
+      const lastThirdStart = Math.max(0, totalQuestions - Math.ceil(totalQuestions / 3));
       const lastThirdQuestions = allPathQuestions.slice(lastThirdStart);
 
       // Add to boss pool
