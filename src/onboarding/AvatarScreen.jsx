@@ -2,22 +2,15 @@ import React, { useState, useMemo } from "react";
 import { useNavigate } from "../hooks/useNavigate";
 import { useUserStore } from "../store/useUserStore";
 import { motion } from "framer-motion";
-
-// ✅ Load all .webp avatars (optimized and compressed)
-const avatarContext = import.meta.glob("/src/assets/avatars/*.webp", {
-  eager: true,
-});
-
-const avatars = Object.values(avatarContext)
-  .map((m) => m.default)
-  .filter((src) => typeof src === "string");
+import assets from "../assets/assets";
 
 export default function AvatarScreen() {
   const navigate = useNavigate();
   const { setAvatar } = useUserStore();
   const [selected, setSelected] = useState(null);
 
-  const sortedAvatars = useMemo(() => avatars.sort(), []);
+  // Use avatars from assets.js in the defined order (male → female → rest)
+  const sortedAvatars = useMemo(() => Object.values(assets.avatars), []);
 
   const handleContinue = () => {
     if (!selected) return;

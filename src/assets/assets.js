@@ -24,11 +24,20 @@ import mascot_countdown from "./mascots/mascot_countdown.webp";
 import mascot_streak_freeze from "./mascots/mascot_streak_freeze.webp";
 
 // ============ AVATARS ============
+// Male avatars
 import avatar_man_lantern from "./avatars/avatar_man_lantern.webp";
 import avatar_man_tasbih from "./avatars/avatar_man_tasbih.webp";
 import avatar_man_cup from "./avatars/avatar_man_cup.webp";
 import avatar_man_spoon from "./avatars/avatar_man_spoon.webp";
 import avatar_man_soccer from "./avatars/avatar_man_soccer.webp";
+import avatar_man_sunglasses from "./avatars/avatar_man_sunglasses.webp";
+import avatar_man_welldone from "./avatars/avatar_man_welldone.webp";
+import avatar_man_construction from "./avatars/avatar_man_construction.webp";
+import avatar_man_thumbsup from "./avatars/avatar_man_thumbsup.webp";
+import avatar_man_scholar from "./avatars/avatar_man_scholar.webp";
+import avatar_ninja_male from "./avatars/avatar_ninja_male.png.webp";
+
+// Female avatars
 import avatar_woman_hijab_book from "./avatars/avatar_woman_hijab_book.webp";
 import avatar_woman_hijab_dua from "./avatars/avatar_woman_hijab_dua.webp";
 import avatar_woman_hijab_tasbih from "./avatars/avatar_woman_hijab_tasbih.webp";
@@ -38,8 +47,16 @@ import avatar_woman_niqab from "./avatars/avatar_woman_niqab.webp";
 import avatar_woman_cartoon from "./avatars/avatar_woman_cartoon.webp";
 import avatar_woman_pixel from "./avatars/avatar_woman_pixel.webp";
 import avatar_woman_neon from "./avatars/avatar_woman_neon.webp";
+import avatar_woman_crown from "./avatars/avatar_woman_crown.webp";
+import avatar_woman_cooking from "./avatars/avatar_woman_cooking.webp";
+import avatar_woman_elder_cane from "./avatars/avatar_woman_elder_cane.webp";
+import avatar_woman_hawa from "./avatars/avatar_woman_hawa.webp";
+import avatar_woman_hijab_pink from "./avatars/avatar_woman_hijab_pink.webp";
+import avatar_woman_hijab_tan from "./avatars/avatar_woman_hijab_tan.webp";
+import avatar_woman_hijab_purse from "./avatars/avatar_woman_hijab_purse.webp";
 import avatar_ninja_female from "./avatars/avatar_ninja_female.png.webp";
-import avatar_ninja_male from "./avatars/avatar_ninja_male.png.webp";
+
+// Other avatars (animals, robots, etc.)
 import avatar_dino from "./avatars/avatar_dino.png.webp";
 import avatar_fox from "./avatars/avatar_fox.png.webp";
 import avatar_panda from "./avatars/avatar_panda.png.webp";
@@ -78,11 +95,19 @@ const assets = {
     mascot_streak_freeze,
   },
   avatars: {
+    // Male avatars first
     avatar_man_lantern,
     avatar_man_tasbih,
     avatar_man_cup,
     avatar_man_spoon,
     avatar_man_soccer,
+    avatar_man_sunglasses,
+    avatar_man_welldone,
+    avatar_man_construction,
+    avatar_man_thumbsup,
+    avatar_man_scholar,
+    avatar_ninja_male,
+    // Female avatars second
     avatar_woman_hijab_book,
     avatar_woman_hijab_dua,
     avatar_woman_hijab_tasbih,
@@ -92,8 +117,15 @@ const assets = {
     avatar_woman_cartoon,
     avatar_woman_pixel,
     avatar_woman_neon,
+    avatar_woman_crown,
+    avatar_woman_cooking,
+    avatar_woman_elder_cane,
+    avatar_woman_hawa,
+    avatar_woman_hijab_pink,
+    avatar_woman_hijab_tan,
+    avatar_woman_hijab_purse,
     avatar_ninja_female,
-    avatar_ninja_male,
+    // Other avatars last
     avatar_dino,
     avatar_fox,
     avatar_panda,

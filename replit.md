@@ -6,7 +6,16 @@ Islam Quest is a mobile-first web application designed as a gamified Islamic lea
 ## User Preferences
 Preferred communication style: Simple, everyday language.
 
-## Recent Major Updates (November 23, 2025)
+## Recent Major Updates (November 24, 2025)
+
+### ✅ 12 New Avatars Added (Complete - November 24, 2025)
+- **New Male Avatars (5)**: Sunglasses waving, "Well done!" sign holder, construction worker, crown with thumbs up, scholar with book
+- **New Female Avatars (7)**: Crown (black hijab), cooking with spoon, elder with cane, HAWA text hijab, pink hijab, tan hijab, yellow hijab with purse
+- **Avatar Organization**: All avatars now display in proper order: Male avatars → Female avatars → Other avatars (animals, robots, etc.)
+- **Total Avatars**: 34 unique avatars available (11 male, 17 female, 6 other) plus 1 exclusive Dev avatar
+- **Onboarding & Profile**: Both avatar selection screens show avatars in organized male→female→rest order
+- **File Optimization**: All new avatars converted to WebP format (37KB-226KB each) for optimal performance
+- **Full Integration**: New avatars work seamlessly across onboarding, profile editing, friends system, leaderboards, and all UI components
 
 ### ✅ Diamond Level Modal Fix (Complete - November 23, 2025)
 - **ViewAllLevelsModal Glitch Fixed**: Resolved runtime crash when clicking "View All Levels" button

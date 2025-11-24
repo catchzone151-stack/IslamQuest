@@ -6,12 +6,20 @@ export const DEV_AVATAR_KEY = "avatar_ninja_male";
 export const DEV_USER_ID = "the_dev_npc"; // The Dev NPC's unique ID
 
 // All available avatars EXCEPT the Dev avatar
+// Ordered: Male avatars → Female avatars → Other avatars
 export const AVAILABLE_AVATARS = [
+  // Male avatars (11 total)
   "avatar_man_lantern",
   "avatar_man_tasbih",
   "avatar_man_cup",
   "avatar_man_spoon",
   "avatar_man_soccer",
+  "avatar_man_sunglasses",
+  "avatar_man_welldone",
+  "avatar_man_construction",
+  "avatar_man_thumbsup",
+  "avatar_man_scholar",
+  // Female avatars (17 total)
   "avatar_woman_hijab_book",
   "avatar_woman_hijab_dua",
   "avatar_woman_hijab_tasbih",
@@ -21,7 +29,15 @@ export const AVAILABLE_AVATARS = [
   "avatar_woman_cartoon",
   "avatar_woman_pixel",
   "avatar_woman_neon",
+  "avatar_woman_crown",
+  "avatar_woman_cooking",
+  "avatar_woman_elder_cane",
+  "avatar_woman_hawa",
+  "avatar_woman_hijab_pink",
+  "avatar_woman_hijab_tan",
+  "avatar_woman_hijab_purse",
   "avatar_ninja_female",
+  // Other avatars (6 total)
   "avatar_dino",
   "avatar_fox",
   "avatar_panda",
