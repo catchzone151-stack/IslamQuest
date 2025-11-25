@@ -25,9 +25,15 @@ The premium model offers free tier limits (0-3 free lessons depending on the pat
 - **Progress (progressStore)**: Manages xp, coins, streak, shield_count - synced via `syncToSupabase()` which never touches identity fields
 - **Avatar Storage**: Stored as INTEGER index in Supabase (0-33), converted to/from string key in app via `avatarKeyToIndex()` and `avatarIndexToKey()`
 - **Profile Completeness**: `isProfileComplete()` checks if username (not "UserXXXX" pattern) and handle are set - triggers onboarding if incomplete
-- **Onboarding Flow**: UsernameScreen calls `completeOnboarding()` which saves all identity fields AND only marks `hasOnboarded=true` after successful cloud save
 
-**Supabase Integration Status**: Phase 6 complete (cloud-backed Challenges and Events). Silent account creation on first launch with permanent Supabase UID. Auto-login on every app open using hidden email/password credentials. The progressStore automatically syncs to Supabase cloud on all state changes (WRITE) with 5-second throttling and AES encryption for sensitive data. On app start, it restores from cloud if cloud data is newer (READ). Profile creation uses SELECT-then-INSERT pattern to prevent duplicates.
+**Profile Creation Architecture (Nov 2025)**:
+- Profiles are ONLY created after onboarding completes, NEVER at app startup
+- `init()` uses `checkProfileExists()` - only checks, never inserts
+- `completeOnboarding()` calls `createProfileAfterOnboarding()` to insert profile with ALL required fields (no nulls)
+- If profile already exists but incomplete, `saveCloudProfile()` updates identity fields
+- Startup sequence: silentAuth → deviceId → checkProfileExists → onboarding OR load stores
+
+**Supabase Integration Status**: Phase 6 complete (cloud-backed Challenges and Events). Silent account creation on first launch with permanent Supabase UID. Auto-login on every app open using hidden email/password credentials. The progressStore automatically syncs to Supabase cloud on all state changes (WRITE) with 5-second throttling and AES encryption for sensitive data. On app start, it restores from cloud if cloud data is newer (READ).
 
 **Challenge System (Phase 6)**: All friend challenges use `submitChallengeAttempt` for cloud-backed completion with server-determined winners. Boss Level uses `saveBossAttemptCloud` with proper error modals on failure (no local fallback). Cloud failures surface user-friendly alerts and prevent reward application until successful sync. Boss playable status refreshes via `canPlayBossTodayCloud` after completion.
 
