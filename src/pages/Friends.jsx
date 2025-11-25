@@ -1,10 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "../hooks/useNavigate";
 import { useFriendsStore } from "../store/friendsStore";
 import { useUserStore } from "../store/useUserStore";
 import { useProgressStore } from "../store/progressStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import { supabase } from "../lib/supabaseClient";
+import { isDevMode } from "../config/dev";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
@@ -43,6 +44,7 @@ export default function Friends() {
   const {
     loadAll,
     loadFriends,
+    loadRequests,
     loadPendingRequests,
     getAllFriends,
     getSentRequests,
@@ -70,18 +72,46 @@ export default function Friends() {
 
   useEffect(() => {
     if (!currentUserId) return;
-    console.log("🔄 Friends page mounted - calling loadAll for userId:", currentUserId);
-    loadAll();
+    console.log("🔄 Friends page mounted - loading all friend data for userId:", currentUserId);
+    loadFriends();
+    loadRequests();
+    loadPendingRequests();
   }, [currentUserId]);
   
   useEffect(() => {
     const handleFocus = () => {
       console.log("🔄 Window focused - refreshing friend data");
-      loadAll();
+      loadFriends();
+      loadRequests();
+      loadPendingRequests();
     };
     window.addEventListener('focus', handleFocus);
     return () => window.removeEventListener('focus', handleFocus);
-  }, [loadAll]);
+  }, [loadFriends, loadRequests, loadPendingRequests]);
+
+  useEffect(() => {
+    if (isDevMode()) {
+      console.log("🔧 Dev mode active - polling disabled");
+      return;
+    }
+
+    let isMounted = true;
+
+    const poll = async () => {
+      if (!isMounted) return;
+      console.log("🔄 Polling friends data...");
+      await loadFriends();
+      await loadRequests();
+      await loadPendingRequests();
+    };
+
+    const intervalId = setInterval(poll, 7000);
+
+    return () => {
+      isMounted = false;
+      clearInterval(intervalId);
+    };
+  }, [loadFriends, loadRequests, loadPendingRequests]);
 
   const loadGlobalLeaderboard = useCallback(async () => {
     setLoadingGlobal(true);

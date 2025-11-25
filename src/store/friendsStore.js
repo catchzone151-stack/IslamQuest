@@ -549,9 +549,10 @@ export const useFriendsStore = create((set, get) => ({
         return { success: false, error: "Failed to send request" };
       }
 
-      // Refresh both friends and requests
+      // Refresh friends, sent requests, and pending requests
       await get().loadFriends();
       await get().loadRequests();
+      await get().loadPendingRequests();
       return { success: true, message: "Friend request sent!" };
     } catch (err) {
       console.error("sendFriendRequest error:", err);
@@ -586,8 +587,9 @@ export const useFriendsStore = create((set, get) => ({
         return { success: false, error: "Request not found or already accepted" };
       }
 
-      // Refresh both friends and pending requests
+      // Refresh friends, sent requests, and pending requests
       await get().loadFriends();
+      await get().loadRequests();
       await get().loadPendingRequests();
       
       const { friends } = get();
@@ -615,8 +617,9 @@ export const useFriendsStore = create((set, get) => ({
 
       console.log("❌ declineFriendRequest - delete error:", deleteErr);
 
-      // Refresh both friends and pending requests
+      // Refresh friends, sent requests, and pending requests
       await get().loadFriends();
+      await get().loadRequests();
       await get().loadPendingRequests();
       return { success: true };
     } catch (err) {
