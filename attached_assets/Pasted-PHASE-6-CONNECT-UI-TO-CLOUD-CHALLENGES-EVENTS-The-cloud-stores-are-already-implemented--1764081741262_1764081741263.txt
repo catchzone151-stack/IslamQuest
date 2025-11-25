@@ -1,0 +1,71 @@
+PHASE 6 – CONNECT UI TO CLOUD CHALLENGES + EVENTS
+
+The cloud stores are already implemented:
+
+- useChallengeStore in src/store/challengeStore.js
+  - createChallengeCloud / createChallenge
+  - submitChallengeAttempt
+  - loadPendingChallenges / loadActiveChallenges / loadChallengeHistory / loadAllMyChallenges
+  - saveBossAttemptCloud / loadBossAttemptToday / canPlayBossTodayCloud
+
+- useEventsStore in src/store/eventsStore.js
+  - enterEventCloud (also used inside enterEvent)
+  - hasEnteredCloud / loadMyEntries
+  - loadLeaderboard / getMyRank
+  - claimEventRewards
+
+DO NOT re-architect these stores. Only use them from the UI and remove old local-only flows.
+
+1) Challenges (friend vs friend)
+Update:
+- src/pages/Challenges.jsx
+- src/pages/ChallengeGame.jsx
+- any challenge result/components
+
+Requirements:
+- Use useChallengeStore() for all challenge actions.
+- Creating a challenge must call createChallenge(friendId, mode) (wrapper over createChallengeCloud).
+- When a game finishes, submit the result with submitChallengeAttempt(challengeId, score, answers, completionTime, chain if needed) instead of any old local-only completion logic.
+- Pending/active/history lists must be loaded via:
+  - loadPendingChallenges()
+  - loadActiveChallenges()
+  - loadChallengeHistory()
+  - or loadAllMyChallenges() on screen load.
+- Remove / stop using any old purely localStorage challenge flows except for harmless caching (challenges array, history, etc.).
+
+2) Boss Level
+Update:
+- src/pages/BossLevel.jsx
+
+Requirements:
+- Starting/finishing Boss Level must use:
+  - saveBossAttempt(score, answers) (which wraps saveBossAttemptCloud).
+  - canPlayBossTodayCloud() to decide if user can play.
+  - loadBossAttemptToday() to restore today’s attempt if needed.
+- Do not keep an independent local-only boss attempts system (just cached state from the cloud is fine).
+
+3) Global Events
+Update:
+- src/pages/GlobalEvents.jsx
+- src/pages/EventQuiz.jsx
+- any event result / leaderboard components
+
+Requirements:
+- Entering an event must use enterEvent(eventId, score, answers). This already calls enterEventCloud internally; keep that behaviour.
+- hasEntered(eventId) and loadMyEntries() should be used to control UI (show “Play” vs “View results” etc.).
+- Leaderboards must come from:
+  - loadLeaderboard(eventId) + getLeaderboard(eventId)
+  - getMyRank(eventId) for the user’s rank.
+- Stop using generateMockLeaderboard() and grantRewardsForEvent() for the main flow; use claimEventRewards(eventId) instead, which updates event_entries and profiles XP/coins.
+- Keep mock functions only as a fallback if no cloud data is available.
+
+4) Cleanup + Verification
+- Remove any dead imports or old local challenge/event logic that is no longer used.
+- Ensure no button calls missing functions.
+- Then RUN THE APP and manually verify:
+  - Challenges screen: send challenge, see it on other account, play, and see results.
+  - Boss Level: can only play once per day, result saved to cloud.
+  - Global Events: enter event, see leaderboard, see rank, claim rewards.
+- Fix any errors you encounter until everything compiles with zero errors and all buttons work.
+
+Stop after UI is fully wired and tested. Do NOT start Phase 7.
