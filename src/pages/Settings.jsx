@@ -10,12 +10,11 @@ import { ChevronLeft } from "lucide-react";
 export default function Settings() {
   const navigate = useNavigate();
   const { showModal } = useModalStore();
-  const { vibrationEnabled, setVibrationEnabled, resetAllProgress, setHasOnboarded } = useProgressStore();
-  const { resetUserData } = useUserStore();
+  const { vibrationEnabled, setVibrationEnabled, resetAllProgress } = useProgressStore();
+  const { resetUserData, setOnboarded } = useUserStore();
 
   const handleVibrationToggle = () => {
     setVibrationEnabled(!vibrationEnabled);
-    // Trigger haptic feedback if enabling
     if (!vibrationEnabled && navigator.vibrate) {
       navigator.vibrate(50);
     }
@@ -30,7 +29,7 @@ export default function Settings() {
 
     resetUserData();
     resetAllProgress();
-    setHasOnboarded(false);
+    setOnboarded(false);
 
     navigate("/onboarding/bismillah", { replace: true });
   };
