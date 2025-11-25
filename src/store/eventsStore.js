@@ -136,14 +136,29 @@ export const useEventsStore = create(
             return { success: false, error: "ALREADY_ENTERED" };
           }
           
-          const { count, error: countError } = await supabase
+          const { count: higherScoreCount, error: countError1 } = await supabase
             .from('event_entries')
             .select('*', { count: 'exact', head: true })
             .eq('event_id', eventId)
             .eq('week_id', weekId)
             .gt('score', score);
           
-          const provisionalRank = countError ? 1 : (count || 0) + 1;
+          let sameScoreFasterCount = 0;
+          if (completionTime !== null) {
+            const { count: fasterCount, error: countError2 } = await supabase
+              .from('event_entries')
+              .select('*', { count: 'exact', head: true })
+              .eq('event_id', eventId)
+              .eq('week_id', weekId)
+              .eq('score', score)
+              .lt('completion_time', completionTime);
+            
+            if (!countError2) {
+              sameScoreFasterCount = fasterCount || 0;
+            }
+          }
+          
+          const provisionalRank = (countError1 ? 0 : (higherScoreCount || 0)) + sameScoreFasterCount + 1;
           
           const { data, error } = await supabase
             .from('event_entries')
