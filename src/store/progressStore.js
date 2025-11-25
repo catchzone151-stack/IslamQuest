@@ -1043,7 +1043,7 @@ export const useProgressStore = create((set, get) => ({
         .from("profiles")
         .select("shield_count")
         .eq("user_id", auth.user.id)
-        .single();
+        .maybeSingle();
 
       if (error) {
         console.log("❌ loadStreakShieldFromCloud error:", error.message);
@@ -1107,7 +1107,7 @@ export const useProgressStore = create((set, get) => ({
         .from("profiles")
         .select("*")
         .eq("user_id", userId)
-        .single();
+        .maybeSingle();
 
       if (error || !data) {
         console.log("No cloud profile found or error:", error);

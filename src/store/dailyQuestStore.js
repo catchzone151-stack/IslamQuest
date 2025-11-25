@@ -280,54 +280,45 @@ export const useDailyQuestStore = create((set, get) => ({
         .from("daily_quests")
         .select("*")
         .eq("user_id", userId)
-        .single();
+        .maybeSingle();
 
       if (error) {
-        if (error.code === "PGRST116") {
-          // No row found - this is a new user
-          console.log("📥 No cloud quest found - checking local quest");
-          let state = get();
-          
-          // If no local quest exists, generate one first
-          if (!state.date || state.questions.length === 0) {
-            console.log("🔄 No local quest - generating new quest");
-            const hasQuest = await get().checkAndGenerateDailyQuest();
-            if (!hasQuest) {
-              console.log("⚠️ Cannot generate quest - no completed lessons");
-              return;
-            }
-            state = get(); // Refresh state after generation
-          }
-          
-          // Now upload to cloud
-          if (state.date && state.questions.length > 0) {
-            console.log("📤 Uploading quest to cloud...");
-            await get().saveDailyQuestToCloud(userId, {
-              date: state.date,
-              questions: state.questions,
-              completed: state.completed,
-              rewardGiven: state.rewardGiven,
-            });
-          }
-          return;
-        }
         console.log("❌ loadDailyQuestFromCloud error:", error.message);
         return;
       }
 
       if (!data) {
-        console.log("📥 No daily quest data in cloud");
+        console.log("📥 No cloud quest found - checking local quest");
+        let state = get();
+        
+        if (!state.date || state.questions.length === 0) {
+          console.log("🔄 No local quest - generating new quest");
+          const hasQuest = await get().checkAndGenerateDailyQuest();
+          if (!hasQuest) {
+            console.log("⚠️ Cannot generate quest - no completed lessons");
+            return;
+          }
+          state = get();
+        }
+        
+        if (state.date && state.questions.length > 0) {
+          console.log("📤 Uploading quest to cloud...");
+          await get().saveDailyQuestToCloud(userId, {
+            date: state.date,
+            questions: state.questions,
+            completed: state.completed,
+            rewardGiven: state.rewardGiven,
+          });
+        }
         return;
       }
 
       const today = getTodayGMT();
       const cloudDate = data.quest_date;
 
-      // Check if cloud quest is expired (not today's date)
       if (cloudDate !== today) {
         console.log("🔄 Cloud quest expired - generating new local quest");
-        // Generate new quest locally and upload to cloud
-        const hasQuest = get().checkAndGenerateDailyQuest();
+        const hasQuest = await get().checkAndGenerateDailyQuest();
         if (hasQuest) {
           const state = get();
           await get().saveDailyQuestToCloud(userId, {
@@ -340,7 +331,6 @@ export const useDailyQuestStore = create((set, get) => ({
         return;
       }
 
-      // Cloud quest is valid for today - override local with cloud data
       console.log("✅ Restoring daily quest from cloud");
       const questions = data.questions ? JSON.parse(data.questions) : [];
       
@@ -351,7 +341,6 @@ export const useDailyQuestStore = create((set, get) => ({
         rewardGiven: data.reward_given || false,
       });
 
-      // Also save to local storage for offline access
       get().saveDailyQuest();
 
     } catch (err) {
