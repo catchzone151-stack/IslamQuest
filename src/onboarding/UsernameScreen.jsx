@@ -3,13 +3,11 @@ import { useState } from "react";
 import { useNavigate } from "../hooks/useNavigate";
 import { motion } from "framer-motion";
 import { useUserStore } from "../store/useUserStore";
-import { useProgressStore } from "../store/progressStore";
 import { supabase } from "../lib/supabaseClient";
 
 export default function UsernameScreen() {
   const navigate = useNavigate();
   const { setHandle, setOnboarded } = useUserStore();
-  const { setHasOnboarded } = useProgressStore();
   const [input, setInput] = useState("");
   const [checking, setChecking] = useState(false);
   const [error, setError] = useState("");
@@ -45,7 +43,6 @@ export default function UsernameScreen() {
     
     // Mark onboarding as complete
     setOnboarded(true);
-    setHasOnboarded(true);
     
     // Navigate to homepage
     navigate("/");

@@ -24,12 +24,14 @@ import { LevelBadgeCompact } from "../components/LevelBadge";
 import { getAvatarImage } from "../utils/avatarUtils";
 import { getCurrentLevel } from "../utils/diamondLevels";
 import QuickMessageModal from "../components/QuickMessageModal";
+import assets from "../assets/assets";
 
-// Highlight CSS for current user
+// Highlight CSS for current user (gold border + slight glow)
 const highlightStyle = `
 .highlight-user {
   border: 2px solid gold !important;
-  background: rgba(255, 215, 0, 0.1) !important;
+  background: rgba(255, 215, 0, 0.15) !important;
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.3) !important;
 }
 `;
 
@@ -64,6 +66,8 @@ export default function Friends() {
   const [isSearching, setIsSearching] = useState(false);
   const [quickMessageFriend, setQuickMessageFriend] = useState(null);
   const [globalLeaderboard, setGlobalLeaderboard] = useState([]);
+  const [loadingGlobal, setLoadingGlobal] = useState(true);
+  const [globalError, setGlobalError] = useState(null);
 
   // -------------------------------------------------------------------
   // 🚀 PATCH 2 — NEW FRIEND SYSTEM INITIALIZATION + DATA SYNC
@@ -87,54 +91,67 @@ export default function Friends() {
   }, [currentUserXP, currentUserStreak]);
 
   // 🔥 GLOBAL LEADERBOARD: Fetch top 100 from Supabase + include current user
-  useEffect(() => {
-    async function fetchGlobalLeaderboard() {
-      try {
-        const { data, error } = await supabase
-          .from("profiles")
-          .select("user_id, username, handle, avatar, xp")
-          .order("xp", { ascending: false })
-          .limit(100);
+  const loadGlobalLeaderboard = async () => {
+    setLoadingGlobal(true);
+    setGlobalError(null);
+    
+    try {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("user_id, username, handle, avatar, xp")
+        .order("xp", { ascending: false })
+        .limit(100);
 
-        if (error) {
-          console.log("Global leaderboard fetch error:", error.message);
-        }
-
-        // Add The Dev entry (permanent NPC)
-        const THE_DEV_ENTRY = {
-          user_id: "the_dev_npc",
-          username: "The Dev",
-          handle: "thedev",
-          avatar: "avatar_ninja_male",
-          xp: 168542,
-          isPermanent: true,
-        };
-
-        // Add current user entry from local state
-        const userState = useUserStore.getState();
-        const progressState = useProgressStore.getState();
-        const CURRENT_USER_ENTRY = {
-          user_id: currentUserId || userState.id || "current_user",
-          username: name || userState.name || userState.username || "You",
-          handle: userState.handle || username || "you",
-          avatar: avatar || userState.avatar || "avatar_muslim_man",
-          xp: currentUserXP || progressState.xp || 0,
-          isCurrentUser: true,
-        };
-
-        // Combine all entries, remove duplicates (if current user exists in DB)
-        const dbUsers = (data || []).filter(u => u.user_id !== currentUserId);
-        const combined = [THE_DEV_ENTRY, CURRENT_USER_ENTRY, ...dbUsers]
-          .sort((a, b) => b.xp - a.xp);
-        
-        setGlobalLeaderboard(combined);
-      } catch (err) {
-        console.log("Global leaderboard error:", err);
+      if (error) {
+        console.log("Global leaderboard fetch error:", error.message);
+        setGlobalError(error.message);
       }
-    }
 
-    fetchGlobalLeaderboard();
-  }, [currentUserId, name, avatar, username, currentUserXP]);
+      // The Dev permanent entry (168,542 XP, 82-day streak, male ninja avatar)
+      const THE_DEV_ENTRY = {
+        user_id: "the_dev_permanent",
+        username: "The Dev",
+        handle: "thedev",
+        avatar: "avatar_ninja_male",
+        xp: 168542,
+        streak: 82,
+        isPermanent: true,
+      };
+
+      // Current user entry from local state
+      const userState = useUserStore.getState();
+      const progressState = useProgressStore.getState();
+      const CURRENT_USER_ENTRY = {
+        user_id: currentUserId || userState.id || "current_user",
+        username: name || userState.name || userState.username || "You",
+        handle: userState.handle || username || "you",
+        avatar: avatar || userState.avatar || "avatar_man_lantern",
+        xp: currentUserXP || progressState.xp || 0,
+        streak: currentUserStreak || progressState.streak || 0,
+        isCurrentUser: true,
+      };
+
+      // Combine: The Dev + Current User + DB users (filter out current user duplicate)
+      const dbUsers = (data || []).filter(u => 
+        u.user_id !== currentUserId && 
+        u.user_id !== CURRENT_USER_ENTRY.user_id
+      );
+      
+      const combined = [THE_DEV_ENTRY, CURRENT_USER_ENTRY, ...dbUsers]
+        .sort((a, b) => b.xp - a.xp);
+      
+      setGlobalLeaderboard(combined);
+    } catch (err) {
+      console.log("Global leaderboard error:", err);
+      setGlobalError(err.message);
+    } finally {
+      setLoadingGlobal(false);
+    }
+  };
+
+  useEffect(() => {
+    loadGlobalLeaderboard();
+  }, []);
 
   // 3) Handle search input
   useEffect(() => {
@@ -968,10 +985,12 @@ function GlobalLeaderboardCard({
   isFriend,
   onUserClick,
 }) {
-  const avatarSrc = getAvatarImage(user.avatar, {
+  // Use assets.avatars for reliable avatar loading with fallback
+  const avatarSrc = assets.avatars[user.avatar] || assets.avatars.avatar_man_lantern || getAvatarImage(user.avatar, {
     userId: user.user_id,
     nickname: user.username || user.handle,
   });
+  const displayName = user.username || user.handle || "Unknown";
   const userLevel = getCurrentLevel(user.xp);
   const isPermanentEntry = user.isPermanent === true;
 
@@ -1051,7 +1070,7 @@ function GlobalLeaderboardCard({
       >
         <img
           src={avatarSrc}
-          alt={user.username || user.handle}
+          alt={displayName}
           style={{
             width: "100%",
             height: "100%",
@@ -1075,7 +1094,7 @@ function GlobalLeaderboardCard({
             marginBottom: "2px",
           }}
         >
-          {user.username || user.handle}
+          {displayName}
         </p>
         <p
           className="handle"
