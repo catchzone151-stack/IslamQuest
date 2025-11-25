@@ -284,10 +284,24 @@ export const useDailyQuestStore = create((set, get) => ({
 
       if (error) {
         if (error.code === "PGRST116") {
-          // No row found - this is a new user, create cloud quest from local
-          console.log("📥 No cloud quest found - uploading local quest");
-          const state = get();
+          // No row found - this is a new user
+          console.log("📥 No cloud quest found - checking local quest");
+          let state = get();
+          
+          // If no local quest exists, generate one first
+          if (!state.date || state.questions.length === 0) {
+            console.log("🔄 No local quest - generating new quest");
+            const hasQuest = await get().checkAndGenerateDailyQuest();
+            if (!hasQuest) {
+              console.log("⚠️ Cannot generate quest - no completed lessons");
+              return;
+            }
+            state = get(); // Refresh state after generation
+          }
+          
+          // Now upload to cloud
           if (state.date && state.questions.length > 0) {
+            console.log("📤 Uploading quest to cloud...");
             await get().saveDailyQuestToCloud(userId, {
               date: state.date,
               questions: state.questions,
