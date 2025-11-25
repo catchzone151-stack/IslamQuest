@@ -1179,6 +1179,26 @@ export const useChallengeStore = create((set, get) => ({
     await get().loadAllMyChallenges();
   },
 
+  selectRandomQuestions: (count) => {
+    let allQuestions = get().getQuestionPool();
+    if (allQuestions.length === 0) {
+      allQuestions = get().getBetaFallbackQuestions();
+    }
+    
+    const freshQuestions = get().filterRecentQuestions(allQuestions);
+    let pool = freshQuestions.length > 0 ? freshQuestions : allQuestions;
+    
+    if (pool.length < count) {
+      pool = get().expandQuestionPool(pool, count);
+    }
+    
+    const shuffled = pool.sort(() => Math.random() - 0.5);
+    const selected = shuffled.slice(0, count);
+    selected.forEach(q => get().trackShownQuestion(q.question));
+    
+    return selected;
+  },
+
   getSharedLessons: (userId, friendId) => {
     if (isDevMode()) {
       console.log('🔧 DEV MODE: Returning mock shared lessons for challenge');
