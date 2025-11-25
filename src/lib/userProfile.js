@@ -60,6 +60,8 @@ export async function ensureProfile(userId, deviceId) {
     .eq("user_id", userId)
     .maybeSingle();
 
+  console.log("ensureProfile: SELECT result - data:", existingProfile, "error:", selectError);
+
   if (selectError && selectError.code !== "PGRST116") {
     console.error("ensureProfile: select error", selectError);
     return null;
@@ -71,6 +73,8 @@ export async function ensureProfile(userId, deviceId) {
     console.log("ensureProfile: existing profile found (upsert skipped)");
     return existingProfile;
   }
+  
+  console.log("ensureProfile: No existing profile found, will create new one");
 
   // Step 2: Profile doesn't exist - create with ALL default values (no NULLs)
   console.log("PROFILE: creating new profile for device →", deviceId);
@@ -154,7 +158,10 @@ export async function loadCloudProfile(userId) {
  * Converts avatar string key to integer index for Supabase storage.
  */
 export async function saveCloudProfile(userId, partialData) {
-  if (!userId) return;
+  if (!userId) {
+    console.warn("saveCloudProfile: No userId provided");
+    return { success: false, error: "No userId" };
+  }
 
   // Convert avatar string key to integer index for DB storage
   const dataToSave = { ...partialData, updated_at: new Date().toISOString() };
@@ -164,12 +171,25 @@ export async function saveCloudProfile(userId, partialData) {
     console.log("saveCloudProfile: Converting avatar", partialData.avatar, "→ index", avatarIndex);
   }
 
-  const { error } = await supabase
+  console.log("saveCloudProfile: Updating profile for", userId, "with data:", dataToSave);
+
+  const { data, error, count } = await supabase
     .from("profiles")
     .update(dataToSave)
-    .eq("user_id", userId);
+    .eq("user_id", userId)
+    .select();
 
   if (error) {
-    console.error("Failed to save cloud profile:", error);
+    console.error("saveCloudProfile: Update FAILED:", error);
+    return { success: false, error };
   }
+
+  console.log("saveCloudProfile: Update result - rows affected:", data?.length || 0, "data:", data);
+  
+  if (!data || data.length === 0) {
+    console.warn("saveCloudProfile: No rows updated - profile may not exist for user", userId);
+    return { success: false, error: "No rows updated" };
+  }
+
+  return { success: true, data: data[0] };
 }
