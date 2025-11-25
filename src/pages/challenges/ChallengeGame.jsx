@@ -336,7 +336,7 @@ export default function ChallengeGame() {
     }
   };
 
-  const handleGameComplete = async (finalAnswers = answers) => {
+  const handleGameComplete = (finalAnswers = answers) => {
     // Prevent double-completion
     if (isCompletingRef.current) return;
     isCompletingRef.current = true;
@@ -355,93 +355,108 @@ export default function ChallengeGame() {
     const finalScore = finalAnswers.filter(a => a.correct).length;
     setScore(finalScore);
     
-    // Calculate chain for Sudden Death mode
-    const chain = mode?.id === "sudden_death" ? calculateLongestChain(finalAnswers) : null;
-    
-    console.log('📊 Final score calculated', { finalScore, totalQuestions: questions.length, finalAnswers, chain });
+    console.log('📊 Final score calculated', { finalScore, totalQuestions: questions.length, finalAnswers });
 
-    let cloudResult = null;
-    
-    // Save results to cloud and award rewards
+    // Save results and award rewards
     if (isBoss) {
-      // Use cloud function for Boss Level
-      cloudResult = await useChallengeStore.getState().saveBossAttemptCloud(
-        finalScore, 
-        finalAnswers, 
-        completionTimeRef.current
-      );
+      useChallengeStore.getState().saveBossAttempt(finalScore, finalAnswers);
+      const result = finalScore >= BOSS_LEVEL.questionCount * 0.6 ? "win" : "lose";
+      useChallengeStore.getState().awardRewards("boss_level", result);
       
-      if (cloudResult.success) {
-        // Apply rewards from cloud response
-        if (cloudResult.rewards) {
-          addRewards(cloudResult.rewards);
-        }
-        // Track boss level completion for analytics
-        if (cloudResult.attempt?.passed) {
-          analytics('boss_win', { score: finalScore, total: BOSS_LEVEL.questionCount });
-        }
-      } else {
-        console.error('Boss attempt save failed:', cloudResult.error);
+      // Track boss level completion for analytics
+      if (result === "win") {
+        analytics('boss_win', { score: finalScore, total: BOSS_LEVEL.questionCount });
       }
     } else if (challenge) {
-      // Use cloud function for Friend Challenges
-      cloudResult = await useChallengeStore.getState().submitChallengeAttempt(
+      const currentUserId = "current_user";
+      const isChallenger = challenge.challengerId === currentUserId;
+      useChallengeStore.getState().saveChallengeProgress(
         challengeId, 
         finalScore, 
         finalAnswers, 
-        completionTimeRef.current,
-        chain
+        isChallenger, 
+        completionTimeRef.current
       );
       
-      console.log('☁️ Challenge attempt submitted:', cloudResult);
-      
-      if (cloudResult.success && cloudResult.rewards) {
-        // Apply rewards if challenge is completed
-        addRewards(cloudResult.rewards);
+      // Re-read the updated challenge from store to check if both players finished
+      const updatedChallenge = useChallengeStore.getState().challenges.find(c => c.id === challengeId);
+      if (updatedChallenge && updatedChallenge.challengerScore !== null && updatedChallenge.opponentScore !== null) {
+        // Both players finished - complete the challenge and award rewards
+        const winner = useChallengeStore.getState().completeChallenge(challengeId);
+        let rewardType = "lose";
+        if (winner === "draw") {
+          rewardType = "draw";
+        } else if ((winner === updatedChallenge.challengerId && isChallenger) || 
+                   (winner === updatedChallenge.opponentId && !isChallenger)) {
+          rewardType = "win";
+        }
+        useChallengeStore.getState().awardRewards(updatedChallenge.mode, rewardType);
         
         // Track challenge outcome for analytics
-        if (cloudResult.result === "win") {
-          analytics('challenge_won', { mode: mode?.id, opponent: challenge.opponentId });
+        if (rewardType === "win") {
+          analytics('challenge_won', { mode: updatedChallenge.mode, opponent: updatedChallenge.opponentId });
         }
       }
     }
 
     // Use the mode from component scope (already normalized)
-    console.log('🎯 Using mode for rewards', { mode, cloudResult });
+    console.log('🎯 Using mode for rewards', { mode });
     
     if (!mode) {
       console.error('❌ Mode is undefined! Cannot show results.');
       return;
     }
     
-    // Get result from cloud response or calculate locally
     let result;
-    let rewards = { xp: 0, coins: 0 };
     
     if (isBoss) {
-      // Use cloud result for Boss Level
-      result = cloudResult?.attempt?.passed ? "win" : "lose";
-      rewards = cloudResult?.rewards || (mode?.rewards?.[result] || { xp: 0, coins: 0 });
+      result = finalScore >= BOSS_LEVEL.questionCount * 0.6 ? "win" : "lose";
     } else if (challenge) {
-      // Use cloud result for Friend Challenges
-      result = cloudResult?.result || "pending";
-      rewards = cloudResult?.rewards || { xp: 0, coins: 0 };
+      // Re-read challenge to get final winner status
+      const updatedChallenge = useChallengeStore.getState().challenges.find(c => c.id === challengeId);
+      const currentUserId = "current_user";
+      const isChallenger = challenge.challengerId === currentUserId;
+      
+      if (updatedChallenge?.winner) {
+        if (updatedChallenge.winner === "draw") {
+          result = "draw";
+        } else if ((updatedChallenge.winner === updatedChallenge.challengerId && isChallenger) ||
+                   (updatedChallenge.winner === updatedChallenge.opponentId && !isChallenger)) {
+          result = "win";
+        } else {
+          result = "lose";
+        }
+      } else {
+        // Game not completed yet (waiting for opponent)
+        result = "pending";
+      }
     }
     
-    console.log('🏆 Result determined from cloud', { result, rewards, cloudResult });
+    console.log('🏆 Result determined', { result, mode, rewards: mode?.rewards });
+    
+    // Calculate rewards safely - handle "pending" result
+    let rewards = { xp: 0, coins: 0 };
+    if (mode?.rewards) {
+      if (result && mode.rewards[result]) {
+        rewards = mode.rewards[result];
+      } else if (mode.rewards.lose) {
+        rewards = mode.rewards.lose;
+      }
+    }
+    
+    console.log('💰 Showing results modal', { finalScore, result, rewards });
     
     // For Speed Run, track how many questions were actually answered
     const isSpeedRun = mode?.id === "speed_run";
     const userAnsweredCount = isSpeedRun ? finalAnswers.length : questions.length;
-    const opponentAnsweredCount = isSpeedRun && cloudResult?.opponentAnswers ? cloudResult.opponentAnswers.length : questions.length;
+    const opponentAnsweredCount = isSpeedRun && challenge?.opponentAnswers ? challenge.opponentAnswers.length : questions.length;
     
-    // For Sudden Death, get chain lengths
+    // For Sudden Death, get chain lengths (recalculate from answers to ensure accuracy)
     const isSuddenDeath = mode?.id === "sudden_death";
-    const userChain = isSuddenDeath ? chain : null;
-    const opponentChain = isSuddenDeath ? (cloudResult?.opponentChain || null) : null;
-    
-    // Get opponent info from cloud result
-    const opponentScore = cloudResult?.opponentScore ?? challenge?.opponentScore;
+    const userChain = isSuddenDeath ? calculateLongestChain(finalAnswers) : null;
+    const opponentChain = isSuddenDeath 
+      ? (challenge?.opponentAnswers ? calculateLongestChain(challenge.opponentAnswers) : null)
+      : null;
     
     showModal(MODAL_TYPES.CHALLENGE_RESULTS, {
       mode,
@@ -453,8 +468,8 @@ export default function ChallengeGame() {
       rewards,
       xpEarned: rewards.xp,
       coinsEarned: rewards.coins,
-      opponentName: isBoss ? "Boss" : cloudResult?.opponentName || challenge?.opponentId,
-      opponentScore,
+      opponentName: isBoss ? "Boss" : challenge?.opponentId,
+      opponentScore: challenge?.opponentScore,
       userChain,
       opponentChain,
       onApplyRewards: (rewardData) => addRewards(rewardData),
