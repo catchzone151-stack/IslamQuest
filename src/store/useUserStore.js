@@ -32,8 +32,16 @@ export const useUserStore = create((set, get) => ({
   isHydrated: false,  // Track if store has initialized
   hasOnboarded: checkOnboarded(), // Check localStorage on load
   user: null,         // Supabase auth user
+  userId: null,       // Supabase auth user ID (set during init)
   profile: null,      // Full profile row from DB
   deviceId: loadDeviceId(),
+
+  // Setters for userId and deviceId (used by App.jsx initAuth)
+  setUserId: (userId) => set({ userId }),
+  setDeviceId: (deviceId) => {
+    localStorage.setItem("device_id", deviceId);
+    set({ deviceId });
+  },
 
   // --------------------------------------------------
   // INIT → Silent login + profile load

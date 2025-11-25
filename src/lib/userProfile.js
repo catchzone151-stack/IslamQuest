@@ -41,17 +41,15 @@ export async function ensureSignedIn() {
 /**
  * 🔹 ensureProfile(userId, deviceId)
  * Creates the profile row if missing.
- * Uses correct schema with all required columns.
  */
-export async function ensureProfile(userId, deviceId = null) {
-  console.debug("ensureProfile called", { userId, deviceId });
-  
+export async function ensureProfile(userId, deviceId) {
   if (!userId) {
-    console.debug("ensureProfile: No userId provided, skipping");
-    return null;
+    console.warn("ensureProfile called without userId");
+    return;
   }
 
-  // Check if profile exists
+  console.log("ensureProfile: checking profile for", userId);
+
   const { data: existing, error: selectErr } = await supabase
     .from("profiles")
     .select("user_id")
@@ -59,33 +57,19 @@ export async function ensureProfile(userId, deviceId = null) {
     .single();
 
   if (existing) {
-    console.debug("Profile exists", { user_id: existing.user_id });
+    console.log("ensureProfile: existing profile found");
     return existing;
   }
+  if (selectErr && selectErr.code !== "PGRST116") {
+    console.warn("ensureProfile: select error", selectErr);
+  }
 
-  // Profile doesn't exist - insert with correct schema
-  // Columns: user_id, device_id, username, avatar, premium, premium_family_id,
-  // xp, coins, streak, last_streak_date, shield_count, created_at, updated_at,
-  // handle, streak_shields, last_daily_quest
-  const now = new Date().toISOString();
-  
   const { error: insertErr } = await supabase.from("profiles").insert({
     user_id: userId,
     device_id: deviceId || null,
     username: null,
     avatar: null,
     handle: null,
-    premium: false,
-    premium_family_id: null,
-    xp: 0,
-    coins: 0,
-    streak: 0,
-    last_streak_date: null,
-    shield_count: 0,
-    streak_shields: 0,
-    last_daily_quest: null,
-    created_at: now,
-    updated_at: now,
   });
 
   if (insertErr) {
@@ -93,7 +77,7 @@ export async function ensureProfile(userId, deviceId = null) {
     return null;
   }
 
-  console.debug("Profile inserted", { user_id: userId });
+  console.log("ensureProfile: profile inserted for", userId);
   return { user_id: userId };
 }
 

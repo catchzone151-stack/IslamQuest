@@ -293,39 +293,35 @@ export default function App() {
   // 🔐 SUPABASE: Silent auth + profile creation + Phase 4 cloud sync
   useEffect(() => {
     async function initAuth() {
+      const { setUserId, setDeviceId } = useUserStore.getState();
+
+      const fp = getDeviceFingerprint();
+      setDeviceId(fp);
+
       try {
-        // 1. Silent auth (get existing session or create hidden account)
         const user = await ensureSignedIn();
-        
         if (user) {
-          console.debug("Silent auth successful, user.id:", user.id);
-          
-          // 2. Ensure profile exists in database (FIX: was not being called)
-          const deviceId = localStorage.getItem("device_id") || crypto.randomUUID();
-          if (!localStorage.getItem("device_id")) {
-            localStorage.setItem("device_id", deviceId);
-          }
-          await ensureProfile(user.id, deviceId);
-          
-          // 3. Initialize user store (will load profile)
+          console.log("🔐 Signed in as", user.id);
+          setUserId(user.id);
+
+          // 🔹 CREATE PROFILE ROW IF MISSING
+          console.log("👤 Calling ensureProfile for", user.id, fp);
+          await ensureProfile(user.id, fp);
+
+          // Initialize user store (will load profile)
           await useUserStore.getState().init();
-          
+
           // 🌐 Phase 4: Load cloud data after silent auth
-          // Load daily quest from cloud
           await useDailyQuestStore.getState().loadDailyQuestFromCloud(user.id);
-          
-          // Load streak shields from cloud
           await useProgressStore.getState().loadStreakShieldFromCloud();
-          
+
           console.log("✅ Phase 4: Cloud sync completed after silent auth");
         } else {
-          // Fallback: just init user store without cloud sync
+          console.warn("No user returned from ensureSignedIn");
           await useUserStore.getState().init();
-          console.warn("Silent auth returned no user, skipping cloud sync");
         }
-      } catch (error) {
-        console.error("Silent auth failed:", error);
-        // Fallback: try to init store anyway
+      } catch (err) {
+        console.error("initAuth failed:", err);
         try {
           await useUserStore.getState().init();
         } catch (e) {

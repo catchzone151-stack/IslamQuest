@@ -1,0 +1,81 @@
+Fix Supabase profile creation. I have ensureProfile(userId, deviceId) in src/lib/userProfile.js, but new users are not appearing in the public.profiles table.
+
+Make the following precise changes:
+
+1. In src/App.jsx:
+   - Import ensureProfile from src/lib/userProfile.js:
+       import { ensureProfile } from "./lib/userProfile";
+   - In the auth init useEffect where ensureSignedIn() is called, update it to:
+
+       useEffect(() => {
+         async function initAuth() {
+           const { setUserId, setDeviceId } = useUserStore.getState();
+
+           const fp = getDeviceFingerprint();
+           setDeviceId(fp);
+
+           try {
+             const user = await ensureSignedIn();
+             if (user) {
+               console.log("🔐 Signed in as", user.id);
+               setUserId(user.id);
+
+               // 🔹 CREATE PROFILE ROW IF MISSING
+               console.log("👤 Calling ensureProfile for", user.id, fp);
+               await ensureProfile(user.id, fp);
+             } else {
+               console.warn("No user returned from ensureSignedIn");
+             }
+           } catch (err) {
+             console.error("initAuth failed:", err);
+           }
+         }
+
+         initAuth();
+       }, []);
+
+2. In src/lib/userProfile.js:
+   - Add some temporary debug logs inside ensureProfile so we can see it running:
+
+       export async function ensureProfile(userId, deviceId) {
+         if (!userId) {
+           console.warn("ensureProfile called without userId");
+           return;
+         }
+
+         console.log("ensureProfile: checking profile for", userId);
+
+         const { data: existing, error: selectErr } = await supabase
+           .from("profiles")
+           .select("user_id")
+           .eq("user_id", userId)
+           .single();
+
+         if (existing) {
+           console.log("ensureProfile: existing profile found");
+           return existing;
+         }
+         if (selectErr && selectErr.code !== "PGRST116") {
+           console.warn("ensureProfile: select error", selectErr);
+         }
+
+         const { error: insertErr } = await supabase.from("profiles").insert({
+           user_id: userId,
+           device_id: deviceId || null,
+           username: null,
+           avatar: null,
+           handle: null,
+         });
+
+         if (insertErr) {
+           console.error("Profile creation failed:", insertErr);
+           return null;
+         }
+
+         console.log("ensureProfile: profile inserted for", userId);
+         return { user_id: userId };
+       }
+
+3. Do NOT touch any other logic (onboarding, UI, friends, quests, etc.). Just wire ensureProfile correctly and add the logs.
+
+After changes, restart the dev server and show me a summary of the edits.
