@@ -1,6 +1,6 @@
 // src/onboarding/UsernameScreen.jsx
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "../hooks/useNavigate";
 import { motion } from "framer-motion";
 import { useUserStore } from "../store/useUserStore";
 import { useProgressStore } from "../store/progressStore";
@@ -55,53 +55,106 @@ export default function UsernameScreen() {
     navigate("/login");
   };
 
+  const isValid = input.trim().length > 0;
+
   return (
     <div
-      className="min-h-screen flex flex-col justify-center px-6 pb-20"
+      className="onboarding-screen"
       style={{
-        background:
-          "radial-gradient(circle at 20% 20%, rgba(10,15,30,1) 0%, rgba(3,6,20,1) 70%)",
+        background: "linear-gradient(180deg, #0A1A2F 0%, #060D18 100%)",
+        color: "white",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        textAlign: "center",
+        paddingLeft: "24px",
+        paddingRight: "24px",
+        paddingTop: "24px",
+        justifyContent: "center",
       }}
     >
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="max-w-md mx-auto text-center"
+        style={{
+          width: "100%",
+          maxWidth: "360px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
       >
-        <h1 className="text-2xl font-bold text-[var(--gold)] mb-4">
-          Choose Your Handle
-        </h1>
-
-        <p className="text-gray-300 text-sm mb-6">
-          This is your unique @username used for friends & challenges.
+        <h2 style={{ color: "#D4AF37", fontSize: "1.4rem", marginBottom: "8px" }}>
+          Choose your handle
+        </h2>
+        <p style={{ color: "#ccc", fontSize: "0.95rem", marginBottom: 24 }}>
+          This is your unique @username for friends & challenges
         </p>
 
         <input
-          className="w-full px-4 py-3 rounded-xl bg-[#0b1e36] text-white mb-3 border border-gray-700"
-          placeholder="@yourname"
+          type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          placeholder="@yourhandle"
+          style={{
+            width: "100%",
+            padding: "14px 18px",
+            borderRadius: "12px",
+            border: error ? "2px solid #ef4444" : "2px solid rgba(212, 175, 55, 0.3)",
+            background: "#0E1625",
+            color: "white",
+            fontSize: "1rem",
+            textAlign: "center",
+            outline: "none",
+            marginBottom: "8px",
+          }}
         />
 
         {error && (
-          <p className="text-red-400 text-sm mb-3">{error}</p>
+          <motion.p
+            initial={{ opacity: 0, y: -5 }}
+            animate={{ opacity: 1, y: 0 }}
+            style={{
+              color: "#ef4444",
+              fontSize: "0.85rem",
+              marginBottom: "8px",
+            }}
+          >
+            {error}
+          </motion.p>
         )}
 
-        <button
-          className="w-full py-3 rounded-xl font-bold text-[#0a1a2f]"
-          style={{
-            background: "linear-gradient(90deg, #FFD700, #FFB700)",
-          }}
+        <motion.button
           onClick={handleContinue}
-          disabled={checking}
+          disabled={!isValid || checking}
+          whileHover={isValid && !checking ? { scale: 1.03, filter: "brightness(1.1)" } : {}}
+          whileTap={isValid && !checking ? { scale: 0.97 } : {}}
+          style={{
+            marginTop: 20,
+            background: isValid ? "#D4AF37" : "#7e6a2b",
+            color: "#0A1A2F",
+            border: "none",
+            borderRadius: 10,
+            padding: "12px 36px",
+            fontWeight: 600,
+            fontSize: "1rem",
+            cursor: isValid && !checking ? "pointer" : "not-allowed",
+            width: "100%",
+            maxWidth: "200px",
+          }}
         >
           {checking ? "Checking..." : "Continue"}
-        </button>
+        </motion.button>
 
-        {/* LOGIN LINK */}
         <p
-          className="mt-6 text-gray-400 text-sm underline cursor-pointer"
           onClick={goToLogin}
+          style={{
+            marginTop: "28px",
+            color: "#888",
+            fontSize: "0.85rem",
+            textDecoration: "underline",
+            cursor: "pointer",
+          }}
         >
           Already have an account? Log in
         </p>
