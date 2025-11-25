@@ -47,12 +47,12 @@ export default function UsernameScreen() {
     setOnboarded(true);
 
     // 🔹 SYNC PROFILE TO SUPABASE
-    // Save username (display name), avatar, and handle to cloud
+    // Save username (display name) and handle to cloud
+    // NOTE: Avatar is stored as string locally but DB expects integer, so skip avatar sync
     try {
-      console.log("📤 Syncing profile to Supabase...", { name, avatar, handle: handleValue });
+      console.log("📤 Syncing profile to Supabase...", { username: name, handle: handleValue });
       await saveProfile({
         username: name || null,
-        avatar: avatar || null,
         handle: handleValue,
       });
       console.log("✅ Profile synced to Supabase");
