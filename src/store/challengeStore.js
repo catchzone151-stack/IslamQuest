@@ -1178,4 +1178,31 @@ export const useChallengeStore = create((set, get) => ({
   loadFromSupabase: async () => {
     await get().loadAllMyChallenges();
   },
+
+  getSharedLessons: (userId, friendId) => {
+    if (isDevMode()) {
+      console.log('🔧 DEV MODE: Returning mock shared lessons for challenge');
+      return [
+        { pathId: 1, lessonId: 1 },
+        { pathId: 1, lessonId: 2 },
+        { pathId: 1, lessonId: 3 },
+        { pathId: 2, lessonId: 1 },
+        { pathId: 2, lessonId: 2 },
+        { pathId: 3, lessonId: 1 },
+        { pathId: 3, lessonId: 2 },
+        { pathId: 3, lessonId: 3 },
+        { pathId: 4, lessonId: 1 },
+        { pathId: 5, lessonId: 1 },
+      ];
+    }
+    
+    const { completedLessons } = useProgressStore.getState();
+    const userCompletedSet = new Set(
+      completedLessons.map(l => `${l.pathId}-${l.lessonId}`)
+    );
+    
+    return completedLessons.filter(lesson => 
+      userCompletedSet.has(`${lesson.pathId}-${lesson.lessonId}`)
+    );
+  },
 }));
