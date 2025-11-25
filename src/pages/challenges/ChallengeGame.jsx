@@ -364,36 +364,27 @@ export default function ChallengeGame() {
     let result = "pending";
     let updatedChallenge = null;
 
-    // Save results to cloud and apply rewards client-side
+    // Save results locally and apply rewards
     if (isBoss) {
-      // Use cloud-backed boss attempt saving
-      const bossResult = await useChallengeStore.getState().saveBossAttemptCloud(
+      // Use local boss attempt saving
+      const bossResult = useChallengeStore.getState().saveBossAttempt(
         finalScore, 
         finalAnswers, 
         completionTimeRef.current
       );
       
       if (bossResult.success) {
-        console.log('✅ Boss attempt saved to cloud', bossResult);
+        console.log('✅ Boss attempt saved locally', bossResult);
         
-        // Use cloud-determined pass status for result
         result = bossResult.attempt?.passed ? "win" : "lose";
         
-        // Apply rewards client-side (cloud records but doesn't apply)
         useChallengeStore.getState().awardRewards("boss_level", result);
         
-        // Refresh boss playable status for Challenge screen
-        useChallengeStore.getState().canPlayBossTodayCloud().then(canPlay => {
-          console.log('🔄 Boss playable status refreshed:', canPlay);
-        });
-        
-        // Track boss level completion for analytics
         if (result === "win") {
           analytics('boss_win', { score: finalScore, total: BOSS_LEVEL.questionCount });
         }
       } else {
-        // Surface error to user - DO NOT award rewards on failure
-        console.error('❌ Boss cloud save failed:', bossResult.error);
+        console.error('❌ Boss save failed:', bossResult.error);
         
         if (bossResult.error === "ALREADY_ATTEMPTED_TODAY") {
           showModal(MODAL_TYPES.ALERT, {
@@ -401,19 +392,12 @@ export default function ChallengeGame() {
             message: "You've already completed the Boss Level today. Come back tomorrow for another attempt!",
             onClose: () => navigate("/challenge")
           });
-          return; // Exit early, don't show results
-        } else {
-          showModal(MODAL_TYPES.ALERT, {
-            title: "Save Failed",
-            message: "Failed to save your Boss Level results. Please check your connection and try again.",
-            onClose: () => navigate("/challenge")
-          });
-          return; // Exit early, don't show results
+          return;
         }
       }
     } else if (challenge) {
-      // Use cloud-backed challenge submission
-      const submitResult = await useChallengeStore.getState().submitChallengeAttempt(
+      // Use local challenge submission
+      const submitResult = useChallengeStore.getState().submitChallengeAttempt(
         challengeId,
         finalScore,
         finalAnswers,
@@ -422,31 +406,28 @@ export default function ChallengeGame() {
       );
       
       if (submitResult.success) {
-        console.log('✅ Challenge attempt submitted to cloud', submitResult);
+        console.log('✅ Challenge attempt submitted locally', submitResult);
         updatedChallenge = submitResult.challenge;
         
-        // Determine result based on cloud response
         if (updatedChallenge?.status === 'completed') {
           if (updatedChallenge.isDraw) {
             result = "draw";
-          } else if (updatedChallenge.winner === updatedChallenge.challengerId) {
-            result = challenge.challengerId === updatedChallenge.challengerId ? "win" : "lose";
+          } else if (updatedChallenge.winner === 'current_user') {
+            result = "win";
           } else {
-            result = challenge.opponentId === updatedChallenge.winner ? "win" : "lose";
+            result = "lose";
           }
           
-          // Apply rewards client-side based on cloud result
           useChallengeStore.getState().awardRewards(updatedChallenge.mode, result);
           
           if (result === "win") {
             analytics('challenge_won', { mode: updatedChallenge.mode, opponent: updatedChallenge.opponentId });
           }
         } else {
-          // Challenge still active (waiting for opponent)
           result = "pending";
         }
       } else {
-        console.log('⚠️ Challenge cloud submit failed:', submitResult.error);
+        console.log('⚠️ Challenge submit failed:', submitResult.error);
         result = "pending";
       }
     }

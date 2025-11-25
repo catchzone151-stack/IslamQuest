@@ -41,8 +41,8 @@ export default function Challenge() {
     // Load local challenges on mount
     loadAllMyChallenges();
     
-    // Boss level always playable locally (cloud check disabled)
-    setBossPlayable(true);
+    // Boss level playable check (local only)
+    setBossPlayable(useChallengeStore.getState().canPlayBossToday());
     
     // Get friends list
     const friendsList = getAllFriends?.() || [];
@@ -105,7 +105,7 @@ export default function Challenge() {
       return;
     }
 
-    // Use cloud-backed boss playability check (already loaded on mount)
+    // Check local boss playability
     if (!bossPlayable) {
       alert("You've already completed the Boss Level today! Come back tomorrow.");
       return;

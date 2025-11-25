@@ -1,0 +1,170 @@
+Fix the Challenges system exactly as follows.
+Do NOT change any unrelated files.
+
+1. REMOVE ALL SUPABASE DEPENDENCY FROM CHALLENGE CREATION
+
+The app must never call Supabase when creating a challenge, selecting questions, or starting a match.
+
+Remove or disable:
+
+supabase.from("challenges").insert(...)
+
+supabase.from("challenges").select(...)
+
+any challenge fetch/insert/update/delete
+
+any global event challenge dependencies
+
+Challenges must run 100% locally using in-memory objects stored in Zustand (challengeStore).
+
+2. IMPLEMENT PURE LOCAL CHALLENGE CREATION
+
+In challengeStore.js, rewrite createChallenge() to:
+
+NOT call Supabase at all
+
+Build the challenge structure fully locally, including:
+
+id (use crypto.randomUUID or similar)
+
+mode
+
+questionCount
+
+questions (from getQuestionsForMode)
+
+opponentUserId
+
+yourUserId (player)
+
+timestamps
+
+result fields (pending)
+
+Save locally into challengeStore state
+
+Navigate directly to ChallengeGame.jsx
+
+This is a temporary fix to keep challenges working with zero internet dependency.
+
+3. FIX getQuestionsForMode
+
+Ensure all challenge question generation uses:
+
+progressStore for lesson completion verification
+
+local questions data ONLY
+
+NO cloud calls
+
+NO lesson count blocking (we removed this)
+
+Implement the rules exactly:
+
+For Friendly Challenges:
+
+If BOTH users have completed ≥1 lesson in common, allow challenge
+
+Otherwise show “Not enough learning yet” popup
+
+For Boss Battle:
+
+UNLOCK only when:
+
+player.level >= 8
+
+NOT related to premium
+
+NOT related to lessons count
+
+For Global Events:
+
+ALWAYS blocked unless:
+
+month is Ramadan
+
+AND user has premium (this is already implemented)
+
+When clicked before Ramadan → show “Coming Ramadan”
+
+4. FIX CHALLENGE NAVIGATION
+
+In Challenge.jsx and ChallengeGame.jsx:
+
+Remove cloud checks
+
+Remove async supabase flows
+
+Ensure “Let’s Go!” button immediately:
+
+Generates challenge
+
+Loads questions
+
+Navigates to ChallengeGame
+
+5. ENSURE FRIEND-CHALLENGE LOGIC WORKS
+
+When challenging a friend:
+
+Opponent details must come from friendsStore (local)
+
+Remove any leftover cloud-side lookups.
+
+6. AUDIT AND FIX THE FOLLOWING FILES (STRICT):
+
+Only touch these:
+
+src/store/challengeStore.js
+
+src/store/eventsStore.js (ONLY if it references challenge creation)
+
+src/pages/Challenge.jsx
+
+src/pages/ChallengeGame.jsx
+
+src/pages/GlobalEvents.jsx
+
+src/pages/EventQuiz.jsx
+
+NO changes to onboarding, userProfile, friends system, or progress sync.
+
+7. AFTER IMPLEMENTATION
+
+Do a full self-check:
+
+Try creating challenges in all modes
+
+Verify NO Supabase errors occur
+
+Verify “Not Enough Learning Yet” only appears when appropriate
+
+Verify Boss Battle unlocks only at level 8
+
+Verify Global Events are locked until Ramadan
+
+Verify challenge question generation works
+
+Verify navigation into ChallengeGame works
+
+No console errors
+
+8. KEEP ALL OTHER FEATURES UNCHANGED
+
+Do NOT modify:
+
+onboarding flow
+
+profile sync
+
+friends system
+
+dev mode
+
+RLS
+
+progress sync
+
+premium system
+
+Only fix challenges.
