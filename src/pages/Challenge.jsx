@@ -23,19 +23,28 @@ export default function Challenge() {
   const isUserPremium = premium || premiumStatus !== "free";
   const level = getCurrentLevel(xp).level;
   const getAllFriends = useFriendsStore(state => state.getAllFriends);
-  const { loadFromStorage } = useChallengeStore();
+  const { loadFromStorage, loadAllMyChallenges } = useChallengeStore();
   const { showModal } = useModalStore();
 
   const [selectedMode, setSelectedMode] = useState(null);
   const [selectedFriend, setSelectedFriend] = useState(null);
   const [showFriendSelector, setShowFriendSelector] = useState(false);
   const [friends, setFriends] = useState([]);
+  const [bossPlayable, setBossPlayable] = useState(true);
   
   // Use ref to ensure we always have the latest friend value
   const friendRef = useRef(null);
 
   useEffect(() => {
     loadFromStorage();
+    
+    // Load cloud challenges on mount
+    loadAllMyChallenges().catch(err => console.log('Cloud challenges not available:', err.message));
+    
+    // Check if boss level is playable today (async cloud check)
+    useChallengeStore.getState().canPlayBossTodayCloud().then(canPlay => {
+      setBossPlayable(canPlay);
+    }).catch(() => setBossPlayable(true));
     
     // Get friends list
     const friendsList = getAllFriends?.() || [];
@@ -115,8 +124,8 @@ export default function Challenge() {
       return;
     }
 
-    const canPlay = useChallengeStore.getState().canPlayBossToday();
-    if (!canPlay) {
+    // Use cloud-backed boss playability check (already loaded on mount)
+    if (!bossPlayable) {
       alert("You've already completed the Boss Level today! Come back tomorrow.");
       return;
     }

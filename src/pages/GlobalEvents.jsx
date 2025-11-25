@@ -17,7 +17,11 @@ export default function GlobalEvents() {
     getTimeUntilResults,
     checkWeekReset,
     areResultsViewed,
-    getEntry
+    getEntry,
+    loadMyEntries,
+    loadLeaderboard,
+    getMyRank,
+    claimEventRewards
   } = useEventsStore();
   
   const { coins, premium, premiumStatus } = useProgressStore();
@@ -31,13 +35,24 @@ export default function GlobalEvents() {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isLoadingEvents, setIsLoadingEvents] = useState(true);
 
-  // Check for week reset on mount and set loading state
+  // Check for week reset on mount, load cloud entries
   useEffect(() => {
-    setIsLoadingEvents(true);
-    checkWeekReset();
-    const timer = setTimeout(() => setIsLoadingEvents(false), 600);
-    return () => clearTimeout(timer);
-  }, [checkWeekReset]);
+    const initEvents = async () => {
+      setIsLoadingEvents(true);
+      checkWeekReset();
+      
+      // Load cloud entries for the current week
+      try {
+        await loadMyEntries();
+      } catch (err) {
+        console.log('Cloud entries not available:', err.message);
+      }
+      
+      setIsLoadingEvents(false);
+    };
+    
+    initEvents();
+  }, [checkWeekReset, loadMyEntries]);
 
   // Update countdown timer
   useEffect(() => {

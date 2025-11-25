@@ -460,7 +460,7 @@ export const useEventsStore = create(
         }
       },
 
-      enterEvent: (eventId, score, answers) => {
+      enterEvent: (eventId, score, answers, completionTime = null) => {
         const { currentWeekId, weeklyEntries } = get();
         const provisionalRank = Math.floor(Math.random() * 50) + 1;
         useProgressStore.getState().markDayComplete();
@@ -475,7 +475,7 @@ export const useEventsStore = create(
             }
           }
         });
-        get().enterEventCloud(eventId, score, answers);
+        get().enterEventCloud(eventId, score, answers, completionTime);
       },
 
       hasEntered: (eventId) => {

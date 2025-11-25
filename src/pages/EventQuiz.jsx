@@ -199,9 +199,12 @@ export default function EventQuiz() {
     const score = finalAnswers.filter(a => a.correct).length;
     setQuizScore(score);
     
-    // UPDATE entry with final score and answers
+    // Calculate completion time (60 seconds total - remaining time)
+    const completionTime = 60 - timeLeft;
+    
+    // UPDATE entry with final score, answers, and completion time
     // Entry was already created in handleCountdownComplete with score=0
-    enterEvent(eventId, score, finalAnswers);
+    enterEvent(eventId, score, finalAnswers, completionTime);
     
     // Show provisional results
     showModal(MODAL_TYPES.EVENT_PROVISIONAL_RESULTS, {

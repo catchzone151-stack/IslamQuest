@@ -336,7 +336,7 @@ export default function ChallengeGame() {
     }
   };
 
-  const handleGameComplete = (finalAnswers = answers) => {
+  const handleGameComplete = async (finalAnswers = answers) => {
     // Prevent double-completion
     if (isCompletingRef.current) return;
     isCompletingRef.current = true;
@@ -355,81 +355,107 @@ export default function ChallengeGame() {
     const finalScore = finalAnswers.filter(a => a.correct).length;
     setScore(finalScore);
     
-    console.log('📊 Final score calculated', { finalScore, totalQuestions: questions.length, finalAnswers });
+    // For Sudden Death, calculate chain length
+    const chainLength = mode?.id === 'sudden_death' ? calculateLongestChain(finalAnswers) : null;
+    
+    console.log('📊 Final score calculated', { finalScore, totalQuestions: questions.length, finalAnswers, chainLength });
 
-    // Save results and award rewards
+    let result = "pending";
+    let updatedChallenge = null;
+
+    // Save results to cloud and apply rewards client-side
     if (isBoss) {
-      useChallengeStore.getState().saveBossAttempt(finalScore, finalAnswers);
-      const result = finalScore >= BOSS_LEVEL.questionCount * 0.6 ? "win" : "lose";
-      useChallengeStore.getState().awardRewards("boss_level", result);
-      
-      // Track boss level completion for analytics
-      if (result === "win") {
-        analytics('boss_win', { score: finalScore, total: BOSS_LEVEL.questionCount });
-      }
-    } else if (challenge) {
-      const currentUserId = "current_user";
-      const isChallenger = challenge.challengerId === currentUserId;
-      useChallengeStore.getState().saveChallengeProgress(
-        challengeId, 
+      // Use cloud-backed boss attempt saving
+      const bossResult = await useChallengeStore.getState().saveBossAttemptCloud(
         finalScore, 
         finalAnswers, 
-        isChallenger, 
         completionTimeRef.current
       );
       
-      // Re-read the updated challenge from store to check if both players finished
-      const updatedChallenge = useChallengeStore.getState().challenges.find(c => c.id === challengeId);
-      if (updatedChallenge && updatedChallenge.challengerScore !== null && updatedChallenge.opponentScore !== null) {
-        // Both players finished - complete the challenge and award rewards
-        const winner = useChallengeStore.getState().completeChallenge(challengeId);
-        let rewardType = "lose";
-        if (winner === "draw") {
-          rewardType = "draw";
-        } else if ((winner === updatedChallenge.challengerId && isChallenger) || 
-                   (winner === updatedChallenge.opponentId && !isChallenger)) {
-          rewardType = "win";
-        }
-        useChallengeStore.getState().awardRewards(updatedChallenge.mode, rewardType);
+      if (bossResult.success) {
+        console.log('✅ Boss attempt saved to cloud', bossResult);
         
-        // Track challenge outcome for analytics
-        if (rewardType === "win") {
-          analytics('challenge_won', { mode: updatedChallenge.mode, opponent: updatedChallenge.opponentId });
+        // Use cloud-determined pass status for result
+        result = bossResult.attempt?.passed ? "win" : "lose";
+        
+        // Apply rewards client-side (cloud records but doesn't apply)
+        useChallengeStore.getState().awardRewards("boss_level", result);
+        
+        // Refresh boss playable status for Challenge screen
+        useChallengeStore.getState().canPlayBossTodayCloud().then(canPlay => {
+          console.log('🔄 Boss playable status refreshed:', canPlay);
+        });
+        
+        // Track boss level completion for analytics
+        if (result === "win") {
+          analytics('boss_win', { score: finalScore, total: BOSS_LEVEL.questionCount });
         }
+      } else {
+        // Surface error to user - DO NOT award rewards on failure
+        console.error('❌ Boss cloud save failed:', bossResult.error);
+        
+        if (bossResult.error === "ALREADY_ATTEMPTED_TODAY") {
+          showModal(MODAL_TYPES.ALERT, {
+            title: "Already Played Today",
+            message: "You've already completed the Boss Level today. Come back tomorrow for another attempt!",
+            onClose: () => navigate("/challenge")
+          });
+          return; // Exit early, don't show results
+        } else {
+          showModal(MODAL_TYPES.ALERT, {
+            title: "Save Failed",
+            message: "Failed to save your Boss Level results. Please check your connection and try again.",
+            onClose: () => navigate("/challenge")
+          });
+          return; // Exit early, don't show results
+        }
+      }
+    } else if (challenge) {
+      // Use cloud-backed challenge submission
+      const submitResult = await useChallengeStore.getState().submitChallengeAttempt(
+        challengeId,
+        finalScore,
+        finalAnswers,
+        completionTimeRef.current,
+        chainLength
+      );
+      
+      if (submitResult.success) {
+        console.log('✅ Challenge attempt submitted to cloud', submitResult);
+        updatedChallenge = submitResult.challenge;
+        
+        // Determine result based on cloud response
+        if (updatedChallenge?.status === 'completed') {
+          if (updatedChallenge.isDraw) {
+            result = "draw";
+          } else if (updatedChallenge.winner === updatedChallenge.challengerId) {
+            result = challenge.challengerId === updatedChallenge.challengerId ? "win" : "lose";
+          } else {
+            result = challenge.opponentId === updatedChallenge.winner ? "win" : "lose";
+          }
+          
+          // Apply rewards client-side based on cloud result
+          useChallengeStore.getState().awardRewards(updatedChallenge.mode, result);
+          
+          if (result === "win") {
+            analytics('challenge_won', { mode: updatedChallenge.mode, opponent: updatedChallenge.opponentId });
+          }
+        } else {
+          // Challenge still active (waiting for opponent)
+          result = "pending";
+        }
+      } else {
+        console.log('⚠️ Challenge cloud submit failed:', submitResult.error);
+        result = "pending";
       }
     }
 
     // Use the mode from component scope (already normalized)
-    console.log('🎯 Using mode for rewards', { mode });
+    console.log('🎯 Using mode for rewards', { mode, result });
     
     if (!mode) {
       console.error('❌ Mode is undefined! Cannot show results.');
       return;
-    }
-    
-    let result;
-    
-    if (isBoss) {
-      result = finalScore >= BOSS_LEVEL.questionCount * 0.6 ? "win" : "lose";
-    } else if (challenge) {
-      // Re-read challenge to get final winner status
-      const updatedChallenge = useChallengeStore.getState().challenges.find(c => c.id === challengeId);
-      const currentUserId = "current_user";
-      const isChallenger = challenge.challengerId === currentUserId;
-      
-      if (updatedChallenge?.winner) {
-        if (updatedChallenge.winner === "draw") {
-          result = "draw";
-        } else if ((updatedChallenge.winner === updatedChallenge.challengerId && isChallenger) ||
-                   (updatedChallenge.winner === updatedChallenge.opponentId && !isChallenger)) {
-          result = "win";
-        } else {
-          result = "lose";
-        }
-      } else {
-        // Game not completed yet (waiting for opponent)
-        result = "pending";
-      }
     }
     
     console.log('🏆 Result determined', { result, mode, rewards: mode?.rewards });
