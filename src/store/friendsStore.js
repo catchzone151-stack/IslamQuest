@@ -100,9 +100,10 @@ export const useFriendsStore = create((set, get) => ({
 
       const userId = auth.user.id;
 
+      // Load accepted friends (mutual friendship - both directions)
       const { data: friendsData, error: friendsErr } = await supabase
         .from("friends")
-        .select("user_id, friend_id, status")
+        .select("*")
         .or(`user_id.eq.${userId},friend_id.eq.${userId}`)
         .eq("status", "accepted");
       
@@ -123,6 +124,7 @@ export const useFriendsStore = create((set, get) => ({
         return;
       }
 
+      // For each row, resolve friendUserId (the other person)
       const friendIds = (friendsData || []).map((f) => 
         f.user_id === userId ? f.friend_id : f.user_id
       );
@@ -150,9 +152,10 @@ export const useFriendsStore = create((set, get) => ({
         shield_count: profile.shield_count || 0,
       }));
 
+      // Load sent requests (where I am user_id, status pending)
       const { data: sent, error: sentErr } = await supabase
         .from("friends")
-        .select("user_id, friend_id")
+        .select("*")
         .eq("user_id", userId)
         .eq("status", "pending");
 
@@ -173,10 +176,11 @@ export const useFriendsStore = create((set, get) => ({
       const formattedSent = (sent || []).map((row) => {
         const profile = sentProfiles.find((p) => p.user_id === row.friend_id) || {};
         return {
+          id: row.id,
+          requestId: row.id,
           senderId: row.user_id,
           receiverId: row.friend_id,
           user_id: row.friend_id,
-          id: row.friend_id,
           username: profile.username,
           handle: profile.handle,
           nickname: profile.username || profile.handle || "User",
@@ -187,9 +191,10 @@ export const useFriendsStore = create((set, get) => ({
         };
       });
 
+      // Load pending requests where I am friend_id (someone sent TO me)
       const { data: received, error: receivedErr } = await supabase
         .from("friends")
-        .select("user_id, friend_id")
+        .select("*")
         .eq("friend_id", userId)
         .eq("status", "pending");
 
@@ -210,10 +215,11 @@ export const useFriendsStore = create((set, get) => ({
       const formattedReceived = (received || []).map((row) => {
         const profile = receivedProfiles.find((p) => p.user_id === row.user_id) || {};
         return {
+          id: row.id,
+          requestId: row.id,
           senderId: row.user_id,
           receiverId: row.friend_id,
           user_id: row.user_id,
-          id: row.user_id,
           username: profile.username,
           handle: profile.handle,
           nickname: profile.username || profile.handle || "User",
@@ -251,7 +257,7 @@ export const useFriendsStore = create((set, get) => ({
     
     const { data, error } = await supabase
       .from("friends")
-      .select("user_id, friend_id")
+      .select("*")
       .or(`user_id.eq.${userId},friend_id.eq.${userId}`)
       .eq("status", "accepted");
 
@@ -292,6 +298,55 @@ export const useFriendsStore = create((set, get) => ({
     return friends;
   },
 
+  loadPendingRequests: async () => {
+    const { data: auth } = await supabase.auth.getUser();
+    if (!auth?.user) return [];
+
+    const userId = auth.user.id;
+
+    const { data, error } = await supabase
+      .from("friends")
+      .select("*")
+      .eq("friend_id", userId)
+      .eq("status", "pending");
+
+    if (error) {
+      console.warn("loadPendingRequests error:", error.message);
+      return [];
+    }
+
+    const senderIds = (data || []).map((r) => r.user_id);
+    let senderProfiles = [];
+    if (senderIds.length > 0) {
+      const { data: profiles } = await supabase
+        .from("profiles")
+        .select("user_id, username, handle, avatar, xp")
+        .in("user_id", senderIds);
+      senderProfiles = profiles || [];
+    }
+
+    const formattedReceived = (data || []).map((row) => {
+      const profile = senderProfiles.find((p) => p.user_id === row.user_id) || {};
+      return {
+        id: row.id,
+        requestId: row.id,
+        senderId: row.user_id,
+        receiverId: row.friend_id,
+        user_id: row.user_id,
+        username: profile.username,
+        handle: profile.handle,
+        nickname: profile.username || profile.handle || "User",
+        avatar: typeof profile.avatar === "number"
+          ? avatarIndexToKey(profile.avatar)
+          : profile.avatar || "avatar_man_lantern",
+        xp: profile.xp || 0,
+      };
+    });
+
+    set({ receivedRequests: formattedReceived });
+    return formattedReceived;
+  },
+
   loadRequests: async () => {
     const { data: auth } = await supabase.auth.getUser();
     if (!auth?.user) return { sent: [], received: [] };
@@ -300,13 +355,13 @@ export const useFriendsStore = create((set, get) => ({
 
     const { data: sent } = await supabase
       .from("friends")
-      .select("user_id, friend_id")
+      .select("*")
       .eq("user_id", userId)
       .eq("status", "pending");
 
     const { data: received } = await supabase
       .from("friends")
-      .select("user_id, friend_id")
+      .select("*")
       .eq("friend_id", userId)
       .eq("status", "pending");
 
@@ -335,10 +390,11 @@ export const useFriendsStore = create((set, get) => ({
     const formattedSent = (sent || []).map((row) => {
       const p = sentProfiles.find((pr) => pr.user_id === row.friend_id) || {};
       return {
+        id: row.id,
+        requestId: row.id,
         senderId: row.user_id,
         receiverId: row.friend_id,
         user_id: row.friend_id,
-        id: row.friend_id,
         username: p.username,
         handle: p.handle,
         nickname: p.username || p.handle || "User",
@@ -350,10 +406,11 @@ export const useFriendsStore = create((set, get) => ({
     const formattedReceived = (received || []).map((row) => {
       const p = receivedProfiles.find((pr) => pr.user_id === row.user_id) || {};
       return {
+        id: row.id,
+        requestId: row.id,
         senderId: row.user_id,
         receiverId: row.friend_id,
         user_id: row.user_id,
-        id: row.user_id,
         username: p.username,
         handle: p.handle,
         nickname: p.username || p.handle || "User",
@@ -502,37 +559,19 @@ export const useFriendsStore = create((set, get) => ({
     }
   },
 
-  acceptFriendRequest: async (senderId) => {
+  acceptFriendRequest: async (requestId) => {
     try {
       const { data: auth } = await supabase.auth.getUser();
       if (!auth?.user) return { success: false, error: "Not logged in" };
 
       const myUserId = auth.user.id;
-      console.log("🤝 acceptFriendRequest - myUserId:", myUserId, "senderId:", senderId);
+      console.log("🤝 acceptFriendRequest - myUserId:", myUserId, "requestId:", requestId);
 
-      // First verify the request exists: sender's user_id, receiver's friend_id
-      const { data: existingRequest, error: checkErr } = await supabase
-        .from("friends")
-        .select("user_id, friend_id, status")
-        .eq("user_id", senderId)
-        .eq("friend_id", myUserId)
-        .eq("status", "pending")
-        .maybeSingle();
-
-      console.log("🤝 acceptFriendRequest - existing request:", existingRequest, checkErr);
-
-      if (!existingRequest) {
-        console.warn("🤝 acceptFriendRequest - No pending request found");
-        return { success: false, error: "Request not found or already accepted" };
-      }
-
-      // Update status to accepted
+      // Update status to accepted using the row id
       const { data: updateData, error: updateErr } = await supabase
         .from("friends")
         .update({ status: "accepted" })
-        .eq("user_id", senderId)
-        .eq("friend_id", myUserId)
-        .eq("status", "pending")
+        .eq("id", requestId)
         .select();
 
       console.log("🤝 acceptFriendRequest - update result:", updateData, "error:", updateErr);
@@ -542,9 +581,14 @@ export const useFriendsStore = create((set, get) => ({
         return { success: false, error: "Failed to accept request" };
       }
 
-      // Refresh both friends and requests
+      if (!updateData || updateData.length === 0) {
+        console.warn("🤝 acceptFriendRequest - No request found with id:", requestId);
+        return { success: false, error: "Request not found or already accepted" };
+      }
+
+      // Refresh both friends and pending requests
       await get().loadFriends();
-      await get().loadRequests();
+      await get().loadPendingRequests();
       
       const { friends } = get();
       console.log("🤝 acceptFriendRequest - friends after refresh:", friends);
@@ -556,27 +600,24 @@ export const useFriendsStore = create((set, get) => ({
     }
   },
 
-  declineFriendRequest: async (senderId) => {
+  declineFriendRequest: async (requestId) => {
     try {
       const { data: auth } = await supabase.auth.getUser();
       if (!auth?.user) return { success: false, error: "Not logged in" };
 
-      const myUserId = auth.user.id;
-      console.log("❌ declineFriendRequest - myUserId:", myUserId, "senderId:", senderId);
+      console.log("❌ declineFriendRequest - requestId:", requestId);
 
-      // Delete where sender is user_id, receiver (me) is friend_id
+      // Delete the request by id
       const { error: deleteErr } = await supabase
         .from("friends")
         .delete()
-        .eq("user_id", senderId)
-        .eq("friend_id", myUserId)
-        .eq("status", "pending");
+        .eq("id", requestId);
 
       console.log("❌ declineFriendRequest - delete error:", deleteErr);
 
-      // Refresh both friends and requests
+      // Refresh both friends and pending requests
       await get().loadFriends();
-      await get().loadRequests();
+      await get().loadPendingRequests();
       return { success: true };
     } catch (err) {
       console.error("declineFriendRequest error:", err);
@@ -602,9 +643,10 @@ export const useFriendsStore = create((set, get) => ({
 
       console.log("🚫 cancelSentRequest - delete error:", deleteErr);
 
-      // Refresh both friends and requests
+      // Refresh friends, sent requests, and pending requests
       await get().loadFriends();
       await get().loadRequests();
+      await get().loadPendingRequests();
       return { success: true, message: "Request cancelled" };
     } catch (err) {
       console.error("cancelSentRequest error:", err);
@@ -630,9 +672,10 @@ export const useFriendsStore = create((set, get) => ({
 
       console.log("🗑️ removeFriend - delete error:", deleteErr);
 
-      // Refresh both friends and requests
+      // Refresh friends and requests
       await get().loadFriends();
       await get().loadRequests();
+      await get().loadPendingRequests();
       return { success: true, message: "Friend removed" };
     } catch (err) {
       console.error("removeFriend error:", err);

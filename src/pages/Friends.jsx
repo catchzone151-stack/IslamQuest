@@ -42,6 +42,8 @@ export default function Friends() {
 
   const {
     loadAll,
+    loadFriends,
+    loadPendingRequests,
     getAllFriends,
     getSentRequests,
     getReceivedRequests,
@@ -188,18 +190,23 @@ export default function Friends() {
     }
   };
 
-  const handleAcceptRequest = async (senderId) => {
-    const result = await acceptFriendRequest(senderId);
+  const handleAcceptRequest = async (requestId) => {
+    const result = await acceptFriendRequest(requestId);
     if (result.success) {
       showModal(MODAL_TYPES.SUCCESS, { message: result.message });
+      await loadFriends();
+      await loadPendingRequests();
     } else {
       showModal(MODAL_TYPES.ERROR, { message: result.error });
     }
   };
 
-  const handleDeclineRequest = async (senderId) => {
-    const result = await declineFriendRequest(senderId);
-    if (!result.success) {
+  const handleDeclineRequest = async (requestId) => {
+    const result = await declineFriendRequest(requestId);
+    if (result.success) {
+      await loadFriends();
+      await loadPendingRequests();
+    } else {
       showModal(MODAL_TYPES.ERROR, { message: result.error });
     }
   };
@@ -505,11 +512,11 @@ export default function Friends() {
                   >
                     {receivedRequests.map((request) => (
                       <RequestCard
-                        key={request.senderId}
+                        key={request.requestId || request.id}
                         user={request}
                         type="received"
-                        onAccept={() => handleAcceptRequest(request.senderId)}
-                        onDecline={() => handleDeclineRequest(request.senderId)}
+                        onAccept={() => handleAcceptRequest(request.requestId || request.id)}
+                        onDecline={() => handleDeclineRequest(request.requestId || request.id)}
                       />
                     ))}
                   </div>
@@ -537,7 +544,7 @@ export default function Friends() {
                   >
                     {sentRequests.map((request) => (
                       <RequestCard
-                        key={request.receiverId}
+                        key={request.requestId || request.id}
                         user={request}
                         type="sent"
                         onCancel={() => handleCancelRequest(request.receiverId)}
