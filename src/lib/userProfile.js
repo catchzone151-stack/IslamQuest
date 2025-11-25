@@ -2,15 +2,16 @@
 // -------------------------------------------------------
 // Cloud Profile Management - Identity Pipeline (Fixed)
 // -------------------------------------------------------
-// Avatar stored as TEXT (string key), not integer
+// Avatar stored as INTEGER (index) in DB, string key in app
 // Profile creation happens ONCE with full defaults
 // Updates NEVER overwrite with null values
 
 import { supabase } from "./supabaseClient";
 import { avatarKeyToIndex, avatarIndexToKey } from "../utils/avatarUtils";
 
-// Default avatar key for new profiles
-const DEFAULT_AVATAR = "avatar_man_lantern";
+// Default avatar for new profiles (index 0 = avatar_man_lantern)
+const DEFAULT_AVATAR_KEY = "avatar_man_lantern";
+const DEFAULT_AVATAR_INDEX = 0;
 
 /**
  * 🔹 ensureSignedIn()
@@ -87,12 +88,12 @@ export async function ensureProfile(userId, deviceId) {
   const randomSuffix = Math.floor(1000 + Math.random() * 9000);
   const tempUsername = `User${randomSuffix}`;
   
-  // Insert with TEXT avatar (string key), not integer
+  // Insert with INTEGER avatar index (DB column is integer type)
   const newProfileData = {
     user_id: userId,
     device_id: deviceId || null,
     username: tempUsername,           // Temporary - replaced during onboarding
-    avatar: DEFAULT_AVATAR,           // TEXT: string key, not integer
+    avatar: DEFAULT_AVATAR_INDEX,     // INTEGER: 0 = avatar_man_lantern
     xp: 0,
     coins: 0,
     streak: 0,
@@ -232,8 +233,6 @@ export function isProfileComplete(profile) {
   const hasHandle = profile.handle && 
     typeof profile.handle === "string" && 
     profile.handle.trim().length > 0;
-  
-  const hasAvatar = profile.avatar && profile.avatar !== DEFAULT_AVATAR;
   
   return hasValidUsername && hasHandle;
 }
