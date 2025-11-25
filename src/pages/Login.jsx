@@ -45,7 +45,7 @@ export default function Login() {
       .from("profiles")
       .select("*")
       .eq("user_id", data.user.id)
-      .single();
+      .maybeSingle();
 
     if (profile) {
       setDisplayName(profile.username || "Student");

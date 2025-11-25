@@ -67,7 +67,7 @@ export async function ensureProfile(userId, deviceId) {
       }
     )
     .select("user_id")
-    .single();
+    .maybeSingle();
 
   if (error) {
     // PGRST116 = no rows returned (expected for ignoreDuplicates on existing row)
@@ -95,9 +95,9 @@ export async function loadCloudProfile(userId) {
     .from("profiles")
     .select("*")
     .eq("user_id", userId)
-    .single();
+    .maybeSingle();
 
-  if (error) {
+  if (error || !data) {
     console.error("Failed to load cloud profile:", error);
     return null;
   }
