@@ -47,7 +47,7 @@ export const useUserStore = create((set, get) => ({
 
       if (!user) {
         console.error("Silent auth failed");
-        set({ loading: false });
+        set({ loading: false, isHydrated: true });
         return;
       }
 

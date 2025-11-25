@@ -3,11 +3,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useUserStore } from "../store/useUserStore";
+import { useProgressStore } from "../store/progressStore";
 import { supabase } from "../lib/supabaseClient";
 
 export default function UsernameScreen() {
   const navigate = useNavigate();
-  const { setHandle, handle } = useUserStore();
+  const { setHandle, handle, setOnboarded } = useUserStore();
+  const { setHasOnboarded } = useProgressStore();
   const [input, setInput] = useState(handle || "");
   const [checking, setChecking] = useState(false);
   const [error, setError] = useState("");
@@ -21,27 +23,32 @@ export default function UsernameScreen() {
     setChecking(true);
     setError("");
 
-    // Check if handle already taken
-    const { data, error: err } = await supabase
-      .from("profiles")
-      .select("handle")
-      .eq("handle", input.trim().toLowerCase());
+    // Check if handle already taken (skip if DB not ready)
+    try {
+      const { data, error: err } = await supabase
+        .from("profiles")
+        .select("handle")
+        .eq("handle", input.trim().toLowerCase());
 
-    if (err) {
-      setError("Something went wrong. Try again.");
-      setChecking(false);
-      return;
-    }
-
-    if (data.length > 0) {
-      setError("Handle already taken. Try another.");
-      setChecking(false);
-      return;
+      if (!err && data && data.length > 0) {
+        setError("Handle already taken. Try another.");
+        setChecking(false);
+        return;
+      }
+    } catch (e) {
+      // Database not ready, skip uniqueness check
+      console.log("Handle check skipped (DB not ready)");
     }
 
     // Save locally (Supabase bind happens after login)
     setHandle(input.trim().toLowerCase());
-    navigate("/onboarding/avatar");
+    
+    // Mark onboarding as complete
+    setOnboarded(true);
+    setHasOnboarded(true);
+    
+    // Navigate to homepage
+    navigate("/");
   };
 
   const goToLogin = () => {
