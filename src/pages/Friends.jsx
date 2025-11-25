@@ -68,8 +68,18 @@ export default function Friends() {
 
   useEffect(() => {
     if (!currentUserId) return;
-    loadAll(currentUserId);
-  }, [currentUserId, loadAll]);
+    console.log("🔄 Friends page mounted - calling loadAll for userId:", currentUserId);
+    loadAll();
+  }, [currentUserId]);
+  
+  useEffect(() => {
+    const handleFocus = () => {
+      console.log("🔄 Window focused - refreshing friend data");
+      loadAll();
+    };
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, [loadAll]);
 
   const loadGlobalLeaderboard = useCallback(async () => {
     setLoadingGlobal(true);

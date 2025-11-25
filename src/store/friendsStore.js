@@ -33,9 +33,13 @@ export const useFriendsStore = create((set, get) => ({
 
       const { data: friendsData, error: friendsErr } = await supabase
         .from("friends")
-        .select("id, user_id, friend_id, status")
+        .select("user_id, friend_id, status")
         .or(`user_id.eq.${userId},friend_id.eq.${userId}`)
         .eq("status", "accepted");
+      
+      console.log("🔍 loadAll - userId:", userId);
+      console.log("🔍 loadAll - friendsData:", friendsData);
+      console.log("🔍 loadAll - friendsErr:", friendsErr);
 
       if (friendsErr) {
         console.warn("Friends table not ready:", friendsErr.message);
@@ -77,11 +81,15 @@ export const useFriendsStore = create((set, get) => ({
         shield_count: profile.shield_count || 0,
       }));
 
-      const { data: sent } = await supabase
+      const { data: sent, error: sentErr } = await supabase
         .from("friends")
         .select("user_id, friend_id")
         .eq("user_id", userId)
         .eq("status", "pending");
+
+      console.log("🔍 loadAll - sent requests for userId:", userId);
+      console.log("🔍 loadAll - sent data:", sent);
+      console.log("🔍 loadAll - sent error:", sentErr);
 
       const sentIds = (sent || []).map((s) => s.friend_id);
       let sentProfiles = [];
@@ -110,11 +118,15 @@ export const useFriendsStore = create((set, get) => ({
         };
       });
 
-      const { data: received } = await supabase
+      const { data: received, error: receivedErr } = await supabase
         .from("friends")
         .select("user_id, friend_id")
         .eq("friend_id", userId)
         .eq("status", "pending");
+
+      console.log("🔍 loadAll - received requests query for userId:", userId);
+      console.log("🔍 loadAll - received data:", received);
+      console.log("🔍 loadAll - received error:", receivedErr);
 
       const receivedIds = (received || []).map((r) => r.user_id);
       let receivedProfiles = [];
