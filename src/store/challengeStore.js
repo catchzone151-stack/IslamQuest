@@ -979,31 +979,39 @@ export const useChallengeStore = create((set, get) => ({
       return [];
     }
     
+    // Try completed lessons first, then fallback to beta questions
     let allQuestions = get().getQuestionPool();
+    if (allQuestions.length === 0) {
+      console.log('🎮 No completed lessons - using fallback questions for challenges');
+      allQuestions = get().getBetaFallbackQuestions();
+    }
+    
+    // If still empty, use the fallback again (should never happen)
     if (allQuestions.length === 0) {
       allQuestions = get().getBetaFallbackQuestions();
     }
     
     const freshQuestions = get().filterRecentQuestions(allQuestions);
-    let filteredQuestions = freshQuestions;
+    
+    // If all questions were recently shown, reset and use all questions
+    let filteredQuestions = freshQuestions.length > 0 ? freshQuestions : allQuestions;
     
     if (config.id === 'mind_battle') {
-      filteredQuestions = freshQuestions.filter(q => 
+      const difficultyFiltered = filteredQuestions.filter(q => 
         q.difficulty === 'hard' || q.difficulty === 'medium'
       );
-    } else if (config.id === 'lightning_round') {
-      filteredQuestions = freshQuestions;
+      if (difficultyFiltered.length > 0) {
+        filteredQuestions = difficultyFiltered;
+      }
     } else if (config.id === 'speed_run') {
-      filteredQuestions = freshQuestions.filter(q => 
+      const speedFiltered = filteredQuestions.filter(q => 
         q.difficulty !== 'hard' || Math.random() > 0.5
       );
-    } else if (config.id === 'sudden_death') {
-      filteredQuestions = freshQuestions;
+      if (speedFiltered.length > 0) {
+        filteredQuestions = speedFiltered;
+      }
     }
-    
-    if (filteredQuestions.length === 0) {
-      filteredQuestions = freshQuestions;
-    }
+    // lightning_round and sudden_death use all filteredQuestions
     
     const count = config.questionCount || 8;
     if (filteredQuestions.length < count) {

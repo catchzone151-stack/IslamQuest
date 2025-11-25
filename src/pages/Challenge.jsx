@@ -70,16 +70,7 @@ export default function Challenge() {
     if (selectedFriend) {
       console.log('✅ Friend already selected, going to explainer');
       
-      // Check shared lessons requirement
-      const shared = useChallengeStore.getState().getSharedLessons("current_user", selectedFriend.id);
-      if (shared.length === 0) {
-        showModal(MODAL_TYPES.NO_SHARED_LESSONS, {
-          friendName: selectedFriend.nickname || selectedFriend.name
-        });
-        return;
-      }
-      
-      // Go straight to explainer
+      // Go straight to explainer - no lesson restrictions
       showModal(MODAL_TYPES.CHALLENGE_EXPLAINER, {
         mode: mode,
         onStart: () => handleStartChallenge(mode),
@@ -97,15 +88,7 @@ export default function Challenge() {
     friendRef.current = friend;
     setShowFriendSelector(false);
     
-    // Check if they have shared lessons
-    const shared = useChallengeStore.getState().getSharedLessons("current_user", friend.id);
-    if (shared.length === 0) {
-      showModal(MODAL_TYPES.NO_SHARED_LESSONS, {
-        friendName: friend.nickname || friend.name
-      });
-      return;
-    }
-    
+    // Show explainer immediately - no lesson restrictions
     showModal(MODAL_TYPES.CHALLENGE_EXPLAINER, {
       mode: selectedMode,
       onStart: () => handleStartChallenge(selectedMode),

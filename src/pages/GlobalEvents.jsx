@@ -77,7 +77,13 @@ export default function GlobalEvents() {
   }, [getTimeUntilResults]);
 
   const handleEventClick = (event) => {
-    // Global Events are premium-only feature - show coming soon for everyone
+    // Premium check first - non-premium users can't access events
+    if (!isUserPremium) {
+      navigate("/premium");
+      return;
+    }
+    
+    // Premium users: check Ramadan logic (user's existing implementation)
     showModal(MODAL_TYPES.RAMADAN_COMING_SOON);
   };
 
