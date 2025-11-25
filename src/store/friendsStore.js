@@ -79,7 +79,7 @@ export const useFriendsStore = create((set, get) => ({
 
       const { data: sent } = await supabase
         .from("friends")
-        .select("id, friend_id")
+        .select("user_id, friend_id")
         .eq("user_id", userId)
         .eq("status", "pending");
 
@@ -96,7 +96,8 @@ export const useFriendsStore = create((set, get) => ({
       const formattedSent = (sent || []).map((row) => {
         const profile = sentProfiles.find((p) => p.user_id === row.friend_id) || {};
         return {
-          requestId: row.id,
+          senderId: row.user_id,
+          receiverId: row.friend_id,
           user_id: row.friend_id,
           id: row.friend_id,
           username: profile.username,
@@ -111,7 +112,7 @@ export const useFriendsStore = create((set, get) => ({
 
       const { data: received } = await supabase
         .from("friends")
-        .select("id, user_id")
+        .select("user_id, friend_id")
         .eq("friend_id", userId)
         .eq("status", "pending");
 
@@ -128,7 +129,8 @@ export const useFriendsStore = create((set, get) => ({
       const formattedReceived = (received || []).map((row) => {
         const profile = receivedProfiles.find((p) => p.user_id === row.user_id) || {};
         return {
-          requestId: row.id,
+          senderId: row.user_id,
+          receiverId: row.friend_id,
           user_id: row.user_id,
           id: row.user_id,
           username: profile.username,
@@ -217,13 +219,13 @@ export const useFriendsStore = create((set, get) => ({
 
     const { data: sent } = await supabase
       .from("friends")
-      .select("id, friend_id")
+      .select("user_id, friend_id")
       .eq("user_id", userId)
       .eq("status", "pending");
 
     const { data: received } = await supabase
       .from("friends")
-      .select("id, user_id")
+      .select("user_id, friend_id")
       .eq("friend_id", userId)
       .eq("status", "pending");
 
@@ -252,7 +254,8 @@ export const useFriendsStore = create((set, get) => ({
     const formattedSent = (sent || []).map((row) => {
       const p = sentProfiles.find((pr) => pr.user_id === row.friend_id) || {};
       return {
-        requestId: row.id,
+        senderId: row.user_id,
+        receiverId: row.friend_id,
         user_id: row.friend_id,
         id: row.friend_id,
         username: p.username,
@@ -266,7 +269,8 @@ export const useFriendsStore = create((set, get) => ({
     const formattedReceived = (received || []).map((row) => {
       const p = receivedProfiles.find((pr) => pr.user_id === row.user_id) || {};
       return {
-        requestId: row.id,
+        senderId: row.user_id,
+        receiverId: row.friend_id,
         user_id: row.user_id,
         id: row.user_id,
         username: p.username,
@@ -426,9 +430,19 @@ export const useFriendsStore = create((set, get) => ({
     }
   },
 
-  declineFriendRequest: async (requestId) => {
+  declineFriendRequest: async (senderId) => {
     try {
-      await supabase.from("friends").delete().eq("id", requestId);
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth?.user) return { success: false, error: "Not logged in" };
+
+      const myUserId = auth.user.id;
+
+      await supabase
+        .from("friends")
+        .delete()
+        .eq("user_id", senderId)
+        .eq("friend_id", myUserId);
+
       await get().loadAll();
       return { success: true };
     } catch (err) {
@@ -436,9 +450,19 @@ export const useFriendsStore = create((set, get) => ({
     }
   },
 
-  cancelSentRequest: async (requestId) => {
+  cancelSentRequest: async (receiverId) => {
     try {
-      await supabase.from("friends").delete().eq("id", requestId);
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth?.user) return { success: false, error: "Not logged in" };
+
+      const myUserId = auth.user.id;
+
+      await supabase
+        .from("friends")
+        .delete()
+        .eq("user_id", myUserId)
+        .eq("friend_id", receiverId);
+
       await get().loadAll();
       return { success: true, message: "Request cancelled" };
     } catch (err) {
