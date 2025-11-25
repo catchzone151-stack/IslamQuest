@@ -37,6 +37,17 @@ export default function Challenge() {
   useEffect(() => {
     loadFromStorage();
     
+    // Load cloud challenges on mount
+    const loadCloudChallenges = async () => {
+      const store = useChallengeStore.getState();
+      await Promise.all([
+        store.loadPendingChallenges(),
+        store.loadActiveChallenges(),
+        store.loadChallengeHistory()
+      ]);
+    };
+    loadCloudChallenges();
+    
     // Get friends list
     const friendsList = getAllFriends?.() || [];
     setFriends(friendsList);
@@ -104,7 +115,7 @@ export default function Challenge() {
     });
   };
 
-  const handleBossClick = () => {
+  const handleBossClick = async () => {
     vibrate(50); // Haptic feedback on boss click
     // Check level requirement
     if (level < BOSS_LEVEL.minLevel) {
@@ -115,7 +126,8 @@ export default function Challenge() {
       return;
     }
 
-    const canPlay = useChallengeStore.getState().canPlayBossToday();
+    // Check cloud for today's boss attempt
+    const canPlay = await useChallengeStore.getState().canPlayBossTodayCloud();
     if (!canPlay) {
       alert("You've already completed the Boss Level today! Come back tomorrow.");
       return;
@@ -129,7 +141,7 @@ export default function Challenge() {
     });
   };
 
-  const handleStartChallenge = (modeOverride = null) => {
+  const handleStartChallenge = async (modeOverride = null) => {
     // Use the passed mode or fall back to selectedMode
     const currentMode = modeOverride || selectedMode;
     
@@ -165,9 +177,10 @@ export default function Challenge() {
       return;
     }
     
-    console.log('✅ Creating challenge', { friendId: currentFriend.id, modeId: currentMode.id });
+    console.log('✅ Creating cloud challenge', { friendId: currentFriend.id, modeId: currentMode.id });
     
-    const result = useChallengeStore.getState().createChallenge(
+    // Use cloud function to create challenge
+    const result = await useChallengeStore.getState().createChallengeCloud(
       currentFriend.id,
       currentMode.id
     );
@@ -175,16 +188,15 @@ export default function Challenge() {
     if (result.success) {
       showModal(MODAL_TYPES.CHALLENGE_COUNTDOWN, {
         onComplete: () => {
-          // Get the latest challenge ID
-          const challenges = useChallengeStore.getState().challenges;
-          const latestChallenge = challenges[challenges.length - 1];
-          if (latestChallenge) {
-            navigate(`/challenge/${latestChallenge.id}`);
+          // Use the challenge returned from cloud
+          if (result.challenge) {
+            navigate(`/challenge/${result.challenge.id}`);
           }
         }
       });
     } else {
-      alert("Failed to create challenge. Please try again.");
+      console.error('Challenge creation failed:', result.error);
+      alert(result.error || "Failed to create challenge. Please try again.");
     }
   };
 
