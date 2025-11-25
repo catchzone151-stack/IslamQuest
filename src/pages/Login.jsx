@@ -43,7 +43,7 @@ export default function Login() {
     const { data: profile } = await supabase
       .from("profiles")
       .select("*")
-      .eq("id", data.user.id)
+      .eq("user_id", data.user.id)
       .single();
 
     if (profile) {

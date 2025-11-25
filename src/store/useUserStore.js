@@ -120,15 +120,21 @@ export const useUserStore = create((set, get) => ({
   // UPDATE PROFILE (username, handle, avatar, etc.)
   // --------------------------------------------------
   saveProfile: async (updates) => {
-    const userId = get().user?.id;
-    if (!userId) return;
+    // Try both user.id and userId (set during App.jsx initAuth)
+    const userId = get().user?.id || get().userId;
+    if (!userId) {
+      console.warn("saveProfile: No userId available, skipping sync");
+      return;
+    }
 
+    console.log("saveProfile: Saving to Supabase for user", userId, updates);
     await saveCloudProfile(userId, updates);
 
     // Reload to get updated profile
     const updated = await loadCloudProfile(userId);
     if (updated) {
       set({ profile: updated });
+      console.log("saveProfile: Profile reloaded from cloud");
     }
   },
 
@@ -136,7 +142,7 @@ export const useUserStore = create((set, get) => ({
   // REFRESH PROFILE FROM DB (optional)
   // --------------------------------------------------
   reloadProfile: async () => {
-    const userId = get().user?.id;
+    const userId = get().user?.id || get().userId;
     if (!userId) return;
 
     const profile = await loadCloudProfile(userId);

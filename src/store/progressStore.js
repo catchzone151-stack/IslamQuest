@@ -1023,7 +1023,7 @@ export const useProgressStore = create((set, get) => ({
       const { error } = await supabase
         .from("profiles")
         .update(payload)
-        .eq("id", userId);
+        .eq("user_id", userId);
 
       if (!error) {
         get().setLastUpdatedAt(now);
@@ -1057,23 +1057,7 @@ export const useProgressStore = create((set, get) => ({
         .single();
 
       if (error) {
-        // Try with 'id' column as fallback
-        const { data: fallbackData, error: fallbackError } = await supabase
-          .from("profiles")
-          .select("shield_count")
-          .eq("id", auth.user.id)
-          .single();
-
-        if (fallbackError) {
-          console.log("❌ loadStreakShieldFromCloud error:", fallbackError.message);
-          return;
-        }
-
-        if (fallbackData && fallbackData.shield_count !== undefined) {
-          set({ shieldCount: fallbackData.shield_count });
-          get().saveProgress();
-          console.log("✅ Streak shields loaded from cloud:", fallbackData.shield_count);
-        }
+        console.log("❌ loadStreakShieldFromCloud error:", error.message);
         return;
       }
 
@@ -1099,7 +1083,6 @@ export const useProgressStore = create((set, get) => ({
 
       const { shieldCount } = get();
 
-      // Try update with user_id first
       const { error } = await supabase
         .from("profiles")
         .update({ 
@@ -1109,19 +1092,8 @@ export const useProgressStore = create((set, get) => ({
         .eq("user_id", auth.user.id);
 
       if (error) {
-        // Try with 'id' column as fallback
-        const { error: fallbackError } = await supabase
-          .from("profiles")
-          .update({ 
-            shield_count: shieldCount,
-            updated_at: new Date().toISOString()
-          })
-          .eq("id", auth.user.id);
-
-        if (fallbackError) {
-          console.log("❌ syncStreakShieldToCloud error:", fallbackError.message);
-          return;
-        }
+        console.log("❌ syncStreakShieldToCloud error:", error.message);
+        return;
       }
 
       console.log("✅ Streak shields synced to cloud:", shieldCount);
@@ -1145,7 +1117,7 @@ export const useProgressStore = create((set, get) => ({
       const { data, error } = await supabase
         .from("profiles")
         .select("*")
-        .eq("id", userId)
+        .eq("user_id", userId)
         .single();
 
       if (error || !data) {

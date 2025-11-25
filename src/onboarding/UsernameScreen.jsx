@@ -7,7 +7,7 @@ import { supabase } from "../lib/supabaseClient";
 
 export default function UsernameScreen() {
   const navigate = useNavigate();
-  const { setHandle, setOnboarded } = useUserStore();
+  const { setHandle, setOnboarded, saveProfile, name, avatar, userId } = useUserStore();
   const [input, setInput] = useState("");
   const [checking, setChecking] = useState(false);
   const [error, setError] = useState("");
@@ -21,12 +21,14 @@ export default function UsernameScreen() {
     setChecking(true);
     setError("");
 
+    const handleValue = input.trim().toLowerCase();
+
     // Check if handle already taken (skip if DB not ready)
     try {
       const { data, error: err } = await supabase
         .from("profiles")
         .select("handle")
-        .eq("handle", input.trim().toLowerCase());
+        .eq("handle", handleValue);
 
       if (!err && data && data.length > 0) {
         setError("Handle already taken. Try another.");
@@ -38,11 +40,26 @@ export default function UsernameScreen() {
       console.log("Handle check skipped (DB not ready)");
     }
 
-    // Save locally (Supabase bind happens after login)
-    setHandle(input.trim().toLowerCase());
+    // Save locally
+    setHandle(handleValue);
     
     // Mark onboarding as complete
     setOnboarded(true);
+
+    // 🔹 SYNC PROFILE TO SUPABASE
+    // Save username (display name), avatar, and handle to cloud
+    try {
+      console.log("📤 Syncing profile to Supabase...", { name, avatar, handle: handleValue });
+      await saveProfile({
+        username: name || null,
+        avatar: avatar || null,
+        handle: handleValue,
+      });
+      console.log("✅ Profile synced to Supabase");
+    } catch (e) {
+      console.error("Profile sync failed:", e);
+      // Continue anyway - local storage has the data
+    }
     
     // Navigate to homepage
     navigate("/");
