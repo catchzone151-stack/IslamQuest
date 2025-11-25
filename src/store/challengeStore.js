@@ -1,9 +1,9 @@
 import { create } from "zustand";
 import { useProgressStore } from "./progressStore";
 import { useFriendsStore } from "./friendsStore";
+import { supabase } from "../lib/supabaseClient";
 import { getQuizForLesson } from "../data/quizEngine";
 
-// Import all quiz data for Boss Level
 import namesOfAllahQuizzesData from '../data/quizzes/namesOfAllah.json';
 import foundationsQuizzesData from '../data/quizzes/foundations.json';
 import prophetsQuizzesData from '../data/quizzes/prophets.json';
@@ -19,10 +19,9 @@ import judgementQuizzesData from '../data/quizzes/judgementQuizzes.json';
 import hellfireQuizzesData from '../data/quizzes/hellfireQuizzes.json';
 import paradiseQuizzesData from '../data/quizzes/paradiseQuizzes.json';
 
-const STORAGE_KEY = "islamQuestChallenges_v1";
-const CHALLENGE_DURATION = 48 * 60 * 60 * 1000; // 48 hours in ms
+const STORAGE_KEY = "islamQuestChallenges_v2";
+const CHALLENGE_DURATION = 48 * 60 * 60 * 1000;
 
-// Challenge modes with config
 export const CHALLENGE_MODES = {
   MIND_BATTLE: {
     id: "mind_battle",
@@ -83,7 +82,6 @@ export const BOSS_LEVEL = {
   glow: "0 0 30px rgba(30, 58, 95, 0.7)"
 };
 
-// Helper function to calculate longest chain of correct answers
 export const calculateLongestChain = (answers) => {
   if (!answers || answers.length === 0) return 0;
   let longest = 0;
@@ -100,15 +98,15 @@ export const calculateLongestChain = (answers) => {
 };
 
 export const useChallengeStore = create((set, get) => ({
-  // State
-  challenges: [], // All friend challenges
-  bossAttempts: [], // Boss level attempts
-  challengeHistory: [], // Completed challenges
-  recentlyShownQuestions: [], // Last 50 questions to avoid repetition
-  questionPoolCache: null, // Memoized question pool
-  cacheTimestamp: null, // When cache was built
-  
-  // Helper: Save to storage (Supabase-ready)
+  challenges: [],
+  bossAttempts: [],
+  challengeHistory: [],
+  recentlyShownQuestions: [],
+  questionPoolCache: null,
+  cacheTimestamp: null,
+  loading: false,
+  error: null,
+
   saveToStorage: () => {
     const data = {
       challenges: get().challenges,
@@ -119,7 +117,6 @@ export const useChallengeStore = create((set, get) => ({
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   },
 
-  // Helper: Load from storage
   loadFromStorage: () => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
@@ -130,13 +127,9 @@ export const useChallengeStore = create((set, get) => ({
         challengeHistory: data.challengeHistory || [],
         recentlyShownQuestions: data.recentlyShownQuestions || [],
       });
-      
-      // 🤖 Rehydrate simulated friend auto-responses
-      get().rehydrateSimulatedResponses();
     }
   },
 
-  // 📝 Track recently shown questions (last 50)
   trackShownQuestion: (questionText) => {
     set(state => {
       const updated = [questionText, ...state.recentlyShownQuestions].slice(0, 50);
@@ -145,19 +138,12 @@ export const useChallengeStore = create((set, get) => ({
     get().saveToStorage();
   },
 
-  // 🔄 Generate question variation (same meaning, different wording)
   generateQuestionVariation: (originalQuestion) => {
     const { question, options, answer, difficulty } = originalQuestion;
-    
-    // Create distractor variations by shuffling options
     const newOptions = [...options];
     const correctAnswer = options[answer];
-    
-    // Remove correct answer and shuffle remaining
     const distractors = newOptions.filter((_, idx) => idx !== answer);
     const shuffledDistractors = distractors.sort(() => Math.random() - 0.5);
-    
-    // Rebuild options array with correct answer in random position
     const newAnswerIndex = Math.floor(Math.random() * 4);
     const finalOptions = [];
     for (let i = 0; i < 4; i++) {
@@ -167,26 +153,20 @@ export const useChallengeStore = create((set, get) => ({
         finalOptions.push(shuffledDistractors.shift());
       }
     }
-    
     return {
       ...originalQuestion,
       options: finalOptions,
       answer: newAnswerIndex,
-      isVariation: true // Mark as auto-generated
+      isVariation: true
     };
   },
 
-  // 🏗️ Build question pool from ALL completed lessons
   buildQuestionPool: () => {
     const { lessonStates } = useProgressStore.getState();
     const allQuestions = [];
-    
-    // Pull from completed lessons only
     Object.keys(lessonStates).forEach(lessonKey => {
       const lessonState = lessonStates[lessonKey];
-      // Check if lesson is completed
       if (lessonState?.completed === true || lessonState?.passed === true) {
-        // Add all questions from this lesson
         if (lessonState.questions && Array.isArray(lessonState.questions)) {
           allQuestions.push(...lessonState.questions.map(q => ({
             ...q,
@@ -195,21 +175,15 @@ export const useChallengeStore = create((set, get) => ({
         }
       }
     });
-    
     return allQuestions;
   },
 
-  // 🎯 Get question pool with caching
   getQuestionPool: () => {
     const { questionPoolCache, cacheTimestamp } = get();
     const { lessonStates } = useProgressStore.getState();
-    
-    // Check if cache is valid (rebuild if lesson states changed)
     const currentLessonCount = Object.keys(lessonStates).filter(
       key => lessonStates[key]?.completed || lessonStates[key]?.passed
     ).length;
-    
-    // Rebuild cache if invalid, empty, or lesson count changed
     if (!questionPoolCache || !cacheTimestamp || 
         questionPoolCache.lessonCount !== currentLessonCount) {
       const pool = get().buildQuestionPool();
@@ -219,242 +193,536 @@ export const useChallengeStore = create((set, get) => ({
       });
       return pool;
     }
-    
     return questionPoolCache.questions;
   },
 
-  // 🚫 Filter out recently shown questions
   filterRecentQuestions: (questions) => {
     const { recentlyShownQuestions } = get();
     return questions.filter(q => !recentlyShownQuestions.includes(q.question));
   },
 
-  // 🎲 Expand question pool with variations (for users with few completed lessons)
   expandQuestionPool: (questions, targetCount) => {
     const expanded = [...questions];
     const neededVariations = Math.max(0, targetCount - questions.length);
-    
     if (neededVariations > 0 && questions.length > 0) {
-      // Generate variations by cycling through original questions
       for (let i = 0; i < neededVariations; i++) {
         const sourceQuestion = questions[i % questions.length];
         const variation = get().generateQuestionVariation(sourceQuestion);
         expanded.push(variation);
       }
     }
-    
     return expanded;
   },
 
-  // Get shared completed lessons between two users
-  getSharedLessons: (userId, friendId) => {
-    // Get current user's completed lessons
-    const { lessonStates } = useProgressStore.getState();
-    const currentUserCompletedLessons = Object.keys(lessonStates).filter(
-      key => lessonStates[key]?.completed === true
-    );
-    
-    // Get friend's completed lessons from friendsStore
-    // In LocalStorage mode, friends have a completedLessons array
-    // In Supabase mode, we'll fetch from DB
-    const { friends } = useFriendsStore.getState();
-    const friend = friends.find(f => f.id === friendId);
-    
-    let friendCompletedLessons = [];
-    if (friend) {
-      // If friend has completedLessons stored, use it
-      if (friend.completedLessons && Array.isArray(friend.completedLessons)) {
-        friendCompletedLessons = friend.completedLessons;
-      } else {
-        // Mock for friends without stored lesson data
-        // Simulate friend has completed a random subset (deterministic based on friend ID)
-        // This ensures consistency across sessions
-        const seed = friend.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-        friendCompletedLessons = currentUserCompletedLessons.filter((_, index) => 
-          ((seed + index) % 3) !== 0 // Deterministic ~66% overlap
-        );
+  getCurrentUserId: async () => {
+    const { data: auth } = await supabase.auth.getUser();
+    return auth?.user?.id || null;
+  },
+
+  createChallengeCloud: async (opponentId, mode) => {
+    try {
+      set({ loading: true, error: null });
+      
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth?.user) {
+        set({ loading: false, error: "Not authenticated" });
+        return { success: false, error: "NOT_AUTHENTICATED" };
       }
+      
+      const challengerId = auth.user.id;
+      
+      let config;
+      if (typeof mode === 'string') {
+        config = Object.values(CHALLENGE_MODES).find(m => m.id === mode);
+      } else {
+        config = mode;
+      }
+      
+      if (!config) {
+        set({ loading: false, error: "Invalid mode" });
+        return { success: false, error: "INVALID_MODE" };
+      }
+      
+      const questions = get().getQuestionsForMode(config, []);
+      
+      if (questions.length === 0) {
+        set({ loading: false, error: "No questions available" });
+        return { success: false, error: "NO_QUESTIONS" };
+      }
+      
+      const expiresAt = new Date(Date.now() + CHALLENGE_DURATION).toISOString();
+      
+      const { data, error } = await supabase
+        .from('challenges')
+        .insert({
+          challenger_id: challengerId,
+          opponent_id: opponentId,
+          mode: config.id,
+          questions: questions,
+          status: 'pending',
+          expires_at: expiresAt
+        })
+        .select()
+        .maybeSingle();
+      
+      if (error) {
+        console.error('Create challenge error:', error);
+        set({ loading: false, error: error.message });
+        return { success: false, error: error.message };
+      }
+      
+      const formattedChallenge = get().formatChallengeFromCloud(data);
+      
+      set(state => ({
+        challenges: [...state.challenges, formattedChallenge],
+        loading: false
+      }));
+      get().saveToStorage();
+      
+      return { success: true, challenge: formattedChallenge };
+    } catch (err) {
+      console.error('Create challenge error:', err);
+      set({ loading: false, error: err.message });
+      return { success: false, error: err.message };
     }
-    
-    // Find intersection (lessons both have completed)
-    const shared = currentUserCompletedLessons.filter(lesson => 
-      friendCompletedLessons.includes(lesson)
-    );
-    
-    return shared;
   },
 
-  // Create a new challenge (Supabase-ready structure)
-  createChallenge: (friendId, mode) => {
-    const currentUserId = "current_user"; // Will be from auth later
-    const sharedLessons = get().getSharedLessons(currentUserId, friendId);
-    
-    // Require shared lessons
-    if (sharedLessons.length === 0) {
-      return { success: false, error: "NO_SHARED_LESSONS" };
-    }
-    
-    const lessonsToUse = sharedLessons;
-
-    // Normalize mode to object (might be passed as string ID or object)
-    let config;
-    if (typeof mode === 'string') {
-      config = Object.values(CHALLENGE_MODES).find(m => m.id === mode);
-    } else {
-      config = mode;
-    }
-    
-    if (!config) {
-      console.error('Invalid mode:', mode);
-      return { success: false, error: "INVALID_MODE" };
-    }
-    
-    const questions = get().getQuestionsForMode(config, lessonsToUse);
-    
-    if (questions.length === 0) {
-      return { success: false, error: "NO_QUESTIONS" };
-    }
-
-    const challenge = {
-      id: `challenge_${Date.now()}`,
-      challengerId: currentUserId,
-      opponentId: friendId,
-      mode: config.id,
-      questions: questions,
-      challengerScore: null, // Not played yet
-      opponentScore: null,
-      challengerAnswers: null,
-      opponentAnswers: null,
-      status: "pending", // pending, active, completed
-      createdAt: new Date().toISOString(),
-      expiresAt: new Date(Date.now() + CHALLENGE_DURATION).toISOString(),
-      winner: null,
-    };
-
-    set(state => ({
-      challenges: [...state.challenges, challenge]
-    }));
-    
-    get().saveToStorage();
-    
-    // 🤖 Check if opponent is simulated and schedule auto-response
-    const { isSimulatedFriend } = useFriendsStore.getState();
-    if (isSimulatedFriend(friendId)) {
-      get().scheduleSimulatedResponse(challenge.id, friendId);
-    }
-    
-    return { success: true, challenge };
-  },
-
-  // 🤖 Schedule auto-response for simulated friend
-  scheduleSimulatedResponse: (challengeId, friendId) => {
-    const { friends } = useFriendsStore.getState();
-    const friend = friends.find(f => f.id === friendId);
-    
-    if (!friend || !friend.isSimulated) return;
-
-    // Random delay based on friend's response delay range
-    const { min, max } = friend.responseDelay;
-    const delay = Math.floor(Math.random() * (max - min + 1)) + min;
-    
-    // Calculate and store expected response time
-    const expectedResponseTime = Date.now() + delay;
-    
-    // Update challenge with scheduled response time
-    set(state => ({
-      challenges: state.challenges.map(c =>
-        c.id === challengeId ? { ...c, simulatedResponseTime: expectedResponseTime } : c
-      )
-    }));
-    get().saveToStorage();
-
-    setTimeout(() => {
-      get().simulateFriendResponse(challengeId, friend);
-    }, delay);
-  },
-  
-  // 🤖 Rehydrate simulated responses on app reload
-  rehydrateSimulatedResponses: () => {
-    const challenges = get().challenges;
-    const { friends } = useFriendsStore.getState();
-    
-    challenges.forEach(challenge => {
-      // Check if this is a pending simulated challenge with scheduled response time
-      if (
-        challenge.simulatedResponseTime &&
-        challenge.opponentScore === null &&
-        challenge.status !== 'completed'
-      ) {
-        const friend = friends.find(f => f.id === challenge.opponentId);
-        if (friend && friend.isSimulated) {
-          const now = Date.now();
-          const timeLeft = challenge.simulatedResponseTime - now;
-          
-          if (timeLeft > 0) {
-            // Response still pending - reschedule
-            setTimeout(() => {
-              get().simulateFriendResponse(challenge.id, friend);
-            }, timeLeft);
+  submitChallengeAttempt: async (challengeId, score, answers, completionTime = null, chain = null) => {
+    try {
+      set({ loading: true, error: null });
+      
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth?.user) {
+        set({ loading: false });
+        return { success: false, error: "NOT_AUTHENTICATED" };
+      }
+      
+      const userId = auth.user.id;
+      
+      const { data: challenge, error: fetchError } = await supabase
+        .from('challenges')
+        .select('*')
+        .eq('id', challengeId)
+        .maybeSingle();
+      
+      if (fetchError || !challenge) {
+        set({ loading: false });
+        return { success: false, error: "CHALLENGE_NOT_FOUND" };
+      }
+      
+      const isChallenger = challenge.challenger_id === userId;
+      const isOpponent = challenge.opponent_id === userId;
+      
+      if (!isChallenger && !isOpponent) {
+        set({ loading: false });
+        return { success: false, error: "NOT_PARTICIPANT" };
+      }
+      
+      const updateData = {
+        status: 'active'
+      };
+      
+      if (isChallenger) {
+        if (challenge.challenger_score !== null) {
+          set({ loading: false });
+          return { success: false, error: "ALREADY_PLAYED" };
+        }
+        updateData.challenger_score = score;
+        updateData.challenger_answers = answers;
+        updateData.challenger_time = completionTime;
+        updateData.challenger_chain = chain;
+        updateData.challenger_played_at = new Date().toISOString();
+      } else {
+        if (challenge.opponent_score !== null) {
+          set({ loading: false });
+          return { success: false, error: "ALREADY_PLAYED" };
+        }
+        updateData.opponent_score = score;
+        updateData.opponent_answers = answers;
+        updateData.opponent_time = completionTime;
+        updateData.opponent_chain = chain;
+        updateData.opponent_played_at = new Date().toISOString();
+      }
+      
+      const otherPlayerPlayed = isChallenger 
+        ? challenge.opponent_score !== null 
+        : challenge.challenger_score !== null;
+      
+      if (otherPlayerPlayed) {
+        updateData.status = 'completed';
+        updateData.completed_at = new Date().toISOString();
+        
+        const challengerScore = isChallenger ? score : challenge.challenger_score;
+        const opponentScore = isChallenger ? challenge.opponent_score : score;
+        const challengerTime = isChallenger ? completionTime : challenge.challenger_time;
+        const opponentTime = isChallenger ? challenge.opponent_time : completionTime;
+        const challengerChain = isChallenger ? chain : challenge.challenger_chain;
+        const opponentChain = isChallenger ? challenge.opponent_chain : chain;
+        
+        const modeId = challenge.mode;
+        const isSuddenDeath = modeId === 'sudden_death';
+        
+        let winnerId = null;
+        let isDraw = false;
+        
+        if (isSuddenDeath) {
+          const cChain = challengerChain || 0;
+          const oChain = opponentChain || 0;
+          if (cChain > oChain) {
+            winnerId = challenge.challenger_id;
+          } else if (oChain > cChain) {
+            winnerId = challenge.opponent_id;
           } else {
-            // Response overdue - execute immediately
-            get().simulateFriendResponse(challenge.id, friend);
+            isDraw = true;
+          }
+        } else {
+          if (challengerScore > opponentScore) {
+            winnerId = challenge.challenger_id;
+          } else if (opponentScore > challengerScore) {
+            winnerId = challenge.opponent_id;
+          } else {
+            const mode = Object.values(CHALLENGE_MODES).find(m => m.id === modeId);
+            if (mode?.trackTime && challengerTime !== null && opponentTime !== null) {
+              winnerId = challengerTime < opponentTime 
+                ? challenge.challenger_id 
+                : challenge.opponent_id;
+            } else {
+              isDraw = true;
+            }
           }
         }
+        
+        updateData.winner_id = winnerId;
+        updateData.is_draw = isDraw;
       }
-    });
-  },
-
-  // 🤖 Simulate friend playing the challenge
-  simulateFriendResponse: (challengeId, friend) => {
-    const challenge = get().challenges.find(c => c.id === challengeId);
-    if (!challenge || challenge.opponentScore !== null) return;
-
-    const { questions } = challenge;
-    const accuracy = friend.accuracy;
-
-    // Simulate answers based on accuracy
-    const simulatedAnswers = questions.map((q, index) => {
-      const willGetCorrect = Math.random() < accuracy;
-      if (willGetCorrect) {
-        return q.answer; // Correct answer
-      } else {
-        // Random wrong answer
-        const wrongOptions = [0, 1, 2, 3].filter(opt => opt !== q.answer);
-        return wrongOptions[Math.floor(Math.random() * wrongOptions.length)];
+      
+      const { data: updated, error: updateError } = await supabase
+        .from('challenges')
+        .update(updateData)
+        .eq('id', challengeId)
+        .select()
+        .maybeSingle();
+      
+      if (updateError) {
+        console.error('Update challenge error:', updateError);
+        set({ loading: false });
+        return { success: false, error: updateError.message };
       }
-    });
-
-    // Calculate score
-    const score = simulatedAnswers.filter((ans, idx) => ans === questions[idx].answer).length;
-
-    // Generate completion time for time-tracked modes (Mind Battle, Sudden Death)
-    const mode = Object.values(CHALLENGE_MODES).find(m => m.id === challenge.mode);
-    let completionTime = null;
-    if (mode?.trackTime) {
-      // Simulate realistic completion time based on friend difficulty
-      const baseTime = questions.length * 3; // 3 seconds per question base
-      const randomFactor = friend.difficulty?.responseTime?.[0] || 5;
-      const randomRange = (friend.difficulty?.responseTime?.[1] || 10) - randomFactor;
-      completionTime = baseTime + (questions.length * (randomFactor + Math.random() * randomRange));
-    }
-
-    // Save the opponent's progress
-    get().saveChallengeProgress(challengeId, score, simulatedAnswers, false, completionTime);
-    
-    // If challenger has also played, complete the challenge
-    if (challenge.challengerScore !== null) {
-      get().completeChallenge(challengeId);
+      
+      const formattedChallenge = get().formatChallengeFromCloud(updated);
+      
+      set(state => ({
+        challenges: state.challenges.map(c => 
+          c.id === challengeId ? formattedChallenge : c
+        ),
+        loading: false
+      }));
+      
+      if (updated.status === 'completed') {
+        set(state => ({
+          challengeHistory: [...state.challengeHistory, formattedChallenge]
+        }));
+      }
+      
+      get().saveToStorage();
+      useProgressStore.getState().markDayComplete();
+      
+      return { success: true, challenge: formattedChallenge };
+    } catch (err) {
+      console.error('Submit attempt error:', err);
+      set({ loading: false, error: err.message });
+      return { success: false, error: err.message };
     }
   },
 
-  // Save challenge progress
+  formatChallengeFromCloud: (data) => {
+    if (!data) return null;
+    return {
+      id: data.id,
+      challengerId: data.challenger_id,
+      opponentId: data.opponent_id,
+      mode: data.mode,
+      questions: data.questions || [],
+      challengerScore: data.challenger_score,
+      opponentScore: data.opponent_score,
+      challengerAnswers: data.challenger_answers,
+      opponentAnswers: data.opponent_answers,
+      challengerTime: data.challenger_time,
+      opponentTime: data.opponent_time,
+      challengerChain: data.challenger_chain,
+      opponentChain: data.opponent_chain,
+      status: data.status,
+      winner: data.winner_id || (data.is_draw ? 'draw' : null),
+      isDraw: data.is_draw,
+      createdAt: data.created_at,
+      expiresAt: data.expires_at,
+      completedAt: data.completed_at
+    };
+  },
+
+  loadPendingChallenges: async () => {
+    try {
+      set({ loading: true, error: null });
+      
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth?.user) {
+        set({ loading: false });
+        return [];
+      }
+      
+      const userId = auth.user.id;
+      
+      const { data, error } = await supabase
+        .from('challenges')
+        .select('*')
+        .eq('opponent_id', userId)
+        .eq('status', 'pending')
+        .gt('expires_at', new Date().toISOString())
+        .order('created_at', { ascending: false });
+      
+      if (error) {
+        console.error('Load pending challenges error:', error);
+        set({ loading: false });
+        return [];
+      }
+      
+      const formatted = (data || []).map(c => get().formatChallengeFromCloud(c));
+      
+      set(state => {
+        const existingIds = new Set(state.challenges.map(c => c.id));
+        const newChallenges = formatted.filter(c => !existingIds.has(c.id));
+        return {
+          challenges: [...state.challenges.filter(c => c.status !== 'pending' || c.challengerId === userId), ...formatted],
+          loading: false
+        };
+      });
+      
+      return formatted;
+    } catch (err) {
+      console.error('Load pending error:', err);
+      set({ loading: false });
+      return [];
+    }
+  },
+
+  loadActiveChallenges: async () => {
+    try {
+      set({ loading: true, error: null });
+      
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth?.user) {
+        set({ loading: false });
+        return [];
+      }
+      
+      const userId = auth.user.id;
+      
+      const { data, error } = await supabase
+        .from('challenges')
+        .select('*')
+        .or(`challenger_id.eq.${userId},opponent_id.eq.${userId}`)
+        .eq('status', 'active')
+        .gt('expires_at', new Date().toISOString())
+        .order('created_at', { ascending: false });
+      
+      if (error) {
+        console.error('Load active challenges error:', error);
+        set({ loading: false });
+        return [];
+      }
+      
+      const formatted = (data || []).map(c => get().formatChallengeFromCloud(c));
+      
+      set(state => {
+        const activeIds = new Set(formatted.map(c => c.id));
+        const otherChallenges = state.challenges.filter(c => 
+          c.status !== 'active' || !activeIds.has(c.id)
+        );
+        return {
+          challenges: [...otherChallenges, ...formatted],
+          loading: false
+        };
+      });
+      
+      return formatted;
+    } catch (err) {
+      console.error('Load active error:', err);
+      set({ loading: false });
+      return [];
+    }
+  },
+
+  loadChallengeHistory: async (limit = 20) => {
+    try {
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth?.user) return [];
+      
+      const userId = auth.user.id;
+      
+      const { data, error } = await supabase
+        .from('challenges')
+        .select('*')
+        .or(`challenger_id.eq.${userId},opponent_id.eq.${userId}`)
+        .eq('status', 'completed')
+        .order('completed_at', { ascending: false })
+        .limit(limit);
+      
+      if (error) {
+        console.error('Load history error:', error);
+        return [];
+      }
+      
+      const formatted = (data || []).map(c => get().formatChallengeFromCloud(c));
+      set({ challengeHistory: formatted });
+      
+      return formatted;
+    } catch (err) {
+      console.error('Load history error:', err);
+      return [];
+    }
+  },
+
+  loadAllMyChallenges: async () => {
+    try {
+      set({ loading: true, error: null });
+      
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth?.user) {
+        set({ loading: false });
+        return [];
+      }
+      
+      const userId = auth.user.id;
+      
+      const { data, error } = await supabase
+        .from('challenges')
+        .select('*')
+        .or(`challenger_id.eq.${userId},opponent_id.eq.${userId}`)
+        .in('status', ['pending', 'active'])
+        .gt('expires_at', new Date().toISOString())
+        .order('created_at', { ascending: false });
+      
+      if (error) {
+        console.error('Load all challenges error:', error);
+        set({ loading: false });
+        return [];
+      }
+      
+      const formatted = (data || []).map(c => get().formatChallengeFromCloud(c));
+      set({ challenges: formatted, loading: false });
+      get().saveToStorage();
+      
+      return formatted;
+    } catch (err) {
+      console.error('Load all error:', err);
+      set({ loading: false });
+      return [];
+    }
+  },
+
+  saveBossAttemptCloud: async (score, answers, completionTime = null) => {
+    try {
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth?.user) {
+        return { success: false, error: "NOT_AUTHENTICATED" };
+      }
+      
+      const userId = auth.user.id;
+      const today = new Date().toISOString().split('T')[0];
+      const passed = score >= Math.ceil(BOSS_LEVEL.questionCount * 0.75);
+      const rewards = passed ? BOSS_LEVEL.rewards.win : BOSS_LEVEL.rewards.lose;
+      
+      const { data, error } = await supabase
+        .from('boss_attempts')
+        .insert({
+          user_id: userId,
+          attempt_date: today,
+          score: score,
+          answers: answers,
+          completion_time: completionTime,
+          passed: passed,
+          xp_earned: rewards.xp,
+          coins_earned: rewards.coins
+        })
+        .select()
+        .maybeSingle();
+      
+      if (error) {
+        if (error.code === '23505') {
+          return { success: false, error: "ALREADY_ATTEMPTED_TODAY" };
+        }
+        console.error('Save boss attempt error:', error);
+        return { success: false, error: error.message };
+      }
+      
+      const attempt = {
+        id: data.id,
+        score: data.score,
+        answers: data.answers,
+        completedAt: data.created_at,
+        maxScore: BOSS_LEVEL.questionCount,
+        passed: data.passed
+      };
+      
+      set(state => ({
+        bossAttempts: [...state.bossAttempts, attempt]
+      }));
+      get().saveToStorage();
+      
+      useProgressStore.getState().markDayComplete();
+      
+      return { success: true, attempt, rewards };
+    } catch (err) {
+      console.error('Save boss attempt error:', err);
+      return { success: false, error: err.message };
+    }
+  },
+
+  loadBossAttemptToday: async () => {
+    try {
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth?.user) return null;
+      
+      const userId = auth.user.id;
+      const today = new Date().toISOString().split('T')[0];
+      
+      const { data, error } = await supabase
+        .from('boss_attempts')
+        .select('*')
+        .eq('user_id', userId)
+        .eq('attempt_date', today)
+        .maybeSingle();
+      
+      if (error || !data) return null;
+      
+      return {
+        id: data.id,
+        score: data.score,
+        answers: data.answers,
+        completedAt: data.created_at,
+        maxScore: BOSS_LEVEL.questionCount,
+        passed: data.passed
+      };
+    } catch (err) {
+      console.error('Load boss attempt error:', err);
+      return null;
+    }
+  },
+
+  canPlayBossTodayCloud: async () => {
+    const attempt = await get().loadBossAttemptToday();
+    return !attempt;
+  },
+
+  createChallenge: (friendId, mode) => {
+    return get().createChallengeCloud(friendId, mode);
+  },
+
   saveChallengeProgress: (challengeId, score, answers, isChallenger, completionTime = null) => {
     set(state => ({
       challenges: state.challenges.map(c => {
         if (c.id === challengeId) {
           let updatedChallenge = { ...c };
-          
-          // Update the current player's data
           if (isChallenger) {
             updatedChallenge.challengerScore = score;
             updatedChallenge.challengerAnswers = answers;
@@ -466,8 +734,6 @@ export const useChallengeStore = create((set, get) => ({
             updatedChallenge.opponentTime = completionTime;
             updatedChallenge.status = c.challengerScore !== null ? "completed" : "active";
           }
-          
-          // For Sudden Death, always recalculate both chains from answers
           const modeId = typeof c.mode === 'string' ? c.mode : c.mode?.id;
           if (modeId === 'sudden_death') {
             updatedChallenge.challengerChain = updatedChallenge.challengerAnswers 
@@ -477,59 +743,46 @@ export const useChallengeStore = create((set, get) => ({
               ? calculateLongestChain(updatedChallenge.opponentAnswers) 
               : 0;
           }
-          
           return updatedChallenge;
         }
         return c;
       })
     }));
-    
     get().saveToStorage();
   },
 
-  // Complete challenge and determine winner
   completeChallenge: (challengeId) => {
     const challenge = get().challenges.find(c => c.id === challengeId);
     if (!challenge) return;
 
     let winner = null;
-    
-    // Normalize mode to check if it's Sudden Death
     const modeId = typeof challenge.mode === 'string' ? challenge.mode : challenge.mode?.id;
     const isSuddenDeath = modeId === 'sudden_death';
     
     if (isSuddenDeath) {
-      // Sudden Death: ALWAYS compare chain lengths first (ignore scores)
-      // Ensure both chains are calculated from answers if missing
       let challengerChain = challenge.challengerChain;
       let opponentChain = challenge.opponentChain;
-      
       if (challengerChain === null || challengerChain === undefined) {
         challengerChain = challenge.challengerAnswers ? calculateLongestChain(challenge.challengerAnswers) : 0;
       }
       if (opponentChain === null || opponentChain === undefined) {
         opponentChain = challenge.opponentAnswers ? calculateLongestChain(challenge.opponentAnswers) : 0;
       }
-      
       if (challengerChain > opponentChain) {
         winner = challenge.challengerId;
       } else if (opponentChain > challengerChain) {
         winner = challenge.opponentId;
       } else {
-        // Equal chains - this is a draw (no time tiebreaker for Sudden Death)
         winner = "draw";
       }
     } else {
-      // For other modes, use score comparison
       if (challenge.challengerScore > challenge.opponentScore) {
         winner = challenge.challengerId;
       } else if (challenge.opponentScore > challenge.challengerScore) {
         winner = challenge.opponentId;
       } else {
-        // Scores are equal - check if it's a time-based mode (Mind Battle)
         const mode = Object.values(CHALLENGE_MODES).find(m => m.id === modeId);
         if (mode?.trackTime && challenge.challengerTime !== null && challenge.opponentTime !== null) {
-          // Fastest time wins
           winner = challenge.challengerTime < challenge.opponentTime 
             ? challenge.challengerId 
             : challenge.opponentId;
@@ -539,7 +792,6 @@ export const useChallengeStore = create((set, get) => ({
       }
     }
     
-    // 🛡️ Mark day as complete for streak tracking
     useProgressStore.getState().markDayComplete();
 
     set(state => ({
@@ -553,179 +805,84 @@ export const useChallengeStore = create((set, get) => ({
     return winner;
   },
 
-  // Get questions for a specific mode
   getQuestionsForMode: (mode, sharedLessons) => {
-    // Mode can be an object or a string ID - normalize it
     let config;
     if (typeof mode === 'string') {
-      // Find mode by ID
       config = Object.values(CHALLENGE_MODES).find(m => m.id === mode);
     } else {
-      // Mode is already an object
       config = mode;
     }
-    
     if (!config) {
       console.error('Invalid mode:', mode);
       return [];
     }
     
-    // 🎯 NEW SYSTEM: Get ALL questions from user's completed lessons (NOT just shared)
     let allQuestions = get().getQuestionPool();
-    
-    // If no completed lessons, use minimal fallback for beta testing
     if (allQuestions.length === 0) {
       allQuestions = get().getBetaFallbackQuestions();
     }
     
-    // 🚫 Remove recently shown questions (last 50)
     const freshQuestions = get().filterRecentQuestions(allQuestions);
-    
-    // 📊 Apply difficulty scaling based on mode
     let filteredQuestions = freshQuestions;
     
     if (config.id === 'mind_battle') {
-      // Mind Battle: Highest reasoning complexity
       filteredQuestions = freshQuestions.filter(q => 
         q.difficulty === 'hard' || q.difficulty === 'medium'
       );
     } else if (config.id === 'lightning_round') {
-      // Lightning Round: Fastest recall (all difficulties)
       filteredQuestions = freshQuestions;
     } else if (config.id === 'speed_run') {
-      // Speed Run: Quick recall (medium/easy preferred)
       filteredQuestions = freshQuestions.filter(q => 
         q.difficulty !== 'hard' || Math.random() > 0.5
       );
     } else if (config.id === 'sudden_death') {
-      // Sudden Death: Mix of all difficulties for 25 questions
       filteredQuestions = freshQuestions;
     }
     
-    // Fallback if filtering removed too many
     if (filteredQuestions.length === 0) {
       filteredQuestions = freshQuestions;
     }
     
     const count = config.questionCount || 8;
-    
-    // 🎲 Expand pool if needed (generate variations)
     if (filteredQuestions.length < count) {
       filteredQuestions = get().expandQuestionPool(filteredQuestions, count);
     }
     
-    // Shuffle and select
     const shuffled = filteredQuestions.sort(() => Math.random() - 0.5);
     const selected = shuffled.slice(0, count);
-    
-    // 📝 Track shown questions to avoid repetition
     selected.forEach(q => get().trackShownQuestion(q.question));
     
     return selected;
   },
 
-  // 🤖 BETA MODE: Fallback question pool for testing without completed lessons
   getBetaFallbackQuestions: () => {
     return [
-      {
-        question: "What is the first pillar of Islam?",
-        options: ["Prayer", "Shahada (Declaration of Faith)", "Fasting", "Charity"],
-        answer: 1,
-        difficulty: "hard"
-      },
-      {
-        question: "How many daily prayers are obligatory in Islam?",
-        options: ["3", "4", "5", "6"],
-        answer: 2,
-        difficulty: "hard"
-      },
-      {
-        question: "Which prophet built the Kaaba?",
-        options: ["Prophet Muhammad ﷺ", "Prophet Ibrahim ﷺ", "Prophet Musa ﷺ", "Prophet Isa ﷺ"],
-        answer: 1,
-        difficulty: "hard"
-      },
-      {
-        question: "What is the holy book of Islam?",
-        options: ["Torah", "Bible", "Qur'an", "Vedas"],
-        answer: 2,
-        difficulty: "hard"
-      },
-      {
-        question: "In which month do Muslims fast?",
-        options: ["Rajab", "Shaban", "Ramadan", "Dhul Hijjah"],
-        answer: 2,
-        difficulty: "hard"
-      },
-      {
-        question: "What is Zakat?",
-        options: ["Fasting", "Prayer", "Charity", "Pilgrimage"],
-        answer: 2,
-        difficulty: "hard"
-      },
-      {
-        question: "Where is the Kaaba located?",
-        options: ["Medina", "Mecca", "Jerusalem", "Cairo"],
-        answer: 1,
-        difficulty: "hard"
-      },
-      {
-        question: "What does 'Islam' mean?",
-        options: ["Peace", "Submission to Allah ﷻ", "Both peace and submission", "Faith"],
-        answer: 2,
-        difficulty: "hard"
-      },
-      {
-        question: "Who was the first person to accept Islam?",
-        options: ["Abu Bakr", "Khadijah", "Ali", "Umar"],
-        answer: 1,
-        difficulty: "hard"
-      },
-      {
-        question: "How many verses are in Surah Al-Fatiha?",
-        options: ["5", "6", "7", "8"],
-        answer: 2,
-        difficulty: "hard"
-      },
-      {
-        question: "What is the meaning of 'Bismillah'?",
-        options: ["In the name of Allah ﷻ", "Praise be to Allah ﷻ", "Allah ﷻ is Great", "There is no god but Allah ﷻ"],
-        answer: 0,
-        difficulty: "hard"
-      },
-      {
-        question: "Which direction do Muslims face when praying?",
-        options: ["East", "West", "Towards Mecca", "North"],
-        answer: 2,
-        difficulty: "hard"
-      }
+      { question: "What is the first pillar of Islam?", options: ["Prayer", "Shahada (Declaration of Faith)", "Fasting", "Charity"], answer: 1, difficulty: "hard" },
+      { question: "How many daily prayers are obligatory in Islam?", options: ["3", "4", "5", "6"], answer: 2, difficulty: "hard" },
+      { question: "Which prophet built the Kaaba?", options: ["Prophet Muhammad ﷺ", "Prophet Ibrahim ﷺ", "Prophet Musa ﷺ", "Prophet Isa ﷺ"], answer: 1, difficulty: "hard" },
+      { question: "What is the holy book of Islam?", options: ["Torah", "Bible", "Qur'an", "Vedas"], answer: 2, difficulty: "hard" },
+      { question: "In which month do Muslims fast?", options: ["Rajab", "Shaban", "Ramadan", "Dhul Hijjah"], answer: 2, difficulty: "hard" },
+      { question: "What is Zakat?", options: ["Fasting", "Prayer", "Charity", "Pilgrimage"], answer: 2, difficulty: "hard" },
+      { question: "Where is the Kaaba located?", options: ["Medina", "Mecca", "Jerusalem", "Cairo"], answer: 1, difficulty: "hard" },
+      { question: "What does 'Islam' mean?", options: ["Peace", "Submission to Allah ﷻ", "Both peace and submission", "Faith"], answer: 2, difficulty: "hard" },
+      { question: "Who was the first person to accept Islam?", options: ["Abu Bakr", "Khadijah", "Ali", "Umar"], answer: 1, difficulty: "hard" },
+      { question: "How many verses are in Surah Al-Fatiha?", options: ["5", "6", "7", "8"], answer: 2, difficulty: "hard" },
+      { question: "What is the meaning of 'Bismillah'?", options: ["In the name of Allah ﷻ", "Praise be to Allah ﷻ", "Allah ﷻ is Great", "There is no god but Allah ﷻ"], answer: 0, difficulty: "hard" },
+      { question: "Which direction do Muslims face when praying?", options: ["East", "West", "Towards Mecca", "North"], answer: 2, difficulty: "hard" }
     ];
   },
 
-  // 🎯 Build Boss Level question pool from last third of ALL paths
   getBossLevelQuestionPool: () => {
     const allPathsData = [
-      namesOfAllahQuizzesData,      // Path 1
-      foundationsQuizzesData,        // Path 2
-      prophetsQuizzesData,           // Path 3
-      prophetLifeQuizzesData,        // Path 4
-      wivesQuizzesData,              // Path 5
-      tenPromisedQuizzesData,        // Path 6
-      greatestWomenQuizzesData,      // Path 7
-      companionsQuizzesData,         // Path 8
-      angelsQuizzesData,             // Path 9
-      endTimesQuizzesData,           // Path 10
-      graveQuizzesData,              // Path 11
-      judgementQuizzesData,          // Path 12
-      hellfireQuizzesData,           // Path 13
-      paradiseQuizzesData            // Path 14
+      namesOfAllahQuizzesData, foundationsQuizzesData, prophetsQuizzesData,
+      prophetLifeQuizzesData, wivesQuizzesData, tenPromisedQuizzesData,
+      greatestWomenQuizzesData, companionsQuizzesData, angelsQuizzesData,
+      endTimesQuizzesData, graveQuizzesData, judgementQuizzesData,
+      hellfireQuizzesData, paradiseQuizzesData
     ];
 
     const bossPool = [];
-
-    // For each path, extract last third of questions
     allPathsData.forEach((pathData, pathIndex) => {
-      // Flatten all questions from all lessons in this path
       const allPathQuestions = [];
       pathData.forEach(lessonData => {
         if (lessonData.questions && Array.isArray(lessonData.questions)) {
@@ -734,517 +891,62 @@ export const useChallengeStore = create((set, get) => ({
               question: q.question,
               options: q.options,
               answer: q.answer,
-              difficulty: 'hard', // Mark all Boss Level questions as hard
+              difficulty: 'hard',
               sourcePath: pathIndex + 1,
               sourceLesson: lessonData.lessonId
             });
           });
         }
       });
-
-      // Calculate last third (ensure at least ceil(totalQuestions/3) items)
       const totalQuestions = allPathQuestions.length;
       const lastThirdStart = Math.max(0, totalQuestions - Math.ceil(totalQuestions / 3));
       const lastThirdQuestions = allPathQuestions.slice(lastThirdStart);
-
-      // Add to boss pool
       bossPool.push(...lastThirdQuestions);
     });
 
     return bossPool;
   },
 
-  // Get questions for Boss Level (from last third of ALL paths)
   getBossLevelQuestions: () => {
-    // 🎯 NEW SYSTEM: Pull from last third of all paths (automatically hard difficulty)
     let allQuestions = get().getBossLevelQuestionPool();
-    
-    // 🚫 Remove recently shown questions
     allQuestions = get().filterRecentQuestions(allQuestions);
     
-    // If pool is too small, expand with variations
     const targetCount = BOSS_LEVEL.questionCount || 12;
     if (allQuestions.length < targetCount) {
-      // If no questions available, use fallback pool
       if (allQuestions.length === 0) {
         allQuestions = get().getBossLevelFallbackQuestions();
       } else {
-        // Expand pool with variations
         allQuestions = get().expandQuestionPool(allQuestions, targetCount);
       }
     }
     
-    // Shuffle and select (KEEP EXISTING LOGIC)
     const shuffled = allQuestions.sort(() => Math.random() - 0.5);
     const selected = shuffled.slice(0, targetCount);
-    
-    // 📝 Track shown questions (KEEP EXISTING LOGIC)
     selected.forEach(q => get().trackShownQuestion(q.question));
     
     return selected;
   },
 
-  // 🤖 Fallback ultra-hard questions for Boss Level (when no lessons completed)
   getBossLevelFallbackQuestions: () => {
-    // Pool of 90 ultra-hard Islamic questions
-    const questionPool = [
-      {
-        question: "Which name of Allah ﷻ means 'The All-Knowing'?",
-        options: ["Al-Aleem", "Al-Hakeem", "Al-Baseer", "Al-Samee"],
-        answer: 0
-      },
-      {
-        question: "How many prophets are mentioned by name in the Qur'an?",
-        options: ["13", "25", "40", "124,000"],
-        answer: 1
-      },
-      {
-        question: "What is the last verse revealed in the Qur'an?",
-        options: ["Ayat al-Kursi", "The verse about debt in Surah Al-Baqarah", "The final verse of Surah Al-Baqarah", "Surah An-Nasr"],
-        answer: 1
-      },
-      {
-        question: "Which companion was known as 'The Sword of Allah ﷻ'?",
-        options: ["Ali ibn Abi Talib", "Umar ibn al-Khattab", "Khalid ibn al-Walid", "Abu Bakr as-Siddiq"],
-        answer: 2
-      },
-      {
-        question: "What was the first masjid built by Prophet Muhammad ﷺ?",
-        options: ["Masjid al-Haram", "Masjid an-Nabawi", "Masjid Quba", "Masjid al-Aqsa"],
-        answer: 2
-      },
-      {
-        question: "How many times is Prophet Muhammad ﷺ mentioned by name in the Qur'an?",
-        options: ["3", "4", "5", "7"],
-        answer: 1
-      },
-      {
-        question: "Which surah is called 'the heart of the Qur'an'?",
-        options: ["Al-Fatiha", "Ya-Sin", "Al-Mulk", "Ar-Rahman"],
-        answer: 1
-      },
-      {
-        question: "In which year of Hijrah did the Battle of Badr take place?",
-        options: ["1st year", "2nd year", "3rd year", "4th year"],
-        answer: 1
-      },
-      {
-        question: "How many angels are mentioned by name in the Qur'an?",
-        options: ["1", "2", "3", "4"],
-        answer: 2
-      },
-      {
-        question: "What is the longest surah in the Qur'an?",
-        options: ["Al-Baqarah", "Aal-e-Imran", "An-Nisa", "Al-An'am"],
-        answer: 0
-      },
-      {
-        question: "Which prophet is mentioned the most in the Qur'an?",
-        options: ["Muhammad ﷺ", "Ibrahim ﷺ", "Musa ﷺ", "Isa ﷺ"],
-        answer: 2
-      },
-      {
-        question: "How many years did it take for the Qur'an to be revealed?",
-        options: ["10 years", "15 years", "23 years", "30 years"],
-        answer: 2
-      },
-      {
-        question: "Which sahabi was given the title 'Al-Farooq' (The Criterion)?",
-        options: ["Abu Bakr", "Umar ibn al-Khattab", "Uthman ibn Affan", "Ali ibn Abi Talib"],
-        answer: 1
-      },
-      {
-        question: "In which cave did Prophet Muhammad ﷺ receive the first revelation?",
-        options: ["Cave of Thawr", "Cave of Hira", "Cave of Uhud", "Cave of Safa"],
-        answer: 1
-      },
-      {
-        question: "What was the name of Prophet Muhammad's ﷺ mother?",
-        options: ["Khadijah", "Aminah", "Fatimah", "Aisha"],
-        answer: 1
-      },
-      {
-        question: "How many times is Sajdah (prostration) mentioned in the Qur'an?",
-        options: ["11", "13", "15", "17"],
-        answer: 2
-      },
-      {
-        question: "Which surah does not begin with Bismillah?",
-        options: ["Al-Fatiha", "At-Tawbah", "Al-Ikhlas", "An-Nas"],
-        answer: 1
-      },
-      {
-        question: "Who was the first male to accept Islam?",
-        options: ["Ali ibn Abi Talib", "Abu Bakr as-Siddiq", "Umar ibn al-Khattab", "Uthman ibn Affan"],
-        answer: 1
-      },
-      {
-        question: "How many Makki surahs are in the Qur'an?",
-        options: ["82", "86", "90", "93"],
-        answer: 1
-      },
-      {
-        question: "Which prophet could speak to animals and jinn?",
-        options: ["Dawud ﷺ", "Sulaiman ﷺ", "Musa ﷺ", "Isa ﷺ"],
-        answer: 1
-      },
-      {
-        question: "What is the shortest surah in the Qur'an?",
-        options: ["Al-Ikhlas", "Al-Kawthar", "Al-Asr", "An-Nasr"],
-        answer: 1
-      },
-      {
-        question: "In which battle did Prophet Muhammad ﷺ lose his tooth?",
-        options: ["Battle of Badr", "Battle of Uhud", "Battle of Khandaq", "Battle of Hunayn"],
-        answer: 1
-      },
-      {
-        question: "How many wives did Prophet Muhammad ﷺ have?",
-        options: ["9", "11", "13", "15"],
-        answer: 1
-      },
-      {
-        question: "Which angel is responsible for blowing the trumpet on the Day of Judgment?",
-        options: ["Jibra'il", "Mikail", "Israfil", "Azrael"],
-        answer: 2
-      },
-      {
-        question: "What was the occupation of Prophet Muhammad ﷺ before prophethood?",
-        options: ["Farmer", "Merchant/Shepherd", "Scholar", "Soldier"],
-        answer: 1
-      },
-      {
-        question: "Which surah is recommended to be recited on Friday?",
-        options: ["Al-Mulk", "Al-Kahf", "Ar-Rahman", "Ya-Sin"],
-        answer: 1
-      },
-      {
-        question: "How many children did Prophet Muhammad ﷺ have?",
-        options: ["5", "6", "7", "8"],
-        answer: 2
-      },
-      {
-        question: "Which companion compiled the Qur'an into one book first?",
-        options: ["Umar ibn al-Khattab", "Abu Bakr as-Siddiq", "Uthman ibn Affan", "Ali ibn Abi Talib"],
-        answer: 1
-      },
-      {
-        question: "What does 'Al-Qadr' mean?",
-        options: ["The Power", "The Decree/Divine Will", "The Night", "The Book"],
-        answer: 1
-      },
-      {
-        question: "In which year did the Hijrah (migration) to Madinah occur?",
-        options: ["610 CE", "615 CE", "622 CE", "630 CE"],
-        answer: 2
-      },
-      {
-        question: "Which two surahs are called 'Az-Zahrawayn' (The Two Radiant Ones)?",
-        options: ["Al-Fatiha & Al-Ikhlas", "Al-Baqarah & Aal-e-Imran", "Ya-Sin & Ar-Rahman", "Al-Mulk & Al-Waqi'ah"],
-        answer: 1
-      },
-      {
-        question: "How many years did Prophet Nuh ﷺ preach to his people?",
-        options: ["500 years", "750 years", "950 years", "1000 years"],
-        answer: 2
-      },
-      {
-        question: "Which battle is known as 'Yawm al-Furqan' (Day of Criterion)?",
-        options: ["Battle of Badr", "Battle of Uhud", "Battle of Khandaq", "Battle of Hunayn"],
-        answer: 0
-      },
-      {
-        question: "What is the name of the gate of Paradise reserved for those who fast?",
-        options: ["Bab al-Jihad", "Bab al-Salah", "Bab ar-Rayyan", "Bab al-Sadaqah"],
-        answer: 2
-      },
-      {
-        question: "Which surah mentions two prophets in its name?",
-        options: ["Surah Ibrahim", "Surah Yunus", "Surah Hud", "No surah has two prophets in its name"],
-        answer: 3
-      },
-      {
-        question: "How many times is Iblees mentioned by name in the Qur'an?",
-        options: ["9", "11", "13", "15"],
-        answer: 1
-      },
-      {
-        question: "What was the name of Prophet Muhammad's ﷺ grandfather?",
-        options: ["Abdullah", "Abdul Muttalib", "Abu Talib", "Hashim"],
-        answer: 1
-      },
-      {
-        question: "Which prophet is known as 'Kalimullah' (The one who spoke to Allah ﷻ)?",
-        options: ["Ibrahim ﷺ", "Musa ﷺ", "Isa ﷺ", "Muhammad ﷺ"],
-        answer: 1
-      },
-      {
-        question: "In which surah is the verse of the Throne (Ayat al-Kursi) found?",
-        options: ["Al-Fatiha", "Al-Baqarah", "Aal-e-Imran", "An-Nisa"],
-        answer: 1
-      },
-      {
-        question: "How many daughters did Prophet Muhammad ﷺ have?",
-        options: ["2", "3", "4", "5"],
-        answer: 2
-      },
-      {
-        question: "Which companion was promised Paradise while still alive?",
-        options: ["Only Abu Bakr", "Only Umar", "The ten promised Paradise (Asharah Mubasharah)", "All companions"],
-        answer: 2
-      },
-      {
-        question: "What is the longest verse in the Qur'an about?",
-        options: ["Prayer", "Debt and financial transactions", "Fasting", "Hajj"],
-        answer: 1
-      },
-      {
-        question: "Which prophet's name is mentioned 25 times in the Qur'an?",
-        options: ["Ibrahim ﷺ", "Nuh ﷺ", "Isa ﷺ", "Musa ﷺ"],
-        answer: 2
-      },
-      {
-        question: "What was the first thing created by Allah ﷻ according to hadith?",
-        options: ["The Throne", "The Pen", "Light", "Water"],
-        answer: 1
-      },
-      {
-        question: "How many pillars does Iman (faith) have?",
-        options: ["4", "5", "6", "7"],
-        answer: 2
-      },
-      {
-        question: "Which surah is known as the 'Mother of the Qur'an'?",
-        options: ["Al-Fatiha", "Al-Baqarah", "Ya-Sin", "Al-Ikhlas"],
-        answer: 0
-      },
-      {
-        question: "What is the Arabic term for the standing position in prayer?",
-        options: ["Ruku", "Qiyam", "Sujud", "Julus"],
-        answer: 1
-      },
-      {
-        question: "Which companion was known as 'Dhul-Nurayn' (The Possessor of Two Lights)?",
-        options: ["Abu Bakr", "Umar", "Uthman ibn Affan", "Ali"],
-        answer: 2
-      },
-      {
-        question: "How many prostrations of recitation (Sajdah Tilawah) are in the Qur'an?",
-        options: ["11", "14", "15", "17"],
-        answer: 2
-      },
-      {
-        question: "Which month were the Muslims commanded to fast?",
-        options: ["Muharram", "Rajab", "Sha'ban", "Ramadan"],
-        answer: 3
-      },
-      {
-        question: "What is the name of the well of Zamzam's original name?",
-        options: ["Bir Zamzam", "Bir Isma'il", "It was always called Zamzam", "Bir Hajar"],
-        answer: 2
-      },
-      {
-        question: "Which prophet had control over the wind?",
-        options: ["Ibrahim ﷺ", "Sulaiman ﷺ", "Dawud ﷺ", "Musa ﷺ"],
-        answer: 1
-      },
-      {
-        question: "How many sons did Prophet Muhammad ﷺ have?",
-        options: ["1", "2", "3", "4"],
-        answer: 2
-      },
-      {
-        question: "What is the night when the Qur'an was first revealed called?",
-        options: ["Laylat al-Isra", "Laylat al-Qadr", "Laylat al-Bara'ah", "Laylat al-Mi'raj"],
-        answer: 1
-      },
-      {
-        question: "Which angel is responsible for rain and provisions?",
-        options: ["Jibra'il", "Mikail", "Israfil", "Malik"],
-        answer: 1
-      },
-      {
-        question: "How many Madani surahs are in the Qur'an?",
-        options: ["24", "28", "32", "36"],
-        answer: 1
-      },
-      {
-        question: "What is the Arabic word for the pillar of Islam regarding charity?",
-        options: ["Sadaqah", "Zakat", "Khums", "Fitrah"],
-        answer: 1
-      },
-      {
-        question: "Which companion was the first to be martyred in Islam?",
-        options: ["Hamza", "Sumayah bint Khayyat", "Mus'ab ibn Umair", "Yasir ibn Amir"],
-        answer: 1
-      },
-      {
-        question: "Which surah was revealed entirely at once?",
-        options: ["Al-Fatiha", "Al-Ikhlas", "Both Al-Fatiha and Al-Ikhlas", "Al-Kawthar"],
-        answer: 0
-      },
-      {
-        question: "How many times is the word 'Jannah' (Paradise) mentioned in the Qur'an?",
-        options: ["66", "77", "88", "99"],
-        answer: 1
-      },
-      {
-        question: "Which prophet is associated with the miracle of the she-camel?",
-        options: ["Salih ﷺ", "Hud ﷺ", "Shu'ayb ﷺ", "Lut ﷺ"],
-        answer: 0
-      },
-      {
-        question: "What was the age of Prophet Muhammad ﷺ when he passed away?",
-        options: ["60 years", "61 years", "63 years", "65 years"],
-        answer: 2
-      },
-      {
-        question: "Which Khalifah compiled the Qur'an into one standardized text?",
-        options: ["Abu Bakr", "Umar", "Uthman", "Ali"],
-        answer: 2
-      },
-      {
-        question: "What is the reward for reciting Surah Al-Ikhlas according to hadith?",
-        options: ["Equal to 1/3 of the Qur'an", "Equal to 1/2 of the Qur'an", "Equal to full Qur'an", "10 rewards"],
-        answer: 0
-      },
-      {
-        question: "Which direction did Muslims first pray towards?",
-        options: ["Makkah", "Madinah", "Jerusalem (Al-Aqsa)", "Yemen"],
-        answer: 2
-      },
-      {
-        question: "How many camels were sacrificed as ransom for Prophet Muhammad ﷺ's grandfather's vow?",
-        options: ["50", "75", "100", "150"],
-        answer: 2
-      },
-      {
-        question: "Which surah is entirely about the Oneness of Allah ﷻ?",
-        options: ["Al-Fatiha", "Al-Ikhlas", "Al-Nas", "Al-Falaq"],
-        answer: 1
-      },
-      {
-        question: "What was the name of the first mosque built in Madinah?",
-        options: ["Masjid Quba", "Masjid an-Nabawi", "Masjid Qiblatain", "Masjid al-Jumu'ah"],
-        answer: 0
-      },
-      {
-        question: "Which prophet's people were destroyed by a loud blast (Sayhah)?",
-        options: ["Hud ﷺ", "Salih ﷺ", "Shu'ayb ﷺ", "Lut ﷺ"],
-        answer: 1
-      },
-      {
-        question: "How many types of Tawheed (Oneness of Allah ﷻ) are there?",
-        options: ["1", "2", "3", "4"],
-        answer: 2
-      },
-      {
-        question: "Which battle did the angels participate in helping the Muslims?",
-        options: ["Battle of Badr", "Battle of Uhud", "Battle of Khandaq", "All of the above"],
-        answer: 0
-      },
-      {
-        question: "What is the name of the first male martyr in Islam?",
-        options: ["Hamza", "Yasir ibn Amir", "Mus'ab ibn Umair", "Zayd ibn Harithah"],
-        answer: 1
-      },
-      {
-        question: "Which prophet was swallowed by a whale?",
-        options: ["Musa ﷺ", "Yunus ﷺ", "Nuh ﷺ", "Sulaiman ﷺ"],
-        answer: 1
-      },
-      {
-        question: "How many prayers (Salawat) are mentioned in the Qur'an by specific names?",
-        options: ["3", "4", "5", "7"],
-        answer: 0
-      },
-      {
-        question: "Which companion was the first to accept Islam from among the youth?",
-        options: ["Abu Bakr", "Ali ibn Abi Talib", "Uthman", "Zubair ibn al-Awwam"],
-        answer: 1
-      },
-      {
-        question: "What is the name of the bridge that all must cross on the Day of Judgment?",
-        options: ["As-Sirat", "Al-Mawazin", "Al-Hawd", "Al-A'raf"],
-        answer: 0
-      },
-      {
-        question: "Which prophet is known as 'Sayyid al-Awliya' (Leader of the Saints)?",
-        options: ["Ibrahim ﷺ", "Musa ﷺ", "Isa ﷺ", "None - this title is not for prophets"],
-        answer: 3
-      },
-      {
-        question: "How many surahs in the Qur'an are named after prophets?",
-        options: ["4", "5", "6", "7"],
-        answer: 2
-      },
-      {
-        question: "Which angel is responsible for taking souls?",
-        options: ["Jibra'il", "Mikail", "Azrael (Malak al-Mawt)", "Israfil"],
-        answer: 2
-      },
-      {
-        question: "What was the name of Prophet Muhammad's ﷺ wet nurse?",
-        options: ["Aminah", "Halimah as-Sa'diyah", "Barakah", "Thuwaybah"],
-        answer: 1
-      },
-      {
-        question: "Which surah contains the famous verse 'Allah ﷻ does not burden a soul beyond what it can bear'?",
-        options: ["Al-Baqarah", "Aal-e-Imran", "An-Nisa", "Al-An'am"],
-        answer: 0
-      },
-      {
-        question: "How many heavens are mentioned in Islam?",
-        options: ["3", "5", "7", "9"],
-        answer: 2
-      },
-      {
-        question: "Which prophet had a staff that turned into a serpent?",
-        options: ["Ibrahim ﷺ", "Musa ﷺ", "Harun ﷺ", "Sulaiman ﷺ"],
-        answer: 1
-      },
-      {
-        question: "What is the name of the tree in Paradise from which Adam and Eve ate?",
-        options: ["Tuba Tree", "Zaqqum Tree", "The Forbidden Tree", "Sidrat al-Muntaha"],
-        answer: 2
-      },
-      {
-        question: "Which companion was known as 'The Scribe of Revelation'?",
-        options: ["Zayd ibn Thabit", "Abdullah ibn Mas'ud", "Ubayy ibn Ka'b", "All of the above"],
-        answer: 3
-      },
-      {
-        question: "In which surah is the story of the People of the Cave (Ashab al-Kahf)?",
-        options: ["Al-Kahf", "Al-Ankabut", "Al-Isra", "Maryam"],
-        answer: 0
-      },
-      {
-        question: "How many times is Maryam (Mary) mentioned by name in the Qur'an?",
-        options: ["19", "25", "34", "40"],
-        answer: 2
-      },
-      {
-        question: "Which battle is known as the 'Battle of the Trench'?",
-        options: ["Battle of Badr", "Battle of Uhud", "Battle of Khandaq", "Battle of Hunayn"],
-        answer: 2
-      },
-      {
-        question: "What is the Arabic term for the obligatory charity given at the end of Ramadan?",
-        options: ["Zakat", "Sadaqah", "Zakat al-Fitr", "Khums"],
-        answer: 2
-      },
-      {
-        question: "Which prophet is mentioned as 'Dhul-Kifl' in the Qur'an?",
-        options: ["Ilyas ﷺ", "Ayyub ﷺ", "Dhul-Kifl ﷺ", "Yusha ﷺ"],
-        answer: 2
-      }
+    return [
+      { question: "Which name of Allah ﷻ means 'The All-Knowing'?", options: ["Al-Aleem", "Al-Hakeem", "Al-Baseer", "Al-Samee"], answer: 0, difficulty: "hard" },
+      { question: "How many prophets are mentioned by name in the Qur'an?", options: ["13", "25", "40", "124,000"], answer: 1, difficulty: "hard" },
+      { question: "What is the last verse revealed in the Qur'an?", options: ["Ayat al-Kursi", "The verse about debt in Surah Al-Baqarah", "The final verse of Surah Al-Baqarah", "Surah An-Nasr"], answer: 1, difficulty: "hard" },
+      { question: "Which companion was known as 'The Sword of Allah ﷻ'?", options: ["Ali ibn Abi Talib", "Umar ibn al-Khattab", "Khalid ibn al-Walid", "Abu Bakr as-Siddiq"], answer: 2, difficulty: "hard" },
+      { question: "What was the first masjid built by Prophet Muhammad ﷺ?", options: ["Masjid al-Haram", "Masjid an-Nabawi", "Masjid Quba", "Masjid al-Aqsa"], answer: 2, difficulty: "hard" },
+      { question: "How many times is Prophet Muhammad ﷺ mentioned by name in the Qur'an?", options: ["3", "4", "5", "7"], answer: 1, difficulty: "hard" },
+      { question: "Which surah is called 'the heart of the Qur'an'?", options: ["Al-Fatiha", "Ya-Sin", "Al-Mulk", "Ar-Rahman"], answer: 1, difficulty: "hard" },
+      { question: "In which year of Hijrah did the Battle of Badr take place?", options: ["1st year", "2nd year", "3rd year", "4th year"], answer: 1, difficulty: "hard" },
+      { question: "How many angels are mentioned by name in the Qur'an?", options: ["1", "2", "3", "4"], answer: 2, difficulty: "hard" },
+      { question: "What is the longest surah in the Qur'an?", options: ["Al-Baqarah", "Aal-e-Imran", "An-Nisa", "Al-An'am"], answer: 0, difficulty: "hard" },
+      { question: "Which prophet is mentioned the most in the Qur'an?", options: ["Muhammad ﷺ", "Ibrahim ﷺ", "Musa ﷺ", "Isa ﷺ"], answer: 2, difficulty: "hard" },
+      { question: "How many years did it take for the Qur'an to be revealed?", options: ["10 years", "15 years", "23 years", "30 years"], answer: 2, difficulty: "hard" },
+      { question: "Which sahabi was given the title 'Al-Farooq' (The Criterion)?", options: ["Abu Bakr", "Umar ibn al-Khattab", "Uthman ibn Affan", "Ali ibn Abi Talib"], answer: 1, difficulty: "hard" },
+      { question: "In which cave did Prophet Muhammad ﷺ receive the first revelation?", options: ["Cave of Thawr", "Cave of Hira", "Cave of Uhud", "Cave of Safa"], answer: 1, difficulty: "hard" },
+      { question: "What was the name of Prophet Muhammad's ﷺ mother?", options: ["Khadijah", "Aminah", "Fatimah", "Aisha"], answer: 1, difficulty: "hard" }
     ];
-    
-    // Return pool (selection and shuffling handled by getBossLevelQuestions)
-    return questionPool.map(q => ({ ...q, difficulty: "hard" }));
   },
 
-  // Boss Level: Check if can play today
   canPlayBossToday: () => {
     const today = new Date().toDateString();
     const { bossAttempts } = get();
@@ -1254,29 +956,12 @@ export const useChallengeStore = create((set, get) => ({
     return !todayAttempt;
   },
 
-  // Boss Level: Save attempt
   saveBossAttempt: (score, answers) => {
-    const attempt = {
-      id: `boss_${Date.now()}`,
-      score: score,
-      answers: answers,
-      completedAt: new Date().toISOString(),
-      maxScore: BOSS_LEVEL.questionCount
-    };
-
-    set(state => ({
-      bossAttempts: [...state.bossAttempts, attempt]
-    }));
-
-    get().saveToStorage();
-    return attempt;
+    return get().saveBossAttemptCloud(score, answers);
   },
 
-  // Award rewards
   awardRewards: (mode, result) => {
     const config = mode === "boss_level" ? BOSS_LEVEL : CHALLENGE_MODES[mode];
-    
-    // Safe rewards access - handle invalid results like "pending"
     let rewards = { xp: 0, coins: 0 };
     if (config?.rewards) {
       if (result && config.rewards[result]) {
@@ -1285,20 +970,16 @@ export const useChallengeStore = create((set, get) => ({
         rewards = config.rewards.lose;
       }
     }
-    
     const { addXPAndCoins } = useProgressStore.getState();
     addXPAndCoins(rewards.xp, rewards.coins);
-    
     return rewards;
   },
 
-  // Auto-expire challenges after 48h
   checkExpiredChallenges: () => {
     const now = Date.now();
     set(state => ({
       challenges: state.challenges.map(c => {
         if (c.status !== "completed" && new Date(c.expiresAt).getTime() < now) {
-          // Auto-win for whoever played
           let winner = null;
           if (c.challengerScore !== null && c.opponentScore === null) {
             winner = c.challengerId;
@@ -1313,36 +994,27 @@ export const useChallengeStore = create((set, get) => ({
     get().saveToStorage();
   },
 
-  // Get pending challenges for current user
   getPendingChallenges: () => {
     get().checkExpiredChallenges();
-    const currentUserId = "current_user";
-    return get().challenges.filter(c => 
-      (c.challengerId === currentUserId || c.opponentId === currentUserId) &&
-      c.status === "pending"
-    );
+    return get().challenges.filter(c => c.status === "pending");
   },
 
-  // Get active challenges (one player finished, waiting for other)
   getActiveChallenges: () => {
     get().checkExpiredChallenges();
-    const currentUserId = "current_user";
-    return get().challenges.filter(c =>
-      (c.challengerId === currentUserId || c.opponentId === currentUserId) &&
-      c.status === "active"
-    );
+    return get().challenges.filter(c => c.status === "active");
   },
 
-  // Get completed challenges
   getCompletedChallenges: () => {
-    const currentUserId = "current_user";
-    return get().challenges.filter(c =>
-      (c.challengerId === currentUserId || c.opponentId === currentUserId) &&
-      (c.status === "completed" || c.status === "expired")
+    return get().challenges.filter(c => 
+      c.status === "completed" || c.status === "expired"
     );
   },
 
-  // Supabase sync functions (Phase 1: empty placeholders)
-  syncToSupabase: async () => {},
-  loadFromSupabase: async () => {},
+  syncToSupabase: async () => {
+    await get().loadAllMyChallenges();
+  },
+
+  loadFromSupabase: async () => {
+    await get().loadAllMyChallenges();
+  },
 }));
