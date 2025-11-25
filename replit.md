@@ -33,9 +33,18 @@ The premium model offers free tier limits (0-3 free lessons depending on the pat
 - If profile already exists but incomplete, `saveCloudProfile()` updates identity fields
 - Startup sequence: silentAuth → deviceId → checkProfileExists → onboarding OR load stores
 
-**Supabase Integration Status**: Phase 6 complete (cloud-backed Challenges and Events). Silent account creation on first launch with permanent Supabase UID. Auto-login on every app open using hidden email/password credentials. The progressStore automatically syncs to Supabase cloud on all state changes (WRITE) with 5-second throttling and AES encryption for sensitive data. On app start, it restores from cloud if cloud data is newer (READ).
+**Supabase Integration Status**: Silent account creation on first launch with permanent Supabase UID. Auto-login on every app open using hidden email/password credentials. The progressStore automatically syncs to Supabase cloud on all state changes (WRITE) with 5-second throttling and AES encryption for sensitive data. On app start, it restores from cloud if cloud data is newer (READ). Note: Challenges are now 100% local (no Supabase), while Global Events remain cloud-backed.
 
-**Challenge System (Phase 6)**: All friend challenges use `submitChallengeAttempt` for cloud-backed completion with server-determined winners. Boss Level uses `saveBossAttemptCloud` with proper error modals on failure (no local fallback). Cloud failures surface user-friendly alerts and prevent reward application until successful sync. Boss playable status refreshes via `canPlayBossTodayCloud` after completion.
+**Challenge System (100% Local - Nov 2025 Refactor)**:
+- All challenge functionality runs locally with NO Supabase dependency
+- `createChallenge()` builds local challenge objects with `crypto.randomUUID()` fallback
+- `submitChallengeAttempt()` generates random opponent results locally and determines winner
+- `saveBossAttempt()` stores Boss Level attempts in localStorage
+- `canPlayBossToday()` checks local bossAttempts array
+- `getQuestionsForMode()` pulls from completed lesson pools, falls back to 60 diverse fallback questions
+- Fallback questions cover all difficulty levels; expandQuestionPool() recycles for high-count modes (Speed Run)
+- Boss Level locked at level >= 8 only (no premium/lesson requirements)
+- Winner determination uses 'current_user' sentinel for challenger ID
 
 **Events System (Phase 6)**: Global Events load cloud entries on mount via `loadMyEntries`. Event quiz submissions pass completion time to `enterEventCloud` for tiebreaker rankings. The 75% pass threshold applies to all quizzes, daily quests, boss level, and global events.
 
