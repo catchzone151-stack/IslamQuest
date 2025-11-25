@@ -7,7 +7,7 @@ import { supabase } from "../lib/supabaseClient";
 
 export default function UsernameScreen() {
   const navigate = useNavigate();
-  const { setHandle, setOnboarded, saveProfile, name, avatar, userId } = useUserStore();
+  const { setHandle, setUsername, completeOnboarding, name, avatar, userId, user } = useUserStore();
   const [input, setInput] = useState("");
   const [checking, setChecking] = useState(false);
   const [error, setError] = useState("");
@@ -22,44 +22,42 @@ export default function UsernameScreen() {
     setError("");
 
     const handleValue = input.trim().toLowerCase();
+    const uid = user?.id || userId;
 
-    // Check if handle already taken (skip if DB not ready)
+    // Check if handle already taken (excluding own profile)
     try {
       const { data, error: err } = await supabase
         .from("profiles")
-        .select("handle")
+        .select("handle, user_id")
         .eq("handle", handleValue);
 
       if (!err && data && data.length > 0) {
-        setError("Handle already taken. Try another.");
-        setChecking(false);
-        return;
+        // Check if it's our own handle (allow keeping same handle)
+        const otherUser = data.find(d => d.user_id !== uid);
+        if (otherUser) {
+          setError("Handle already taken. Try another.");
+          setChecking(false);
+          return;
+        }
       }
     } catch (e) {
-      // Database not ready, skip uniqueness check
       console.log("Handle check skipped (DB not ready)");
     }
 
-    // Save locally
+    // Set local state - both handle and username (display name)
     setHandle(handleValue);
-    
-    // Mark onboarding as complete
-    setOnboarded(true);
+    if (name) {
+      setUsername(name);
+    }
 
-    // 🔹 SYNC PROFILE TO SUPABASE
-    // Save username (display name), avatar, and handle to cloud
-    // Avatar string is converted to integer index in saveCloudProfile
-    try {
-      console.log("📤 Syncing profile to Supabase...", { username: name, avatar, handle: handleValue });
-      await saveProfile({
-        username: name || null,
-        avatar: avatar || null,
-        handle: handleValue,
-      });
-      console.log("✅ Profile synced to Supabase");
-    } catch (e) {
-      console.error("Profile sync failed:", e);
-      // Continue anyway - local storage has the data
+    // Complete onboarding - saves all identity fields to cloud
+    // ONLY marks hasOnboarded=true AFTER successful save
+    const success = await completeOnboarding();
+    
+    if (!success) {
+      setError("Could not save profile. Please try again.");
+      setChecking(false);
+      return;
     }
     
     // Navigate to homepage

@@ -290,40 +290,35 @@ export default function App() {
     }
   }, []);
 
-  // 🔐 SUPABASE: Silent auth + profile creation + Phase 4 cloud sync
+  // 🔐 SUPABASE: Silent auth + profile + cloud sync
+  // SEQUENCE: silentAuth → deviceId → ensureProfile (once) → loadCloudProfile → stores
   useEffect(() => {
     async function initAuth() {
-      const { setUserId, setDeviceId } = useUserStore.getState();
+      const { setDeviceId } = useUserStore.getState();
 
+      // 1. Set device fingerprint
       const fp = getDeviceFingerprint();
       setDeviceId(fp);
 
-      try {
-        const user = await ensureSignedIn();
-        if (user) {
-          console.log("🔐 Signed in as", user.id);
-          setUserId(user.id);
+      // 2. Init user store (handles silentAuth + ensureProfile + loadCloudProfile)
+      // ensureProfile is called ONLY in init() to prevent duplicate inserts
+      await useUserStore.getState().init();
 
-          // Initialize user store (handles profile creation + load)
-          // NOTE: ensureProfile is called ONLY in init() to prevent duplicate inserts
-          await useUserStore.getState().init();
+      // 3. Get user ID after init completes
+      const { user, profileReady } = useUserStore.getState();
+      
+      if (!user) {
+        console.warn("No user after init");
+        return;
+      }
 
-          // 🌐 Phase 4: Load cloud data after silent auth
-          await useDailyQuestStore.getState().loadDailyQuestFromCloud(user.id);
-          await useProgressStore.getState().loadStreakShieldFromCloud();
+      console.log("🔐 Signed in as", user.id);
 
-          console.log("✅ Phase 4: Cloud sync completed after silent auth");
-        } else {
-          console.warn("No user returned from ensureSignedIn");
-          await useUserStore.getState().init();
-        }
-      } catch (err) {
-        console.error("initAuth failed:", err);
-        try {
-          await useUserStore.getState().init();
-        } catch (e) {
-          console.error("Store init also failed:", e);
-        }
+      // 4. Load progress stores ONLY after profile is ready
+      if (profileReady) {
+        await useDailyQuestStore.getState().loadDailyQuestFromCloud(user.id);
+        await useProgressStore.getState().loadStreakShieldFromCloud();
+        console.log("✅ Cloud sync completed");
       }
     }
 
