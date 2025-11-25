@@ -422,19 +422,27 @@ export const useFriendsStore = create((set, get) => ({
       if (!auth?.user) return { success: false, error: "Not logged in" };
 
       const myUserId = auth.user.id;
+      console.log("🤝 acceptFriendRequest - myUserId:", myUserId, "senderId:", senderId);
 
-      const { error } = await supabase
+      const { data: updateData, error } = await supabase
         .from("friends")
         .update({ status: "accepted" })
         .eq("user_id", senderId)
-        .eq("friend_id", myUserId);
+        .eq("friend_id", myUserId)
+        .select();
+
+      console.log("🤝 acceptFriendRequest - update result:", updateData, "error:", error);
 
       if (error) {
         console.error("Accept friend request error:", error);
         return { success: false, error: "Failed to accept request" };
       }
 
+      // Force reload and log the result
       await get().loadAll();
+      const { friends } = get();
+      console.log("🤝 acceptFriendRequest - friends after loadAll:", friends);
+      
       return { success: true, message: "Friend added!" };
     } catch (err) {
       console.error("acceptFriendRequest error:", err);
