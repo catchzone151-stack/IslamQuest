@@ -83,6 +83,25 @@ export const useUserStore = create((set, get) => ({
   // Set onboarding complete
   setOnboarded: (value) => set({ hasOnboarded: value }),
 
+  // Onboarding setters (store locally, sync to cloud later)
+  name: localStorage.getItem("iq_name") || "",
+  setName: (name) => {
+    localStorage.setItem("iq_name", name);
+    set({ name });
+  },
+
+  avatar: localStorage.getItem("iq_avatar") || "avatar1",
+  setAvatar: (avatar) => {
+    localStorage.setItem("iq_avatar", avatar);
+    set({ avatar });
+  },
+
+  username: localStorage.getItem("iq_username") || "",
+  setUsername: (username) => {
+    localStorage.setItem("iq_username", username);
+    set({ username });
+  },
+
   // --------------------------------------------------
   // UPDATE PROFILE (username, handle, avatar, etc.)
   // --------------------------------------------------
