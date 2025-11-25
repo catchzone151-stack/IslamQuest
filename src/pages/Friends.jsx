@@ -4,6 +4,7 @@ import { useFriendsStore } from "../store/friendsStore";
 import { useUserStore } from "../store/useUserStore";
 import { useProgressStore } from "../store/progressStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
+import { supabase } from "../lib/supabaseClient";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
@@ -23,6 +24,14 @@ import { LevelBadgeCompact } from "../components/LevelBadge";
 import { getAvatarImage } from "../utils/avatarUtils";
 import { getCurrentLevel } from "../utils/diamondLevels";
 import QuickMessageModal from "../components/QuickMessageModal";
+
+// Highlight CSS for current user
+const highlightStyle = `
+.highlight-user {
+  border: 2px solid gold !important;
+  background: rgba(255, 215, 0, 0.1) !important;
+}
+`;
 
 export default function Friends() {
   const navigate = useNavigate();
@@ -54,6 +63,7 @@ export default function Friends() {
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [quickMessageFriend, setQuickMessageFriend] = useState(null);
+  const [globalLeaderboard, setGlobalLeaderboard] = useState([]);
 
   // -------------------------------------------------------------------
   // 🚀 PATCH 2 — NEW FRIEND SYSTEM INITIALIZATION + DATA SYNC
@@ -76,6 +86,41 @@ export default function Friends() {
     });
   }, [currentUserXP, currentUserStreak]);
 
+  // 🔥 GLOBAL LEADERBOARD: Fetch top 100 from Supabase
+  useEffect(() => {
+    async function fetchGlobalLeaderboard() {
+      try {
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("user_id, username, handle, avatar, xp")
+          .order("xp", { ascending: false })
+          .limit(100);
+
+        if (error) {
+          console.log("Global leaderboard fetch error:", error.message);
+          return;
+        }
+
+        // Add The Dev entry and merge with fetched data
+        const THE_DEV_ENTRY = {
+          user_id: "the_dev_npc",
+          username: "The Dev",
+          handle: "thedev",
+          avatar: "avatar_ninja_male",
+          xp: 168542,
+          isPermanent: true,
+        };
+
+        const combined = [THE_DEV_ENTRY, ...(data || [])].sort((a, b) => b.xp - a.xp);
+        setGlobalLeaderboard(combined);
+      } catch (err) {
+        console.log("Global leaderboard error:", err);
+      }
+    }
+
+    fetchGlobalLeaderboard();
+  }, []);
+
   // 3) Handle search input
   useEffect(() => {
     if (searchQuery.trim().length >= 3) {
@@ -93,33 +138,20 @@ export default function Friends() {
   const sentRequests = getSentRequests();
   const receivedRequests = getReceivedRequests();
 
-  // 5) Friends Leaderboard
-  const friendsLeaderboard = [...friends].sort((a, b) => {
-    if (b.xp !== a.xp) return b.xp - a.xp;
-    if (b.streak !== a.streak) return b.streak - a.streak;
-    return a.nickname.localeCompare(b.nickname);
-  });
+  // 🔥 FRIENDS LEADERBOARD: Map with user_id, username, handle, avatar, xp
+  const friendsLeaderboard = friends
+    .map(f => ({
+      user_id: f.user_id || f.id,
+      username: f.username || f.handle || f.nickname,
+      handle: f.handle || f.username,
+      avatar: f.avatar,
+      xp: f.xp || 0,
+      streak: f.streak || 0,
+    }))
+    .sort((a, b) => b.xp - a.xp);
 
-  // 🔹 THE DEV - Permanent Global Leaderboard Entry--
-  const THE_DEV_ENTRY = {
-    id: "the_dev_npc",
-    username: "thedev",
-    nickname: "The Dev",
-    avatar: "avatar_ninja_male",
-    xp: 168542,
-    streak: 82,
-    isPermanent: true,
-  };
-
-  // Get global leaderboard (all users except current user + The Dev, sorted by XP)
-  const globalLeaderboard = [
-    THE_DEV_ENTRY,
-    ...users.filter((u) => u.id !== currentUserId),
-  ].sort((a, b) => {
-    if (b.xp !== a.xp) return b.xp - a.xp;
-    if (b.streak !== a.streak) return b.streak - a.streak;
-    return a.nickname.localeCompare(b.nickname);
-  });
+  // Get current user ID for highlight
+  const currentUserIdForHighlight = useUserStore.getState().user?.id;
 
   const handleSendRequest = (userId) => {
     const result = sendFriendRequest(userId);
@@ -219,6 +251,9 @@ export default function Friends() {
         paddingBottom: "80px",
       }}
     >
+      {/* Inject highlight CSS */}
+      <style>{highlightStyle}</style>
+
       {/* Header */}
       <div
         style={{
@@ -376,9 +411,10 @@ export default function Friends() {
                     >
                       {friendsLeaderboard.map((friend, index) => (
                         <LeaderboardCard
-                          key={friend.id}
+                          key={friend.user_id}
                           user={friend}
                           rank={index + 1}
+                          isCurrentUser={friend.user_id === currentUserIdForHighlight}
                           onChallenge={() => handleChallengeFriend(friend)}
                           onQuickMessage={() => handleQuickMessage(friend)}
                         />
@@ -407,12 +443,12 @@ export default function Friends() {
                     >
                       {globalLeaderboard.map((user, index) => (
                         <GlobalLeaderboardCard
-                          key={user.id}
+                          key={user.user_id}
                           user={user}
                           rank={index + 1}
-                          currentUserId={currentUserId}
-                          isFriend={isFriend(user.id)}
-                          onUserClick={() => handleUserClick(user.id)}
+                          isCurrentUser={user.user_id === currentUserIdForHighlight}
+                          isFriend={isFriend(user.user_id)}
+                          onUserClick={() => handleUserClick(user.user_id)}
                         />
                       ))}
                     </div>
@@ -719,10 +755,10 @@ function SubTabButton({ active, onClick, label, icon }) {
   );
 }
 
-function LeaderboardCard({ user, rank, onChallenge, onQuickMessage }) {
+function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, onQuickMessage }) {
   const avatarSrc = getAvatarImage(user.avatar, {
-    userId: user.id,
-    nickname: user.nickname,
+    userId: user.user_id,
+    nickname: user.username || user.handle,
   });
   const userLevel = getCurrentLevel(user.xp);
 
@@ -745,6 +781,7 @@ function LeaderboardCard({ user, rank, onChallenge, onQuickMessage }) {
 
   return (
     <motion.div
+      className={isCurrentUser ? "highlight-user" : ""}
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: rank * 0.05 }}
@@ -799,7 +836,7 @@ function LeaderboardCard({ user, rank, onChallenge, onQuickMessage }) {
       >
         <img
           src={avatarSrc}
-          alt={user.nickname}
+          alt={user.username || user.handle}
           style={{
             width: "100%",
             height: "100%",
@@ -819,6 +856,7 @@ function LeaderboardCard({ user, rank, onChallenge, onQuickMessage }) {
           }}
         >
           <p
+            className="name"
             style={{
               color: "white",
               fontWeight: "600",
@@ -829,11 +867,12 @@ function LeaderboardCard({ user, rank, onChallenge, onQuickMessage }) {
               margin: 0,
             }}
           >
-            {user.nickname}
+            {user.username || user.handle}
           </p>
           <LevelBadgeCompact level={userLevel} size="tiny" />
         </div>
         <p
+          className="handle"
           style={{
             color: "#aaa",
             fontSize: "0.8rem",
@@ -841,7 +880,7 @@ function LeaderboardCard({ user, rank, onChallenge, onQuickMessage }) {
             margin: 0,
           }}
         >
-          @{user.username}
+          @{user.handle}
         </p>
         <div
           style={{
@@ -910,13 +949,13 @@ function LeaderboardCard({ user, rank, onChallenge, onQuickMessage }) {
 function GlobalLeaderboardCard({
   user,
   rank,
-  currentUserId,
+  isCurrentUser,
   isFriend,
   onUserClick,
 }) {
   const avatarSrc = getAvatarImage(user.avatar, {
-    userId: user.id,
-    nickname: user.nickname,
+    userId: user.user_id,
+    nickname: user.username || user.handle,
   });
   const userLevel = getCurrentLevel(user.xp);
   const isPermanentEntry = user.isPermanent === true;
@@ -940,6 +979,7 @@ function GlobalLeaderboardCard({
 
   return (
     <motion.div
+      className={isCurrentUser ? "highlight-user" : ""}
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: Math.min(rank * 0.03, 0.5) }}
@@ -996,7 +1036,7 @@ function GlobalLeaderboardCard({
       >
         <img
           src={avatarSrc}
-          alt={user.nickname}
+          alt={user.username || user.handle}
           style={{
             width: "100%",
             height: "100%",
@@ -1008,6 +1048,7 @@ function GlobalLeaderboardCard({
       {/* User Info */}
       <div style={{ flex: 1, minWidth: 0 }}>
         <p
+          className="name"
           style={{
             color: "#e2e8f0",
             fontWeight: "600",
@@ -1019,7 +1060,18 @@ function GlobalLeaderboardCard({
             marginBottom: "2px",
           }}
         >
-          {user.nickname}
+          {user.username || user.handle}
+        </p>
+        <p
+          className="handle"
+          style={{
+            color: "#aaa",
+            fontSize: "0.75rem",
+            margin: 0,
+            marginBottom: "2px",
+          }}
+        >
+          @{user.handle}
         </p>
         <div
           style={{

@@ -102,6 +102,12 @@ export const useUserStore = create((set, get) => ({
     set({ username });
   },
 
+  handle: localStorage.getItem("iq_handle") || "",
+  setHandle: (handle) => {
+    localStorage.setItem("iq_handle", handle);
+    set({ handle });
+  },
+
   // --------------------------------------------------
   // UPDATE PROFILE (username, handle, avatar, etc.)
   // --------------------------------------------------
