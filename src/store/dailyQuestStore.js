@@ -3,6 +3,7 @@ import { useProgressStore } from "./progressStore";
 import {
   getQuizForLesson
 } from "../data/quizEngine";
+import { supabase } from "../lib/supabaseClient";
 
 const STORAGE_KEY = "islamQuestDailyQuest";
 
@@ -138,7 +139,8 @@ export const useDailyQuestStore = create((set, get) => ({
   // Check if Daily Quest is ready for today
   // If new day, generate fresh questions
   // Returns true if quest is available
-  checkAndGenerateDailyQuest: () => {
+  // Phase 4: Now syncs new quest to Supabase cloud
+  checkAndGenerateDailyQuest: async () => {
     const today = getTodayGMT();
     const state = get();
     
@@ -163,12 +165,28 @@ export const useDailyQuestStore = create((set, get) => ({
     });
 
     get().saveDailyQuest();
+
+    // 🌐 Phase 4: Sync new quest to Supabase cloud
+    try {
+      const { data: auth } = await supabase.auth.getUser();
+      if (auth && auth.user) {
+        await get().saveDailyQuestToCloud(auth.user.id, {
+          date: today,
+          questions,
+          completed: false,
+          rewardGiven: false,
+        });
+      }
+    } catch (err) {
+      console.log("❌ Cloud sync after quest generation failed:", err);
+    }
+
     return true;
   },
 
   // Complete Daily Quest and award rewards
-  // Supabase-ready: will become async DB operation
-  completeDailyQuest: (correctCount) => {
+  // Phase 4: Now syncs completion to Supabase cloud
+  completeDailyQuest: async (correctCount) => {
     const state = get();
 
     if (state.completed || !isToday(state.date)) {
@@ -190,6 +208,16 @@ export const useDailyQuestStore = create((set, get) => ({
     });
 
     get().saveDailyQuest();
+
+    // 🌐 Phase 4: Sync completion to Supabase cloud
+    try {
+      const { data: auth } = await supabase.auth.getUser();
+      if (auth && auth.user) {
+        await get().markDailyQuestCompleted(auth.user.id);
+      }
+    } catch (err) {
+      console.log("❌ Cloud sync after quest completion failed:", err);
+    }
   },
   
   // Track daily quest completion for analytics
@@ -236,7 +264,191 @@ export const useDailyQuestStore = create((set, get) => ({
     return "unavailable"; // No completed lessons
   },
 
-  // Supabase sync functions (Phase 1: empty placeholders)
-  syncToSupabase: async () => {},
-  loadFromSupabase: async () => {},
+  // ═══════════════════════════════════════════════════════════════════════════
+  // 🌐 PHASE 4: SUPABASE CLOUD SYNC FUNCTIONS
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  // Load daily quest from Supabase cloud
+  loadDailyQuestFromCloud: async (userId) => {
+    if (!userId) {
+      console.log("❌ loadDailyQuestFromCloud: No userId provided");
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from("daily_quests")
+        .select("*")
+        .eq("user_id", userId)
+        .single();
+
+      if (error) {
+        if (error.code === "PGRST116") {
+          // No row found - this is a new user, create cloud quest from local
+          console.log("📥 No cloud quest found - uploading local quest");
+          const state = get();
+          if (state.date && state.questions.length > 0) {
+            await get().saveDailyQuestToCloud(userId, {
+              date: state.date,
+              questions: state.questions,
+              completed: state.completed,
+              rewardGiven: state.rewardGiven,
+            });
+          }
+          return;
+        }
+        console.log("❌ loadDailyQuestFromCloud error:", error.message);
+        return;
+      }
+
+      if (!data) {
+        console.log("📥 No daily quest data in cloud");
+        return;
+      }
+
+      const today = getTodayGMT();
+      const cloudDate = data.quest_date;
+
+      // Check if cloud quest is expired (not today's date)
+      if (cloudDate !== today) {
+        console.log("🔄 Cloud quest expired - generating new local quest");
+        // Generate new quest locally and upload to cloud
+        const hasQuest = get().checkAndGenerateDailyQuest();
+        if (hasQuest) {
+          const state = get();
+          await get().saveDailyQuestToCloud(userId, {
+            date: state.date,
+            questions: state.questions,
+            completed: state.completed,
+            rewardGiven: state.rewardGiven,
+          });
+        }
+        return;
+      }
+
+      // Cloud quest is valid for today - override local with cloud data
+      console.log("✅ Restoring daily quest from cloud");
+      const questions = data.questions ? JSON.parse(data.questions) : [];
+      
+      set({
+        date: data.quest_date,
+        questions: questions,
+        completed: data.completed || false,
+        rewardGiven: data.reward_given || false,
+      });
+
+      // Also save to local storage for offline access
+      get().saveDailyQuest();
+
+    } catch (err) {
+      console.log("❌ loadDailyQuestFromCloud failed:", err);
+    }
+  },
+
+  // Save daily quest to Supabase cloud
+  saveDailyQuestToCloud: async (userId, questData) => {
+    if (!userId) {
+      console.log("❌ saveDailyQuestToCloud: No userId provided");
+      return;
+    }
+
+    try {
+      const payload = {
+        user_id: userId,
+        quest_date: questData.date,
+        questions: JSON.stringify(questData.questions),
+        completed: questData.completed || false,
+        reward_given: questData.rewardGiven || false,
+        updated_at: new Date().toISOString(),
+      };
+
+      // Upsert (insert or update if exists)
+      const { error } = await supabase
+        .from("daily_quests")
+        .upsert(payload, { onConflict: "user_id" });
+
+      if (error) {
+        console.log("❌ saveDailyQuestToCloud error:", error.message);
+        return;
+      }
+
+      console.log("✅ Daily quest saved to cloud");
+
+    } catch (err) {
+      console.log("❌ saveDailyQuestToCloud failed:", err);
+    }
+  },
+
+  // Mark daily quest as completed in cloud
+  markDailyQuestCompleted: async (userId) => {
+    if (!userId) {
+      console.log("❌ markDailyQuestCompleted: No userId provided");
+      return;
+    }
+
+    try {
+      const state = get();
+      
+      const { error } = await supabase
+        .from("daily_quests")
+        .update({
+          completed: true,
+          reward_given: true,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("user_id", userId);
+
+      if (error) {
+        console.log("❌ markDailyQuestCompleted error:", error.message);
+        return;
+      }
+
+      console.log("✅ Daily quest completion synced to cloud");
+
+    } catch (err) {
+      console.log("❌ markDailyQuestCompleted failed:", err);
+    }
+  },
+
+  // Create or update daily quest in cloud (wrapper for flexibility)
+  createOrUpdateDailyQuest: async (userId, quest) => {
+    if (!userId) {
+      console.log("❌ createOrUpdateDailyQuest: No userId provided");
+      return;
+    }
+
+    await get().saveDailyQuestToCloud(userId, quest);
+  },
+
+  // Sync current local state to cloud (convenience wrapper)
+  syncToSupabase: async () => {
+    try {
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth || !auth.user) return;
+
+      const state = get();
+      if (state.date && state.questions.length > 0) {
+        await get().saveDailyQuestToCloud(auth.user.id, {
+          date: state.date,
+          questions: state.questions,
+          completed: state.completed,
+          rewardGiven: state.rewardGiven,
+        });
+      }
+    } catch (err) {
+      console.log("❌ syncToSupabase failed:", err);
+    }
+  },
+
+  // Load from cloud (convenience wrapper)
+  loadFromSupabase: async () => {
+    try {
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth || !auth.user) return;
+
+      await get().loadDailyQuestFromCloud(auth.user.id);
+    } catch (err) {
+      console.log("❌ loadFromSupabase failed:", err);
+    }
+  },
 }));

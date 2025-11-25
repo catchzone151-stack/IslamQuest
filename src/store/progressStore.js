@@ -314,6 +314,10 @@ export const useProgressStore = create((set, get) => ({
         lastStudyDate: yesterdayStr, // Keep for consistency
       });
       get().saveProgress();
+      
+      // 🌐 Phase 4: Sync consumed shields to cloud
+      setTimeout(() => get().syncStreakShieldToCloud(), 50);
+      
       return;
     }
 
@@ -328,7 +332,8 @@ export const useProgressStore = create((set, get) => ({
   },
 
   // 🛡️ Purchase streak freeze shield
-  purchaseShield: () => {
+  // Phase 4: Now syncs shield count to Supabase cloud
+  purchaseShield: async () => {
     const { coins, shieldCount } = get();
     const SHIELD_COST = 100;
     const MAX_SHIELDS = 3;
@@ -349,11 +354,16 @@ export const useProgressStore = create((set, get) => ({
       shieldCount: shieldCount + 1,
     });
     get().saveProgress();
+    
+    // 🌐 Phase 4: Sync shield count to cloud
+    setTimeout(() => get().syncStreakShieldToCloud(), 50);
+    
     return { success: true };
   },
 
   // 🔧 Repair broken streak
-  repairStreak: () => {
+  // Phase 4: Now syncs shield count to Supabase cloud
+  repairStreak: async () => {
     const { coins, brokenStreakValue, shieldCount } = get();
     const REPAIR_COST = 200;
     const MAX_SHIELDS = 3;
@@ -375,6 +385,10 @@ export const useProgressStore = create((set, get) => ({
     });
     get().calculateXPMultiplier();
     get().saveProgress();
+    
+    // 🌐 Phase 4: Sync shield count to cloud
+    setTimeout(() => get().syncStreakShieldToCloud(), 50);
+    
     return { success: true, giftedShield: true };
   },
 
@@ -972,6 +986,7 @@ export const useProgressStore = create((set, get) => ({
       premium_type: state.premiumType,
       premium_activated_at: state.premiumActivatedAt,
       family_plan_id: state.familyPlanId,
+      shield_count: state.shieldCount, // 🛡️ Phase 4: Streak shields cloud sync
       lesson_states: encryptJSON(state.lessonStates),
       locked_lessons: encryptJSON(state.lockedLessons),
       paths: encryptJSON(state.paths),
@@ -1019,6 +1034,100 @@ export const useProgressStore = create((set, get) => ({
 
     } catch (err) {
       console.log("❌ Sync failed:", err);
+    }
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // 🛡️ PHASE 4: STREAK SHIELD CLOUD SYNC FUNCTIONS
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  // Load streak shields from Supabase profiles table
+  loadStreakShieldFromCloud: async () => {
+    try {
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth || !auth.user) {
+        console.log("❌ loadStreakShieldFromCloud: No user logged in");
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("shield_count")
+        .eq("user_id", auth.user.id)
+        .single();
+
+      if (error) {
+        // Try with 'id' column as fallback
+        const { data: fallbackData, error: fallbackError } = await supabase
+          .from("profiles")
+          .select("shield_count")
+          .eq("id", auth.user.id)
+          .single();
+
+        if (fallbackError) {
+          console.log("❌ loadStreakShieldFromCloud error:", fallbackError.message);
+          return;
+        }
+
+        if (fallbackData && fallbackData.shield_count !== undefined) {
+          set({ shieldCount: fallbackData.shield_count });
+          get().saveProgress();
+          console.log("✅ Streak shields loaded from cloud:", fallbackData.shield_count);
+        }
+        return;
+      }
+
+      if (data && data.shield_count !== undefined) {
+        set({ shieldCount: data.shield_count });
+        get().saveProgress();
+        console.log("✅ Streak shields loaded from cloud:", data.shield_count);
+      }
+
+    } catch (err) {
+      console.log("❌ loadStreakShieldFromCloud failed:", err);
+    }
+  },
+
+  // Sync streak shields to Supabase profiles table
+  syncStreakShieldToCloud: async () => {
+    try {
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth || !auth.user) {
+        console.log("❌ syncStreakShieldToCloud: No user logged in");
+        return;
+      }
+
+      const { shieldCount } = get();
+
+      // Try update with user_id first
+      const { error } = await supabase
+        .from("profiles")
+        .update({ 
+          shield_count: shieldCount,
+          updated_at: new Date().toISOString()
+        })
+        .eq("user_id", auth.user.id);
+
+      if (error) {
+        // Try with 'id' column as fallback
+        const { error: fallbackError } = await supabase
+          .from("profiles")
+          .update({ 
+            shield_count: shieldCount,
+            updated_at: new Date().toISOString()
+          })
+          .eq("id", auth.user.id);
+
+        if (fallbackError) {
+          console.log("❌ syncStreakShieldToCloud error:", fallbackError.message);
+          return;
+        }
+      }
+
+      console.log("✅ Streak shields synced to cloud:", shieldCount);
+
+    } catch (err) {
+      console.log("❌ syncStreakShieldToCloud failed:", err);
     }
   },
 
@@ -1077,6 +1186,9 @@ export const useProgressStore = create((set, get) => ({
         hasPremium: data.premium ?? false,
 
         familyPlanId: data.family_plan_id ?? null,
+        
+        // 🛡️ Phase 4: Streak shields cloud sync
+        shieldCount: data.shield_count ?? get().shieldCount,
 
         lessonStates: lessonStates || {},
         lockedLessons: lockedLessons || get().lockedLessons,

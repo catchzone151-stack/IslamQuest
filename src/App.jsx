@@ -12,6 +12,7 @@ import { ModalProvider, ModalRoot } from "./providers/ModalProvider.jsx";
 import { ShimmerCard, ShimmerImage } from "./components/ShimmerLoader.jsx";
 import { useUserStore } from "./store/useUserStore";
 import { useProgressStore } from "./store/progressStore";
+import { useDailyQuestStore } from "./store/dailyQuestStore";
 import { preloadAllAssets } from "./utils/imagePreloader";
 import { useModalStore, MODAL_TYPES } from "./store/modalStore";
 import { supabase, ensureSignedIn } from "./lib/supabaseClient";
@@ -288,12 +289,24 @@ export default function App() {
     }
   }, []);
 
-  // 🔐 SUPABASE: Silent auth + profile initialisation
+  // 🔐 SUPABASE: Silent auth + profile initialisation + Phase 4 cloud sync
   useEffect(() => {
     async function initAuth() {
       try {
         // New store: just call init()
         await useUserStore.getState().init();
+        
+        // 🌐 Phase 4: Load cloud data after silent auth
+        const { data: auth } = await supabase.auth.getUser();
+        if (auth && auth.user) {
+          // Load daily quest from cloud
+          await useDailyQuestStore.getState().loadDailyQuestFromCloud(auth.user.id);
+          
+          // Load streak shields from cloud
+          await useProgressStore.getState().loadStreakShieldFromCloud();
+          
+          console.log("✅ Phase 4: Cloud sync completed after silent auth");
+        }
       } catch (error) {
         console.error("Silent auth failed:", error);
       }
