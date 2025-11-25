@@ -974,9 +974,9 @@ export const useProgressStore = create((set, get) => ({
   serializeForSupabase: () => {
     const state = get();
 
-    // Build payload - only include username if it's actually set
-    // This prevents overwriting user's chosen username with null
-    const payload = {
+    // ONLY sync progress fields - NEVER identity fields
+    // Identity (username, avatar, handle) is managed by useUserStore
+    return {
       xp: state.xp,
       coins: state.coins,
       streak: state.streak,
@@ -984,14 +984,6 @@ export const useProgressStore = create((set, get) => ({
       shield_count: state.shieldCount,
       updated_at: new Date().toISOString()
     };
-
-    // Only include username if it's not null/undefined
-    // Username is managed by useUserStore during onboarding
-    if (state.username) {
-      payload.username = state.username;
-    }
-
-    return payload;
   },
 
   getLastUpdatedAt: () => {
