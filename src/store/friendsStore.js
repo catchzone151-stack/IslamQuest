@@ -400,34 +400,22 @@ export const useFriendsStore = create((set, get) => ({
     }
   },
 
-  acceptFriendRequest: async (requestId) => {
+  acceptFriendRequest: async (senderId) => {
     try {
       const { data: auth } = await supabase.auth.getUser();
       if (!auth?.user) return { success: false, error: "Not logged in" };
 
-      const userId = auth.user.id;
+      const myUserId = auth.user.id;
 
-      const { data: req } = await supabase
-        .from("friends")
-        .select("*")
-        .eq("id", requestId)
-        .maybeSingle();
-
-      if (!req) return { success: false, error: "Request not found" };
-
-      await supabase
+      const { error } = await supabase
         .from("friends")
         .update({ status: "accepted" })
-        .eq("id", requestId);
+        .eq("user_id", senderId)
+        .eq("friend_id", myUserId);
 
-      const { error: insertErr } = await supabase.from("friends").insert({
-        user_id: userId,
-        friend_id: req.user_id,
-        status: "accepted",
-      });
-
-      if (insertErr && insertErr.code !== "23505") {
-        console.warn("Reverse friendship insert error:", insertErr);
+      if (error) {
+        console.error("Accept friend request error:", error);
+        return { success: false, error: "Failed to accept request" };
       }
 
       await get().loadAll();
