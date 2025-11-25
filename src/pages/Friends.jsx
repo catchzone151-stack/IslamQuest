@@ -63,7 +63,7 @@ export default function Friends() {
   useEffect(() => {
     if (!currentUserId) return;
 
-    loadAll();
+    loadAll(currentUserId);
   }, [currentUserId, loadAll]);
 
   // 2) Sync changes to the progress store to update the Friends Leaderboard

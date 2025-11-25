@@ -1,55 +1,93 @@
 // src/store/useUserStore.js
+// Full replacement — correct Supabase integration + real DB schema alignment.
+
 import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
+import { supabase } from "../lib/supabaseClient";
+import { getOrCreateProfile, updateProfile } from "../lib/userProfile";
 
-export const useUserStore = create(
-  persist(
-    (set, get) => ({
-      // state
-      name: "",
-      username: null,
-      avatar: null,
-      id: crypto.randomUUID(),
-      hasOnboarded: false,
+// Generate or load stable device fingerprint
+function loadDeviceId() {
+  let id = localStorage.getItem("device_id");
+  if (!id) {
+    id = crypto.randomUUID();
+    localStorage.setItem("device_id", id);
+  }
+  return id;
+}
 
-      // hydration flag (so router waits until store is loaded from storage)
-      isHydrated: false,
+export const useUserStore = create((set, get) => ({
+  loading: true,
+  user: null,         // Supabase auth user
+  profile: null,      // Full profile row from DB
+  deviceId: loadDeviceId(),
 
-      // Supabase fields
-      userId: null,
-      deviceId: null,
+  // --------------------------------------------------
+  // INIT → Silent login + profile load
+  // --------------------------------------------------
+  init: async () => {
+    set({ loading: true });
 
-      // actions
-      setName: (name) => set({ name }),
-      setUsername: (username) => set({ username }),
-      setAvatar: (avatar) => set({ avatar }),
-      setId: (id) => set({ id }),
-      completeOnboarding: () => set({ hasOnboarded: true }),
-      resetUser: () => set({ name: "", username: null, avatar: null, hasOnboarded: false }),
-      
-      // 🛠️ Reset onboarding state (for developer/testing purposes)
-      resetOnboarding: () => set({ name: "", username: null, avatar: null, hasOnboarded: false }),
+    // 1. Get current session
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
 
-      // internal: set hydrated after rehydrate finishes
-      _setHydrated: () => set({ isHydrated: true }),
+    let user = session?.user;
 
-      // Supabase actions
-      setUserId: (id) => set({ userId: id }),
-      setDeviceId: (id) => set({ deviceId: id }),
+    // 2. If no user → silently sign in anonymously
+    if (!user) {
+      const { data, error } = await supabase.auth.signInAnonymously();
 
-      syncToSupabase: async () => {},
-      loadFromSupabase: async () => {},
-    }),
-    {
-      name: "iq-user-v2", // localStorage key
-      storage: createJSONStorage(() => localStorage),
-      // when the store rehydrates from storage, flip isHydrated to true
-      onRehydrateStorage: () => (state, error) => {
-        // called after rehydration (success or error)
-        if (state && typeof state._setHydrated === "function") {
-          state._setHydrated();
-        }
-      },
+      if (error) {
+        console.error("Silent auth error:", error);
+        set({ loading: false });
+        return;
+      }
+
+      user = data.user;
     }
-  )
-);
+
+    set({ user });
+
+    // 3. Load or create profile
+    const deviceId = get().deviceId;
+    const profile = await getOrCreateProfile(user.id, deviceId);
+
+    set({
+      profile,
+      loading: false,
+    });
+  },
+
+  // --------------------------------------------------
+  // UPDATE PROFILE (username, handle, avatar, etc.)
+  // --------------------------------------------------
+  saveProfile: async (updates) => {
+    const userId = get().user?.id;
+    if (!userId) return;
+
+    const updated = await updateProfile(userId, updates);
+
+    if (updated) {
+      set({ profile: updated });
+    }
+  },
+
+  // --------------------------------------------------
+  // REFRESH PROFILE FROM DB (optional)
+  // --------------------------------------------------
+  reloadProfile: async () => {
+    const userId = get().user?.id;
+    if (!userId) return;
+
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("user_id", userId)
+      .single();
+
+    if (!error && data) {
+      set({ profile: data });
+    }
+  },
+}));

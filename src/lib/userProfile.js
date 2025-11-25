@@ -1,89 +1,55 @@
 // src/lib/userProfile.js
-// -------------------------------------------------------
-// Phase 3 – Permanent Cloud Users + Profile Auto-Creation
-// -------------------------------------------------------
+// Full replacement — matches your REAL Supabase schema (profiles.user_id, slugs, full row load)
 
 import { supabase } from "./supabaseClient";
 
-/**
- * 🔹 ensureSignedIn()
- * Silent authentication:
- * - Creates a hidden Supabase user account on first launch
- * - Returns a permanent user ID
- */
-export async function ensureSignedIn() {
-  // 1) Check existing session
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  if (session?.user) {
-    return session.user;
-  }
-
-  // 2) Create a new hidden account
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.signUp({
-    email: `hidden_${crypto.randomUUID()}@hidden.local`,
-    password: crypto.randomUUID(),
-  });
-
-  if (error) {
-    console.error("Silent sign-up failed:", error);
-    return null;
-  }
-
-  return user;
+// Utility: generate a safe random handle (lowercase, no spaces)
+function generateHandle() {
+  return `user_${Math.floor(Math.random() * 90000 + 10000)}`.toLowerCase();
 }
 
 /**
- * 🔹 ensureProfile(userId)
- * Creates a profile row in the public.profiles table if missing.
+ * Fetches an existing profile OR creates a new one if none exists.
+ *
+ * @param {string} userId - Auth user UUID (supabase.auth.getUser())
+ * @param {string} deviceId - Local fingerprint UUID
  */
-export async function ensureProfile(userId) {
-  if (!userId) return;
-
-  // Does profile already exist?
-  const { data: existing, error: selectErr } = await supabase
+export async function getOrCreateProfile(userId, deviceId) {
+  // 1. Try to load profile
+  const { data: profile, error: fetchError } = await supabase
     .from("profiles")
-    .select("id")
-    .eq("id", userId)
+    .select("*")
+    .eq("user_id", userId)
     .single();
 
-  // Exists → no action needed
-  if (existing) return;
+  if (profile) {
+    return profile; // 🎉 Profile exists
+  }
 
-  // Insert new profile
-  const { error: insertErr } = await supabase.from("profiles").insert({
-    id: userId,
-    username: null,
-    display_name: null,
-    avatar: null,
+  // 2. If no profile → create one
+  const newProfile = {
+    user_id: userId,
+    device_id: deviceId,
+    username: null, // user may set this later
+    handle: generateHandle(), // guaranteed lowercase + unique constraint applies
+    avatar: "avatar1", // your system uses avatar slugs
     xp: 0,
     coins: 0,
     streak: 0,
-  });
+    last_streak_date: null,
+    shield_count: 0,
+    premium: false,
+    premium_family_id: null,
+  };
 
-  if (insertErr) {
-    console.error("Profile creation failed:", insertErr);
-  }
-}
-
-/**
- * 🔹 loadCloudProfile(userId)
- * Reads the cloud profile into JS (used later in Phase 4).
- */
-export async function loadCloudProfile(userId) {
-  const { data, error } = await supabase
+  const { data, error: insertError } = await supabase
     .from("profiles")
-    .select("*")
-    .eq("id", userId)
+    .insert([newProfile])
+    .select()
     .single();
 
-  if (error) {
-    console.error("Failed to load cloud profile:", error);
+  if (insertError) {
+    console.error("Profile insert error:", insertError);
     return null;
   }
 
@@ -91,18 +57,33 @@ export async function loadCloudProfile(userId) {
 }
 
 /**
- * 🔹 saveCloudProfile(userId, partialData)
- * Updates only the given fields.
+ * Updates a user profile row safely.
+ *
+ * @param {string} userId - Auth user UUID
+ * @param {object} updates - Partial updates
  */
-export async function saveCloudProfile(userId, partialData) {
-  if (!userId) return;
+export async function updateProfile(userId, updates) {
+  // Lowercase usernames/handles
+  const cleanedUpdates = { ...updates };
 
-  const { error } = await supabase
+  if (cleanedUpdates.username) {
+    cleanedUpdates.username = cleanedUpdates.username.toLowerCase();
+  }
+  if (cleanedUpdates.handle) {
+    cleanedUpdates.handle = cleanedUpdates.handle.toLowerCase();
+  }
+
+  const { data, error } = await supabase
     .from("profiles")
-    .update(partialData)
-    .eq("id", userId);
+    .update(cleanedUpdates)
+    .eq("user_id", userId)
+    .select()
+    .single();
 
   if (error) {
-    console.error("Failed to save cloud profile:", error);
+    console.error("Profile update error:", error);
+    return null;
   }
+
+  return data;
 }
