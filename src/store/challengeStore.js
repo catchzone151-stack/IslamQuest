@@ -1217,6 +1217,10 @@ export const useChallengeStore = create((set, get) => ({
     }
     
     const { completedLessons } = useProgressStore.getState();
+    if (!completedLessons || !Array.isArray(completedLessons) || completedLessons.length === 0) {
+      return [];
+    }
+    
     const userCompletedSet = new Set(
       completedLessons.map(l => `${l.pathId}-${l.lessonId}`)
     );
