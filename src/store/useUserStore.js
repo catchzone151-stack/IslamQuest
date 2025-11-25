@@ -1,9 +1,9 @@
 // src/store/useUserStore.js
-// Full replacement — correct Supabase integration + real DB schema alignment.
+// Supabase integration with correct imports from userProfile.js
 
 import { create } from "zustand";
 import { supabase } from "../lib/supabaseClient";
-import { getOrCreateProfile, updateProfile } from "../lib/userProfile";
+import { ensureSignedIn, ensureProfile, loadCloudProfile, saveCloudProfile } from "../lib/userProfile";
 
 // Generate or load stable device fingerprint
 function loadDeviceId() {
@@ -15,8 +15,22 @@ function loadDeviceId() {
   return id;
 }
 
+// Check localStorage for onboarding status
+function checkOnboarded() {
+  try {
+    const data = localStorage.getItem("progress-storage");
+    if (data) {
+      const parsed = JSON.parse(data);
+      return parsed?.state?.hasOnboarded === true;
+    }
+  } catch (e) {}
+  return false;
+}
+
 export const useUserStore = create((set, get) => ({
   loading: true,
+  isHydrated: false,  // Track if store has initialized
+  hasOnboarded: checkOnboarded(), // Check localStorage on load
   user: null,         // Supabase auth user
   profile: null,      // Full profile row from DB
   deviceId: loadDeviceId(),
@@ -27,37 +41,47 @@ export const useUserStore = create((set, get) => ({
   init: async () => {
     set({ loading: true });
 
-    // 1. Get current session
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
+    try {
+      // 1. Silent auth (get existing session or create hidden account)
+      const user = await ensureSignedIn();
 
-    let user = session?.user;
-
-    // 2. If no user → silently sign in anonymously
-    if (!user) {
-      const { data, error } = await supabase.auth.signInAnonymously();
-
-      if (error) {
-        console.error("Silent auth error:", error);
+      if (!user) {
+        console.error("Silent auth failed");
         set({ loading: false });
         return;
       }
 
-      user = data.user;
+      set({ user });
+
+      // 2. Ensure profile exists (may fail if DB schema not ready)
+      const deviceId = get().deviceId;
+      try {
+        await ensureProfile(user.id, deviceId);
+      } catch (e) {
+        console.log("Profile creation skipped (DB not ready):", e.message);
+      }
+
+      // 3. Load full profile (may return null if DB not ready)
+      let profile = null;
+      try {
+        profile = await loadCloudProfile(user.id);
+      } catch (e) {
+        console.log("Cloud profile load skipped:", e.message);
+      }
+
+      set({
+        profile,
+        loading: false,
+        isHydrated: true,
+      });
+    } catch (error) {
+      console.error("Init error:", error);
+      set({ loading: false, isHydrated: true });
     }
-
-    set({ user });
-
-    // 3. Load or create profile
-    const deviceId = get().deviceId;
-    const profile = await getOrCreateProfile(user.id, deviceId);
-
-    set({
-      profile,
-      loading: false,
-    });
   },
+
+  // Set onboarding complete
+  setOnboarded: (value) => set({ hasOnboarded: value }),
 
   // --------------------------------------------------
   // UPDATE PROFILE (username, handle, avatar, etc.)
@@ -66,8 +90,10 @@ export const useUserStore = create((set, get) => ({
     const userId = get().user?.id;
     if (!userId) return;
 
-    const updated = await updateProfile(userId, updates);
+    await saveCloudProfile(userId, updates);
 
+    // Reload to get updated profile
+    const updated = await loadCloudProfile(userId);
     if (updated) {
       set({ profile: updated });
     }
@@ -80,14 +106,9 @@ export const useUserStore = create((set, get) => ({
     const userId = get().user?.id;
     if (!userId) return;
 
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("user_id", userId)
-      .single();
-
-    if (!error && data) {
-      set({ profile: data });
+    const profile = await loadCloudProfile(userId);
+    if (profile) {
+      set({ profile });
     }
   },
 }));
