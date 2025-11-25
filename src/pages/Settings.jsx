@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ScreenContainer from "../components/ScreenContainer";
 import { useNavigate } from "../hooks/useNavigate";
 import { useProgressStore } from "../store/progressStore";
@@ -6,18 +6,26 @@ import { useUserStore } from "../store/useUserStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import { supabase } from "../lib/supabaseClient";
 import { ChevronLeft } from "lucide-react";
+import { DEV_MODE, setDevMode } from "../config/dev";
 
 export default function Settings() {
   const navigate = useNavigate();
   const { showModal } = useModalStore();
   const { vibrationEnabled, setVibrationEnabled, resetAllProgress } = useProgressStore();
   const { resetUserData, setOnboarded } = useUserStore();
+  const [devModeEnabled, setDevModeEnabled] = useState(DEV_MODE);
 
   const handleVibrationToggle = () => {
     setVibrationEnabled(!vibrationEnabled);
     if (!vibrationEnabled && navigator.vibrate) {
       navigator.vibrate(50);
     }
+  };
+
+  const handleDevModeToggle = () => {
+    const newValue = !devModeEnabled;
+    setDevModeEnabled(newValue);
+    setDevMode(newValue);
   };
 
   const handleLogout = async () => {
@@ -126,6 +134,67 @@ export default function Settings() {
               {vibrationEnabled ? "ON" : "OFF"}
             </button>
           </div>
+
+          {/* Dev Mode Toggle */}
+          <div
+            style={{
+              background: devModeEnabled 
+                ? "rgba(251, 191, 36, 0.15)" 
+                : "rgba(255, 255, 255, 0.03)",
+              padding: 14,
+              borderRadius: 12,
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              border: devModeEnabled 
+                ? "1px solid rgba(251, 191, 36, 0.4)" 
+                : "none",
+            }}
+          >
+            <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              <span style={{ color: devModeEnabled ? "#fbbf24" : "#cbd5e1", fontSize: "0.9rem" }}>
+                🔧 Developer Mode
+              </span>
+              <span style={{ color: "#64748b", fontSize: "0.7rem" }}>
+                Local testing (no cloud sync)
+              </span>
+            </div>
+            <button
+              onClick={handleDevModeToggle}
+              style={{
+                background: devModeEnabled
+                  ? "linear-gradient(135deg, #f59e0b, #d97706)"
+                  : "rgba(255, 255, 255, 0.1)",
+                border: "1px solid rgba(251, 191, 36, 0.3)",
+                borderRadius: 20,
+                padding: "6px 14px",
+                color: devModeEnabled ? "white" : "#fbbf24",
+                fontWeight: "600",
+                cursor: "pointer",
+                fontSize: "0.85rem",
+                transition: "all 0.3s",
+              }}
+            >
+              {devModeEnabled ? "ON" : "OFF"}
+            </button>
+          </div>
+
+          {/* Dev Mode Active Banner */}
+          {devModeEnabled && (
+            <div
+              style={{
+                background: "linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(217, 119, 6, 0.15) 100%)",
+                border: "1px solid rgba(251, 191, 36, 0.4)",
+                borderRadius: 8,
+                padding: "10px 14px",
+                textAlign: "center",
+              }}
+            >
+              <span style={{ color: "#fbbf24", fontSize: "0.8rem", fontWeight: 600 }}>
+                ⚠️ DEV MODE ACTIVE - No data will sync to cloud
+              </span>
+            </div>
+          )}
 
           {/* App Version */}
           <div
