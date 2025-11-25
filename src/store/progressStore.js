@@ -979,19 +979,9 @@ export const useProgressStore = create((set, get) => ({
       coins: state.coins,
       streak: state.streak,
       level: state.level,
-      avatar: state.avatar,
       username: state.username,
-      display_name: state.displayName,
       premium: state.premium,
-      premium_type: state.premiumType,
-      premium_activated_at: state.premiumActivatedAt,
-      family_plan_id: state.familyPlanId,
-      shield_count: state.shieldCount, // 🛡️ Phase 4: Streak shields cloud sync
-      lesson_states: encryptJSON(state.lessonStates),
-      locked_lessons: encryptJSON(state.lockedLessons),
-      paths: encryptJSON(state.paths),
-      reviewMistakesUnlocked: state.reviewMistakesUnlocked,
-      smartRevisionUnlocked: state.smartRevisionUnlocked,
+      shield_count: state.shieldCount,
       updated_at: new Date().toISOString()
     };
   },
@@ -1147,27 +1137,13 @@ export const useProgressStore = create((set, get) => ({
         coins: data.coins ?? get().coins,
         streak: data.streak ?? get().streak,
         level: data.level ?? get().level,
-        avatar: data.avatar ?? get().avatar,
         username: data.username ?? get().username,
-        displayName: data.display_name ?? get().displayName,
 
         premium: data.premium ?? false,
-        premiumType: data.premium_type ?? null,
-        premiumActivatedAt: data.premium_activated_at ?? null,
-        premiumStatus: data.premium_type ?? "free",
         hasPremium: data.premium ?? false,
 
-        familyPlanId: data.family_plan_id ?? null,
-        
         // 🛡️ Phase 4: Streak shields cloud sync
         shieldCount: data.shield_count ?? get().shieldCount,
-
-        lessonStates: lessonStates || {},
-        lockedLessons: lockedLessons || get().lockedLessons,
-        paths: paths || get().paths,
-
-        reviewMistakesUnlocked: data.reviewMistakesUnlocked ?? false,
-        smartRevisionUnlocked: data.smartRevisionUnlocked ?? false,
       };
 
       // Apply restored state
