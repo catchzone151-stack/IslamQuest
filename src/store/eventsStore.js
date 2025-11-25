@@ -3,7 +3,7 @@ import { persist } from "zustand/middleware";
 import { useProgressStore } from "./progressStore";
 import { supabase } from "../lib/supabaseClient";
 import { avatarIndexToKey } from "../utils/avatarUtils";
-import { DEV_MODE, DEV_MOCK_EVENT_LEADERBOARD } from "../config/dev";
+import { isDevMode, DEV_MOCK_EVENT_LEADERBOARD } from "../config/dev";
 
 export const EMPTY_LEADERBOARD = Object.freeze([]);
 
@@ -115,7 +115,7 @@ export const useEventsStore = create(
         try {
           set({ loading: true, error: null });
           
-          if (DEV_MODE) {
+          if (isDevMode()) {
             console.log('🔧 DEV MODE: Entering event locally (no coins deducted)');
             const provisionalRank = Math.floor(Math.random() * 20) + 1;
             
@@ -259,7 +259,7 @@ export const useEventsStore = create(
         try {
           set({ loading: true, error: null });
           
-          if (DEV_MODE) {
+          if (isDevMode()) {
             console.log('🔧 DEV MODE: Returning local entries only');
             set({ loading: false });
             return get().weeklyEntries;
@@ -310,7 +310,7 @@ export const useEventsStore = create(
 
       loadLeaderboard: async (eventId, limit = 50) => {
         try {
-          if (DEV_MODE) {
+          if (isDevMode()) {
             console.log('🔧 DEV MODE: Returning mock leaderboard');
             const weekId = getCurrentWeekId();
             const userEntry = get().weeklyEntries[eventId];
@@ -436,7 +436,7 @@ export const useEventsStore = create(
 
       getMyRank: async (eventId) => {
         try {
-          if (DEV_MODE) {
+          if (isDevMode()) {
             const userEntry = get().weeklyEntries[eventId];
             if (!userEntry) return null;
             const rank = DEV_MOCK_EVENT_LEADERBOARD.filter(p => 
@@ -483,7 +483,7 @@ export const useEventsStore = create(
 
       claimEventRewards: async (eventId) => {
         try {
-          if (DEV_MODE) {
+          if (isDevMode()) {
             console.log('🔧 DEV MODE: Claiming event rewards locally');
             const userEntry = get().weeklyEntries[eventId];
             if (!userEntry) {

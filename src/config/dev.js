@@ -1,14 +1,27 @@
-export let DEV_MODE = false;
+const getStoredDevMode = () => {
+  if (typeof window !== 'undefined' && window.localStorage) {
+    return window.localStorage.getItem('iq_dev_mode') === 'true';
+  }
+  return false;
+};
+
+export let DEV_MODE = getStoredDevMode();
 
 export const setDevMode = (value) => {
   DEV_MODE = value;
   if (typeof window !== 'undefined') {
     window.DEV_MODE = value;
+    window.localStorage.setItem('iq_dev_mode', value ? 'true' : 'false');
   }
   console.log(`🔧 Dev Mode ${value ? 'ENABLED' : 'DISABLED'}`);
 };
 
-export const isDevMode = () => DEV_MODE;
+export const isDevMode = () => {
+  if (typeof window !== 'undefined' && window.localStorage) {
+    return window.localStorage.getItem('iq_dev_mode') === 'true';
+  }
+  return DEV_MODE;
+};
 
 export const DEV_MOCK_FRIENDS = [
   {

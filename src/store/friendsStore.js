@@ -3,6 +3,75 @@
 import { create } from "zustand";
 import { supabase } from "../lib/supabaseClient";
 import { avatarIndexToKey } from "../utils/avatarUtils";
+import { isDevMode } from "../config/dev";
+
+const DEV_FAKE_FRIENDS = [
+  {
+    user_id: "dev_friend_1",
+    id: "dev_friend_1",
+    username: "Aisha",
+    handle: "aisha_learner",
+    nickname: "Aisha",
+    avatar: "avatar_woman_hijab",
+    xp: 2450,
+    streak: 15,
+    coins: 340,
+    shield_count: 2,
+    premium: false
+  },
+  {
+    user_id: "dev_friend_2",
+    id: "dev_friend_2",
+    username: "Omar",
+    handle: "omar_explorer",
+    nickname: "Omar",
+    avatar: "avatar_man_beard",
+    xp: 3200,
+    streak: 22,
+    coins: 520,
+    shield_count: 1,
+    premium: true
+  },
+  {
+    user_id: "dev_friend_3",
+    id: "dev_friend_3",
+    username: "Fatima",
+    handle: "fatima_star",
+    nickname: "Fatima",
+    avatar: "avatar_woman_cartoon",
+    xp: 1800,
+    streak: 8,
+    coins: 210,
+    shield_count: 0,
+    premium: false
+  },
+  {
+    user_id: "dev_friend_4",
+    id: "dev_friend_4",
+    username: "Yusuf",
+    handle: "yusuf_quest",
+    nickname: "Yusuf",
+    avatar: "avatar_man_lantern",
+    xp: 4100,
+    streak: 45,
+    coins: 890,
+    shield_count: 3,
+    premium: true
+  },
+  {
+    user_id: "dev_friend_5",
+    id: "dev_friend_5",
+    username: "Maryam",
+    handle: "maryam_wisdom",
+    nickname: "Maryam",
+    avatar: "avatar_rabbit",
+    xp: 2800,
+    streak: 18,
+    coins: 450,
+    shield_count: 1,
+    premium: false
+  }
+];
 
 export const useFriendsStore = create((set, get) => ({
   friends: [],
@@ -594,7 +663,13 @@ export const useFriendsStore = create((set, get) => ({
     return;
   },
 
-  getAllFriends: () => get().friends,
+  getAllFriends: () => {
+    if (isDevMode()) {
+      console.log('🔧 DEV MODE: Returning fake friends');
+      return DEV_FAKE_FRIENDS;
+    }
+    return get().friends;
+  },
   getSentRequests: () => get().sentRequests,
   getReceivedRequests: () => get().receivedRequests,
   getGlobalLeaderboard: () => get().globalLeaderboard,

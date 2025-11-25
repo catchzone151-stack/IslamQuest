@@ -1,28 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { DEV_MODE } from "../config/dev";
+import { isDevMode as checkDevMode } from "../config/dev";
 
 export default function DevModeBanner() {
-  const [isDevMode, setIsDevMode] = useState(DEV_MODE);
+  const [devModeActive, setDevModeActive] = useState(checkDevMode());
 
   useEffect(() => {
-    const checkDevMode = () => {
+    const updateDevMode = () => {
       const stored = localStorage.getItem("iq_dev_mode");
-      setIsDevMode(stored === "true");
+      setDevModeActive(stored === "true");
     };
     
-    checkDevMode();
+    updateDevMode();
     
-    window.addEventListener("storage", checkDevMode);
+    window.addEventListener("storage", updateDevMode);
     
-    const interval = setInterval(checkDevMode, 1000);
+    const interval = setInterval(updateDevMode, 1000);
     
     return () => {
-      window.removeEventListener("storage", checkDevMode);
+      window.removeEventListener("storage", updateDevMode);
       clearInterval(interval);
     };
   }, []);
 
-  if (!isDevMode) return null;
+  if (!devModeActive) return null;
 
   return (
     <div

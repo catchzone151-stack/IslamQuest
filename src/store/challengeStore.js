@@ -3,7 +3,7 @@ import { useProgressStore } from "./progressStore";
 import { useFriendsStore } from "./friendsStore";
 import { supabase } from "../lib/supabaseClient";
 import { getQuizForLesson } from "../data/quizEngine";
-import { DEV_MODE, DEV_MOCK_FRIENDS } from "../config/dev";
+import { isDevMode, DEV_MOCK_FRIENDS } from "../config/dev";
 
 import namesOfAllahQuizzesData from '../data/quizzes/namesOfAllah.json';
 import foundationsQuizzesData from '../data/quizzes/foundations.json';
@@ -292,7 +292,7 @@ export const useChallengeStore = create((set, get) => ({
     try {
       set({ loading: true, error: null });
       
-      if (DEV_MODE) {
+      if (isDevMode()) {
         return get().submitChallengeAttemptLocal(challengeId, score, answers, completionTime, chain);
       }
       
@@ -591,7 +591,7 @@ export const useChallengeStore = create((set, get) => ({
     try {
       set({ loading: true, error: null });
       
-      if (DEV_MODE) {
+      if (isDevMode()) {
         console.log('🔧 DEV MODE: Returning local challenges only');
         set({ loading: false });
         return get().challenges;
@@ -636,7 +636,7 @@ export const useChallengeStore = create((set, get) => ({
       const passed = score >= Math.ceil(BOSS_LEVEL.questionCount * 0.75);
       const rewards = passed ? BOSS_LEVEL.rewards.win : BOSS_LEVEL.rewards.lose;
       
-      if (DEV_MODE) {
+      if (isDevMode()) {
         console.log('🔧 DEV MODE: Boss attempt saved locally only');
         const attempt = {
           id: `dev_boss_${Date.now()}`,
@@ -742,7 +742,7 @@ export const useChallengeStore = create((set, get) => ({
   },
 
   canPlayBossTodayCloud: async () => {
-    if (DEV_MODE) {
+    if (isDevMode()) {
       console.log('🔧 DEV MODE: Boss Level always playable');
       return true;
     }
@@ -751,7 +751,7 @@ export const useChallengeStore = create((set, get) => ({
   },
 
   createChallenge: (friendId, mode) => {
-    if (DEV_MODE) {
+    if (isDevMode()) {
       return get().createChallengeLocal(friendId, mode);
     }
     return get().createChallengeCloud(friendId, mode);
