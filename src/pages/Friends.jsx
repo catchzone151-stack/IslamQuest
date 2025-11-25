@@ -86,7 +86,7 @@ export default function Friends() {
     });
   }, [currentUserXP, currentUserStreak]);
 
-  // 🔥 GLOBAL LEADERBOARD: Fetch top 100 from Supabase
+  // 🔥 GLOBAL LEADERBOARD: Fetch top 100 from Supabase + include current user
   useEffect(() => {
     async function fetchGlobalLeaderboard() {
       try {
@@ -98,10 +98,9 @@ export default function Friends() {
 
         if (error) {
           console.log("Global leaderboard fetch error:", error.message);
-          return;
         }
 
-        // Add The Dev entry and merge with fetched data
+        // Add The Dev entry (permanent NPC)
         const THE_DEV_ENTRY = {
           user_id: "the_dev_npc",
           username: "The Dev",
@@ -111,7 +110,23 @@ export default function Friends() {
           isPermanent: true,
         };
 
-        const combined = [THE_DEV_ENTRY, ...(data || [])].sort((a, b) => b.xp - a.xp);
+        // Add current user entry from local state
+        const userState = useUserStore.getState();
+        const progressState = useProgressStore.getState();
+        const CURRENT_USER_ENTRY = {
+          user_id: currentUserId || userState.id || "current_user",
+          username: name || userState.name || userState.username || "You",
+          handle: userState.handle || username || "you",
+          avatar: avatar || userState.avatar || "avatar_muslim_man",
+          xp: currentUserXP || progressState.xp || 0,
+          isCurrentUser: true,
+        };
+
+        // Combine all entries, remove duplicates (if current user exists in DB)
+        const dbUsers = (data || []).filter(u => u.user_id !== currentUserId);
+        const combined = [THE_DEV_ENTRY, CURRENT_USER_ENTRY, ...dbUsers]
+          .sort((a, b) => b.xp - a.xp);
+        
         setGlobalLeaderboard(combined);
       } catch (err) {
         console.log("Global leaderboard error:", err);
@@ -119,7 +134,7 @@ export default function Friends() {
     }
 
     fetchGlobalLeaderboard();
-  }, []);
+  }, [currentUserId, name, avatar, username, currentUserXP]);
 
   // 3) Handle search input
   useEffect(() => {
@@ -150,8 +165,8 @@ export default function Friends() {
     }))
     .sort((a, b) => b.xp - a.xp);
 
-  // Get current user ID for highlight
-  const currentUserIdForHighlight = useUserStore.getState().user?.id;
+  // Get current user ID for highlight (use multiple sources for reliability)
+  const currentUserIdForHighlight = currentUserId || useUserStore.getState().user?.id || useUserStore.getState().id;
 
   const handleSendRequest = (userId) => {
     const result = sendFriendRequest(userId);
@@ -446,7 +461,7 @@ export default function Friends() {
                           key={user.user_id}
                           user={user}
                           rank={index + 1}
-                          isCurrentUser={user.user_id === currentUserIdForHighlight}
+                          isCurrentUser={user.isCurrentUser || user.user_id === currentUserIdForHighlight}
                           isFriend={isFriend(user.user_id)}
                           onUserClick={() => handleUserClick(user.user_id)}
                         />
