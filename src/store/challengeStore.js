@@ -289,13 +289,15 @@ export const useChallengeStore = create((set, get) => ({
   },
 
   submitChallengeAttempt: async (challengeId, score, answers, completionTime = null, chain = null) => {
+    // Always use local challenge submission - cloud disabled temporarily
+    console.log('🎮 Using local challenge submission (cloud disabled)');
+    const result = get().submitChallengeAttemptLocal(challengeId, score, answers, completionTime, chain);
+    return result;
+    
+    // Cloud code disabled below:
+    /*
     try {
       set({ loading: true, error: null });
-      
-      if (isDevMode()) {
-        return get().submitChallengeAttemptLocal(challengeId, score, answers, completionTime, chain);
-      }
-      
       const { data: auth } = await supabase.auth.getUser();
       if (!auth?.user) {
         set({ loading: false });
@@ -438,6 +440,7 @@ export const useChallengeStore = create((set, get) => ({
       set({ loading: false, error: err.message });
       return { success: false, error: err.message };
     }
+    */
   },
 
   formatChallengeFromCloud: (data) => {
@@ -591,39 +594,11 @@ export const useChallengeStore = create((set, get) => ({
     try {
       set({ loading: true, error: null });
       
-      if (isDevMode()) {
-        console.log('🔧 DEV MODE: Returning local challenges only');
-        set({ loading: false });
-        return get().challenges;
-      }
+      // Always use local challenges - cloud disabled temporarily
+      console.log('🎮 Returning local challenges only (cloud disabled)');
+      set({ loading: false });
+      return get().challenges;
       
-      const { data: auth } = await supabase.auth.getUser();
-      if (!auth?.user) {
-        set({ loading: false });
-        return [];
-      }
-      
-      const userId = auth.user.id;
-      
-      const { data, error } = await supabase
-        .from('challenges')
-        .select('*')
-        .or(`challenger_id.eq.${userId},opponent_id.eq.${userId}`)
-        .in('status', ['pending', 'active'])
-        .gt('expires_at', new Date().toISOString())
-        .order('created_at', { ascending: false });
-      
-      if (error) {
-        console.error('Load all challenges error:', error);
-        set({ loading: false });
-        return [];
-      }
-      
-      const formatted = (data || []).map(c => get().formatChallengeFromCloud(c));
-      set({ challenges: formatted, loading: false });
-      get().saveToStorage();
-      
-      return formatted;
     } catch (err) {
       console.error('Load all error:', err);
       set({ loading: false });
@@ -751,14 +726,13 @@ export const useChallengeStore = create((set, get) => ({
   },
 
   createChallenge: (friendId, mode) => {
-    if (isDevMode()) {
-      return get().createChallengeLocal(friendId, mode);
-    }
-    return get().createChallengeCloud(friendId, mode);
+    // Always use local challenge creation - cloud disabled temporarily
+    console.log('🎮 Creating local challenge (cloud disabled)');
+    return get().createChallengeLocal(friendId, mode);
   },
   
   createChallengeLocal: (friendId, mode) => {
-    console.log('🔧 DEV MODE: Creating local challenge');
+    console.log('🎮 Creating local challenge');
     const modeConfig = typeof mode === 'string' 
       ? Object.values(CHALLENGE_MODES).find(m => m.id === mode) 
       : mode;
@@ -768,16 +742,23 @@ export const useChallengeStore = create((set, get) => ({
       return { success: false, error: 'INVALID_MODE' };
     }
     
-    const friend = DEV_MOCK_FRIENDS.find(f => f.odolena_user_id === friendId) || 
+    // Try to get friend from friendsStore first, then fall back to mock friends
+    const realFriends = useFriendsStore.getState().friends || [];
+    const realFriend = realFriends.find(f => f.user_id === friendId || f.id === friendId);
+    
+    const friend = realFriend || 
+                   DEV_MOCK_FRIENDS.find(f => f.odolena_user_id === friendId) || 
                    DEV_FAKE_FRIENDS.find(f => f.id === friendId);
-    const questions = get().selectRandomQuestions(modeConfig.questionCount);
+    
+    // Get questions using the improved fallback-enabled function
+    const questions = get().getQuestionsForMode(modeConfig, []);
     
     const challenge = {
-      id: `dev_challenge_${Date.now()}`,
+      id: `local_challenge_${Date.now()}`,
       mode: modeConfig.id,
-      challengerId: 'dev_user',
+      challengerId: 'current_user',
       opponentId: friendId,
-      opponentName: friend?.nickname || friend?.odolena_nickname || 'Test Friend',
+      opponentName: friend?.nickname || friend?.username || friend?.odolena_nickname || 'Friend',
       opponentAvatar: friend?.avatar || friend?.odolena_avatar || 'avatar_man_beard',
       questions: questions,
       status: 'active',
@@ -802,7 +783,7 @@ export const useChallengeStore = create((set, get) => ({
   },
   
   submitChallengeAttemptLocal: (challengeId, score, answers, completionTime = null, chain = null) => {
-    console.log('🔧 DEV MODE: Submitting challenge attempt locally with auto-opponent');
+    console.log('🎮 Submitting challenge attempt locally with auto-opponent');
     
     const challenge = get().challenges.find(c => c.id === challengeId);
     if (!challenge) {
@@ -831,7 +812,7 @@ export const useChallengeStore = create((set, get) => ({
     if (modeConfig?.id === 'sudden_death') {
       const userChain = chain || calculateLongestChain(answers);
       if (userChain > opponentChain) {
-        winnerId = 'dev_user';
+        winnerId = 'current_user';
       } else if (opponentChain > userChain) {
         winnerId = challenge.opponentId;
       } else {
@@ -839,7 +820,7 @@ export const useChallengeStore = create((set, get) => ({
       }
     } else {
       if (score > opponentScore) {
-        winnerId = 'dev_user';
+        winnerId = 'current_user';
       } else if (opponentScore > score) {
         winnerId = challenge.opponentId;
       } else {

@@ -38,13 +38,11 @@ export default function Challenge() {
   useEffect(() => {
     loadFromStorage();
     
-    // Load cloud challenges on mount
-    loadAllMyChallenges().catch(err => console.log('Cloud challenges not available:', err.message));
+    // Load local challenges on mount
+    loadAllMyChallenges();
     
-    // Check if boss level is playable today (async cloud check)
-    useChallengeStore.getState().canPlayBossTodayCloud().then(canPlay => {
-      setBossPlayable(canPlay);
-    }).catch(() => setBossPlayable(true));
+    // Boss level always playable locally (cloud check disabled)
+    setBossPlayable(true);
     
     // Get friends list
     const friendsList = getAllFriends?.() || [];
