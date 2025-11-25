@@ -8,9 +8,9 @@ import { supabase } from "../lib/supabaseClient";
 
 export default function UsernameScreen() {
   const navigate = useNavigate();
-  const { setHandle, handle, setOnboarded } = useUserStore();
+  const { setHandle, setOnboarded } = useUserStore();
   const { setHasOnboarded } = useProgressStore();
-  const [input, setInput] = useState(handle || "");
+  const [input, setInput] = useState("");
   const [checking, setChecking] = useState(false);
   const [error, setError] = useState("");
 
