@@ -437,6 +437,15 @@ export default function App() {
                     path="/onboarding/username"
                     element={<UsernameScreen />}
                   />
+                  {/* Login route available during onboarding */}
+                  <Route
+                    path="/login"
+                    element={
+                      <Suspense fallback={<LoadingScreen />}>
+                        <Login />
+                      </Suspense>
+                    }
+                  />
                   {/* Fallback — always go to Bismillah if not onboarded */}
                   <Route path="*" element={<BismillahScreen />} />
                 </>

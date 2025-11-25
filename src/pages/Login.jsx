@@ -1,14 +1,15 @@
 // src/pages/Login.jsx
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "../hooks/useNavigate";
 import { motion } from "framer-motion";
 import { supabase } from "../lib/supabaseClient";
 import { useUserStore } from "../store/useUserStore";
 import { useProgressStore } from "../store/progressStore";
+import { avatarIndexToKey } from "../utils/avatarUtils";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { setHasOnboarded, setDisplayName, setHandle, setAvatar } = useUserStore();
+  const { setOnboarded, setDisplayName, setHandle, setAvatar } = useUserStore();
   const loadFromSupabase = useProgressStore((s) => s.loadFromSupabase);
 
   const [email, setEmail] = useState("");
@@ -47,13 +48,17 @@ export default function Login() {
       .single();
 
     if (profile) {
-      setDisplayName(profile.display_name || "Student");
+      setDisplayName(profile.username || "Student");
       setHandle(profile.handle || null);
-      setAvatar(profile.avatar || "default");
+      // Convert avatar index to key if it's a number
+      const avatarKey = typeof profile.avatar === "number" 
+        ? avatarIndexToKey(profile.avatar) 
+        : profile.avatar;
+      setAvatar(avatarKey || "avatar_man_lantern");
     }
 
     // Skip onboarding forever
-    setHasOnboarded(true);
+    setOnboarded(true);
 
     setLoading(false);
     navigate("/");

@@ -150,4 +150,37 @@ export const useUserStore = create((set, get) => ({
       set({ profile });
     }
   },
+
+  // --------------------------------------------------
+  // RESET USER DATA (for logout)
+  // --------------------------------------------------
+  resetUserData: () => {
+    // Clear all localStorage items related to user
+    localStorage.removeItem("iq_name");
+    localStorage.removeItem("iq_avatar");
+    localStorage.removeItem("iq_username");
+    localStorage.removeItem("iq_handle");
+    localStorage.removeItem("device_id");
+    
+    // Reset store state
+    set({
+      user: null,
+      userId: null,
+      profile: null,
+      hasOnboarded: false,
+      name: "",
+      avatar: "avatar1",
+      username: "",
+      handle: "",
+      deviceId: "",
+      loading: false,
+      isHydrated: true,
+    });
+  },
+
+  // Alias for setName (used by Login.jsx)
+  setDisplayName: (name) => {
+    localStorage.setItem("iq_name", name);
+    set({ name });
+  },
 }));

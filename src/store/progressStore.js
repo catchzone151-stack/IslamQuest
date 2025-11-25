@@ -978,7 +978,6 @@ export const useProgressStore = create((set, get) => ({
       xp: state.xp,
       coins: state.coins,
       streak: state.streak,
-      level: state.level,
       username: state.username,
       premium: state.premium,
       shield_count: state.shieldCount,
@@ -1136,7 +1135,6 @@ export const useProgressStore = create((set, get) => ({
         xp: data.xp ?? get().xp,
         coins: data.coins ?? get().coins,
         streak: data.streak ?? get().streak,
-        level: data.level ?? get().level,
         username: data.username ?? get().username,
 
         premium: data.premium ?? false,
