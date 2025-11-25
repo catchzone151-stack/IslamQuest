@@ -768,7 +768,8 @@ export const useChallengeStore = create((set, get) => ({
       return { success: false, error: 'INVALID_MODE' };
     }
     
-    const friend = DEV_MOCK_FRIENDS.find(f => f.odolena_user_id === friendId);
+    const friend = DEV_MOCK_FRIENDS.find(f => f.odolena_user_id === friendId) || 
+                   DEV_FAKE_FRIENDS.find(f => f.id === friendId);
     const questions = get().selectRandomQuestions(modeConfig.questionCount);
     
     const challenge = {
@@ -776,8 +777,8 @@ export const useChallengeStore = create((set, get) => ({
       mode: modeConfig.id,
       challengerId: 'dev_user',
       opponentId: friendId,
-      opponentName: friend?.odolena_nickname || 'Test Friend',
-      opponentAvatar: friend?.odolena_avatar || 'avatar_man_beard',
+      opponentName: friend?.nickname || friend?.odolena_nickname || 'Test Friend',
+      opponentAvatar: friend?.avatar || friend?.odolena_avatar || 'avatar_man_beard',
       questions: questions,
       status: 'active',
       challengerScore: null,

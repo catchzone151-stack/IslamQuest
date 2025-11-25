@@ -8,6 +8,7 @@ import { useAnalytics } from "../../hooks/useAnalytics";
 import { useVibration } from "../../hooks/useVibration";
 import assets from "../../assets/assets";
 import mascot_running from "../../assets/mascots/mascot_running.webp";
+import { avatarIndexToKey } from "../../utils/avatarUtils";
 import "./ChallengeGame.css";
 
 // Helper function to normalize mode from any format to config object
@@ -562,11 +563,15 @@ export default function ChallengeGame() {
         {mode?.id === "speed_run" ? `Question ${currentIndex + 1}` : `Question ${currentIndex + 1} of ${questions.length}`}
       </p>
 
-      {/* Thinking Mascot */}
+      {/* Thinking Mascot - Show opponent's avatar for friend challenges, boss mascot for boss */}
       <div style={{ textAlign: "center", marginBottom: "20px" }}>
         <img 
-          src={assets.mascots.mascot_pointing_v2} 
-          alt="Mascot"
+          src={
+            isBoss 
+              ? assets.mascots.mascot_pointing_v2 
+              : (challenge?.opponentAvatar ? assets.avatars[challenge.opponentAvatar] : assets.mascots.mascot_pointing_v2)
+          }
+          alt={isBoss ? "Boss" : "Opponent"}
           style={{
             width: "80px",
             height: "auto"
