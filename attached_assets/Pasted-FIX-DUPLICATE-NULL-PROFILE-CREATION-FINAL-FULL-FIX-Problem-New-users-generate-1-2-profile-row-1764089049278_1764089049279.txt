@@ -1,0 +1,66 @@
+FIX DUPLICATE/NULL PROFILE CREATION (FINAL FULL FIX)
+
+Problem:
+New users generate 1–2 profile rows in Supabase, sometimes NULL. This must NEVER happen.
+
+Cause:
+Profile creation logic is firing from multiple places. We need ONE authoritative creation path.
+
+TASK: Centralise profile creation into ONE function and remove ALL other Supabase insert calls.
+
+1) In src/lib/userProfile.js:
+Create/verify ONE canonical function:
+   async function getOrCreateProfile(deviceId)
+
+Rules for this function:
+- SELECT * FROM profiles WHERE device_id = deviceId LIMIT 1
+- If exists → return it
+- If not:
+    INSERT INTO profiles:
+       user_id: uuid
+       device_id
+       username (default "User" + random)
+       avatar: "default_male" or default female
+       xp: 0
+       coins: 0
+       streak: 0
+       created_at: now
+- Return the newly created profile row
+
+2) REMOVE ALL OTHER INSERTS TO profiles TABLE in the entire codebase:
+Search for ANY of these and delete/replace:
+   supabase.from('profiles').insert(...)
+   createProfile(...)
+   any custom profile creation calls
+   any onboarding-created profile
+   any silent-auth-created profile
+Make sure ONLY getOrCreateProfile() performs INSERT.
+
+3) UPDATE every file that uses profile creation:
+- progressStore.js
+- dailyQuestStore
+- challengeStore
+- eventsStore
+- any pages/screens
+All must call:
+   await getOrCreateProfile(deviceId)
+Never insert directly.
+
+4) Ensure profile creation runs ONCE:
+In the main app startup flow, after silent auth + deviceId ready, call:
+   await getOrCreateProfile(deviceId)
+Store the result in global state.
+
+5) Add temporary logs in getOrCreateProfile():
+   console.log("PROFILE: existing →", profile)
+   console.log("PROFILE: creating new profile for device →", deviceId)
+
+6) Cleanup:
+- Ensure no null values inserted (username, avatar, xp, coins, streak must always be defined)
+- Ensure no duplicate inserts are possible anywhere
+
+Stop after:
+- Only ONE insert path remains
+- All other insert logic removed
+- App always loads or creates exactly one profile
+- No more null/duplicate profiles can ever be created.

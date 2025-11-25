@@ -41,8 +41,9 @@ export async function ensureSignedIn() {
 
 /**
  * 🔹 ensureProfile(userId, deviceId)
- * Creates the profile row if missing using UPSERT to prevent duplicates.
+ * Creates the profile row if missing, with sensible defaults.
  * This is the ONLY function that should ever INSERT into the profiles table.
+ * Uses SELECT-then-INSERT pattern to prevent duplicates and NULL values.
  */
 export async function ensureProfile(userId, deviceId) {
   if (!userId) {
@@ -52,35 +53,69 @@ export async function ensureProfile(userId, deviceId) {
 
   console.log("ensureProfile: checking/creating profile for", userId);
 
-  // Use UPSERT pattern: Insert if not exists, do nothing if exists
-  // This prevents race conditions from causing duplicate rows
-  const { data, error } = await supabase
+  // Step 1: Check if profile already exists
+  const { data: existingProfile, error: selectError } = await supabase
     .from("profiles")
-    .upsert(
-      {
-        user_id: userId,
-        device_id: deviceId || null,
-      },
-      {
-        onConflict: "user_id",
-        ignoreDuplicates: true, // Don't update existing rows, just skip
-      }
-    )
-    .select("user_id")
+    .select("user_id, username, avatar, xp, coins, streak")
+    .eq("user_id", userId)
     .maybeSingle();
 
-  if (error) {
-    // PGRST116 = no rows returned (expected for ignoreDuplicates on existing row)
-    if (error.code === "PGRST116") {
-      console.log("ensureProfile: existing profile found (upsert skipped)");
-      return { user_id: userId };
-    }
-    console.error("ensureProfile: upsert error", error);
+  if (selectError && selectError.code !== "PGRST116") {
+    console.error("ensureProfile: select error", selectError);
     return null;
   }
 
+  // Profile already exists - return it
+  if (existingProfile) {
+    console.log("PROFILE: existing →", existingProfile);
+    console.log("ensureProfile: existing profile found (upsert skipped)");
+    return existingProfile;
+  }
+
+  // Step 2: Profile doesn't exist - create with ALL default values (no NULLs)
+  console.log("PROFILE: creating new profile for device →", deviceId);
+  
+  // Generate random suffix for default username
+  const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+  const defaultUsername = `User${randomSuffix}`;
+  
+  const newProfileData = {
+    user_id: userId,
+    device_id: deviceId || null,
+    username: defaultUsername,       // Never NULL
+    avatar: 0,                        // Default avatar index (avatar_man_pixel)
+    xp: 0,                            // Never NULL
+    coins: 0,                         // Never NULL
+    streak: 0,                        // Never NULL
+    shield_count: 0,                  // Never NULL
+    handle: null,                     // Set during onboarding
+    created_at: new Date().toISOString(),
+  };
+
+  const { data: insertedProfile, error: insertError } = await supabase
+    .from("profiles")
+    .insert(newProfileData)
+    .select("user_id, username, avatar, xp, coins, streak")
+    .maybeSingle();
+
+  if (insertError) {
+    // Duplicate key = race condition, profile was created by another request
+    if (insertError.code === "23505") {
+      console.log("ensureProfile: race condition detected, fetching existing profile");
+      const { data: raceProfile } = await supabase
+        .from("profiles")
+        .select("user_id, username, avatar, xp, coins, streak")
+        .eq("user_id", userId)
+        .maybeSingle();
+      return raceProfile || { user_id: userId };
+    }
+    console.error("ensureProfile: insert error", insertError);
+    return null;
+  }
+
+  console.log("PROFILE: created →", insertedProfile);
   console.log("ensureProfile: profile ready for", userId);
-  return data || { user_id: userId };
+  return insertedProfile || { user_id: userId };
 }
 
 /**
