@@ -4,6 +4,7 @@
 // -------------------------------------------------------
 
 import { supabase } from "./supabaseClient";
+import { avatarKeyToIndex, avatarIndexToKey } from "../utils/avatarUtils";
 
 /**
  * 🔹 ensureSignedIn()
@@ -84,6 +85,7 @@ export async function ensureProfile(userId, deviceId) {
 /**
  * 🔹 loadCloudProfile(userId)
  * Returns the full profile row.
+ * Converts avatar integer index to string key for app usage.
  */
 export async function loadCloudProfile(userId) {
   if (!userId) return null;
@@ -99,32 +101,36 @@ export async function loadCloudProfile(userId) {
     return null;
   }
 
-  // Auto-patch missing fields (safety)
-  const patch = {};
-
-  if (data.handle === null) patch.handle = null; // user will set during onboarding
-  if (data.username === null) patch.username = null;
-  if (data.avatar === null) patch.avatar = null;
-  if (data.device_id === null) patch.device_id = null;
-
-  if (Object.keys(patch).length > 0) {
-    await saveCloudProfile(userId, patch);
-    return { ...data, ...patch };
+  // Convert avatar integer index to string key
+  const result = { ...data };
+  if (typeof data.avatar === "number") {
+    const avatarKey = avatarIndexToKey(data.avatar);
+    result.avatar = avatarKey;
+    console.log("loadCloudProfile: Converting avatar index", data.avatar, "→", avatarKey);
   }
 
-  return data;
+  return result;
 }
 
 /**
  * 🔹 saveCloudProfile(userId, partialData)
  * Updates profile fields after onboarding or app usage.
+ * Converts avatar string key to integer index for Supabase storage.
  */
 export async function saveCloudProfile(userId, partialData) {
   if (!userId) return;
 
+  // Convert avatar string key to integer index for DB storage
+  const dataToSave = { ...partialData, updated_at: new Date().toISOString() };
+  if (partialData.avatar !== undefined) {
+    const avatarIndex = avatarKeyToIndex(partialData.avatar);
+    dataToSave.avatar = avatarIndex;
+    console.log("saveCloudProfile: Converting avatar", partialData.avatar, "→ index", avatarIndex);
+  }
+
   const { error } = await supabase
     .from("profiles")
-    .update({ ...partialData, updated_at: new Date().toISOString() })
+    .update(dataToSave)
     .eq("user_id", userId);
 
   if (error) {

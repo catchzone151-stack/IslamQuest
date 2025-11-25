@@ -266,6 +266,43 @@ export function assignAvatarsToUsers(users, options = {}) {
 }
 
 // ═══════════════════════════════════════════════════════════════════
+// 🔢 AVATAR INDEX MAPPING (For Supabase integer column)
+// ═══════════════════════════════════════════════════════════════════
+// Supabase stores avatar as integer. These functions convert between
+// string keys (used in app) and integer indices (stored in DB).
+// ═══════════════════════════════════════════════════════════════════
+
+// Complete list of ALL avatars including hidden ninjas (for DB mapping)
+export const ALL_AVATARS = [
+  ...AVAILABLE_AVATARS,
+  NINJA_MALE_KEY,
+  NINJA_FEMALE_KEY,
+];
+
+/**
+ * Convert avatar string key to integer index for Supabase storage
+ * @param {string} avatarKey - Avatar key like "avatar_woman_crown"
+ * @returns {number|null} Integer index or null if not found
+ */
+export function avatarKeyToIndex(avatarKey) {
+  if (!avatarKey) return null;
+  const index = ALL_AVATARS.indexOf(avatarKey);
+  return index >= 0 ? index : null;
+}
+
+/**
+ * Convert integer index from Supabase to avatar string key
+ * @param {number} index - Integer index from database
+ * @returns {string|null} Avatar key or null if invalid index
+ */
+export function avatarIndexToKey(index) {
+  if (index === null || index === undefined || index < 0 || index >= ALL_AVATARS.length) {
+    return null;
+  }
+  return ALL_AVATARS[index];
+}
+
+// ═══════════════════════════════════════════════════════════════════
 // 🧪 SIMULATED FRIENDS (For Testing)
 // ═══════════════════════════════════════════════════════════════════
 
