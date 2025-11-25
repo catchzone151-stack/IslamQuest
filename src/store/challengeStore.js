@@ -3,6 +3,7 @@ import { useProgressStore } from "./progressStore";
 import { useFriendsStore } from "./friendsStore";
 import { supabase } from "../lib/supabaseClient";
 import { getQuizForLesson } from "../data/quizEngine";
+import { DEV_MODE, DEV_MOCK_FRIENDS } from "../config/dev";
 
 import namesOfAllahQuizzesData from '../data/quizzes/namesOfAllah.json';
 import foundationsQuizzesData from '../data/quizzes/foundations.json';
@@ -290,6 +291,10 @@ export const useChallengeStore = create((set, get) => ({
   submitChallengeAttempt: async (challengeId, score, answers, completionTime = null, chain = null) => {
     try {
       set({ loading: true, error: null });
+      
+      if (DEV_MODE) {
+        return get().submitChallengeAttemptLocal(challengeId, score, answers, completionTime, chain);
+      }
       
       const { data: auth } = await supabase.auth.getUser();
       if (!auth?.user) {
@@ -586,6 +591,12 @@ export const useChallengeStore = create((set, get) => ({
     try {
       set({ loading: true, error: null });
       
+      if (DEV_MODE) {
+        console.log('🔧 DEV MODE: Returning local challenges only');
+        set({ loading: false });
+        return get().challenges;
+      }
+      
       const { data: auth } = await supabase.auth.getUser();
       if (!auth?.user) {
         set({ loading: false });
@@ -622,6 +633,29 @@ export const useChallengeStore = create((set, get) => ({
 
   saveBossAttemptCloud: async (score, answers, completionTime = null) => {
     try {
+      const passed = score >= Math.ceil(BOSS_LEVEL.questionCount * 0.75);
+      const rewards = passed ? BOSS_LEVEL.rewards.win : BOSS_LEVEL.rewards.lose;
+      
+      if (DEV_MODE) {
+        console.log('🔧 DEV MODE: Boss attempt saved locally only');
+        const attempt = {
+          id: `dev_boss_${Date.now()}`,
+          score: score,
+          answers: answers,
+          completedAt: new Date().toISOString(),
+          maxScore: BOSS_LEVEL.questionCount,
+          passed: passed
+        };
+        
+        set(state => ({
+          bossAttempts: [...state.bossAttempts, attempt]
+        }));
+        get().saveToStorage();
+        useProgressStore.getState().markDayComplete();
+        
+        return { success: true, attempt, rewards };
+      }
+      
       const { data: auth } = await supabase.auth.getUser();
       if (!auth?.user) {
         return { success: false, error: "NOT_AUTHENTICATED" };
@@ -629,8 +663,6 @@ export const useChallengeStore = create((set, get) => ({
       
       const userId = auth.user.id;
       const today = new Date().toISOString().split('T')[0];
-      const passed = score >= Math.ceil(BOSS_LEVEL.questionCount * 0.75);
-      const rewards = passed ? BOSS_LEVEL.rewards.win : BOSS_LEVEL.rewards.lose;
       
       const { data, error } = await supabase
         .from('boss_attempts')
@@ -710,12 +742,141 @@ export const useChallengeStore = create((set, get) => ({
   },
 
   canPlayBossTodayCloud: async () => {
+    if (DEV_MODE) {
+      console.log('🔧 DEV MODE: Boss Level always playable');
+      return true;
+    }
     const attempt = await get().loadBossAttemptToday();
     return !attempt;
   },
 
   createChallenge: (friendId, mode) => {
+    if (DEV_MODE) {
+      return get().createChallengeLocal(friendId, mode);
+    }
     return get().createChallengeCloud(friendId, mode);
+  },
+  
+  createChallengeLocal: (friendId, mode) => {
+    console.log('🔧 DEV MODE: Creating local challenge');
+    const modeConfig = typeof mode === 'string' 
+      ? Object.values(CHALLENGE_MODES).find(m => m.id === mode) 
+      : mode;
+    
+    if (!modeConfig) {
+      console.error('Invalid mode:', mode);
+      return { success: false, error: 'INVALID_MODE' };
+    }
+    
+    const friend = DEV_MOCK_FRIENDS.find(f => f.odolena_user_id === friendId);
+    const questions = get().selectRandomQuestions(modeConfig.questionCount);
+    
+    const challenge = {
+      id: `dev_challenge_${Date.now()}`,
+      mode: modeConfig.id,
+      challengerId: 'dev_user',
+      opponentId: friendId,
+      opponentName: friend?.odolena_nickname || 'Test Friend',
+      opponentAvatar: friend?.odolena_avatar || 'avatar_man_beard',
+      questions: questions,
+      status: 'active',
+      challengerScore: null,
+      challengerAnswers: null,
+      challengerTime: null,
+      opponentScore: null,
+      opponentAnswers: null,
+      opponentTime: null,
+      winner: null,
+      isDraw: false,
+      createdAt: new Date().toISOString(),
+      expiresAt: new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString()
+    };
+    
+    set(state => ({
+      challenges: [...state.challenges, challenge]
+    }));
+    get().saveToStorage();
+    
+    return { success: true, challenge };
+  },
+  
+  submitChallengeAttemptLocal: (challengeId, score, answers, completionTime = null, chain = null) => {
+    console.log('🔧 DEV MODE: Submitting challenge attempt locally with auto-opponent');
+    
+    const challenge = get().challenges.find(c => c.id === challengeId);
+    if (!challenge) {
+      set({ loading: false });
+      return { success: false, error: 'CHALLENGE_NOT_FOUND' };
+    }
+    
+    const modeConfig = typeof challenge.mode === 'string' 
+      ? Object.values(CHALLENGE_MODES).find(m => m.id === challenge.mode)
+      : challenge.mode;
+    
+    const opponentScore = Math.floor(Math.random() * (challenge.questions?.length || 8));
+    const opponentTime = Math.floor(Math.random() * 60) + 20;
+    const opponentChain = modeConfig?.id === 'sudden_death' 
+      ? Math.floor(Math.random() * 6) + 1 
+      : null;
+    const opponentAnswers = (challenge.questions || []).map((q, i) => ({
+      questionId: q.id || `q_${i}`,
+      selectedAnswer: Math.floor(Math.random() * 4),
+      correct: i < opponentScore
+    }));
+    
+    let winnerId = null;
+    let isDraw = false;
+    
+    if (modeConfig?.id === 'sudden_death') {
+      const userChain = chain || calculateLongestChain(answers);
+      if (userChain > opponentChain) {
+        winnerId = 'dev_user';
+      } else if (opponentChain > userChain) {
+        winnerId = challenge.opponentId;
+      } else {
+        isDraw = true;
+      }
+    } else {
+      if (score > opponentScore) {
+        winnerId = 'dev_user';
+      } else if (opponentScore > score) {
+        winnerId = challenge.opponentId;
+      } else {
+        if (modeConfig?.trackTime && completionTime !== null) {
+          winnerId = completionTime < opponentTime ? 'dev_user' : challenge.opponentId;
+        } else {
+          isDraw = true;
+        }
+      }
+    }
+    
+    const updatedChallenge = {
+      ...challenge,
+      challengerScore: score,
+      challengerAnswers: answers,
+      challengerTime: completionTime,
+      challengerChain: chain,
+      opponentScore: opponentScore,
+      opponentAnswers: opponentAnswers,
+      opponentTime: opponentTime,
+      opponentChain: opponentChain,
+      status: 'completed',
+      winner: winnerId,
+      isDraw: isDraw,
+      completedAt: new Date().toISOString()
+    };
+    
+    set(state => ({
+      challenges: state.challenges.map(c => 
+        c.id === challengeId ? updatedChallenge : c
+      ),
+      challengeHistory: [...state.challengeHistory, updatedChallenge],
+      loading: false
+    }));
+    get().saveToStorage();
+    useProgressStore.getState().markDayComplete();
+    
+    return { success: true, challenge: updatedChallenge };
   },
 
   saveChallengeProgress: (challengeId, score, answers, isChallenger, completionTime = null) => {
