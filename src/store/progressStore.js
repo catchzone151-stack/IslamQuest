@@ -59,9 +59,6 @@ export const useProgressStore = create((set, get) => ({
   xpMultiplier: 0,
   level: 1, // Diamond level (1-10)
   lastLogin: null,
-  avatar: "default",
-  username: null, // Unique username (set during onboarding)
-  displayName: "Student of Knowledge", // Display name / nickname
   lessonStates: {},
   lockedLessons: {},
   hasPremium: false, // Deprecated: derived from premiumStatus, kept for backwards compatibility
@@ -1132,11 +1129,11 @@ export const useProgressStore = create((set, get) => ({
       }
 
       // Build final restored state
+      // NOTE: ONLY progress fields - identity (username, avatar, handle) is managed by useUserStore
       const restored = {
         xp: data.xp ?? get().xp,
         coins: data.coins ?? get().coins,
         streak: data.streak ?? get().streak,
-        username: data.username ?? get().username,
 
         premium: data.premium ?? false,
         hasPremium: data.premium ?? false,

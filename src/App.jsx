@@ -290,8 +290,9 @@ export default function App() {
     }
   }, []);
 
-  // 🔐 SUPABASE: Silent auth + profile + cloud sync
-  // SEQUENCE: silentAuth → deviceId → ensureProfile (once) → loadCloudProfile → stores
+  // 🔐 SUPABASE: Silent auth + profile check + cloud sync
+  // SEQUENCE: deviceId → silentAuth → check profile exists → onboarding OR load stores
+  // IMPORTANT: Profiles are ONLY created after onboarding via createProfileAfterOnboarding()
   useEffect(() => {
     async function initAuth() {
       const { setDeviceId } = useUserStore.getState();
@@ -300,11 +301,11 @@ export default function App() {
       const fp = getDeviceFingerprint();
       setDeviceId(fp);
 
-      // 2. Init user store (handles silentAuth + ensureProfile + loadCloudProfile)
-      // ensureProfile is called ONLY in init() to prevent duplicate inserts
+      // 2. Init user store (handles silentAuth + checks profile existence)
+      // NOTE: init() NEVER creates profiles - it only checks if one exists
       await useUserStore.getState().init();
 
-      // 3. Get user ID after init completes
+      // 3. Get user ID and profile status after init completes
       const { user, profileReady } = useUserStore.getState();
       
       if (!user) {
@@ -314,12 +315,13 @@ export default function App() {
 
       console.log("🔐 Signed in as", user.id);
 
-      // 4. Load progress stores ONLY after profile is ready
+      // 4. Load progress stores ONLY after profile is ready (post-onboarding)
       if (profileReady) {
         await useDailyQuestStore.getState().loadDailyQuestFromCloud(user.id);
         await useProgressStore.getState().loadStreakShieldFromCloud();
         console.log("✅ Cloud sync completed");
       }
+      // If profileReady is false, user needs onboarding - profile will be created there
     }
 
     initAuth();

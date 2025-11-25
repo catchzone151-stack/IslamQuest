@@ -1,10 +1,12 @@
 // src/lib/userProfile.js
 // -------------------------------------------------------
-// Cloud Profile Management - Identity Pipeline (Fixed)
+// Cloud Profile Management - Identity Pipeline
 // -------------------------------------------------------
-// Avatar stored as INTEGER (index) in DB, string key in app
-// Profile creation happens ONCE with full defaults
-// Updates NEVER overwrite with null values
+// ARCHITECTURE (Nov 2025):
+// - Profiles are ONLY created after onboarding via createProfileAfterOnboarding()
+// - NO profile creation at app startup
+// - Avatar stored as INTEGER (index) in DB, string key in app
+// - saveCloudProfile() only updates existing profiles, never inserts
 
 import { supabase } from "./supabaseClient";
 import { avatarKeyToIndex, avatarIndexToKey } from "../utils/avatarUtils";
@@ -47,19 +49,16 @@ export async function ensureSignedIn() {
 }
 
 /**
- * 🔹 ensureProfile(userId, deviceId)
- * Creates the profile row if missing, with sensible defaults.
- * This is the ONLY function that should ever INSERT into the profiles table.
- * Uses SELECT-then-INSERT pattern to prevent duplicates.
- * Avatar is stored as TEXT (string key), not integer.
+ * 🔹 checkProfileExists(userId)
+ * Returns the profile if it exists, null if not.
+ * Does NOT create a profile - use createProfileAfterOnboarding() for that.
  */
-export async function ensureProfile(userId, deviceId) {
+export async function checkProfileExists(userId) {
   if (!userId) {
-    console.warn("ensureProfile called without userId");
+    console.warn("checkProfileExists called without userId");
     return null;
   }
 
-  // Step 1: Check if profile already exists
   const { data: existingProfile, error: selectError } = await supabase
     .from("profiles")
     .select("user_id, username, handle, avatar, xp, coins, streak")
@@ -67,40 +66,64 @@ export async function ensureProfile(userId, deviceId) {
     .maybeSingle();
 
   if (selectError && selectError.code !== "PGRST116") {
-    console.error("ensureProfile: select error", selectError);
+    console.error("checkProfileExists: select error", selectError);
     return null;
   }
 
-  // Profile already exists - return it (with avatar normalization)
   if (existingProfile) {
     // Normalize avatar: convert integer to string if needed
     if (typeof existingProfile.avatar === "number") {
       existingProfile.avatar = avatarIndexToKey(existingProfile.avatar);
     }
-    console.log("PROFILE: existing →", existingProfile.user_id);
+    console.log("PROFILE EXISTS →", existingProfile.user_id);
     return existingProfile;
   }
 
-  // Step 2: Profile doesn't exist - create with ALL default values (no NULLs)
-  console.log("PROFILE CREATED for device →", deviceId);
-  
-  // Generate random suffix for temporary username
-  const randomSuffix = Math.floor(1000 + Math.random() * 9000);
-  const tempUsername = `User${randomSuffix}`;
-  
-  // Insert with INTEGER avatar index (DB column is integer type)
+  console.log("NO PROFILE FOUND for user →", userId);
+  return null;
+}
+
+/**
+ * 🔹 createProfileAfterOnboarding({ userId, deviceId, username, avatar, handle })
+ * Creates a new profile with ALL required fields.
+ * Called ONLY from completeOnboarding() after user finishes onboarding.
+ * NO null fields allowed - all fields must be populated.
+ */
+export async function createProfileAfterOnboarding({ userId, deviceId, username, avatar, handle }) {
+  if (!userId) {
+    console.error("createProfileAfterOnboarding: Missing userId");
+    return { success: false, error: "Missing userId" };
+  }
+
+  if (!username || !handle) {
+    console.error("createProfileAfterOnboarding: Missing required fields", { username, handle });
+    return { success: false, error: "Missing required fields (username or handle)" };
+  }
+
+  // Convert avatar string key to integer index for DB
+  let avatarIndex = DEFAULT_AVATAR_INDEX;
+  if (avatar) {
+    if (typeof avatar === "string") {
+      avatarIndex = avatarKeyToIndex(avatar) ?? DEFAULT_AVATAR_INDEX;
+    } else if (typeof avatar === "number") {
+      avatarIndex = avatar;
+    }
+  }
+
   const newProfileData = {
     user_id: userId,
     device_id: deviceId || null,
-    username: tempUsername,           // Temporary - replaced during onboarding
-    avatar: DEFAULT_AVATAR_INDEX,     // INTEGER: 0 = avatar_man_lantern
+    username: username.trim(),
+    handle: handle.trim().toLowerCase(),
+    avatar: avatarIndex,
     xp: 0,
     coins: 0,
     streak: 0,
     shield_count: 0,
-    handle: null,                     // Set during onboarding
     created_at: new Date().toISOString(),
   };
+
+  console.log("CREATING PROFILE →", userId, { username, handle, avatar: avatarIndex });
 
   const { data: insertedProfile, error: insertError } = await supabase
     .from("profiles")
@@ -109,24 +132,23 @@ export async function ensureProfile(userId, deviceId) {
     .maybeSingle();
 
   if (insertError) {
-    // Duplicate key = race condition, profile was created by another request
+    // Duplicate key = profile already exists (race condition or re-onboarding)
     if (insertError.code === "23505") {
-      console.log("ensureProfile: race condition, fetching existing");
-      const { data: raceProfile } = await supabase
-        .from("profiles")
-        .select("user_id, username, handle, avatar, xp, coins, streak")
-        .eq("user_id", userId)
-        .maybeSingle();
-      if (raceProfile && typeof raceProfile.avatar === "number") {
-        raceProfile.avatar = avatarIndexToKey(raceProfile.avatar);
-      }
-      return raceProfile || { user_id: userId };
+      console.log("createProfileAfterOnboarding: Profile already exists, updating instead");
+      // Update the existing profile instead
+      return await saveCloudProfile(userId, { username, avatar, handle });
     }
-    console.error("ensureProfile: insert error", insertError);
-    return null;
+    console.error("createProfileAfterOnboarding: insert error", insertError);
+    return { success: false, error: insertError };
   }
 
-  return insertedProfile || { user_id: userId };
+  // Normalize avatar back to string key for app use
+  if (insertedProfile && typeof insertedProfile.avatar === "number") {
+    insertedProfile.avatar = avatarIndexToKey(insertedProfile.avatar);
+  }
+
+  console.log("PROFILE CREATED SUCCESSFULLY →", userId);
+  return { success: true, data: insertedProfile };
 }
 
 /**
@@ -158,8 +180,9 @@ export async function loadCloudProfile(userId) {
 
 /**
  * 🔹 saveCloudProfile(userId, partialData)
- * Updates ONLY identity fields (username, avatar, handle).
+ * Updates ONLY identity fields (username, avatar, handle) on EXISTING profiles.
  * NEVER sends null/undefined values - only truthy fields are sent.
+ * NEVER inserts new profiles - use createProfileAfterOnboarding() for that.
  * Avatar can be string key or integer index (converted to integer for DB).
  */
 export async function saveCloudProfile(userId, partialData) {
@@ -184,7 +207,10 @@ export async function saveCloudProfile(userId, partialData) {
   // Only include avatar if it's set - convert string key to integer index
   if (partialData.avatar) {
     if (typeof partialData.avatar === "string") {
-      dataToSave.avatar = avatarKeyToIndex(partialData.avatar);
+      const idx = avatarKeyToIndex(partialData.avatar);
+      if (idx !== null) {
+        dataToSave.avatar = idx;
+      }
     } else if (typeof partialData.avatar === "number") {
       dataToSave.avatar = partialData.avatar;
     }
@@ -196,7 +222,7 @@ export async function saveCloudProfile(userId, partialData) {
     return { success: false, error: "No valid fields" };
   }
 
-  console.log("PROFILE UPDATED →", userId, dataToSave);
+  console.log("PROFILE UPDATE →", userId, dataToSave);
 
   const { data, error } = await supabase
     .from("profiles")
@@ -210,11 +236,17 @@ export async function saveCloudProfile(userId, partialData) {
   }
 
   if (!data || data.length === 0) {
-    console.warn("saveCloudProfile: No rows updated");
+    console.warn("saveCloudProfile: No rows updated (profile may not exist)");
     return { success: false, error: "No rows updated" };
   }
 
-  return { success: true, data: data[0] };
+  // Normalize avatar back to string key
+  const result = { ...data[0] };
+  if (typeof result.avatar === "number") {
+    result.avatar = avatarIndexToKey(result.avatar);
+  }
+
+  return { success: true, data: result };
 }
 
 /**

@@ -3,10 +3,21 @@
 // Identity Store - Manages username, avatar, handle
 // Separate from progressStore which manages xp/coins/streak
 // -------------------------------------------------------
+// ARCHITECTURE (Nov 2025):
+// - Profiles are ONLY created after onboarding via createProfileAfterOnboarding()
+// - init() only CHECKS for existing profile, never creates one
+// - completeOnboarding() creates the profile if it doesn't exist
 
 import { create } from "zustand";
 import { supabase } from "../lib/supabaseClient";
-import { ensureSignedIn, ensureProfile, loadCloudProfile, saveCloudProfile, isProfileComplete } from "../lib/userProfile";
+import { 
+  ensureSignedIn, 
+  checkProfileExists, 
+  createProfileAfterOnboarding,
+  loadCloudProfile, 
+  saveCloudProfile, 
+  isProfileComplete 
+} from "../lib/userProfile";
 
 // Default avatar for new users
 const DEFAULT_AVATAR = "avatar_man_lantern";
@@ -21,8 +32,7 @@ function loadDeviceId() {
   return id;
 }
 
-// Check if onboarding was completed based on profile completeness
-// Returns false if profile is missing required identity fields
+// Check if onboarding was completed based on localStorage flag
 function checkOnboardedFromStorage() {
   try {
     const profileStr = localStorage.getItem("iq_profile_complete");
@@ -59,7 +69,7 @@ export const useUserStore = create((set, get) => ({
 
   // --------------------------------------------------
   // INIT → Called from App.jsx after silentAuth
-  // Only loads profile - does NOT create it
+  // Only CHECKS for profile - NEVER creates one
   // --------------------------------------------------
   init: async () => {
     set({ loading: true });
@@ -75,26 +85,32 @@ export const useUserStore = create((set, get) => ({
 
       set({ user, userId: user.id });
 
-      // Ensure profile exists in DB
-      const deviceId = get().deviceId;
-      const profile = await ensureProfile(user.id, deviceId);
+      // Check if profile exists (DO NOT create it here)
+      const existingProfile = await checkProfileExists(user.id);
 
-      if (!profile) {
-        console.warn("Profile not ready");
-        set({ loading: false, isHydrated: true, profileReady: false });
+      if (!existingProfile) {
+        // No profile = user needs onboarding
+        console.log("NO PROFILE → ONBOARDING REQUIRED");
+        localStorage.removeItem("iq_profile_complete");
+        set({ 
+          loading: false, 
+          isHydrated: true, 
+          profileReady: false,
+          hasOnboarded: false,
+        });
         return;
       }
 
-      // Load full profile from cloud
+      // Profile exists - load full data
       const fullProfile = await loadCloudProfile(user.id);
       
-      // Determine if onboarding is needed
+      // Determine if onboarding is complete
       const needsOnboarding = !isProfileComplete(fullProfile);
       
       if (needsOnboarding) {
-        // Clear corrupted onboarding state
+        // Profile exists but is incomplete (missing username/handle)
         localStorage.removeItem("iq_profile_complete");
-        console.log("ONBOARDING REQUIRED");
+        console.log("INCOMPLETE PROFILE → ONBOARDING REQUIRED");
       } else {
         // Profile is complete - restore local state from cloud
         localStorage.setItem("iq_profile_complete", "true");
@@ -103,11 +119,12 @@ export const useUserStore = create((set, get) => ({
           localStorage.setItem("iq_handle", fullProfile.handle || "");
           localStorage.setItem("iq_avatar", fullProfile.avatar || DEFAULT_AVATAR);
         }
+        console.log("PROFILE COMPLETE → Loading app");
       }
 
       set({
         profile: fullProfile,
-        profileReady: true,
+        profileReady: !needsOnboarding,
         hasOnboarded: !needsOnboarding,
         loading: false,
         isHydrated: true,
@@ -149,7 +166,7 @@ export const useUserStore = create((set, get) => ({
   },
 
   // --------------------------------------------------
-  // SET ONBOARDED - Only call after saveProfile succeeds
+  // SET ONBOARDED - Only call after profile save succeeds
   // --------------------------------------------------
   setOnboarded: (value) => {
     if (value) {
@@ -162,8 +179,7 @@ export const useUserStore = create((set, get) => ({
 
   // --------------------------------------------------
   // SAVE PROFILE - Updates ONLY identity fields
-  // NEVER updates xp, coins, streak, shield_count
-  // NEVER sends null values
+  // Only works if profile already exists
   // --------------------------------------------------
   saveProfile: async (updates) => {
     const userId = get().user?.id || get().userId;
@@ -191,7 +207,6 @@ export const useUserStore = create((set, get) => ({
       const updated = await loadCloudProfile(userId);
       if (updated) {
         set({ profile: updated });
-        console.log("ONBOARDING COMPLETE");
       }
     }
 
@@ -200,10 +215,10 @@ export const useUserStore = create((set, get) => ({
 
   // --------------------------------------------------
   // COMPLETE ONBOARDING - Final step after all screens
-  // Saves all identity fields and marks onboarding done
+  // Creates profile if missing, then marks onboarding done
   // --------------------------------------------------
   completeOnboarding: async () => {
-    const { username, avatar, handle, userId, user } = get();
+    const { username, avatar, handle, userId, user, deviceId } = get();
     const uid = user?.id || userId;
 
     if (!uid) {
@@ -217,17 +232,48 @@ export const useUserStore = create((set, get) => ({
       return false;
     }
 
-    // Save all identity fields to cloud
-    const result = await saveCloudProfile(uid, {
-      username,
-      avatar: avatar || DEFAULT_AVATAR,
-      handle,
-    });
+    // Check if profile already exists
+    const existingProfile = await checkProfileExists(uid);
+
+    let result;
+    if (existingProfile) {
+      // Profile exists - update it
+      console.log("Profile exists, updating identity fields...");
+      result = await saveCloudProfile(uid, {
+        username,
+        avatar: avatar || DEFAULT_AVATAR,
+        handle,
+      });
+    } else {
+      // No profile - create it
+      console.log("Creating new profile...");
+      result = await createProfileAfterOnboarding({
+        userId: uid,
+        deviceId: deviceId,
+        username,
+        avatar: avatar || DEFAULT_AVATAR,
+        handle,
+      });
+    }
 
     if (result.success) {
+      // Load the full profile
+      const fullProfile = await loadCloudProfile(uid);
+      
+      // Update localStorage
       localStorage.setItem("iq_profile_complete", "true");
-      set({ hasOnboarded: true });
-      console.log("ONBOARDING COMPLETE");
+      localStorage.setItem("iq_username", username);
+      localStorage.setItem("iq_handle", handle);
+      localStorage.setItem("iq_avatar", avatar || DEFAULT_AVATAR);
+      
+      // Update store
+      set({ 
+        hasOnboarded: true, 
+        profileReady: true,
+        profile: fullProfile,
+      });
+      
+      console.log("ONBOARDING COMPLETE → Profile saved");
       return true;
     }
 
