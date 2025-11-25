@@ -16,7 +16,6 @@ import { useDailyQuestStore } from "./store/dailyQuestStore";
 import { preloadAllAssets } from "./utils/imagePreloader";
 import { useModalStore, MODAL_TYPES } from "./store/modalStore";
 import { supabase, ensureSignedIn } from "./lib/supabaseClient";
-import { ensureProfile } from "./lib/userProfile";
 import { getDeviceFingerprint } from "./lib/deviceFingerprint";
 
 // ✅ Onboarding screens (loaded immediately for first-time users)
@@ -304,11 +303,8 @@ export default function App() {
           console.log("🔐 Signed in as", user.id);
           setUserId(user.id);
 
-          // 🔹 CREATE PROFILE ROW IF MISSING
-          console.log("👤 Calling ensureProfile for", user.id, fp);
-          await ensureProfile(user.id, fp);
-
-          // Initialize user store (will load profile)
+          // Initialize user store (handles profile creation + load)
+          // NOTE: ensureProfile is called ONLY in init() to prevent duplicate inserts
           await useUserStore.getState().init();
 
           // 🌐 Phase 4: Load cloud data after silent auth

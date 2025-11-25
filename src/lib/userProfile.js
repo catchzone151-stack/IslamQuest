@@ -41,45 +41,46 @@ export async function ensureSignedIn() {
 
 /**
  * 🔹 ensureProfile(userId, deviceId)
- * Creates the profile row if missing.
+ * Creates the profile row if missing using UPSERT to prevent duplicates.
+ * This is the ONLY function that should ever INSERT into the profiles table.
  */
 export async function ensureProfile(userId, deviceId) {
   if (!userId) {
     console.warn("ensureProfile called without userId");
-    return;
-  }
-
-  console.log("ensureProfile: checking profile for", userId);
-
-  const { data: existing, error: selectErr } = await supabase
-    .from("profiles")
-    .select("user_id")
-    .eq("user_id", userId)
-    .single();
-
-  if (existing) {
-    console.log("ensureProfile: existing profile found");
-    return existing;
-  }
-  if (selectErr && selectErr.code !== "PGRST116") {
-    console.warn("ensureProfile: select error", selectErr);
-  }
-
-  const { error: insertErr } = await supabase.from("profiles").insert({
-    user_id: userId,
-    device_id: deviceId || null,
-    username: null,
-    avatar: null,
-    handle: null,
-  });
-
-  if (insertErr) {
-    console.error("Profile creation failed:", insertErr);
     return null;
   }
 
-  console.log("ensureProfile: profile inserted for", userId);
-  return { user_id: userId };
+  console.log("ensureProfile: checking/creating profile for", userId);
+
+  // Use UPSERT pattern: Insert if not exists, do nothing if exists
+  // This prevents race conditions from causing duplicate rows
+  const { data, error } = await supabase
+    .from("profiles")
+    .upsert(
+      {
+        user_id: userId,
+        device_id: deviceId || null,
+      },
+      {
+        onConflict: "user_id",
+        ignoreDuplicates: true, // Don't update existing rows, just skip
+      }
+    )
+    .select("user_id")
+    .single();
+
+  if (error) {
+    // PGRST116 = no rows returned (expected for ignoreDuplicates on existing row)
+    if (error.code === "PGRST116") {
+      console.log("ensureProfile: existing profile found (upsert skipped)");
+      return { user_id: userId };
+    }
+    console.error("ensureProfile: upsert error", error);
+    return null;
+  }
+
+  console.log("ensureProfile: profile ready for", userId);
+  return data || { user_id: userId };
 }
 
 /**
