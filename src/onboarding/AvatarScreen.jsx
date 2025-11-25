@@ -3,14 +3,17 @@ import { useNavigate } from "../hooks/useNavigate";
 import { useUserStore } from "../store/useUserStore";
 import { motion } from "framer-motion";
 import assets from "../assets/assets";
+import { AVAILABLE_AVATARS } from "../utils/avatarUtils";
 
 export default function AvatarScreen() {
   const navigate = useNavigate();
   const { setAvatar } = useUserStore();
   const [selected, setSelected] = useState(null);
 
-  // Use avatars from assets.js in the defined order (male → female → rest)
-  const sortedAvatars = useMemo(() => Object.values(assets.avatars), []);
+  // Only show AVAILABLE_AVATARS (excludes hidden ninja avatars)
+  const sortedAvatars = useMemo(() => 
+    AVAILABLE_AVATARS.map(key => assets.avatars[key]).filter(Boolean), 
+  []);
 
   const handleContinue = () => {
     if (!selected) return;
