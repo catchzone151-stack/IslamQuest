@@ -41,9 +41,15 @@ export async function ensureSignedIn() {
 /**
  * 🔹 ensureProfile(userId, deviceId)
  * Creates the profile row if missing.
+ * Uses correct schema with all required columns.
  */
-export async function ensureProfile(userId, deviceId) {
-  if (!userId) return;
+export async function ensureProfile(userId, deviceId = null) {
+  console.debug("ensureProfile called", { userId, deviceId });
+  
+  if (!userId) {
+    console.debug("ensureProfile: No userId provided, skipping");
+    return null;
+  }
 
   // Check if profile exists
   const { data: existing, error: selectErr } = await supabase
@@ -52,16 +58,34 @@ export async function ensureProfile(userId, deviceId) {
     .eq("user_id", userId)
     .single();
 
-  if (existing) return existing;
+  if (existing) {
+    console.debug("Profile exists", { user_id: existing.user_id });
+    return existing;
+  }
 
-  // Insert minimal profile (onboarding will fill username/avatar/handle)
+  // Profile doesn't exist - insert with correct schema
+  // Columns: user_id, device_id, username, avatar, premium, premium_family_id,
+  // xp, coins, streak, last_streak_date, shield_count, created_at, updated_at,
+  // handle, streak_shields, last_daily_quest
+  const now = new Date().toISOString();
+  
   const { error: insertErr } = await supabase.from("profiles").insert({
     user_id: userId,
-    device_id: deviceId,
+    device_id: deviceId || null,
     username: null,
     avatar: null,
     handle: null,
-    // xp, coins, streak, shield_count use DB defaults
+    premium: false,
+    premium_family_id: null,
+    xp: 0,
+    coins: 0,
+    streak: 0,
+    last_streak_date: null,
+    shield_count: 0,
+    streak_shields: 0,
+    last_daily_quest: null,
+    created_at: now,
+    updated_at: now,
   });
 
   if (insertErr) {
@@ -69,6 +93,7 @@ export async function ensureProfile(userId, deviceId) {
     return null;
   }
 
+  console.debug("Profile inserted", { user_id: userId });
   return { user_id: userId };
 }
 

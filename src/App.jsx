@@ -16,6 +16,7 @@ import { useDailyQuestStore } from "./store/dailyQuestStore";
 import { preloadAllAssets } from "./utils/imagePreloader";
 import { useModalStore, MODAL_TYPES } from "./store/modalStore";
 import { supabase, ensureSignedIn } from "./lib/supabaseClient";
+import { ensureProfile } from "./lib/userProfile";
 import { getDeviceFingerprint } from "./lib/deviceFingerprint";
 
 // ✅ Onboarding screens (loaded immediately for first-time users)
@@ -289,26 +290,47 @@ export default function App() {
     }
   }, []);
 
-  // 🔐 SUPABASE: Silent auth + profile initialisation + Phase 4 cloud sync
+  // 🔐 SUPABASE: Silent auth + profile creation + Phase 4 cloud sync
   useEffect(() => {
     async function initAuth() {
       try {
-        // New store: just call init()
-        await useUserStore.getState().init();
+        // 1. Silent auth (get existing session or create hidden account)
+        const user = await ensureSignedIn();
         
-        // 🌐 Phase 4: Load cloud data after silent auth
-        const { data: auth } = await supabase.auth.getUser();
-        if (auth && auth.user) {
+        if (user) {
+          console.debug("Silent auth successful, user.id:", user.id);
+          
+          // 2. Ensure profile exists in database (FIX: was not being called)
+          const deviceId = localStorage.getItem("device_id") || crypto.randomUUID();
+          if (!localStorage.getItem("device_id")) {
+            localStorage.setItem("device_id", deviceId);
+          }
+          await ensureProfile(user.id, deviceId);
+          
+          // 3. Initialize user store (will load profile)
+          await useUserStore.getState().init();
+          
+          // 🌐 Phase 4: Load cloud data after silent auth
           // Load daily quest from cloud
-          await useDailyQuestStore.getState().loadDailyQuestFromCloud(auth.user.id);
+          await useDailyQuestStore.getState().loadDailyQuestFromCloud(user.id);
           
           // Load streak shields from cloud
           await useProgressStore.getState().loadStreakShieldFromCloud();
           
           console.log("✅ Phase 4: Cloud sync completed after silent auth");
+        } else {
+          // Fallback: just init user store without cloud sync
+          await useUserStore.getState().init();
+          console.warn("Silent auth returned no user, skipping cloud sync");
         }
       } catch (error) {
         console.error("Silent auth failed:", error);
+        // Fallback: try to init store anyway
+        try {
+          await useUserStore.getState().init();
+        } catch (e) {
+          console.error("Store init also failed:", e);
+        }
       }
     }
 
