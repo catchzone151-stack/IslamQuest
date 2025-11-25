@@ -33,8 +33,8 @@ export const useFriendsStore = create((set, get) => ({
 
       const { data: friendsData, error: friendsErr } = await supabase
         .from("friends")
-        .select("id, friend_id, status")
-        .eq("user_id", userId)
+        .select("id, user_id, friend_id, status")
+        .or(`user_id.eq.${userId},friend_id.eq.${userId}`)
         .eq("status", "accepted");
 
       if (friendsErr) {
@@ -50,7 +50,9 @@ export const useFriendsStore = create((set, get) => ({
         return;
       }
 
-      const friendIds = (friendsData || []).map((f) => f.friend_id);
+      const friendIds = (friendsData || []).map((f) => 
+        f.user_id === userId ? f.friend_id : f.user_id
+      );
       let friendProfiles = [];
       if (friendIds.length > 0) {
         const { data: profiles } = await supabase
@@ -162,10 +164,12 @@ export const useFriendsStore = create((set, get) => ({
     const { data: auth } = await supabase.auth.getUser();
     if (!auth?.user) return [];
 
+    const userId = auth.user.id;
+    
     const { data, error } = await supabase
       .from("friends")
-      .select("friend_id")
-      .eq("user_id", auth.user.id)
+      .select("user_id, friend_id")
+      .or(`user_id.eq.${userId},friend_id.eq.${userId}`)
       .eq("status", "accepted");
 
     if (error) {
@@ -173,7 +177,9 @@ export const useFriendsStore = create((set, get) => ({
       return [];
     }
 
-    const friendIds = (data || []).map((f) => f.friend_id);
+    const friendIds = (data || []).map((f) => 
+      f.user_id === userId ? f.friend_id : f.user_id
+    );
     if (friendIds.length === 0) {
       set({ friends: [] });
       return [];
