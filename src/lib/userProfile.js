@@ -1,89 +1,124 @@
 // src/lib/userProfile.js
-// Full replacement — matches your REAL Supabase schema (profiles.user_id, slugs, full row load)
+// -------------------------------------------------------
+// Cloud Profile Management (Corrected for your schema)
+// -------------------------------------------------------
 
 import { supabase } from "./supabaseClient";
 
-// Utility: generate a safe random handle (lowercase, no spaces)
-function generateHandle() {
-  return `user_${Math.floor(Math.random() * 90000 + 10000)}`.toLowerCase();
+/**
+ * 🔹 ensureSignedIn()
+ * Silent authentication:
+ * - Checks existing session
+ * - Creates hidden account on first launch
+ */
+export async function ensureSignedIn() {
+  // Check for existing session
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (session?.user) {
+    return session.user;
+  }
+
+  // Create hidden account
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.signUp({
+    email: `hidden_${crypto.randomUUID()}@hidden.local`,
+    password: crypto.randomUUID(),
+  });
+
+  if (error) {
+    console.error("Silent signup failed:", error);
+    return null;
+  }
+
+  return user;
 }
 
 /**
- * Fetches an existing profile OR creates a new one if none exists.
- *
- * @param {string} userId - Auth user UUID (supabase.auth.getUser())
- * @param {string} deviceId - Local fingerprint UUID
+ * 🔹 ensureProfile(userId, deviceId)
+ * Creates the profile row if missing.
  */
-export async function getOrCreateProfile(userId, deviceId) {
-  // 1. Try to load profile
-  const { data: profile, error: fetchError } = await supabase
+export async function ensureProfile(userId, deviceId) {
+  if (!userId) return;
+
+  // Check if profile exists
+  const { data: existing, error: selectErr } = await supabase
+    .from("profiles")
+    .select("user_id")
+    .eq("user_id", userId)
+    .single();
+
+  if (existing) return existing;
+
+  // Insert minimal profile (onboarding will fill username/avatar/handle)
+  const { error: insertErr } = await supabase.from("profiles").insert({
+    user_id: userId,
+    device_id: deviceId,
+    username: null,
+    avatar: null,
+    handle: null,
+    // xp, coins, streak, shield_count use DB defaults
+  });
+
+  if (insertErr) {
+    console.error("Profile creation failed:", insertErr);
+    return null;
+  }
+
+  return { user_id: userId };
+}
+
+/**
+ * 🔹 loadCloudProfile(userId)
+ * Returns the full profile row.
+ */
+export async function loadCloudProfile(userId) {
+  if (!userId) return null;
+
+  const { data, error } = await supabase
     .from("profiles")
     .select("*")
     .eq("user_id", userId)
     .single();
 
-  if (profile) {
-    return profile; // 🎉 Profile exists
+  if (error) {
+    console.error("Failed to load cloud profile:", error);
+    return null;
   }
 
-  // 2. If no profile → create one
-  const newProfile = {
-    user_id: userId,
-    device_id: deviceId,
-    username: null, // user may set this later
-    handle: generateHandle(), // guaranteed lowercase + unique constraint applies
-    avatar: "avatar1", // your system uses avatar slugs
-    xp: 0,
-    coins: 0,
-    streak: 0,
-    last_streak_date: null,
-    shield_count: 0,
-    premium: false,
-    premium_family_id: null,
-  };
+  // Auto-patch missing fields (safety)
+  const patch = {};
 
-  const { data, error: insertError } = await supabase
-    .from("profiles")
-    .insert([newProfile])
-    .select()
-    .single();
+  if (data.handle === null) patch.handle = null; // user will set during onboarding
+  if (data.username === null) patch.username = null;
+  if (data.avatar === null) patch.avatar = null;
+  if (data.device_id === null) patch.device_id = null;
 
-  if (insertError) {
-    console.error("Profile insert error:", insertError);
-    return null;
+  if (Object.keys(patch).length > 0) {
+    await saveCloudProfile(userId, patch);
+    return { ...data, ...patch };
   }
 
   return data;
 }
 
 /**
- * Updates a user profile row safely.
- *
- * @param {string} userId - Auth user UUID
- * @param {object} updates - Partial updates
+ * 🔹 saveCloudProfile(userId, partialData)
+ * Updates profile fields after onboarding or app usage.
  */
-export async function updateProfile(userId, updates) {
-  // Lowercase usernames/handles
-  const cleanedUpdates = { ...updates };
+export async function saveCloudProfile(userId, partialData) {
+  if (!userId) return;
 
-  if (cleanedUpdates.username) {
-    cleanedUpdates.username = cleanedUpdates.username.toLowerCase();
-  }
-  if (cleanedUpdates.handle) {
-    cleanedUpdates.handle = cleanedUpdates.handle.toLowerCase();
-  }
-
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("profiles")
-    .update(cleanedUpdates)
-    .eq("user_id", userId)
-    .select()
-    .single();
+    .update({ ...partialData, updated_at: new Date().toISOString() })
+    .eq("user_id", userId);
 
   if (error) {
-    console.error("Profile update error:", error);
-    return null;
+    console.error("Failed to save cloud profile:", error);
   }
-
-  return data;
 }
