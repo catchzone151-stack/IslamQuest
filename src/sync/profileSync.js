@@ -1,5 +1,5 @@
 import { supabase } from "../lib/supabaseClient.js";
-import { useUserStore } from "../store/userStore.js";
+import { useUserStore } from "../store/useUserStore.js";
 
 /*
   FIELDS WE SYNC:

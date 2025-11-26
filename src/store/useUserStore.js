@@ -60,6 +60,13 @@ export const useUserStore = create((set, get) => ({
   username: localStorage.getItem("iq_username") || "",
   handle: localStorage.getItem("iq_handle") || "",
 
+  // Progress sync fields
+  xp: 0,
+  streak: 0,
+  lastStreakUpdate: null,
+  streakShield: false,
+  lastXpGain: null,
+
   // Setters for userId and deviceId
   setUserId: (userId) => set({ userId }),
   setDeviceId: (deviceId) => {
@@ -163,6 +170,19 @@ export const useUserStore = create((set, get) => ({
   setHandle: (handle) => {
     localStorage.setItem("iq_handle", handle);
     set({ handle });
+  },
+
+  // --------------------------------------------------
+  // SET PROFILE FROM SYNC - Called by profileSync merge
+  // --------------------------------------------------
+  setProfileFromSync: (data) => {
+    set({
+      xp: data.xp,
+      streak: data.streak,
+      lastStreakUpdate: data.lastStreakUpdate,
+      streakShield: data.streakShield,
+      lastXpGain: data.lastXpGain,
+    });
   },
 
   // --------------------------------------------------
