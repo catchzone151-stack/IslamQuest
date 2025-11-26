@@ -36,18 +36,21 @@ export async function pushDailyQuestToCloud() {
 
   const questDate = date || getToday();
 
+  // --- SAFE JSON ---
+  const safeQuestions = Array.isArray(questions) ? questions : [];
+
   const payload = {
     user_id: auth.user.id,
     quest_date: questDate,
-    questions: JSON.stringify(questions || []),
-    completed: completed || false,
-    reward_given: rewardGiven || false,
+    questions: JSON.stringify(safeQuestions),
+    completed: Boolean(completed),
+    reward_given: Boolean(rewardGiven),
     updated_at: new Date().toISOString(),
   };
 
   const { error } = await supabase
     .from("daily_quests")
-    .upsert(payload, { onConflict: "user_id,quest_date" });
+    .upsert(payload, { onConflict: "user_id" });
 
   if (error) console.log("[DailyQuestSync] Push ERROR:", error);
 }
