@@ -139,13 +139,12 @@ export const useDailyQuestStore = create((set, get) => ({
   // Set daily quest from sync (cloud → local)
   setDailyQuestFromSync: (data) => {
     set({
-      currentQuest: {
-        id: data.id,
-        completedAt: data.completedAt,
-        xpReward: data.xpReward,
-        streakBonus: data.streakBonus,
-      }
+      date: data.quest_date,
+      questions: data.questions ? JSON.parse(data.questions) : [],
+      completed: data.completed || false,
+      rewardGiven: data.reward_given || false,
     });
+    get().saveDailyQuest();
   },
 
   // Check if Daily Quest is ready for today
