@@ -1,6 +1,5 @@
 import { supabase } from "../lib/supabaseClient.js";
 import { useDailyQuestStore } from "../store/dailyQuestStore.js";
-import { useProgressStore } from "../store/progressStore.js";
 
 const getToday = () => new Date().toISOString().split("T")[0];
 
@@ -35,7 +34,6 @@ export async function pushDailyQuestToCloud() {
   const { data: auth } = await supabase.auth.getUser();
   if (!auth?.user) return;
 
-  // Make sure date is ALWAYS valid
   const questDate = date || getToday();
 
   const payload = {
@@ -49,23 +47,21 @@ export async function pushDailyQuestToCloud() {
 
   const { error } = await supabase
     .from("daily_quests")
-    .upsert(payload, { onConflict: "user_id" });
+    .upsert(payload, { onConflict: "user_id,quest_date" });
 
   if (error) console.log("[DailyQuestSync] Push ERROR:", error);
 }
 
 // ------------------------------------------------------------
-// Merge from cloud (CLOUD FIRST)
+// Merge cloud → local
 // ------------------------------------------------------------
 export function mergeDailyQuest(cloud) {
   if (!cloud) return;
-
-  const setDaily = useDailyQuestStore.getState().setDailyQuestFromSync;
-  setDaily(cloud);
+  useDailyQuestStore.getState().setDailyQuestFromSync(cloud);
 }
 
 // ------------------------------------------------------------
-// Streak shield lives in profiles table, so handled by profileSync
+// Shield handled by profileSync, skip here
 // ------------------------------------------------------------
 export async function pullStreakShieldFromCloud() {
   return null;
