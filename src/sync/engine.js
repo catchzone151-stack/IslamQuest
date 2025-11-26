@@ -1,46 +1,79 @@
-import { pullCloudRevision, pushLocalRevision, mergeRevisionData } from "./revisionSync.js";
+import {
+  pullCloudRevision,
+  pushLocalRevision,
+  mergeRevisionData,
+} from "./revisionSync.js";
 
+import {
+  pullProfileFromCloud,
+  pushProfileToCloud,
+  mergeProfileData,
+} from "./profileSync.js";
+
+// --------------------
+// SYNC ON APP OPEN
+// --------------------
 export async function syncOnAppOpen() {
-  console.log("[SyncEngine] syncOnAppOpen() called");
+  console.log("[SyncEngine] syncOnAppOpen()");
 
-  // 1. Pull cloud
-  const cloudItems = await pullCloudRevision();
-
-  // 2. Merge (future)
-  await mergeRevisionData(cloudItems);
-
-  // 3. Push local
+  // 1. REVISION
+  const cloudRevision = await pullCloudRevision();
+  await mergeRevisionData(cloudRevision);
   await pushLocalRevision();
+
+  // 2. PROFILE
+  const cloudProfile = await pullProfileFromCloud();
+  mergeProfileData(cloudProfile);
+  await pushProfileToCloud();
 
   console.log("[SyncEngine] syncOnAppOpen() complete");
 }
 
+// --------------------
+// SYNC ON FOREGROUND
+// --------------------
 export async function syncOnForeground() {
-  console.log("[SyncEngine] syncOnForeground() called");
+  console.log("[SyncEngine] syncOnForeground()");
 
-  const cloudItems = await pullCloudRevision();
-  await mergeRevisionData(cloudItems);
+  // REVISION
+  const cloudRevision = await pullCloudRevision();
+  await mergeRevisionData(cloudRevision);
   await pushLocalRevision();
+
+  // PROFILE
+  const cloudProfile = await pullProfileFromCloud();
+  mergeProfileData(cloudProfile);
+  await pushProfileToCloud();
 
   console.log("[SyncEngine] syncOnForeground() complete");
 }
 
+// --------------------
+// FULL SYNC
+// --------------------
 export async function syncAll() {
-  console.log("[SyncEngine] syncAll() called");
+  console.log("[SyncEngine] syncAll()");
 
-  const cloudItems = await pullCloudRevision();
-  await mergeRevisionData(cloudItems);
+  const cloudRevision = await pullCloudRevision();
+  await mergeRevisionData(cloudRevision);
   await pushLocalRevision();
+
+  const cloudProfile = await pullProfileFromCloud();
+  mergeProfileData(cloudProfile);
+  await pushProfileToCloud();
 
   console.log("[SyncEngine] syncAll() complete");
 }
 
-export async function syncRevisionOnly() {
-  console.log("[SyncEngine] syncRevisionOnly() called");
+// --------------------
+// PROFILE-ONLY SYNC
+// --------------------
+export async function syncProfileOnly() {
+  console.log("[SyncEngine] syncProfileOnly()");
 
-  const cloudItems = await pullCloudRevision();
-  await mergeRevisionData(cloudItems);
-  await pushLocalRevision();
+  const cloudProfile = await pullProfileFromCloud();
+  mergeProfileData(cloudProfile);
+  await pushProfileToCloud();
 
-  console.log("[SyncEngine] syncRevisionOnly() complete");
+  console.log("[SyncEngine] syncProfileOnly() complete");
 }

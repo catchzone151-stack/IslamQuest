@@ -1,0 +1,85 @@
+You are Senior Dev Mode.
+
+Update src/sync/engine.js with this full replacement:
+
+-------------------------------------------------------------
+import {
+  pullCloudRevision,
+  pushLocalRevision,
+  mergeRevisionData,
+} from "./revisionSync.js";
+
+import {
+  pullProfileFromCloud,
+  pushProfileToCloud,
+  mergeProfileData,
+} from "./profileSync.js";
+
+// --------------------
+// SYNC ON APP OPEN
+// --------------------
+export async function syncOnAppOpen() {
+  console.log("[SyncEngine] syncOnAppOpen()");
+
+  // 1. REVISION
+  const cloudRevision = await pullCloudRevision();
+  await mergeRevisionData(cloudRevision);
+  await pushLocalRevision();
+
+  // 2. PROFILE
+  const cloudProfile = await pullProfileFromCloud();
+  mergeProfileData(cloudProfile);
+  await pushProfileToCloud();
+
+  console.log("[SyncEngine] syncOnAppOpen() complete");
+}
+
+// --------------------
+// SYNC ON FOREGROUND
+// --------------------
+export async function syncOnForeground() {
+  console.log("[SyncEngine] syncOnForeground()");
+
+  // REVISION
+  const cloudRevision = await pullCloudRevision();
+  await mergeRevisionData(cloudRevision);
+  await pushLocalRevision();
+
+  // PROFILE
+  const cloudProfile = await pullProfileFromCloud();
+  mergeProfileData(cloudProfile);
+  await pushProfileToCloud();
+
+  console.log("[SyncEngine] syncOnForeground() complete");
+}
+
+// --------------------
+// FULL SYNC
+// --------------------
+export async function syncAll() {
+  console.log("[SyncEngine] syncAll()");
+
+  const cloudRevision = await pullCloudRevision();
+  await mergeRevisionData(cloudRevision);
+  await pushLocalRevision();
+
+  const cloudProfile = await pullProfileFromCloud();
+  mergeProfileData(cloudProfile);
+  await pushProfileToCloud();
+
+  console.log("[SyncEngine] syncAll() complete");
+}
+
+// --------------------
+// PROFILE-ONLY SYNC
+// --------------------
+export async function syncProfileOnly() {
+  console.log("[SyncEngine] syncProfileOnly()");
+
+  const cloudProfile = await pullProfileFromCloud();
+  mergeProfileData(cloudProfile);
+  await pushProfileToCloud();
+
+  console.log("[SyncEngine] syncProfileOnly() complete");
+}
+-------------------------------------------------------------
