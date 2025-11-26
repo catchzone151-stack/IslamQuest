@@ -1,0 +1,190 @@
+You are Senior Dev Mode.
+
+Apply the following small, safe fixes. 
+Do NOT rewrite whole files. Only insert or update the blocks specified.
+
+-----------------------------------------------------
+1) Add safe Supabase wrapper for offline/error scenarios
+-----------------------------------------------------
+
+Create a new file:
+
+src/lib/supabaseSafe.js
+
+Its content:
+
+------------------------------------------------------
+export async function safeCall(fn, fallback = null) {
+  try {
+    const res = await fn();
+    if (res?.error) throw res.error;
+    return res;
+  } catch (e) {
+    console.warn("[safeCall] failed:", e.message);
+    return fallback;
+  }
+}
+------------------------------------------------------
+
+
+-----------------------------------------------------
+2) Patch sync engine to use the safe wrapper
+-----------------------------------------------------
+
+Open: src/sync/engine.js
+
+Replace each direct Supabase sync call like:
+
+  const cloudItems = await pullCloudRevision();
+
+With:
+
+  const cloudItems = await safeCall(() => pullCloudRevision(), []);
+
+Do this for:
+
+- pullCloudRevision
+- pullDailyQuestFromCloud
+- pullProfileFromCloud (if used)
+- pullStreakShieldFromCloud
+
+Do NOT change merge logic.
+
+At the top of the file, add:
+
+  import { safeCall } from "../lib/supabaseSafe.js";
+
+
+-----------------------------------------------------
+3) Add offline fallback to user store init()
+-----------------------------------------------------
+
+Open: src/store/useUserStore.js
+
+Inside init(), wrap ensureSignedIn() with the safe wrapper:
+
+Change:
+
+  const user = await ensureSignedIn();
+
+To:
+
+  const user = (await safeCall(() => ensureSignedIn())) ?? null;
+
+If user is null, gracefully set:
+
+  set({ loading: false, isHydrated: true, profileReady: false });
+
+DO NOT touch onboarding logic.
+
+
+-----------------------------------------------------
+4) Add deviceId guarantee (rare edge case fix)
+-----------------------------------------------------
+
+Still in useUserStore.js:
+
+After const DEFAULT_AVATAR… locate loadDeviceId()
+
+Below loadDeviceId(), add:
+
+  // Ensure device_id always exists
+  if (!localStorage.getItem("device_id")) {
+    localStorage.setItem("device_id", crypto.randomUUID());
+  }
+
+
+-----------------------------------------------------
+5) Add a global error boundary for UI safety
+-----------------------------------------------------
+
+Create file:
+
+src/components/GlobalErrorBoundary.jsx
+
+Content:
+
+------------------------------------------------------
+import React from "react";
+
+export default class GlobalErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="screen" style={{ padding: "2rem", color: "white" }}>
+          <h2>Something went wrong</h2>
+          <p>Try refreshing the app.</p>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+------------------------------------------------------
+
+
+-----------------------------------------------------
+6) Wrap App.jsx with the error boundary
+-----------------------------------------------------
+
+Open: src/App.jsx
+
+At the top add:
+
+  import GlobalErrorBoundary from "./components/GlobalErrorBoundary.jsx";
+
+Wrap the return block:
+
+Change:
+
+  return (
+    <ErrorBoundary>
+      ...
+    </ErrorBoundary>
+  )
+
+To:
+
+  return (
+    <GlobalErrorBoundary>
+      <ErrorBoundary>
+        ...
+      </ErrorBoundary>
+    </GlobalErrorBoundary>
+  );
+
+
+-----------------------------------------------------
+7) Fix onboarding robustness (missing profile case)
+-----------------------------------------------------
+
+Inside init():
+
+After loading fullProfile, BEFORE set(), add:
+
+  if (!fullProfile) {
+    console.warn("[UserStore] Missing profile from cloud");
+    set({ loading: false, isHydrated: true, profileReady: false });
+    return;
+  }
+
+Do NOT change anything else in init().
+
+
+-----------------------------------------------------
+
+These changes should NOT affect existing logic. 
+They only handle missing data, offline mode, and error resilience.
+
+Save all files.
+-----------------------------------------------------
+

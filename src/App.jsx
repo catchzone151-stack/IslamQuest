@@ -3,6 +3,7 @@ import React, { useEffect, Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // ✅ Critical imports (loaded immediately)
+import GlobalErrorBoundary from "./components/GlobalErrorBoundary.jsx";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import BottomNav from "./components/BottomNav.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
@@ -422,10 +423,11 @@ export default function App() {
   }
 
   return (
-    <ErrorBoundary>
-      <DevModeBanner />
-      <OfflineConnectionBanner />
-      <ModalProvider>
+    <GlobalErrorBoundary>
+      <ErrorBoundary>
+        <DevModeBanner />
+        <OfflineConnectionBanner />
+        <ModalProvider>
         <BrowserRouter>
           <ScrollToTop />
           <div
@@ -620,6 +622,7 @@ export default function App() {
           <ModalRoot />
         </BrowserRouter>
       </ModalProvider>
-    </ErrorBoundary>
+      </ErrorBoundary>
+    </GlobalErrorBoundary>
   );
 }

@@ -10,6 +10,7 @@
 
 import { create } from "zustand";
 import { supabase } from "../lib/supabaseClient";
+import { safeCall } from "../lib/supabaseSafe";
 import { 
   ensureSignedIn, 
   checkProfileExists, 
@@ -30,6 +31,11 @@ function loadDeviceId() {
     localStorage.setItem("device_id", id);
   }
   return id;
+}
+
+// Ensure device_id always exists
+if (!localStorage.getItem("device_id")) {
+  localStorage.setItem("device_id", crypto.randomUUID());
 }
 
 // Check if onboarding was completed based on localStorage flag
@@ -82,7 +88,7 @@ export const useUserStore = create((set, get) => ({
     set({ loading: true });
 
     try {
-      const user = await ensureSignedIn();
+      const user = (await safeCall(() => ensureSignedIn())) ?? null;
 
       if (!user) {
         console.error("Silent auth failed");
@@ -110,6 +116,12 @@ export const useUserStore = create((set, get) => ({
 
       // Profile exists - load full data
       const fullProfile = await loadCloudProfile(user.id);
+
+      if (!fullProfile) {
+        console.warn("[UserStore] Missing profile from cloud");
+        set({ loading: false, isHydrated: true, profileReady: false });
+        return;
+      }
       
       // Determine if onboarding is complete
       const needsOnboarding = !isProfileComplete(fullProfile);
