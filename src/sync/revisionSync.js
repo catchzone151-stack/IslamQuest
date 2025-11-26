@@ -1,9 +1,6 @@
 import { supabase } from "../lib/supabaseClient.js";
 import {
-  normalizeLocalRevisionItem,
-  convertToCloudRow,
-  convertFromCloudRow,
-  validateRevisionItem
+  convertFromCloudRow
 } from "./revisionData.js";
 import { useReviseStore } from "../store/reviseStore.js";
 
@@ -21,11 +18,12 @@ export async function pullCloudRevision() {
   }
 
   console.log(`[RevisionSync] pullCloudRevision() fetched ${data.length} rows`);
-
   return data.map(convertFromCloudRow);
 }
 
-// Convert weakPool → cloud row shape (Option A)
+// ------------------------
+// Convert weakPool → cloud row shape
+// ------------------------
 function weakItemToCloudShape(item, userId) {
   return {
     user_id: userId,
@@ -46,19 +44,47 @@ function weakItemToCloudShape(item, userId) {
   };
 }
 
-// Push local weakPool to cloud (placeholder — Step 5 adds real logic)
+// ------------------------
+// Push local revision (weakPool) to cloud using UPSERT
+// ------------------------
 export async function pushLocalRevision() {
   console.log("[RevisionSync] pushLocalRevision() start");
 
   const state = useReviseStore.getState();
   const weakPool = state.getWeakPool();
-  console.log(`[RevisionSync] pushLocalRevision() local weakPool size: ${weakPool.length}`);
+  console.log(`[RevisionSync] weakPool size: ${weakPool.length}`);
 
-  // userId retrieved later in Step 5
-  console.log("[RevisionSync] pushLocalRevision() awaiting userId in Step 5");
+  // Get user id
+  const { data: userData } = await supabase.auth.getUser();
+  const userId = userData?.user?.id;
+
+  if (!userId) {
+    console.log("[RevisionSync] No user authenticated, abort push.");
+    return;
+  }
+
+  const rows = weakPool.map((item) => weakItemToCloudShape(item, userId));
+  console.log(`[RevisionSync] Prepared ${rows.length} rows for UPSERT`);
+
+  if (rows.length === 0) return;
+
+  const { error } = await supabase
+    .from("revision_items")
+    .upsert(rows, {
+      onConflict: "user_id,lesson_id,card_id",
+    });
+
+  if (error) {
+    console.log("[RevisionSync] UPSERT ERROR:", error);
+    return;
+  }
+
+  console.log("[RevisionSync] UPSERT successful");
 }
 
-// Merge logic (placeholder)
+// ------------------------
+// Merge logic placeholder
+// ------------------------
 export async function mergeRevisionData() {
   console.log("[RevisionSync] mergeRevisionData() placeholder called");
 }
