@@ -176,6 +176,14 @@ export const useProgressStore = create((set, get) => ({
     set({ vibrationEnabled: enabled });
     get().saveProgress();
   },
+
+  // Set streak shield from sync (cloud → local)
+  setStreakShieldFromSync: (data) => {
+    set({
+      shieldCount: data.shieldCount,
+      lastShieldUsed: data.lastUsed,
+    });
+  },
   
   // 🔒 Normalize locks based on lesson completion
   normalizeLocks: (lessonStates) => {

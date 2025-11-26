@@ -136,6 +136,18 @@ export const useDailyQuestStore = create((set, get) => ({
     localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
   },
 
+  // Set daily quest from sync (cloud → local)
+  setDailyQuestFromSync: (data) => {
+    set({
+      currentQuest: {
+        id: data.id,
+        completedAt: data.completedAt,
+        xpReward: data.xpReward,
+        streakBonus: data.streakBonus,
+      }
+    });
+  },
+
   // Check if Daily Quest is ready for today
   // If new day, generate fresh questions
   // Returns true if quest is available
