@@ -5,7 +5,9 @@ import {
   convertFromCloudRow,
   validateRevisionItem
 } from "./revisionData.js";
+import { useReviseStore } from "../store/reviseStore.js";
 
+// Pull ALL cloud revision rows
 export async function pullCloudRevision() {
   console.log("[RevisionSync] pullCloudRevision() start");
 
@@ -23,10 +25,40 @@ export async function pullCloudRevision() {
   return data.map(convertFromCloudRow);
 }
 
-export async function pushLocalRevision() {
-  console.log("[RevisionSync] pushLocalRevision() placeholder called");
+// Convert weakPool → cloud row shape (Option A)
+function weakItemToCloudShape(item, userId) {
+  return {
+    user_id: userId,
+    lesson_id: item.lessonId,
+    card_id: item.id,
+    strength: 0,
+    times_correct: 0,
+    times_wrong: 1,
+    last_reviewed_at: item.lastSeen,
+    next_review_at: null,
+    extra_data: {
+      question: item.question,
+      options: item.options,
+      answer: item.answer,
+      sourcePathId: item.sourcePathId
+    },
+    updated_at: new Date().toISOString()
+  };
 }
 
+// Push local weakPool to cloud (placeholder — Step 5 adds real logic)
+export async function pushLocalRevision() {
+  console.log("[RevisionSync] pushLocalRevision() start");
+
+  const state = useReviseStore.getState();
+  const weakPool = state.getWeakPool();
+  console.log(`[RevisionSync] pushLocalRevision() local weakPool size: ${weakPool.length}`);
+
+  // userId retrieved later in Step 5
+  console.log("[RevisionSync] pushLocalRevision() awaiting userId in Step 5");
+}
+
+// Merge logic (placeholder)
 export async function mergeRevisionData() {
   console.log("[RevisionSync] mergeRevisionData() placeholder called");
 }
