@@ -85,6 +85,12 @@ export const useReviseStore = create((set, get) => ({
     return get().weakPool;
   },
 
+  // Set weak pool directly (used by sync merge)
+  setWeakPool: (pool) => {
+    set({ weakPool: pool });
+    get().saveReviseData();
+  },
+
   // Remove question from weak pool (user mastered it)
   removeIfMastered: (questionId) => {
     const state = get();
