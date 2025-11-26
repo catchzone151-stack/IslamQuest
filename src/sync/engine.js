@@ -26,24 +26,28 @@ import {
 export async function syncOnAppOpen() {
   console.log("[SyncEngine] syncOnAppOpen()");
 
-  // 1. REVISION
-  const cloudRevision = await safeCall(() => pullCloudRevision(), []);
-  await mergeRevisionData(cloudRevision);
-  await pushLocalRevision();
+  try {
+    // 1. REVISION
+    const cloudRevision = await safeCall(() => pullCloudRevision(), []);
+    await mergeRevisionData(cloudRevision);
+    await safeCall(() => pushLocalRevision());
 
-  // 2. PROFILE
-  const cloudProfile = await safeCall(() => pullProfileFromCloud(), null);
-  mergeProfileData(cloudProfile);
-  await pushProfileToCloud();
+    // 2. PROFILE
+    const cloudProfile = await safeCall(() => pullProfileFromCloud(), null);
+    mergeProfileData(cloudProfile);
+    await safeCall(() => pushProfileToCloud());
 
-  // 3. DAILY QUEST
-  const cloudQuest = await safeCall(() => pullDailyQuestFromCloud(), null);
-  mergeDailyQuest(cloudQuest);
-  await pushDailyQuestToCloud();
+    // 3. DAILY QUEST
+    const cloudQuest = await safeCall(() => pullDailyQuestFromCloud(), null);
+    mergeDailyQuest(cloudQuest);
+    await safeCall(() => pushDailyQuestToCloud());
 
-  // 4. STREAK SHIELD
-  const cloudShield = await safeCall(() => pullStreakShieldFromCloud(), null);
-  mergeStreakShield(cloudShield);
+    // 4. STREAK SHIELD
+    const cloudShield = await safeCall(() => pullStreakShieldFromCloud(), null);
+    mergeStreakShield(cloudShield);
+  } catch (e) {
+    console.warn("[SyncEngine] syncOnAppOpen error:", e.message);
+  }
 
   console.log("[SyncEngine] syncOnAppOpen() complete");
 }
@@ -54,24 +58,28 @@ export async function syncOnAppOpen() {
 export async function syncOnForeground() {
   console.log("[SyncEngine] syncOnForeground()");
 
-  // REVISION
-  const cloudRevision = await safeCall(() => pullCloudRevision(), []);
-  await mergeRevisionData(cloudRevision);
-  await pushLocalRevision();
+  try {
+    // REVISION
+    const cloudRevision = await safeCall(() => pullCloudRevision(), []);
+    await mergeRevisionData(cloudRevision);
+    await safeCall(() => pushLocalRevision());
 
-  // PROFILE
-  const cloudProfile = await safeCall(() => pullProfileFromCloud(), null);
-  mergeProfileData(cloudProfile);
-  await pushProfileToCloud();
+    // PROFILE
+    const cloudProfile = await safeCall(() => pullProfileFromCloud(), null);
+    mergeProfileData(cloudProfile);
+    await safeCall(() => pushProfileToCloud());
 
-  // DAILY QUEST
-  const cloudQuest = await safeCall(() => pullDailyQuestFromCloud(), null);
-  mergeDailyQuest(cloudQuest);
-  await pushDailyQuestToCloud();
+    // DAILY QUEST
+    const cloudQuest = await safeCall(() => pullDailyQuestFromCloud(), null);
+    mergeDailyQuest(cloudQuest);
+    await safeCall(() => pushDailyQuestToCloud());
 
-  // STREAK SHIELD
-  const cloudShield = await safeCall(() => pullStreakShieldFromCloud(), null);
-  mergeStreakShield(cloudShield);
+    // STREAK SHIELD
+    const cloudShield = await safeCall(() => pullStreakShieldFromCloud(), null);
+    mergeStreakShield(cloudShield);
+  } catch (e) {
+    console.warn("[SyncEngine] syncOnForeground error:", e.message);
+  }
 
   console.log("[SyncEngine] syncOnForeground() complete");
 }
@@ -82,22 +90,26 @@ export async function syncOnForeground() {
 export async function syncAll() {
   console.log("[SyncEngine] syncAll()");
 
-  const cloudRevision = await safeCall(() => pullCloudRevision(), []);
-  await mergeRevisionData(cloudRevision);
-  await pushLocalRevision();
+  try {
+    const cloudRevision = await safeCall(() => pullCloudRevision(), []);
+    await mergeRevisionData(cloudRevision);
+    await safeCall(() => pushLocalRevision());
 
-  const cloudProfile = await safeCall(() => pullProfileFromCloud(), null);
-  mergeProfileData(cloudProfile);
-  await pushProfileToCloud();
+    const cloudProfile = await safeCall(() => pullProfileFromCloud(), null);
+    mergeProfileData(cloudProfile);
+    await safeCall(() => pushProfileToCloud());
 
-  // DAILY QUEST
-  const cloudQuest = await safeCall(() => pullDailyQuestFromCloud(), null);
-  mergeDailyQuest(cloudQuest);
-  await pushDailyQuestToCloud();
+    // DAILY QUEST
+    const cloudQuest = await safeCall(() => pullDailyQuestFromCloud(), null);
+    mergeDailyQuest(cloudQuest);
+    await safeCall(() => pushDailyQuestToCloud());
 
-  // STREAK SHIELD
-  const cloudShield = await safeCall(() => pullStreakShieldFromCloud(), null);
-  mergeStreakShield(cloudShield);
+    // STREAK SHIELD
+    const cloudShield = await safeCall(() => pullStreakShieldFromCloud(), null);
+    mergeStreakShield(cloudShield);
+  } catch (e) {
+    console.warn("[SyncEngine] syncAll error:", e.message);
+  }
 
   console.log("[SyncEngine] syncAll() complete");
 }
@@ -108,9 +120,13 @@ export async function syncAll() {
 export async function syncProfileOnly() {
   console.log("[SyncEngine] syncProfileOnly()");
 
-  const cloudProfile = await pullProfileFromCloud();
-  mergeProfileData(cloudProfile);
-  await pushProfileToCloud();
+  try {
+    const cloudProfile = await safeCall(() => pullProfileFromCloud(), null);
+    mergeProfileData(cloudProfile);
+    await safeCall(() => pushProfileToCloud());
+  } catch (e) {
+    console.warn("[SyncEngine] syncProfileOnly error:", e.message);
+  }
 
   console.log("[SyncEngine] syncProfileOnly() complete");
 }

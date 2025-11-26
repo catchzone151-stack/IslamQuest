@@ -179,9 +179,10 @@ export const useProgressStore = create((set, get) => ({
 
   // Set streak shield from sync (cloud → local)
   setStreakShieldFromSync: (data) => {
+    if (!data) return;
     set({
-      shieldCount: data.shieldCount,
-      lastShieldUsed: data.lastUsed,
+      shieldCount: data.shieldCount ?? 0,
+      lastShieldUsed: data.lastUsed ?? null,
     });
   },
   

@@ -117,10 +117,20 @@ export const useDailyQuestStore = create((set, get) => ({
 
   // Load from LocalStorage
   loadDailyQuest: () => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      const data = JSON.parse(saved);
-      set(data);
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const data = JSON.parse(saved);
+        set({
+          date: data.date || null,
+          questions: Array.isArray(data.questions) ? data.questions : [],
+          completed: Boolean(data.completed),
+          rewardGiven: Boolean(data.rewardGiven),
+        });
+      }
+    } catch (e) {
+      console.warn("[DailyQuestStore] loadDailyQuest error:", e.message);
+      set({ date: null, questions: [], completed: false, rewardGiven: false });
     }
   },
 
@@ -138,11 +148,29 @@ export const useDailyQuestStore = create((set, get) => ({
 
   // Set daily quest from sync (cloud → local)
   setDailyQuestFromSync: (data) => {
+    if (!data) return;
+    
+    let questions = [];
+    try {
+      if (data.questions) {
+        if (typeof data.questions === "string") {
+          questions = JSON.parse(data.questions);
+        } else if (Array.isArray(data.questions)) {
+          questions = data.questions;
+        }
+      }
+    } catch (e) {
+      console.warn("[DailyQuestStore] Failed to parse questions:", e.message);
+      questions = [];
+    }
+
+    if (!Array.isArray(questions)) questions = [];
+
     set({
-      date: data.quest_date,
-      questions: data.questions ? JSON.parse(data.questions) : [],
-      completed: data.completed || false,
-      rewardGiven: data.reward_given || false,
+      date: data.quest_date || null,
+      questions: questions,
+      completed: Boolean(data.completed),
+      rewardGiven: Boolean(data.reward_given),
     });
     get().saveDailyQuest();
   },

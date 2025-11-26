@@ -188,12 +188,13 @@ export const useUserStore = create((set, get) => ({
   // SET PROFILE FROM SYNC - Called by profileSync merge
   // --------------------------------------------------
   setProfileFromSync: (data) => {
+    if (!data) return;
     set({
-      xp: data.xp,
-      streak: data.streak,
-      lastStreakUpdate: data.lastStreakUpdate,
-      streakShield: data.streakShield,
-      lastXpGain: data.lastXpGain,
+      xp: data.xp ?? 0,
+      streak: data.streak ?? 0,
+      lastStreakUpdate: data.lastStreakUpdate ?? data.lastStreakDate ?? null,
+      streakShield: data.streakShield ?? data.shieldCount ?? 0,
+      lastXpGain: data.lastXpGain ?? null,
     });
   },
 

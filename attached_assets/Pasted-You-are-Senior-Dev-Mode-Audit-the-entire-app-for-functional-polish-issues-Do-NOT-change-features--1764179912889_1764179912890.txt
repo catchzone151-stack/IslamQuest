@@ -1,0 +1,134 @@
+You are Senior Dev Mode.
+Audit the entire app for functional polish issues.
+Do NOT change features — fix only stability, fallback, missing guards, error handling, and hydration flow.
+Make code changes ONLY if required for stability.
+
+🔍 TASK LIST — Fix ALL of these if needed:
+1. Error resilience
+
+Add safe guards everywhere:
+
+If Supabase fetch fails → return default fallback (never null that breaks UI)
+
+If push/insert/upsert fails → silently queue local changes (store flag: needsSync = true)
+
+If user has no internet → app should still load from device stores
+
+If daily quest missing questions → auto regenerate
+
+If revision items missing → initialize empty array
+
+If profile missing fields → apply defaults
+
+2. Prevent white screens
+
+Check every store:
+
+Must hydrate before used
+
+Must never return undefined
+
+UI must never render before hydration (wrap screens with: if (!isHydrated) return <Loading/>)
+
+App.jsx must guard routing (no onboarding → no access to main app)
+
+3. Crash-proof all sync modules
+
+For each file:
+
+src/sync/engine.js
+
+src/sync/profileSync.js
+
+src/sync/dailyQuestSync.js
+
+src/sync/revisionSync.js
+
+Add:
+
+try/catch around all Supabase calls
+
+console.warn instead of console.error for non-critical failures
+
+retry logic for pushes (1 retry max)
+
+If pull returns null → fallback to existing local store
+
+4. Supervise user flow
+
+Check all navigation guards:
+
+User must finish onboarding before accessing:
+
+Revise
+
+Friends
+
+Challenges
+
+Leaderboard
+
+User must finish lessons before accessing Revise
+
+If profile incomplete → force onboarding
+
+Fix any missing guards in:
+
+App.jsx
+
+router logic
+
+header buttons
+
+navigation actions
+
+5. Daily quest safety
+
+Daily quest must always have:
+
+date
+
+questions (array)
+
+completed flag
+
+rewardGiven flag
+
+regenerate if cloud returns invalid JSON or empty
+
+prevent duplicate rows (user_id + date unique)
+
+6. Revision safety
+
+reviseStore must never break if weakPool empty
+
+merging must always return arrays
+
+revision items missing fields get defaults
+
+never assume Supabase returns all fields
+
+7. Profile safety
+
+If streak/shields/xp missing → default to 0
+
+If avatar missing → DEFAULT_AVATAR
+
+If handle/username missing → prevent app crash
+
+⚠️ IMPORTANT RULES
+
+Do NOT redesign UI
+
+Do NOT remove any features
+
+Respect existing architecture
+
+Only fix stability + fallback logic
+
+Always generate full file replacements (my rule)
+
+Keep messaging short
+
+After changes, print:
+Functional polish complete.

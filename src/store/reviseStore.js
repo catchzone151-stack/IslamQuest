@@ -25,10 +25,16 @@ export const useReviseStore = create((set, get) => ({
 
   // Load from LocalStorage
   loadReviseData: () => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      const data = JSON.parse(saved);
-      set({ weakPool: data.weakPool || [] });
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const data = JSON.parse(saved);
+        const safePool = Array.isArray(data.weakPool) ? data.weakPool : [];
+        set({ weakPool: safePool });
+      }
+    } catch (e) {
+      console.warn("[ReviseStore] loadReviseData error:", e.message);
+      set({ weakPool: [] });
     }
   },
 
@@ -82,12 +88,14 @@ export const useReviseStore = create((set, get) => ({
 
   // Get weak question pool for revision
   getWeakPool: () => {
-    return get().weakPool;
+    const pool = get().weakPool;
+    return Array.isArray(pool) ? pool : [];
   },
 
   // Set weak pool directly (used by sync merge)
   setWeakPool: (pool) => {
-    set({ weakPool: pool });
+    const safePool = Array.isArray(pool) ? pool : [];
+    set({ weakPool: safePool });
     get().saveReviseData();
   },
 
