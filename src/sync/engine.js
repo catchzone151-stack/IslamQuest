@@ -10,6 +10,14 @@ import {
   mergeProfileData,
 } from "./profileSync.js";
 
+import {
+  pullDailyQuestFromCloud,
+  pullStreakShieldFromCloud,
+  pushDailyQuestToCloud,
+  mergeDailyQuest,
+  mergeStreakShield
+} from "./dailyQuestSync.js";
+
 // --------------------
 // SYNC ON APP OPEN
 // --------------------
@@ -25,6 +33,15 @@ export async function syncOnAppOpen() {
   const cloudProfile = await pullProfileFromCloud();
   mergeProfileData(cloudProfile);
   await pushProfileToCloud();
+
+  // 3. DAILY QUEST
+  const cloudQuest = await pullDailyQuestFromCloud();
+  mergeDailyQuest(cloudQuest);
+  await pushDailyQuestToCloud();
+
+  // 4. STREAK SHIELD
+  const cloudShield = await pullStreakShieldFromCloud();
+  mergeStreakShield(cloudShield);
 
   console.log("[SyncEngine] syncOnAppOpen() complete");
 }
@@ -45,6 +62,15 @@ export async function syncOnForeground() {
   mergeProfileData(cloudProfile);
   await pushProfileToCloud();
 
+  // DAILY QUEST
+  const cloudQuest = await pullDailyQuestFromCloud();
+  mergeDailyQuest(cloudQuest);
+  await pushDailyQuestToCloud();
+
+  // STREAK SHIELD
+  const cloudShield = await pullStreakShieldFromCloud();
+  mergeStreakShield(cloudShield);
+
   console.log("[SyncEngine] syncOnForeground() complete");
 }
 
@@ -61,6 +87,15 @@ export async function syncAll() {
   const cloudProfile = await pullProfileFromCloud();
   mergeProfileData(cloudProfile);
   await pushProfileToCloud();
+
+  // DAILY QUEST
+  const cloudQuest = await pullDailyQuestFromCloud();
+  mergeDailyQuest(cloudQuest);
+  await pushDailyQuestToCloud();
+
+  // STREAK SHIELD
+  const cloudShield = await pullStreakShieldFromCloud();
+  mergeStreakShield(cloudShield);
 
   console.log("[SyncEngine] syncAll() complete");
 }
