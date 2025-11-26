@@ -18,6 +18,8 @@ import { preloadAllAssets } from "./utils/imagePreloader";
 import { useModalStore, MODAL_TYPES } from "./store/modalStore";
 import { supabase, ensureSignedIn } from "./lib/supabaseClient";
 import { getDeviceFingerprint } from "./lib/deviceFingerprint";
+import { syncOnAppOpen, syncOnForeground } from "./sync/engine.js";
+
 
 // ✅ Onboarding screens (loaded immediately for first-time users)
 import BismillahScreen from "./onboarding/BismillahScreen.jsx";
@@ -381,6 +383,23 @@ export default function App() {
     // Cleanup
     return () => {
       window.removeEventListener("popstate", handleBackButton);
+    };
+  }, []);
+  
+  // 🔄 SYNC ENGINE LIFECYCLE HOOKS
+  useEffect(() => {
+    // Sync on app open
+    syncOnAppOpen();
+
+    // Sync when app/tab regains focus
+    const handleFocus = () => {
+      syncOnForeground();
+    };
+
+    window.addEventListener("focus", handleFocus);
+
+    return () => {
+      window.removeEventListener("focus", handleFocus);
     };
   }, []);
 
