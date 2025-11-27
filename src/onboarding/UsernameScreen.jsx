@@ -43,27 +43,6 @@ export default function UsernameScreen() {
       console.log("Handle check skipped (DB not ready)");
     }
 
-    // Check if username (display name) already taken (excluding own profile)
-    if (name) {
-      try {
-        const { data, error: err } = await supabase
-          .from("profiles")
-          .select("username, user_id")
-          .eq("username", name.trim());
-
-        if (!err && data && data.length > 0) {
-          const otherUser = data.find(d => d.user_id !== uid);
-          if (otherUser) {
-            setError(`Display name "${name}" is already taken. Please go back and choose a different name.`);
-            setChecking(false);
-            return;
-          }
-        }
-      } catch (e) {
-        console.log("Username check skipped (DB not ready)");
-      }
-    }
-
     // Set local state - both handle and username (display name)
     setHandle(handleValue);
     if (name) {
