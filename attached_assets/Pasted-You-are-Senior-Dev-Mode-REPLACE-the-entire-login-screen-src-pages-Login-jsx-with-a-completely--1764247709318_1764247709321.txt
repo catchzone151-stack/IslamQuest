@@ -1,0 +1,78 @@
+You are Senior Dev Mode.
+
+REPLACE the entire login screen (src/pages/Login.jsx) with a completely new UI that matches the IslamQuest theme.
+
+REQUIREMENTS:
+
+GENERAL STYLE:
+- Full-screen centered layout
+- Gradient background from deep navy (#030614) to indigo (#0a0f1e)
+- White card container with rounded-2xl and soft shadow
+- IslamQuest mascot above the card (use /src/assets/mascots/mascot_zayd_happy.webp)
+- Title: "Welcome Back"
+- Subtitle: "Sign in to continue your journey"
+
+INPUT FIELDS:
+- Two fields: Email and Password
+- Use consistent styling with the rest of the app:
+    rounded-xl
+    background: var(--card-bg)
+    border: 1px solid var(--border)
+    text color: var(--text)
+    placeholder: rgba(255,255,255,0.4)
+    padding: 14px 16px
+- Password field must have "show/hide" toggle icon.
+
+BUTTON:
+- “Sign In” button
+- Purple/blue gradient: from var(--accent) to var(--accent-glow)
+- Rounded-xl, height: 50px, full width
+- Disabled state when loading
+
+ERROR HANDLING:
+- If login fails → show small red error text under fields:
+    “Invalid email or password”
+- Also shake the card slightly using a micro animation.
+
+SUCCESS:
+- After successful sign-in:
+    → Immediately call useUserStore.getState().init()
+    → Then navigate to "/home" (or "/" if that’s your main)
+
+FORGOT PASSWORD LINK:
+- Under the button: “Forgot Password?”
+- Clicking it:
+    - Shows a modal with an email input
+    - User enters email → send Supabase password reset email:
+        supabase.auth.resetPasswordForEmail(email)
+    - Show success toast:
+        “A reset link has been sent to your email.”
+
+SUPABASE LOGIC:
+- Use supabase.auth.signInWithPassword({ email, password })
+- If error → show error in UI
+- If success → proceed to home
+
+FILE CHANGES:
+
+1. Replace src/pages/Login.jsx with:
+    - New component: full layout, card, mascot, inputs, reset modal
+    - Handles all logic above
+
+2. Create new small component:
+    src/components/ForgotPasswordModal.jsx
+    - Contains email input + “Send reset link” button
+    - On success close + toast message
+
+3. Ensure the router still sends users to Login.jsx when not authenticated.
+
+4. Keep all logic consistent with existing silentAuth + profile init.
+
+END GOAL:
+- Beautiful themed login screen
+- Fully functional sign-in
+- Forgot password flow working with Supabase
+- Error/success UX polished
+- No change to onboarding, lessons, or profile creation.
+
+Apply all changes, rebuild, and ensure login works end-to-end.
