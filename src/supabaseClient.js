@@ -1,1 +1,1 @@
-export { supabase } from "./lib/supabaseClient.js";
+export { supabase, ensureSignedIn, getUID, logoutUser } from "./lib/supabaseClient.js";
