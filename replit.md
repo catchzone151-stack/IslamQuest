@@ -46,7 +46,13 @@ The premium model offers free tier limits (0-3 free lessons depending on the pat
 - Boss Level locked at level >= 8 only (no premium/lesson requirements)
 - Winner determination uses 'current_user' sentinel for challenger ID
 
-**Review Mistakes System (Nov 2025)**: When users answer incorrectly in lesson quizzes (`QuizScreen.jsx`), the question is saved via `saveWrongQuestion()` from `reviseStore`. This automatically unlocks the "Review Mistakes" mode in the Revise tab after the first wrong answer. The weakPool stores all missed questions with source path/lesson info for targeted revision.
+**Revision System (Nov 2025 Refactor)**: The reviseStore uses a lightweight data structure that only stores cardId, lessonId, and tracking counts (timesWrong, timesCorrect, lastReviewedAt, updatedAt) - NOT full question content. Question content is looked up at render time via `getQuizForLesson()` using the cardId format `${pathId}_${lessonId}_${questionIndex}`. Key functions:
+- `saveWrongQuestion(cardId, lessonId)` - Called when user answers incorrectly in QuizScreen
+- `clearCorrectQuestion(cardId, lessonId)` - Called when user answers correctly in Revise mode
+- `getWeakPool()` - Returns array of weak question references
+- Revise.jsx uses `enrichWeakPool()` to hydrate cardIds with full question data from quizEngine
+- Cloud sync via `revisionSync.js` with `convertToCloudRow()`/`convertFromCloudRow()` in `revisionData.js`
+- Supabase table `revision_items` requires unique constraint on `(user_id, lesson_id, card_id)`
 
 **Events System (Phase 6)**: Global Events load cloud entries on mount via `loadMyEntries`. Event quiz submissions pass completion time to `enterEventCloud` for tiebreaker rankings. The 75% pass threshold applies to all quizzes, daily quests, boss level, and global events.
 

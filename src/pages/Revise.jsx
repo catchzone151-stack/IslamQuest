@@ -1,44 +1,136 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import ScreenContainer from "../components/ScreenContainer";
 import { useReviseStore } from "../store/reviseStore";
 import { useProgressStore } from "../store/progressStore";
 import { useAnalytics } from "../hooks/useAnalytics";
+import { getQuizForLesson } from "../data/quizEngine";
 import QuestionCard from "../components/quiz/QuestionCard";
 import assets from "../assets/assets";
 
+function parseCardId(cardId) {
+  if (!cardId || typeof cardId !== "string") return null;
+  const parts = cardId.split("_");
+  if (parts.length < 3) return null;
+  const pathId = parseInt(parts[0], 10);
+  const lessonId = parseInt(parts[1], 10);
+  const questionIndex = parseInt(parts[2], 10);
+  if (isNaN(pathId) || isNaN(lessonId) || isNaN(questionIndex)) return null;
+  return { pathId, lessonId, questionIndex };
+}
+
+function lookupQuestion(cardId, lessonId) {
+  const parsed = parseCardId(cardId);
+  if (!parsed) return null;
+  
+  const questions = getQuizForLesson(parsed.lessonId, parsed.pathId);
+  if (!questions || !Array.isArray(questions)) return null;
+  
+  const q = questions[parsed.questionIndex];
+  if (!q) return null;
+  
+  return {
+    id: cardId,
+    cardId,
+    lessonId,
+    question: q.text || q.question,
+    options: q.options,
+    answer: q.correctIndex !== undefined ? q.correctIndex : q.answer,
+    pathId: parsed.pathId,
+    questionIndex: parsed.questionIndex,
+  };
+}
+
+function enrichWeakPool(weakPool) {
+  return weakPool
+    .map((item) => {
+      const enriched = lookupQuestion(item.cardId, item.lessonId);
+      if (!enriched) return null;
+      return {
+        ...enriched,
+        timesWrong: item.timesWrong || 0,
+        timesCorrect: item.timesCorrect || 0,
+        lastReviewedAt: item.lastReviewedAt,
+      };
+    })
+    .filter(Boolean);
+}
+
+function shuffle(array) {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 export default function Revise() {
-  const [mode, setMode] = useState(null); // null | "mistakes" | "smart"
+  const [mode, setMode] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [currentQ, setCurrentQ] = useState(0);
   const [selected, setSelected] = useState(null);
   const [answers, setAnswers] = useState([]);
   const [showResults, setShowResults] = useState(false);
 
-  const {
-    loadReviseData,
-    getWeakPool,
-    getRevisionSession,
-    getSmartRevisionPack,
-    removeIfMastered,
-    updateLastSeen,
-  } = useReviseStore();
-
-  const { addXPAndCoins, reviewMistakesUnlocked, smartRevisionUnlocked } = useProgressStore();
+  const { loadReviseData, getWeakPool, clearCorrectQuestion, saveWrongQuestion } = useReviseStore();
+  const { addXPAndCoins, reviewMistakesUnlocked, smartRevisionUnlocked, getTotalCompletedLessons, paths } = useProgressStore();
   const analytics = useAnalytics();
 
-  // Load revise data on mount
   useEffect(() => {
     loadReviseData();
   }, [loadReviseData]);
 
   const weakPool = getWeakPool();
-  const hasWeakQuestions = weakPool.length > 0;
+  const enrichedPool = useMemo(() => enrichWeakPool(weakPool), [weakPool]);
+  const hasWeakQuestions = enrichedPool.length > 0;
 
-  // Start Review Mistakes session
+  const getRevisionSession = (count = 10) => {
+    if (enrichedPool.length === 0) return [];
+    const sorted = [...enrichedPool].sort((a, b) => (b.timesWrong || 0) - (a.timesWrong || 0));
+    return shuffle(sorted.slice(0, count));
+  };
+
+  const getWeakestPath = () => {
+    if (enrichedPool.length === 0) return null;
+    
+    const pathStats = {};
+    enrichedPool.forEach((q) => {
+      if (!pathStats[q.pathId]) {
+        pathStats[q.pathId] = { pathId: q.pathId, wrongCount: 0, questions: [] };
+      }
+      pathStats[q.pathId].wrongCount += q.timesWrong || 0;
+      pathStats[q.pathId].questions.push(q);
+    });
+
+    let weakest = null;
+    Object.values(pathStats).forEach((stat) => {
+      if (!weakest || stat.wrongCount > weakest.wrongCount) {
+        weakest = stat;
+      }
+    });
+
+    if (!weakest) return null;
+
+    const pathInfo = paths?.find((p) => p.id === weakest.pathId);
+    return {
+      pathId: weakest.pathId,
+      title: pathInfo?.title || `Path ${weakest.pathId}`,
+      totalQuestions: weakest.questions.length,
+      wrongQuestions: weakest.wrongCount,
+      completedLessons: pathInfo?.completedLessons || 0,
+      questions: weakest.questions,
+    };
+  };
+
+  const getSmartRevisionPack = () => {
+    const weakestPath = getWeakestPath();
+    if (!weakestPath || weakestPath.questions.length === 0) return [];
+    return shuffle(weakestPath.questions).slice(0, 8);
+  };
+
   const startMistakesReview = () => {
     const session = getRevisionSession(10);
     if (session.length === 0) return;
-
     setQuestions(session);
     setMode("mistakes");
     setCurrentQ(0);
@@ -47,11 +139,9 @@ export default function Revise() {
     setShowResults(false);
   };
 
-  // Start Smart Revision session
   const startSmartRevision = () => {
     const pack = getSmartRevisionPack();
     if (pack.length === 0) return;
-
     setQuestions(pack);
     setMode("smart");
     setCurrentQ(0);
@@ -60,7 +150,6 @@ export default function Revise() {
     setShowResults(false);
   };
 
-  // Handle answer selection
   const handleSelect = (index) => {
     if (selected !== null) return;
 
@@ -68,7 +157,7 @@ export default function Revise() {
     const isCorrect = index === question.answer;
 
     setSelected(index);
-    const newAnswers = [...answers, { questionId: question.id, correct: isCorrect }];
+    const newAnswers = [...answers, { cardId: question.cardId, lessonId: question.lessonId, correct: isCorrect }];
     setAnswers(newAnswers);
 
     setTimeout(() => {
@@ -81,24 +170,19 @@ export default function Revise() {
     }, 1200);
   };
 
-  // Finish revision session
   const finishSession = (finalAnswers) => {
     const correctCount = finalAnswers.filter((a) => a.correct).length;
     const totalQuestions = questions.length;
 
-    // Process mistakes mode: remove mastered, update wrong again
     if (mode === "mistakes") {
       finalAnswers.forEach((ans) => {
         if (ans.correct) {
-          // User got it right - remove from weak pool
-          removeIfMastered(ans.questionId);
+          clearCorrectQuestion(ans.cardId, ans.lessonId);
         } else {
-          // User got it wrong again - update timestamp
-          updateLastSeen(ans.questionId);
+          saveWrongQuestion(ans.cardId, ans.lessonId);
         }
       });
 
-      // Rewards for mistakes mode
       const xpPerCorrect = 4;
       const xpEarned = correctCount * xpPerCorrect;
       const bonusXP = correctCount === totalQuestions ? 10 : 0;
@@ -106,31 +190,29 @@ export default function Revise() {
 
       if (totalXP > 0) {
         addXPAndCoins(totalXP, 0);
-        analytics('revision_completed', {
-          mode: 'mistakes',
+        analytics("revision_completed", {
+          mode: "mistakes",
           score: correctCount,
           total: totalQuestions,
-          xpEarned: totalXP
+          xpEarned: totalXP,
         });
       }
     } else if (mode === "smart") {
-      // Rewards for smart mode
       const xp = 25;
       const coins = 10;
       addXPAndCoins(xp, coins);
-      analytics('revision_completed', {
-        mode: 'smart',
+      analytics("revision_completed", {
+        mode: "smart",
         score: correctCount,
         total: totalQuestions,
         xpEarned: xp,
-        coinsEarned: coins
+        coinsEarned: coins,
       });
     }
 
     setShowResults(true);
   };
 
-  // Go back to main menu
   const goBack = () => {
     setMode(null);
     setQuestions([]);
@@ -140,9 +222,6 @@ export default function Revise() {
     setShowResults(false);
   };
 
-  // ============================================
-  // RESULTS SCREEN
-  // ============================================
   if (showResults) {
     const correctCount = answers.filter((a) => a.correct).length;
     const totalQuestions = questions.length;
@@ -153,9 +232,7 @@ export default function Revise() {
 
     if (mode === "mistakes") {
       rewardXP = correctCount * 4;
-      if (correctCount === totalQuestions) {
-        rewardXP += 10; // Perfect score bonus
-      }
+      if (correctCount === totalQuestions) rewardXP += 10;
     } else if (mode === "smart") {
       rewardXP = 25;
       rewardCoins = 10;
@@ -185,18 +262,17 @@ export default function Revise() {
             boxShadow: "0 10px 40px rgba(212, 175, 55, 0.3)",
           }}
         >
-          {/* Mascot */}
-          <img 
-            src={passed ? assets.mascots.mascot_congratulation : assets.mascots.mascot_sitting_v2} 
+          <img
+            src={passed ? assets.mascots.mascot_congratulation : assets.mascots.mascot_sitting_v2}
             alt="Mascot"
             style={{
               width: "100px",
               height: "auto",
               margin: "0 auto 20px",
-              animation: "bounce 1.5s infinite"
+              animation: "bounce 1.5s infinite",
             }}
           />
-          
+
           <style>{`
             @keyframes bounce {
               0%, 100% { transform: translateY(0); }
@@ -212,7 +288,7 @@ export default function Revise() {
               marginBottom: "20px",
             }}
           >
-            {passed ? "Great Work! 🎉" : "Keep Learning! 💪"}
+            {passed ? "Great Work!" : "Keep Learning!"}
           </h1>
 
           <div
@@ -235,44 +311,25 @@ export default function Revise() {
                 marginBottom: "20px",
               }}
             >
-              <p
-                style={{
-                  fontSize: "1.1rem",
-                  color: "#10B981",
-                  fontWeight: 600,
-                  margin: "0 0 10px",
-                }}
-              >
+              <p style={{ fontSize: "1.1rem", color: "#10B981", fontWeight: 600, margin: "0 0 10px" }}>
                 Rewards Earned!
               </p>
               <div style={{ fontSize: "1.5rem", color: "#D4AF37" }}>
                 +{rewardXP} XP
-                {rewardCoins > 0 && ` • +${rewardCoins} Coins`}
+                {rewardCoins > 0 && ` +${rewardCoins} Coins`}
               </div>
             </div>
           )}
 
           {mode === "mistakes" && correctCount === totalQuestions && (
-            <p
-              style={{
-                color: "#10B981",
-                fontWeight: 600,
-                marginBottom: "20px",
-              }}
-            >
-              🎯 Perfect Score Bonus: +10 XP
+            <p style={{ color: "#10B981", fontWeight: 600, marginBottom: "20px" }}>
+              Perfect Score Bonus: +10 XP
             </p>
           )}
 
-          {mode === "mistakes" && (
-            <p
-              style={{
-                opacity: 0.8,
-                marginBottom: "20px",
-                fontSize: "0.95rem",
-              }}
-            >
-              {correctCount > 0 && `${correctCount} question${correctCount > 1 ? 's' : ''} removed from weak pool!`}
+          {mode === "mistakes" && correctCount > 0 && (
+            <p style={{ opacity: 0.8, marginBottom: "20px", fontSize: "0.95rem" }}>
+              {correctCount} question{correctCount > 1 ? "s" : ""} improved!
             </p>
           )}
 
@@ -290,14 +347,6 @@ export default function Revise() {
               color: "#0B1E2D",
               transition: "all 0.2s",
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = "#FFD700";
-              e.currentTarget.style.transform = "scale(1.05)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = "#D4AF37";
-              e.currentTarget.style.transform = "scale(1)";
-            }}
           >
             Back to Revise
           </button>
@@ -306,9 +355,6 @@ export default function Revise() {
     );
   }
 
-  // ============================================
-  // QUIZ SCREEN
-  // ============================================
   if (mode && questions.length > 0) {
     const currentQuestion = {
       text: questions[currentQ].question,
@@ -329,36 +375,17 @@ export default function Revise() {
         }}
       >
         <div style={{ width: "100%", maxWidth: "600px" }}>
-          <div
-            style={{
-              textAlign: "center",
-              marginBottom: "30px",
-            }}
-          >
-            <h2
-              style={{
-                fontSize: "1.5rem",
-                color: "#D4AF37",
-                marginBottom: "10px",
-              }}
-            >
+          <div style={{ textAlign: "center", marginBottom: "30px" }}>
+            <h2 style={{ fontSize: "1.5rem", color: "#D4AF37", marginBottom: "10px" }}>
               {mode === "mistakes" ? "Review Mistakes" : "Smart Revision"}
             </h2>
             <p style={{ opacity: 0.8, fontSize: "0.9rem" }}>
-              {mode === "mistakes"
-                ? "Master your weak areas"
-                : "Strengthen your weakest path"}
+              {mode === "mistakes" ? "Master your weak areas" : "Strengthen your weakest path"}
             </p>
-            
-            {/* Thinking Mascot */}
-            <img 
-              src={assets.mascots.mascot_pointing_v2} 
+            <img
+              src={assets.mascots.mascot_pointing_v2}
               alt="Mascot"
-              style={{
-                width: "80px",
-                height: "auto",
-                margin: "20px auto 0"
-              }}
+              style={{ width: "80px", height: "auto", margin: "20px auto 0" }}
             />
           </div>
 
@@ -374,13 +401,14 @@ export default function Revise() {
     );
   }
 
-  // ============================================
-  // MAIN MENU
-  // ============================================
+  const weakestPath = getWeakestPath();
+  const hasWeakestPath = weakestPath !== null && weakestPath.totalQuestions > 0;
+  const totalCompleted = getTotalCompletedLessons();
+  const isSmartActive = smartRevisionUnlocked && hasWeakestPath;
+
   return (
     <ScreenContainer>
       <div style={{ position: "relative", padding: "20px 20px 40px" }}>
-        {/* Title */}
         <div style={{ textAlign: "center", marginTop: "20px", marginBottom: "30px" }}>
           <h1
             style={{
@@ -397,84 +425,52 @@ export default function Revise() {
             Revise & Master
           </h1>
           <p style={{ opacity: 0.9, marginTop: 8, fontSize: "0.95rem" }}>
-            Turn your mistakes into mastery 📘
+            Turn your mistakes into mastery
           </p>
         </div>
 
-        {/* Review Mistakes Card */}
         <div
           onClick={reviewMistakesUnlocked && hasWeakQuestions ? startMistakesReview : null}
           style={{
-            background: reviewMistakesUnlocked && hasWeakQuestions
-              ? "linear-gradient(145deg, rgba(212,175,55,0.2), rgba(16,185,129,0.1))"
-              : "linear-gradient(145deg, rgba(107,114,128,0.2), rgba(75,85,99,0.1))",
+            background:
+              reviewMistakesUnlocked && hasWeakQuestions
+                ? "linear-gradient(145deg, rgba(212,175,55,0.2), rgba(16,185,129,0.1))"
+                : "linear-gradient(145deg, rgba(107,114,128,0.2), rgba(75,85,99,0.1))",
             border: `2px solid ${reviewMistakesUnlocked && hasWeakQuestions ? "rgba(212,175,55,0.5)" : "rgba(107,114,128,0.3)"}`,
             borderRadius: 20,
             padding: 24,
             marginBottom: 20,
             cursor: reviewMistakesUnlocked && hasWeakQuestions ? "pointer" : "not-allowed",
             transition: "all 0.3s ease",
-            boxShadow: reviewMistakesUnlocked && hasWeakQuestions
-              ? "0 8px 20px rgba(212,175,55,0.2)"
-              : "0 4px 10px rgba(0,0,0,0.1)",
+            boxShadow:
+              reviewMistakesUnlocked && hasWeakQuestions
+                ? "0 8px 20px rgba(212,175,55,0.2)"
+                : "0 4px 10px rgba(0,0,0,0.1)",
             opacity: reviewMistakesUnlocked && hasWeakQuestions ? 1 : 0.6,
-          }}
-          onMouseEnter={(e) => {
-            if (reviewMistakesUnlocked && hasWeakQuestions) {
-              e.currentTarget.style.transform = "scale(1.02)";
-              e.currentTarget.style.boxShadow = "0 12px 30px rgba(212,175,55,0.3)";
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (reviewMistakesUnlocked && hasWeakQuestions) {
-              e.currentTarget.style.transform = "scale(1)";
-              e.currentTarget.style.boxShadow = "0 8px 20px rgba(212,175,55,0.2)";
-            }
           }}
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
-              <h3
-                style={{
-                  fontSize: "1.3rem",
-                  fontWeight: 700,
-                  color: "#D4AF37",
-                  margin: "0 0 8px",
-                }}
-              >
-                Review Mistakes 🎯
+              <h3 style={{ fontSize: "1.3rem", fontWeight: 700, color: "#D4AF37", margin: "0 0 8px" }}>
+                Review Mistakes
               </h3>
-              <p
-                style={{
-                  opacity: 0.85,
-                  margin: "0 0 12px",
-                  fontSize: "0.9rem",
-                  lineHeight: 1.5,
-                }}
-              >
+              <p style={{ opacity: 0.85, margin: "0 0 12px", fontSize: "0.9rem", lineHeight: 1.5 }}>
                 Fix mistakes from past lessons, quizzes, and challenges.
               </p>
-              <div
-                style={{
-                  display: "flex",
-                  gap: 10,
-                  flexWrap: "wrap",
-                  fontSize: "0.85rem",
-                  opacity: 0.7,
-                }}
-              >
-                <span>📝 10 questions</span>
-                <span>•</span>
-                <span>⏱️ No timer</span>
-                <span>•</span>
-                <span>✨ +4 XP per correct</span>
+              <div style={{ display: "flex", gap: 10, flexWrap: "wrap", fontSize: "0.85rem", opacity: 0.7 }}>
+                <span>10 questions</span>
+                <span>|</span>
+                <span>No timer</span>
+                <span>|</span>
+                <span>+4 XP per correct</span>
               </div>
             </div>
             <div
               style={{
-                background: reviewMistakesUnlocked && hasWeakQuestions
-                  ? "rgba(212,175,55,0.2)"
-                  : "rgba(107,114,128,0.2)",
+                background:
+                  reviewMistakesUnlocked && hasWeakQuestions
+                    ? "rgba(212,175,55,0.2)"
+                    : "rgba(107,114,128,0.2)",
                 borderRadius: "50%",
                 width: 60,
                 height: 60,
@@ -485,7 +481,7 @@ export default function Revise() {
                 flexShrink: 0,
               }}
             >
-              {reviewMistakesUnlocked && hasWeakQuestions ? weakPool.length : "🔒"}
+              {reviewMistakesUnlocked && hasWeakQuestions ? enrichedPool.length : "?"}
             </div>
           </div>
 
@@ -500,10 +496,10 @@ export default function Revise() {
                 opacity: 0.8,
               }}
             >
-              💡 Get your first question wrong in any quiz to unlock this feature!
+              Get your first question wrong in any quiz to unlock this feature!
             </div>
           )}
-          
+
           {reviewMistakesUnlocked && !hasWeakQuestions && (
             <div
               style={{
@@ -515,13 +511,104 @@ export default function Revise() {
                 opacity: 0.8,
               }}
             >
-              🎉 No mistakes to review! You've mastered all your weak areas!
+              No mistakes to review! You've mastered all your weak areas!
             </div>
           )}
         </div>
 
-        {/* Smart Revision Card */}
-        <SmartRevisionCard onStart={startSmartRevision} />
+        <div
+          onClick={isSmartActive ? startSmartRevision : null}
+          style={{
+            background: isSmartActive
+              ? "linear-gradient(145deg, rgba(59,130,246,0.2), rgba(147,51,234,0.1))"
+              : "linear-gradient(145deg, rgba(107,114,128,0.2), rgba(75,85,99,0.1))",
+            border: `2px solid ${isSmartActive ? "rgba(59,130,246,0.5)" : "rgba(107,114,128,0.3)"}`,
+            borderRadius: 20,
+            padding: 24,
+            cursor: isSmartActive ? "pointer" : "not-allowed",
+            transition: "all 0.3s ease",
+            boxShadow: isSmartActive ? "0 8px 20px rgba(59,130,246,0.2)" : "0 4px 10px rgba(0,0,0,0.1)",
+            opacity: isSmartActive ? 1 : 0.6,
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div>
+              <h3 style={{ fontSize: "1.3rem", fontWeight: 700, color: isSmartActive ? "#3B82F6" : "#9CA3AF", margin: "0 0 8px" }}>
+                Smart Revision
+              </h3>
+              <p style={{ opacity: 0.85, margin: "0 0 12px", fontSize: "0.9rem", lineHeight: 1.5 }}>
+                {isSmartActive ? `Revise your weakest topic: ${weakestPath.title}` : "Revise your weakest topics intelligently."}
+              </p>
+              <div style={{ display: "flex", gap: 10, flexWrap: "wrap", fontSize: "0.85rem", opacity: 0.7 }}>
+                <span>8 questions</span>
+                <span>|</span>
+                <span>No timer</span>
+                <span>|</span>
+                <span>+25 XP +10 Coins</span>
+              </div>
+            </div>
+            <div
+              style={{
+                background: isSmartActive ? "rgba(59,130,246,0.2)" : "rgba(107,114,128,0.2)",
+                borderRadius: "50%",
+                width: 60,
+                height: 60,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "1.8rem",
+                flexShrink: 0,
+              }}
+            >
+              {isSmartActive ? "+" : "?"}
+            </div>
+          </div>
+
+          {isSmartActive && weakestPath.wrongQuestions > 0 && (
+            <div
+              style={{
+                marginTop: 15,
+                padding: 12,
+                background: "rgba(59,130,246,0.1)",
+                borderRadius: 10,
+                fontSize: "0.85rem",
+                opacity: 0.9,
+              }}
+            >
+              {weakestPath.wrongQuestions} mistakes found | {weakestPath.completedLessons} lessons completed
+            </div>
+          )}
+
+          {!smartRevisionUnlocked && (
+            <div
+              style={{
+                marginTop: 15,
+                padding: 12,
+                background: "rgba(255,255,255,0.05)",
+                borderRadius: 10,
+                fontSize: "0.85rem",
+                opacity: 0.8,
+              }}
+            >
+              Complete 40 lessons to unlock Smart Revision! ({totalCompleted}/40)
+            </div>
+          )}
+
+          {smartRevisionUnlocked && !hasWeakestPath && (
+            <div
+              style={{
+                marginTop: 15,
+                padding: 12,
+                background: "rgba(255,255,255,0.05)",
+                borderRadius: 10,
+                fontSize: "0.85rem",
+                opacity: 0.8,
+              }}
+            >
+              Keep learning! Complete more lessons to build your revision pack.
+            </div>
+          )}
+        </div>
       </div>
 
       <style>
@@ -533,154 +620,5 @@ export default function Revise() {
         `}
       </style>
     </ScreenContainer>
-  );
-}
-
-// ============================================
-// SMART REVISION CARD COMPONENT
-// ============================================
-function SmartRevisionCard({ onStart }) {
-  const { getWeakestPath } = useReviseStore();
-  const { smartRevisionUnlocked, getTotalCompletedLessons } = useProgressStore();
-  const weakestPath = getWeakestPath();
-
-  const hasWeakestPath = weakestPath !== null && weakestPath.totalQuestions > 0;
-  const totalCompleted = getTotalCompletedLessons();
-  const isActive = smartRevisionUnlocked && hasWeakestPath;
-
-  return (
-    <div
-      onClick={isActive ? onStart : null}
-      style={{
-        background: isActive
-          ? "linear-gradient(145deg, rgba(59,130,246,0.2), rgba(147,51,234,0.1))"
-          : "linear-gradient(145deg, rgba(107,114,128,0.2), rgba(75,85,99,0.1))",
-        border: `2px solid ${isActive ? "rgba(59,130,246,0.5)" : "rgba(107,114,128,0.3)"}`,
-        borderRadius: 20,
-        padding: 24,
-        cursor: isActive ? "pointer" : "not-allowed",
-        transition: "all 0.3s ease",
-        boxShadow: isActive
-          ? "0 8px 20px rgba(59,130,246,0.2)"
-          : "0 4px 10px rgba(0,0,0,0.1)",
-        opacity: isActive ? 1 : 0.6,
-      }}
-      onMouseEnter={(e) => {
-        if (isActive) {
-          e.currentTarget.style.transform = "scale(1.02)";
-          e.currentTarget.style.boxShadow = "0 12px 30px rgba(59,130,246,0.3)";
-        }
-      }}
-      onMouseLeave={(e) => {
-        if (isActive) {
-          e.currentTarget.style.transform = "scale(1)";
-          e.currentTarget.style.boxShadow = "0 8px 20px rgba(59,130,246,0.2)";
-        }
-      }}
-    >
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <div>
-          <h3
-            style={{
-              fontSize: "1.3rem",
-              fontWeight: 700,
-              color: isActive ? "#3B82F6" : "#9CA3AF",
-              margin: "0 0 8px",
-            }}
-          >
-            Smart Revision 🧠
-          </h3>
-          <p
-            style={{
-              opacity: 0.85,
-              margin: "0 0 12px",
-              fontSize: "0.9rem",
-              lineHeight: 1.5,
-            }}
-          >
-            {isActive
-              ? `Revise your weakest topic: ${weakestPath.title}`
-              : "Revise your weakest topics intelligently."}
-          </p>
-          <div
-            style={{
-              display: "flex",
-              gap: 10,
-              flexWrap: "wrap",
-              fontSize: "0.85rem",
-              opacity: 0.7,
-            }}
-          >
-            <span>📝 8 questions</span>
-            <span>•</span>
-            <span>⏱️ No timer</span>
-            <span>•</span>
-            <span>✨ +25 XP +10 Coins</span>
-          </div>
-        </div>
-        <div
-          style={{
-            background: isActive
-              ? "rgba(59,130,246,0.2)"
-              : "rgba(107,114,128,0.2)",
-            borderRadius: "50%",
-            width: 60,
-            height: 60,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "1.8rem",
-            flexShrink: 0,
-          }}
-        >
-          {isActive ? "🎓" : "🔒"}
-        </div>
-      </div>
-
-      {isActive && weakestPath.wrongQuestions > 0 && (
-        <div
-          style={{
-            marginTop: 15,
-            padding: 12,
-            background: "rgba(59,130,246,0.1)",
-            borderRadius: 10,
-            fontSize: "0.85rem",
-            opacity: 0.9,
-          }}
-        >
-          📊 {weakestPath.wrongQuestions} mistakes found • {weakestPath.completedLessons} lessons completed
-        </div>
-      )}
-
-      {!smartRevisionUnlocked && (
-        <div
-          style={{
-            marginTop: 15,
-            padding: 12,
-            background: "rgba(255,255,255,0.05)",
-            borderRadius: 10,
-            fontSize: "0.85rem",
-            opacity: 0.8,
-          }}
-        >
-          💡 Complete 40 lessons to unlock Smart Revision! ({totalCompleted}/40)
-        </div>
-      )}
-
-      {smartRevisionUnlocked && !hasWeakestPath && (
-        <div
-          style={{
-            marginTop: 15,
-            padding: 12,
-            background: "rgba(255,255,255,0.05)",
-            borderRadius: 10,
-            fontSize: "0.85rem",
-            opacity: 0.8,
-          }}
-        >
-          🎉 Keep learning! Complete more lessons to build your revision pack.
-        </div>
-      )}
-    </div>
   );
 }

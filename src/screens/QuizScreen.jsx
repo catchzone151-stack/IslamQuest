@@ -89,7 +89,8 @@ const QuizScreen = () => {
     setAnswers(updatedAnswers);
 
     if (!isCorrect) {
-      saveWrongQuestion(q, parseInt(pathId), parseInt(lessonId));
+      const cardId = `${pathId}_${lessonId}_${currentQ}`;
+      saveWrongQuestion(cardId, parseInt(lessonId));
     }
 
     setTimeout(() => {
