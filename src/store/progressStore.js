@@ -6,6 +6,7 @@ import { useModalStore, MODAL_TYPES } from "./modalStore";
 import { supabase } from "../lib/supabaseClient";
 import CryptoJS from "crypto-js";
 import { getQuizForLesson } from "../data/quizEngine";
+import { logStreakEvent } from "../backend/streakLogs";
 
 const STORAGE_KEY = "islamQuestProgress_v4";
 
@@ -267,13 +268,23 @@ export const useProgressStore = create((set, get) => ({
 
     // Consecutive day - increment streak
     if (diffDays === 1) {
+      const newStreak = streak + 1;
       set({ 
-        streak: streak + 1,
+        streak: newStreak,
         lastCompletedActivityDate: today,
         lastStudyDate: today,
       });
       get().calculateXPMultiplier();
       get().saveProgress();
+      
+      // Log streak increment
+      (async () => {
+        const { data } = await supabase.auth.getUser();
+        const userId = data?.user?.id;
+        if (userId) {
+          logStreakEvent(userId, "increment", newStreak);
+        }
+      })();
     } else if (diffDays === 0) {
       // Same day - check if streak needs to be initialized (from skip repair)
       if (streak === 0) {
@@ -351,10 +362,20 @@ export const useProgressStore = create((set, get) => ({
       // 🌐 Phase 4: Sync consumed shields to cloud
       setTimeout(() => get().syncStreakShieldToCloud(), 50);
       
+      // Log shield used to save streak
+      (async () => {
+        const { data } = await supabase.auth.getUser();
+        const userId = data?.user?.id;
+        if (userId) {
+          logStreakEvent(userId, "shield_saved", shieldsNeeded);
+        }
+      })();
+      
       return;
     }
 
     // No shields - streak breaks
+    const brokenValue = streak;
     set({ 
       brokenStreakValue: streak,
       streak: 0,
@@ -362,6 +383,15 @@ export const useProgressStore = create((set, get) => ({
     });
     get().calculateXPMultiplier();
     get().saveProgress();
+    
+    // Log streak break
+    (async () => {
+      const { data } = await supabase.auth.getUser();
+      const userId = data?.user?.id;
+      if (userId) {
+        logStreakEvent(userId, "break", brokenValue);
+      }
+    })();
   },
 
   // 🛡️ Purchase streak freeze shield
@@ -382,14 +412,24 @@ export const useProgressStore = create((set, get) => ({
     }
 
     // Purchase successful
+    const newShieldCount = shieldCount + 1;
     set({ 
       coins: coins - SHIELD_COST,
-      shieldCount: shieldCount + 1,
+      shieldCount: newShieldCount,
     });
     get().saveProgress();
     
     // 🌐 Phase 4: Sync shield count to cloud
     setTimeout(() => get().syncStreakShieldToCloud(), 50);
+    
+    // Log shield purchased
+    (async () => {
+      const { data } = await supabase.auth.getUser();
+      const userId = data?.user?.id;
+      if (userId) {
+        logStreakEvent(userId, "shield_used", newShieldCount);
+      }
+    })();
     
     return { success: true };
   },
@@ -421,6 +461,13 @@ export const useProgressStore = create((set, get) => ({
     
     // 🌐 Phase 4: Sync shield count to cloud
     setTimeout(() => get().syncStreakShieldToCloud(), 50);
+    
+    // Log streak repair
+    const { data } = await supabase.auth.getUser();
+    const userId = data?.user?.id;
+    if (userId) {
+      logStreakEvent(userId, "increment", brokenStreakValue);
+    }
     
     return { success: true, giftedShield: true };
   },
@@ -480,6 +527,15 @@ export const useProgressStore = create((set, get) => ({
     
     get().saveProgress();
     setTimeout(() => get().syncToSupabase(), 50);
+    
+    // Log daily XP
+    (async () => {
+      const { data } = await supabase.auth.getUser();
+      const userId = data?.user?.id;
+      if (userId) {
+        logStreakEvent(userId, "daily_xp", total);
+      }
+    })();
   },
 
   addCoins: (amount) => {
