@@ -58,6 +58,17 @@ The premium model offers free tier limits (0-3 free lessons depending on the pat
 
 **Dev Mode System**: A toggle in Settings enables local-only testing without touching Supabase. When DEV_MODE is true: challenges generate fake opponents with random results, Boss Level allows unlimited plays, Global Events use mock leaderboards, and all rewards are applied locally. A persistent yellow banner shows "DEV MODE ACTIVE" at the top of the screen. Configuration is stored in `src/config/dev.js` and persisted via localStorage. This allows safe testing of all Phase 6 features without polluting production data.
 
+**Payment Service (Nov 2025)**: Unified payment service layer ready for Google Play Billing and Apple IAP integration:
+- Located at `src/services/paymentService.js`
+- Provides: `loadProducts()`, `purchase(productId)`, `confirmPurchase()`, `restorePurchases()`
+- Automatically detects Capacitor native platform for Google/Apple IAP
+- Falls back to existing `purchaseIndividual()`/`purchaseFamily()` on web
+- On successful purchase: logs to Supabase `purchases` table with platform & receipt, then activates premium via existing `unlockPremium()` function
+- `restorePurchases()` checks Supabase purchases table first, then native store, then localStorage
+- Product IDs: `individual_monthly` (£4.99), `family_monthly` (£18.00)
+- Store product IDs: `islamquest_individual_monthly` / `islamquest.individual.monthly` (Google/Apple)
+- **No restructuring**: All existing premium logic (`premium`, `hasPremium`, `premiumStatus`, `purchaseIndividual`, `purchaseFamily`) remains untouched
+
 Asset management is centralized via `assets.js` for optimized WebP images. Development and deployment use Vite.
 
 ## External Dependencies

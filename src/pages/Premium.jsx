@@ -1,14 +1,34 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Crown } from "lucide-react";
+import { Crown, RefreshCw } from "lucide-react";
 import { useProgressStore } from "../store/progressStore";
+import { restorePurchases } from "../services/paymentService";
 import MainMascot from "../assets/mascots/mascot_sitting.webp";
 
 const Premium = () => {
   const navigate = useNavigate();
   const { premium, premiumType, purchaseIndividual, purchaseFamily } = useProgressStore();
   const [loading, setLoading] = useState(false);
+  const [restoring, setRestoring] = useState(false);
+  const [restoreMessage, setRestoreMessage] = useState("");
+
+  const handleRestorePurchases = async () => {
+    setRestoring(true);
+    setRestoreMessage("");
+    try {
+      const result = await restorePurchases(useProgressStore);
+      setRestoreMessage(result.message || (result.success ? "Purchases restored!" : "No purchases found"));
+      if (result.success) {
+        setTimeout(() => navigate("/"), 1500);
+      }
+    } catch (error) {
+      console.error("Restore failed:", error);
+      setRestoreMessage("Failed to restore purchases");
+    } finally {
+      setRestoring(false);
+    }
+  };
 
   const handleIndividualPurchase = async () => {
     setLoading(true);
@@ -147,6 +167,19 @@ const Premium = () => {
           <p className="premium-footer">
             Secure payment • Instant access • Lifetime unlock
           </p>
+
+          <button 
+            className="restore-btn"
+            onClick={handleRestorePurchases}
+            disabled={restoring}
+          >
+            <RefreshCw size={16} className={restoring ? "spin" : ""} />
+            {restoring ? "Restoring..." : "Restore Purchases"}
+          </button>
+
+          {restoreMessage && (
+            <p className="restore-message">{restoreMessage}</p>
+          )}
         </div>
       </motion.div>
 
@@ -249,6 +282,46 @@ const Premium = () => {
           margin-top: 24px;
           font-size: 0.75rem;
           color: #9ea5b0;
+        }
+
+        .restore-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          margin-top: 16px;
+          padding: 10px 20px;
+          background: transparent;
+          border: 1px solid rgba(255, 215, 0, 0.3);
+          border-radius: 10px;
+          color: #9ea5b0;
+          font-size: 0.85rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .restore-btn:hover {
+          border-color: rgba(255, 215, 0, 0.6);
+          color: #FFD700;
+        }
+
+        .restore-btn:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+
+        .restore-message {
+          margin-top: 10px;
+          font-size: 0.8rem;
+          color: #10b981;
+        }
+
+        .spin {
+          animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
         }
       `}</style>
     </div>
