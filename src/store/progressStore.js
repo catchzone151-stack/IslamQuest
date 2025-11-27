@@ -278,12 +278,12 @@ export const useProgressStore = create((set, get) => ({
       get().calculateXPMultiplier();
       get().saveProgress();
       
-      // Log streak increment
+      // Log streak maintained
       (async () => {
         const { data } = await supabase.auth.getUser();
         const userId = data?.user?.id;
         if (userId) {
-          logStreakEvent(userId, "increment", newStreak);
+          logStreakEvent(userId, true);
         }
       })();
     } else if (diffDays === 0) {
@@ -363,12 +363,12 @@ export const useProgressStore = create((set, get) => ({
       // 🌐 Phase 4: Sync consumed shields to cloud
       setTimeout(() => get().syncStreakShieldToCloud(), 50);
       
-      // Log shield used to save streak
+      // Log streak maintained (shield saved it)
       (async () => {
         const { data } = await supabase.auth.getUser();
         const userId = data?.user?.id;
         if (userId) {
-          logStreakEvent(userId, "shield_saved", shieldsNeeded);
+          logStreakEvent(userId, true);
         }
       })();
       
@@ -390,7 +390,7 @@ export const useProgressStore = create((set, get) => ({
       const { data } = await supabase.auth.getUser();
       const userId = data?.user?.id;
       if (userId) {
-        logStreakEvent(userId, "break", brokenValue);
+        logStreakEvent(userId, false);
       }
     })();
   },
@@ -423,12 +423,12 @@ export const useProgressStore = create((set, get) => ({
     // 🌐 Phase 4: Sync shield count to cloud
     setTimeout(() => get().syncStreakShieldToCloud(), 50);
     
-    // Log shield purchased
+    // Log streak maintained (shield purchased)
     (async () => {
       const { data } = await supabase.auth.getUser();
       const userId = data?.user?.id;
       if (userId) {
-        logStreakEvent(userId, "shield_used", newShieldCount);
+        logStreakEvent(userId, true);
       }
     })();
     
@@ -463,11 +463,11 @@ export const useProgressStore = create((set, get) => ({
     // 🌐 Phase 4: Sync shield count to cloud
     setTimeout(() => get().syncStreakShieldToCloud(), 50);
     
-    // Log streak repair
+    // Log streak repaired
     const { data } = await supabase.auth.getUser();
     const userId = data?.user?.id;
     if (userId) {
-      logStreakEvent(userId, "increment", brokenStreakValue);
+      logStreakEvent(userId, true);
     }
     
     return { success: true, giftedShield: true };
@@ -529,12 +529,12 @@ export const useProgressStore = create((set, get) => ({
     get().saveProgress();
     setTimeout(() => get().syncToSupabase(), 50);
     
-    // Log daily XP
+    // Log streak maintained (daily activity)
     (async () => {
       const { data } = await supabase.auth.getUser();
       const userId = data?.user?.id;
       if (userId) {
-        logStreakEvent(userId, "daily_xp", total);
+        logStreakEvent(userId, true);
       }
     })();
   },
