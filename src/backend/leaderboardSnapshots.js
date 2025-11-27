@@ -1,4 +1,4 @@
-import { supabase } from "../supabaseClient";
+import { supabase } from "../lib/supabaseClient";
 
 export async function createDailyLeaderboardSnapshot() {
   const today = new Date().toISOString().split("T")[0];

@@ -5,7 +5,7 @@ import { getLessonsForPath } from "../data/lessonLoader";
 import { useProgressStore } from "../store/progressStore";
 import { useVibration } from "../hooks/useVibration";
 import zaydTeachingMascot from "../assets/mascots/mascot_sitting.webp";
-import { supabase } from "../supabaseClient";
+import { supabase } from "../lib/supabaseClient";
 import { logLessonStart, logLessonExit } from "../backend/lessonProgress";
 
 export default function Lesson() {

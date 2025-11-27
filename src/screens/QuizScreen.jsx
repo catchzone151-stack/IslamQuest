@@ -6,7 +6,7 @@ import { useProgressStore } from "../store/progressStore";
 import { useReviseStore } from "../store/reviseStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import { useAnalytics } from "../hooks/useAnalytics";
-import { supabase } from "../supabaseClient";
+import { supabase } from "../lib/supabaseClient";
 import { logLessonComplete } from "../backend/lessonProgress";
 import { logXpEvent } from "../backend/xpLogs";
 import PointingMascot from "../assets/mascots/mascot_pointing_v2.webp";

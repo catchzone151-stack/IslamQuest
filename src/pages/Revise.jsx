@@ -6,7 +6,7 @@ import { useAnalytics } from "../hooks/useAnalytics";
 import { getQuizForLesson } from "../data/quizEngine";
 import QuestionCard from "../components/quiz/QuestionCard";
 import assets from "../assets/assets";
-import { supabase } from "../supabaseClient";
+import { supabase } from "../lib/supabaseClient";
 import { logXpEvent } from "../backend/xpLogs";
 
 function parseCardId(cardId) {
