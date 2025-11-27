@@ -37,20 +37,6 @@ export default function ChallengeExplainerModal({ mode, onStart, onCancel }) {
           />
         </div>
 
-        <div 
-          className="challenge-mode-icon"
-          style={{
-            background: mode.gradient,
-            boxShadow: mode.glow
-          }}
-        >
-          <img 
-            src={mascot} 
-            alt={mode.name} 
-            style={{ width: "50px", height: "auto" }}
-          />
-        </div>
-
         <h2 className="challenge-modal-title">{mode.name}</h2>
         <p className="challenge-modal-subtitle">{mode.description}</p>
 
