@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { Globe, Lock } from "lucide-react";
+import { Globe } from "lucide-react";
 import { useNavigate } from "../hooks/useNavigate";
 import { useChallengeStore, CHALLENGE_MODES, BOSS_LEVEL } from "../store/challengeStore";
 import { useProgressStore } from "../store/progressStore";
@@ -212,10 +212,6 @@ export default function Challenge() {
 
       {/* Global Events Card */}
       <div onClick={() => {
-        if (!isUserPremium) {
-          showModal(MODAL_TYPES.PURCHASE);
-          return;
-        }
         navigate("/events");
       }} style={{
         maxWidth: 520,
@@ -229,42 +225,6 @@ export default function Challenge() {
         transition: "all 0.3s ease",
         position: "relative",
       }}>
-        {/* Grey lock overlay for Global Events (Premium Only) */}
-        {!isUserPremium && (
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              background: "rgba(30, 30, 30, 0.75)",
-              borderRadius: 18,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              zIndex: 10,
-              gap: 8,
-            }}
-          >
-            <Lock 
-              size={28} 
-              color="#D4AF37" 
-              strokeWidth={2.5}
-              style={{ filter: "drop-shadow(0 0 4px rgba(212,175,55,0.5))" }}
-            />
-            <span
-              style={{
-                fontSize: "0.9rem",
-                color: "#D4AF37",
-                fontWeight: 700,
-                textShadow: "0 2px 4px rgba(0,0,0,0.5)",
-              }}
-            >
-              Premium Only
-            </span>
-          </div>
-        )}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <Globe size={28} style={{ color: "#D4AF37" }} />
@@ -289,10 +249,6 @@ export default function Challenge() {
           boxShadow: "0 4px 15px rgba(16,185,129,0.3)",
         }} onClick={(e) => { 
           e.stopPropagation(); 
-          if (!isUserPremium) {
-            showModal(MODAL_TYPES.PURCHASE);
-            return;
-          }
           navigate("/events"); 
         }}>
           Enter Global Events →
