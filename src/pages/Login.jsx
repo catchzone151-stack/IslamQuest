@@ -7,7 +7,7 @@ import { useUserStore } from "../store/useUserStore";
 import { useProgressStore } from "../store/progressStore";
 import { avatarIndexToKey } from "../utils/avatarUtils";
 import ForgotPasswordModal from "../components/ForgotPasswordModal";
-import WavingMascot from "../assets/mascots/mascot_waving.webp";
+import SittingMascot from "../assets/mascots/mascot_sitting.webp";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -93,10 +93,15 @@ export default function Login() {
       className="min-h-screen flex flex-col items-center justify-center px-5 py-10"
       style={{
         background: "linear-gradient(180deg, #0a0f1e 0%, #030614 100%)",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
       }}
     >
       <motion.img
-        src={WavingMascot}
+        src={SittingMascot}
         alt="Zayd"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
