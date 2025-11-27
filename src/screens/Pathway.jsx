@@ -13,7 +13,6 @@ import { getLessonsForPath } from "../data/lessonLoader.js";
 
 // Mascots
 import CompletionMascot from "../assets/mascots/mascot_welldone.webp";
-import mascot_sitting from "../assets/mascots/mascot_sitting.webp";
 
 export default function Pathway() {
   const { pathId } = useParams();
@@ -394,7 +393,7 @@ export default function Pathway() {
         </div>
       </div>
 
-      {/* Mascot + message */}
+      {/* User Avatar + message */}
       <div
         style={{
           position: "absolute",
@@ -406,15 +405,20 @@ export default function Pathway() {
           gap: 6,
         }}
       >
-        <img
-          src={mascot_sitting}
-          alt="Learning guide"
-          style={{
-            width: 70,
-            height: "auto",
-            filter: "drop-shadow(0 0 8px rgba(255,215,0,0.6))",
-          }}
-        />
+        {avatarSrc && (
+          <img
+            src={avatarSrc}
+            alt="Your guide"
+            style={{
+              width: 70,
+              height: 70,
+              borderRadius: "50%",
+              objectFit: "contain",
+              border: "3px solid rgba(255,215,0,0.7)",
+              filter: "drop-shadow(0 0 8px rgba(255,215,0,0.6))",
+            }}
+          />
+        )}
         <div
           style={{
             maxWidth: 120,
