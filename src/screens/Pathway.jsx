@@ -129,8 +129,8 @@ export default function Pathway() {
     navigate(`/path/${pathId}/lesson/${lesson.id}`);
   };
 
-  // Get the correct avatar image from the stored key
-  const avatarSrc = avatar && avatar !== "default" ? getAvatarImage(avatar, { userId }) : null;
+  // Get the correct avatar image from the stored key - always use the user's selected avatar
+  const avatarSrc = getAvatarImage(avatar, { userId });
 
   // If all lessons completed, show completion screen
   if (showCompletion && completedCount === totalLessons && totalLessons > 0) {
@@ -405,20 +405,18 @@ export default function Pathway() {
           gap: 6,
         }}
       >
-        {avatarSrc && (
-          <img
-            src={avatarSrc}
-            alt="Your guide"
-            style={{
-              width: 70,
-              height: 70,
-              borderRadius: "50%",
-              objectFit: "contain",
-              border: "3px solid rgba(255,215,0,0.7)",
-              filter: "drop-shadow(0 0 8px rgba(255,215,0,0.6))",
-            }}
-          />
-        )}
+        <img
+          src={avatarSrc}
+          alt="Your guide"
+          style={{
+            width: 70,
+            height: 70,
+            borderRadius: "50%",
+            objectFit: "contain",
+            border: "3px solid rgba(255,215,0,0.7)",
+            filter: "drop-shadow(0 0 8px rgba(255,215,0,0.6))",
+          }}
+        />
         <div
           style={{
             maxWidth: 120,
@@ -552,7 +550,7 @@ export default function Pathway() {
                   zIndex: 2,
                 }}
               >
-                {isActive && avatarSrc ? (
+                {isActive ? (
                   <img
                     src={avatarSrc}
                     alt="avatar"
