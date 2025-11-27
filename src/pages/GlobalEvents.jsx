@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Globe, Lock, Crown } from "lucide-react";
+import { Globe } from "lucide-react";
 import { useNavigate } from "../hooks/useNavigate";
 import { useEventsStore } from "../store/eventsStore";
 import { useProgressStore } from "../store/progressStore";
@@ -24,12 +24,10 @@ export default function GlobalEvents() {
     claimEventRewards
   } = useEventsStore();
   
-  const { coins, premium, premiumStatus } = useProgressStore();
+  const { coins } = useProgressStore();
   const { showModal } = useModalStore();
   const events = getEvents();
   const resultsUnlocked = areResultsUnlocked();
-  
-  const isUserPremium = premium || premiumStatus !== "free";
   
   const [timeLeft, setTimeLeft] = useState("");
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -77,132 +75,12 @@ export default function GlobalEvents() {
   }, [getTimeUntilResults]);
 
   const handleEventClick = (event) => {
-    // Premium check first - non-premium users can't access events
-    if (!isUserPremium) {
-      navigate("/premium");
-      return;
-    }
-    
-    // Premium users: check Ramadan logic (user's existing implementation)
+    // Show Ramadan coming soon modal
     showModal(MODAL_TYPES.RAMADAN_COMING_SOON);
   };
 
   return (
     <div className="screen no-extra-space global-events-container" style={{ position: "relative" }}>
-      {/* Premium Overlay for Global Events */}
-      {!isUserPremium && (
-        <div
-          onClick={() => navigate("/premium")}
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: "rgba(0, 0, 0, 0.85)",
-            backdropFilter: "blur(8px)",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 1000,
-            cursor: "pointer",
-            padding: "32px",
-            textAlign: "center",
-          }}
-        >
-          <div
-            style={{
-              width: "80px",
-              height: "80px",
-              borderRadius: "50%",
-              background: "linear-gradient(135deg, #D4AF37, #FFA500)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              marginBottom: "24px",
-              boxShadow: "0 8px 32px rgba(212, 175, 55, 0.4)",
-            }}
-          >
-            <Lock size={40} color="white" />
-          </div>
-          
-          <h2
-            style={{
-              fontSize: "1.8rem",
-              fontWeight: 800,
-              marginBottom: "12px",
-              background: "linear-gradient(90deg, #D4AF37, #FFA500)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            Premium Feature 👑
-          </h2>
-          
-          <p
-            style={{
-              fontSize: "1rem",
-              color: "rgba(255, 255, 255, 0.85)",
-              maxWidth: "350px",
-              lineHeight: 1.6,
-              marginBottom: "8px",
-            }}
-          >
-            Global Events are exclusive to Premium members
-          </p>
-          
-          <p
-            style={{
-              fontSize: "0.9rem",
-              color: "rgba(255, 255, 255, 0.65)",
-              maxWidth: "320px",
-              marginBottom: "32px",
-            }}
-          >
-            Compete with Muslims worldwide and climb the leaderboards
-          </p>
-          
-          <div
-            style={{
-              background: "linear-gradient(135deg, #D4AF37, #FFA500)",
-              color: "white",
-              padding: "16px 40px",
-              borderRadius: "12px",
-              fontSize: "1.1rem",
-              fontWeight: 700,
-              boxShadow: "0 6px 24px rgba(212, 175, 55, 0.5)",
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-            }}
-          >
-            <Crown size={24} />
-            Unlock Premium
-          </div>
-          
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate("/challenge");
-            }}
-            style={{
-              marginTop: "24px",
-              background: "transparent",
-              border: "2px solid rgba(255, 255, 255, 0.3)",
-              color: "white",
-              padding: "10px 24px",
-              borderRadius: "8px",
-              fontSize: "0.95rem",
-              fontWeight: 600,
-              cursor: "pointer",
-            }}
-          >
-            Back to Challenge
-          </button>
-        </div>
-      )}
-      
       {/* Header */}
       <div className="events-header">
         <button className="back-btn" onClick={() => navigate("/challenge")}>
