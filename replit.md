@@ -58,6 +58,7 @@ Asset management is centralized via `assets.js` for optimized WebP images. Devel
 
 ### Third-Party Services
 - **Supabase**: Used for authentication, database, and real-time subscriptions.
+- **OneSignal**: Push notifications via react-onesignal v2 API. Initialized in App.jsx after onboarding, uses `OneSignal.login()` with Supabase user ID, prompts for permission via `OneSignal.Slidedown.promptPush()`, stores subscription ID to `push_tokens` table. Supabase Edge Function (`send-daily-notifications`) sends automated daily reminders via CRON. Requires `VITE_ONESIGNAL_APP_ID` env var and `ONESIGNAL_REST_API_KEY` secret in Edge Function.
 
 ### Core Libraries
 - **UI & Animation**: `framer-motion`, `lucide-react`, `react-router-dom`.
