@@ -65,3 +65,52 @@ export const DEV_MOCK_EVENT_LEADERBOARD = [
   { userId: 'dev_player_9', nickname: 'Umar', avatar: 'avatar_man_beard', score: 6, completionTime: 55 },
   { userId: 'dev_player_10', nickname: 'Salma', avatar: 'avatar_woman_hijab', score: 5, completionTime: 50 }
 ];
+
+export const initDevCommands = (progressStore) => {
+  if (typeof window === 'undefined') return;
+  
+  window.dev = {
+    setXP: (amount) => {
+      progressStore.getState().setXP(amount);
+      console.log(`✅ XP set to ${amount}`);
+    },
+    setLevel: (level) => {
+      const xpThresholds = [0, 250, 750, 1500, 3500, 7000, 14000, 25000, 40000, 51000];
+      const xp = xpThresholds[level - 1] || 0;
+      progressStore.getState().setXP(xp);
+      console.log(`✅ Level set to ${level} (XP: ${xp})`);
+    },
+    setCoins: (amount) => {
+      progressStore.getState().setCoins(amount);
+      console.log(`✅ Coins set to ${amount}`);
+    },
+    setPremium: (value = true) => {
+      if (value) {
+        progressStore.getState().purchaseIndividual();
+        console.log('✅ Premium enabled');
+      }
+    },
+    getStats: () => {
+      const state = progressStore.getState();
+      console.log({
+        xp: state.xp,
+        coins: state.coins,
+        streak: state.streak,
+        premium: state.premium,
+        level: state.level
+      });
+    },
+    help: () => {
+      console.log(`
+🔧 Dev Commands:
+  dev.setXP(25000)     - Set XP to specific amount
+  dev.setLevel(8)      - Set level (auto-calculates XP)
+  dev.setCoins(1000)   - Set coins
+  dev.setPremium()     - Enable premium
+  dev.getStats()       - View current stats
+      `);
+    }
+  };
+  
+  console.log('🔧 Dev commands loaded. Type dev.help() for options.');
+};
