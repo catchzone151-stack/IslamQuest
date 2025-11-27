@@ -1,4 +1,4 @@
-import { supabase } from "../supabaseClient";
+import { supabase } from "../lib/supabaseClient";
 
 export async function logXpEvent(userId, amount, source) {
   const { error } = await supabase.from("xp_logs").insert({
