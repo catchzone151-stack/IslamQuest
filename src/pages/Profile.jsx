@@ -24,7 +24,7 @@ const extractAvatarKey = (path) => {
 
 export default function Profile() {
   const navigate = useNavigate();
-  const { id: userId, name, avatar, setName, setAvatar } = useUserStore();
+  const { id: userId, name, avatar, handle, setName, setAvatar } = useUserStore();
   const { 
     xp, 
     coins, 
@@ -115,10 +115,21 @@ export default function Profile() {
                 fontSize: "1.3rem",
                 fontWeight: 600,
                 color: "#FFD700",
+                marginBottom: 4,
               }}
             >
               {name || "Explorer"}
             </h2>
+            
+            {handle && (
+              <p style={{
+                color: "rgba(255, 255, 255, 0.5)",
+                fontSize: "0.9rem",
+                margin: 0,
+              }}>
+                @{handle}
+              </p>
+            )}
             
             {/* 💎 Diamond Level Badge */}
             <div 
