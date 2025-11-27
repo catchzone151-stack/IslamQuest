@@ -92,6 +92,32 @@ export const useProgressStore = create((set, get) => ({
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   },
 
+  saveLessonSummary: async (lessonId, status) => {
+    // status = "completed", "in-progress", "started"
+    const current = get().lessonStates || {};
+    const updated = {
+      ...current,
+      [lessonId]: {
+        status,
+        updatedAt: Date.now(),
+      },
+    };
+
+    set({ lessonStates: updated });
+
+    // Push to profile JSON
+    const { data } = await supabase.auth.getUser();
+    const userId = data?.user?.id;
+    if (!userId) return;
+
+    await supabase
+      .from("profiles")
+      .update({
+        lesson_states: updated,
+      })
+      .eq("user_id", userId);
+  },
+
   loadProgress: () => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
