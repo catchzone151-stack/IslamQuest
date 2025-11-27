@@ -1,30 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Crown, RefreshCw } from "lucide-react";
+import { Crown, RefreshCw, Smartphone } from "lucide-react";
 import { useProgressStore } from "../store/progressStore";
-import { purchase, restorePurchases, isNativePlatform, getPlatform } from "../services/paymentService";
+import { purchase, restorePurchases, isNativeAppRequired, getPlatform, loadProducts } from "../services/iapService";
+import { markPremiumActivated } from "../services/premiumStateService";
 import MainMascot from "../assets/mascots/mascot_sitting.webp";
-
-const detectPaymentPlatform = () => {
-  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-  
-  if (/android/i.test(userAgent)) {
-    return "google";
-  }
-  
-  if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-    return "apple";
-  }
-  
-  if (isNativePlatform()) {
-    const platform = getPlatform();
-    if (platform === "android") return "google";
-    if (platform === "ios") return "apple";
-  }
-  
-  return "google";
-};
 
 const Premium = () => {
   const navigate = useNavigate();
@@ -32,35 +13,68 @@ const Premium = () => {
   const [loading, setLoading] = useState(false);
   const [restoring, setRestoring] = useState(false);
   const [restoreMessage, setRestoreMessage] = useState("");
+  const [requiresNativeApp, setRequiresNativeApp] = useState(false);
+  const [products, setProducts] = useState({});
+
+  useEffect(() => {
+    const checkPlatform = async () => {
+      const needsNative = isNativeAppRequired();
+      setRequiresNativeApp(needsNative);
+      
+      if (!needsNative) {
+        try {
+          const loadedProducts = await loadProducts();
+          setProducts(loadedProducts);
+        } catch (error) {
+          console.error("Failed to load products:", error);
+        }
+      }
+    };
+    checkPlatform();
+  }, []);
 
   const handleRestorePurchases = async () => {
     setRestoring(true);
     setRestoreMessage("");
     try {
-      const result = await restorePurchases(useProgressStore);
-      setRestoreMessage(result.message || (result.success ? "Purchases restored!" : "No purchases found"));
-      if (result.success) {
+      const result = await restorePurchases();
+      
+      if (result.success && result.verified) {
+        const planType = result.planType || "single";
+        if (planType === "family") {
+          purchaseFamily();
+        } else {
+          purchaseIndividual();
+        }
+        setRestoreMessage("Purchases restored successfully!");
         setTimeout(() => navigate("/"), 1500);
+      } else if (result.requiresDeviceTransfer) {
+        setRestoreMessage("Your premium is active on another device. You can only use premium on one device at a time.");
+      } else {
+        setRestoreMessage(result.message || result.error || "No purchases found to restore");
       }
     } catch (error) {
       console.error("Restore failed:", error);
-      setRestoreMessage("Failed to restore purchases");
+      setRestoreMessage("Failed to restore purchases. Please try again.");
     } finally {
       setRestoring(false);
     }
   };
 
   const handleIndividualPurchase = async () => {
+    if (requiresNativeApp) {
+      return;
+    }
+    
     setLoading(true);
-    const paymentPlatform = detectPaymentPlatform();
     
     try {
-      const result = await purchase("individual_monthly", useProgressStore);
+      const result = await purchase("premium_lifetime");
       
       if (result.success) {
-        setTimeout(() => {
-          navigate("/");
-        }, 1000);
+        purchaseIndividual();
+        markPremiumActivated("single");
+        setTimeout(() => navigate("/"), 1000);
       } else {
         console.error("Purchase failed:", result.error);
         alert(result.error || "Payment was not completed. Please try again.");
@@ -74,16 +88,19 @@ const Premium = () => {
   };
 
   const handleFamilyPurchase = async () => {
+    if (requiresNativeApp) {
+      return;
+    }
+    
     setLoading(true);
-    const paymentPlatform = detectPaymentPlatform();
     
     try {
-      const result = await purchase("family_monthly", useProgressStore);
+      const result = await purchase("premium_family_lifetime");
       
       if (result.success) {
-        setTimeout(() => {
-          navigate("/");
-        }, 1000);
+        purchaseFamily();
+        markPremiumActivated("family");
+        setTimeout(() => navigate("/"), 1000);
       } else {
         console.error("Purchase failed:", result.error);
         alert(result.error || "Payment was not completed. Please try again.");
@@ -158,49 +175,66 @@ const Premium = () => {
             Lifetime access • No ads • All learning paths • Works across devices
           </p>
 
-          {/* INDIVIDUAL PLAN */}
-          <div className="premium-card">
-            <h2 className="premium-plan-title">Individual</h2>
-            <div className="premium-price">£4.99 — One-time</div>
+          {requiresNativeApp ? (
+            <div className="native-app-required">
+              <div className="native-app-icon">
+                <Smartphone size={48} className="text-[var(--gold)]" />
+              </div>
+              <h2 className="native-app-title">Download the App to Purchase</h2>
+              <p className="native-app-text">
+                To complete your purchase, please download Islam Quest from the App Store or Google Play Store.
+              </p>
+              <p className="native-app-text" style={{ marginTop: '8px', fontSize: '0.8rem', opacity: 0.8 }}>
+                Already purchased? Tap "Restore Purchases" below.
+              </p>
+            </div>
+          ) : (
+            <>
+              {/* INDIVIDUAL PLAN */}
+              <div className="premium-card">
+                <h2 className="premium-plan-title">Individual</h2>
+                <div className="premium-price">£4.99 — One-time</div>
 
-            <ul className="premium-list">
-              <li>✔ All 14 Learning Paths</li>
-              <li>✔ Unlimited Lessons</li>
-              <li>✔ Global Events Access</li>
-              <li>✔ No Ads Ever</li>
-              <li>✔ Works Across Devices</li>
-            </ul>
+                <ul className="premium-list">
+                  <li>✔ All 14 Learning Paths</li>
+                  <li>✔ Unlimited Lessons</li>
+                  <li>✔ Global Events Access</li>
+                  <li>✔ No Ads Ever</li>
+                  <li>✔ Works Across Devices</li>
+                </ul>
 
-            <button 
-              className="premium-btn"
-              onClick={handleIndividualPurchase}
-              disabled={loading}
-            >
-              {loading ? "Processing..." : "Unlock Individual — £4.99"}
-            </button>
-          </div>
+                <button 
+                  className="premium-btn"
+                  onClick={handleIndividualPurchase}
+                  disabled={loading}
+                >
+                  {loading ? "Processing..." : "Unlock Individual — £4.99"}
+                </button>
+              </div>
 
-          {/* FAMILY PLAN */}
-          <div className="premium-card">
-            <h2 className="premium-plan-title">Family (Up to 6 Users)</h2>
-            <div className="premium-price">£18 — One-time</div>
+              {/* FAMILY PLAN */}
+              <div className="premium-card">
+                <h2 className="premium-plan-title">Family (Up to 6 Users)</h2>
+                <div className="premium-price">£18 — One-time</div>
 
-            <ul className="premium-list">
-              <li>✔ All Individual Benefits</li>
-              <li>✔ 6 Linked Accounts</li>
-              <li>✔ Perfect for parents & children</li>
-            </ul>
+                <ul className="premium-list">
+                  <li>✔ All Individual Benefits</li>
+                  <li>✔ 6 Linked Accounts</li>
+                  <li>✔ Perfect for parents & children</li>
+                </ul>
 
-            <button 
-              className="premium-btn"
-              onClick={handleFamilyPurchase}
-              disabled={loading}
-            >
-              {loading ? "Processing..." : "Unlock Family — £18"}
-            </button>
+                <button 
+                  className="premium-btn"
+                  onClick={handleFamilyPurchase}
+                  disabled={loading}
+                >
+                  {loading ? "Processing..." : "Unlock Family — £18"}
+                </button>
 
-            <div className="premium-coming-soon">* More family features coming soon *</div>
-          </div>
+                <div className="premium-coming-soon">* More family features coming soon *</div>
+              </div>
+            </>
+          )}
 
           <p className="premium-footer">
             Secure payment • Instant access • Lifetime unlock
@@ -360,6 +394,32 @@ const Premium = () => {
         @keyframes spin {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
+        }
+
+        .native-app-required {
+          background: #0b1e36;
+          border: 2px solid rgba(255, 215, 0, 0.3);
+          border-radius: 24px;
+          padding: 32px 20px;
+          margin: 20px auto;
+          max-width: 360px;
+          text-align: center;
+        }
+
+        .native-app-icon {
+          margin-bottom: 16px;
+        }
+
+        .native-app-title {
+          color: #FFD700;
+          font-size: 1.2rem;
+          margin-bottom: 12px;
+        }
+
+        .native-app-text {
+          color: #cfd6e1;
+          font-size: 0.9rem;
+          line-height: 1.5;
         }
       `}</style>
     </div>

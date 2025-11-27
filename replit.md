@@ -58,16 +58,57 @@ The premium model offers free tier limits (0-3 free lessons depending on the pat
 
 **Dev Mode System**: A toggle in Settings enables local-only testing without touching Supabase. When DEV_MODE is true: challenges generate fake opponents with random results, Boss Level allows unlimited plays, Global Events use mock leaderboards, and all rewards are applied locally. A persistent yellow banner shows "DEV MODE ACTIVE" at the top of the screen. Configuration is stored in `src/config/dev.js` and persisted via localStorage. This allows safe testing of all Phase 6 features without polluting production data.
 
-**Payment Service (Nov 2025)**: Unified payment service layer ready for Google Play Billing and Apple IAP integration:
-- Located at `src/services/paymentService.js`
-- Provides: `loadProducts()`, `purchase(productId)`, `confirmPurchase()`, `restorePurchases()`
-- Automatically detects Capacitor native platform for Google/Apple IAP
-- Falls back to existing `purchaseIndividual()`/`purchaseFamily()` on web
-- On successful purchase: logs to Supabase `purchases` table with platform & receipt, then activates premium via existing `unlockPremium()` function
-- `restorePurchases()` checks Supabase purchases table first, then native store, then localStorage
-- Product IDs: `individual_monthly` (£4.99), `family_monthly` (£18.00)
-- Store product IDs: `islamquest_individual_monthly` / `islamquest.individual.monthly` (Google/Apple)
-- **No restructuring**: All existing premium logic (`premium`, `hasPremium`, `premiumStatus`, `purchaseIndividual`, `purchaseFamily`) remains untouched
+**In-App Purchase System (Nov 2025 Rebuild)**: Complete backend-verified IAP system with lifetime unlocks:
+
+**Architecture:**
+- **iapService.js**: Native StoreKit/Google Play Billing via Capacitor, handles purchase flow and receipt retrieval
+- **purchaseVerificationService.js**: Calls Supabase Edge Functions for server-side receipt verification
+- **premiumStateService.js**: Manages premium status with offline caching, device binding, and cloud sync
+- **deviceService.js**: Generates/hashes unique device IDs for one-device-per-email enforcement
+- **familyService.js**: Family group management with invite tokens and deep link acceptance
+- **deepLinkService.js**: Handles `islamquest://family-join?token=xxx` for family member onboarding
+
+**Product Configuration (Lifetime Unlocks):**
+- `premium_lifetime` (Individual): £4.99 one-time purchase
+- `premium_family_lifetime` (Family): £18 one-time purchase (owner + up to 5 members)
+
+**Backend (Supabase Edge Functions):**
+- `verify-apple-receipt`: JWT-authenticated App Store Server API validation
+- `verify-google-receipt`: Service account Google Play Developer API validation
+- `validate-premium-status`: Checks user premium status and device match
+- `register-device`: Enforces one-device-per-email, updates active_device_id
+- `accept-family-invite`: Validates invite token and adds member to family group
+- `apple-webhook`: App Store Server Notifications V2 for refund handling
+- `google-webhook`: Google RTDN for voided purchases
+- `daily-validation`: CRON job to revalidate Android purchases
+
+**Database Tables (Supabase):**
+- `users`: id, email, premium, plan_type, active_device_id, timestamps
+- `purchases`: id, user_id, platform, product_id, receipt_token, verified, refunded, nonce, device_id, order_id
+- `family_groups`: id, owner_id, max_members (5)
+- `family_members`: id, family_group_id, user_id, invited_email, invite_token, accepted, accepted_at
+
+**Security Features:**
+- Nonce per purchase prevents replay attacks
+- Hashed device IDs (SHA-256) stored, not raw
+- Backend-only premium activation (no client-side unlock without verification)
+- Device limit: premium only works on active_device_id; switching devices logs out previous
+- Refund webhooks automatically revoke premium
+
+**Purchase Flow:**
+1. User taps purchase button in Premium.jsx
+2. iapService calls native StoreKit/Google Billing API
+3. On success, receipt/transactionId sent to Supabase Edge Function
+4. Edge Function validates with Apple/Google APIs
+5. On verification: inserts purchase record, updates users.premium = true, sets active_device_id
+6. premiumStateService caches result locally for offline access
+7. progressStore.purchaseIndividual/Family() called to update local state
+
+**Restore Purchases:**
+1. Calls native store's restore API
+2. Retrieves receipts and verifies each with backend
+3. Backend checks purchases table and re-validates if needed
+4. Premium status restored if valid purchase found
 
 Asset management is centralized via `assets.js` for optimized WebP images. Development and deployment use Vite.
 
