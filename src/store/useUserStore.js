@@ -9,6 +9,7 @@
 // - completeOnboarding() creates the profile if it doesn't exist
 
 import { create } from "zustand";
+import { createDailyLeaderboardSnapshot } from "../backend/leaderboardSnapshots";
 import { supabase } from "../lib/supabaseClient";
 import { safeCall } from "../lib/supabaseSafe";
 import { 
