@@ -46,6 +46,8 @@ The premium model offers free tier limits (0-3 free lessons depending on the pat
 - Boss Level locked at level >= 8 only (no premium/lesson requirements)
 - Winner determination uses 'current_user' sentinel for challenger ID
 
+**Review Mistakes System (Nov 2025)**: When users answer incorrectly in lesson quizzes (`QuizScreen.jsx`), the question is saved via `saveWrongQuestion()` from `reviseStore`. This automatically unlocks the "Review Mistakes" mode in the Revise tab after the first wrong answer. The weakPool stores all missed questions with source path/lesson info for targeted revision.
+
 **Events System (Phase 6)**: Global Events load cloud entries on mount via `loadMyEntries`. Event quiz submissions pass completion time to `enterEventCloud` for tiebreaker rankings. The 75% pass threshold applies to all quizzes, daily quests, boss level, and global events.
 
 **Dev Mode System**: A toggle in Settings enables local-only testing without touching Supabase. When DEV_MODE is true: challenges generate fake opponents with random results, Boss Level allows unlimited plays, Global Events use mock leaderboards, and all rewards are applied locally. A persistent yellow banner shows "DEV MODE ACTIVE" at the top of the screen. Configuration is stored in `src/config/dev.js` and persisted via localStorage. This allows safe testing of all Phase 6 features without polluting production data.

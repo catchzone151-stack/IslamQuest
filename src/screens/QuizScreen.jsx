@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "../hooks/useNavigate";
 import { getQuizForLesson, calculateResults } from "../data/quizEngine";
 import { useProgressStore } from "../store/progressStore";
+import { useReviseStore } from "../store/reviseStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import { useAnalytics } from "../hooks/useAnalytics";
 import PointingMascot from "../assets/mascots/mascot_pointing_v2.webp";
@@ -39,6 +40,7 @@ const QuizScreen = () => {
   const applyQuizResults = useProgressStore((s) => s.applyQuizResults);
   const getLessonLockState = useProgressStore((s) => s.getLessonLockState);
   const { showModal } = useModalStore();
+  const saveWrongQuestion = useReviseStore((s) => s.saveWrongQuestion);
 
   // 🔒 PREMIUM GUARD: Block direct URL access to premium-locked quizzes
   useEffect(() => {
@@ -85,6 +87,10 @@ const QuizScreen = () => {
 
     setSelected(index);
     setAnswers(updatedAnswers);
+
+    if (!isCorrect) {
+      saveWrongQuestion(q, parseInt(pathId), parseInt(lessonId));
+    }
 
     setTimeout(() => {
       const isLast = currentQ === quizData.length - 1;
