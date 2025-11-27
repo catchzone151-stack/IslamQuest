@@ -232,8 +232,11 @@ export const restorePurchases = async (progressStore) => {
   }
   
   if (!iapPlugin) {
-    const localResult = progressStore.getState().restorePurchases();
-    return localResult;
+    console.log("[PaymentService] No purchases found in Supabase and no native store available");
+    return { 
+      success: false, 
+      message: "No previous purchases found. Please purchase a plan to unlock premium." 
+    };
   }
   
   try {
