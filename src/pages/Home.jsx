@@ -387,6 +387,8 @@ export default function Home() {
               transform: "translateZ(0)",
               cursor: "pointer",
               userSelect: "none",
+              WebkitTapHighlightColor: "transparent",
+              outline: "none",
             }}
           />
         </div>
