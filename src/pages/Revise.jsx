@@ -6,6 +6,8 @@ import { useAnalytics } from "../hooks/useAnalytics";
 import { getQuizForLesson } from "../data/quizEngine";
 import QuestionCard from "../components/quiz/QuestionCard";
 import assets from "../assets/assets";
+import { supabase } from "../supabaseClient";
+import { logXpEvent } from "../backend/xpLogs";
 
 function parseCardId(cardId) {
   if (!cardId || typeof cardId !== "string") return null;
@@ -196,6 +198,15 @@ export default function Revise() {
           total: totalQuestions,
           xpEarned: totalXP,
         });
+        
+        // Log XP event for revision mistakes mode
+        (async () => {
+          const { data } = await supabase.auth.getUser();
+          const userId = data?.user?.id;
+          if (userId) {
+            logXpEvent(userId, totalXP, "revision");
+          }
+        })();
       }
     } else if (mode === "smart") {
       const xp = 25;
@@ -208,6 +219,15 @@ export default function Revise() {
         xpEarned: xp,
         coinsEarned: coins,
       });
+      
+      // Log XP event for smart revision mode
+      (async () => {
+        const { data } = await supabase.auth.getUser();
+        const userId = data?.user?.id;
+        if (userId) {
+          logXpEvent(userId, xp, "revision");
+        }
+      })();
     }
 
     setShowResults(true);

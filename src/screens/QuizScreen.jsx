@@ -8,6 +8,7 @@ import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import { useAnalytics } from "../hooks/useAnalytics";
 import { supabase } from "../supabaseClient";
 import { logLessonComplete } from "../backend/lessonProgress";
+import { logXpEvent } from "../backend/xpLogs";
 import PointingMascot from "../assets/mascots/mascot_pointing_v2.webp";
 import SittingMascot from "../assets/mascots/mascot_sitting_v2.webp";
 import CongratsMascot from "../assets/mascots/mascot_congratulation.webp";
@@ -44,11 +45,16 @@ const QuizScreen = () => {
   const { showModal } = useModalStore();
   const saveWrongQuestion = useReviseStore((s) => s.saveWrongQuestion);
 
-  const sendLessonCompleteLog = async (accuracy, mistakes) => {
+  const sendLessonCompleteLog = async (accuracy, mistakes, xpAmount) => {
     const { data } = await supabase.auth.getUser();
     const userId = data?.user?.id;
     if (!userId || !lessonId) return;
+
     await logLessonComplete(userId, parseInt(lessonId), accuracy, mistakes);
+
+    if (xpAmount) {
+      await logXpEvent(userId, xpAmount, "lesson_complete");
+    }
   };
 
   // 🔒 PREMIUM GUARD: Block direct URL access to premium-locked quizzes
@@ -121,7 +127,8 @@ const QuizScreen = () => {
     // Log lesson completion to Supabase
     const accuracy = Math.round((res.correct / res.total) * 100);
     const mistakes = finalAnswers.filter(a => !a.correct).length;
-    await sendLessonCompleteLog(accuracy, mistakes);
+    const xpReward = res.passed ? res.xp : 0;
+    await sendLessonCompleteLog(accuracy, mistakes, xpReward);
     
     // Apply quiz results with score tracking
     applyQuizResults(
