@@ -17,6 +17,7 @@ import ChallengeCountdown from './challenges/ChallengeCountdown';
 import ChallengeResultsModal from './challenges/ChallengeResultsModal';
 import NoSharedLessonsModal from './challenges/NoSharedLessonsModal';
 import BossLockedModal from './challenges/BossLockedModal';
+import BossPlayedTodayModal from './challenges/BossPlayedTodayModal';
 
 import EventInfoModal from './events/EventInfoModal';
 import CountdownModal from './events/CountdownModal';
@@ -208,6 +209,13 @@ export default function ModalController() {
         return (
           <BossLockedModal
             currentLevel={modalData.currentLevel}
+            onClose={hideModal}
+          />
+        );
+
+      case MODAL_TYPES.BOSS_PLAYED_TODAY:
+        return (
+          <BossPlayedTodayModal
             onClose={hideModal}
           />
         );

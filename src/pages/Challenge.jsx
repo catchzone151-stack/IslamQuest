@@ -107,7 +107,7 @@ export default function Challenge() {
 
     // Check local boss playability
     if (!bossPlayable) {
-      alert("You've already completed the Boss Level today! Come back tomorrow.");
+      showModal(MODAL_TYPES.BOSS_PLAYED_TODAY);
       return;
     }
 
