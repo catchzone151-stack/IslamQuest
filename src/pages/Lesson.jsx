@@ -5,6 +5,8 @@ import { getLessonsForPath } from "../data/lessonLoader";
 import { useProgressStore } from "../store/progressStore";
 import { useVibration } from "../hooks/useVibration";
 import zaydTeachingMascot from "../assets/mascots/mascot_sitting.webp";
+import { supabase } from "../supabaseClient";
+import { logLessonStart, logLessonExit } from "../backend/lessonProgress";
 
 export default function Lesson() {
   const { pathId, lessonId } = useParams();
@@ -19,6 +21,26 @@ export default function Lesson() {
   const lesson = pathLessons.find(
     (l) => l.id === parseInt(lessonId, 10)
   );
+
+  useEffect(() => {
+    let userIdRef = null;
+
+    const loadUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      userIdRef = data?.user?.id;
+      if (userIdRef && lesson?.id) {
+        logLessonStart(userIdRef, lesson.id);
+      }
+    };
+
+    loadUser();
+
+    return () => {
+      if (userIdRef && lesson?.id) {
+        logLessonExit(userIdRef, lesson.id);
+      }
+    };
+  }, [lesson]);
 
   // 🔒 PREMIUM GUARD: Block direct URL access to premium-locked lessons
   useEffect(() => {
