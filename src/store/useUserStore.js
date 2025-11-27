@@ -334,6 +334,29 @@ export const useUserStore = create((set, get) => ({
   },
 
   // --------------------------------------------------
+  // SYNC USER PROFILE - Refresh from cloud
+  // --------------------------------------------------
+  syncUserProfile: async () => {
+    const { data } = await supabase.auth.getUser();
+    const userId = data?.user?.id;
+    if (!userId) return;
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("user_id", userId)
+      .single();
+
+    if (profile) {
+      set({
+        xp: profile.xp ?? 0,
+        streak: profile.streak ?? 0,
+        streakShield: profile.shield_count ?? 0,
+      });
+    }
+  },
+
+  // --------------------------------------------------
   // RESET USER DATA (for logout)
   // --------------------------------------------------
   resetUserData: () => {

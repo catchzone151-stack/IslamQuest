@@ -21,6 +21,7 @@ import { supabase, ensureSignedIn } from "./lib/supabaseClient";
 import { getDeviceFingerprint } from "./lib/deviceFingerprint";
 import { syncOnAppOpen, syncOnForeground } from "./sync/engine.js";
 import OneSignal from "react-onesignal";
+import { createDailyLeaderboardSnapshot } from "./backend/leaderboardSnapshots";
 
 
 // ✅ Onboarding screens (loaded immediately for first-time users)
@@ -321,6 +322,7 @@ export default function App() {
 
       // 4. Load progress stores ONLY after profile is ready (post-onboarding)
       if (profileReady) {
+        await useUserStore.getState().syncUserProfile();
         await useDailyQuestStore.getState().loadDailyQuestFromCloud(user.id);
         await useProgressStore.getState().loadStreakShieldFromCloud();
         console.log("✅ Cloud sync completed");
@@ -403,6 +405,21 @@ export default function App() {
     return () => {
       window.removeEventListener("focus", handleFocus);
     };
+  }, []);
+
+  // 📊 DAILY LEADERBOARD SNAPSHOT (once per day)
+  useEffect(() => {
+    const runDailySnapshot = async () => {
+      const lastRun = localStorage.getItem("last_snapshot_run");
+      const today = new Date().toDateString();
+
+      if (lastRun !== today) {
+        await createDailyLeaderboardSnapshot();
+        localStorage.setItem("last_snapshot_run", today);
+      }
+    };
+
+    runDailySnapshot();
   }, []);
 
   // 🔔 ONESIGNAL PUSH NOTIFICATIONS
