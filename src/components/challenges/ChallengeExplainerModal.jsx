@@ -1,22 +1,42 @@
-import ZaydChallenge from "../../assets/mascots/mascot_boss.webp";
+import mascot_quiz from "../../assets/mascots/mascot_quiz.webp";
+import mascot_power from "../../assets/mascots/mascot_power.webp";
 import mascot_running from "../../assets/mascots/mascot_running.webp";
+import mascot_locked from "../../assets/mascots/mascot_locked.webp";
+import mascot_boss from "../../assets/mascots/mascot_boss.webp";
 import "./ChallengeModals.css";
 
+const getMascotForMode = (modeId) => {
+  switch (modeId) {
+    case "mind_battle":
+      return mascot_quiz;
+    case "lightning_round":
+      return mascot_power;
+    case "speed_run":
+      return mascot_running;
+    case "sudden_death":
+      return mascot_locked;
+    case "boss_level":
+      return mascot_boss;
+    default:
+      return mascot_quiz;
+  }
+};
+
 export default function ChallengeExplainerModal({ mode, onStart, onCancel }) {
+  const mascot = getMascotForMode(mode?.id);
+
   return (
     <div className="challenge-modal-overlay">
       <div className="challenge-modal">
-        {/* Zayd Mascot */}
         <div className="challenge-zayd-container">
           <img 
-            src={ZaydChallenge} 
-            alt="Zayd" 
+            src={mascot} 
+            alt={mode?.name || "Challenge"} 
             className="challenge-zayd-bounce"
             style={{ width: 100, height: "auto" }}
           />
         </div>
 
-        {/* Mode Icon */}
         <div 
           className="challenge-mode-icon"
           style={{
@@ -24,22 +44,16 @@ export default function ChallengeExplainerModal({ mode, onStart, onCancel }) {
             boxShadow: mode.glow
           }}
         >
-          {mode.id === "speed_run" ? (
-            <img 
-              src={mascot_running} 
-              alt="Speed Run" 
-              style={{ width: "50px", height: "auto" }}
-            />
-          ) : (
-            mode.icon
-          )}
+          <img 
+            src={mascot} 
+            alt={mode.name} 
+            style={{ width: "50px", height: "auto" }}
+          />
         </div>
 
-        {/* Title */}
         <h2 className="challenge-modal-title">{mode.name}</h2>
         <p className="challenge-modal-subtitle">{mode.description}</p>
 
-        {/* Details */}
         <div className="challenge-details">
           {mode.questionCount && (
             <div className="challenge-detail-item">
@@ -63,7 +77,6 @@ export default function ChallengeExplainerModal({ mode, onStart, onCancel }) {
           )}
         </div>
 
-        {/* Rewards */}
         <div className="challenge-rewards">
           <h4 style={{ color: "#d4af37", marginBottom: 8 }}>Rewards</h4>
           <div className="reward-grid">
@@ -90,7 +103,6 @@ export default function ChallengeExplainerModal({ mode, onStart, onCancel }) {
           </div>
         </div>
 
-        {/* Buttons */}
         <div className="challenge-modal-actions">
           <button 
             className="challenge-btn-secondary"
