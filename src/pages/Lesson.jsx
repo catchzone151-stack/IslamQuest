@@ -24,23 +24,24 @@ export default function Lesson() {
 
   useEffect(() => {
     let userIdRef = null;
+    const numericPathId = parseInt(pathId, 10);
 
     const loadUser = async () => {
       const { data } = await supabase.auth.getUser();
       userIdRef = data?.user?.id;
-      if (userIdRef && lesson?.id) {
-        logLessonStart(userIdRef, lesson.id);
+      if (userIdRef && lesson?.id && numericPathId) {
+        logLessonStart(userIdRef, numericPathId, lesson.id);
       }
     };
 
     loadUser();
 
     return () => {
-      if (userIdRef && lesson?.id) {
-        logLessonExit(userIdRef, lesson.id);
+      if (userIdRef && lesson?.id && numericPathId) {
+        logLessonExit(userIdRef, numericPathId, lesson.id);
       }
     };
-  }, [lesson]);
+  }, [lesson, pathId]);
 
   // 🔒 PREMIUM GUARD: Block direct URL access to premium-locked lessons
   useEffect(() => {

@@ -1,48 +1,41 @@
 import { supabase } from "../lib/supabaseClient.js";
 
-export async function logLessonStart(userId, lessonId) {
+export async function logLessonStart(userId, pathId, lessonId) {
   const now = Date.now();
-  const { error } = await supabase.from("lesson_progress").insert({
+  const { error } = await supabase.from("lesson_progress").upsert({
     user_id: userId,
+    path_id: pathId,
     lesson_id: lessonId,
-    event_type: "start",
+    completed: false,
+    score: 0,
     timestamp: now,
-  });
+    updated_at: new Date().toISOString(),
+  }, { onConflict: "user_id,path_id,lesson_id" });
   if (error) {
     console.error("[LessonProgress] logLessonStart error:", error);
   } else {
-    console.log("[LessonProgress] logLessonStart success:", lessonId);
+    console.log("[LessonProgress] logLessonStart success:", pathId, lessonId);
   }
 }
 
-export async function logLessonComplete(userId, lessonId, accuracy, mistakes) {
+export async function logLessonComplete(userId, pathId, lessonId, score, passed) {
   const now = Date.now();
-  const { error } = await supabase.from("lesson_progress").insert({
+  const { error } = await supabase.from("lesson_progress").upsert({
     user_id: userId,
+    path_id: pathId,
     lesson_id: lessonId,
-    event_type: "complete",
+    completed: passed,
+    score: score,
     timestamp: now,
-    accuracy,
-    mistakes,
-  });
+    updated_at: new Date().toISOString(),
+  }, { onConflict: "user_id,path_id,lesson_id" });
   if (error) {
     console.error("[LessonProgress] logLessonComplete error:", error);
   } else {
-    console.log("[LessonProgress] logLessonComplete success:", lessonId, accuracy, mistakes);
+    console.log("[LessonProgress] logLessonComplete success:", pathId, lessonId, score, passed);
   }
 }
 
-export async function logLessonExit(userId, lessonId) {
-  const now = Date.now();
-  const { error } = await supabase.from("lesson_progress").insert({
-    user_id: userId,
-    lesson_id: lessonId,
-    event_type: "exit",
-    timestamp: now,
-  });
-  if (error) {
-    console.error("[LessonProgress] logLessonExit error:", error);
-  } else {
-    console.log("[LessonProgress] logLessonExit success:", lessonId);
-  }
+export async function logLessonExit(userId, pathId, lessonId) {
+  console.log("[LessonProgress] logLessonExit:", pathId, lessonId);
 }

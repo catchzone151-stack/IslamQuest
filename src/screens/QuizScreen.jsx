@@ -45,12 +45,12 @@ const QuizScreen = () => {
   const { showModal } = useModalStore();
   const saveWrongQuestion = useReviseStore((s) => s.saveWrongQuestion);
 
-  const sendLessonCompleteLog = async (accuracy, mistakes, xpAmount) => {
+  const sendLessonCompleteLog = async (score, passed, xpAmount) => {
     const { data } = await supabase.auth.getUser();
     const userId = data?.user?.id;
-    if (!userId || !lessonId) return;
+    if (!userId || !lessonId || !pathId) return;
 
-    await logLessonComplete(userId, parseInt(lessonId), accuracy, mistakes);
+    await logLessonComplete(userId, parseInt(pathId), parseInt(lessonId), score, passed);
 
     if (xpAmount) {
       await logXpEvent(userId, xpAmount, "lesson_complete");
@@ -125,10 +125,8 @@ const QuizScreen = () => {
     setResults(res);
     
     // Log lesson completion to Supabase
-    const accuracy = Math.round((res.correct / res.total) * 100);
-    const mistakes = finalAnswers.filter(a => !a.correct).length;
     const xpReward = res.passed ? res.xp : 0;
-    await sendLessonCompleteLog(accuracy, mistakes, xpReward);
+    await sendLessonCompleteLog(res.correct, res.passed, xpReward);
     
     // Apply quiz results with score tracking
     applyQuizResults(
