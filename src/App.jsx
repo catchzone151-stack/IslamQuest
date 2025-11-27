@@ -20,6 +20,7 @@ import { useModalStore, MODAL_TYPES } from "./store/modalStore";
 import { supabase, ensureSignedIn } from "./lib/supabaseClient";
 import { getDeviceFingerprint } from "./lib/deviceFingerprint";
 import { syncOnAppOpen, syncOnForeground } from "./sync/engine.js";
+import OneSignal from "react-onesignal";
 
 
 // ✅ Onboarding screens (loaded immediately for first-time users)
@@ -403,6 +404,41 @@ export default function App() {
       window.removeEventListener("focus", handleFocus);
     };
   }, []);
+
+  // 🔔 ONESIGNAL PUSH NOTIFICATIONS
+  useEffect(() => {
+    const initOneSignal = async () => {
+      try {
+        await OneSignal.init({
+          appId: process.env.ONESIGNAL_APP_ID || "YOUR-ONESIGNAL-APP-ID",
+          allowLocalhostAsSecureOrigin: true,
+        });
+
+        const token = await OneSignal.getUserId();
+        if (!token) return;
+
+        const { data: auth } = await supabase.auth.getUser();
+        if (!auth?.user) return;
+
+        await supabase.from("push_tokens").upsert({
+          user_id: auth.user.id,
+          device_token: token,
+          platform: "web",
+          updated_at: new Date().toISOString()
+        }, {
+          onConflict: "user_id,device_token"
+        });
+
+        console.log("🔔 OneSignal initialized, token saved");
+      } catch (err) {
+        console.warn("OneSignal init failed:", err.message);
+      }
+    };
+
+    if (hasOnboarded) {
+      initOneSignal();
+    }
+  }, [hasOnboarded]);
 
   // ✅ Wait until Zustand store is rehydrated (prevents onboarding redirect)
   if (!isHydrated) {

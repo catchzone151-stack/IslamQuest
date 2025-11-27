@@ -1,0 +1,94 @@
+You are Senior Dev Mode.
+
+------------------------------------------------------------
+1) Install OneSignal SDK
+------------------------------------------------------------
+Run:
+npm install react-onesignal
+
+------------------------------------------------------------
+2) Update App.jsx to initialize OneSignal
+------------------------------------------------------------
+Add at the top:
+import OneSignal from "react-onesignal";
+import { supabase } from "./lib/supabaseClient";
+
+Inside the main App useEffect(), add:
+
+OneSignal.init({
+  appId: "YOUR-ONESIGNAL-APP-ID",
+  allowLocalhostAsSecureOrigin: true,
+});
+
+OneSignal.getUserId().then(async (token) => {
+  if (!token) return;
+  const { data: auth } = await supabase.auth.getUser();
+  if (!auth?.user) return;
+
+  await supabase.from("push_tokens").upsert({
+    user_id: auth.user.id,
+    device_token: token,
+    platform: "web",
+    updated_at: new Date().toISOString()
+  });
+});
+
+------------------------------------------------------------
+3) Create Supabase Edge Function
+Create folder:
+supabase/functions/send-daily-notifications/index.ts
+
+Paste this file content:
+
+------------------------------------------------------------
+import { serve } from "https://deno.land/std/http/server.ts";
+
+serve(async () => {
+  const supabaseUrl = Deno.env.get("SUPABASE_URL");
+  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+
+  const supabase = createClient(supabaseUrl, serviceKey);
+
+  const { data: tokens } = await supabase.from("push_tokens").select("*");
+
+  for (const t of tokens) {
+    await fetch("https://onesignal.com/api/v1/notifications", {
+      method: "POST",
+      headers: {
+        "Authorization": "Basic YOUR-ONESIGNAL-REST-API-KEY",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        app_id: "YOUR-ONESIGNAL-APP-ID",
+        include_player_ids: [t.device_token],
+        headings: { en: "Don't lose your streak! 🔥" },
+        contents: { en: "Come back and complete today's Daily Quest." },
+      }),
+    });
+  }
+
+  return new Response("sent!");
+});
+------------------------------------------------------------
+
+------------------------------------------------------------
+4) Deploy the function
+------------------------------------------------------------
+In terminal:
+supabase functions deploy send-daily-notifications
+supabase secrets set --env-file ./supabase/.env
+
+------------------------------------------------------------
+5) Set up Supabase CRON
+------------------------------------------------------------
+In Supabase Dashboard:
+Project → Edge Functions → Schedules → New Schedule
+
+Run daily at 7pm:
+* 19 * * *
+
+Target function:
+send-daily-notifications
+------------------------------------------------------------
+
+End.
