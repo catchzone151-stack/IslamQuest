@@ -1,0 +1,98 @@
+You are Senior Dev Mode.
+
+SEARCH the entire project for any Arabic phrases or transliterations that may have been auto-inserted incorrectly by Replit or imported from templates.
+
+Fix ALL of the following:
+
+============================================================
+1. After the name “Allah”
+============================================================
+If you find ANY variant of the following:
+
+Arabic variants:
+- جل جلاله
+- جَلَّ جَلَالُهُ
+- جل جلالهُ
+- جـل جلالـه
+- جلاله
+
+English transliterations:
+- jalla jalaluhu
+- jalla jalalahu
+- jala jalaalahu
+- jalalawa ala
+- jalla wa’ala
+- jalla wa ala
+- jalla wa alaahu
+- jalla jalalahu
+
+REPLACE ALL of them with the correct phrase:
+
+سُبْحَانَهُ وَتَعَالَى
+
+This phrase must appear EXACTLY as written, with no additions after it.
+
+============================================================
+2. Mashallah (ما شاء الله)
+============================================================
+Detect ALL variants:
+
+Arabic variants:
+- ماشاءالله
+- ماشاالله
+- ما شاءالله
+- ماشآء الله
+
+English transliterations:
+- mashallah
+- mashAllah
+- ma sha allah
+- mashaallah
+- ma shaa allah
+
+Rule:
+✔ KEEP the standardized Arabic version:
+
+ما شاء الله
+
+❌ REMOVE any Arabic or English phrase that appears *after* it.
+(e.g., remove جل جلاله or anything else attached)
+
+============================================================
+3. Inshallah (إن شاء الله)
+============================================================
+Detect ALL variants:
+
+Arabic variants:
+- انشاء الله
+- ان شاء الله
+- إن شاءالله
+- إنشاالله
+
+English transliterations:
+- inshallah
+- inshaAllah
+- in sha allah
+- inshaa allah
+- inshAllah
+
+Rule:
+✔ KEEP the standardized Arabic version:
+
+إن شاء الله
+
+❌ REMOVE ANYTHING appearing after it.
+No added phrases, no appended calligraphy.
+
+============================================================
+4. General rules
+============================================================
+
+- Do NOT modify harakat.
+- Preserve RTL formatting.
+- Ensure JSX or JSON strings remain valid.
+- Do not wrap Arabic in any new components unless required for safety.
+- After replacing, rebuild the project and ensure no syntax errors.
+
+============================================================
+End of instructions.
