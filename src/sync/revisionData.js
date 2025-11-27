@@ -1,56 +1,80 @@
 export function normalizeLocalRevisionItem(item) {
-  console.log("[RevisionData] normalizeLocalRevisionItem called");
-
   return {
-    lesson_id: item.lessonId,
-    card_id: item.cardId,
-    strength: item.strength ?? 0,
-    times_correct: item.timesCorrect ?? 0,
-    times_wrong: item.timesWrong ?? 0,
-    last_reviewed_at: item.lastReviewedAt ?? null,
-    next_review_at: item.nextReviewAt ?? null,
-    updated_at: item.updatedAt ?? new Date().toISOString(),
-    extra_data: item.extraData ?? null,
-  };
-}
-
-export function convertToCloudRow(item, userId) {
-  console.log("[RevisionData] convertToCloudRow called");
-
-  return {
-    user_id: userId,
-    lesson_id: item.lesson_id,
-    card_id: item.card_id,
-    strength: item.strength,
-    times_correct: item.times_correct,
-    times_wrong: item.times_wrong,
-    last_reviewed_at: item.last_reviewed_at,
-    next_review_at: item.next_review_at,
-    updated_at: item.updated_at,
-    extra_data: item.extra_data,
+    id: item.id || item.cardId,
+    lessonId: item.lessonId,
+    question: item.question || item.extraData?.question || "",
+    options: item.options || item.extraData?.options || [],
+    answer: item.answer ?? item.extraData?.answer ?? 0,
+    sourcePathId: item.sourcePathId || item.extraData?.sourcePathId || 0,
+    timesCorrect: item.timesCorrect || 0,
+    timesWrong: item.timesWrong || 0,
+    lastSeen: item.lastSeen || item.lastReviewedAt || null,
   };
 }
 
 export function convertFromCloudRow(row) {
-  console.log("[RevisionData] convertFromCloudRow called");
-
+  const extraData = row.extra_data || {};
   return {
+    id: row.card_id,
     lessonId: row.lesson_id,
-    cardId: row.card_id,
-    strength: row.strength,
-    timesCorrect: row.times_correct,
-    timesWrong: row.times_wrong,
-    lastReviewedAt: row.last_reviewed_at,
-    nextReviewAt: row.next_review_at,
-    updatedAt: row.updated_at,
-    extraData: row.extra_data,
+    question: extraData.question || "",
+    options: extraData.options || [],
+    answer: extraData.answer ?? 0,
+    sourcePathId: extraData.sourcePathId || 0,
+    timesCorrect: row.times_correct || 0,
+    timesWrong: row.times_wrong || 0,
+    lastSeen: row.last_reviewed_at || null,
+  };
+}
+
+export function convertToCloudRow(userId, item) {
+  return {
+    user_id: userId,
+    lesson_id: item.lessonId,
+    card_id: item.id,
+    strength: 0,
+    times_correct: item.timesCorrect || 0,
+    times_wrong: item.timesWrong || 0,
+    last_reviewed_at: item.lastSeen || null,
+    next_review_at: null,
+    extra_data: {
+      question: item.question || "",
+      options: item.options || [],
+      answer: item.answer ?? 0,
+      sourcePathId: item.sourcePathId || 0,
+    },
+    updated_at: new Date().toISOString(),
   };
 }
 
 export function validateRevisionItem(item) {
-  console.log("[RevisionData] validateRevisionItem called");
+  return (
+    item &&
+    typeof item.id !== "undefined" &&
+    typeof item.lessonId !== "undefined"
+  );
+}
 
-  if (!item.lesson_id || !item.card_id) return false;
-  if (typeof item.strength !== "number") return false;
-  return true;
+export function mergeLocalAndCloud(localArr, cloudArr) {
+  const map = new Map();
+
+  for (const c of cloudArr) {
+    map.set(`${c.lessonId}-${c.id}`, c);
+  }
+
+  for (const l of localArr) {
+    const key = `${l.lessonId}-${l.id}`;
+    if (!map.has(key)) {
+      map.set(key, l);
+    } else {
+      const existing = map.get(key);
+      const localTime = new Date(l.lastSeen || 0).getTime();
+      const cloudTime = new Date(existing.lastSeen || 0).getTime();
+      if (localTime > cloudTime) {
+        map.set(key, l);
+      }
+    }
+  }
+
+  return Array.from(map.values());
 }

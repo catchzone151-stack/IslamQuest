@@ -97,6 +97,11 @@ export async function pushLocalRevision(retry = true) {
     });
 
     if (error) {
+      // If table doesn't exist or constraint missing, skip silently (local-only mode)
+      if (error.code === "42P01" || error.code === "42P10") {
+        console.log("[RevisionSync] Table/constraint not ready, using local-only mode");
+        return;
+      }
       console.warn("[RevisionSync] UPSERT ERROR:", error);
       if (retry) {
         console.log("[RevisionSync] Retrying push...");
