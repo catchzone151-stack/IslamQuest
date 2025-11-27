@@ -1,14 +1,12 @@
 import { supabase } from "../lib/supabaseClient.js";
 
 export async function logLessonStart(userId, pathId, lessonId) {
-  const now = Date.now();
   const { error } = await supabase.from("lesson_progress").upsert({
     user_id: userId,
     path_id: pathId,
     lesson_id: lessonId,
     completed: false,
     score: 0,
-    timestamp: now,
     updated_at: new Date().toISOString(),
   }, { onConflict: "user_id,path_id,lesson_id" });
   if (error) {
@@ -19,14 +17,12 @@ export async function logLessonStart(userId, pathId, lessonId) {
 }
 
 export async function logLessonComplete(userId, pathId, lessonId, score, passed) {
-  const now = Date.now();
   const { error } = await supabase.from("lesson_progress").upsert({
     user_id: userId,
     path_id: pathId,
     lesson_id: lessonId,
     completed: passed,
     score: score,
-    timestamp: now,
     updated_at: new Date().toISOString(),
   }, { onConflict: "user_id,path_id,lesson_id" });
   if (error) {

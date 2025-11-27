@@ -3,9 +3,9 @@ import { supabase } from "../supabaseClient";
 export async function logXpEvent(userId, amount, source) {
   const { error } = await supabase.from("xp_logs").insert({
     user_id: userId,
-    xp_amount: amount,
+    xp: amount,
     source,
-    timestamp: Date.now(),
+    created_at: new Date().toISOString(),
   });
   if (error) {
     console.error("[XpLogs] logXpEvent error:", error);
