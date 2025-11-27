@@ -22,6 +22,9 @@ function getQuestionId(question, pathId, lessonId) {
 export const useReviseStore = create((set, get) => ({
   // Weak question pool: questions user has gotten wrong
   weakPool: [], // { id, question, options, answer, sourcePathId, lessonId, lastSeen }
+  
+  // Sync flag - set to true when local changes need to sync to Supabase
+  needsSync: false,
 
   // Load from LocalStorage
   loadReviseData: () => {
@@ -61,10 +64,10 @@ export const useReviseStore = create((set, get) => ({
       // Update lastSeen timestamp
       const updated = state.weakPool.map((q) =>
         q.id === questionId
-          ? { ...q, lastSeen: new Date().toISOString() }
+          ? { ...q, lastSeen: new Date().toISOString(), timesWrong: (q.timesWrong || 0) + 1 }
           : q
       );
-      set({ weakPool: updated });
+      set({ weakPool: updated, needsSync: true });
     } else {
       // Add new wrong question
       const newQuestion = {
@@ -75,8 +78,10 @@ export const useReviseStore = create((set, get) => ({
         sourcePathId: pathId,
         lessonId: lessonId,
         lastSeen: new Date().toISOString(),
+        timesWrong: 1,
+        timesCorrect: 0,
       };
-      set({ weakPool: [...state.weakPool, newQuestion] });
+      set({ weakPool: [...state.weakPool, newQuestion], needsSync: true });
       
       // 🔓 Unlock Review Mistakes when first mistake is saved
       const { unlockReviewMistakes } = useProgressStore.getState();
@@ -286,7 +291,7 @@ export const useReviseStore = create((set, get) => ({
       }
     }
 
-    set({ weakPool: mergedPool });
+    set({ weakPool: mergedPool, needsSync: true });
     get().saveReviseData();
     console.log(`[ReviseStore] addLessonToRevision: Added ${newItems.length} questions from path ${pathId}, lesson ${lessonId}`);
   },

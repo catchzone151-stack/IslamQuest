@@ -53,6 +53,24 @@ function weakItemToCloudShape(item, userId) {
   };
 }
 
+// Prepare local revision data for sync (serializes weakPool correctly)
+export function prepareLocalRevision() {
+  const state = useReviseStore.getState();
+  const weakPool = state.getWeakPool() || [];
+  
+  return weakPool.map((item) => ({
+    id: item.id,
+    question: item.question,
+    options: item.options,
+    answer: item.answer,
+    sourcePathId: item.sourcePathId,
+    lessonId: item.lessonId,
+    lastSeen: item.lastSeen,
+    timesCorrect: item.timesCorrect ?? 0,
+    timesWrong: item.timesWrong ?? 0,
+  }));
+}
+
 export async function pushLocalRevision(retry = true) {
   console.log("[RevisionSync] pushLocalRevision() start");
 
@@ -87,6 +105,8 @@ export async function pushLocalRevision(retry = true) {
       return;
     }
 
+    // Reset needsSync flag after successful push
+    useReviseStore.setState({ needsSync: false });
     console.log("[RevisionSync] UPSERT successful");
   } catch (e) {
     console.warn("[RevisionSync] pushLocalRevision exception:", e.message);
