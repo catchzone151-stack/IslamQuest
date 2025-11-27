@@ -8,6 +8,8 @@ import CryptoJS from "crypto-js";
 import { getQuizForLesson } from "../data/quizEngine";
 import { logStreakEvent } from "../backend/streakLogs";
 import { logXpEvent } from "../backend/xpLogs";
+import { logPurchase } from "../backend/purchaseLogs";
+import { addFamilyMember as addFamilyMemberCloud, removeFamilyMember as removeFamilyMemberCloud } from "../backend/familyMembers";
 
 const STORAGE_KEY = "islamQuestProgress_v4";
 
@@ -873,6 +875,16 @@ export const useProgressStore = create((set, get) => ({
     });
     get().saveProgress();
     setTimeout(() => get().syncToSupabase(), 50);
+    
+    // Log purchase to Supabase
+    (async () => {
+      const { data } = await supabase.auth.getUser();
+      const userId = data?.user?.id;
+      if (userId) {
+        logPurchase(userId, "individual_plan", 4.99, "GBP");
+      }
+    })();
+    
     return { success: true, plan: "individual" };
   },
 
@@ -897,6 +909,16 @@ export const useProgressStore = create((set, get) => ({
     });
     get().saveProgress();
     setTimeout(() => get().syncToSupabase(), 50);
+    
+    // Log purchase to Supabase
+    (async () => {
+      const { data } = await supabase.auth.getUser();
+      const userId = data?.user?.id;
+      if (userId) {
+        logPurchase(userId, "family_plan", 18.00, "GBP");
+      }
+    })();
+    
     return { success: true, plan: "family", familyId };
   },
 
@@ -938,16 +960,16 @@ export const useProgressStore = create((set, get) => ({
     };
   },
 
-  // 👨‍👩‍👧‍👦 PLACEHOLDER: Add family member
-  // Later: sync with Supabase family table
-  addFamilyMember: (memberData) => {
-    const { familyMembers } = get();
+  // 👨‍👩‍👧‍👦 Add family member - syncs with Supabase
+  addFamilyMember: async (memberData) => {
+    const { familyMembers, familyPlanId } = get();
     if (familyMembers.length >= 5) {
       return { success: false, message: "Family plan is full (max 5 members)" };
     }
     
     const newMember = {
-      id: `member_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id: memberData.userId || `member_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      userId: memberData.userId,
       name: memberData.name || "Family Member",
       avatar: memberData.avatar || null,
       joinedAt: new Date().toISOString(),
@@ -955,15 +977,28 @@ export const useProgressStore = create((set, get) => ({
     
     set({ familyMembers: [...familyMembers, newMember] });
     get().saveProgress();
+    
+    // Sync to Supabase family_members table
+    if (familyPlanId && memberData.userId) {
+      addFamilyMemberCloud(familyPlanId, memberData.userId);
+    }
+    
     return { success: true, member: newMember };
   },
 
-  // 👨‍👩‍👧‍👦 PLACEHOLDER: Remove family member
-  // Later: sync with Supabase
-  removeFamilyMember: (memberId) => {
-    const { familyMembers } = get();
+  // 👨‍👩‍👧‍👦 Remove family member - syncs with Supabase
+  removeFamilyMember: async (memberId) => {
+    const { familyMembers, familyPlanId } = get();
+    const member = familyMembers.find(m => m.id === memberId);
+    
     set({ familyMembers: familyMembers.filter(m => m.id !== memberId) });
     get().saveProgress();
+    
+    // Sync to Supabase family_members table
+    if (familyPlanId && member?.userId) {
+      removeFamilyMemberCloud(familyPlanId, member.userId);
+    }
+    
     return { success: true };
   },
 

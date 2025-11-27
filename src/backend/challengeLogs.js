@@ -1,4 +1,4 @@
-import { supabase } from "../supabaseClient";
+import { supabase } from "../lib/supabaseClient";
 
 export async function logChallengeRequest(userId, mode, opponentId = null) {
   const { error } = await supabase.from("challenge_logs").insert({
