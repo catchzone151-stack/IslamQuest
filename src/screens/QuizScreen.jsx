@@ -6,6 +6,8 @@ import { useProgressStore } from "../store/progressStore";
 import { useReviseStore } from "../store/reviseStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import { useAnalytics } from "../hooks/useAnalytics";
+import { supabase } from "../supabaseClient";
+import { logLessonComplete } from "../backend/lessonProgress";
 import PointingMascot from "../assets/mascots/mascot_pointing_v2.webp";
 import SittingMascot from "../assets/mascots/mascot_sitting_v2.webp";
 import CongratsMascot from "../assets/mascots/mascot_congratulation.webp";
@@ -41,6 +43,13 @@ const QuizScreen = () => {
   const getLessonLockState = useProgressStore((s) => s.getLessonLockState);
   const { showModal } = useModalStore();
   const saveWrongQuestion = useReviseStore((s) => s.saveWrongQuestion);
+
+  const sendLessonCompleteLog = async (accuracy, mistakes) => {
+    const { data } = await supabase.auth.getUser();
+    const userId = data?.user?.id;
+    if (!userId || !lessonId) return;
+    await logLessonComplete(userId, parseInt(lessonId), accuracy, mistakes);
+  };
 
   // 🔒 PREMIUM GUARD: Block direct URL access to premium-locked quizzes
   useEffect(() => {
@@ -105,9 +114,14 @@ const QuizScreen = () => {
     }, 900);
   };
 
-  const finishQuiz = (finalAnswers) => {
+  const finishQuiz = async (finalAnswers) => {
     const res = calculateResults(finalAnswers);
     setResults(res);
+    
+    // Log lesson completion to Supabase
+    const accuracy = Math.round((res.correct / res.total) * 100);
+    const mistakes = finalAnswers.filter(a => !a.correct).length;
+    await sendLessonCompleteLog(accuracy, mistakes);
     
     // Apply quiz results with score tracking
     applyQuizResults(
