@@ -1,6 +1,7 @@
 import { supabase } from "../lib/supabaseClient";
 import { getDeviceId, hashDeviceId } from "./deviceService";
 import { verifyReceipt, validatePremiumStatus } from "./purchaseVerificationService";
+import { logEvent, ANALYTICS_EVENTS } from "./analyticsService";
 
 const PRODUCTS = {
   premium_lifetime: {
@@ -174,6 +175,8 @@ export const purchase = async (productId) => {
   const hashedDeviceId = await hashDeviceId(deviceId);
   const nonce = generateNonce();
   
+  logEvent(ANALYTICS_EVENTS.PURCHASE_INITIATED, { productId, platform: platformType });
+  
   const store = platformType === "ios" ? storeKit : googleBilling;
   const storeId = platformType === "ios" ? product.appleId : product.googleId;
   
@@ -196,6 +199,7 @@ export const purchase = async (productId) => {
         }
         
         console.log("[IAP] Receipt received, sending to backend for verification...");
+        logEvent(ANALYTICS_EVENTS.PURCHASE_TOKEN_RECEIVED, { productId: product.id, platform: platformType });
         
         const verificationResult = await verifyReceipt({
           platform: platformType,
@@ -208,9 +212,12 @@ export const purchase = async (productId) => {
         
         if (!verificationResult.success) {
           console.error("[IAP] Backend verification failed:", verificationResult.error);
+          logEvent(ANALYTICS_EVENTS.INVALID_RECEIPT, { productId: product.id, error: verificationResult.error });
           resolve({ success: false, error: verificationResult.error || "Purchase verification failed" });
           return;
         }
+        
+        logEvent(ANALYTICS_EVENTS.PURCHASE_VERIFIED_SERVER, { productId: product.id, platform: platformType });
         
         if (store.finish) {
           await store.finish(purchasedProduct);
@@ -277,10 +284,13 @@ export const restorePurchases = async () => {
   const deviceId = await getDeviceId();
   const hashedDeviceId = await hashDeviceId(deviceId);
   
+  logEvent(ANALYTICS_EVENTS.RESTORE_PURCHASES_ATTEMPTED, { platform: platformType });
+  
   const backendResult = await validatePremiumStatus(userId, hashedDeviceId);
   
   if (backendResult.requiresDeviceTransfer) {
     console.log("[IAP] Premium exists but requires device transfer");
+    logEvent(ANALYTICS_EVENTS.DEVICE_LIMIT_TRIGGERED, { planType: backendResult.planType });
     return {
       success: false,
       verified: false,
@@ -295,6 +305,7 @@ export const restorePurchases = async () => {
     markPremiumActivated(backendResult.planType);
     
     console.log("[IAP] Restored from backend (verified):", backendResult.planType);
+    logEvent(ANALYTICS_EVENTS.RESTORE_PURCHASES_SUCCESS, { source: "backend", planType: backendResult.planType });
     return {
       success: true,
       verified: true,

@@ -5,11 +5,13 @@ import { useProgressStore } from "../store/progressStore";
 import { useUserStore } from "../store/useUserStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import { supabase } from "../lib/supabaseClient";
-import { ChevronLeft, Users, UserPlus, UserMinus, Crown } from "lucide-react";
+import { ChevronLeft, Users, UserPlus, UserMinus, Crown, Trash2 } from "lucide-react";
 import { DEV_MODE, setDevMode } from "../config/dev";
 import RemoveFamilyMemberModal from "../components/RemoveFamilyMemberModal";
 import InviteFamilyMemberModal from "../components/InviteFamilyMemberModal";
+import DeleteAccountModal from "../components/DeleteAccountModal";
 import { getAvatarImage } from "../utils/avatarUtils";
+import { logEvent, ANALYTICS_EVENTS } from "../services/analyticsService";
 
 export default function Settings() {
   const navigate = useNavigate();
@@ -28,6 +30,8 @@ export default function Settings() {
   const [devModeEnabled, setDevModeEnabled] = useState(DEV_MODE);
   const [showRemoveModal, setShowRemoveModal] = useState(false);
   const [showInviteModal, setShowInviteModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [memberToRemove, setMemberToRemove] = useState(null);
 
   const isFamilyPlanOwner = premiumType === "family";
@@ -64,6 +68,8 @@ export default function Settings() {
   };
 
   const handleLogout = async () => {
+    logEvent(ANALYTICS_EVENTS.LOGOUT, {});
+    
     try {
       await supabase.auth.signOut();
     } catch (err) {
@@ -75,6 +81,45 @@ export default function Settings() {
     setOnboarded(false);
 
     navigate("/onboarding/bismillah", { replace: true });
+  };
+
+  const handleDeleteAccount = async () => {
+    setIsDeleting(true);
+    
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session?.access_token) {
+        console.error("No active session for account deletion");
+        setIsDeleting(false);
+        return;
+      }
+
+      const response = await supabase.functions.invoke("delete-user-account", {
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
+
+      if (response.error) {
+        console.error("Account deletion failed:", response.error);
+        setIsDeleting(false);
+        return;
+      }
+
+      logEvent(ANALYTICS_EVENTS.ACCOUNT_DELETED, {});
+      
+      resetUserData();
+      resetAllProgress();
+      setOnboarded(false);
+      
+      setShowDeleteModal(false);
+      navigate("/goodbye", { replace: true });
+      
+    } catch (err) {
+      console.error("Account deletion error:", err);
+      setIsDeleting(false);
+    }
   };
 
   return (
@@ -493,6 +538,58 @@ export default function Settings() {
             Log Out
           </button>
         </div>
+
+        {/* Delete Account Section - At the very bottom with divider */}
+        <div
+          style={{
+            maxWidth: 400,
+            margin: "32px auto 0",
+            padding: "0 20px",
+          }}
+        >
+          {/* Divider */}
+          <div
+            style={{
+              height: 1,
+              background: "linear-gradient(90deg, transparent 0%, rgba(239, 68, 68, 0.3) 50%, transparent 100%)",
+              marginBottom: 20,
+            }}
+          />
+          
+          {/* Delete Account Button */}
+          <button
+            onClick={() => setShowDeleteModal(true)}
+            style={{
+              background: "transparent",
+              border: "1px solid rgba(239, 68, 68, 0.2)",
+              borderRadius: 12,
+              padding: "14px 16px",
+              color: "rgba(239, 68, 68, 0.7)",
+              fontWeight: "500",
+              fontSize: "0.9rem",
+              width: "100%",
+              cursor: "pointer",
+              transition: "all 0.2s ease",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "rgba(239, 68, 68, 0.05)";
+              e.currentTarget.style.borderColor = "rgba(239, 68, 68, 0.3)";
+              e.currentTarget.style.color = "#ef4444";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "transparent";
+              e.currentTarget.style.borderColor = "rgba(239, 68, 68, 0.2)";
+              e.currentTarget.style.color = "rgba(239, 68, 68, 0.7)";
+            }}
+          >
+            <Trash2 size={16} />
+            Delete My Account
+          </button>
+        </div>
       </div>
 
       {/* Remove Family Member Confirmation Modal */}
@@ -512,6 +609,14 @@ export default function Settings() {
         onClose={() => setShowInviteModal(false)}
         familyPlanId={familyPlanId}
         onInvite={handleInviteMember}
+      />
+
+      {/* Delete Account Confirmation Modal */}
+      <DeleteAccountModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleDeleteAccount}
+        isDeleting={isDeleting}
       />
     </ScreenContainer>
   );

@@ -5,6 +5,7 @@ import { Crown, RefreshCw, Smartphone } from "lucide-react";
 import { useProgressStore } from "../store/progressStore";
 import { purchase, restorePurchases, isNativeAppRequired, getPlatform, loadProducts } from "../services/iapService";
 import { markPremiumActivated } from "../services/premiumStateService";
+import NotificationModal from "../components/NotificationModal";
 import MainMascot from "../assets/mascots/mascot_sitting.webp";
 
 const Premium = () => {
@@ -12,9 +13,23 @@ const Premium = () => {
   const { premium, premiumType, purchaseIndividual, purchaseFamily } = useProgressStore();
   const [loading, setLoading] = useState(false);
   const [restoring, setRestoring] = useState(false);
-  const [restoreMessage, setRestoreMessage] = useState("");
   const [requiresNativeApp, setRequiresNativeApp] = useState(false);
   const [products, setProducts] = useState({});
+  
+  const [notification, setNotification] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+    type: "info",
+  });
+
+  const showNotification = (title, message, type = "info") => {
+    setNotification({ isOpen: true, title, message, type });
+  };
+
+  const closeNotification = () => {
+    setNotification({ ...notification, isOpen: false });
+  };
 
   useEffect(() => {
     const checkPlatform = async () => {
@@ -35,7 +50,6 @@ const Premium = () => {
 
   const handleRestorePurchases = async () => {
     setRestoring(true);
-    setRestoreMessage("");
     try {
       const result = await restorePurchases();
       
@@ -46,16 +60,28 @@ const Premium = () => {
         } else {
           purchaseIndividual();
         }
-        setRestoreMessage("Purchases restored successfully!");
+        showNotification("Restored!", "Your purchases have been restored successfully.", "success");
         setTimeout(() => navigate("/"), 1500);
       } else if (result.requiresDeviceTransfer) {
-        setRestoreMessage("Your premium is active on another device. You can only use premium on one device at a time.");
+        showNotification(
+          "Device Limit Reached",
+          "Your premium is active on another device. You can only use premium on one device at a time.",
+          "device"
+        );
       } else {
-        setRestoreMessage(result.message || result.error || "No purchases found to restore");
+        showNotification(
+          "No Purchases Found",
+          result.message || result.error || "We couldn't find any purchases to restore.",
+          "info"
+        );
       }
     } catch (error) {
       console.error("Restore failed:", error);
-      setRestoreMessage("Failed to restore purchases. Please try again.");
+      showNotification(
+        "Restore Failed",
+        "Failed to restore purchases. Please check your connection and try again.",
+        "error"
+      );
     } finally {
       setRestoring(false);
     }
@@ -77,11 +103,19 @@ const Premium = () => {
         setTimeout(() => navigate("/"), 1000);
       } else {
         console.error("Purchase failed:", result.error);
-        alert(result.error || "Payment was not completed. Please try again.");
+        showNotification(
+          "Purchase Failed",
+          result.error || "Payment was not completed. Please try again.",
+          "error"
+        );
       }
     } catch (error) {
       console.error("Purchase failed:", error);
-      alert("Payment failed. Please try again.");
+      showNotification(
+        "Payment Failed",
+        "Something went wrong with your payment. Please try again.",
+        "error"
+      );
     } finally {
       setLoading(false);
     }
@@ -103,11 +137,19 @@ const Premium = () => {
         setTimeout(() => navigate("/"), 1000);
       } else {
         console.error("Purchase failed:", result.error);
-        alert(result.error || "Payment was not completed. Please try again.");
+        showNotification(
+          "Purchase Failed",
+          result.error || "Payment was not completed. Please try again.",
+          "error"
+        );
       }
     } catch (error) {
       console.error("Purchase failed:", error);
-      alert("Payment failed. Please try again.");
+      showNotification(
+        "Payment Failed",
+        "Something went wrong with your payment. Please try again.",
+        "error"
+      );
     } finally {
       setLoading(false);
     }
@@ -248,12 +290,16 @@ const Premium = () => {
             <RefreshCw size={16} className={restoring ? "spin" : ""} />
             {restoring ? "Restoring..." : "Restore Purchases"}
           </button>
-
-          {restoreMessage && (
-            <p className="restore-message">{restoreMessage}</p>
-          )}
         </div>
       </motion.div>
+
+      <NotificationModal
+        isOpen={notification.isOpen}
+        onClose={closeNotification}
+        title={notification.title}
+        message={notification.message}
+        type={notification.type}
+      />
 
       <style>{`
         .premium-container {
@@ -379,12 +425,6 @@ const Premium = () => {
         .restore-btn:disabled {
           opacity: 0.6;
           cursor: not-allowed;
-        }
-
-        .restore-message {
-          margin-top: 10px;
-          font-size: 0.8rem;
-          color: #10b981;
         }
 
         .spin {

@@ -51,6 +51,7 @@ const QuizScreen = lazy(() => import("./screens/QuizScreen.jsx"));
 const GlobalEvents = lazy(() => import("./pages/GlobalEvents.jsx"));
 const ResetPremium = lazy(() => import("./pages/ResetPremium.jsx"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword.jsx"));
+const Goodbye = lazy(() => import("./pages/Goodbye.jsx"));
 
 // 🌙 Loading Component for lazy routes
 function LoadingScreen() {
@@ -542,6 +543,15 @@ export default function App() {
                       </Suspense>
                     }
                   />
+                  {/* Goodbye screen after account deletion */}
+                  <Route
+                    path="/goodbye"
+                    element={
+                      <Suspense fallback={<LoadingScreen />}>
+                        <Goodbye />
+                      </Suspense>
+                    }
+                  />
                   {/* Fallback — always go to Bismillah if not onboarded */}
                   <Route path="*" element={<BismillahScreen />} />
                 </>
@@ -682,6 +692,14 @@ export default function App() {
                     element={
                       <Suspense fallback={<LoadingScreen />}>
                         <ResetPassword />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="/goodbye"
+                    element={
+                      <Suspense fallback={<LoadingScreen />}>
+                        <Goodbye />
                       </Suspense>
                     }
                   />
