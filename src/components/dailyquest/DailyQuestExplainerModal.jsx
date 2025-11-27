@@ -7,25 +7,27 @@ export default function DailyQuestExplainerModal({ onStart, onCancel }) {
         position: "fixed",
         inset: 0,
         background: "rgba(0, 0, 0, 0.85)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 9999,
-        padding: "20px",
-        paddingTop: "15vh",
+        zIndex: 9998,
       }}
       onClick={onCancel}
     >
       <div
+        className="quest-modal"
         style={{
+          position: "fixed",
+          top: "15%",
+          left: "50%",
+          transform: "translateX(-50%)",
+          maxHeight: "70vh",
+          overflowY: "auto",
+          zIndex: 9999,
           background: "linear-gradient(145deg, #0B1E2D 0%, #1a3a52 100%)",
           borderRadius: "20px",
           padding: "30px",
           maxWidth: "450px",
-          width: "100%",
+          width: "calc(100% - 40px)",
           boxShadow: "0 10px 40px rgba(212, 175, 55, 0.3)",
           border: "2px solid #D4AF37",
-          position: "relative",
           textAlign: "center",
         }}
         onClick={(e) => e.stopPropagation()}
