@@ -248,6 +248,49 @@ export const useReviseStore = create((set, get) => ({
     return shuffled.slice(0, Math.min(8, shuffled.length));
   },
 
+  // Add all lesson questions to revision pool for Smart Revision
+  // This is called when a lesson is completed
+  addLessonToRevision: (pathId, lessonId, questions) => {
+    if (!questions || !Array.isArray(questions) || questions.length === 0) {
+      console.log("[ReviseStore] addLessonToRevision: No questions provided");
+      return;
+    }
+
+    const state = get();
+    const existingPool = state.weakPool || [];
+    
+    // Create revision items for each question (marks them as "seen")
+    const newItems = questions.map((q) => {
+      const questionId = getQuestionId(q, pathId, lessonId);
+      
+      return {
+        id: questionId,
+        question: q.text || q.question,
+        options: q.options,
+        answer: q.correctIndex !== undefined ? q.correctIndex : q.answer,
+        sourcePathId: pathId,
+        lessonId: lessonId,
+        lastSeen: new Date().toISOString(),
+        timesCorrect: 1, // Mark as correct since lesson was completed
+        timesWrong: 0,
+      };
+    });
+
+    // Merge with existing pool (don't overwrite wrong answers)
+    const mergedPool = [...existingPool];
+    for (const newItem of newItems) {
+      const existingIndex = mergedPool.findIndex((p) => p.id === newItem.id);
+      if (existingIndex === -1) {
+        // Only add if not already in pool (preserves wrong answer tracking)
+        mergedPool.push(newItem);
+      }
+    }
+
+    set({ weakPool: mergedPool });
+    get().saveReviseData();
+    console.log(`[ReviseStore] addLessonToRevision: Added ${newItems.length} questions from path ${pathId}, lesson ${lessonId}`);
+  },
+
   // Supabase sync functions (Phase 1: empty placeholders)
   syncToSupabase: async () => {},
   loadFromSupabase: async () => {},

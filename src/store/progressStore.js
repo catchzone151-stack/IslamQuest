@@ -5,6 +5,7 @@ import { FREE_LESSON_LIMITS, PREMIUM_ONLY_PATHS, isPremiumOnlyPath } from "./pre
 import { useModalStore, MODAL_TYPES } from "./modalStore";
 import { supabase } from "../lib/supabaseClient";
 import CryptoJS from "crypto-js";
+import { getQuizForLesson } from "../data/quizEngine";
 
 const STORAGE_KEY = "islamQuestProgress_v4";
 
@@ -541,6 +542,13 @@ export const useProgressStore = create((set, get) => ({
       
       // 📚 Check and unlock Smart Revision if 40 lessons completed
       get().checkAndUnlockSmartRevision();
+      
+      // 📝 Add lesson questions to revision pool for Smart Revision
+      const { useReviseStore } = require("./reviseStore");
+      const questions = getQuizForLesson(lessonId, pathId);
+      if (questions && questions.length > 0) {
+        useReviseStore.getState().addLessonToRevision(pathId, lessonId, questions);
+      }
     }
     
     get().saveProgress();
