@@ -9,6 +9,8 @@ import { useVibration } from "../../hooks/useVibration";
 import assets from "../../assets/assets";
 import mascot_running from "../../assets/mascots/mascot_running.webp";
 import { avatarIndexToKey } from "../../utils/avatarUtils";
+import { logChallengeResult } from "../../backend/challengeLogs";
+import { supabase } from "../../lib/supabaseClient";
 import "./ChallengeGame.css";
 
 // Helper function to normalize mode from any format to config object
@@ -380,6 +382,16 @@ export default function ChallengeGame() {
         
         useChallengeStore.getState().awardRewards("boss_level", result);
         
+        const xpEarned = result === "win" ? BOSS_LEVEL.rewards.win.xp : BOSS_LEVEL.rewards.lose.xp;
+        
+        (async () => {
+          const { data } = await supabase.auth.getUser();
+          const userId = data?.user?.id;
+          if (userId) {
+            logChallengeResult(userId, "boss_level", result, xpEarned);
+          }
+        })();
+        
         if (result === "win") {
           analytics('boss_win', { score: finalScore, total: BOSS_LEVEL.questionCount });
         }
@@ -419,6 +431,17 @@ export default function ChallengeGame() {
           }
           
           useChallengeStore.getState().awardRewards(updatedChallenge.mode, result);
+          
+          const modeConfig = getModeConfig(updatedChallenge.mode);
+          const xpEarned = modeConfig?.rewards?.[result]?.xp || 0;
+          
+          (async () => {
+            const { data } = await supabase.auth.getUser();
+            const userId = data?.user?.id;
+            if (userId) {
+              logChallengeResult(userId, updatedChallenge.mode, result, xpEarned, updatedChallenge.opponentId);
+            }
+          })();
           
           if (result === "win") {
             analytics('challenge_won', { mode: updatedChallenge.mode, opponent: updatedChallenge.opponentId });
