@@ -27,26 +27,25 @@ const initializeIAP = async () => {
   
   try {
     if (window.Capacitor?.isNativePlatform()) {
-      const { InAppPurchase2 } = await import("@nicholasbraun/capacitor-in-app-purchase-2").catch(() => ({ InAppPurchase2: null }));
+      platformType = window.Capacitor.getPlatform();
       
-      if (InAppPurchase2) {
-        iapPlugin = InAppPurchase2;
-        platformType = window.Capacitor.getPlatform();
-        console.log("[PaymentService] IAP initialized for:", platformType);
+      if (window.CdvPurchase?.store) {
+        iapPlugin = window.CdvPurchase.store;
+        console.log("[PaymentService] CdvPurchase initialized for:", platformType);
         return true;
       }
-    }
-    
-    if (window.CdvPurchase?.store) {
-      iapPlugin = window.CdvPurchase.store;
-      platformType = window.device?.platform?.toLowerCase() || "android";
-      console.log("[PaymentService] CdvPurchase initialized for:", platformType);
-      return true;
+      
+      if (window.store) {
+        iapPlugin = window.store;
+        console.log("[PaymentService] Cordova store initialized for:", platformType);
+        return true;
+      }
     }
   } catch (e) {
     console.log("[PaymentService] Running in web mode (no IAP available)");
   }
   
+  console.log("[PaymentService] Running in web mode");
   return false;
 };
 
