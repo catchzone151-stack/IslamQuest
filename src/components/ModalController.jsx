@@ -152,6 +152,9 @@ export default function ModalController() {
           <InviteFamilyMemberModal
             isOpen={true}
             onClose={hideModal}
+            onInvite={(memberName) => {
+              modalData.onInvite?.(memberName);
+            }}
           />
         );
 

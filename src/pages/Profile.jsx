@@ -466,7 +466,14 @@ export default function Profile() {
               {/* Invite Button */}
               {familyMembers.length < 5 && (
                 <button
-                  onClick={() => showModal(MODAL_TYPES.INVITE_FAMILY)}
+                  onClick={() => showModal(MODAL_TYPES.INVITE_FAMILY, {
+                    onInvite: async (memberName) => {
+                      const result = await addFamilyMember({ name: memberName });
+                      if (result.success) {
+                        console.log("Family member invited:", memberName);
+                      }
+                    }
+                  })}
                   style={{
                     background: "linear-gradient(135deg, #FFD700 0%, #FFA500 100%)",
                     color: "#111827",

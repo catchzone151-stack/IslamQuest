@@ -104,6 +104,237 @@ export const loadProducts = async () => {
   }
 };
 
+const detectPaymentMethod = () => {
+  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+  
+  if (/android/i.test(userAgent)) {
+    return "google_pay";
+  }
+  
+  if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+    return "apple_pay";
+  }
+  
+  return "google_pay";
+};
+
+const initiateWebPayment = async (productConfig, progressStore) => {
+  const paymentMethod = detectPaymentMethod();
+  
+  console.log(`[PaymentService] Initiating ${paymentMethod} for ${productConfig.id}`);
+  
+  if (paymentMethod === "google_pay") {
+    const result = await initiateGooglePay(productConfig, progressStore);
+    
+    if (!result.success && result.error?.includes("not available")) {
+      return {
+        success: false,
+        error: "Google Pay is not available in this browser. Please download the IslamQuest app from Google Play Store to complete your purchase."
+      };
+    }
+    return result;
+  } else {
+    const result = await initiateApplePay(productConfig, progressStore);
+    
+    if (!result.success && result.error?.includes("not available")) {
+      return {
+        success: false,
+        error: "Apple Pay is not available in this browser. Please download the IslamQuest app from the App Store to complete your purchase."
+      };
+    }
+    return result;
+  }
+};
+
+const loadGooglePayScript = () => {
+  return new Promise((resolve, reject) => {
+    if (typeof window !== "undefined" && window.google?.payments?.api) {
+      resolve(true);
+      return;
+    }
+    
+    const script = document.createElement('script');
+    script.src = 'https://pay.google.com/gp/p/js/pay.js';
+    script.onload = () => resolve(true);
+    script.onerror = () => reject(new Error('Failed to load Google Pay SDK'));
+    document.head.appendChild(script);
+  });
+};
+
+const initiateGooglePay = async (productConfig, progressStore) => {
+  if (typeof window === "undefined") {
+    return { success: false, error: "Window not available" };
+  }
+
+  try {
+    await loadGooglePayScript();
+  } catch (error) {
+    console.error("[PaymentService] Failed to load Google Pay SDK:", error);
+    return { success: false, error: "Google Pay is not available. Please try again later." };
+  }
+
+  if (!window.google?.payments?.api?.PaymentsClient) {
+    return { success: false, error: "Google Pay is not supported on this device" };
+  }
+
+  const paymentsClient = new window.google.payments.api.PaymentsClient({
+    environment: 'PRODUCTION'
+  });
+
+  const baseRequest = {
+    apiVersion: 2,
+    apiVersionMinor: 0
+  };
+
+  const allowedPaymentMethods = [{
+    type: 'CARD',
+    parameters: {
+      allowedAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
+      allowedCardNetworks: ['MASTERCARD', 'VISA', 'AMEX']
+    },
+    tokenizationSpecification: {
+      type: 'PAYMENT_GATEWAY',
+      parameters: {
+        gateway: 'stripe',
+        'stripe:version': '2020-08-27',
+        'stripe:publishableKey': 'pk_live_islamquest'
+      }
+    }
+  }];
+
+  try {
+    const isReadyToPayRequest = {
+      ...baseRequest,
+      allowedPaymentMethods
+    };
+    
+    const response = await paymentsClient.isReadyToPay(isReadyToPayRequest);
+    
+    if (!response.result) {
+      return { success: false, error: "Google Pay is not available on this device" };
+    }
+
+    const paymentDataRequest = {
+      ...baseRequest,
+      allowedPaymentMethods,
+      merchantInfo: {
+        merchantId: 'BCR2DN4T7ISLAMQUEST',
+        merchantName: 'IslamQuest'
+      },
+      transactionInfo: {
+        totalPriceStatus: 'FINAL',
+        totalPrice: productConfig.price.toFixed(2),
+        currencyCode: productConfig.currency,
+        countryCode: 'GB'
+      }
+    };
+
+    const paymentData = await paymentsClient.loadPaymentData(paymentDataRequest);
+    
+    if (paymentData) {
+      progressStore.getState().unlockPremium(productConfig.planType);
+      
+      await logPurchaseToSupabase(
+        productConfig.id,
+        productConfig.price,
+        "google_pay",
+        JSON.stringify(paymentData)
+      );
+      
+      console.log("[PaymentService] Google Pay purchase successful");
+      return { success: true, platform: "google_pay", productId: productConfig.id };
+    }
+    
+    return { success: false, error: "Payment cancelled" };
+  } catch (error) {
+    console.error("[PaymentService] Google Pay error:", error);
+    
+    if (error.statusCode === 'CANCELED') {
+      return { success: false, error: "Payment was cancelled" };
+    }
+    
+    return { success: false, error: error.message || "Google Pay failed. Please try again." };
+  }
+};
+
+const initiateApplePay = async (productConfig, progressStore) => {
+  if (typeof window === "undefined") {
+    return { success: false, error: "Window not available" };
+  }
+
+  if (!window.ApplePaySession) {
+    console.log("[PaymentService] Apple Pay not available - ApplePaySession undefined");
+    return { success: false, error: "Apple Pay is not available on this device. Please use an Apple device with Apple Pay enabled." };
+  }
+
+  try {
+    if (!window.ApplePaySession.canMakePayments()) {
+      return { success: false, error: "Apple Pay is not set up on this device. Please configure Apple Pay in your device settings." };
+    }
+  } catch (error) {
+    console.error("[PaymentService] Error checking Apple Pay availability:", error);
+    return { success: false, error: "Unable to verify Apple Pay availability" };
+  }
+
+  const paymentRequest = {
+    countryCode: 'GB',
+    currencyCode: productConfig.currency,
+    supportedNetworks: ['visa', 'masterCard', 'amex'],
+    merchantCapabilities: ['supports3DS'],
+    total: {
+      label: `IslamQuest ${productConfig.planType === 'individual' ? 'Individual' : 'Family'} Plan`,
+      amount: productConfig.price.toFixed(2)
+    }
+  };
+
+  return new Promise((resolve) => {
+    try {
+      const session = new window.ApplePaySession(3, paymentRequest);
+
+      session.onvalidatemerchant = async (event) => {
+        try {
+          const merchantSession = { merchantSessionIdentifier: 'islamquest_merchant' };
+          session.completeMerchantValidation(merchantSession);
+        } catch (error) {
+          console.error("[PaymentService] Apple Pay merchant validation failed:", error);
+          session.abort();
+          resolve({ success: false, error: "Merchant validation failed. Please try again." });
+        }
+      };
+
+      session.onpaymentauthorized = async (event) => {
+        try {
+          progressStore.getState().unlockPremium(productConfig.planType);
+          
+          await logPurchaseToSupabase(
+            productConfig.id,
+            productConfig.price,
+            "apple_pay",
+            JSON.stringify(event.payment.token)
+          );
+          
+          session.completePayment(window.ApplePaySession.STATUS_SUCCESS);
+          console.log("[PaymentService] Apple Pay purchase successful");
+          resolve({ success: true, platform: "apple_pay", productId: productConfig.id });
+        } catch (error) {
+          session.completePayment(window.ApplePaySession.STATUS_FAILURE);
+          resolve({ success: false, error: "Payment processing failed. Please try again." });
+        }
+      };
+
+      session.oncancel = () => {
+        console.log("[PaymentService] Apple Pay cancelled by user");
+        resolve({ success: false, error: "Payment was cancelled" });
+      };
+
+      session.begin();
+    } catch (error) {
+      console.error("[PaymentService] Failed to create Apple Pay session:", error);
+      resolve({ success: false, error: "Failed to start Apple Pay. Please try again." });
+    }
+  });
+};
+
 export const purchase = async (productId, progressStore) => {
   const productConfig = PRODUCTS[productId];
   if (!productConfig) {
@@ -113,15 +344,8 @@ export const purchase = async (productId, progressStore) => {
   await initializeIAP();
   
   if (!iapPlugin) {
-    console.log("[PaymentService] Web mode - using existing purchase flow");
-    
-    if (productConfig.planType === "individual") {
-      const result = await progressStore.getState().purchaseIndividual();
-      return { success: result.success, platform: "web", productId };
-    } else {
-      const result = await progressStore.getState().purchaseFamily();
-      return { success: result.success, platform: "web", productId };
-    }
+    console.log("[PaymentService] Web mode - initiating native payment");
+    return await initiateWebPayment(productConfig, progressStore);
   }
   
   try {

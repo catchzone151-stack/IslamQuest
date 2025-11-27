@@ -3,8 +3,28 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Crown, RefreshCw } from "lucide-react";
 import { useProgressStore } from "../store/progressStore";
-import { restorePurchases } from "../services/paymentService";
+import { purchase, restorePurchases, isNativePlatform, getPlatform } from "../services/paymentService";
 import MainMascot from "../assets/mascots/mascot_sitting.webp";
+
+const detectPaymentPlatform = () => {
+  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+  
+  if (/android/i.test(userAgent)) {
+    return "google";
+  }
+  
+  if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+    return "apple";
+  }
+  
+  if (isNativePlatform()) {
+    const platform = getPlatform();
+    if (platform === "android") return "google";
+    if (platform === "ios") return "apple";
+  }
+  
+  return "google";
+};
 
 const Premium = () => {
   const navigate = useNavigate();
@@ -32,13 +52,22 @@ const Premium = () => {
 
   const handleIndividualPurchase = async () => {
     setLoading(true);
+    const paymentPlatform = detectPaymentPlatform();
+    
     try {
-      await purchaseIndividual();
-      setTimeout(() => {
-        navigate("/");
-      }, 1000);
+      const result = await purchase("individual_monthly", useProgressStore);
+      
+      if (result.success) {
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      } else {
+        console.error("Purchase failed:", result.error);
+        alert(result.error || "Payment was not completed. Please try again.");
+      }
     } catch (error) {
       console.error("Purchase failed:", error);
+      alert("Payment failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -46,13 +75,22 @@ const Premium = () => {
 
   const handleFamilyPurchase = async () => {
     setLoading(true);
+    const paymentPlatform = detectPaymentPlatform();
+    
     try {
-      await purchaseFamily();
-      setTimeout(() => {
-        navigate("/");
-      }, 1000);
+      const result = await purchase("family_monthly", useProgressStore);
+      
+      if (result.success) {
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      } else {
+        console.error("Purchase failed:", result.error);
+        alert(result.error || "Payment was not completed. Please try again.");
+      }
     } catch (error) {
       console.error("Purchase failed:", error);
+      alert("Payment failed. Please try again.");
     } finally {
       setLoading(false);
     }
