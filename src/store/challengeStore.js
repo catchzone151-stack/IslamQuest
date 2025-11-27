@@ -4,6 +4,7 @@ import { useFriendsStore } from "./friendsStore";
 import { isDevMode, DEV_MOCK_FRIENDS } from "../config/dev";
 import { supabase } from "../lib/supabaseClient";
 import { logXpEvent } from "../backend/xpLogs";
+import { logChallengeRequest, logChallengeResult } from "../backend/challengeLogs";
 
 import namesOfAllahQuizzesData from '../data/quizzes/namesOfAllah.json';
 import foundationsQuizzesData from '../data/quizzes/foundations.json';
@@ -279,6 +280,15 @@ export const useChallengeStore = create((set, get) => ({
     }));
     get().saveToStorage();
     
+    // Log challenge request
+    (async () => {
+      const { data } = await supabase.auth.getUser();
+      const userId = data?.user?.id;
+      if (userId) {
+        logChallengeRequest(userId, friendId, challenge.id);
+      }
+    })();
+    
     console.log('✅ Challenge created:', challenge.id);
     return { success: true, challenge };
   },
@@ -356,6 +366,20 @@ export const useChallengeStore = create((set, get) => ({
     }));
     get().saveToStorage();
     useProgressStore.getState().markDayComplete();
+    
+    // Log challenge result
+    (async () => {
+      const { data } = await supabase.auth.getUser();
+      const userId = data?.user?.id;
+      if (userId) {
+        const result = isDraw ? "draw" : (winnerId === 'current_user' ? "win" : "lose");
+        const modeConf = typeof challenge.mode === 'string' 
+          ? Object.values(CHALLENGE_MODES).find(m => m.id === challenge.mode)
+          : challenge.mode;
+        const xpGained = modeConf?.rewards?.[result]?.xp || 0;
+        logChallengeResult(userId, challenge.opponentId, challengeId, result, xpGained);
+      }
+    })();
     
     return { success: true, challenge: updatedChallenge };
   },
