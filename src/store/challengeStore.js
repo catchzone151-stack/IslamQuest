@@ -2,6 +2,8 @@ import { create } from "zustand";
 import { useProgressStore } from "./progressStore";
 import { useFriendsStore } from "./friendsStore";
 import { isDevMode, DEV_MOCK_FRIENDS } from "../config/dev";
+import { supabase } from "../lib/supabaseClient";
+import { logXpEvent } from "../backend/xpLogs";
 
 import namesOfAllahQuizzesData from '../data/quizzes/namesOfAllah.json';
 import foundationsQuizzesData from '../data/quizzes/foundations.json';
@@ -696,6 +698,18 @@ export const useChallengeStore = create((set, get) => ({
     }
     const { addXPAndCoins } = useProgressStore.getState();
     addXPAndCoins(rewards.xp, rewards.coins);
+    
+    // Log XP event for challenge
+    if (rewards.xp > 0) {
+      (async () => {
+        const { data } = await supabase.auth.getUser();
+        const userId = data?.user?.id;
+        if (userId) {
+          logXpEvent(userId, rewards.xp, "challenge");
+        }
+      })();
+    }
+    
     return rewards;
   },
 

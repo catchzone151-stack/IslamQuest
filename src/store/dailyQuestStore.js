@@ -4,6 +4,7 @@ import {
   getQuizForLesson
 } from "../data/quizEngine";
 import { supabase } from "../lib/supabaseClient";
+import { logXpEvent } from "../backend/xpLogs";
 
 const STORAGE_KEY = "islamQuestDailyQuest";
 
@@ -237,6 +238,15 @@ export const useDailyQuestStore = create((set, get) => ({
     const coins = 20;
 
     useProgressStore.getState().addXPAndCoins(xp, coins);
+    
+    // Log XP event for daily quest
+    (async () => {
+      const { data } = await supabase.auth.getUser();
+      const userId = data?.user?.id;
+      if (userId) {
+        logXpEvent(userId, xp, "daily_quest");
+      }
+    })();
     
     // 🛡️ Mark day as complete for streak tracking
     useProgressStore.getState().markDayComplete();

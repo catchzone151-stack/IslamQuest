@@ -4,6 +4,7 @@ import { useProgressStore } from "./progressStore";
 import { supabase } from "../lib/supabaseClient";
 import { avatarIndexToKey } from "../utils/avatarUtils";
 import { isDevMode, DEV_MOCK_EVENT_LEADERBOARD } from "../config/dev";
+import { logXpEvent } from "../backend/xpLogs";
 
 export const EMPTY_LEADERBOARD = Object.freeze([]);
 
@@ -502,6 +503,15 @@ export const useEventsStore = create(
             const { addXPAndCoins } = useProgressStore.getState();
             addXPAndCoins(rewards.xpReward, rewards.coinReward);
             
+            // Log XP event for global event (dev mode)
+            if (rewards.xpReward > 0) {
+              const { data } = await supabase.auth.getUser();
+              const userId = data?.user?.id;
+              if (userId) {
+                logXpEvent(userId, rewards.xpReward, "event");
+              }
+            }
+            
             set(state => ({
               resultsViewed: {
                 ...state.resultsViewed,
@@ -568,6 +578,11 @@ export const useEventsStore = create(
           
           const { addXPAndCoins } = useProgressStore.getState();
           addXPAndCoins(rewards.xpReward, rewards.coinReward);
+          
+          // Log XP event for global event
+          if (rewards.xpReward > 0) {
+            logXpEvent(userId, rewards.xpReward, "event");
+          }
           
           set(state => ({
             resultsViewed: {

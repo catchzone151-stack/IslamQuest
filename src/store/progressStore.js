@@ -7,6 +7,7 @@ import { supabase } from "../lib/supabaseClient";
 import CryptoJS from "crypto-js";
 import { getQuizForLesson } from "../data/quizEngine";
 import { logStreakEvent } from "../backend/streakLogs";
+import { logXpEvent } from "../backend/xpLogs";
 
 const STORAGE_KEY = "islamQuestProgress_v4";
 
@@ -603,6 +604,17 @@ export const useProgressStore = create((set, get) => ({
     if (passed) {
       if (xp) get().addXP(xp);
       if (coins) get().addCoins(coins);
+      
+      // Log XP event for quiz completion
+      if (xp) {
+        (async () => {
+          const { data } = await supabase.auth.getUser();
+          const userId = data?.user?.id;
+          if (userId) {
+            logXpEvent(userId, xp, "quiz");
+          }
+        })();
+      }
 
       const path = get().paths.find((x) => x.id === pathId);
       const passedCount = Object.values(get().lessonStates[pathId] || {}).filter(
