@@ -285,7 +285,7 @@ export const useChallengeStore = create((set, get) => ({
       const { data } = await supabase.auth.getUser();
       const userId = data?.user?.id;
       if (userId) {
-        logChallengeRequest(userId, friendId, challenge.id);
+        logChallengeRequest(userId, modeConfig.id, friendId);
       }
     })();
     
@@ -377,7 +377,8 @@ export const useChallengeStore = create((set, get) => ({
           ? Object.values(CHALLENGE_MODES).find(m => m.id === challenge.mode)
           : challenge.mode;
         const xpGained = modeConf?.rewards?.[result]?.xp || 0;
-        logChallengeResult(userId, challenge.opponentId, challengeId, result, xpGained);
+        const modeId = typeof challenge.mode === 'string' ? challenge.mode : modeConf?.id;
+        logChallengeResult(userId, modeId, result, xpGained, challenge.opponentId);
       }
     })();
     

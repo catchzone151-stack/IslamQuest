@@ -1,10 +1,15 @@
 import { supabase } from "../supabaseClient";
 
 export async function logXpEvent(userId, amount, source) {
-  await supabase.from("xp_logs").insert({
+  const { error } = await supabase.from("xp_logs").insert({
     user_id: userId,
-    amount,
-    source,            // "lesson", "quiz", "daily_quest", "challenge", "streak_bonus", etc.
+    xp_amount: amount,
+    source,
     timestamp: Date.now(),
   });
+  if (error) {
+    console.error("[XpLogs] logXpEvent error:", error);
+  } else {
+    console.log("[XpLogs] logXpEvent success:", amount, source);
+  }
 }

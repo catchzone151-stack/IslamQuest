@@ -1,10 +1,15 @@
 import { supabase } from "../supabaseClient";
 
 export async function logStreakEvent(userId, type, value = null) {
-  await supabase.from("streak_logs").insert({
+  const { error } = await supabase.from("streak_logs").insert({
     user_id: userId,
-    event_type: type,         // "increment", "break", "shield_used", "shield_saved", "daily_xp"
-    value,
+    event_type: type,
+    streak_value: value,
     timestamp: Date.now(),
   });
+  if (error) {
+    console.error("[StreakLogs] logStreakEvent error:", error);
+  } else {
+    console.log("[StreakLogs] logStreakEvent success:", type, value);
+  }
 }
