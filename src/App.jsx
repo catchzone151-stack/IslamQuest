@@ -409,27 +409,44 @@ export default function App() {
   useEffect(() => {
     const initOneSignal = async () => {
       try {
+        const oneSignalAppId = import.meta.env.VITE_ONESIGNAL_APP_ID;
+        
+        if (!oneSignalAppId || oneSignalAppId === "YOUR-ONESIGNAL-APP-ID") {
+          console.log("🔔 OneSignal: No App ID configured, skipping init");
+          return;
+        }
+
         await OneSignal.init({
-          appId: process.env.ONESIGNAL_APP_ID || "YOUR-ONESIGNAL-APP-ID",
+          appId: oneSignalAppId,
           allowLocalhostAsSecureOrigin: true,
         });
-
-        const token = await OneSignal.getUserId();
-        if (!token) return;
 
         const { data: auth } = await supabase.auth.getUser();
         if (!auth?.user) return;
 
+        await OneSignal.login(auth.user.id);
+
+        const permission = await OneSignal.Notifications.permission;
+        if (!permission) {
+          await OneSignal.Slidedown.promptPush();
+        }
+
+        const subscriptionId = await OneSignal.User.PushSubscription.id;
+        if (!subscriptionId) {
+          console.log("🔔 OneSignal: No subscription ID yet (permission pending)");
+          return;
+        }
+
         await supabase.from("push_tokens").upsert({
           user_id: auth.user.id,
-          device_token: token,
+          device_token: subscriptionId,
           platform: "web",
           updated_at: new Date().toISOString()
         }, {
           onConflict: "user_id,device_token"
         });
 
-        console.log("🔔 OneSignal initialized, token saved");
+        console.log("🔔 OneSignal initialized, subscription saved");
       } catch (err) {
         console.warn("OneSignal init failed:", err.message);
       }
