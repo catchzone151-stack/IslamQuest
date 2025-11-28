@@ -92,6 +92,7 @@ export default function Friends() {
     acceptChallenge,
     declineChallenge,
     clearPendingIncomingCount,
+    markResultViewed,
   } = useFriendChallengesStore();
 
   const [activeTab, setActiveTab] = useState("friends");
