@@ -66,6 +66,7 @@ export default function Friends() {
 
   const {
     initialize: initFriendChallenges,
+    loadChallenges,
     pendingIncoming,
     pendingOutgoing,
     resultsToView,
@@ -95,14 +96,15 @@ export default function Friends() {
   
   useEffect(() => {
     const handleFocus = () => {
-      console.log("🔄 Window focused - refreshing friend data");
+      console.log("🔄 Window focused - refreshing friend data and challenges");
       loadFriends();
       loadRequests();
       loadPendingRequests();
+      loadChallenges();
     };
     window.addEventListener('focus', handleFocus);
     return () => window.removeEventListener('focus', handleFocus);
-  }, [loadFriends, loadRequests, loadPendingRequests]);
+  }, [loadFriends, loadRequests, loadPendingRequests, loadChallenges]);
 
   useEffect(() => {
     if (isDevMode()) {
@@ -114,10 +116,11 @@ export default function Friends() {
 
     const poll = async () => {
       if (!isMounted) return;
-      console.log("🔄 Polling friends data...");
+      console.log("🔄 Polling friends data and challenges...");
       await loadFriends();
       await loadRequests();
       await loadPendingRequests();
+      await loadChallenges();
     };
 
     const intervalId = setInterval(poll, 7000);
@@ -126,7 +129,7 @@ export default function Friends() {
       isMounted = false;
       clearInterval(intervalId);
     };
-  }, [loadFriends, loadRequests, loadPendingRequests]);
+  }, [loadFriends, loadRequests, loadPendingRequests, loadChallenges]);
 
   const loadGlobalLeaderboard = useCallback(async () => {
     setLoadingGlobal(true);
