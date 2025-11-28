@@ -288,17 +288,9 @@ export default function FriendChallengeGame() {
   };
 
   const processAnswer = (answerIndex, questionIndex, previousAnswers) => {
-    console.log('[FriendChallengeGame] processAnswer called:', {
-      answerIndex,
-      questionIndex,
-      totalQuestions: questions.length,
-      gameEnded
-    });
+    console.log('[FriendChallengeGame] processAnswer:', { answerIndex, questionIndex, total: questions.length });
     
-    if (answerIndex === null || answerIndex === undefined) {
-      console.log('[FriendChallengeGame] answerIndex is null/undefined, returning early');
-      return;
-    }
+    if (answerIndex === null || answerIndex === undefined) return;
 
     const currentQ = questions[questionIndex];
     if (!currentQ) {
@@ -318,14 +310,15 @@ export default function FriendChallengeGame() {
     setAnswers(updatedAnswers);
 
     const isLastQuestion = questionIndex >= questions.length - 1;
-    console.log('[FriendChallengeGame] Question answered:', {
-      questionNum: questionIndex + 1,
-      isCorrect,
-      isLastQuestion,
-      totalAnswers: updatedAnswers.length
-    });
+    console.log('[FriendChallengeGame] Answered:', { q: questionIndex + 1, isLast: isLastQuestion, answers: updatedAnswers.length });
 
-    if (!isLastQuestion) {
+    if (isLastQuestion) {
+      console.log('[FriendChallengeGame] LAST QUESTION - triggering completion');
+      setGameEnded(true);
+      setTimeout(() => {
+        handleGameComplete(updatedAnswers);
+      }, 100);
+    } else {
       setCurrentIndex(questionIndex + 1);
       setSelectedAnswer(null);
       selectedAnswerRef.current = null;
@@ -333,10 +326,6 @@ export default function FriendChallengeGame() {
       if (mode?.timePerQuestion && mode?.id !== "lightning_round") {
         setTimeLeft(mode.timePerQuestion);
       }
-    } else {
-      console.log('[FriendChallengeGame] Last question completed, calling handleGameComplete');
-      setGameEnded(true);
-      handleGameComplete(updatedAnswers);
     }
   };
 
