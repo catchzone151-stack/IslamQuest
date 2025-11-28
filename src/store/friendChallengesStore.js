@@ -19,24 +19,36 @@ export const useFriendChallengesStore = create((set, get) => ({
   currentUserId: null,
   realtimeChannel: null,
   initialized: false,
+  initializingPromise: null,
 
   initialize: async () => {
     if (get().initialized) return;
     
-    const { data: userData } = await supabase.auth.getUser();
-    if (!userData?.user?.id) {
-      console.log("[FriendChallenges] No user logged in");
-      return;
+    if (get().initializingPromise) {
+      console.log("[FriendChallenges] Already initializing, waiting...");
+      return get().initializingPromise;
     }
     
-    const userId = userData.user.id;
-    set({ currentUserId: userId });
+    const initPromise = (async () => {
+      const { data: userData } = await supabase.auth.getUser();
+      if (!userData?.user?.id) {
+        console.log("[FriendChallenges] No user logged in");
+        set({ initializingPromise: null });
+        return;
+      }
+      
+      const userId = userData.user.id;
+      set({ currentUserId: userId });
+      
+      await get().loadChallenges();
+      get().setupRealtimeSubscription(userId);
+      set({ initialized: true, initializingPromise: null });
+      
+      console.log("[FriendChallenges] Initialized for user:", userId);
+    })();
     
-    await get().loadChallenges();
-    get().setupRealtimeSubscription(userId);
-    set({ initialized: true });
-    
-    console.log("[FriendChallenges] Initialized for user:", userId);
+    set({ initializingPromise: initPromise });
+    return initPromise;
   },
 
   cleanup: () => {
@@ -54,6 +66,7 @@ export const useFriendChallengesStore = create((set, get) => ({
       currentUserId: null,
       realtimeChannel: null,
       initialized: false,
+      initializingPromise: null,
     });
   },
 
@@ -520,14 +533,21 @@ export const useFriendChallengesStore = create((set, get) => ({
   },
 
   ensureChallengeLoaded: async (challengeId) => {
+    console.log("[FriendChallenges] ensureChallengeLoaded start:", challengeId);
+    
     await get().initialize();
+    console.log("[FriendChallenges] ensureChallengeLoaded: initialized");
     
     let challenge = get().getChallengeById(challengeId);
     if (challenge) {
+      console.log("[FriendChallenges] ensureChallengeLoaded: found in local state");
       return challenge;
     }
     
+    console.log("[FriendChallenges] ensureChallengeLoaded: fetching from DB");
     challenge = await get().fetchChallengeById(challengeId);
+    console.log("[FriendChallenges] ensureChallengeLoaded: fetched:", challenge ? "found" : "not found");
+    
     if (challenge) {
       await get().loadChallenges();
     }

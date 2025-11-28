@@ -71,34 +71,80 @@ export default function FriendChallengeGame() {
 
   useEffect(() => {
     let isMounted = true;
+    let timeoutId = null;
     
     const loadChallenge = async () => {
-      console.log('[FriendChallengeGame] Loading challenge:', challengeId);
+      console.log('[FriendChallengeGame] Loading challenge:', challengeId, 'for user:', currentUserId);
       
-      const loadedChallenge = await ensureChallengeLoaded(challengeId);
-      
-      if (!isMounted) return;
-      
-      if (!loadedChallenge) {
-        console.error('[FriendChallengeGame] Challenge not found:', challengeId);
-        showModal(MODAL_TYPES.ERROR, {
-          title: "Challenge Not Found",
-          message: "This challenge could not be loaded. It may have expired.",
-          onClose: () => navigate("/challenge")
-        });
+      if (!currentUserId) {
+        console.log('[FriendChallengeGame] Waiting for currentUserId...');
         return;
       }
       
-      console.log('[FriendChallengeGame] Challenge loaded:', loadedChallenge.id);
-      setChallenge(loadedChallenge);
-      setIsSender(loadedChallenge.sender_id === currentUserId);
-      setLoading(false);
+      timeoutId = setTimeout(() => {
+        console.error('[FriendChallengeGame] Loading timeout - taking too long');
+        if (isMounted && loading) {
+          showModal(MODAL_TYPES.ERROR, {
+            title: "Loading Timeout",
+            message: "Challenge is taking too long to load. Please try again.",
+            onClose: () => navigate("/friends")
+          });
+        }
+      }, 10000);
+      
+      try {
+        const loadedChallenge = await ensureChallengeLoaded(challengeId);
+        
+        if (timeoutId) clearTimeout(timeoutId);
+        
+        console.log('[FriendChallengeGame] ensureChallengeLoaded returned:', loadedChallenge ? 'challenge found' : 'null');
+        
+        if (!isMounted) {
+          console.log('[FriendChallengeGame] Component unmounted, aborting');
+          return;
+        }
+        
+        if (!loadedChallenge) {
+          console.error('[FriendChallengeGame] Challenge not found:', challengeId);
+          showModal(MODAL_TYPES.ERROR, {
+            title: "Challenge Not Found",
+            message: "This challenge could not be loaded. It may have expired.",
+            onClose: () => navigate("/challenge")
+          });
+          return;
+        }
+        
+        console.log('[FriendChallengeGame] Challenge loaded:', {
+          id: loadedChallenge.id,
+          status: loadedChallenge.status,
+          sender: loadedChallenge.sender_id?.slice(0,8),
+          receiver: loadedChallenge.receiver_id?.slice(0,8),
+          senderScore: loadedChallenge.sender_score,
+          receiverScore: loadedChallenge.receiver_score,
+          hasQuestions: !!loadedChallenge.questions,
+          questionCount: loadedChallenge.questions?.length
+        });
+        
+        setChallenge(loadedChallenge);
+        setIsSender(loadedChallenge.sender_id === currentUserId);
+        setLoading(false);
+      } catch (err) {
+        console.error('[FriendChallengeGame] Error loading challenge:', err);
+        if (isMounted) {
+          showModal(MODAL_TYPES.ERROR, {
+            title: "Error",
+            message: "Failed to load challenge: " + err.message,
+            onClose: () => navigate("/challenge")
+          });
+        }
+      }
     };
     
     loadChallenge();
     
     return () => {
       isMounted = false;
+      if (timeoutId) clearTimeout(timeoutId);
     };
   }, [challengeId, currentUserId, ensureChallengeLoaded, showModal, navigate]);
 
