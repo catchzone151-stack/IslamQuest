@@ -543,24 +543,63 @@ export const useFriendChallengesStore = create((set, get) => ({
   ensureChallengeLoaded: async (challengeId) => {
     console.log("[FriendChallenges] ensureChallengeLoaded start:", challengeId);
     
-    await get().initialize();
-    console.log("[FriendChallenges] ensureChallengeLoaded: initialized");
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error("ensureChallengeLoaded timeout")), 8000)
+    );
     
-    let challenge = get().getChallengeById(challengeId);
-    if (challenge) {
-      console.log("[FriendChallenges] ensureChallengeLoaded: found in local state");
-      return challenge;
+    try {
+      const loadPromise = (async () => {
+        const { data: userData } = await supabase.auth.getUser();
+        const userId = userData?.user?.id;
+        
+        if (!userId) {
+          console.error("[FriendChallenges] ensureChallengeLoaded: No user ID");
+          throw new Error("Not authenticated");
+        }
+        
+        console.log("[FriendChallenges] ensureChallengeLoaded: user:", userId?.slice(0,8));
+        
+        if (!get().initialized || get().currentUserId !== userId) {
+          set({ currentUserId: userId });
+          await get().loadChallenges();
+          set({ initialized: true });
+        }
+        
+        let challenge = get().getChallengeById(challengeId);
+        if (challenge) {
+          console.log("[FriendChallenges] ensureChallengeLoaded: found in local state");
+          return challenge;
+        }
+        
+        console.log("[FriendChallenges] ensureChallengeLoaded: fetching directly from DB");
+        const { data, error } = await supabase
+          .from("friend_challenges")
+          .select("*")
+          .eq("id", challengeId)
+          .single();
+        
+        if (error) {
+          console.error("[FriendChallenges] ensureChallengeLoaded DB error:", error);
+          throw new Error("Challenge not found in database");
+        }
+        
+        if (!data) {
+          console.error("[FriendChallenges] ensureChallengeLoaded: No data returned");
+          throw new Error("Challenge not found");
+        }
+        
+        console.log("[FriendChallenges] ensureChallengeLoaded: fetched from DB:", data.id?.slice(0,8));
+        
+        await get().loadChallenges();
+        
+        return data;
+      })();
+      
+      return await Promise.race([loadPromise, timeoutPromise]);
+    } catch (error) {
+      console.error("[FriendChallenges] ensureChallengeLoaded error:", error.message);
+      throw error;
     }
-    
-    console.log("[FriendChallenges] ensureChallengeLoaded: fetching from DB");
-    challenge = await get().fetchChallengeById(challengeId);
-    console.log("[FriendChallenges] ensureChallengeLoaded: fetched:", challenge ? "found" : "not found");
-    
-    if (challenge) {
-      await get().loadChallenges();
-    }
-    
-    return challenge;
   },
 
   getActiveWithFriend: (friendId) => {

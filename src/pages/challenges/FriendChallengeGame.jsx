@@ -71,85 +71,43 @@ export default function FriendChallengeGame() {
 
   useEffect(() => {
     let isMounted = true;
-    let timeoutId = null;
     
     const loadChallenge = async () => {
-      let userId = currentUserId;
-      
-      if (!userId) {
-        console.log('[FriendChallengeGame] currentUserId not available, fetching from Supabase...');
-        const { supabase } = await import('../../lib/supabaseClient');
-        const { data } = await supabase.auth.getUser();
-        userId = data?.user?.id;
-        console.log('[FriendChallengeGame] Got userId from Supabase:', userId?.slice(0,8));
-      }
-      
-      if (!userId) {
-        console.error('[FriendChallengeGame] No user ID available');
-        showModal(MODAL_TYPES.ERROR, {
-          title: "Not Logged In",
-          message: "Please log in to play challenges.",
-          onClose: () => navigate("/")
-        });
-        return;
-      }
-      
-      console.log('[FriendChallengeGame] Loading challenge:', challengeId, 'for user:', userId?.slice(0,8));
-      
-      timeoutId = setTimeout(() => {
-        console.error('[FriendChallengeGame] Loading timeout - taking too long');
-        if (isMounted && loading) {
-          showModal(MODAL_TYPES.ERROR, {
-            title: "Loading Timeout",
-            message: "Challenge is taking too long to load. Please try again.",
-            onClose: () => navigate("/friends")
-          });
-        }
-      }, 10000);
+      console.log('[FriendChallengeGame] Starting challenge load:', challengeId);
       
       try {
         const loadedChallenge = await ensureChallengeLoaded(challengeId);
-        
-        if (timeoutId) clearTimeout(timeoutId);
-        
-        console.log('[FriendChallengeGame] ensureChallengeLoaded returned:', loadedChallenge ? 'challenge found' : 'null');
         
         if (!isMounted) {
           console.log('[FriendChallengeGame] Component unmounted, aborting');
           return;
         }
         
-        if (!loadedChallenge) {
-          console.error('[FriendChallengeGame] Challenge not found:', challengeId);
-          showModal(MODAL_TYPES.ERROR, {
-            title: "Challenge Not Found",
-            message: "This challenge could not be loaded. It may have expired.",
-            onClose: () => navigate("/challenge")
-          });
-          return;
-        }
-        
         console.log('[FriendChallengeGame] Challenge loaded:', {
-          id: loadedChallenge.id,
+          id: loadedChallenge.id?.slice(0,8),
           status: loadedChallenge.status,
           sender: loadedChallenge.sender_id?.slice(0,8),
           receiver: loadedChallenge.receiver_id?.slice(0,8),
           senderScore: loadedChallenge.sender_score,
           receiverScore: loadedChallenge.receiver_score,
-          hasQuestions: !!loadedChallenge.questions,
           questionCount: loadedChallenge.questions?.length
         });
         
+        const { supabase } = await import('../../lib/supabaseClient');
+        const { data: userData } = await supabase.auth.getUser();
+        const userId = userData?.user?.id;
+        
         setChallenge(loadedChallenge);
-        setIsSender(loadedChallenge.sender_id === currentUserId);
+        setIsSender(loadedChallenge.sender_id === userId);
         setLoading(false);
       } catch (err) {
-        console.error('[FriendChallengeGame] Error loading challenge:', err);
+        console.error('[FriendChallengeGame] Error loading challenge:', err.message);
         if (isMounted) {
+          setLoading(false);
           showModal(MODAL_TYPES.ERROR, {
-            title: "Error",
-            message: "Failed to load challenge: " + err.message,
-            onClose: () => navigate("/challenge")
+            title: "Cannot Load Challenge",
+            message: err.message || "Failed to load challenge. Please try again.",
+            onClose: () => navigate("/friends")
           });
         }
       }
@@ -159,9 +117,8 @@ export default function FriendChallengeGame() {
     
     return () => {
       isMounted = false;
-      if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [challengeId, currentUserId, ensureChallengeLoaded, showModal, navigate]);
+  }, [challengeId, ensureChallengeLoaded, showModal, navigate]);
 
   useEffect(() => {
     if (loading || gameInitialized || !challenge) return;
