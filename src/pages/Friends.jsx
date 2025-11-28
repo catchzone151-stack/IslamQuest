@@ -84,7 +84,9 @@ export default function Friends() {
     loadChallenges,
     pendingIncoming,
     pendingOutgoing,
+    activeChallenges,
     resultsToView,
+    currentUserId: challengeUserId,
     unreadCount: challengeUnreadCount,
     getChallengeStateForFriend,
     acceptChallenge,
@@ -396,6 +398,21 @@ export default function Friends() {
     return getChallengeStateForFriend(friendId);
   };
 
+  const yourTurnChallenges = activeChallenges.filter(c => {
+    const isSender = c.sender_id === challengeUserId;
+    const myTurnDone = isSender ? (c.sender_score !== null) : (c.receiver_score !== null);
+    return !myTurnDone;
+  });
+
+  const waitingChallenges = activeChallenges.filter(c => {
+    const isSender = c.sender_id === challengeUserId;
+    const myTurnDone = isSender ? (c.sender_score !== null) : (c.receiver_score !== null);
+    return myTurnDone && c.status !== "finished";
+  });
+
+  const totalChallengeActivity = pendingIncoming.length + yourTurnChallenges.length + 
+    waitingChallenges.length + resultsToView.length + pendingOutgoing.length;
+
   const totalRequests = sentRequests.length + receivedRequests.length;
 
   return (
@@ -478,7 +495,8 @@ export default function Friends() {
               }}
             >
               {/* Incoming Challenge Requests Section */}
-              {pendingIncoming.length > 0 && (
+              {/* Challenge Activity Section */}
+              {totalChallengeActivity > 0 && (
                 <div style={{ marginBottom: "20px" }}>
                   <div style={{
                     display: "flex",
@@ -486,14 +504,14 @@ export default function Friends() {
                     gap: "8px",
                     marginBottom: "12px",
                   }}>
-                    <Swords size={18} color="#22c55e" />
+                    <Swords size={18} color="#d4af37" />
                     <h3 style={{
-                      color: "#22c55e",
+                      color: "#d4af37",
                       fontSize: "1rem",
                       fontWeight: "600",
                       margin: 0,
                     }}>
-                      Challenge Requests ({pendingIncoming.length})
+                      Challenge Activity ({totalChallengeActivity})
                     </h3>
                   </div>
                   <div style={{
@@ -501,6 +519,7 @@ export default function Friends() {
                     flexDirection: "column",
                     gap: "10px",
                   }}>
+                    {/* Incoming Challenge Requests */}
                     {pendingIncoming.map((challenge) => {
                       const sender = friends.find(f => (f.user_id || f.id) === challenge.sender_id);
                       const senderName = sender?.nickname || sender?.username || "Friend";
@@ -509,12 +528,12 @@ export default function Friends() {
                       
                       return (
                         <motion.div
-                          key={challenge.id}
+                          key={`incoming-${challenge.id}`}
                           initial={{ opacity: 0, scale: 0.95 }}
                           animate={{ opacity: 1, scale: 1 }}
                           style={{
-                            background: "linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(16, 185, 129, 0.1) 100%)",
-                            border: "2px solid #22c55e",
+                            background: "linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.1) 100%)",
+                            border: "2px solid #f59e0b",
                             borderRadius: "12px",
                             padding: "14px",
                             display: "flex",
@@ -526,7 +545,7 @@ export default function Friends() {
                             width: "44px",
                             height: "44px",
                             borderRadius: "50%",
-                            border: "2px solid #22c55e",
+                            border: "2px solid #f59e0b",
                             overflow: "hidden",
                             flexShrink: 0,
                           }}>
@@ -538,33 +557,42 @@ export default function Friends() {
                           </div>
                           <div style={{ flex: 1 }}>
                             <p style={{
+                              color: "#f59e0b",
+                              fontWeight: "700",
+                              fontSize: "0.75rem",
+                              margin: 0,
+                              marginBottom: "2px",
+                              textTransform: "uppercase",
+                              letterSpacing: "0.5px",
+                            }}>
+                              Challenge Request
+                            </p>
+                            <p style={{
                               color: "#e2e8f0",
                               fontWeight: "600",
                               fontSize: "0.95rem",
                               margin: 0,
-                              marginBottom: "4px",
+                              marginBottom: "2px",
                             }}>
                               {senderName}
                             </p>
                             <p style={{
-                              color: "#22c55e",
+                              color: "#94a3b8",
                               fontSize: "0.8rem",
                               margin: 0,
                             }}>
                               {getModeIcon(challenge.challenge_type)} {getModeName(challenge.challenge_type)}
                             </p>
                           </div>
-                          <div style={{ display: "flex", gap: "8px", position: "relative", zIndex: 10 }}>
+                          <div style={{ display: "flex", gap: "8px" }}>
                             <button
                               type="button"
                               disabled={acceptingChallengeId === challenge.id}
                               onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                console.log("[Friends] Accept clicked:", challenge.id);
                                 setAcceptingChallengeId(challenge.id);
                                 acceptChallenge(challenge.id).then((result) => {
-                                  console.log("[Friends] Accept result:", result);
                                   setAcceptingChallengeId(null);
                                   if (result.success) {
                                     navigate(`/challenge/friend/${challenge.id}`);
@@ -572,27 +600,24 @@ export default function Friends() {
                                     alert(result.error || "Could not accept challenge");
                                   }
                                 }).catch((err) => {
-                                  console.error("[Friends] Accept error:", err);
                                   setAcceptingChallengeId(null);
                                   alert("Error: " + err.message);
                                 });
                               }}
                               style={{
                                 padding: "10px 16px",
-                                background: acceptingChallengeId === challenge.id ? "#166534" : "#22c55e",
+                                background: acceptingChallengeId === challenge.id ? "#b45309" : "#f59e0b",
                                 border: "none",
                                 borderRadius: "8px",
                                 color: "#fff",
                                 fontWeight: "600",
                                 fontSize: "0.85rem",
                                 cursor: acceptingChallengeId === challenge.id ? "wait" : "pointer",
-                                pointerEvents: "auto",
                               }}
                             >
-                              {acceptingChallengeId === challenge.id ? "Loading..." : "Accept"}
+                              {acceptingChallengeId === challenge.id ? "..." : "Accept"}
                             </button>
                             <motion.button
-                              whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
                               onClick={() => declineChallenge(challenge.id)}
                               style={{
@@ -610,9 +635,345 @@ export default function Friends() {
                         </motion.div>
                       );
                     })}
+
+                    {/* Your Turn - Play Now */}
+                    {yourTurnChallenges.map((challenge) => {
+                      const isSender = challenge.sender_id === challengeUserId;
+                      const friendId = isSender ? challenge.receiver_id : challenge.sender_id;
+                      const friend = friends.find(f => (f.user_id || f.id) === friendId);
+                      const friendName = friend?.nickname || friend?.username || "Friend";
+                      const friendAvatar = friend?.avatar;
+                      const avatarSrc = assets.avatars[friendAvatar] || assets.avatars.avatar_man_lantern;
+                      
+                      return (
+                        <motion.div
+                          key={`yourturn-${challenge.id}`}
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          style={{
+                            background: "linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.1) 100%)",
+                            border: "2px solid #10b981",
+                            borderRadius: "12px",
+                            padding: "14px",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "12px",
+                            boxShadow: "0 0 20px rgba(16, 185, 129, 0.2)",
+                            animation: "pulseGlow 2s ease-in-out infinite",
+                          }}
+                        >
+                          <div style={{
+                            width: "44px",
+                            height: "44px",
+                            borderRadius: "50%",
+                            border: "2px solid #10b981",
+                            overflow: "hidden",
+                            flexShrink: 0,
+                          }}>
+                            <img
+                              src={avatarSrc}
+                              alt={friendName}
+                              style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                            />
+                          </div>
+                          <div style={{ flex: 1 }}>
+                            <p style={{
+                              color: "#10b981",
+                              fontWeight: "700",
+                              fontSize: "0.75rem",
+                              margin: 0,
+                              marginBottom: "2px",
+                              textTransform: "uppercase",
+                              letterSpacing: "0.5px",
+                            }}>
+                              Your Turn!
+                            </p>
+                            <p style={{
+                              color: "#e2e8f0",
+                              fontWeight: "600",
+                              fontSize: "0.95rem",
+                              margin: 0,
+                              marginBottom: "2px",
+                            }}>
+                              vs {friendName}
+                            </p>
+                            <p style={{
+                              color: "#94a3b8",
+                              fontSize: "0.8rem",
+                              margin: 0,
+                            }}>
+                              {getModeIcon(challenge.challenge_type)} {getModeName(challenge.challenge_type)}
+                            </p>
+                          </div>
+                          <button
+                            onClick={() => navigate(`/challenge/friend/${challenge.id}`)}
+                            style={{
+                              padding: "10px 20px",
+                              background: "#10b981",
+                              border: "none",
+                              borderRadius: "8px",
+                              color: "#fff",
+                              fontWeight: "700",
+                              fontSize: "0.9rem",
+                              cursor: "pointer",
+                            }}
+                          >
+                            Play Now
+                          </button>
+                        </motion.div>
+                      );
+                    })}
+
+                    {/* Waiting for Friend */}
+                    {waitingChallenges.map((challenge) => {
+                      const isSender = challenge.sender_id === challengeUserId;
+                      const friendId = isSender ? challenge.receiver_id : challenge.sender_id;
+                      const friend = friends.find(f => (f.user_id || f.id) === friendId);
+                      const friendName = friend?.nickname || friend?.username || "Friend";
+                      const friendAvatar = friend?.avatar;
+                      const avatarSrc = assets.avatars[friendAvatar] || assets.avatars.avatar_man_lantern;
+                      
+                      return (
+                        <motion.div
+                          key={`waiting-${challenge.id}`}
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          style={{
+                            background: "linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%)",
+                            border: "1px solid rgba(59, 130, 246, 0.5)",
+                            borderRadius: "12px",
+                            padding: "14px",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "12px",
+                          }}
+                        >
+                          <div style={{
+                            width: "44px",
+                            height: "44px",
+                            borderRadius: "50%",
+                            border: "2px solid #3b82f6",
+                            overflow: "hidden",
+                            flexShrink: 0,
+                          }}>
+                            <img
+                              src={avatarSrc}
+                              alt={friendName}
+                              style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                            />
+                          </div>
+                          <div style={{ flex: 1 }}>
+                            <p style={{
+                              color: "#3b82f6",
+                              fontWeight: "700",
+                              fontSize: "0.75rem",
+                              margin: 0,
+                              marginBottom: "2px",
+                              textTransform: "uppercase",
+                              letterSpacing: "0.5px",
+                            }}>
+                              Waiting...
+                            </p>
+                            <p style={{
+                              color: "#e2e8f0",
+                              fontWeight: "600",
+                              fontSize: "0.95rem",
+                              margin: 0,
+                              marginBottom: "2px",
+                            }}>
+                              {friendName}'s turn
+                            </p>
+                            <p style={{
+                              color: "#94a3b8",
+                              fontSize: "0.8rem",
+                              margin: 0,
+                            }}>
+                              {getModeIcon(challenge.challenge_type)} {getModeName(challenge.challenge_type)}
+                            </p>
+                          </div>
+                          <div style={{
+                            padding: "8px 14px",
+                            background: "rgba(59, 130, 246, 0.2)",
+                            borderRadius: "8px",
+                            color: "#3b82f6",
+                            fontSize: "0.8rem",
+                            fontWeight: "600",
+                          }}>
+                            Pending
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+
+                    {/* Results Ready */}
+                    {resultsToView.map((challenge) => {
+                      const isSender = challenge.sender_id === challengeUserId;
+                      const friendId = isSender ? challenge.receiver_id : challenge.sender_id;
+                      const friend = friends.find(f => (f.user_id || f.id) === friendId);
+                      const friendName = friend?.nickname || friend?.username || "Friend";
+                      const friendAvatar = friend?.avatar;
+                      const avatarSrc = assets.avatars[friendAvatar] || assets.avatars.avatar_man_lantern;
+                      
+                      return (
+                        <motion.div
+                          key={`results-${challenge.id}`}
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          style={{
+                            background: "linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(124, 58, 237, 0.1) 100%)",
+                            border: "2px solid #8b5cf6",
+                            borderRadius: "12px",
+                            padding: "14px",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "12px",
+                          }}
+                        >
+                          <div style={{
+                            width: "44px",
+                            height: "44px",
+                            borderRadius: "50%",
+                            border: "2px solid #8b5cf6",
+                            overflow: "hidden",
+                            flexShrink: 0,
+                          }}>
+                            <img
+                              src={avatarSrc}
+                              alt={friendName}
+                              style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                            />
+                          </div>
+                          <div style={{ flex: 1 }}>
+                            <p style={{
+                              color: "#8b5cf6",
+                              fontWeight: "700",
+                              fontSize: "0.75rem",
+                              margin: 0,
+                              marginBottom: "2px",
+                              textTransform: "uppercase",
+                              letterSpacing: "0.5px",
+                            }}>
+                              Results Ready!
+                            </p>
+                            <p style={{
+                              color: "#e2e8f0",
+                              fontWeight: "600",
+                              fontSize: "0.95rem",
+                              margin: 0,
+                              marginBottom: "2px",
+                            }}>
+                              vs {friendName}
+                            </p>
+                            <p style={{
+                              color: "#94a3b8",
+                              fontSize: "0.8rem",
+                              margin: 0,
+                            }}>
+                              {getModeIcon(challenge.challenge_type)} {getModeName(challenge.challenge_type)}
+                            </p>
+                          </div>
+                          <button
+                            onClick={() => {
+                              showModal(MODAL_TYPES.FRIEND_CHALLENGE_RESULTS, { challenge });
+                            }}
+                            style={{
+                              padding: "10px 16px",
+                              background: "#8b5cf6",
+                              border: "none",
+                              borderRadius: "8px",
+                              color: "#fff",
+                              fontWeight: "600",
+                              fontSize: "0.85rem",
+                              cursor: "pointer",
+                            }}
+                          >
+                            View Results
+                          </button>
+                        </motion.div>
+                      );
+                    })}
+
+                    {/* Pending Outgoing */}
+                    {pendingOutgoing.map((challenge) => {
+                      const receiver = friends.find(f => (f.user_id || f.id) === challenge.receiver_id);
+                      const receiverName = receiver?.nickname || receiver?.username || "Friend";
+                      const receiverAvatar = receiver?.avatar;
+                      const avatarSrc = assets.avatars[receiverAvatar] || assets.avatars.avatar_man_lantern;
+                      
+                      return (
+                        <motion.div
+                          key={`outgoing-${challenge.id}`}
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          style={{
+                            background: "linear-gradient(135deg, rgba(107, 114, 128, 0.1) 0%, rgba(75, 85, 99, 0.05) 100%)",
+                            border: "1px solid rgba(107, 114, 128, 0.5)",
+                            borderRadius: "12px",
+                            padding: "14px",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "12px",
+                          }}
+                        >
+                          <div style={{
+                            width: "44px",
+                            height: "44px",
+                            borderRadius: "50%",
+                            border: "2px solid #6b7280",
+                            overflow: "hidden",
+                            flexShrink: 0,
+                          }}>
+                            <img
+                              src={avatarSrc}
+                              alt={receiverName}
+                              style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                            />
+                          </div>
+                          <div style={{ flex: 1 }}>
+                            <p style={{
+                              color: "#6b7280",
+                              fontWeight: "700",
+                              fontSize: "0.75rem",
+                              margin: 0,
+                              marginBottom: "2px",
+                              textTransform: "uppercase",
+                              letterSpacing: "0.5px",
+                            }}>
+                              Challenge Sent
+                            </p>
+                            <p style={{
+                              color: "#e2e8f0",
+                              fontWeight: "600",
+                              fontSize: "0.95rem",
+                              margin: 0,
+                              marginBottom: "2px",
+                            }}>
+                              to {receiverName}
+                            </p>
+                            <p style={{
+                              color: "#94a3b8",
+                              fontSize: "0.8rem",
+                              margin: 0,
+                            }}>
+                              {getModeIcon(challenge.challenge_type)} {getModeName(challenge.challenge_type)}
+                            </p>
+                          </div>
+                          <div style={{
+                            padding: "8px 14px",
+                            background: "rgba(107, 114, 128, 0.2)",
+                            borderRadius: "8px",
+                            color: "#9ca3af",
+                            fontSize: "0.8rem",
+                            fontWeight: "600",
+                          }}>
+                            Awaiting
+                          </div>
+                        </motion.div>
+                      );
+                    })}
                   </div>
                   
-                  {/* Divider between challenge requests and friends list */}
+                  {/* Divider between challenge activity and friends list */}
                   {friends.length > 0 && (
                     <div style={{
                       height: "1px",
@@ -620,6 +981,13 @@ export default function Friends() {
                       marginTop: "20px",
                     }} />
                   )}
+
+                  <style>{`
+                    @keyframes pulseGlow {
+                      0%, 100% { box-shadow: 0 0 15px rgba(16, 185, 129, 0.2); }
+                      50% { box-shadow: 0 0 25px rgba(16, 185, 129, 0.4); }
+                    }
+                  `}</style>
                 </div>
               )}
 
@@ -654,7 +1022,6 @@ export default function Friends() {
                         onClick={() => handleUserClick(friend.user_id || friend.id)}
                         badge="Friends"
                         badgeColor="#10b981"
-                        challengeState={getFriendChallengeState(friend.user_id || friend.id)}
                       />
                     ))}
                 </div>
@@ -1466,36 +1833,13 @@ function GlobalLeaderboardCard({
   );
 }
 
-function UserCard({ user, onClick, action, badge, badgeColor, challengeState }) {
+function UserCard({ user, onClick, action, badge, badgeColor }) {
   const avatarSrc = getAvatarImage(user.avatar, {
     userId: user.user_id || user.id,
     nickname: user.nickname || user.username,
   });
   const userLevel = getCurrentLevel(user.xp);
   const displayName = user.nickname || user.username || user.handle || "User";
-
-  const getChallengeIndicator = () => {
-    if (!challengeState) return null;
-    
-    const stateType = typeof challengeState === 'string' 
-      ? challengeState 
-      : challengeState?.type;
-    
-    if (!stateType || stateType === "none") return null;
-    
-    const indicators = {
-      pending_received: { text: "Challenge!", color: "#f59e0b", pulse: true },
-      pending_sent: { text: "Sent", color: "#6b7280", pulse: false },
-      ready_to_play: { text: "Your Turn!", color: "#10b981", pulse: true },
-      waiting_for_friend: { text: "Waiting...", color: "#3b82f6", pulse: false },
-      results_ready: { text: "Results!", color: "#8b5cf6", pulse: true },
-    };
-    
-    return indicators[stateType] || null;
-  };
-
-  const indicator = getChallengeIndicator();
-  const hasChallengeActivity = indicator?.pulse;
 
   return (
     <motion.div
@@ -1504,17 +1848,13 @@ function UserCard({ user, onClick, action, badge, badgeColor, challengeState }) 
       onClick={onClick}
       style={{
         background: "rgba(14, 22, 37, 0.6)",
-        border: hasChallengeActivity 
-          ? `2px solid ${indicator.color}` 
-          : "1px solid rgba(212, 175, 55, 0.3)",
+        border: "1px solid rgba(212, 175, 55, 0.3)",
         borderRadius: "12px",
         padding: "14px",
         display: "flex",
         alignItems: "center",
         gap: "12px",
         cursor: onClick ? "pointer" : "default",
-        position: "relative",
-        boxShadow: hasChallengeActivity ? `0 0 15px ${indicator.color}40` : "none",
       }}
     >
       <div
@@ -1592,47 +1932,23 @@ function UserCard({ user, onClick, action, badge, badgeColor, challengeState }) 
         </div>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "6px", alignItems: "flex-end" }}>
-        {indicator && (
-          <div
-            style={{
-              padding: "4px 10px",
-              background: `${indicator.color}22`,
-              border: `1px solid ${indicator.color}`,
-              borderRadius: "6px",
-              color: indicator.color,
-              fontSize: "0.7rem",
-              fontWeight: "700",
-              animation: indicator.pulse ? "challengePulse 1.5s ease-in-out infinite" : "none",
-            }}
-          >
-            {indicator.text}
-          </div>
-        )}
-        {badge && !indicator ? (
-          <div
-            style={{
-              padding: "6px 12px",
-              background: `${badgeColor}22`,
-              border: `1px solid ${badgeColor}`,
-              borderRadius: "8px",
-              color: badgeColor,
-              fontSize: "0.8rem",
-              fontWeight: "600",
-            }}
-          >
-            {badge}
-          </div>
-        ) : (
-          !indicator && action
-        )}
-      </div>
-      <style>{`
-        @keyframes challengePulse {
-          0%, 100% { opacity: 1; transform: scale(1); }
-          50% { opacity: 0.8; transform: scale(1.05); }
-        }
-      `}</style>
+      {badge ? (
+        <div
+          style={{
+            padding: "6px 12px",
+            background: `${badgeColor}22`,
+            border: `1px solid ${badgeColor}`,
+            borderRadius: "8px",
+            color: badgeColor,
+            fontSize: "0.8rem",
+            fontWeight: "600",
+          }}
+        >
+          {badge}
+        </div>
+      ) : (
+        action
+      )}
     </motion.div>
   );
 }
