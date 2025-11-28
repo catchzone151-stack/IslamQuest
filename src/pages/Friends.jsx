@@ -874,7 +874,26 @@ export default function Friends() {
                           </div>
                           <button
                             onClick={() => {
-                              showModal(MODAL_TYPES.FRIEND_CHALLENGE_RESULTS, { challenge });
+                              showModal(MODAL_TYPES.FRIEND_CHALLENGE_RESULTS, { 
+                                challenge,
+                                currentUserId: challengeUserId,
+                                onChallengeAgain: () => {
+                                  markResultViewed(challenge.id);
+                                  navigate("/challenge", {
+                                    state: {
+                                      preselectedFriend: friend ? {
+                                        id: friendId,
+                                        user_id: friendId,
+                                        name: friendName,
+                                        avatar: friendAvatar,
+                                      } : null,
+                                    },
+                                  });
+                                },
+                                onClose: () => {
+                                  markResultViewed(challenge.id);
+                                },
+                              });
                             }}
                             style={{
                               padding: "10px 16px",
