@@ -419,14 +419,28 @@ export const useFriendChallengesStore = create((set, get) => ({
     }
     
     try {
-      const { data, error } = await supabase
+      console.log("[FriendChallenges] Submitting update:", updateData);
+      
+      let { data, error } = await supabase
         .from("friend_challenges")
         .update(updateData)
         .eq("id", challengeId)
         .select()
         .single();
       
-      if (error) throw error;
+      if (error) {
+        console.warn("[FriendChallenges] First submit attempt failed, trying without answers:", error.message);
+        const { sender_answers, receiver_answers, ...minimalUpdate } = updateData;
+        const { data: retryData, error: retryError } = await supabase
+          .from("friend_challenges")
+          .update(minimalUpdate)
+          .eq("id", challengeId)
+          .select()
+          .single();
+        
+        if (retryError) throw retryError;
+        data = retryData;
+      }
       
       await get().loadChallenges();
       
