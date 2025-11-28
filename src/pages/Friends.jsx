@@ -89,6 +89,7 @@ export default function Friends() {
     getChallengeStateForFriend,
     acceptChallenge,
     declineChallenge,
+    clearPendingIncomingCount,
   } = useFriendChallengesStore();
 
   const [activeTab, setActiveTab] = useState("friends");
@@ -107,6 +108,7 @@ export default function Friends() {
     loadRequests();
     loadPendingRequests();
     initFriendChallenges();
+    clearPendingIncomingCount();
   }, [currentUserId]);
   
   useEffect(() => {
@@ -586,6 +588,15 @@ export default function Friends() {
                       );
                     })}
                   </div>
+                  
+                  {/* Divider between challenge requests and friends list */}
+                  {friends.length > 0 && (
+                    <div style={{
+                      height: "1px",
+                      background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)",
+                      marginTop: "20px",
+                    }} />
+                  )}
                 </div>
               )}
 

@@ -164,6 +164,11 @@ export const useFriendChallengesStore = create((set, get) => ({
     get().loadChallenges();
   },
 
+  clearPendingIncomingCount: () => {
+    const { resultsToView } = get();
+    set({ unreadCount: resultsToView.length });
+  },
+
   createChallenge: async (friendId, modeId, questions) => {
     const { currentUserId, pendingOutgoing, activeChallenges } = get();
     if (!currentUserId) {
@@ -306,12 +311,23 @@ export const useFriendChallengesStore = create((set, get) => ({
   },
 
   submitResult: async (challengeId, score, answers, completionTime = null, chain = null) => {
-    const { currentUserId, activeChallenges } = get();
+    const { currentUserId, activeChallenges, pendingIncoming } = get();
     if (!currentUserId) return { success: false, error: "Not logged in" };
     
-    const challenge = activeChallenges.find(c => c.id === challengeId);
+    let challenge = activeChallenges.find(c => c.id === challengeId);
+    
     if (!challenge) {
-      return { success: false, error: "Challenge not found" };
+      const { data: fetchedChallenge, error: fetchError } = await supabase
+        .from("friend_challenges")
+        .select("*")
+        .eq("id", challengeId)
+        .single();
+      
+      if (fetchError || !fetchedChallenge) {
+        console.error("[FriendChallenges] Could not find challenge:", challengeId);
+        return { success: false, error: "Challenge not found" };
+      }
+      challenge = fetchedChallenge;
     }
     
     const isSender = challenge.sender_id === currentUserId;

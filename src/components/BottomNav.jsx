@@ -24,7 +24,7 @@ export default function BottomNav() {
   const tabs = [
     { path: "/", label: "Home", icon: <Home size={22} /> },
     { path: "/revise", label: "Revise", icon: <BookOpen size={22} /> },
-    { path: "/challenge", label: "Challenge", icon: <Sword size={22} />, badge: challengeUnreadCount },
+    { path: "/challenge", label: "Challenge", icon: <Sword size={22} /> },
     { path: "/friends", label: "Friends", icon: <Users size={22} />, badge: friendBadgeCount },
     { path: "/profile", label: "Profile", icon: <User size={22} /> },
   ];
