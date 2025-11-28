@@ -263,10 +263,7 @@ export const useFriendChallengesStore = create((set, get) => ({
       
       const { data, error } = await supabase
         .from("friend_challenges")
-        .update({
-          status: "accepted",
-          accepted_at: new Date().toISOString(),
-        })
+        .update({ status: "accepted" })
         .eq("id", challengeId)
         .eq("receiver_id", currentUserId)
         .eq("status", "pending")

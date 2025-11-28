@@ -562,7 +562,6 @@ export default function Friends() {
                                 e.preventDefault();
                                 e.stopPropagation();
                                 console.log("[Friends] Accept clicked:", challenge.id);
-                                alert("Accept button clicked - processing...");
                                 setAcceptingChallengeId(challenge.id);
                                 acceptChallenge(challenge.id).then((result) => {
                                   console.log("[Friends] Accept result:", result);
