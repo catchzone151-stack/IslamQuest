@@ -78,6 +78,16 @@ export const useFriendChallengesStore = create((set, get) => ({
       }
       
       console.log("[FriendChallenges] Raw data from DB:", data?.length || 0, "rows");
+      if (data?.length > 0) {
+        console.log("[FriendChallenges] Challenge details:", data.map(c => ({
+          id: c.id?.slice(0,8),
+          sender: c.sender_id?.slice(0,8),
+          receiver: c.receiver_id?.slice(0,8),
+          status: c.status,
+          iAmSender: c.sender_id === currentUserId,
+          iAmReceiver: c.receiver_id === currentUserId
+        })));
+      }
       
       const now = new Date();
       const challenges = (data || []).filter(c => {
