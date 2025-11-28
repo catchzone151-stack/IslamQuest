@@ -100,6 +100,7 @@ export default function Friends() {
   const [quickMessageFriend, setQuickMessageFriend] = useState(null);
   const [globalLeaderboard, setGlobalLeaderboard] = useState([]);
   const [loadingGlobal, setLoadingGlobal] = useState(true);
+  const [acceptingChallengeId, setAcceptingChallengeId] = useState(null);
 
   useEffect(() => {
     if (!currentUserId) return;
@@ -553,50 +554,44 @@ export default function Friends() {
                               {getModeIcon(challenge.challenge_type)} {getModeName(challenge.challenge_type)}
                             </p>
                           </div>
-                          <div style={{ display: "flex", gap: "8px" }}>
-                            <motion.button
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.95 }}
-                              onClick={async (e) => {
+                          <div style={{ display: "flex", gap: "8px", position: "relative", zIndex: 10 }}>
+                            <button
+                              type="button"
+                              disabled={acceptingChallengeId === challenge.id}
+                              onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                console.log("[Friends] Accept button clicked for challenge:", challenge.id);
-                                
-                                try {
-                                  const result = await acceptChallenge(challenge.id);
+                                console.log("[Friends] Accept clicked:", challenge.id);
+                                alert("Accept button clicked - processing...");
+                                setAcceptingChallengeId(challenge.id);
+                                acceptChallenge(challenge.id).then((result) => {
                                   console.log("[Friends] Accept result:", result);
-                                  
+                                  setAcceptingChallengeId(null);
                                   if (result.success) {
-                                    console.log("[Friends] Challenge accepted, navigating to game");
                                     navigate(`/challenge/friend/${challenge.id}`);
                                   } else {
-                                    console.error("[Friends] Accept failed:", result.error);
-                                    showModal(MODAL_TYPES.ERROR, {
-                                      title: "Accept Failed",
-                                      message: result.error || "Could not accept challenge. Please try again."
-                                    });
+                                    alert(result.error || "Could not accept challenge");
                                   }
-                                } catch (err) {
-                                  console.error("[Friends] Accept exception:", err);
-                                  showModal(MODAL_TYPES.ERROR, {
-                                    title: "Error",
-                                    message: "Something went wrong. Please try again."
-                                  });
-                                }
+                                }).catch((err) => {
+                                  console.error("[Friends] Accept error:", err);
+                                  setAcceptingChallengeId(null);
+                                  alert("Error: " + err.message);
+                                });
                               }}
                               style={{
                                 padding: "10px 16px",
-                                background: "#22c55e",
+                                background: acceptingChallengeId === challenge.id ? "#166534" : "#22c55e",
                                 border: "none",
                                 borderRadius: "8px",
                                 color: "#fff",
                                 fontWeight: "600",
                                 fontSize: "0.85rem",
-                                cursor: "pointer",
+                                cursor: acceptingChallengeId === challenge.id ? "wait" : "pointer",
+                                pointerEvents: "auto",
                               }}
                             >
-                              Accept
-                            </motion.button>
+                              {acceptingChallengeId === challenge.id ? "Loading..." : "Accept"}
+                            </button>
                             <motion.button
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
