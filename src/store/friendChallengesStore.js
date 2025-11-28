@@ -553,16 +553,14 @@ export const useFriendChallengesStore = create((set, get) => ({
     if (active) {
       const isSender = active.sender_id === currentUserId;
       const myTurnDone = isSender 
-        ? (active.status === "sender_done" || active.status === "finished")
-        : (active.status === "receiver_done" || active.status === "finished");
+        ? (active.sender_score !== null)
+        : (active.receiver_score !== null);
       
-      if (!myTurnDone && active.status === "accepted") {
-        return { type: "ready_to_play", challenge: active };
-      }
       if (myTurnDone && active.status !== "finished") {
         return { type: "waiting_for_friend", challenge: active };
       }
-      if (active.status === "accepted" && !myTurnDone) {
+      
+      if (!myTurnDone) {
         return { type: "ready_to_play", challenge: active };
       }
     }
