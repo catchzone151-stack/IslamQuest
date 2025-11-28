@@ -393,24 +393,28 @@ export const useFriendChallengesStore = create((set, get) => ({
   },
 
   submitResult: async (challengeId, score, answers, completionTime = null, chain = null) => {
-    const { currentUserId, activeChallenges, pendingIncoming } = get();
+    const { currentUserId } = get();
     if (!currentUserId) return { success: false, error: "Not logged in" };
     
-    let challenge = activeChallenges.find(c => c.id === challengeId);
+    console.log("[FriendChallenges] submitResult called:", { challengeId, score, completionTime });
     
-    if (!challenge) {
-      const { data: fetchedChallenge, error: fetchError } = await supabase
-        .from("friend_challenges")
-        .select("*")
-        .eq("id", challengeId)
-        .single();
-      
-      if (fetchError || !fetchedChallenge) {
-        console.error("[FriendChallenges] Could not find challenge:", challengeId);
-        return { success: false, error: "Challenge not found" };
-      }
-      challenge = fetchedChallenge;
+    const { data: challenge, error: fetchError } = await supabase
+      .from("friend_challenges")
+      .select("*")
+      .eq("id", challengeId)
+      .single();
+    
+    if (fetchError || !challenge) {
+      console.error("[FriendChallenges] Could not find challenge:", challengeId, fetchError);
+      return { success: false, error: "Challenge not found" };
     }
+    
+    console.log("[FriendChallenges] Current challenge state:", {
+      id: challenge.id,
+      status: challenge.status,
+      senderScore: challenge.sender_score,
+      receiverScore: challenge.receiver_score
+    });
     
     const isSender = challenge.sender_id === currentUserId;
     const updateData = {};
@@ -421,11 +425,13 @@ export const useFriendChallengesStore = create((set, get) => ({
       updateData.sender_chain = chain;
       updateData.sender_answers = answers;
       
-      if (challenge.status === "receiver_done") {
+      if (challenge.receiver_score !== null || challenge.status === "receiver_done") {
         updateData.status = "finished";
         updateData.finished_at = new Date().toISOString();
+        console.log("[FriendChallenges] Sender finishing - receiver already done, marking FINISHED");
       } else {
         updateData.status = "sender_done";
+        console.log("[FriendChallenges] Sender finishing - waiting for receiver");
       }
     } else {
       updateData.receiver_score = score;
@@ -433,11 +439,13 @@ export const useFriendChallengesStore = create((set, get) => ({
       updateData.receiver_chain = chain;
       updateData.receiver_answers = answers;
       
-      if (challenge.status === "sender_done") {
+      if (challenge.sender_score !== null || challenge.status === "sender_done") {
         updateData.status = "finished";
         updateData.finished_at = new Date().toISOString();
+        console.log("[FriendChallenges] Receiver finishing - sender already done, marking FINISHED");
       } else {
         updateData.status = "receiver_done";
+        console.log("[FriendChallenges] Receiver finishing - waiting for sender");
       }
     }
     
