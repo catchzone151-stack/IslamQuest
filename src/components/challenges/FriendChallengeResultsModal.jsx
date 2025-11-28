@@ -15,7 +15,7 @@ export default function FriendChallengeResultsModal({
 }) {
   const { hideModal } = useModalStore();
   const { markResultViewed, determineWinner, getRewards } = useFriendChallengesStore();
-  const { addXp, addCoins } = useProgressStore();
+  const { addXP, addCoins } = useProgressStore();
   
   const isSender = challenge?.sender_id === currentUserId;
   const modeId = challenge?.challenge_type;
@@ -36,7 +36,7 @@ export default function FriendChallengeResultsModal({
   
   const handleClose = async () => {
     await markResultViewed(challenge.id);
-    if (rewards.xp > 0) addXp(rewards.xp);
+    if (rewards.xp > 0) addXP(rewards.xp);
     if (rewards.coins > 0) addCoins(rewards.coins);
     hideModal();
     onClose?.();
@@ -44,7 +44,7 @@ export default function FriendChallengeResultsModal({
   
   const handleChallengeAgain = async () => {
     await markResultViewed(challenge.id);
-    if (rewards.xp > 0) addXp(rewards.xp);
+    if (rewards.xp > 0) addXP(rewards.xp);
     if (rewards.coins > 0) addCoins(rewards.coins);
     hideModal();
     onChallengeAgain?.(modeId);
