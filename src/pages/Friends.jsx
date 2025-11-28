@@ -36,6 +36,21 @@ const highlightStyle = `
   background: rgba(255, 215, 0, 0.15) !important;
   box-shadow: 0 0 12px rgba(255, 215, 0, 0.3) !important;
 }
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
 `;
 
 export default function Friends() {
@@ -453,6 +468,127 @@ export default function Friends() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
             >
+              {/* Incoming Challenge Requests Section */}
+              {pendingIncoming.length > 0 && (
+                <div style={{ marginBottom: "20px" }}>
+                  <div style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    marginBottom: "12px",
+                  }}>
+                    <Swords size={18} color="#22c55e" />
+                    <h3 style={{
+                      color: "#22c55e",
+                      fontSize: "1rem",
+                      fontWeight: "600",
+                      margin: 0,
+                    }}>
+                      Challenge Requests ({pendingIncoming.length})
+                    </h3>
+                  </div>
+                  <div style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                  }}>
+                    {pendingIncoming.map((challenge) => {
+                      const sender = friends.find(f => (f.user_id || f.id) === challenge.sender_id);
+                      const senderName = sender?.nickname || sender?.username || "Friend";
+                      const senderAvatar = sender?.avatar;
+                      const avatarSrc = assets.avatars[senderAvatar] || assets.avatars.avatar_man_lantern;
+                      
+                      return (
+                        <motion.div
+                          key={challenge.id}
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          style={{
+                            background: "linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(16, 185, 129, 0.1) 100%)",
+                            border: "2px solid #22c55e",
+                            borderRadius: "12px",
+                            padding: "14px",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "12px",
+                          }}
+                        >
+                          <div style={{
+                            width: "44px",
+                            height: "44px",
+                            borderRadius: "50%",
+                            border: "2px solid #22c55e",
+                            overflow: "hidden",
+                            flexShrink: 0,
+                          }}>
+                            <img
+                              src={avatarSrc}
+                              alt={senderName}
+                              style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                            />
+                          </div>
+                          <div style={{ flex: 1 }}>
+                            <p style={{
+                              color: "#e2e8f0",
+                              fontWeight: "600",
+                              fontSize: "0.95rem",
+                              margin: 0,
+                              marginBottom: "4px",
+                            }}>
+                              {senderName}
+                            </p>
+                            <p style={{
+                              color: "#22c55e",
+                              fontSize: "0.8rem",
+                              margin: 0,
+                            }}>
+                              {getModeIcon(challenge.challenge_type)} {getModeName(challenge.challenge_type)}
+                            </p>
+                          </div>
+                          <div style={{ display: "flex", gap: "8px" }}>
+                            <motion.button
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                              onClick={async () => {
+                                await acceptChallenge(challenge.id);
+                                navigate(`/challenge/friend/${challenge.id}`);
+                              }}
+                              style={{
+                                padding: "10px 16px",
+                                background: "#22c55e",
+                                border: "none",
+                                borderRadius: "8px",
+                                color: "#fff",
+                                fontWeight: "600",
+                                fontSize: "0.85rem",
+                                cursor: "pointer",
+                              }}
+                            >
+                              Accept
+                            </motion.button>
+                            <motion.button
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                              onClick={() => declineChallenge(challenge.id)}
+                              style={{
+                                padding: "10px 12px",
+                                background: "rgba(239, 68, 68, 0.2)",
+                                border: "1px solid #ef4444",
+                                borderRadius: "8px",
+                                color: "#ef4444",
+                                cursor: "pointer",
+                              }}
+                            >
+                              <X size={16} />
+                            </motion.button>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
               {friends.length === 0 ? (
                 <EmptyState
                   icon={<Users size={48} />}
@@ -550,6 +686,7 @@ export default function Friends() {
                           isCurrentUser={friend.user_id === currentUserIdForHighlight}
                           onChallenge={() => handleChallengeFriend(friend)}
                           onQuickMessage={() => handleQuickMessage(friend)}
+                          challengeState={getFriendChallengeState(friend.user_id)}
                         />
                       ))}
                     </div>
@@ -893,7 +1030,7 @@ function SubTabButton({ active, onClick, label, icon }) {
   );
 }
 
-function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, onQuickMessage }) {
+function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, onQuickMessage, challengeState }) {
   const avatarSrc =
     assets.avatars[user.avatar] ||
     assets.avatars.avatar_man_lantern ||
@@ -1061,14 +1198,53 @@ function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, onQuickMessag
           onClick={onChallenge}
           style={{
             padding: "8px",
-            background: "rgba(239, 68, 68, 0.2)",
-            border: "1px solid #ef4444",
+            background: challengeState?.type === "pending_received" 
+              ? "rgba(34, 197, 94, 0.3)" 
+              : challengeState?.type === "ready_to_play"
+                ? "rgba(251, 191, 36, 0.3)"
+                : "rgba(239, 68, 68, 0.2)",
+            border: challengeState?.type === "pending_received"
+              ? "2px solid #22c55e"
+              : challengeState?.type === "ready_to_play"
+                ? "2px solid #fbbf24"
+                : "1px solid #ef4444",
             borderRadius: "8px",
-            color: "#ef4444",
+            color: challengeState?.type === "pending_received"
+              ? "#22c55e"
+              : challengeState?.type === "ready_to_play"
+                ? "#fbbf24"
+                : "#ef4444",
             cursor: "pointer",
+            position: "relative",
+            animation: challengeState?.type === "pending_received" ? "pulse 1.5s infinite" : "none",
           }}
         >
           <Swords size={16} />
+          {challengeState?.type === "pending_received" && (
+            <span style={{
+              position: "absolute",
+              top: "-4px",
+              right: "-4px",
+              width: "12px",
+              height: "12px",
+              background: "#22c55e",
+              borderRadius: "50%",
+              border: "2px solid #0B1E2D",
+              animation: "pulse 1.5s infinite",
+            }} />
+          )}
+          {challengeState?.type === "ready_to_play" && (
+            <span style={{
+              position: "absolute",
+              top: "-4px",
+              right: "-4px",
+              width: "12px",
+              height: "12px",
+              background: "#fbbf24",
+              borderRadius: "50%",
+              border: "2px solid #0B1E2D",
+            }} />
+          )}
         </motion.button>
       </div>
     </motion.div>
