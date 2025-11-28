@@ -2,22 +2,51 @@ import { useModalStore } from "../../store/modalStore";
 import { getModeIcon, getModeName } from "../../utils/challengeQuestions";
 import assets from "../../assets/assets";
 import "./ChallengeModals.css";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { supabase } from "../../lib/supabaseClient";
+import { useFriendChallengesStore } from "../../store/friendChallengesStore";
 
 export default function FriendChallengeWaitingModal({ friendName, modeId, score, totalQuestions, onClose, challengeId }) {
   const { hideModal } = useModalStore();
-  const [receiverAccepted, setReceiverAccepted] = useState(false);
-  const [receiverFinished, setReceiverFinished] = useState(false);
+  const loadChallenges = useFriendChallengesStore(state => state.loadChallenges);
+  const [challengeData, setChallengeData] = useState(null);
   const pollIntervalRef = useRef(null);
   const mountedRef = useRef(true);
-  const acceptedRef = useRef(false);
-  const finishedRef = useRef(false);
+  
+  const receiverAccepted = challengeData && (
+    challengeData.status === 'accepted' || 
+    challengeData.status === 'sender_done' || 
+    challengeData.status === 'receiver_done' || 
+    challengeData.status === 'finished'
+  );
+  
+  const receiverFinished = challengeData && 
+    challengeData.receiver_score !== null && 
+    challengeData.receiver_score !== undefined;
+  
+  const fetchChallenge = useCallback(async () => {
+    if (!mountedRef.current || !challengeId) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from("friend_challenges")
+        .select("status, receiver_score")
+        .eq("id", challengeId)
+        .single();
+      
+      if (error || !data || !mountedRef.current) return;
+      
+      console.log('[WaitingModal] Fetched:', data.status, 'receiver_score:', data.receiver_score);
+      setChallengeData(data);
+      
+      await loadChallenges();
+    } catch (err) {
+      console.error('[WaitingModal] Fetch error:', err);
+    }
+  }, [challengeId, loadChallenges]);
   
   useEffect(() => {
     mountedRef.current = true;
-    acceptedRef.current = false;
-    finishedRef.current = false;
     
     if (!challengeId) {
       console.log('[WaitingModal] No challengeId');
@@ -26,41 +55,8 @@ export default function FriendChallengeWaitingModal({ friendName, modeId, score,
     
     console.log('[WaitingModal] Starting poll for:', challengeId);
     
-    const pollChallenge = async () => {
-      if (!mountedRef.current) return;
-      
-      try {
-        const { data, error } = await supabase
-          .from("friend_challenges")
-          .select("status, receiver_score")
-          .eq("id", challengeId)
-          .single();
-        
-        if (error || !data || !mountedRef.current) return;
-        
-        console.log('[WaitingModal] Poll:', data.status, 'score:', data.receiver_score);
-        
-        const shouldBeAccepted = data.status === 'accepted' || data.status === 'sender_done' || data.status === 'receiver_done' || data.status === 'finished';
-        const shouldBeFinished = data.receiver_score !== null && data.receiver_score !== undefined;
-        
-        if (shouldBeAccepted && !acceptedRef.current) {
-          console.log('[WaitingModal] ACCEPTED!');
-          acceptedRef.current = true;
-          setReceiverAccepted(true);
-        }
-        
-        if (shouldBeFinished && !finishedRef.current) {
-          console.log('[WaitingModal] FINISHED!');
-          finishedRef.current = true;
-          setReceiverFinished(true);
-        }
-      } catch (err) {
-        console.error('[WaitingModal] Poll error:', err);
-      }
-    };
-    
-    pollChallenge();
-    pollIntervalRef.current = setInterval(pollChallenge, 2500);
+    fetchChallenge();
+    pollIntervalRef.current = setInterval(fetchChallenge, 2500);
     
     return () => {
       mountedRef.current = false;
@@ -69,7 +65,7 @@ export default function FriendChallengeWaitingModal({ friendName, modeId, score,
         pollIntervalRef.current = null;
       }
     };
-  }, [challengeId]);
+  }, [challengeId, fetchChallenge]);
   
   const handleClose = () => {
     hideModal();
