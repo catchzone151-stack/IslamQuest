@@ -107,7 +107,10 @@ export default function Friends() {
     loadFriends();
     loadRequests();
     loadPendingRequests();
-    initFriendChallenges();
+    initFriendChallenges().then(() => {
+      loadChallenges();
+      console.log("🔄 Force loading challenges on Friends mount");
+    });
     clearPendingIncomingCount();
   }, [currentUserId]);
   
@@ -554,17 +557,30 @@ export default function Friends() {
                             <motion.button
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
-                              onClick={async () => {
-                                console.log("[Friends] Accepting challenge:", challenge.id);
-                                const result = await acceptChallenge(challenge.id);
-                                if (result.success) {
-                                  console.log("[Friends] Challenge accepted, navigating to game");
-                                  navigate(`/challenge/friend/${challenge.id}`);
-                                } else {
-                                  console.error("[Friends] Accept failed:", result.error);
+                              onClick={async (e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                console.log("[Friends] Accept button clicked for challenge:", challenge.id);
+                                
+                                try {
+                                  const result = await acceptChallenge(challenge.id);
+                                  console.log("[Friends] Accept result:", result);
+                                  
+                                  if (result.success) {
+                                    console.log("[Friends] Challenge accepted, navigating to game");
+                                    navigate(`/challenge/friend/${challenge.id}`);
+                                  } else {
+                                    console.error("[Friends] Accept failed:", result.error);
+                                    showModal(MODAL_TYPES.ERROR, {
+                                      title: "Accept Failed",
+                                      message: result.error || "Could not accept challenge. Please try again."
+                                    });
+                                  }
+                                } catch (err) {
+                                  console.error("[Friends] Accept exception:", err);
                                   showModal(MODAL_TYPES.ERROR, {
-                                    title: "Accept Failed",
-                                    message: result.error || "Could not accept challenge. Please try again."
+                                    title: "Error",
+                                    message: "Something went wrong. Please try again."
                                   });
                                 }
                               }}
