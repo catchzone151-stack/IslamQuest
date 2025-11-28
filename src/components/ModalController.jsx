@@ -263,7 +263,10 @@ export default function ModalController() {
           <FriendChallengeResultsModal
             challenge={modalData.challenge}
             currentUserId={modalData.currentUserId}
+            userScore={modalData.userScore}
+            opponentInfo={modalData.opponentInfo}
             onChallengeAgain={(modeId) => {
+              hideModal();
               modalData.onChallengeAgain?.(modeId);
             }}
             onClose={() => {
@@ -278,6 +281,8 @@ export default function ModalController() {
           <FriendChallengeWaitingModal
             friendName={modalData.friendName}
             modeId={modalData.modeId}
+            score={modalData.score}
+            totalQuestions={modalData.totalQuestions}
             onClose={() => {
               hideModal();
               modalData.onClose?.();

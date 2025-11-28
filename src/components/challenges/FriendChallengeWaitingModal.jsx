@@ -3,7 +3,7 @@ import { getModeIcon, getModeName } from "../../utils/challengeQuestions";
 import assets from "../../assets/assets";
 import "./ChallengeModals.css";
 
-export default function FriendChallengeWaitingModal({ friendName, modeId, onClose }) {
+export default function FriendChallengeWaitingModal({ friendName, modeId, score, totalQuestions, onClose }) {
   const { hideModal } = useModalStore();
   
   const handleClose = () => {
@@ -44,6 +44,25 @@ export default function FriendChallengeWaitingModal({ friendName, modeId, onClos
         <p style={{ color: "#cbd5e1", fontSize: "1rem", lineHeight: 1.6, marginBottom: 8 }}>
           You've completed the <strong>{getModeName(modeId)}</strong> challenge!
         </p>
+
+        {score !== undefined && totalQuestions !== undefined && (
+          <div style={{
+            background: "rgba(212, 175, 55, 0.15)",
+            border: "1px solid rgba(212, 175, 55, 0.3)",
+            borderRadius: "12px",
+            padding: "12px 20px",
+            margin: "16px 0",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "8px"
+          }}>
+            <span style={{ fontSize: "1.5rem" }}>🎯</span>
+            <span style={{ color: "#D4AF37", fontWeight: "700", fontSize: "1.2rem" }}>
+              Your Score: {score}/{totalQuestions}
+            </span>
+          </div>
+        )}
         
         <p style={{ color: "#94a3b8", fontSize: "0.85rem", marginBottom: 24 }}>
           You'll see the results when your friend finishes.

@@ -39,6 +39,9 @@ const Challenge = lazy(() => import("./pages/Challenge.jsx"));
 const ChallengeGame = lazy(
   () => import("./pages/challenges/ChallengeGame.jsx"),
 );
+const FriendChallengeGame = lazy(
+  () => import("./pages/challenges/FriendChallengeGame.jsx"),
+);
 const DailyQuestGame = lazy(() => import("./pages/DailyQuestGame.jsx"));
 const Friends = lazy(() => import("./pages/Friends.jsx"));
 const FriendProfile = lazy(() => import("./pages/FriendProfile"));
@@ -604,6 +607,14 @@ export default function App() {
                     element={
                       <Suspense fallback={<LoadingScreen />}>
                         <ChallengeGame />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="/challenge/friend/:challengeId"
+                    element={
+                      <Suspense fallback={<LoadingScreen />}>
+                        <FriendChallengeGame />
                       </Suspense>
                     }
                   />
