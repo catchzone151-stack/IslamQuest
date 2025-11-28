@@ -35,19 +35,27 @@ export default function FriendChallengeResultsModal({
   const rewards = getRewards(challenge, winnerId);
   
   const handleClose = async () => {
-    await markResultViewed(challenge.id);
-    if (rewards.xp > 0) addXP(rewards.xp);
-    if (rewards.coins > 0) addCoins(rewards.coins);
-    hideModal();
+    console.log("[ResultsModal] handleClose called");
+    try {
+      await markResultViewed(challenge.id);
+      if (rewards.xp > 0) addXP(rewards.xp);
+      if (rewards.coins > 0) addCoins(rewards.coins);
+    } catch (err) {
+      console.error("[ResultsModal] handleClose error:", err);
+    }
     onClose?.();
   };
   
   const handleChallengeAgain = async () => {
-    await markResultViewed(challenge.id);
-    if (rewards.xp > 0) addXP(rewards.xp);
-    if (rewards.coins > 0) addCoins(rewards.coins);
-    hideModal();
-    onChallengeAgain?.(modeId);
+    console.log("[ResultsModal] handleChallengeAgain called");
+    try {
+      await markResultViewed(challenge.id);
+      if (rewards.xp > 0) addXP(rewards.xp);
+      if (rewards.coins > 0) addCoins(rewards.coins);
+    } catch (err) {
+      console.error("[ResultsModal] handleChallengeAgain error:", err);
+    }
+    onChallengeAgain?.();
   };
   
   const resultColor = isDraw ? "#f59e0b" : (isWinner ? "#10b981" : "#ef4444");

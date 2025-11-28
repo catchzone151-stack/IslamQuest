@@ -494,26 +494,49 @@ export const useFriendChallengesStore = create((set, get) => ({
   },
 
   markResultViewed: async (challengeId) => {
-    const { currentUserId } = get();
-    if (!currentUserId) return;
+    console.log("[FriendChallenges] markResultViewed called:", challengeId);
     
-    const challenge = get().completedChallenges.find(c => c.id === challengeId);
-    if (!challenge) return;
+    const { data: userData } = await supabase.auth.getUser();
+    const currentUserId = userData?.user?.id;
+    
+    if (!currentUserId) {
+      console.error("[FriendChallenges] markResultViewed: No user ID");
+      return;
+    }
+    
+    const { data: challenge, error: fetchError } = await supabase
+      .from("friend_challenges")
+      .select("*")
+      .eq("id", challengeId)
+      .single();
+    
+    if (fetchError || !challenge) {
+      console.error("[FriendChallenges] markResultViewed: Challenge not found", fetchError);
+      return;
+    }
     
     const isSender = challenge.sender_id === currentUserId;
     const updateData = isSender 
       ? { sender_viewed_results: true }
       : { receiver_viewed_results: true };
     
+    console.log("[FriendChallenges] markResultViewed updating:", updateData);
+    
     try {
-      await supabase
+      const { error } = await supabase
         .from("friend_challenges")
         .update(updateData)
         .eq("id", challengeId);
       
+      if (error) {
+        console.error("[FriendChallenges] markResultViewed update error:", error);
+        return;
+      }
+      
+      console.log("[FriendChallenges] markResultViewed success, reloading challenges");
       await get().loadChallenges();
     } catch (error) {
-      console.error("[FriendChallenges] Mark viewed error:", error);
+      console.error("[FriendChallenges] markResultViewed error:", error);
     }
   },
 
