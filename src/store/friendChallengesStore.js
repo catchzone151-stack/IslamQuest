@@ -171,6 +171,37 @@ export const useFriendChallengesStore = create((set, get) => ({
     get().loadChallenges();
   },
 
+  refreshChallenge: async (challengeId) => {
+    if (!challengeId) return null;
+    
+    try {
+      console.log("[FriendChallenges] Refreshing single challenge:", challengeId);
+      
+      const { data, error } = await supabase
+        .from("friend_challenges")
+        .select("*")
+        .eq("id", challengeId)
+        .single();
+      
+      if (error) {
+        console.error("[FriendChallenges] Refresh error:", error);
+        return null;
+      }
+      
+      console.log("[FriendChallenges] Refreshed challenge:", {
+        id: challengeId,
+        status: data?.status,
+        senderScore: data?.sender_score,
+        receiverScore: data?.receiver_score
+      });
+      
+      return data;
+    } catch (error) {
+      console.error("[FriendChallenges] Refresh exception:", error);
+      return null;
+    }
+  },
+
   clearPendingIncomingCount: () => {
     const { resultsToView } = get();
     set({ unreadCount: resultsToView.length });
