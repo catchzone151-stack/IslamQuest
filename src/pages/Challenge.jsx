@@ -3,11 +3,13 @@ import { useLocation } from "react-router-dom";
 import { Globe } from "lucide-react";
 import { useNavigate } from "../hooks/useNavigate";
 import { useChallengeStore, CHALLENGE_MODES, BOSS_LEVEL } from "../store/challengeStore";
+import { useFriendChallengesStore } from "../store/friendChallengesStore";
 import { useProgressStore } from "../store/progressStore";
 import { useFriendsStore } from "../store/friendsStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import { useVibration } from "../hooks/useVibration";
 import { getCurrentLevel } from "../utils/diamondLevels";
+import { generateQuestionsForChallenge } from "../utils/challengeQuestions";
 import BossLevelMascot from "../assets/mascots/mascot_boss.webp";
 import mascot_running from "../assets/mascots/mascot_running.webp";
 import mascot_quiz from "../assets/mascots/mascot_quiz.webp";
@@ -24,6 +26,7 @@ export default function Challenge() {
   const level = getCurrentLevel(xp).level;
   const getAllFriends = useFriendsStore(state => state.getAllFriends);
   const { loadFromStorage, loadAllMyChallenges } = useChallengeStore();
+  const { initialize: initFriendChallenges, createChallenge: createFriendChallenge, getActiveWithFriend } = useFriendChallengesStore();
   const { showModal } = useModalStore();
 
   const [selectedMode, setSelectedMode] = useState(null);
@@ -31,24 +34,21 @@ export default function Challenge() {
   const [showFriendSelector, setShowFriendSelector] = useState(false);
   const [friends, setFriends] = useState([]);
   const [bossPlayable, setBossPlayable] = useState(true);
+  const [sendingChallenge, setSendingChallenge] = useState(false);
   
-  // Use ref to ensure we always have the latest friend value
   const friendRef = useRef(null);
 
   useEffect(() => {
     loadFromStorage();
-    
-    // Load local challenges on mount
     loadAllMyChallenges();
     
-    // Boss level playable check (local only)
+    initFriendChallenges();
+    
     setBossPlayable(useChallengeStore.getState().canPlayBossToday());
     
-    // Get friends list
     const friendsList = getAllFriends?.() || [];
     setFriends(friendsList);
     
-    // Check if friend was pre-selected from Friends page
     if (location.state?.preselectedFriend) {
       console.log('👥 Pre-selected friend detected:', location.state.preselectedFriend);
       const friend = location.state.preselectedFriend;
@@ -119,11 +119,8 @@ export default function Challenge() {
     });
   };
 
-  const handleStartChallenge = (modeOverride = null) => {
-    // Use the passed mode or fall back to selectedMode
+  const handleStartChallenge = async (modeOverride = null) => {
     const currentMode = modeOverride || selectedMode;
-    
-    // Use ref for friend to get latest value immediately
     const currentFriend = friendRef.current || selectedFriend;
     
     console.log('🎮 handleStartChallenge called', { 
@@ -135,46 +132,66 @@ export default function Challenge() {
       currentFriend
     });
     
-    // Check if this is boss level (use both checks for reliability)
     const isBossLevel = currentMode?.id === "boss_level" || currentMode?.name === "Boss Level";
     
     if (isBossLevel) {
-      // Start boss level immediately - capture mode in closure
       showModal(MODAL_TYPES.CHALLENGE_COUNTDOWN, {
         onComplete: () => {
           navigate(`/challenge/boss`);
         }
       });
-      return; // Exit early for boss level
+      return;
     }
     
-    // Create friend challenge (requires currentFriend)
     if (!currentFriend) {
       console.error('❌ No currentFriend!', { currentFriend, selectedFriend, friendRef: friendRef.current });
       alert("Please select a friend to challenge.");
       return;
     }
     
-    console.log('✅ Creating challenge', { friendId: currentFriend.id, modeId: currentMode.id });
+    const existingChallenge = getActiveWithFriend(currentFriend.user_id || currentFriend.id);
+    if (existingChallenge) {
+      alert("You already have an active challenge with this friend!");
+      return;
+    }
     
-    const result = useChallengeStore.getState().createChallenge(
-      currentFriend.id,
-      currentMode.id
-    );
+    setSendingChallenge(true);
+    
+    try {
+      console.log('✅ Creating Supabase friend challenge', { friendId: currentFriend.user_id || currentFriend.id, modeId: currentMode.id });
       
-    if (result.success) {
-      showModal(MODAL_TYPES.CHALLENGE_COUNTDOWN, {
-        onComplete: () => {
-          // Get the latest challenge ID
-          const challenges = useChallengeStore.getState().challenges;
-          const latestChallenge = challenges[challenges.length - 1];
-          if (latestChallenge) {
-            navigate(`/challenge/${latestChallenge.id}`);
+      const questions = generateQuestionsForChallenge(currentMode.id);
+      if (questions.length === 0) {
+        alert("Unable to generate questions. Please try again.");
+        setSendingChallenge(false);
+        return;
+      }
+      
+      const result = await createFriendChallenge(
+        currentFriend.user_id || currentFriend.id,
+        currentMode.id,
+        questions
+      );
+      
+      if (result.success) {
+        showModal(MODAL_TYPES.FRIEND_CHALLENGE_SENT, {
+          friendName: currentFriend.nickname || currentFriend.username || currentFriend.display_name || "Friend",
+          modeId: currentMode.id,
+          onClose: () => {
+            setSelectedMode(null);
+            setSelectedFriend(null);
+            friendRef.current = null;
           }
-        }
-      });
-    } else {
-      alert("Failed to create challenge. Please try again.");
+        });
+      } else {
+        console.error('Challenge creation failed:', result.error);
+        alert(result.error || "Failed to create challenge. Please try again.");
+      }
+    } catch (error) {
+      console.error('Challenge creation error:', error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setSendingChallenge(false);
     }
   };
 
