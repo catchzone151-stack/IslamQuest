@@ -397,6 +397,7 @@ export default function FriendChallengeGame() {
         modeId: mode?.id,
         score: finalScore,
         totalQuestions: questions.length,
+        challengeId: challengeId,
         onClose: () => navigate("/challenge")
       });
     }
