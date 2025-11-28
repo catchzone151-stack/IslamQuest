@@ -434,7 +434,6 @@ export const useFriendChallengesStore = create((set, get) => ({
       
       if (challenge.receiver_score !== null || challenge.status === "receiver_done") {
         updateData.status = "finished";
-        updateData.finished_at = new Date().toISOString();
         console.log("[FriendChallenges] Sender finishing - receiver already done, marking FINISHED");
       } else {
         updateData.status = "sender_done";
@@ -448,7 +447,6 @@ export const useFriendChallengesStore = create((set, get) => ({
       
       if (challenge.sender_score !== null || challenge.status === "sender_done") {
         updateData.status = "finished";
-        updateData.finished_at = new Date().toISOString();
         console.log("[FriendChallenges] Receiver finishing - sender already done, marking FINISHED");
       } else {
         updateData.status = "receiver_done";
@@ -463,14 +461,12 @@ export const useFriendChallengesStore = create((set, get) => ({
         ? { 
             sender_score: score, 
             sender_time: normalizedTime,
-            status: updateData.status,
-            ...(updateData.finished_at && { finished_at: updateData.finished_at })
+            status: updateData.status
           }
         : { 
             receiver_score: score, 
             receiver_time: normalizedTime,
-            status: updateData.status,
-            ...(updateData.finished_at && { finished_at: updateData.finished_at })
+            status: updateData.status
           };
       
       console.log("[FriendChallenges] Submitting:", coreUpdate);
