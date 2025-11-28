@@ -272,7 +272,17 @@ export default function FriendChallengeGame() {
 
   const handleNextQuestion = () => {
     const answerIndex = selectedAnswerRef.current;
-    if (answerIndex === null) return;
+    console.log('[FriendChallengeGame] handleNextQuestion called:', {
+      answerIndex,
+      currentIndex,
+      totalQuestions: questions.length,
+      gameEnded
+    });
+    
+    if (answerIndex === null) {
+      console.log('[FriendChallengeGame] answerIndex is null, returning early');
+      return;
+    }
 
     const currentQ = questions[currentIndex];
     const correctAnswer = currentQ.answer ?? currentQ.correctIndex ?? currentQ.correct;
@@ -286,7 +296,15 @@ export default function FriendChallengeGame() {
     const updatedAnswers = [...answers, newAnswer];
     setAnswers(updatedAnswers);
 
-    if (currentIndex < questions.length - 1) {
+    const isLastQuestion = currentIndex >= questions.length - 1;
+    console.log('[FriendChallengeGame] Question answered:', {
+      questionNum: currentIndex + 1,
+      isCorrect,
+      isLastQuestion,
+      totalAnswers: updatedAnswers.length
+    });
+
+    if (!isLastQuestion) {
       setCurrentIndex(currentIndex + 1);
       setSelectedAnswer(null);
       selectedAnswerRef.current = null;
@@ -295,13 +313,22 @@ export default function FriendChallengeGame() {
         setTimeLeft(mode.timePerQuestion);
       }
     } else {
+      console.log('[FriendChallengeGame] Last question completed, calling handleGameComplete');
       setGameEnded(true);
-      setTimeout(() => handleGameComplete(updatedAnswers), 1000);
+      handleGameComplete(updatedAnswers);
     }
   };
 
   const handleGameComplete = async (finalAnswers = answers) => {
-    if (isCompletingRef.current) return;
+    console.log('[FriendChallengeGame] handleGameComplete called:', {
+      answersCount: finalAnswers.length,
+      isCompletingRef: isCompletingRef.current
+    });
+    
+    if (isCompletingRef.current) {
+      console.log('[FriendChallengeGame] Already completing, returning');
+      return;
+    }
     isCompletingRef.current = true;
     
     if (timerRef.current) clearInterval(timerRef.current);
