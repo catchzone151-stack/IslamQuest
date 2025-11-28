@@ -552,8 +552,18 @@ export default function Friends() {
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
                               onClick={async () => {
-                                await acceptChallenge(challenge.id);
-                                navigate(`/challenge/friend/${challenge.id}`);
+                                console.log("[Friends] Accepting challenge:", challenge.id);
+                                const result = await acceptChallenge(challenge.id);
+                                if (result.success) {
+                                  console.log("[Friends] Challenge accepted, navigating to game");
+                                  navigate(`/challenge/friend/${challenge.id}`);
+                                } else {
+                                  console.error("[Friends] Accept failed:", result.error);
+                                  showModal(MODAL_TYPES.ERROR, {
+                                    title: "Accept Failed",
+                                    message: result.error || "Could not accept challenge. Please try again."
+                                  });
+                                }
                               }}
                               style={{
                                 padding: "10px 16px",

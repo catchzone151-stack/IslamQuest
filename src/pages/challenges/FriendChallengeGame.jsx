@@ -332,6 +332,8 @@ export default function FriendChallengeGame() {
       chainLengthResult
     );
     
+    console.log('[FriendChallengeGame] Submit response:', submitResultResponse);
+    
     if (!submitResultResponse.success) {
       console.error('[FriendChallengeGame] Submit failed:', submitResultResponse.error);
       showModal(MODAL_TYPES.ERROR, {
@@ -343,6 +345,7 @@ export default function FriendChallengeGame() {
     }
     
     const updatedChallenge = submitResultResponse.challenge;
+    console.log('[FriendChallengeGame] Updated challenge status:', updatedChallenge?.status);
     
     if (updatedChallenge?.status === 'finished') {
       const winnerId = determineWinner(updatedChallenge);
@@ -388,6 +391,7 @@ export default function FriendChallengeGame() {
         }
       });
     } else {
+      console.log('[FriendChallengeGame] Showing waiting modal');
       showModal(MODAL_TYPES.FRIEND_CHALLENGE_WAITING, {
         friendName: opponentInfo?.name || "Your friend",
         modeId: mode?.id,
