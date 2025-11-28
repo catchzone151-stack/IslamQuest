@@ -26,7 +26,9 @@ The premium model offers free tier limits and premium plans (Individual £4.99/m
 
 **Supabase Integration**: Silent account creation on first launch with permanent Supabase UID. Auto-login on app open. `progressStore` automatically syncs to Supabase cloud on state changes with throttling and AES encryption. Cloud data is restored on app start if newer.
 
-**Challenge System (100% Local)**: All challenge functionality runs locally without Supabase dependency. `createChallenge()` builds local challenge objects, `submitChallengeAttempt()` generates random opponent results locally, and `saveBossAttempt()` stores Boss Level attempts in localStorage. Questions are pulled from completed lesson pools or a diverse fallback pool.
+**Challenge System**: The challenge system operates in two modes:
+-   **Solo/Boss Challenges (Local)**: All single-player challenge functionality runs locally without Supabase dependency. `createChallenge()` builds local challenge objects, `submitChallengeAttempt()` generates random opponent results locally, and `saveBossAttempt()` stores Boss Level attempts in localStorage. Questions are pulled from completed lesson pools or a diverse fallback pool.
+-   **Friend Challenges (Supabase-Backed)**: Real-time multiplayer challenges use Supabase for synchronization. `friendChallengesStore.js` manages the full challenge lifecycle with Realtime subscriptions. The `friend_challenges` table stores challenge data, questions (as JSONB), scores, times, and completion status. Both players receive identical question sets for fairness. Four game modes are supported: Mind Battle (untimed), Lightning Round (timed), Sudden Death (chain-based), and Speed Run (speed-based). Winner determination considers score, time, and chain length depending on mode. Rewards are distributed only when both players complete their attempts.
 
 **Revision System**: The `reviseStore` stores lightweight data (cardId, lessonId, tracking counts) for weak questions, with full question content looked up at render time. Cloud sync is handled via `revisionSync.js` with specific Supabase table `revision_items`.
 

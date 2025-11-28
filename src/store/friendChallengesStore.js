@@ -377,6 +377,42 @@ export const useFriendChallengesStore = create((set, get) => ({
       .find(c => c.id === challengeId);
   },
 
+  fetchChallengeById: async (challengeId) => {
+    try {
+      const { data, error } = await supabase
+        .from("friend_challenges")
+        .select("*")
+        .eq("id", challengeId)
+        .single();
+      
+      if (error) {
+        console.error("[FriendChallenges] fetchChallengeById error:", error);
+        return null;
+      }
+      
+      return data;
+    } catch (error) {
+      console.error("[FriendChallenges] fetchChallengeById error:", error);
+      return null;
+    }
+  },
+
+  ensureChallengeLoaded: async (challengeId) => {
+    await get().initialize();
+    
+    let challenge = get().getChallengeById(challengeId);
+    if (challenge) {
+      return challenge;
+    }
+    
+    challenge = await get().fetchChallengeById(challengeId);
+    if (challenge) {
+      await get().loadChallenges();
+    }
+    
+    return challenge;
+  },
+
   getActiveWithFriend: (friendId) => {
     const { currentUserId, pendingOutgoing, pendingIncoming, activeChallenges } = get();
     return [...pendingOutgoing, ...pendingIncoming, ...activeChallenges].find(

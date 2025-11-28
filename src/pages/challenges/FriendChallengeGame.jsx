@@ -38,14 +38,11 @@ export default function FriendChallengeGame() {
   const { id: currentUserId } = useUserStore();
   const { getAllFriends } = useFriendsStore();
   
-  const {
-    getChallengeById,
-    submitResult,
-    determineWinner,
-    getRewards,
-    initialize,
-    markResultViewed,
-  } = useFriendChallengesStore();
+  const submitResult = useFriendChallengesStore(state => state.submitResult);
+  const determineWinner = useFriendChallengesStore(state => state.determineWinner);
+  const getRewards = useFriendChallengesStore(state => state.getRewards);
+  const markResultViewed = useFriendChallengesStore(state => state.markResultViewed);
+  const ensureChallengeLoaded = useFriendChallengesStore(state => state.ensureChallengeLoaded);
   
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -59,6 +56,9 @@ export default function FriendChallengeGame() {
   const [elapsedTime, setElapsedTime] = useState(0);
   const [loading, setLoading] = useState(true);
   const [opponentInfo, setOpponentInfo] = useState(null);
+  const [gameInitialized, setGameInitialized] = useState(false);
+  const [challenge, setChallenge] = useState(null);
+  const [isSender, setIsSender] = useState(false);
   
   const timerRef = useRef(null);
   const elapsedTimerRef = useRef(null);
@@ -67,38 +67,48 @@ export default function FriendChallengeGame() {
   const startTimeRef = useRef(null);
   const completionTimeRef = useRef(null);
 
-  const challenge = useMemo(() => getChallengeById(challengeId), [challengeId, getChallengeById]);
-  const mode = useMemo(() => challenge ? getModeConfig(challenge.challenge_type) : null, [challenge]);
-  
-  const isSender = challenge?.sender_id === currentUserId;
+  const mode = challenge ? getModeConfig(challenge.challenge_type) : null;
 
   useEffect(() => {
-    const init = async () => {
-      await initialize();
+    let isMounted = true;
+    
+    const loadChallenge = async () => {
+      console.log('[FriendChallengeGame] Loading challenge:', challengeId);
+      
+      const loadedChallenge = await ensureChallengeLoaded(challengeId);
+      
+      if (!isMounted) return;
+      
+      if (!loadedChallenge) {
+        console.error('[FriendChallengeGame] Challenge not found:', challengeId);
+        showModal(MODAL_TYPES.ERROR, {
+          title: "Challenge Not Found",
+          message: "This challenge could not be loaded. It may have expired.",
+          onClose: () => navigate("/challenge")
+        });
+        return;
+      }
+      
+      console.log('[FriendChallengeGame] Challenge loaded:', loadedChallenge.id);
+      setChallenge(loadedChallenge);
+      setIsSender(loadedChallenge.sender_id === currentUserId);
       setLoading(false);
     };
-    init();
-  }, []);
+    
+    loadChallenge();
+    
+    return () => {
+      isMounted = false;
+    };
+  }, [challengeId, currentUserId, ensureChallengeLoaded, showModal, navigate]);
 
   useEffect(() => {
-    if (loading) return;
+    if (loading || gameInitialized || !challenge) return;
     
-    const currentChallenge = getChallengeById(challengeId);
-    
-    if (!currentChallenge) {
-      console.error('[FriendChallengeGame] Challenge not found:', challengeId);
-      showModal(MODAL_TYPES.ERROR, {
-        title: "Challenge Not Found",
-        message: "This challenge could not be loaded.",
-        onClose: () => navigate("/challenge")
-      });
-      return;
-    }
-    
-    const amSender = currentChallenge.sender_id === currentUserId;
+    const amSender = challenge.sender_id === currentUserId;
     const alreadyPlayed = amSender 
-      ? currentChallenge.sender_score !== null
-      : currentChallenge.receiver_score !== null;
+      ? challenge.sender_score !== null
+      : challenge.receiver_score !== null;
     
     if (alreadyPlayed) {
       showModal(MODAL_TYPES.ALERT, {
@@ -109,7 +119,7 @@ export default function FriendChallengeGame() {
       return;
     }
     
-    const opponentId = amSender ? currentChallenge.receiver_id : currentChallenge.sender_id;
+    const opponentId = amSender ? challenge.receiver_id : challenge.sender_id;
     const friends = getAllFriends();
     const friend = friends.find(f => (f.user_id || f.id) === opponentId);
     if (friend) {
@@ -119,7 +129,7 @@ export default function FriendChallengeGame() {
       });
     }
     
-    const challengeQuestions = currentChallenge.questions || [];
+    const challengeQuestions = challenge.questions || [];
     if (challengeQuestions.length === 0) {
       console.error('[FriendChallengeGame] No questions in challenge');
       showModal(MODAL_TYPES.ERROR, {
@@ -130,7 +140,7 @@ export default function FriendChallengeGame() {
       return;
     }
     
-    const modeConfig = getModeConfig(currentChallenge.challenge_type);
+    const modeConfig = getModeConfig(challenge.challenge_type);
     let gameQuestions = [...challengeQuestions];
     
     if ((modeConfig?.id === 'sudden_death' && modeConfig.questionCount) || 
@@ -155,6 +165,8 @@ export default function FriendChallengeGame() {
     }
     
     startTimeRef.current = Date.now();
+    setGameInitialized(true);
+    
     analytics('friend_challenge_started', { 
       mode: modeConfig?.id, 
       challengeId,
@@ -167,7 +179,7 @@ export default function FriendChallengeGame() {
       questionCount: gameQuestions.length,
       isSender: amSender
     });
-  }, [loading, challengeId, currentUserId]);
+  }, [loading, challengeId, currentUserId, challenge, getAllFriends, analytics, showModal, navigate]);
 
   useEffect(() => {
     if (questions.length > 0 && timeLeft > 0 && !gameEnded) {
