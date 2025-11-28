@@ -74,12 +74,27 @@ export default function FriendChallengeGame() {
     let timeoutId = null;
     
     const loadChallenge = async () => {
-      console.log('[FriendChallengeGame] Loading challenge:', challengeId, 'for user:', currentUserId);
+      let userId = currentUserId;
       
-      if (!currentUserId) {
-        console.log('[FriendChallengeGame] Waiting for currentUserId...');
+      if (!userId) {
+        console.log('[FriendChallengeGame] currentUserId not available, fetching from Supabase...');
+        const { supabase } = await import('../../lib/supabaseClient');
+        const { data } = await supabase.auth.getUser();
+        userId = data?.user?.id;
+        console.log('[FriendChallengeGame] Got userId from Supabase:', userId?.slice(0,8));
+      }
+      
+      if (!userId) {
+        console.error('[FriendChallengeGame] No user ID available');
+        showModal(MODAL_TYPES.ERROR, {
+          title: "Not Logged In",
+          message: "Please log in to play challenges.",
+          onClose: () => navigate("/")
+        });
         return;
       }
+      
+      console.log('[FriendChallengeGame] Loading challenge:', challengeId, 'for user:', userId?.slice(0,8));
       
       timeoutId = setTimeout(() => {
         console.error('[FriendChallengeGame] Loading timeout - taking too long');
@@ -151,8 +166,7 @@ export default function FriendChallengeGame() {
   useEffect(() => {
     if (loading || gameInitialized || !challenge) return;
     
-    const amSender = challenge.sender_id === currentUserId;
-    const alreadyPlayed = amSender 
+    const alreadyPlayed = isSender 
       ? challenge.sender_score !== null
       : challenge.receiver_score !== null;
     
@@ -165,7 +179,7 @@ export default function FriendChallengeGame() {
       return;
     }
     
-    const opponentId = amSender ? challenge.receiver_id : challenge.sender_id;
+    const opponentId = isSender ? challenge.receiver_id : challenge.sender_id;
     const friends = getAllFriends();
     const friend = friends.find(f => (f.user_id || f.id) === opponentId);
     if (friend) {
@@ -219,13 +233,13 @@ export default function FriendChallengeGame() {
       opponentId 
     });
     
-    console.log('[FriendChallengeGame] Loaded challenge:', {
+    console.log('[FriendChallengeGame] Game initialized:', {
       id: challengeId,
       mode: modeConfig?.id,
       questionCount: gameQuestions.length,
-      isSender: amSender
+      isSender
     });
-  }, [loading, challengeId, currentUserId, challenge, getAllFriends, analytics, showModal, navigate]);
+  }, [loading, challengeId, isSender, challenge, getAllFriends, analytics, showModal, navigate]);
 
   useEffect(() => {
     if (questions.length > 0 && timeLeft > 0 && !gameEnded) {
