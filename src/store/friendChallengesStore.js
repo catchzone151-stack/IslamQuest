@@ -64,13 +64,20 @@ export const useFriendChallengesStore = create((set, get) => ({
     set({ loading: true, error: null });
     
     try {
+      console.log("[FriendChallenges] Loading challenges for user:", currentUserId);
+      
       const { data, error } = await supabase
         .from("friend_challenges")
         .select("*")
         .or(`sender_id.eq.${currentUserId},receiver_id.eq.${currentUserId}`)
         .order("created_at", { ascending: false });
       
-      if (error) throw error;
+      if (error) {
+        console.error("[FriendChallenges] Load query error:", error);
+        throw error;
+      }
+      
+      console.log("[FriendChallenges] Raw data from DB:", data?.length || 0, "rows");
       
       const now = new Date();
       const challenges = (data || []).filter(c => {
@@ -210,6 +217,13 @@ export const useFriendChallengesStore = create((set, get) => ({
     }
     
     try {
+      console.log("[FriendChallenges] Creating challenge:", {
+        sender: currentUserId,
+        receiver: friendId,
+        mode: modeId,
+        questionCount: questions?.length
+      });
+      
       const { data, error } = await supabase
         .from("friend_challenges")
         .insert({
@@ -223,11 +237,14 @@ export const useFriendChallengesStore = create((set, get) => ({
         .select()
         .single();
       
-      if (error) throw error;
+      if (error) {
+        console.error("[FriendChallenges] Insert error:", error);
+        throw error;
+      }
       
       await get().loadChallenges();
       
-      console.log("[FriendChallenges] Challenge created:", data.id);
+      console.log("[FriendChallenges] Challenge created successfully:", data.id);
       return { success: true, challenge: data };
     } catch (error) {
       console.error("[FriendChallenges] Create error:", error);
@@ -237,9 +254,13 @@ export const useFriendChallengesStore = create((set, get) => ({
 
   acceptChallenge: async (challengeId) => {
     const { currentUserId } = get();
+    console.log("[FriendChallenges] Accept challenge called:", { challengeId, currentUserId });
+    
     if (!currentUserId) return { success: false, error: "Not logged in" };
     
     try {
+      console.log("[FriendChallenges] Updating challenge status to accepted...");
+      
       const { data, error } = await supabase
         .from("friend_challenges")
         .update({
@@ -252,7 +273,10 @@ export const useFriendChallengesStore = create((set, get) => ({
         .select()
         .single();
       
-      if (error) throw error;
+      if (error) {
+        console.error("[FriendChallenges] Accept update error:", error);
+        throw error;
+      }
       
       if (!data) {
         console.error("[FriendChallenges] No rows updated for challenge:", challengeId);
@@ -261,7 +285,7 @@ export const useFriendChallengesStore = create((set, get) => ({
       
       await get().loadChallenges();
       
-      console.log("[FriendChallenges] Challenge accepted:", challengeId, "Status:", data.status);
+      console.log("[FriendChallenges] Challenge accepted successfully:", challengeId, "Status:", data.status);
       return { success: true, challenge: data };
     } catch (error) {
       console.error("[FriendChallenges] Accept error:", error);

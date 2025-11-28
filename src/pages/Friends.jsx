@@ -469,6 +469,9 @@ export default function Friends() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
+              onAnimationComplete={() => {
+                console.log("[Friends] Rendering friends tab, pendingIncoming:", pendingIncoming.length);
+              }}
             >
               {/* Incoming Challenge Requests Section */}
               {pendingIncoming.length > 0 && (
