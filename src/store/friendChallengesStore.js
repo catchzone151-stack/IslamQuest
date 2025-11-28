@@ -174,6 +174,22 @@ export const useFriendChallengesStore = create((set, get) => ({
       return { success: false, error: "Cannot challenge yourself" };
     }
     
+    const isDevFriend = typeof friendId === 'string' && friendId.startsWith('dev_friend_');
+    if (isDevFriend) {
+      return { 
+        success: false, 
+        error: "Friend challenges are not available with test friends. Add real friends to challenge them!" 
+      };
+    }
+    
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(friendId)) {
+      return { 
+        success: false, 
+        error: "Invalid friend ID. Please try again." 
+      };
+    }
+    
     const existingWithFriend = [...pendingOutgoing, ...activeChallenges].find(
       c => (c.sender_id === currentUserId && c.receiver_id === friendId) ||
            (c.receiver_id === currentUserId && c.sender_id === friendId)
