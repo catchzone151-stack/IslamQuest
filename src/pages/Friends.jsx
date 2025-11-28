@@ -3,6 +3,7 @@ import { useNavigate } from "../hooks/useNavigate";
 import { useFriendsStore } from "../store/friendsStore";
 import { useUserStore } from "../store/useUserStore";
 import { useProgressStore } from "../store/progressStore";
+import { useFriendChallengesStore } from "../store/friendChallengesStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import { supabase } from "../lib/supabaseClient";
 import { isDevMode } from "../config/dev";
@@ -20,10 +21,12 @@ import {
   MessageCircle,
   Swords,
   Globe,
+  Zap,
 } from "lucide-react";
 import { LevelBadgeCompact } from "../components/LevelBadge";
 import { getAvatarImage } from "../utils/avatarUtils";
 import { getCurrentLevel } from "../utils/diamondLevels";
+import { getModeIcon, getModeName } from "../utils/challengeQuestions";
 import QuickMessageModal from "../components/QuickMessageModal";
 import assets from "../assets/assets";
 
@@ -61,6 +64,17 @@ export default function Friends() {
     getGlobalLeaderboard,
   } = useFriendsStore();
 
+  const {
+    initialize: initFriendChallenges,
+    pendingIncoming,
+    pendingOutgoing,
+    resultsToView,
+    unreadCount: challengeUnreadCount,
+    getChallengeStateForFriend,
+    acceptChallenge,
+    declineChallenge,
+  } = useFriendChallengesStore();
+
   const [activeTab, setActiveTab] = useState("friends");
   const [leaderboardTab, setLeaderboardTab] = useState("friends");
   const [searchQuery, setSearchQuery] = useState("");
@@ -76,6 +90,7 @@ export default function Friends() {
     loadFriends();
     loadRequests();
     loadPendingRequests();
+    initFriendChallenges();
   }, [currentUserId]);
   
   useEffect(() => {
@@ -265,11 +280,78 @@ export default function Friends() {
   };
 
   const handleChallengeFriend = (friend) => {
+    const friendUserId = friend.user_id || friend.id;
+    const challengeState = getChallengeStateForFriend(friendUserId);
+    
+    if (challengeState?.type === "pending_received") {
+      showModal(MODAL_TYPES.FRIEND_CHALLENGE_RECEIVED, {
+        challenge: challengeState.challenge,
+        senderName: friend.nickname || friend.username || "Friend",
+        senderAvatar: friend.avatar,
+        onAccept: async () => {
+          await acceptChallenge(challengeState.challenge.id);
+          navigate(`/challenge/friend/${challengeState.challenge.id}`);
+        },
+        onDecline: async () => {
+          await declineChallenge(challengeState.challenge.id);
+        },
+      });
+      return;
+    }
+    
+    if (challengeState?.type === "ready_to_play") {
+      navigate(`/challenge/friend/${challengeState.challenge.id}`);
+      return;
+    }
+    
+    if (challengeState?.type === "results_ready") {
+      showModal(MODAL_TYPES.FRIEND_CHALLENGE_RESULTS, {
+        challenge: challengeState.challenge,
+        currentUserId,
+        onChallengeAgain: (modeId) => {
+          const friendLevel = getCurrentLevel(friend.xp);
+          navigate("/challenge", {
+            state: {
+              preselectedFriend: {
+                id: friendUserId,
+                user_id: friendUserId,
+                name: friend.nickname || friend.username,
+                nickname: friend.nickname || friend.username,
+                username: friend.username,
+                avatar: friend.avatar,
+                xp: friend.xp,
+                streak: friend.streak,
+                level: friendLevel.level,
+              },
+            },
+          });
+        },
+      });
+      return;
+    }
+    
+    if (challengeState?.type === "pending_sent") {
+      showModal(MODAL_TYPES.FRIEND_CHALLENGE_SENT, {
+        friendName: friend.nickname || friend.username || "Friend",
+        modeId: challengeState.challenge.challenge_type,
+      });
+      return;
+    }
+    
+    if (challengeState?.type === "waiting_for_friend") {
+      showModal(MODAL_TYPES.FRIEND_CHALLENGE_WAITING, {
+        friendName: friend.nickname || friend.username || "Friend",
+        modeId: challengeState.challenge.challenge_type,
+      });
+      return;
+    }
+    
     const friendLevel = getCurrentLevel(friend.xp);
     navigate("/challenge", {
       state: {
         preselectedFriend: {
-          id: friend.user_id || friend.id,
+          id: friendUserId,
+          user_id: friendUserId,
           name: friend.nickname || friend.username,
           nickname: friend.nickname || friend.username,
           username: friend.username,
@@ -284,6 +366,10 @@ export default function Friends() {
 
   const handleQuickMessage = (friend) => {
     setQuickMessageFriend(friend);
+  };
+
+  const getFriendChallengeState = (friendId) => {
+    return getChallengeStateForFriend(friendId);
   };
 
   const totalRequests = sentRequests.length + receivedRequests.length;
