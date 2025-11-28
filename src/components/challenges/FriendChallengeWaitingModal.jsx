@@ -2,43 +2,59 @@ import { useModalStore } from "../../store/modalStore";
 import { getModeIcon, getModeName } from "../../utils/challengeQuestions";
 import assets from "../../assets/assets";
 import "./ChallengeModals.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useFriendChallengesStore } from "../../store/friendChallengesStore";
 
 export default function FriendChallengeWaitingModal({ friendName, modeId, score, totalQuestions, onClose, challengeId }) {
   const { hideModal } = useModalStore();
   const [receiverAccepted, setReceiverAccepted] = useState(false);
   const [receiverFinished, setReceiverFinished] = useState(false);
+  const pollIntervalRef = useRef(null);
   
   useEffect(() => {
-    if (!challengeId) return;
+    if (!challengeId) {
+      console.log('[WaitingModal] No challengeId provided');
+      return;
+    }
+    
+    console.log('[WaitingModal] Starting to monitor challenge:', challengeId);
     
     const checkChallengeStatus = async () => {
       try {
-        const { useFriendChallengesStore } = await import("../../store/friendChallengesStore");
+        // Get the store instance
         const store = useFriendChallengesStore.getState();
         
-        // Force load latest challenge data
+        // Load fresh data from database
         await store.loadChallenges();
         
-        // Find this specific challenge
-        const allChallenges = [
-          ...store.pendingOutgoing,
-          ...store.activeChallenges,
-          ...store.completedChallenges
+        // Get updated store state after loading
+        const updatedStore = useFriendChallengesStore.getState();
+        const allChalls = [
+          ...updatedStore.pendingOutgoing,
+          ...updatedStore.activeChallenges,
+          ...updatedStore.completedChallenges
         ];
         
-        const challenge = allChallenges.find(c => c.id === challengeId);
+        const challenge = allChalls.find(c => c.id === challengeId);
+        console.log('[WaitingModal] Poll check:', {
+          challengeId,
+          found: !!challenge,
+          status: challenge?.status,
+          receiverScore: challenge?.receiver_score,
+          accepted: receiverAccepted,
+          finished: receiverFinished
+        });
         
         if (challenge) {
           // Check if receiver has started (status accepted)
           if (challenge.status === 'accepted' && !receiverAccepted) {
-            console.log('[WaitingModal] Receiver accepted challenge!');
+            console.log('[WaitingModal] 🎉 Receiver ACCEPTED!');
             setReceiverAccepted(true);
           }
           
           // Check if receiver has finished
           if (challenge.receiver_score !== null && !receiverFinished) {
-            console.log('[WaitingModal] Receiver finished!');
+            console.log('[WaitingModal] ✨ Receiver FINISHED!');
             setReceiverFinished(true);
           }
         }
@@ -47,12 +63,18 @@ export default function FriendChallengeWaitingModal({ friendName, modeId, score,
       }
     };
     
-    // Check immediately and then every 2 seconds
+    // Check immediately
     checkChallengeStatus();
-    const interval = setInterval(checkChallengeStatus, 2000);
     
-    return () => clearInterval(interval);
-  }, [challengeId, receiverAccepted, receiverFinished]);
+    // Set up polling every 2 seconds
+    pollIntervalRef.current = setInterval(checkChallengeStatus, 2000);
+    
+    return () => {
+      if (pollIntervalRef.current) {
+        clearInterval(pollIntervalRef.current);
+      }
+    };
+  }, [challengeId]);
   
   const handleClose = () => {
     hideModal();
