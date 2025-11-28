@@ -18,6 +18,10 @@ import ChallengeResultsModal from './challenges/ChallengeResultsModal';
 import NoSharedLessonsModal from './challenges/NoSharedLessonsModal';
 import BossLockedModal from './challenges/BossLockedModal';
 import BossPlayedTodayModal from './challenges/BossPlayedTodayModal';
+import FriendChallengeSentModal from './challenges/FriendChallengeSentModal';
+import FriendChallengeReceivedModal from './challenges/FriendChallengeReceivedModal';
+import FriendChallengeResultsModal from './challenges/FriendChallengeResultsModal';
+import FriendChallengeWaitingModal from './challenges/FriendChallengeWaitingModal';
 
 import EventInfoModal from './events/EventInfoModal';
 import CountdownModal from './events/CountdownModal';
@@ -220,6 +224,64 @@ export default function ModalController() {
         return (
           <BossPlayedTodayModal
             onClose={hideModal}
+          />
+        );
+
+      case MODAL_TYPES.FRIEND_CHALLENGE_SENT:
+        return (
+          <FriendChallengeSentModal
+            friendName={modalData.friendName}
+            modeId={modalData.modeId}
+            onClose={() => {
+              hideModal();
+              modalData.onClose?.();
+            }}
+          />
+        );
+
+      case MODAL_TYPES.FRIEND_CHALLENGE_RECEIVED:
+        return (
+          <FriendChallengeReceivedModal
+            challenge={modalData.challenge}
+            senderName={modalData.senderName}
+            senderAvatar={modalData.senderAvatar}
+            onAccept={() => {
+              modalData.onAccept?.();
+            }}
+            onDecline={() => {
+              modalData.onDecline?.();
+            }}
+            onClose={() => {
+              hideModal();
+              modalData.onClose?.();
+            }}
+          />
+        );
+
+      case MODAL_TYPES.FRIEND_CHALLENGE_RESULTS:
+        return (
+          <FriendChallengeResultsModal
+            challenge={modalData.challenge}
+            currentUserId={modalData.currentUserId}
+            onChallengeAgain={(modeId) => {
+              modalData.onChallengeAgain?.(modeId);
+            }}
+            onClose={() => {
+              hideModal();
+              modalData.onClose?.();
+            }}
+          />
+        );
+
+      case MODAL_TYPES.FRIEND_CHALLENGE_WAITING:
+        return (
+          <FriendChallengeWaitingModal
+            friendName={modalData.friendName}
+            modeId={modalData.modeId}
+            onClose={() => {
+              hideModal();
+              modalData.onClose?.();
+            }}
           />
         );
 
