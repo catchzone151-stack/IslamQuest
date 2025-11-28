@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "../hooks/useNavigate";
 import { Home, BookOpen, Sword, Users, User } from "lucide-react";
 import { useFriendsStore } from "../store/friendsStore";
+import { useFriendChallengesStore } from "../store/friendChallengesStore";
 
 const NAV_HEIGHT = 76;
 
@@ -10,12 +11,21 @@ export default function BottomNav() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { incomingRequests, hasUnseenRequests } = useFriendsStore();
+  const { unreadCount: challengeUnreadCount, initialize: initChallenges, initialized } = useFriendChallengesStore();
+
+  useEffect(() => {
+    if (!initialized) {
+      initChallenges();
+    }
+  }, [initialized, initChallenges]);
+
+  const friendBadgeCount = (hasUnseenRequests ? incomingRequests.length : 0) + challengeUnreadCount;
 
   const tabs = [
     { path: "/", label: "Home", icon: <Home size={22} /> },
     { path: "/revise", label: "Revise", icon: <BookOpen size={22} /> },
-    { path: "/challenge", label: "Challenge", icon: <Sword size={22} /> },
-    { path: "/friends", label: "Friends", icon: <Users size={22} />, badge: hasUnseenRequests ? incomingRequests.length : 0 },
+    { path: "/challenge", label: "Challenge", icon: <Sword size={22} />, badge: challengeUnreadCount },
+    { path: "/friends", label: "Friends", icon: <Users size={22} />, badge: friendBadgeCount },
     { path: "/profile", label: "Profile", icon: <User size={22} /> },
   ];
 
