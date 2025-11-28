@@ -421,30 +421,37 @@ export const useFriendChallengesStore = create((set, get) => ({
     try {
       console.log("[FriendChallenges] Submitting update:", updateData);
       
-      let { data, error } = await supabase
+      const coreUpdate = isSender 
+        ? { 
+            sender_score: score, 
+            sender_time: completionTime,
+            status: updateData.status,
+            ...(updateData.finished_at && { finished_at: updateData.finished_at })
+          }
+        : { 
+            receiver_score: score, 
+            receiver_time: completionTime,
+            status: updateData.status,
+            ...(updateData.finished_at && { finished_at: updateData.finished_at })
+          };
+      
+      console.log("[FriendChallenges] Core update:", coreUpdate);
+      
+      const { data, error } = await supabase
         .from("friend_challenges")
-        .update(updateData)
+        .update(coreUpdate)
         .eq("id", challengeId)
         .select()
         .single();
       
       if (error) {
-        console.warn("[FriendChallenges] First submit attempt failed, trying without answers:", error.message);
-        const { sender_answers, receiver_answers, ...minimalUpdate } = updateData;
-        const { data: retryData, error: retryError } = await supabase
-          .from("friend_challenges")
-          .update(minimalUpdate)
-          .eq("id", challengeId)
-          .select()
-          .single();
-        
-        if (retryError) throw retryError;
-        data = retryData;
+        console.error("[FriendChallenges] Submit error:", error);
+        throw error;
       }
       
       await get().loadChallenges();
       
-      console.log("[FriendChallenges] Result submitted:", challengeId, updateData.status);
+      console.log("[FriendChallenges] Result submitted:", challengeId, coreUpdate.status);
       return { success: true, challenge: data };
     } catch (error) {
       console.error("[FriendChallenges] Submit error:", error);
