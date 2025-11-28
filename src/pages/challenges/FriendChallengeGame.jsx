@@ -59,6 +59,7 @@ export default function FriendChallengeGame() {
   const [gameInitialized, setGameInitialized] = useState(false);
   const [challenge, setChallenge] = useState(null);
   const [isSender, setIsSender] = useState(false);
+  const [userId, setUserId] = useState(null);
   
   const timerRef = useRef(null);
   const elapsedTimerRef = useRef(null);
@@ -95,10 +96,13 @@ export default function FriendChallengeGame() {
         
         const { supabase } = await import('../../lib/supabaseClient');
         const { data: userData } = await supabase.auth.getUser();
-        const userId = userData?.user?.id;
+        const fetchedUserId = userData?.user?.id;
         
+        console.log('[FriendChallengeGame] User ID:', fetchedUserId?.slice(0,8));
+        
+        setUserId(fetchedUserId);
         setChallenge(loadedChallenge);
-        setIsSender(loadedChallenge.sender_id === userId);
+        setIsSender(loadedChallenge.sender_id === fetchedUserId);
         setLoading(false);
       } catch (err) {
         console.error('[FriendChallengeGame] Error loading challenge:', err.message);
@@ -408,7 +412,7 @@ export default function FriendChallengeGame() {
       
       let result = "draw";
       if (winnerId !== "draw") {
-        result = winnerId === currentUserId ? "win" : "lose";
+        result = winnerId === userId ? "win" : "lose";
       }
       
       if (rewards.xp > 0 || rewards.coins > 0) {
@@ -424,7 +428,7 @@ export default function FriendChallengeGame() {
       
       showModal(MODAL_TYPES.FRIEND_CHALLENGE_RESULTS, {
         challenge: updatedChallenge,
-        currentUserId,
+        currentUserId: userId,
         userScore: finalScore,
         opponentInfo,
         onChallengeAgain: () => {

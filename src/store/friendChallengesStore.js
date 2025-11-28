@@ -393,10 +393,17 @@ export const useFriendChallengesStore = create((set, get) => ({
   },
 
   submitResult: async (challengeId, score, answers, completionTime = null, chain = null) => {
-    const { currentUserId } = get();
-    if (!currentUserId) return { success: false, error: "Not logged in" };
-    
     console.log("[FriendChallenges] submitResult called:", { challengeId, score, completionTime });
+    
+    const { data: userData } = await supabase.auth.getUser();
+    const currentUserId = userData?.user?.id;
+    
+    if (!currentUserId) {
+      console.error("[FriendChallenges] submitResult: No user ID");
+      return { success: false, error: "Not logged in" };
+    }
+    
+    console.log("[FriendChallenges] submitResult for user:", currentUserId?.slice(0,8));
     
     const { data: challenge, error: fetchError } = await supabase
       .from("friend_challenges")
@@ -410,7 +417,7 @@ export const useFriendChallengesStore = create((set, get) => ({
     }
     
     console.log("[FriendChallenges] Current challenge state:", {
-      id: challenge.id,
+      id: challenge.id?.slice(0,8),
       status: challenge.status,
       senderScore: challenge.sender_score,
       receiverScore: challenge.receiver_score
