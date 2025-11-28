@@ -654,6 +654,7 @@ export default function Friends() {
                         onClick={() => handleUserClick(friend.user_id || friend.id)}
                         badge="Friends"
                         badgeColor="#10b981"
+                        challengeState={getFriendChallengeState(friend.user_id || friend.id)}
                       />
                     ))}
                 </div>
@@ -1465,13 +1466,36 @@ function GlobalLeaderboardCard({
   );
 }
 
-function UserCard({ user, onClick, action, badge, badgeColor }) {
+function UserCard({ user, onClick, action, badge, badgeColor, challengeState }) {
   const avatarSrc = getAvatarImage(user.avatar, {
     userId: user.user_id || user.id,
     nickname: user.nickname || user.username,
   });
   const userLevel = getCurrentLevel(user.xp);
   const displayName = user.nickname || user.username || user.handle || "User";
+
+  const getChallengeIndicator = () => {
+    if (!challengeState) return null;
+    
+    const stateType = typeof challengeState === 'string' 
+      ? challengeState 
+      : challengeState?.type;
+    
+    if (!stateType || stateType === "none") return null;
+    
+    const indicators = {
+      pending_received: { text: "Challenge!", color: "#f59e0b", pulse: true },
+      pending_sent: { text: "Sent", color: "#6b7280", pulse: false },
+      ready_to_play: { text: "Your Turn!", color: "#10b981", pulse: true },
+      waiting_for_friend: { text: "Waiting...", color: "#3b82f6", pulse: false },
+      results_ready: { text: "Results!", color: "#8b5cf6", pulse: true },
+    };
+    
+    return indicators[stateType] || null;
+  };
+
+  const indicator = getChallengeIndicator();
+  const hasChallengeActivity = indicator?.pulse;
 
   return (
     <motion.div
@@ -1480,13 +1504,17 @@ function UserCard({ user, onClick, action, badge, badgeColor }) {
       onClick={onClick}
       style={{
         background: "rgba(14, 22, 37, 0.6)",
-        border: "1px solid rgba(212, 175, 55, 0.3)",
+        border: hasChallengeActivity 
+          ? `2px solid ${indicator.color}` 
+          : "1px solid rgba(212, 175, 55, 0.3)",
         borderRadius: "12px",
         padding: "14px",
         display: "flex",
         alignItems: "center",
         gap: "12px",
         cursor: onClick ? "pointer" : "default",
+        position: "relative",
+        boxShadow: hasChallengeActivity ? `0 0 15px ${indicator.color}40` : "none",
       }}
     >
       <div
@@ -1564,23 +1592,47 @@ function UserCard({ user, onClick, action, badge, badgeColor }) {
         </div>
       </div>
 
-      {badge ? (
-        <div
-          style={{
-            padding: "6px 12px",
-            background: `${badgeColor}22`,
-            border: `1px solid ${badgeColor}`,
-            borderRadius: "8px",
-            color: badgeColor,
-            fontSize: "0.8rem",
-            fontWeight: "600",
-          }}
-        >
-          {badge}
-        </div>
-      ) : (
-        action
-      )}
+      <div style={{ display: "flex", flexDirection: "column", gap: "6px", alignItems: "flex-end" }}>
+        {indicator && (
+          <div
+            style={{
+              padding: "4px 10px",
+              background: `${indicator.color}22`,
+              border: `1px solid ${indicator.color}`,
+              borderRadius: "6px",
+              color: indicator.color,
+              fontSize: "0.7rem",
+              fontWeight: "700",
+              animation: indicator.pulse ? "challengePulse 1.5s ease-in-out infinite" : "none",
+            }}
+          >
+            {indicator.text}
+          </div>
+        )}
+        {badge && !indicator ? (
+          <div
+            style={{
+              padding: "6px 12px",
+              background: `${badgeColor}22`,
+              border: `1px solid ${badgeColor}`,
+              borderRadius: "8px",
+              color: badgeColor,
+              fontSize: "0.8rem",
+              fontWeight: "600",
+            }}
+          >
+            {badge}
+          </div>
+        ) : (
+          !indicator && action
+        )}
+      </div>
+      <style>{`
+        @keyframes challengePulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.8; transform: scale(1.05); }
+        }
+      `}</style>
     </motion.div>
   );
 }
