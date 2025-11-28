@@ -222,11 +222,28 @@ export default function FriendChallengeGame() {
   };
 
   const handleAnswerSelect = (answerIndex) => {
-    if (selectedAnswer !== null || gameEnded) return;
+    console.log('[FriendChallengeGame] handleAnswerSelect:', {
+      answerIndex,
+      currentIndex,
+      selectedAnswer,
+      gameEnded,
+      mode: mode?.id
+    });
+    
+    if (selectedAnswer !== null || gameEnded) {
+      console.log('[FriendChallengeGame] Blocked - already answered or game ended');
+      return;
+    }
     
     vibrate(50);
     setSelectedAnswer(answerIndex);
     selectedAnswerRef.current = answerIndex;
+    
+    console.log('[FriendChallengeGame] Answer selected, scheduling next step');
+
+    // Capture current values for the timeout closure
+    const capturedIndex = currentIndex;
+    const capturedAnswers = [...answers];
 
     if (mode?.id === "sudden_death") {
       const currentQ = questions[currentIndex];
@@ -264,48 +281,52 @@ export default function FriendChallengeGame() {
         }, 800);
       }
     } else if (mode?.id === "speed_run") {
-      setTimeout(() => handleNextQuestion(), 200);
+      setTimeout(() => processAnswer(answerIndex, capturedIndex, capturedAnswers), 200);
     } else {
-      setTimeout(() => handleNextQuestion(), 800);
+      setTimeout(() => processAnswer(answerIndex, capturedIndex, capturedAnswers), 800);
     }
   };
 
-  const handleNextQuestion = () => {
-    const answerIndex = selectedAnswerRef.current;
-    console.log('[FriendChallengeGame] handleNextQuestion called:', {
+  const processAnswer = (answerIndex, questionIndex, previousAnswers) => {
+    console.log('[FriendChallengeGame] processAnswer called:', {
       answerIndex,
-      currentIndex,
+      questionIndex,
       totalQuestions: questions.length,
       gameEnded
     });
     
-    if (answerIndex === null) {
-      console.log('[FriendChallengeGame] answerIndex is null, returning early');
+    if (answerIndex === null || answerIndex === undefined) {
+      console.log('[FriendChallengeGame] answerIndex is null/undefined, returning early');
       return;
     }
 
-    const currentQ = questions[currentIndex];
+    const currentQ = questions[questionIndex];
+    if (!currentQ) {
+      console.error('[FriendChallengeGame] No question at index:', questionIndex);
+      return;
+    }
+    
     const correctAnswer = currentQ.answer ?? currentQ.correctIndex ?? currentQ.correct;
     const isCorrect = answerIndex === correctAnswer;
     const newAnswer = {
-      questionId: questions[currentIndex].id || currentIndex,
+      questionId: currentQ.id || questionIndex,
       selectedAnswer: answerIndex,
       correct: isCorrect
     };
 
-    const updatedAnswers = [...answers, newAnswer];
+    const updatedAnswers = [...previousAnswers, newAnswer];
     setAnswers(updatedAnswers);
 
-    const isLastQuestion = currentIndex >= questions.length - 1;
+    const isLastQuestion = questionIndex >= questions.length - 1;
     console.log('[FriendChallengeGame] Question answered:', {
-      questionNum: currentIndex + 1,
+      questionNum: questionIndex + 1,
       isCorrect,
       isLastQuestion,
       totalAnswers: updatedAnswers.length
     });
 
     if (!isLastQuestion) {
-      setCurrentIndex(currentIndex + 1);
+      setCurrentIndex(questionIndex + 1);
       setSelectedAnswer(null);
       selectedAnswerRef.current = null;
 
@@ -335,41 +356,42 @@ export default function FriendChallengeGame() {
     if (elapsedTimerRef.current) clearInterval(elapsedTimerRef.current);
     setGameEnded(true);
     
-    if (startTimeRef.current) {
-      completionTimeRef.current = (Date.now() - startTimeRef.current) / 1000;
-    }
-    
-    const finalScore = finalAnswers.filter(a => a.correct).length;
-    setScore(finalScore);
-    
-    const chainLengthResult = mode?.id === 'sudden_death' ? calculateLongestChain(finalAnswers) : null;
-    
-    console.log('[FriendChallengeGame] Submitting result:', {
-      challengeId,
-      score: finalScore,
-      completionTime: completionTimeRef.current,
-      chain: chainLengthResult
-    });
-    
-    const submitResultResponse = await submitResult(
-      challengeId,
-      finalScore,
-      finalAnswers,
-      completionTimeRef.current,
-      chainLengthResult
-    );
-    
-    console.log('[FriendChallengeGame] Submit response:', submitResultResponse);
-    
-    if (!submitResultResponse.success) {
-      console.error('[FriendChallengeGame] Submit failed:', submitResultResponse.error);
-      showModal(MODAL_TYPES.ERROR, {
-        title: "Error",
-        message: "Failed to save your results. Please try again.",
-        onClose: () => navigate("/challenge")
+    try {
+      if (startTimeRef.current) {
+        completionTimeRef.current = (Date.now() - startTimeRef.current) / 1000;
+      }
+      
+      const finalScore = finalAnswers.filter(a => a.correct).length;
+      setScore(finalScore);
+      
+      const chainLengthResult = mode?.id === 'sudden_death' ? calculateLongestChain(finalAnswers) : null;
+      
+      console.log('[FriendChallengeGame] Submitting result:', {
+        challengeId,
+        score: finalScore,
+        completionTime: completionTimeRef.current,
+        chain: chainLengthResult
       });
-      return;
-    }
+      
+      const submitResultResponse = await submitResult(
+        challengeId,
+        finalScore,
+        finalAnswers,
+        completionTimeRef.current,
+        chainLengthResult
+      );
+      
+      console.log('[FriendChallengeGame] Submit response:', submitResultResponse);
+      
+      if (!submitResultResponse.success) {
+        console.error('[FriendChallengeGame] Submit failed:', submitResultResponse.error);
+        showModal(MODAL_TYPES.ERROR, {
+          title: "Error",
+          message: "Failed to save your results. Please try again.",
+          onClose: () => navigate("/challenge")
+        });
+        return;
+      }
     
     const updatedChallenge = submitResultResponse.challenge;
     console.log('[FriendChallengeGame] Updated challenge status:', updatedChallenge?.status);
@@ -425,6 +447,14 @@ export default function FriendChallengeGame() {
         score: finalScore,
         totalQuestions: questions.length,
         challengeId: challengeId,
+        onClose: () => navigate("/challenge")
+      });
+    }
+    } catch (error) {
+      console.error('[FriendChallengeGame] Error in handleGameComplete:', error);
+      showModal(MODAL_TYPES.ERROR, {
+        title: "Error",
+        message: "Something went wrong. Please try again.",
         onClose: () => navigate("/challenge")
       });
     }
