@@ -419,23 +419,23 @@ export const useFriendChallengesStore = create((set, get) => ({
     }
     
     try {
-      console.log("[FriendChallenges] Submitting update:", updateData);
+      const normalizedTime = completionTime != null ? Math.round(Number(completionTime)) : null;
       
       const coreUpdate = isSender 
         ? { 
             sender_score: score, 
-            sender_time: completionTime,
+            sender_time: normalizedTime,
             status: updateData.status,
             ...(updateData.finished_at && { finished_at: updateData.finished_at })
           }
         : { 
             receiver_score: score, 
-            receiver_time: completionTime,
+            receiver_time: normalizedTime,
             status: updateData.status,
             ...(updateData.finished_at && { finished_at: updateData.finished_at })
           };
       
-      console.log("[FriendChallenges] Core update:", coreUpdate);
+      console.log("[FriendChallenges] Submitting:", coreUpdate);
       
       const { data, error } = await supabase
         .from("friend_challenges")
