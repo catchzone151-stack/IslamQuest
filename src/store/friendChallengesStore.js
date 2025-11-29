@@ -369,7 +369,7 @@ export const useFriendChallengesStore = create((set, get) => ({
     try {
       const { error } = await supabase
         .from("friend_challenges")
-        .update({ status: "declined" })
+        .update({ status: "cancelled" })
         .eq("id", challengeId)
         .eq("receiver_id", currentUserId)
         .eq("status", "pending");
