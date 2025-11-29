@@ -183,7 +183,7 @@ export default function Pathway() {
             lineHeight: 1.5,
           }}
         >
-          Masha'Allah ﷻ! You have mastered all lessons in this path.
+          masha'Allah ﷻ! You have mastered all lessons in this path.
         </p>
 
         <button

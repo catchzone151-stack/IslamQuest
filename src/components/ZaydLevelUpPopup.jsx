@@ -101,7 +101,7 @@ export function ZaydLevelUpPopup({ levelUpData, onClose }) {
           fontWeight: "bold",
           marginBottom: 8,
         }}>
-          🌙 Mā shā' Allāh!
+          🌙 masha'Allah!
         </h2>
 
         <p style={{

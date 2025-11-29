@@ -615,7 +615,7 @@ export const useChallengeStore = create((set, get) => ({
       { question: "What is the last surah of the Qur'an?", options: ["Al-Fatiha", "Al-Ikhlas", "An-Nas", "Al-Falaq"], answer: 2, difficulty: "easy" },
       { question: "How many rakats are in Zuhr prayer?", options: ["2", "3", "4", "5"], answer: 2, difficulty: "medium" },
       { question: "Which prophet was given the Zabur (Psalms)?", options: ["Prophet Musa عليه السلام", "Prophet Dawud عليه السلام", "Prophet Isa عليه السلام", "Prophet Ibrahim عليه السلام"], answer: 1, difficulty: "medium" },
-      { question: "What is the meaning of 'Insha'Allah'?", options: ["God willing", "God is Great", "Praise be to God", "In the name of God"], answer: 0, difficulty: "easy" },
+      { question: "What is the meaning of 'insha'Allah'?", options: ["God willing", "God is Great", "Praise be to God", "In the name of God"], answer: 0, difficulty: "easy" },
       { question: "Which prophet is known as 'Ruhullah' (Spirit of Allah)?", options: ["Prophet Ibrahim عليه السلام", "Prophet Musa عليه السلام", "Prophet Isa عليه السلام", "Prophet Adam عليه السلام"], answer: 2, difficulty: "hard" },
       { question: "What is the name of the angel of death?", options: ["Jibreel", "Mikael", "Israfil", "Azrael"], answer: 3, difficulty: "medium" },
       { question: "How many prophets are considered 'Ulul Azm' (resolute)?", options: ["3", "4", "5", "6"], answer: 2, difficulty: "hard" },

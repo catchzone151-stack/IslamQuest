@@ -267,7 +267,7 @@ const handleSuccess = () => {
     'success',
     SuccessModal,
     { 
-      title: 'Mashaa Allah!',
+      title: "masha'Allah!",
       message: 'Lesson completed!',
       xp: 100
     },
@@ -319,4 +319,4 @@ For questions or issues with the modal system:
 ---
 
 **Built with safety and performance in mind** 🌙
-**MashaAllah, may Allah bless this work** ✨
+**masha'Allah, may Allah bless this work** ✨
