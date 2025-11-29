@@ -742,9 +742,7 @@ export default function Home() {
           showModal(MODAL_TYPES.RAMADAN_COMING_SOON);
         }}
         style={{
-          width: "100%",
-          marginTop: 20,
-          marginBottom: 0,
+          margin: "10px 16px 0 16px",
           background: "#0a2a43",
           borderRadius: 22,
           padding: "14px 16px",
