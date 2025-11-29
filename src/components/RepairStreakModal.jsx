@@ -46,38 +46,28 @@ export default function RepairStreakModal({ onClose }) {
         
         <div style={{
           background: "rgba(239, 68, 68, 0.15)",
-          borderRadius: "16px",
-          padding: "20px",
-          marginBottom: "16px",
+          borderRadius: "12px",
+          padding: "12px 16px",
+          marginBottom: "14px",
           border: "2px solid rgba(239, 68, 68, 0.4)",
           textAlign: "center"
         }}>
-          <div style={{ fontSize: "2.5rem", marginBottom: "8px" }}>🔥</div>
-          <div style={{ fontSize: "1.8rem", fontWeight: "700", color: "#ef4444" }}>
+          <div style={{ fontSize: "1.4rem", fontWeight: "700", color: "#ef4444" }}>
             {brokenStreakValue} day streak
           </div>
-          <div style={{ fontSize: "0.9rem", color: "#94a3b8", marginTop: "6px" }}>
+          <div style={{ fontSize: "0.85rem", color: "#94a3b8", marginTop: "4px" }}>
             Lost due to missed day
           </div>
         </div>
 
         <p style={{ 
           color: "#e2e8f0", 
-          fontSize: "0.95rem", 
+          fontSize: "0.9rem", 
           textAlign: "center",
-          marginBottom: "8px",
+          marginBottom: "14px",
           lineHeight: 1.5
         }}>
           Don't worry! You can repair your streak and get it back to where it was.
-        </p>
-        <p style={{ 
-          color: "#e2e8f0", 
-          fontSize: "0.95rem", 
-          textAlign: "center",
-          marginBottom: "16px",
-          lineHeight: 1.5
-        }}>
-          <strong style={{ color: "#d4af37" }}>Bonus:</strong> Repairing gifts you 1 Streak Freeze Shield to protect your streak in the future!
         </p>
 
         <div style={{
