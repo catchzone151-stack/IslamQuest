@@ -50,8 +50,8 @@ body {
   background-color: #0a2a43;
   min-height: 100%;
   padding: 0;
-  padding-bottom: 66px;
-  padding-bottom: calc(66px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: 56px;
+  padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
   max-width: 100%;
   overflow-x: hidden;
   box-sizing: border-box;
@@ -66,8 +66,8 @@ body {
 
 /* Combined selector to restore bottom nav clearance when both classes are used */
 .screen.no-extra-space {
-  padding-bottom: 66px !important;
-  padding-bottom: calc(66px + env(safe-area-inset-bottom, 0px)) !important;
+  padding-bottom: 56px !important;
+  padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px)) !important;
 }
 
 /* Onboarding screens - remove bottom padding */
