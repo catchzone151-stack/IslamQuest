@@ -116,7 +116,7 @@ function RewardModalContent({ score, totalQ, xp, coins, mascotImg, onContinue, o
           <img src={mascotImg} alt="Mascot" style={mascotStyle} />
 
           <h2 style={titleStyle}>
-            {passed ? "masha'Allah ﷻ!" : "Keep trying!"}
+            {passed ? "masha'Allah!" : "Keep trying!"}
           </h2>
 
           <p style={messageStyle}>

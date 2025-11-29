@@ -27,7 +27,7 @@ export default function SalaamScreen() {
           السلام عليكم ورحمة الله وبركاته
         </h2>
         <p style={{ marginTop: 10, color: "#e5e5e5" }}>
-          Peace be upon you and the mercy of Allah ﷻ and His blessings
+          Peace be upon you and the mercy of Allah ﷾ and His blessings
         </p>
         <p style={{ marginTop: 6, color: "#cfcfcf" }}>Welcome to your journey of sacred knowledge.</p>
 

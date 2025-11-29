@@ -9,7 +9,7 @@ const wivesLessons = [
     title: "Khadijah bint Khuwaylid - Part 1",
     description: [
       "Khadijah was a wealthy businesswoman known for wisdom and honor. She hired Muhammad ﷺ for his trustworthiness. Their marriage began after successful trade journeys together.",
-      "She became the first believer when revelation came to Muhammad ﷺ. Khadijah comforted and reassured him of Allah ﷻ's protection during difficult early persecution years.",
+      "She became the first believer when revelation came to Muhammad ﷺ. Khadijah comforted and reassured him of Allah ﷾'s protection during difficult early persecution years.",
       "All the Prophet's ﷺ children except Ibrahim were born to Khadijah. He never forgot her devotion and praised her throughout his life, even after her death."
     ],
     evidence: {
@@ -27,7 +27,7 @@ const wivesLessons = [
     description: [
       "The Prophet ﷺ showed tremendous loyalty to Khadijah after her death. He sent meat to her friends and praised her constantly, explaining her unique virtues to others.",
       "During the Year of Sorrow, Khadijah and Abu Talib both died. The Prophet ﷺ grieved deeply, losing his beloved wife and his protective uncle in the same year.",
-      "Allah ﷻ sent greetings to Khadijah through Angel Jibra'il. The angel gave her glad tidings of a palace in Paradise made of pearls, showing her elevated status."
+      "Allah ﷾ sent greetings to Khadijah through Angel Jibra'il. The angel gave her glad tidings of a palace in Paradise made of pearls, showing her elevated status."
     ],
     evidence: {
       arabic: "إِنِّي قَدْ رُزِقْتُ حُبَّهَا",
@@ -77,7 +77,7 @@ const wivesLessons = [
     title: "Aishah bint Abu Bakr - Part 2",
     description: [
       "Aishah narrated over two thousand hadiths, teaching companions and the next generation. Her house became a center of learning where students studied Islam from her.",
-      "False accusations were spread against Aishah during the incident of Ifk. Allah ﷻ revealed Quranic verses declaring her innocence, establishing her purity and warning against slander forever.",
+      "False accusations were spread against Aishah during the incident of Ifk. Allah ﷾ revealed Quranic verses declaring her innocence, establishing her purity and warning against slander forever.",
       "Angel Jibra'il sent greetings to Aishah through the Prophet ﷺ. The Prophet ﷺ passed away in her home, resting in her lap, on her appointed day."
     ],
     evidence: {
@@ -133,7 +133,7 @@ const wivesLessons = [
     ],
     evidence: {
       arabic: "أَفْضَلُ مَا يُقَالُ عِنْدَ الْمُصِيبَةِ: إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ، اللَّهُمَّ أْجُرْنِي فِي مُصِيبَتِي وَأَخْلِفْ لِي خَيْرًا مِنْهَا",
-      translation: "The best thing to say during calamity: Indeed we belong to Allah ﷻ and to Him we shall return. O Allah ﷻ, reward me in my affliction and replace it with something better.",
+      translation: "The best thing to say during calamity: Indeed we belong to Allah ﷾ and to Him we shall return. O Allah ﷾, reward me in my affliction and replace it with something better.",
       source: "Sahih Muslim 918"
     },
     keyLesson: "Umm Salamah's patience during hardship and wise counsel made her a source of guidance and blessing.",
@@ -144,7 +144,7 @@ const wivesLessons = [
     id: 9,
     title: "Zaynab bint Jahsh",
     description: [
-      "Zaynab bint Jahsh was the Prophet's ﷺ cousin. Allah ﷻ arranged her marriage to him through divine revelation after her divorce. Quranic verses abolished pre-Islamic adoption practices.",
+      "Zaynab bint Jahsh was the Prophet's ﷺ cousin. Allah ﷾ arranged her marriage to him through divine revelation after her divorce. Quranic verses abolished pre-Islamic adoption practices.",
       "Zaynab was pious, generous, and skilled in leather crafts. She earned money through her skills and gave everything away in charity, more than all other wives.",
       "The Prophet ﷺ told his wives the longest hand would join him first in death. Zaynab died first, fulfilling this prophecy through her unmatched generosity and charitable giving."
     ],
@@ -153,7 +153,7 @@ const wivesLessons = [
       translation: "The one among you with the longest hand.",
       source: "Sahih Muslim 2452"
     },
-    keyLesson: "Zaynab's generosity and devotion to charity showed that giving to others brings us closer to Allah ﷻ.",
+    keyLesson: "Zaynab's generosity and devotion to charity showed that giving to others brings us closer to Allah ﷾.",
     quizId: 9
   },
 
@@ -167,10 +167,10 @@ const wivesLessons = [
     ],
     evidence: {
       arabic: "سُبْحَانَ اللهِ عَدَدَ خَلْقِهِ، سُبْحَانَ اللهِ رِضَا نَفْسِهِ، سُبْحَانَ اللهِ زِنَةَ عَرْشِهِ، سُبْحَانَ اللهِ مِدَادَ كَلِمَاتِهِ",
-      translation: "Glory be to Allah ﷻ equal to the number of His creation, His pleasure, the weight of His Throne, and the ink of His words.",
+      translation: "Glory be to Allah ﷾ equal to the number of His creation, His pleasure, the weight of His Throne, and the ink of His words.",
       source: "Sahih Muslim 2726"
     },
-    keyLesson: "Juwayriyyah's marriage brought an entire tribe to Islam, showing how Allah ﷻ uses marriages for spreading guidance.",
+    keyLesson: "Juwayriyyah's marriage brought an entire tribe to Islam, showing how Allah ﷾ uses marriages for spreading guidance.",
     quizId: 10
   },
 
@@ -212,7 +212,7 @@ const wivesLessons = [
     id: 13,
     title: "Maymunah bint al-Harith",
     description: [
-      "Maymunah was the last wife the Prophet ﷺ married. She offered herself in marriage, and Allah ﷻ revealed a verse allowing this privilege. She was known for piety.",
+      "Maymunah was the last wife the Prophet ﷺ married. She offered herself in marriage, and Allah ﷾ revealed a verse allowing this privilege. She was known for piety.",
       "Maymunah was Khalid ibn al-Walid's maternal aunt and related to prominent companions. Her marriage strengthened ties between the Prophet ﷺ and important Muslim families.",
       "She was generous and dedicated to worship. Maymunah narrated many hadiths about the Prophet's ﷺ private life. She lived many years after his death, teaching and narrating."
     ],
@@ -221,7 +221,7 @@ const wivesLessons = [
       translation: "And a believing woman if she gives herself to the Prophet.",
       source: "Qur'an 33:50"
     },
-    keyLesson: "Maymunah's devotion and generosity in offering herself in marriage showed complete trust in Allah ﷻ's plan.",
+    keyLesson: "Maymunah's devotion and generosity in offering herself in marriage showed complete trust in Allah ﷾'s plan.",
     quizId: 13
   }
 ];

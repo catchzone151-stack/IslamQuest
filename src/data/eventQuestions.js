@@ -11,7 +11,7 @@ export const EVENT_QUESTIONS = {
       options: [
         "Who is your Lord? What is your religion? Who is your Prophet?",
         "What did you worship? What book did you follow? Who was your leader?",
-        "Do you believe in Allah ﷻ? Did you pray? Did you give charity?",
+        "Do you believe in Allah ﷾? Did you pray? Did you give charity?",
         "Why did you live? What good did you do? Who taught you Islam?"
       ],
       correct: 0,
@@ -94,7 +94,7 @@ export const EVENT_QUESTIONS = {
       question: "What are the three types of Tawheed (Islamic monotheism)?",
       options: [
         "Tawheed ar-Rububiyyah, Tawheed al-Uluhiyyah, Tawheed al-Asma wa's-Sifat",
-        "Belief in Allah ﷻ, Angels, and Books",
+        "Belief in Allah ﷾, Angels, and Books",
         "Prayer, Fasting, and Charity",
         "Knowledge, Action, and Sincerity"
       ],
@@ -117,7 +117,7 @@ export const EVENT_QUESTIONS = {
       id: "pc_10",
       question: "What are the six articles of faith (Iman) in Islam?",
       options: [
-        "Belief in Allah ﷻ, Angels, Books, Messengers, Last Day, and Divine Decree",
+        "Belief in Allah ﷾, Angels, Books, Messengers, Last Day, and Divine Decree",
         "Prayer, Fasting, Charity, Pilgrimage, Jihad, and Knowledge",
         "Quran, Sunnah, Ijma, Qiyas, Istihsan, and Maslahah",
         "Tawheed, Salah, Sawm, Zakah, Hajj, and Dawah"
@@ -127,11 +127,11 @@ export const EVENT_QUESTIONS = {
     }
   ],
 
-  // ✨ Names of Allah ﷻ Mastery - Names of Allah ﷻ (Path 1)
+  // ✨ Names of Allah ﷾ Mastery - Names of Allah ﷾ (Path 1)
   names_mastery: [
     {
       id: "nm_1",
-      question: "Al-Qahhar means 'The Subduer.' Which name pairs with it to show Allah ﷻ's complete authority?",
+      question: "Al-Qahhar means 'The Subduer.' Which name pairs with it to show Allah ﷾'s complete authority?",
       options: [
         "Al-Jabbar (The Compeller)",
         "Ar-Rahman (The Most Merciful)",
@@ -139,7 +139,7 @@ export const EVENT_QUESTIONS = {
         "Al-Halim (The Forbearing)"
       ],
       correct: 0,
-      evidence: "Both emphasize Allah ﷻ's absolute power and authority"
+      evidence: "Both emphasize Allah ﷾'s absolute power and authority"
     },
     {
       id: "nm_2",
@@ -167,7 +167,7 @@ export const EVENT_QUESTIONS = {
     },
     {
       id: "nm_4",
-      question: "Which name pair shows Allah ﷻ is both 'The Most Gentle' and 'The All-Aware'?",
+      question: "Which name pair shows Allah ﷾ is both 'The Most Gentle' and 'The All-Aware'?",
       options: [
         "Al-Latif, Al-Khabir",
         "Ar-Ra'uf, Al-Hakim",
@@ -187,7 +187,7 @@ export const EVENT_QUESTIONS = {
         "Surah An-Nas (Mankind)"
       ],
       correct: 0,
-      evidence: "Mentioned in Surah Al-Hashr (59:23) among Allah ﷻ's names"
+      evidence: "Mentioned in Surah Al-Hashr (59:23) among Allah ﷾'s names"
     },
     {
       id: "nm_6",
@@ -227,21 +227,21 @@ export const EVENT_QUESTIONS = {
     },
     {
       id: "nm_9",
-      question: "Al-Haqq means 'The Truth.' Which verse emphasizes that Allah ﷻ is the only Haqq?",
+      question: "Al-Haqq means 'The Truth.' Which verse emphasizes that Allah ﷾ is the only Haqq?",
       options: [
-        "That is because Allah ﷻ is the Truth, and what they call upon besides Him is falsehood (22:62)",
-        "Say He is Allah ﷻ, the One (112:1)",
+        "That is because Allah ﷾ is the Truth, and what they call upon besides Him is falsehood (22:62)",
+        "Say He is Allah ﷾, the One (112:1)",
         "There is no god but He (2:255)",
-        "Allah ﷻ is the Creator of all things (39:62)"
+        "Allah ﷾ is the Creator of all things (39:62)"
       ],
       correct: 0,
       evidence: "Surah Al-Hajj (22:62) directly states this"
     },
     {
       id: "nm_10",
-      question: "How many Beautiful Names of Allah ﷻ are commonly known from authentic hadith?",
+      question: "How many Beautiful Names of Allah ﷾ are commonly known from authentic hadith?",
       options: [
-        "99 names, though Allah ﷻ has more names unknown to us",
+        "99 names, though Allah ﷾ has more names unknown to us",
         "Exactly 99 names with no more",
         "100 names including Al-A'zam",
         "70 names mentioned in the Qur'an"
@@ -423,7 +423,7 @@ export const EVENT_QUESTIONS = {
         "Treaty of Ta'if"
       ],
       correct: 0,
-      evidence: "6 AH - Allah ﷻ called it 'a clear victory' in Surah Al-Fath"
+      evidence: "6 AH - Allah ﷾ called it 'a clear victory' in Surah Al-Fath"
     },
     {
       id: "sc_5",
@@ -441,7 +441,7 @@ export const EVENT_QUESTIONS = {
       id: "sc_6",
       question: "What miracle occurred during the Battle of Badr that helped the Muslims?",
       options: [
-        "Allah ﷻ sent angels to fight alongside Muslims and caused drowsiness to give them rest",
+        "Allah ﷾ sent angels to fight alongside Muslims and caused drowsiness to give them rest",
         "The sun stood still in the sky",
         "Rain fell only on the enemy",
         "A massive earthquake struck"

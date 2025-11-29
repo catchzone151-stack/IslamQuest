@@ -55,7 +55,7 @@ const EVENTS = [
   },
   {
     id: "names_mastery",
-    name: "Names of Allah ﷻ Mastery",
+    name: "Names of Allah ﷾ Mastery",
     description: "Learn the Beautiful Names",
     pathIds: [1],
     theme: {

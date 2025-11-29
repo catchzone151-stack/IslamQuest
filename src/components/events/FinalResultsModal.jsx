@@ -70,10 +70,10 @@ export default function FinalResultsModal({ event, onClose }) {
   const getZaydMessage = () => {
     if (!userRank) return "Keep learning and growing! 🌙";
     
-    if (userRank === 1) return "SubhanAllah ﷻ! You conquered this week! 🏆";
-    if (userRank <= 10) return "masha'Allah ﷻ! You're a top achiever! 🌟";
+    if (userRank === 1) return "SubhanAllah! You conquered this week! 🏆";
+    if (userRank <= 10) return "masha'Allah! You're a top achiever! 🌟";
     if (userRank <= 100) return "Great effort — keep climbing! 💪";
-    return "Next week is yours, in shā' Allāh! 🌙";
+    return "Next week is yours, insha'Allah! 🌙";
   };
   
   const zaydImage = assets.mascots.mascot_congratulation;
