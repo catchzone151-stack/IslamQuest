@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { useProgressStore } from "./progressStore";
 import { useFriendsStore } from "./friendsStore";
-import { isDevMode, DEV_MOCK_FRIENDS } from "../config/dev";
 import { supabase } from "../lib/supabaseClient";
 import { logXpEvent } from "../backend/xpLogs";
 import { logChallengeRequest, logChallengeResult } from "../backend/challengeLogs";
@@ -242,8 +241,7 @@ export const useChallengeStore = create((set, get) => ({
     const realFriends = useFriendsStore.getState().friends || [];
     const allFriends = useFriendsStore.getState().getAllFriends?.() || realFriends;
     const friend = allFriends.find(f => f.user_id === friendId || f.id === friendId) ||
-                   realFriends.find(f => f.user_id === friendId || f.id === friendId) ||
-                   DEV_MOCK_FRIENDS?.find(f => f.id === friendId);
+                   realFriends.find(f => f.user_id === friendId || f.id === friendId);
     
     const questions = get().getQuestionsForMode(modeConfig);
     
@@ -414,10 +412,6 @@ export const useChallengeStore = create((set, get) => ({
   },
 
   canPlayBossToday: () => {
-    if (isDevMode()) {
-      console.log('🔧 DEV MODE: Boss Level always playable');
-      return true;
-    }
     const today = new Date().toDateString();
     const { bossAttempts } = get();
     const todayAttempt = bossAttempts.find(a => 
@@ -794,22 +788,6 @@ export const useChallengeStore = create((set, get) => ({
   },
 
   getSharedLessons: (userId, friendId) => {
-    if (isDevMode()) {
-      console.log('🔧 DEV MODE: Returning mock shared lessons for challenge');
-      return [
-        { pathId: 1, lessonId: 1 },
-        { pathId: 1, lessonId: 2 },
-        { pathId: 1, lessonId: 3 },
-        { pathId: 2, lessonId: 1 },
-        { pathId: 2, lessonId: 2 },
-        { pathId: 3, lessonId: 1 },
-        { pathId: 3, lessonId: 2 },
-        { pathId: 3, lessonId: 3 },
-        { pathId: 4, lessonId: 1 },
-        { pathId: 5, lessonId: 1 },
-      ];
-    }
-    
     const { completedLessons } = useProgressStore.getState();
     if (!completedLessons || !Array.isArray(completedLessons) || completedLessons.length === 0) {
       return [];

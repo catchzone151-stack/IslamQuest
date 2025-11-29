@@ -3,7 +3,6 @@ import { persist } from "zustand/middleware";
 import { useProgressStore } from "./progressStore";
 import { supabase } from "../lib/supabaseClient";
 import { avatarIndexToKey } from "../utils/avatarUtils";
-import { isDevMode, DEV_MOCK_EVENT_LEADERBOARD } from "../config/dev";
 import { logXpEvent } from "../backend/xpLogs";
 
 export const EMPTY_LEADERBOARD = Object.freeze([]);
@@ -115,29 +114,6 @@ export const useEventsStore = create(
       enterEventCloud: async (eventId, score, answers, completionTime = null) => {
         try {
           set({ loading: true, error: null });
-          
-          if (isDevMode()) {
-            console.log('🔧 DEV MODE: Entering event locally (no coins deducted)');
-            const provisionalRank = Math.floor(Math.random() * 20) + 1;
-            
-            set(state => ({
-              weeklyEntries: {
-                ...state.weeklyEntries,
-                [eventId]: {
-                  score,
-                  answers,
-                  completedAt: new Date().toISOString(),
-                  provisionalRank,
-                  cloudId: `dev_entry_${Date.now()}`
-                }
-              },
-              loading: false
-            }));
-            
-            useProgressStore.getState().markDayComplete();
-            
-            return { success: true, entry: { id: `dev_entry_${Date.now()}` }, provisionalRank };
-          }
           
           const { data: auth } = await supabase.auth.getUser();
           if (!auth?.user) {
@@ -260,12 +236,6 @@ export const useEventsStore = create(
         try {
           set({ loading: true, error: null });
           
-          if (isDevMode()) {
-            console.log('🔧 DEV MODE: Returning local entries only');
-            set({ loading: false });
-            return get().weeklyEntries;
-          }
-          
           const { data: auth } = await supabase.auth.getUser();
           if (!auth?.user) {
             set({ loading: false });
@@ -311,60 +281,6 @@ export const useEventsStore = create(
 
       loadLeaderboard: async (eventId, limit = 50) => {
         try {
-          if (isDevMode()) {
-            console.log('🔧 DEV MODE: Returning mock leaderboard');
-            const weekId = getCurrentWeekId();
-            const userEntry = get().weeklyEntries[eventId];
-            
-            let leaderboard = DEV_MOCK_EVENT_LEADERBOARD.map((p, i) => ({
-              rank: i + 1,
-              userId: p.userId,
-              nickname: p.nickname,
-              avatar: p.avatar,
-              score: p.score,
-              completionTime: p.completionTime,
-              completedAt: new Date().toISOString(),
-              premium: false
-            }));
-            
-            if (userEntry) {
-              const userRank = leaderboard.filter(p => 
-                p.score > userEntry.score || 
-                (p.score === userEntry.score && p.completionTime < (userEntry.completionTime || 60))
-              ).length + 1;
-              
-              leaderboard.push({
-                rank: userRank,
-                userId: 'dev_user',
-                nickname: 'You (Dev)',
-                avatar: 'avatar_man_lantern',
-                score: userEntry.score,
-                completionTime: userEntry.completionTime || 50,
-                completedAt: userEntry.completedAt,
-                premium: true
-              });
-              
-              leaderboard.sort((a, b) => {
-                if (b.score !== a.score) return b.score - a.score;
-                return (a.completionTime || 9999) - (b.completionTime || 9999);
-              });
-              
-              leaderboard = leaderboard.map((p, i) => ({ ...p, rank: i + 1 }));
-            }
-            
-            set(state => ({
-              leaderboards: {
-                ...state.leaderboards,
-                [weekId]: {
-                  ...(state.leaderboards[weekId] || {}),
-                  [eventId]: leaderboard
-                }
-              }
-            }));
-            
-            return leaderboard;
-          }
-          
           const weekId = getCurrentWeekId();
           
           const { data, error } = await supabase
@@ -437,16 +353,6 @@ export const useEventsStore = create(
 
       getMyRank: async (eventId) => {
         try {
-          if (isDevMode()) {
-            const userEntry = get().weeklyEntries[eventId];
-            if (!userEntry) return null;
-            const rank = DEV_MOCK_EVENT_LEADERBOARD.filter(p => 
-              p.score > userEntry.score || 
-              (p.score === userEntry.score && p.completionTime < (userEntry.completionTime || 60))
-            ).length + 1;
-            return rank;
-          }
-          
           const { data: auth } = await supabase.auth.getUser();
           if (!auth?.user) return null;
           
@@ -484,52 +390,6 @@ export const useEventsStore = create(
 
       claimEventRewards: async (eventId) => {
         try {
-          if (isDevMode()) {
-            console.log('🔧 DEV MODE: Claiming event rewards locally');
-            const userEntry = get().weeklyEntries[eventId];
-            if (!userEntry) {
-              return { success: false, error: "ENTRY_NOT_FOUND" };
-            }
-            if (userEntry.rewardsClaimed) {
-              return { success: false, error: "ALREADY_CLAIMED" };
-            }
-            
-            const rank = await get().getMyRank(eventId);
-            if (!rank) {
-              return { success: false, error: "RANK_NOT_FOUND" };
-            }
-            
-            const rewards = get().computeRewardsForRank(rank);
-            const { addXPAndCoins } = useProgressStore.getState();
-            addXPAndCoins(rewards.xpReward, rewards.coinReward);
-            
-            // Log XP event for global event (dev mode)
-            if (rewards.xpReward > 0) {
-              const { data } = await supabase.auth.getUser();
-              const userId = data?.user?.id;
-              if (userId) {
-                logXpEvent(userId, rewards.xpReward, "event");
-              }
-            }
-            
-            set(state => ({
-              resultsViewed: {
-                ...state.resultsViewed,
-                [eventId]: true
-              },
-              weeklyEntries: {
-                ...state.weeklyEntries,
-                [eventId]: {
-                  ...state.weeklyEntries[eventId],
-                  rewardsClaimed: true,
-                  finalRank: rank
-                }
-              }
-            }));
-            
-            return { success: true, rank, rewards };
-          }
-          
           const { data: auth } = await supabase.auth.getUser();
           if (!auth?.user) {
             return { success: false, error: "NOT_AUTHENTICATED" };

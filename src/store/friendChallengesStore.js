@@ -3,7 +3,6 @@ import { supabase } from "../lib/supabaseClient";
 import { useProgressStore } from "./progressStore";
 import { useFriendsStore } from "./friendsStore";
 import { CHALLENGE_MODES } from "./challengeStore";
-import { isDevMode } from "../config/dev";
 
 const CHALLENGE_EXPIRY_HOURS = 48;
 const VIEWED_RESULTS_KEY = "iq_viewed_challenge_results";

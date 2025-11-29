@@ -6,7 +6,6 @@ import { useProgressStore } from "../store/progressStore";
 import { useFriendChallengesStore } from "../store/friendChallengesStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import { supabase } from "../lib/supabaseClient";
-import { isDevMode } from "../config/dev";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
@@ -131,11 +130,6 @@ export default function Friends() {
   }, [loadFriends, loadRequests, loadPendingRequests, loadChallenges]);
 
   useEffect(() => {
-    if (isDevMode()) {
-      console.log("🔧 Dev mode active - polling disabled");
-      return;
-    }
-
     let isMounted = true;
 
     const poll = async () => {

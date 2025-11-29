@@ -9,7 +9,6 @@ import BottomNav from "./components/BottomNav.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 import ModalController from "./components/ModalController.jsx";
 import OfflineConnectionBanner from "./components/OfflineConnectionBanner.jsx";
-import DevModeBanner from "./components/DevModeBanner.jsx";
 import { ModalProvider, ModalRoot } from "./providers/ModalProvider.jsx";
 import { ShimmerCard, ShimmerImage } from "./components/ShimmerLoader.jsx";
 import { useUserStore } from "./store/useUserStore";
@@ -500,7 +499,6 @@ export default function App() {
   return (
     <GlobalErrorBoundary>
       <ErrorBoundary>
-        <DevModeBanner />
         <OfflineConnectionBanner />
         <ModalProvider>
         <BrowserRouter>
