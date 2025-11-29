@@ -479,13 +479,13 @@ export const useFriendChallengesStore = create((set, get) => ({
         ? { 
             sender_score: score, 
             sender_time: normalizedTime,
-            sender_chain: chain,
+            ...(chain !== null && { sender_chain: chain }),
             status: updateData.status
           }
         : { 
             receiver_score: score, 
             receiver_time: normalizedTime,
-            receiver_chain: chain,
+            ...(chain !== null && { receiver_chain: chain }),
             status: updateData.status
           };
       
