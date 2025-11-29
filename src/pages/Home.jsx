@@ -490,6 +490,7 @@ export default function Home() {
             transform: "translateZ(0)",
             fontFamily: "'Yuzarsif', serif",
             fontSize: "2.8rem",
+            fontWeight: "normal",
             letterSpacing: "1px",
           }}
         >
