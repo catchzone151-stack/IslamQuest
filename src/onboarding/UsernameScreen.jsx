@@ -51,10 +51,14 @@ export default function UsernameScreen() {
 
     // Complete onboarding - saves all identity fields to cloud
     // ONLY marks hasOnboarded=true AFTER successful save
-    const success = await completeOnboarding();
+    const result = await completeOnboarding();
     
-    if (!success) {
-      setError("Could not save profile. Please try again.");
+    if (!result?.success) {
+      if (result?.error === "handle_taken") {
+        setError("Handle already taken. Try another.");
+      } else {
+        setError("Could not save profile. Please try again.");
+      }
       setChecking(false);
       return;
     }

@@ -308,11 +308,11 @@ export const useUserStore = create((set, get) => ({
       });
       
       console.log("ONBOARDING COMPLETE → Profile saved");
-      return true;
+      return { success: true };
     }
 
     console.error("completeOnboarding: Save failed", result.error);
-    return false;
+    return { success: false, error: result.error };
   },
 
   // --------------------------------------------------

@@ -232,6 +232,9 @@ export async function saveCloudProfile(userId, partialData) {
 
   if (error) {
     console.error("saveCloudProfile: Update FAILED:", error);
+    if (error.code === "23505" && error.message?.includes("handle")) {
+      return { success: false, error: "handle_taken" };
+    }
     return { success: false, error };
   }
 
