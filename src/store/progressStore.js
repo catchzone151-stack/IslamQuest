@@ -1144,6 +1144,28 @@ export const useProgressStore = create((set, get) => ({
     localStorage.setItem("iq_last_cloud_sync", String(ts));
   },
 
+  setFromCloudSync: (data, cloudUpdatedAt = null) => {
+    if (!data) return;
+    
+    const newLevel = getCurrentLevel(data.xp || 0);
+    
+    set({
+      xp: data.xp ?? get().xp,
+      coins: data.coins ?? get().coins,
+      streak: data.streak ?? get().streak,
+      shieldCount: data.shieldCount ?? get().shieldCount,
+      premium: data.premium ?? get().premium,
+      hasPremium: data.premium ?? get().hasPremium,
+      premiumStatus: data.premium ? (get().premiumStatus !== "free" ? get().premiumStatus : "individual") : "free",
+      level: newLevel?.level ?? get().level,
+    });
+    
+    if (cloudUpdatedAt) {
+      get().setLastUpdatedAt(new Date(cloudUpdatedAt).getTime());
+    }
+    get().saveProgress();
+  },
+
   syncToSupabase: async () => {
     try {
       const user = await supabase.auth.getUser();
