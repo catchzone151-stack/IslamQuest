@@ -519,7 +519,7 @@ export default function Friends() {
                       const sender = friends.find(f => (f.user_id || f.id) === challenge.sender_id);
                       const senderName = sender?.nickname || sender?.username || "Friend";
                       const senderAvatar = sender?.avatar;
-                      const avatarSrc = assets.avatars[senderAvatar] || assets.avatars.avatar_man_lantern;
+                      const avatarSrc = getAvatarImage(senderAvatar, { userId: challenge.sender_id, nickname: senderName });
                       
                       return (
                         <motion.div
@@ -649,7 +649,7 @@ export default function Friends() {
                       const friend = friends.find(f => (f.user_id || f.id) === friendId);
                       const friendName = friend?.nickname || friend?.username || "Friend";
                       const friendAvatar = friend?.avatar;
-                      const avatarSrc = assets.avatars[friendAvatar] || assets.avatars.avatar_man_lantern;
+                      const avatarSrc = getAvatarImage(friendAvatar, { userId: friendId, nickname: friendName });
                       
                       return (
                         <motion.div
@@ -737,7 +737,7 @@ export default function Friends() {
                       const friend = friends.find(f => (f.user_id || f.id) === friendId);
                       const friendName = friend?.nickname || friend?.username || "Friend";
                       const friendAvatar = friend?.avatar;
-                      const avatarSrc = assets.avatars[friendAvatar] || assets.avatars.avatar_man_lantern;
+                      const avatarSrc = getAvatarImage(friendAvatar, { userId: friendId, nickname: friendName });
                       
                       return (
                         <motion.div
@@ -818,7 +818,7 @@ export default function Friends() {
                       const friend = friends.find(f => (f.user_id || f.id) === friendId);
                       const friendName = friend?.nickname || friend?.username || "Friend";
                       const friendAvatar = friend?.avatar;
-                      const avatarSrc = assets.avatars[friendAvatar] || assets.avatars.avatar_man_lantern;
+                      const avatarSrc = getAvatarImage(friendAvatar, { userId: friendId, nickname: friendName });
                       
                       return (
                         <motion.div
@@ -923,7 +923,7 @@ export default function Friends() {
                       const receiver = friends.find(f => (f.user_id || f.id) === challenge.receiver_id);
                       const receiverName = receiver?.nickname || receiver?.username || "Friend";
                       const receiverAvatar = receiver?.avatar;
-                      const avatarSrc = assets.avatars[receiverAvatar] || assets.avatars.avatar_man_lantern;
+                      const avatarSrc = getAvatarImage(receiverAvatar, { userId: challenge.receiver_id, nickname: receiverName });
                       
                       return (
                         <motion.div
@@ -1458,13 +1458,10 @@ function SubTabButton({ active, onClick, label, icon }) {
 }
 
 function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, onQuickMessage, challengeState }) {
-  const avatarSrc =
-    assets.avatars[user.avatar] ||
-    assets.avatars.avatar_man_lantern ||
-    getAvatarImage(user.avatar, {
-      userId: user.user_id,
-      nickname: user.username || user.handle,
-    });
+  const avatarSrc = getAvatarImage(user.avatar, {
+    userId: user.user_id,
+    nickname: user.username || user.handle,
+  });
   const displayName = user.username || user.handle || "Unknown";
   const userLevel = getCurrentLevel(user.xp);
 
@@ -1685,13 +1682,10 @@ function GlobalLeaderboardCard({
   isFriend,
   onUserClick,
 }) {
-  const avatarSrc =
-    assets.avatars[user.avatar] ||
-    assets.avatars.avatar_man_lantern ||
-    getAvatarImage(user.avatar, {
-      userId: user.user_id,
-      nickname: user.username || user.handle,
-    });
+  const avatarSrc = getAvatarImage(user.avatar, {
+    userId: user.user_id,
+    nickname: user.username || user.handle,
+  });
   const displayName = user.username || user.handle || "Unknown";
   const userLevel = getCurrentLevel(user.xp);
   const isPermanentEntry = user.isPermanent === true;

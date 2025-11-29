@@ -59,7 +59,7 @@ export default function FriendChallengeReceivedModal({
           margin: "16px 0"
         }}>
           <img 
-            src={getAvatarImage(senderAvatar)} 
+            src={getAvatarImage(senderAvatar, { userId: challenge?.sender_id, nickname: senderName })} 
             alt={senderName}
             style={{ 
               width: 50, 
