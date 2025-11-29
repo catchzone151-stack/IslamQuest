@@ -479,15 +479,17 @@ export const useFriendChallengesStore = create((set, get) => ({
         ? { 
             sender_score: score, 
             sender_time: normalizedTime,
+            sender_chain: chain,
             status: updateData.status
           }
         : { 
             receiver_score: score, 
             receiver_time: normalizedTime,
+            receiver_chain: chain,
             status: updateData.status
           };
       
-      console.log("[FriendChallenges] Submitting:", coreUpdate);
+      console.log("[FriendChallenges] Submitting:", coreUpdate, "chain:", chain);
       
       const { data, error } = await supabase
         .from("friend_challenges")
