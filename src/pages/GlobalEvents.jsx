@@ -181,7 +181,7 @@ export default function GlobalEvents() {
 
               {/* New Event Badge (for un-entered events) */}
               {!entered && (
-                <div className="new-event-badge">NEW!</div>
+                <div className="new-event-badge">Coming soon</div>
               )}
             </div>
           );
