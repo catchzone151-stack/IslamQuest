@@ -488,6 +488,9 @@ export default function Home() {
           style={{
             willChange: "transform",
             transform: "translateZ(0)",
+            fontFamily: "'Yuzarsif', serif",
+            fontSize: "2.8rem",
+            letterSpacing: "1px",
           }}
         >
           IslamQuest
@@ -497,15 +500,16 @@ export default function Home() {
       <p
         style={{
           textAlign: "center",
-          fontSize: "1.15rem",
+          fontSize: "1.3rem",
           margin: "6px 16px 20px 16px",
-          fontWeight: "800",
+          fontFamily: "'Yuzarsif', serif",
+          fontWeight: "normal",
           color: "#FFD700",
           textShadow: "0 2px 8px rgba(212, 175, 55, 0.4)",
-          letterSpacing: "0.5px",
+          letterSpacing: "1px",
         }}
       >
-        Assalamu Alaikum, {name || "Explorer"} 👋
+        Assalamu Alaikum, {name || "Explorer"}
       </p>
 
       {/*

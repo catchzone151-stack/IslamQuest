@@ -1,5 +1,14 @@
 /* Islam Quest global styles */
 
+/* Custom Yuzarsif font for branding */
+@font-face {
+  font-family: 'Yuzarsif';
+  src: url('./assets/fonts/Yuzarsif.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Reset */
 * {
   margin: 0;
