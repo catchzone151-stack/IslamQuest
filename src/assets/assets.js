@@ -56,7 +56,7 @@ import avatar_ninja_female from "./avatars/avatar_ninja_female.png.webp";
 // Other avatars (animals, robots, etc.)
 import avatar_dino from "./avatars/avatar_dino.png.webp";
 import avatar_fox from "./avatars/avatar_fox.png.webp";
-import avatar_panda from "./avatars/avatar_panda.png.webp";
+import avatar_panda from "./avatars/avatar_panda.webp";
 import avatar_rabbit from "./avatars/avatar_rabbit.png.webp";
 import avatar_robot from "./avatars/avatar_robot.png.webp";
 import avatar_unicorn from "./avatars/avatar_unicorn.png.webp";
