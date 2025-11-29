@@ -7,13 +7,11 @@ export default function RepairStreakModal({ onClose }) {
   const { coins, brokenStreakValue, repairStreak, skipRepair } = useProgressStore();
   const REPAIR_COST = 200;
 
-  const handleRepair = () => {
-    const result = repairStreak();
+  const handleRepair = async () => {
+    const result = await repairStreak();
 
     if (result.success) {
-      setTimeout(() => {
-        onClose?.();
-      }, 1500);
+      onClose?.();
     } else if (result.reason === "insufficient_coins") {
       alert("Not enough coins! You need 200 coins to repair your streak.");
     }
