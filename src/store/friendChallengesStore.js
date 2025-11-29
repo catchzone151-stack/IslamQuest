@@ -479,13 +479,11 @@ export const useFriendChallengesStore = create((set, get) => ({
         ? { 
             sender_score: score, 
             sender_time: normalizedTime,
-            ...(chain !== null && { sender_chain: chain }),
             status: updateData.status
           }
         : { 
             receiver_score: score, 
             receiver_time: normalizedTime,
-            ...(chain !== null && { receiver_chain: chain }),
             status: updateData.status
           };
       
@@ -669,22 +667,13 @@ export const useFriendChallengesStore = create((set, get) => ({
   determineWinner: (challenge) => {
     const modeConfig = Object.values(CHALLENGE_MODES).find(m => m.id === challenge.challenge_type);
     
-    if (modeConfig?.id === "sudden_death") {
-      const senderChain = challenge.sender_chain || 0;
-      const receiverChain = challenge.receiver_chain || 0;
-      
-      if (senderChain > receiverChain) return challenge.sender_id;
-      if (receiverChain > senderChain) return challenge.receiver_id;
-      return "draw";
-    }
-    
     const senderScore = challenge.sender_score || 0;
     const receiverScore = challenge.receiver_score || 0;
     
     if (senderScore > receiverScore) return challenge.sender_id;
     if (receiverScore > senderScore) return challenge.receiver_id;
     
-    if (modeConfig?.trackTime) {
+    if (modeConfig?.trackTime || modeConfig?.id === "sudden_death") {
       const senderTime = challenge.sender_time || Infinity;
       const receiverTime = challenge.receiver_time || Infinity;
       if (senderTime < receiverTime) return challenge.sender_id;
