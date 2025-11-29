@@ -10,8 +10,8 @@ export default function SalaamScreen() {
     <div
       className="onboarding-screen"
       style={{
-        background: "#ffffff",
-        color: "#0a2a43",
+        background: "linear-gradient(180deg, #0A1A2F 0%, #060D18 100%)",
+        color: "white",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
@@ -23,13 +23,13 @@ export default function SalaamScreen() {
       }}
     >
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}>
-        <h2 style={{ fontFamily: "Amiri, serif", color: "#0a2a43", fontSize: "1.5rem" }}>
+        <h2 style={{ fontFamily: "Amiri, serif", color: "#D4AF37", fontSize: "1.5rem" }}>
           السلام عليكم ورحمة الله وبركاته
         </h2>
-        <p style={{ marginTop: 10, color: "#0a2a43" }}>
+        <p style={{ marginTop: 10, color: "#e5e5e5" }}>
           Peace be upon you and the mercy of Allah and His blessings
         </p>
-        <p style={{ marginTop: 6, color: "#4a5568" }}>Welcome to your journey of sacred knowledge.</p>
+        <p style={{ marginTop: 6, color: "#cfcfcf" }}>Welcome to your journey of sacred knowledge.</p>
 
         <img
           src={zayd}
@@ -41,8 +41,8 @@ export default function SalaamScreen() {
           onClick={() => navigate("/onboarding/name")}
           style={{
             marginTop: 28,
-            background: "#0a2a43",
-            color: "#ffffff",
+            background: "#D4AF37",
+            color: "#0A1A2F",
             border: "none",
             borderRadius: 10,
             padding: "12px 36px",

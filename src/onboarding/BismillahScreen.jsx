@@ -9,8 +9,9 @@ export default function BismillahScreen() {
     <div
       className="onboarding-screen"
       style={{
-        background: "#ffffff",
-        color: "#0a2a43",
+        background:
+          "linear-gradient(180deg, #0A1A2F 0%, #060D18 100%)",
+        color: "white",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
@@ -26,17 +27,17 @@ export default function BismillahScreen() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
       >
-        <h2 style={{ fontFamily: "Amiri, serif", color: "#0a2a43", fontSize: "1.6rem" }}>
+        <h2 style={{ fontFamily: "Amiri, serif", color: "#D4AF37", fontSize: "1.6rem" }}>
           بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيمِ
         </h2>
-        <p style={{ marginTop: "8px", color: "#0a2a43" }}>
+        <p style={{ marginTop: "8px", color: "#e5e5e5" }}>
           In the name of Allah, the Most Merciful, the Most Compassionate
         </p>
-        <p style={{ marginTop: "20px", color: "#4a5568", fontSize: "0.95rem" }}>
+        <p style={{ marginTop: "20px", color: "#bbb", fontSize: "0.95rem" }}>
           Begin with a pure intention. <br />
           Seek knowledge to get closer to Allah.
         </p>
-        <p style={{ marginTop: "8px", fontSize: "0.9rem", color: "#718096" }}>
+        <p style={{ marginTop: "8px", fontSize: "0.9rem", color: "#888" }}>
           May Allah bless your learning and efforts.
         </p>
 
@@ -44,8 +45,8 @@ export default function BismillahScreen() {
           onClick={() => navigate("/onboarding/salaam")}
           style={{
             marginTop: "32px",
-            background: "#0a2a43",
-            color: "#ffffff",
+            background: "#D4AF37",
+            color: "#0A1A2F",
             border: "none",
             borderRadius: "10px",
             padding: "12px 36px",

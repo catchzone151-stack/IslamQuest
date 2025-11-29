@@ -27,8 +27,8 @@ export default function AvatarScreen() {
     <div
       className="onboarding-screen"
       style={{
-        background: "#ffffff",
-        color: "#0a2a43",
+        background: "linear-gradient(180deg, #0A1A2F 0%, #060D18 100%)",
+        color: "white",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -39,10 +39,10 @@ export default function AvatarScreen() {
         justifyContent: "center",
       }}
     >
-      <h2 style={{ color: "#0a2a43", fontSize: "1.4rem", marginBottom: "8px" }}>
+      <h2 style={{ color: "#D4AF37", fontSize: "1.4rem", marginBottom: "8px" }}>
         Choose your avatar
       </h2>
-      <p style={{ color: "#4a5568", fontSize: "0.95rem", marginBottom: 20 }}>
+      <p style={{ color: "#ccc", fontSize: "0.95rem", marginBottom: 20 }}>
         Tap to choose your look 👇
       </p>
 
@@ -72,9 +72,9 @@ export default function AvatarScreen() {
               padding: 0,
               border:
                 selected === src
-                  ? "3px solid #0a2a43"
-                  : "2px solid #e5e7eb",
-              background: "#f8fafc",
+                  ? "3px solid #D4AF37"
+                  : "2px solid transparent",
+              background: "#0E1625",
               overflow: "hidden",
               cursor: "pointer",
             }}
@@ -98,8 +98,8 @@ export default function AvatarScreen() {
         whileTap={selected ? { scale: 0.97 } : {}}
         style={{
           marginTop: 28,
-          background: selected ? "#0a2a43" : "#94a3b8",
-          color: "#ffffff",
+          background: selected ? "#D4AF37" : "#7e6a2b",
+          color: "#0A1A2F",
           border: "none",
           borderRadius: 10,
           padding: "12px 36px",

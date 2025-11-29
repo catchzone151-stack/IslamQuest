@@ -31,8 +31,8 @@ html {
 
 body {
   font-family: "Poppins", "Nunito", system-ui, sans-serif;
-  background: #ffffff;
-  color: #0a2a43;
+  background: #0a2a43;
+  color: #fff;
   height: 100%;
   -webkit-font-smoothing: antialiased;
   margin: 0;
