@@ -168,11 +168,21 @@ export const useUserStore = create((set, get) => ({
   setName: (name) => {
     localStorage.setItem("iq_name", name);
     set({ name });
+    // Sync name change to cloud (stored as username)
+    const saveProfile = get().saveProfile;
+    if (saveProfile) {
+      saveProfile({ username: name });
+    }
   },
 
   setAvatar: (avatar) => {
     localStorage.setItem("iq_avatar", avatar);
     set({ avatar });
+    // Sync avatar change to cloud
+    const saveProfile = get().saveProfile;
+    if (saveProfile) {
+      saveProfile({ avatar });
+    }
   },
 
   setUsername: (username) => {
