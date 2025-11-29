@@ -438,7 +438,7 @@ export const useProgressStore = create((set, get) => ({
   },
 
   // 🔧 Repair broken streak
-  // Phase 4: Now syncs shield count to Supabase cloud
+  // Phase 4: Now syncs shield count AND full progress to Supabase cloud
   repairStreak: async () => {
     const { coins, brokenStreakValue, shieldCount } = get();
     const REPAIR_COST = 200;
@@ -449,30 +449,43 @@ export const useProgressStore = create((set, get) => ({
       return { success: false, reason: "insufficient_coins" };
     }
 
-    // Repair successful
+    // Repair successful - restore streak to previous value
+    const restoredStreak = brokenStreakValue;
     const newShieldCount = Math.min(shieldCount + 1, MAX_SHIELDS);
+    const today = new Date().toDateString();
+    
     set({ 
       coins: coins - REPAIR_COST,
-      streak: brokenStreakValue,
+      streak: restoredStreak,
       shieldCount: newShieldCount,
       needsRepairPrompt: false,
       brokenStreakValue: 0,
-      lastCompletedActivityDate: new Date().toDateString(),
+      lastCompletedActivityDate: today,
     });
     get().calculateXPMultiplier();
     get().saveProgress();
     
-    // 🌐 Phase 4: Sync shield count to cloud
-    setTimeout(() => get().syncStreakShieldToCloud(), 50);
-    
-    // Log streak repaired
+    // 🌐 Sync repaired streak + coins + shield to Supabase cloud immediately
     const { data } = await supabase.auth.getUser();
     const userId = data?.user?.id;
     if (userId) {
+      try {
+        await supabase.from("profiles").update({
+          streak: restoredStreak,
+          coins: coins - REPAIR_COST,
+          shield_count: newShieldCount,
+          last_completed_activity_date: today,
+        }).eq("id", userId);
+        console.log("✅ Streak repaired and synced to cloud:", restoredStreak);
+      } catch (err) {
+        console.error("Failed to sync repaired streak to cloud:", err);
+      }
+      
+      // Log streak repaired event
       logStreakEvent(userId, true);
     }
     
-    return { success: true, giftedShield: true };
+    return { success: true, giftedShield: true, restoredStreak };
   },
 
   // ❌ Skip streak repair
