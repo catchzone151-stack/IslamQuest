@@ -501,16 +501,15 @@ export default function Home() {
       <p
         style={{
           textAlign: "center",
-          fontSize: "1.3rem",
+          fontSize: "1.15rem",
           margin: "6px 16px 20px 16px",
-          fontFamily: "'Yuzarsif', serif",
-          fontWeight: "normal",
+          fontWeight: "800",
           color: "#FFD700",
           textShadow: "0 2px 8px rgba(212, 175, 55, 0.4)",
-          letterSpacing: "1px",
+          letterSpacing: "0.5px",
         }}
       >
-        Assalamu Alaikum, {name || "Explorer"}
+        Assalamu Alaikum, {name || "Explorer"} 👋
       </p>
 
       {/*
