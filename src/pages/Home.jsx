@@ -743,8 +743,8 @@ export default function Home() {
         }}
         style={{
           width: "100%",
-          marginTop: 32,
-          marginBottom: 12,
+          marginTop: 20,
+          marginBottom: 0,
           background: "#0a2a43",
           borderRadius: 22,
           padding: "14px 16px",
