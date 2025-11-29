@@ -183,7 +183,7 @@ export default function Lesson() {
         {lesson.title}
       </div>
 
-      {/* Meaning - Only show for Names of Allah ﷾ (pathId 1) */}
+      {/* Meaning - Only show for Names of Allah (pathId 1) */}
       {pathId === "1" && lesson.meaning && (
         <div
           style={{

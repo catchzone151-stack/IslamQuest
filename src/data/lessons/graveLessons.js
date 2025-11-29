@@ -8,9 +8,9 @@ const graveLessons = [
     id: 1,
     title: "Death",
     description: [
-      "Every soul will taste death at its appointed time. No one can delay or advance death even by a single moment. Allah ﷾ alone decides when each person's life will end.",
+      "Every soul will taste death at its appointed time. No one can delay or advance death even by a single moment. Allah alone decides when each person's life will end.",
       "Death is not the end but a transition from this temporary world to the eternal Hereafter. The soul leaves the body and begins a new journey that lasts forever in the next life.",
-      "Remembering death frequently keeps our hearts focused on what truly matters. When we remember death often, we prioritize good deeds over worldly pleasures and prepare properly for our inevitable meeting with Allah ﷾."
+      "Remembering death frequently keeps our hearts focused on what truly matters. When we remember death often, we prioritize good deeds over worldly pleasures and prepare properly for our inevitable meeting with Allah."
     ],
     evidence: {
       arabic: "كُلُّ نَفْسٍ ذَائِقَةُ الْمَوْتِ",
@@ -25,9 +25,9 @@ const graveLessons = [
     id: 2,
     title: "Angels of Death",
     description: [
-      "Allah ﷾ assigned the Angel of Death and his helpers to take souls when their time comes. These angels know exactly when and where each person will die according to Allah ﷾'s perfect decree and divine wisdom.",
-      "For believers, the angels come with beautiful faces and pleasant fragrance, gently extracting the soul like water flowing from a pitcher. They bring glad tidings of Allah ﷾'s mercy, Paradise, and eternal peace and happiness.",
-      "For disbelievers, the angels come with harsh appearance and take the soul roughly like thorns tearing through wet wool. They bring warnings of Allah ﷾'s anger, Hellfire, and eternal punishment for their rejection and sins."
+      "Allah assigned the Angel of Death and his helpers to take souls when their time comes. These angels know exactly when and where each person will die according to Allah's perfect decree and divine wisdom.",
+      "For believers, the angels come with beautiful faces and pleasant fragrance, gently extracting the soul like water flowing from a pitcher. They bring glad tidings of Allah's mercy, Paradise, and eternal peace and happiness.",
+      "For disbelievers, the angels come with harsh appearance and take the soul roughly like thorns tearing through wet wool. They bring warnings of Allah's anger, Hellfire, and eternal punishment for their rejection and sins."
     ],
     evidence: {
       arabic: "الَّذِينَ تَتَوَفَّاهُمُ الْمَلَائِكَةُ طَيِّبِينَ ۙ يَقُولُونَ سَلَامٌ عَلَيْكُمُ ادْخُلُوا الْجَنَّةَ بِمَا كُنتُمْ تَعْمَلُونَ",
@@ -42,7 +42,7 @@ const graveLessons = [
     id: 3,
     title: "Soul's Journey",
     description: [
-      "After death, the believer's soul is taken up through the heavens. At each heaven's gate, the angels welcome it joyfully and open the gates. The soul ascends until it reaches Allah ﷾'s presence.",
+      "After death, the believer's soul is taken up through the heavens. At each heaven's gate, the angels welcome it joyfully and open the gates. The soul ascends until it reaches Allah's presence.",
       "The believer's soul is wrapped in fragrant shrouds from Paradise and carried upward by angels. Every angel in the heavens asks whose blessed soul this is, and the angels reply with the person's best name and titles.",
       "The disbeliever's soul is rejected at the first heaven's gate and thrown back down to earth violently. It is returned to the body in the grave to face questioning and punishment for its disbelief and evil deeds."
     ],
@@ -60,12 +60,12 @@ const graveLessons = [
     title: "Questioning (Munkar & Nakīr)",
     description: [
       "Two angels named Munkar and Nakīr come to question every person in the grave shortly after burial. They ask three critical questions: Who is your Lord? What is your religion? Who is your Prophet?",
-      "The believer who lived with sincere faith answers confidently and correctly: My Lord is Allah ﷾, my religion is Islam, and my Prophet is Muhammad ﷺ. The angels make the grave spacious, comfortable, and filled with light.",
+      "The believer who lived with sincere faith answers confidently and correctly: My Lord is Allah, my religion is Islam, and my Prophet is Muhammad ﷺ. The angels make the grave spacious, comfortable, and filled with light.",
       "The hypocrite and disbeliever struggle to answer, saying they don't know or just followed others blindly. The angels make their grave tight and dark, squeezing them painfully. This is the beginning of their grave's punishment."
     ],
     evidence: {
       arabic: "يُثَبِّتُ اللَّهُ الَّذِينَ آمَنُوا بِالْقَوْلِ الثَّابِتِ فِي الْحَيَاةِ الدُّنْيَا وَفِي الْآخِرَةِ",
-      translation: "Allah ﷾ keeps firm those who believe, with the firm word, in this worldly life and in the Hereafter.",
+      translation: "Allah keeps firm those who believe, with the firm word, in this worldly life and in the Hereafter.",
       source: "Qur'an 14:27"
     },
     keyLesson: "We must live our faith sincerely every day so we can answer the grave's questions with complete confidence.",
@@ -99,7 +99,7 @@ const graveLessons = [
     ],
     evidence: {
       arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عَذَابِ الْقَبْرِ",
-      translation: "O Allah ﷾, I seek refuge in You from the punishment of the grave.",
+      translation: "O Allah, I seek refuge in You from the punishment of the grave.",
       source: "Sahih Bukhari 1377"
     },
     keyLesson: "The grave's punishment is real and severe, so we must repent from sins and live righteously before death comes.",
@@ -116,7 +116,7 @@ const graveLessons = [
     ],
     evidence: {
       arabic: "إِنَّ الَّذِينَ قَالُوا رَبُّنَا اللَّهُ ثُمَّ اسْتَقَامُوا تَتَنَزَّلُ عَلَيْهِمُ الْمَلَائِكَةُ أَلَّا تَخَافُوا وَلَا تَحْزَنُوا وَأَبْشِرُوا بِالْجَنَّةِ الَّتِي كُنتُمْ تُوعَدُونَ",
-      translation: "Indeed, those who have said, 'Our Lord is Allah ﷾' and then remained steadfast - the angels will descend upon them, saying, 'Do not fear and do not grieve but receive good tidings of Paradise.'",
+      translation: "Indeed, those who have said, 'Our Lord is Allah' and then remained steadfast - the angels will descend upon them, saying, 'Do not fear and do not grieve but receive good tidings of Paradise.'",
       source: "Qur'an 41:30"
     },
     keyLesson: "The grave becomes Paradise's garden for those who lived with true faith and righteousness in this world.",
@@ -145,8 +145,8 @@ const graveLessons = [
     title: "Visiting Graves (Adab)",
     description: [
       "Visiting graves reminds us of death and the Hereafter, softening our hearts and reducing attachment to worldly things. The Prophet Muhammad ﷺ encouraged visiting graves to remember our inevitable end and prepare for it.",
-      "When visiting, we greet the deceased with peace: 'Peace be upon you, O inhabitants of the graves, from among the believers and Muslims. We will surely join you. We ask Allah ﷾ for well-being for us and you.'",
-      "We should make sincere prayers for the deceased, asking Allah ﷾ to forgive them and grant them mercy. Visiting should increase our own good deeds and remind us to prepare for death. We must not wail loudly or act disrespectfully."
+      "When visiting, we greet the deceased with peace: 'Peace be upon you, O inhabitants of the graves, from among the believers and Muslims. We will surely join you. We ask Allah for well-being for us and you.'",
+      "We should make sincere prayers for the deceased, asking Allah to forgive them and grant them mercy. Visiting should increase our own good deeds and remind us to prepare for death. We must not wail loudly or act disrespectfully."
     ],
     evidence: {
       arabic: "زُورُوا الْقُبُورَ فَإِنَّهَا تُذَكِّرُكُمُ الْآخِرَةَ",
@@ -161,8 +161,8 @@ const graveLessons = [
     id: 10,
     title: "Protection from Punishment",
     description: [
-      "The Prophet Muhammad ﷺ taught us specific actions that protect from the grave's punishment. These include sincere faith in Allah ﷾, dying as a martyr, dying on Friday, dying while guarding Islam's borders, and reciting Surah Al-Mulk regularly.",
-      "Seeking refuge from the grave's punishment in every prayer is essential. We should say after every prayer: 'O Allah ﷾, I seek refuge in You from the punishment of the grave and the trial of the Dajjal.'",
+      "The Prophet Muhammad ﷺ taught us specific actions that protect from the grave's punishment. These include sincere faith in Allah, dying as a martyr, dying on Friday, dying while guarding Islam's borders, and reciting Surah Al-Mulk regularly.",
+      "Seeking refuge from the grave's punishment in every prayer is essential. We should say after every prayer: 'O Allah, I seek refuge in You from the punishment of the grave and the trial of the Dajjal.'",
       "Living righteously protects us from punishment: praying five daily prayers properly, being honest, avoiding backbiting and gossip, cleaning properly after using the bathroom, honoring parents, and maintaining good character throughout life. Good deeds are our best shield."
     ],
     evidence: {
@@ -178,13 +178,13 @@ const graveLessons = [
     id: 11,
     title: "Martyrs in the Grave",
     description: [
-      "Those who die as martyrs fighting in Allah ﷾'s cause or defending Islam receive special honors. They do not experience the grave's trial or questioning. Their souls go directly to Paradise without waiting in Barzakh.",
+      "Those who die as martyrs fighting in Allah's cause or defending Islam receive special honors. They do not experience the grave's trial or questioning. Their souls go directly to Paradise without waiting in Barzakh.",
       "The martyrs' souls live inside green birds that freely roam Paradise, eating its fruits and drinking from its rivers. They experience Paradise's joys immediately while their bodies rest in their graves without decay or punishment.",
-      "Martyrs do not feel the pain of death except like a small pinch. Allah ﷾ forgives all their sins instantly when the first drop of blood is shed. They wish they could return to earth to be martyred again because of the tremendous honor."
+      "Martyrs do not feel the pain of death except like a small pinch. Allah forgives all their sins instantly when the first drop of blood is shed. They wish they could return to earth to be martyred again because of the tremendous honor."
     ],
     evidence: {
       arabic: "وَلَا تَحْسَبَنَّ الَّذِينَ قُتِلُوا فِي سَبِيلِ اللَّهِ أَمْوَاتًا ۚ بَلْ أَحْيَاءٌ عِندَ رَبِّهِمْ يُرْزَقُونَ",
-      translation: "And do not think of those who have been killed in the cause of Allah ﷾ as dead. Rather, they are alive with their Lord, receiving provision.",
+      translation: "And do not think of those who have been killed in the cause of Allah as dead. Rather, they are alive with their Lord, receiving provision.",
       source: "Qur'an 3:169"
     },
     keyLesson: "Martyrs receive special mercy and immediate Paradise, bypassing the grave's normal trials and experiencing instant divine reward.",
@@ -195,16 +195,16 @@ const graveLessons = [
     id: 12,
     title: "Hope & Reflection",
     description: [
-      "Although the grave's punishment is real and frightening, Allah ﷾'s mercy is greater than His punishment. Sincere repentance before death erases sins completely. Even major sinners who died believing will eventually enter Paradise after purification.",
-      "Reflecting on death and the grave should motivate us toward good deeds, not paralyze us with fear. We balance hope in Allah ﷾'s mercy with fear of His punishment. This balance keeps us striving to improve constantly.",
+      "Although the grave's punishment is real and frightening, Allah's mercy is greater than His punishment. Sincere repentance before death erases sins completely. Even major sinners who died believing will eventually enter Paradise after purification.",
+      "Reflecting on death and the grave should motivate us toward good deeds, not paralyze us with fear. We balance hope in Allah's mercy with fear of His punishment. This balance keeps us striving to improve constantly.",
       "Every day is an opportunity to prepare for the grave through prayer, charity, good character, and seeking forgiveness. We should live as if we might die tomorrow but prepare as if we will live long. This mindset leads to the best life."
     ],
     evidence: {
       arabic: "قُلْ يَا عِبَادِيَ الَّذِينَ أَسْرَفُوا عَلَىٰ أَنفُسِهِمْ لَا تَقْنَطُوا مِن رَّحْمَةِ اللَّهِ ۚ إِنَّ اللَّهَ يَغْفِرُ الذُّنُوبَ جَمِيعًا",
-      translation: "Say, 'O My servants who have transgressed against themselves, do not despair of the mercy of Allah ﷾. Indeed, Allah ﷾ forgives all sins.'",
+      translation: "Say, 'O My servants who have transgressed against themselves, do not despair of the mercy of Allah. Indeed, Allah forgives all sins.'",
       source: "Qur'an 39:53"
     },
-    keyLesson: "We balance fear of the grave with hope in Allah ﷾'s infinite mercy, using both to motivate righteous living.",
+    keyLesson: "We balance fear of the grave with hope in Allah's infinite mercy, using both to motivate righteous living.",
     quizId: 12
   }
 ];

@@ -31,14 +31,14 @@ export default function BismillahScreen() {
           بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيمِ
         </h2>
         <p style={{ marginTop: "8px", color: "#e5e5e5" }}>
-          In the name of Allah ﷾, the Most Merciful, the Most Compassionate
+          In the name of Allah, the Most Merciful, the Most Compassionate
         </p>
         <p style={{ marginTop: "20px", color: "#bbb", fontSize: "0.95rem" }}>
           Begin with a pure intention. <br />
-          Seek knowledge to get closer to Allah ﷾.
+          Seek knowledge to get closer to Allah.
         </p>
         <p style={{ marginTop: "8px", fontSize: "0.9rem", color: "#888" }}>
-          May Allah ﷾ bless your learning and efforts.
+          May Allah bless your learning and efforts.
         </p>
 
         <button

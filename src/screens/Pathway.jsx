@@ -446,7 +446,7 @@ export default function Pathway() {
             : numericPathId === 8
             ? "Discover the greatest Companions of the Prophet ﷺ ⭐"
             : numericPathId === 9
-            ? "Meet the noble Angels of Allah ﷾ ✨"
+            ? "Meet the noble Angels of Allah ✨"
             : numericPathId === 10
             ? "Prepare for the Signs of the Hour ⏳"
             : numericPathId === 11

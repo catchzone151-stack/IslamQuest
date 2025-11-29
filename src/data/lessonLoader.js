@@ -76,7 +76,7 @@ export function getLessonsForPath(pathId) {
     ...lesson,
     id: index + 1,
     unlocked: index === 0, // first lesson always unlocked
-    premium: numericId === 1 && index + 1 > 10, // Names of Allah ﷾ premium flag (lesson 11+)
+    premium: numericId === 1 && index + 1 > 10, // Names of Allah premium flag (lesson 11+)
   }));
 }
 
