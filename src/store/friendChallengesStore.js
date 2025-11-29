@@ -6,6 +6,24 @@ import { CHALLENGE_MODES } from "./challengeStore";
 import { isDevMode } from "../config/dev";
 
 const CHALLENGE_EXPIRY_HOURS = 48;
+const VIEWED_RESULTS_KEY = "iq_viewed_challenge_results";
+
+const getViewedResultIds = () => {
+  try {
+    const stored = localStorage.getItem(VIEWED_RESULTS_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
+};
+
+const addViewedResultId = (challengeId) => {
+  const viewed = getViewedResultIds();
+  if (!viewed.includes(challengeId)) {
+    viewed.push(challengeId);
+    localStorage.setItem(VIEWED_RESULTS_KEY, JSON.stringify(viewed));
+  }
+};
 
 export const useFriendChallengesStore = create((set, get) => ({
   pendingIncoming: [],
@@ -124,10 +142,10 @@ export const useFriendChallengesStore = create((set, get) => ({
       );
       const completedChallenges = challenges.filter(c => c.status === "finished");
       
+      const viewedIds = getViewedResultIds();
       const resultsToView = completedChallenges.filter(c => {
-        if (c.sender_id === currentUserId && !c.sender_viewed_results) return true;
-        if (c.receiver_id === currentUserId && !c.receiver_viewed_results) return true;
-        return false;
+        if (viewedIds.includes(c.id)) return false;
+        return true;
       });
       
       const unreadCount = pendingIncoming.length + resultsToView.length;
@@ -496,6 +514,8 @@ export const useFriendChallengesStore = create((set, get) => ({
   markResultViewed: async (challengeId) => {
     console.log("[FriendChallenges] markResultViewed called:", challengeId);
     
+    addViewedResultId(challengeId);
+    
     const { resultsToView } = get();
     const updatedResults = resultsToView.filter(c => c.id !== challengeId);
     
@@ -504,7 +524,7 @@ export const useFriendChallengesStore = create((set, get) => ({
       unreadCount: updatedResults.length + get().pendingIncoming.length
     });
     
-    console.log("[FriendChallenges] markResultViewed: removed from local state, remaining:", updatedResults.length);
+    console.log("[FriendChallenges] markResultViewed: removed and persisted, remaining:", updatedResults.length);
   },
 
   getChallengeById: (challengeId) => {
