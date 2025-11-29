@@ -18,9 +18,8 @@ export default function NameScreen() {
     <div
       className="onboarding-screen"
       style={{
-        background:
-          "linear-gradient(180deg, #0A1A2F 0%, #060D18 100%)",
-        color: "white",
+        background: "#ffffff",
+        color: "#0a2a43",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
@@ -31,7 +30,7 @@ export default function NameScreen() {
         paddingTop: "24px",
       }}
     >
-      <h2 style={{ color: "#D4AF37", fontSize: "1.4rem" }}>
+      <h2 style={{ color: "#0a2a43", fontSize: "1.4rem" }}>
         What should we call you?
       </h2>
       <input
@@ -43,9 +42,9 @@ export default function NameScreen() {
           marginTop: "24px",
           padding: "12px 16px",
           borderRadius: "10px",
-          border: "1px solid #D4AF37",
-          background: "transparent",
-          color: "white",
+          border: "1px solid #0a2a43",
+          background: "#f8fafc",
+          color: "#0a2a43",
           width: "80%",
           maxWidth: "300px",
           textAlign: "center",
@@ -56,8 +55,8 @@ export default function NameScreen() {
         onClick={handleContinue}
         style={{
           marginTop: "28px",
-          background: "#D4AF37",
-          color: "#0A1A2F",
+          background: "#0a2a43",
+          color: "#ffffff",
           border: "none",
           borderRadius: "10px",
           padding: "12px 36px",
