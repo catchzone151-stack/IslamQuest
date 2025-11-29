@@ -77,7 +77,7 @@ export default function FriendChallengeWaitingModal({ friendName, modeId, score,
       <div className="challenge-modal" onClick={(e) => e.stopPropagation()}>
         <div className="challenge-zayd-container">
           <img 
-            src={assets.mascots.mascot_sitting_v2} 
+            src={assets.mascots.mascot_countdown} 
             alt="Zayd" 
             className="challenge-zayd-bounce"
             style={{ width: 100, height: "auto" }}
