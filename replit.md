@@ -34,8 +34,6 @@ The premium model offers free tier limits and premium plans (Individual £4.99/m
 
 **Events System**: Global Events load cloud entries on mount. Event quiz submissions pass completion time for tiebreaker rankings.
 
-**Dev Mode System**: A toggle in Settings enables local-only testing for all features without affecting production data, indicated by a "DEV MODE ACTIVE" banner.
-
 **In-App Purchase System**: A complete backend-verified IAP system with lifetime unlocks for individual (£4.99) and family (£18) plans.
 -   **Architecture**: Uses `iapService.js` (Capacitor for native StoreKit/Google Play), `purchaseVerificationService.js` (Supabase Edge Functions), `premiumStateService.js` (offline caching, device binding), `deviceService.js` (unique device IDs), and `familyService.js` (family group management). Deep linking handles family invite acceptance.
 -   **Backend (Supabase Edge Functions)**: Handles receipt verification (Apple/Google APIs), premium status validation, device registration, family invite acceptance, and webhook processing for refunds.
