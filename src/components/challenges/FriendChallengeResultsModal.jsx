@@ -25,8 +25,6 @@ export default function FriendChallengeResultsModal({
   const opponentScore = isSender ? challenge?.receiver_score : challenge?.sender_score;
   const myTime = isSender ? challenge?.sender_time : challenge?.receiver_time;
   const opponentTime = isSender ? challenge?.receiver_time : challenge?.sender_time;
-  const myChain = isSender ? challenge?.sender_chain : challenge?.receiver_chain;
-  const opponentChain = isSender ? challenge?.receiver_chain : challenge?.sender_chain;
   
   const winnerId = determineWinner(challenge);
   const isWinner = winnerId === currentUserId;
@@ -62,82 +60,85 @@ export default function FriendChallengeResultsModal({
   const resultText = isDraw ? "It's a Draw!" : (isWinner ? "You Won!" : "You Lost");
   const resultEmoji = isDraw ? "🤝" : (isWinner ? "🏆" : "😔");
   
+  const getMascot = () => {
+    if (isWinner) return assets.mascots.mascot_congratulation;
+    if (isDraw) return assets.mascots.mascot_sitting_v2;
+    return assets.mascots.mascot_defeated;
+  };
+  
   return (
     <div className="challenge-modal-overlay" onClick={handleClose}>
       <div className="challenge-modal" onClick={(e) => e.stopPropagation()}>
-        <div className="challenge-zayd-container">
-          <img 
-            src={isWinner ? assets.mascots.mascot_celebrate : assets.mascots.mascot_sitting_v2} 
-            alt="Zayd" 
-            className={isWinner ? "challenge-zayd-bounce" : ""}
-            style={{ width: 100, height: "auto" }}
-          />
-        </div>
+        <img 
+          src={getMascot()} 
+          alt="Zayd" 
+          style={{ width: 90, height: "auto", marginBottom: 8 }}
+        />
 
         <div 
           style={{ 
-            fontSize: "3rem",
-            margin: "8px 0"
+            fontSize: "2.5rem",
+            margin: "4px 0"
           }}
         >
           {resultEmoji}
         </div>
 
-        <h2 className="challenge-modal-title" style={{ color: resultColor }}>
+        <h2 className="challenge-modal-title" style={{ color: resultColor, marginBottom: 4 }}>
           {resultText}
         </h2>
 
-        <p style={{ color: "#94a3b8", fontSize: "0.9rem", marginBottom: 16 }}>
+        <p style={{ color: "#94a3b8", fontSize: "0.85rem", marginBottom: 12 }}>
           {getModeIcon(modeId)} {getModeName(modeId)}
         </p>
 
         <div style={{
           display: "flex",
           justifyContent: "center",
-          gap: 24,
-          margin: "16px 0",
-          padding: "16px",
+          alignItems: "center",
+          gap: 20,
+          margin: "12px 0",
+          padding: "14px 20px",
           background: "rgba(255,255,255,0.05)",
           borderRadius: 12,
         }}>
           <div style={{ textAlign: "center" }}>
-            <p style={{ color: "#94a3b8", fontSize: "0.8rem", margin: 0 }}>You</p>
+            <p style={{ color: "#94a3b8", fontSize: "0.75rem", margin: 0 }}>You</p>
             <p style={{ 
               color: isWinner || isDraw ? "#10b981" : "#fff", 
-              fontSize: "1.8rem", 
+              fontSize: "1.6rem", 
               fontWeight: 700, 
-              margin: "4px 0" 
+              margin: "2px 0" 
             }}>
-              {modeConfig?.id === "sudden_death" ? myChain : myScore}
+              {myScore}
             </p>
-            {myTime && (
-              <p style={{ color: "#64748b", fontSize: "0.75rem", margin: 0 }}>
+            {myTime != null && (
+              <p style={{ color: "#64748b", fontSize: "0.7rem", margin: 0 }}>
                 {Math.round(myTime)}s
               </p>
             )}
           </div>
           
           <div style={{ 
-            display: "flex", 
-            alignItems: "center",
             color: "#64748b",
-            fontSize: "1.2rem"
+            fontSize: "1rem",
+            fontWeight: 500
           }}>
             vs
           </div>
           
           <div style={{ textAlign: "center" }}>
-            <p style={{ color: "#94a3b8", fontSize: "0.8rem", margin: 0 }}>Opponent</p>
+            <p style={{ color: "#94a3b8", fontSize: "0.75rem", margin: 0 }}>Opponent</p>
             <p style={{ 
               color: !isWinner && !isDraw ? "#ef4444" : "#fff", 
-              fontSize: "1.8rem", 
+              fontSize: "1.6rem", 
               fontWeight: 700, 
-              margin: "4px 0" 
+              margin: "2px 0" 
             }}>
-              {modeConfig?.id === "sudden_death" ? opponentChain : opponentScore}
+              {opponentScore}
             </p>
-            {opponentTime && (
-              <p style={{ color: "#64748b", fontSize: "0.75rem", margin: 0 }}>
+            {opponentTime != null && (
+              <p style={{ color: "#64748b", fontSize: "0.7rem", margin: 0 }}>
                 {Math.round(opponentTime)}s
               </p>
             )}
