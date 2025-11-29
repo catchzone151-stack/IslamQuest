@@ -620,7 +620,18 @@ export default function Friends() {
                             </button>
                             <motion.button
                               whileTap={{ scale: 0.95 }}
-                              onClick={() => declineChallenge(challenge.id)}
+                              type="button"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                console.log("[Friends] Declining challenge:", challenge.id);
+                                declineChallenge(challenge.id).then((result) => {
+                                  console.log("[Friends] Decline result:", result);
+                                  if (!result.success) {
+                                    alert(result.error || "Could not decline challenge");
+                                  }
+                                });
+                              }}
                               style={{
                                 padding: "10px 12px",
                                 background: "rgba(239, 68, 68, 0.2)",
