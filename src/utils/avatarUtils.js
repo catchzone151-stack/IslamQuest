@@ -72,7 +72,7 @@ export const HISTORICAL_AVATARS = [
 ];
 
 // Avatars hidden from user selection (but still valid in DB)
-export const HIDDEN_AVATARS = ["avatar_panda", "avatar_woman_niqab"];
+export const HIDDEN_AVATARS = ["avatar_panda"];
 
 // AVAILABLE_AVATARS = what users can select in UI (excludes hidden avatars)
 export const AVAILABLE_AVATARS = HISTORICAL_AVATARS.filter(
