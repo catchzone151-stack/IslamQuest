@@ -26,9 +26,8 @@ import { createDailyLeaderboardSnapshot } from "./backend/leaderboardSnapshots";
 // ✅ Onboarding screens (loaded immediately for first-time users)
 import BismillahScreen from "./onboarding/BismillahScreen.jsx";
 import SalaamScreen from "./onboarding/SalaamScreen.jsx";
-import NameScreen from "./onboarding/NameScreen.jsx";
+import NameHandleScreen from "./onboarding/NameHandleScreen.jsx";
 import AvatarScreen from "./onboarding/AvatarScreen.jsx";
-import UsernameScreen from "./onboarding/UsernameScreen.jsx";
 
 // 🚀 LAZY LOADED ROUTES - Split bundle for proper hydration
 const Home = lazy(() => import("./pages/Home"));
@@ -48,7 +47,6 @@ const Profile = lazy(() => import("./pages/Profile.jsx"));
 const Premium = lazy(() => import("./pages/Premium.jsx"));
 const Settings = lazy(() => import("./pages/Settings.jsx"));
 const Revise = lazy(() => import("./pages/Revise.jsx"));
-const Login = lazy(() => import("./pages/Login.jsx"));
 const AuthPage = lazy(() => import("./pages/AuthPage.jsx"));
 const QuizScreen = lazy(() => import("./screens/QuizScreen.jsx"));
 const GlobalEvents = lazy(() => import("./pages/GlobalEvents.jsx"));
@@ -134,9 +132,8 @@ function OnboardingRedirector() {
   const stepRoutes = {
     bismillah: "/onboarding/bismillah",
     salaam: "/onboarding/salaam",
-    name: "/onboarding/name",
+    namehandle: "/onboarding/namehandle",
     avatar: "/onboarding/avatar",
-    username: "/onboarding/username",
   };
   
   const targetRoute = (savedStep && stepRoutes[savedStep]) 
@@ -375,7 +372,7 @@ export default function App() {
       import("./pages/Profile.jsx"),
       import("./pages/Settings.jsx"),
       import("./pages/Revise.jsx"),
-      import("./pages/Login.jsx"),
+      import("./pages/AuthPage.jsx"),
     ]);
   }, []);
 
@@ -533,33 +530,20 @@ export default function App() {
             <Routes>
               {!hasOnboarded ? (
                 <>
-                  {/* ✅ ONBOARDING FLOW */}
+                  {/* ✅ ONBOARDING FLOW: Bismillah → Salaam → NameHandle → Avatar → /auth */}
                   <Route
                     path="/onboarding/bismillah"
                     element={<BismillahScreen />}
                   />
                   <Route path="/onboarding/salaam" element={<SalaamScreen />} />
-                  <Route path="/onboarding/name" element={<NameScreen />} />
+                  <Route path="/onboarding/namehandle" element={<NameHandleScreen />} />
                   <Route path="/onboarding/avatar" element={<AvatarScreen />} />
-                  <Route
-                    path="/onboarding/username"
-                    element={<UsernameScreen />}
-                  />
                   {/* Auth page (combined login/signup) */}
                   <Route
                     path="/auth"
                     element={
                       <Suspense fallback={<LoadingScreen />}>
                         <AuthPage />
-                      </Suspense>
-                    }
-                  />
-                  {/* Login route (legacy, redirects to auth) */}
-                  <Route
-                    path="/login"
-                    element={
-                      <Suspense fallback={<LoadingScreen />}>
-                        <Login />
                       </Suspense>
                     }
                   />

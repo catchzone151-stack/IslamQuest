@@ -1,39 +1,40 @@
-// src/onboarding/UsernameScreen.jsx
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "../hooks/useNavigate";
 import { motion } from "framer-motion";
 import { useUserStore } from "../store/useUserStore";
 import { supabase } from "../lib/supabaseClient";
 
-export default function UsernameScreen() {
+export default function NameHandleScreen() {
   const navigate = useNavigate();
-  const { setHandle, setUsername, completeOnboarding, name, avatar, userId, user } = useUserStore();
-  const [input, setInput] = useState("");
+  const { setName, setHandle, setUsername, userId, user } = useUserStore();
+  const [nameValue, setNameValue] = useState("");
+  const [handleValue, setHandleValue] = useState("");
   const [checking, setChecking] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    localStorage.setItem("iq_onboarding_step", "username");
+    localStorage.setItem("iq_onboarding_step", "namehandle");
   }, []);
 
+  const isNameValid = nameValue.trim().length > 0;
+  const isHandleValid = handleValue.trim().length > 0;
+  const isValid = isNameValid && isHandleValid;
+
   const handleContinue = async () => {
-    if (!input.trim()) {
-      setError("Please enter a handle.");
-      return;
-    }
+    if (!isValid) return;
 
     setChecking(true);
     setError("");
 
-    const handleValue = input.trim().toLowerCase();
+    const trimmedName = nameValue.trim();
+    const trimmedHandle = handleValue.trim().toLowerCase().replace(/^@/, "");
     const uid = user?.id || userId;
 
-    // Check if handle already taken (excluding own profile)
     try {
       const { data, error: err } = await supabase
         .from("profiles")
         .select("handle, user_id")
-        .eq("handle", handleValue);
+        .eq("handle", trimmedHandle);
 
       if (!err && data && data.length > 0) {
         const otherUser = data.find(d => d.user_id !== uid);
@@ -47,35 +48,17 @@ export default function UsernameScreen() {
       console.log("Handle check skipped (DB not ready)");
     }
 
-    // Set local state - both handle and username (display name)
-    setHandle(handleValue);
-    if (name) {
-      setUsername(name);
-    }
+    setName(trimmedName);
+    setHandle(trimmedHandle);
+    setUsername(trimmedName);
 
-    // Complete onboarding - saves all identity fields to cloud
-    // ONLY marks hasOnboarded=true AFTER successful save
-    const result = await completeOnboarding();
-    
-    if (!result?.success) {
-      if (result?.error === "handle_taken") {
-        setError("Handle already taken. Try another.");
-      } else {
-        setError("Could not save profile. Please try again.");
-      }
-      setChecking(false);
-      return;
-    }
-    
-    // Navigate to auth page for email/password setup
-    navigate("/auth");
+    setChecking(false);
+    navigate("/onboarding/avatar");
   };
 
   const goToLogin = () => {
     navigate("/auth");
   };
-
-  const isValid = input.trim().length > 0;
 
   return (
     <div
@@ -105,30 +88,76 @@ export default function UsernameScreen() {
         }}
       >
         <h2 style={{ color: "#D4AF37", fontSize: "1.4rem", marginBottom: "8px" }}>
-          Choose your handle
+          Set up your profile
         </h2>
         <p style={{ color: "#ccc", fontSize: "0.95rem", marginBottom: 24 }}>
-          This is your unique @username for friends & challenges
+          Tell us what to call you
         </p>
 
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="@yourhandle"
-          style={{
-            width: "100%",
-            padding: "14px 18px",
-            borderRadius: "12px",
-            border: error ? "2px solid #ef4444" : "2px solid rgba(212, 175, 55, 0.3)",
-            background: "#0E1625",
-            color: "white",
-            fontSize: "1rem",
-            textAlign: "center",
-            outline: "none",
-            marginBottom: "8px",
-          }}
-        />
+        <div style={{ width: "100%", marginBottom: "16px" }}>
+          <label
+            style={{
+              display: "block",
+              textAlign: "left",
+              color: "#aaa",
+              fontSize: "0.85rem",
+              marginBottom: "6px",
+            }}
+          >
+            Display Name
+          </label>
+          <input
+            type="text"
+            value={nameValue}
+            onChange={(e) => setNameValue(e.target.value)}
+            placeholder="Your name"
+            style={{
+              width: "100%",
+              padding: "14px 18px",
+              borderRadius: "12px",
+              border: "2px solid rgba(212, 175, 55, 0.3)",
+              background: "#0E1625",
+              color: "white",
+              fontSize: "1rem",
+              textAlign: "center",
+              outline: "none",
+            }}
+          />
+        </div>
+
+        <div style={{ width: "100%", marginBottom: "8px" }}>
+          <label
+            style={{
+              display: "block",
+              textAlign: "left",
+              color: "#aaa",
+              fontSize: "0.85rem",
+              marginBottom: "6px",
+            }}
+          >
+            Unique Handle
+          </label>
+          <input
+            type="text"
+            value={handleValue}
+            onChange={(e) => setHandleValue(e.target.value)}
+            placeholder="@yourhandle"
+            style={{
+              width: "100%",
+              padding: "14px 18px",
+              borderRadius: "12px",
+              border: error ? "2px solid #ef4444" : "2px solid rgba(212, 175, 55, 0.3)",
+              background: "#0E1625",
+              color: "white",
+              fontSize: "1rem",
+              textAlign: "center",
+              outline: "none",
+            }}
+          />
+          <p style={{ color: "#888", fontSize: "0.8rem", marginTop: "6px", textAlign: "left" }}>
+            This is your unique @username for friends & challenges
+          </p>
+        </div>
 
         {error && (
           <motion.p
