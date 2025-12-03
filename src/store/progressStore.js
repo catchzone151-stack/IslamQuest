@@ -109,17 +109,29 @@ export const useProgressStore = create((set, get) => ({
 
     set({ lessonStates: updated });
 
-    // Push to profile JSON
+    // Push encrypted lesson_states to profile
     const { data } = await supabase.auth.getUser();
     const userId = data?.user?.id;
     if (!userId) return;
 
-    await supabase
+    // Encrypt lesson_states before sending to Supabase (column is TEXT type)
+    const encryptedStates = encryptJSON(updated);
+    if (!encryptedStates) {
+      console.error("Failed to encrypt lesson_states");
+      return;
+    }
+
+    const { error } = await supabase
       .from("profiles")
       .update({
-        lesson_states: updated,
+        lesson_states: encryptedStates,
+        updated_at: new Date().toISOString(),
       })
       .eq("user_id", userId);
+    
+    if (error) {
+      console.error("Failed to save lesson summary:", error);
+    }
   },
 
   loadProgress: () => {
@@ -1125,14 +1137,22 @@ export const useProgressStore = create((set, get) => ({
 
     // ONLY sync progress fields - NEVER identity fields
     // Identity (username, avatar, handle) is managed by useUserStore
-    // Note: lesson_states, paths, locked_lessons are stored in localStorage only
-    // since the profiles table doesn't have these columns
     return {
       xp: state.xp,
       coins: state.coins,
       streak: state.streak,
       premium: state.premium,
       shield_count: state.shieldCount,
+      // Encrypt lesson progress data for cloud storage
+      lesson_states: state.lessonStates && Object.keys(state.lessonStates).length > 0 
+        ? encryptJSON(state.lessonStates) 
+        : null,
+      paths: state.paths && state.paths.length > 0 
+        ? encryptJSON(state.paths) 
+        : null,
+      locked_lessons: state.lockedLessons && Object.keys(state.lockedLessons).length > 0 
+        ? encryptJSON(state.lockedLessons) 
+        : null,
       updated_at: new Date().toISOString()
     };
   },
@@ -1306,7 +1326,6 @@ export const useProgressStore = create((set, get) => ({
 
       // Build final restored state
       // NOTE: ONLY progress fields - identity (username, avatar, handle) is managed by useUserStore
-      // Note: lesson_states, paths, locked_lessons are stored in localStorage only
       const restored = {
         xp: data.xp ?? get().xp,
         coins: data.coins ?? get().coins,
@@ -1318,6 +1337,25 @@ export const useProgressStore = create((set, get) => ({
         // 🛡️ Phase 4: Streak shields cloud sync
         shieldCount: data.shield_count ?? get().shieldCount,
       };
+      
+      // Restore lesson progress if cloud has data
+      if (lessonStates && Object.keys(lessonStates).length > 0) {
+        restored.lessonStates = lessonStates;
+      }
+      if (lockedLessons && Object.keys(lockedLessons).length > 0) {
+        restored.lockedLessons = lockedLessons;
+      }
+      if (paths && paths.length > 0) {
+        // Merge cloud paths with defaults to ensure totalLessons is correct
+        restored.paths = paths.map(cloudPath => {
+          const defaultPath = DEFAULT_PATHS.find(p => p.id === cloudPath.id);
+          return {
+            ...cloudPath,
+            totalLessons: defaultPath ? defaultPath.totalLessons : cloudPath.totalLessons,
+            title: defaultPath ? defaultPath.title : cloudPath.title,
+          };
+        });
+      }
 
       // Apply restored state
       set(restored);
@@ -1326,7 +1364,12 @@ export const useProgressStore = create((set, get) => ({
       // Mark restore time
       get().setLastUpdatedAt(Date.now());
 
-      console.log("✅ Restored from Supabase (cloud → device)");
+      console.log("✅ Restored from Supabase (cloud → device)", { 
+        xp: restored.xp, 
+        coins: restored.coins, 
+        lessonStatesCount: Object.keys(restored.lessonStates || {}).length,
+        pathsCount: restored.paths?.length || 0
+      });
     } catch (err) {
       console.log("❌ loadFromSupabase failed:", err);
     }
