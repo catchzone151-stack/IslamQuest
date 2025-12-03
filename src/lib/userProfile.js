@@ -104,7 +104,7 @@ export async function createProfileAfterOnboarding({ userId, deviceId, username,
   let avatarIndex = DEFAULT_AVATAR_INDEX;
   if (avatar) {
     if (typeof avatar === "string") {
-      avatarIndex = avatarKeyToIndex(avatar) ?? DEFAULT_AVATAR_INDEX;
+      avatarIndex = avatarKeyToIndex(avatar);
     } else if (typeof avatar === "number") {
       avatarIndex = avatar;
     }
@@ -207,10 +207,7 @@ export async function saveCloudProfile(userId, partialData) {
   // Only include avatar if it's set - convert string key to integer index
   if (partialData.avatar) {
     if (typeof partialData.avatar === "string") {
-      const idx = avatarKeyToIndex(partialData.avatar);
-      if (idx !== null) {
-        dataToSave.avatar = idx;
-      }
+      dataToSave.avatar = avatarKeyToIndex(partialData.avatar);
     } else if (typeof partialData.avatar === "number") {
       dataToSave.avatar = partialData.avatar;
     }

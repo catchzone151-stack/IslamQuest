@@ -123,7 +123,7 @@ export default function AuthPage() {
             console.log("Creating profile for existing user with stored data...");
             
             // Convert avatar key to index for database (expects integer)
-            const avatarIndex = avatarKeyToIndex(storedAvatar) ?? 0;
+            const avatarIndex = avatarKeyToIndex(storedAvatar);
             
             // Get existing progress from localStorage/progressStore to preserve it
             const progressState = useProgressStore.getState();
