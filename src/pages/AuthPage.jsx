@@ -74,8 +74,6 @@ export default function AuthPage() {
           return;
         }
 
-        await loadFromSupabase();
-
         const { data: profile } = await supabase
           .from("profiles")
           .select("*")
@@ -104,6 +102,12 @@ export default function AuthPage() {
             loading: false,
             isHydrated: true,
           });
+          
+          // Load progress from cloud after successful login
+          setTimeout(() => {
+            useProgressStore.getState().loadFromSupabase();
+            console.log("Progress loaded from cloud after login");
+          }, 100);
           
           setLoading(false);
           navigate("/");
