@@ -71,7 +71,9 @@ export default function Settings() {
     resetUserData();
     resetAllProgress();
     setOnboarded(false);
-    localStorage.removeItem("iq_onboarding_step");
+    
+    // Set step to "auth" so user goes to login page (not back to first onboarding screen)
+    localStorage.setItem("iq_onboarding_step", "auth");
 
     navigate("/auth", { replace: true });
   };

@@ -9,8 +9,6 @@ export default function AvatarScreen() {
   const navigate = useNavigate();
   const { setAvatar } = useUserStore();
   const [selected, setSelected] = useState(null);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     localStorage.setItem("iq_onboarding_step", "avatar");
@@ -21,39 +19,21 @@ export default function AvatarScreen() {
     AVAILABLE_AVATARS.map(key => assets.avatars[key]).filter(Boolean), 
   []);
 
-  const handleContinue = async () => {
-    if (!selected || saving) return;
-    
-    setSaving(true);
-    setError("");
+  const handleContinue = () => {
+    if (!selected) return;
     
     // Extract avatar key from full path (e.g., "/src/assets/avatars/avatar_robot.png.webp" -> "avatar_robot")
     const avatarKey = selected.split("/").pop().split(".")[0];
     setAvatar(avatarKey);
     
-    try {
-      // Complete onboarding - saves all identity fields to cloud
-      const { completeOnboarding } = useUserStore.getState();
-      const result = await completeOnboarding();
-      
-      if (!result?.success) {
-        console.error("Failed to complete onboarding:", result?.error);
-        if (result?.error === "handle_taken") {
-          setError("Handle already taken. Please go back and choose another.");
-        } else {
-          setError("Could not save profile. Please try again.");
-        }
-        setSaving(false);
-        return;
-      }
-      
-      // Navigate to auth page for email/password setup
-      navigate("/auth");
-    } catch (err) {
-      console.error("Onboarding error:", err);
-      setError("Something went wrong. Please try again.");
-      setSaving(false);
-    }
+    // Save to localStorage for AuthPage to use after signup
+    // Profile will be created in AuthPage with the correct authenticated user ID
+    localStorage.setItem("iq_avatar", avatarKey);
+    localStorage.setItem("iq_onboarding_step", "auth");
+    
+    // Navigate to auth page for email/password setup
+    // Profile creation happens there after successful signup
+    navigate("/auth");
   };
 
   return (
@@ -124,39 +104,24 @@ export default function AvatarScreen() {
         ))}
       </div>
 
-      {error && (
-        <motion.p
-          initial={{ opacity: 0, y: -5 }}
-          animate={{ opacity: 1, y: 0 }}
-          style={{
-            color: "#ef4444",
-            fontSize: "0.85rem",
-            marginTop: "16px",
-            marginBottom: "-12px",
-          }}
-        >
-          {error}
-        </motion.p>
-      )}
-
       <motion.button
         onClick={handleContinue}
-        disabled={!selected || saving}
-        whileHover={selected && !saving ? { scale: 1.03, filter: "brightness(1.1)" } : {}}
-        whileTap={selected && !saving ? { scale: 0.97 } : {}}
+        disabled={!selected}
+        whileHover={selected ? { scale: 1.03, filter: "brightness(1.1)" } : {}}
+        whileTap={selected ? { scale: 0.97 } : {}}
         style={{
           marginTop: 28,
-          background: selected && !saving ? "#D4AF37" : "#7e6a2b",
+          background: selected ? "#D4AF37" : "#7e6a2b",
           color: "#0A1A2F",
           border: "none",
           borderRadius: 10,
           padding: "12px 36px",
           fontWeight: 600,
           fontSize: "1rem",
-          cursor: selected && !saving ? "pointer" : "not-allowed",
+          cursor: selected ? "pointer" : "not-allowed",
         }}
       >
-        {saving ? "Saving..." : "Continue"}
+        Continue
       </motion.button>
     </div>
   );

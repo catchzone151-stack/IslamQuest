@@ -109,12 +109,67 @@ export default function AuthPage() {
           setLoading(false);
           navigate("/");
         } else {
-          // No profile found for this account - need to complete onboarding
-          setLoading(false);
-          setErrorMsg("Please complete your profile setup.");
-          setTimeout(() => {
-            navigate("/onboarding/bismillah");
-          }, 1500);
+          // No profile found - check if user completed onboarding (data in localStorage)
+          const storedName = localStorage.getItem("iq_name") || useUserStore.getState().username;
+          const storedHandle = localStorage.getItem("iq_handle") || useUserStore.getState().handle;
+          const storedAvatar = localStorage.getItem("iq_avatar") || useUserStore.getState().avatar || "avatar_man_lantern";
+          
+          if (storedName && storedHandle) {
+            // User completed onboarding but profile was created with old anonymous ID
+            // Create profile for the authenticated user
+            console.log("Creating profile for existing user with stored data...");
+            
+            const { error: profileError } = await supabase
+              .from("profiles")
+              .upsert({
+                user_id: data.user.id,
+                username: storedName,
+                handle: storedHandle,
+                avatar: storedAvatar,
+                xp: 0,
+                coins: 0,
+                streak: 0,
+                created_at: new Date().toISOString(),
+              }, { onConflict: 'user_id' });
+            
+            if (profileError) {
+              console.error("Profile creation error:", profileError);
+              setErrorMsg("Could not restore your profile. Please try again.");
+              setLoading(false);
+              return;
+            }
+            
+            console.log("PROFILE CREATED for existing user:", data.user.id);
+            
+            setDisplayName(storedName);
+            setHandle(storedHandle);
+            setAvatar(storedAvatar);
+            setOnboarded(true);
+            localStorage.removeItem("iq_onboarding_step");
+            localStorage.setItem("iq_profile_complete", "true");
+            
+            useUserStore.setState({ 
+              user: data.user, 
+              userId: data.user.id,
+              username: storedName,
+              handle: storedHandle,
+              avatar: storedAvatar,
+              profileReady: true,
+              hasOnboarded: true,
+              loading: false,
+              isHydrated: true,
+            });
+            
+            setLoading(false);
+            navigate("/");
+          } else {
+            // No stored data - user needs to complete onboarding
+            setLoading(false);
+            setErrorMsg("Please complete your profile setup.");
+            setTimeout(() => {
+              navigate("/onboarding/bismillah");
+            }, 1500);
+          }
         }
         return;
       } else {
@@ -135,33 +190,61 @@ export default function AuthPage() {
         }
 
         if (data?.user) {
-          await loadFromSupabase();
-
-          const { data: profile } = await supabase
+          // Get onboarding data from localStorage/store
+          const storedName = localStorage.getItem("iq_name") || useUserStore.getState().username || "Student";
+          const storedHandle = localStorage.getItem("iq_handle") || useUserStore.getState().handle;
+          const storedAvatar = localStorage.getItem("iq_avatar") || useUserStore.getState().avatar || "avatar_man_lantern";
+          
+          // Create profile for the NEW authenticated user
+          const { error: profileError } = await supabase
             .from("profiles")
-            .select("*")
-            .eq("user_id", data.user.id)
-            .maybeSingle();
-
-          if (profile && profile.username && profile.handle) {
-            setDisplayName(profile.username || "Student");
-            setHandle(profile.handle || null);
-            const avatarKey = typeof profile.avatar === "number"
-              ? avatarIndexToKey(profile.avatar)
-              : profile.avatar;
-            setAvatar(avatarKey || "avatar_man_lantern");
-            setOnboarded(true);
-            localStorage.removeItem("iq_onboarding_step");
-            await useUserStore.getState().init();
+            .upsert({
+              user_id: data.user.id,
+              username: storedName,
+              handle: storedHandle,
+              avatar: storedAvatar,
+              xp: 0,
+              coins: 0,
+              streak: 0,
+              created_at: new Date().toISOString(),
+            }, { onConflict: 'user_id' });
+          
+          if (profileError) {
+            console.error("Profile creation error:", profileError);
+            setErrorMsg("Account created but profile setup failed. Please try logging in.");
             setLoading(false);
-            navigate("/");
-          } else {
-            setLoading(false);
-            setErrorMsg("Account created! Complete your profile to continue.");
-            setTimeout(() => {
-              navigate("/onboarding/bismillah");
-            }, 1500);
+            return;
           }
+          
+          console.log("PROFILE CREATED for user:", data.user.id);
+          
+          // Set local state
+          setDisplayName(storedName);
+          setHandle(storedHandle);
+          setAvatar(storedAvatar);
+          setOnboarded(true);
+          
+          // Clear onboarding step and mark complete
+          localStorage.removeItem("iq_onboarding_step");
+          localStorage.setItem("iq_profile_complete", "true");
+          
+          // Set store state
+          useUserStore.setState({ 
+            user: data.user, 
+            userId: data.user.id,
+            username: storedName,
+            handle: storedHandle,
+            avatar: storedAvatar,
+            profileReady: true,
+            hasOnboarded: true,
+            loading: false,
+            isHydrated: true,
+          });
+          
+          await loadFromSupabase();
+          
+          setLoading(false);
+          navigate("/");
         } else {
           setLoading(false);
           setErrorMsg("Account created! Check your email to verify.");

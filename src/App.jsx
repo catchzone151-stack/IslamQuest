@@ -129,11 +129,22 @@ function LoadingScreen() {
 // 🔄 Onboarding step redirector - resumes from saved step
 function OnboardingRedirector() {
   const savedStep = localStorage.getItem("iq_onboarding_step");
+  
+  // Check if user already completed name/handle setup (has data in localStorage)
+  const hasName = localStorage.getItem("iq_name");
+  const hasHandle = localStorage.getItem("iq_handle");
+  
+  // If user has name/handle data, they already went through onboarding - send to auth
+  if (hasName && hasHandle && !savedStep) {
+    return <Navigate to="/auth" replace />;
+  }
+  
   const stepRoutes = {
     bismillah: "/onboarding/bismillah",
     salaam: "/onboarding/salaam",
     namehandle: "/onboarding/namehandle",
     avatar: "/onboarding/avatar",
+    auth: "/auth",
   };
   
   const targetRoute = (savedStep && stepRoutes[savedStep]) 
