@@ -31,6 +31,8 @@ The premium model offers free tier limits and premium plans (Individual £4.99/m
 -   **Merged NameHandleScreen**: Single screen for both display name and @handle input with uniqueness validation.
 -   **AuthPage Features**: Toggle between Login/SignUp modes, email + password fields, Continue button (disabled until valid), inline Forgot Password modal, Terms & Privacy footer.
 -   **Supabase Auth Methods**: `signUp` for registration, `signInWithPassword` for login, `resetPasswordForEmail` for forgot password (redirects to `/reset-password`), `updateUser` for password reset.
+-   **Welcome Email**: On successful signup, a welcome email is sent via Resend API through a secure Supabase Edge Function (`send-welcome-email`). The Edge Function requires valid user authentication and verifies the recipient matches the authenticated user to prevent abuse.
+-   **Password Reset**: `resetPasswordForEmail` sends a reset link, user clicks → `/reset-password` page → enters new password → `updateUser` → redirects to login. All user data (profile, progress, avatar, XP, coins) is preserved in Supabase and restored on next login.
 -   **Onboarding Persistence**: Current step saved in localStorage (`iq_onboarding_step`), app resumes from saved step if closed mid-onboarding.
 -   **Session Handling**: If active Supabase session with complete profile exists → skip onboarding → go Home. Logout clears session and redirects to `/auth`.
 -   **Routes**: `/auth` (combined login/signup), `/reset-password` (password reset after email link). Old `/login` route removed.
@@ -68,6 +70,7 @@ Asset management is centralized via `assets.js` for optimized WebP images, inclu
 ### Third-Party Services
 -   **Supabase**: Authentication, database, real-time subscriptions, and Edge Functions.
 -   **OneSignal**: Push notifications via `react-onesignal` v2 API, integrated for daily reminders using Supabase Edge Functions.
+-   **Resend**: Transactional email service for welcome emails. Requires `RESEND_API_KEY` secret configured in Supabase dashboard and verified sender domain.
 
 ### Core Libraries
 -   **UI & Animation**: `framer-motion`, `lucide-react`, `react-router-dom`.
