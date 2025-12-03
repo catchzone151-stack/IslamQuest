@@ -1125,6 +1125,8 @@ export const useProgressStore = create((set, get) => ({
 
     // ONLY sync progress fields - NEVER identity fields
     // Identity (username, avatar, handle) is managed by useUserStore
+    // Note: lesson_states, paths, locked_lessons are stored in localStorage only
+    // since the profiles table doesn't have these columns
     return {
       xp: state.xp,
       coins: state.coins,
@@ -1304,6 +1306,7 @@ export const useProgressStore = create((set, get) => ({
 
       // Build final restored state
       // NOTE: ONLY progress fields - identity (username, avatar, handle) is managed by useUserStore
+      // Note: lesson_states, paths, locked_lessons are stored in localStorage only
       const restored = {
         xp: data.xp ?? get().xp,
         coins: data.coins ?? get().coins,

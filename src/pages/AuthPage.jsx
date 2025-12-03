@@ -11,7 +11,6 @@ import SittingMascot from "../assets/mascots/mascot_sitting.webp";
 export default function AuthPage() {
   const navigate = useNavigate();
   const { setOnboarded, setDisplayName, setHandle, setAvatar } = useUserStore();
-  const loadFromSupabase = useProgressStore((s) => s.loadFromSupabase);
 
   const [mode, setMode] = useState("login");
   const [email, setEmail] = useState("");
@@ -122,6 +121,14 @@ export default function AuthPage() {
             // Convert avatar key to index for database (expects integer)
             const avatarIndex = avatarKeyToIndex(storedAvatar) ?? 0;
             
+            // Get existing progress from localStorage/progressStore to preserve it
+            const progressState = useProgressStore.getState();
+            const localXp = progressState.xp || 0;
+            const localCoins = progressState.coins || 0;
+            const localStreak = progressState.streak || 0;
+            
+            console.log("Preserving local progress:", { xp: localXp, coins: localCoins, streak: localStreak });
+            
             const { error: profileError } = await supabase
               .from("profiles")
               .upsert({
@@ -129,9 +136,9 @@ export default function AuthPage() {
                 username: storedName,
                 handle: storedHandle,
                 avatar: avatarIndex,
-                xp: 0,
-                coins: 0,
-                streak: 0,
+                xp: localXp,
+                coins: localCoins,
+                streak: localStreak,
                 created_at: new Date().toISOString(),
               }, { onConflict: 'user_id' });
             
@@ -162,6 +169,12 @@ export default function AuthPage() {
               loading: false,
               isHydrated: true,
             });
+            
+            // Sync full progress to cloud (includes lessonStates, paths)
+            setTimeout(() => {
+              useProgressStore.getState().syncToSupabase();
+              console.log("Progress synced to cloud after login");
+            }, 500);
             
             setLoading(false);
             navigate("/");
@@ -201,6 +214,14 @@ export default function AuthPage() {
           // Convert avatar key to index for database (expects integer)
           const avatarIndex = avatarKeyToIndex(storedAvatar) ?? 0;
           
+          // Get existing progress from localStorage/progressStore to preserve it
+          const progressState = useProgressStore.getState();
+          const localXp = progressState.xp || 0;
+          const localCoins = progressState.coins || 0;
+          const localStreak = progressState.streak || 0;
+          
+          console.log("Preserving local progress on signup:", { xp: localXp, coins: localCoins, streak: localStreak });
+          
           // Create profile for the NEW authenticated user
           const { error: profileError } = await supabase
             .from("profiles")
@@ -209,9 +230,9 @@ export default function AuthPage() {
               username: storedName,
               handle: storedHandle,
               avatar: avatarIndex,
-              xp: 0,
-              coins: 0,
-              streak: 0,
+              xp: localXp,
+              coins: localCoins,
+              streak: localStreak,
               created_at: new Date().toISOString(),
             }, { onConflict: 'user_id' });
           
@@ -247,7 +268,12 @@ export default function AuthPage() {
             isHydrated: true,
           });
           
-          await loadFromSupabase();
+          // Sync full progress to cloud (includes lessonStates, paths)
+          // This pushes local progress to the newly created profile
+          setTimeout(() => {
+            useProgressStore.getState().syncToSupabase();
+            console.log("Progress synced to cloud after signup");
+          }, 500);
           
           setLoading(false);
           navigate("/");
