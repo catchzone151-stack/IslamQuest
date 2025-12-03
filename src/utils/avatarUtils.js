@@ -12,7 +12,7 @@ import { useUserStore } from "../store/useUserStore";
 // Male Ninja - Reserved for "The Dev" NPC
 export const NINJA_MALE_KEY = "avatar_ninja_male";
 export const DEV_AVATAR_KEY = NINJA_MALE_KEY; // Alias for backward compatibility
-export const DEV_USER_ID = "the_dev_npc"; // The Dev NPC's unique ID
+export const DEV_USER_ID = "the_dev_permanent"; // The Dev NPC's unique ID (matches leaderboard)
 
 // Female Ninja - Reserved for special user (to be assigned via Supabase)
 export const NINJA_FEMALE_KEY = "avatar_ninja_female";
