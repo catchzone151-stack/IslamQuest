@@ -701,14 +701,6 @@ export default function App() {
                     }
                   />
                   <Route
-                    path="/login"
-                    element={
-                      <Suspense fallback={<LoadingScreen />}>
-                        <Login />
-                      </Suspense>
-                    }
-                  />
-                  <Route
                     path="/reset-premium"
                     element={
                       <Suspense fallback={<LoadingScreen />}>
