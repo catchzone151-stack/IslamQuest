@@ -35,7 +35,7 @@ const useReviseStore = create((set, get) => ({
     get().saveReviseData();
   },
 
-  saveWrongQuestion: (cardId, lessonId) => {
+  saveWrongQuestion: (cardId, lessonId, unlockCallback) => {
     const pool = [...get().weakPool];
     const existing = pool.find(
       (i) => i.cardId === cardId && i.lessonId === lessonId
@@ -49,16 +49,40 @@ const useReviseStore = create((set, get) => ({
         lessonId,
         timesCorrect: 0,
         timesWrong: 1,
-        lastReviewedAt: now,
+        reviewedOnce: false,
+        firstWrongAt: now,
+        lastReviewedAt: null,
         nextReviewAt: now,
         updatedAt: now,
       });
     } else {
       existing.timesWrong += 1;
-      existing.lastReviewedAt = now;
       existing.updatedAt = now;
     }
 
+    set({ weakPool: pool, needsSync: true });
+    get().saveReviseData();
+    
+    if (unlockCallback) {
+      unlockCallback();
+    }
+  },
+
+  markQuestionReviewed: (cardId, lessonId, wasCorrect) => {
+    const pool = [...get().weakPool];
+    const item = pool.find(
+      (i) => i.cardId === cardId && i.lessonId === lessonId
+    );
+    if (item) {
+      item.reviewedOnce = true;
+      item.lastReviewedAt = Date.now();
+      item.updatedAt = Date.now();
+      if (wasCorrect) {
+        item.timesCorrect += 1;
+      } else {
+        item.timesWrong += 1;
+      }
+    }
     set({ weakPool: pool, needsSync: true });
     get().saveReviseData();
   },
@@ -70,6 +94,8 @@ const useReviseStore = create((set, get) => ({
     );
     if (item) {
       item.timesCorrect += 1;
+      item.reviewedOnce = true;
+      item.lastReviewedAt = Date.now();
       item.updatedAt = Date.now();
     }
     set({ weakPool: pool, needsSync: true });
