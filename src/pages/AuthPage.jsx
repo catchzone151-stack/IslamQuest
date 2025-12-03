@@ -5,7 +5,7 @@ import { Eye, EyeOff, Mail, Lock, X, Send } from "lucide-react";
 import { supabase } from "../lib/supabaseClient";
 import { useUserStore } from "../store/useUserStore";
 import { useProgressStore } from "../store/progressStore";
-import { avatarIndexToKey } from "../utils/avatarUtils";
+import { avatarIndexToKey, avatarKeyToIndex } from "../utils/avatarUtils";
 import SittingMascot from "../assets/mascots/mascot_sitting.webp";
 
 export default function AuthPage() {
@@ -119,13 +119,16 @@ export default function AuthPage() {
             // Create profile for the authenticated user
             console.log("Creating profile for existing user with stored data...");
             
+            // Convert avatar key to index for database (expects integer)
+            const avatarIndex = avatarKeyToIndex(storedAvatar) ?? 0;
+            
             const { error: profileError } = await supabase
               .from("profiles")
               .upsert({
                 user_id: data.user.id,
                 username: storedName,
                 handle: storedHandle,
-                avatar: storedAvatar,
+                avatar: avatarIndex,
                 xp: 0,
                 coins: 0,
                 streak: 0,
@@ -195,6 +198,9 @@ export default function AuthPage() {
           const storedHandle = localStorage.getItem("iq_handle") || useUserStore.getState().handle;
           const storedAvatar = localStorage.getItem("iq_avatar") || useUserStore.getState().avatar || "avatar_man_lantern";
           
+          // Convert avatar key to index for database (expects integer)
+          const avatarIndex = avatarKeyToIndex(storedAvatar) ?? 0;
+          
           // Create profile for the NEW authenticated user
           const { error: profileError } = await supabase
             .from("profiles")
@@ -202,7 +208,7 @@ export default function AuthPage() {
               user_id: data.user.id,
               username: storedName,
               handle: storedHandle,
-              avatar: storedAvatar,
+              avatar: avatarIndex,
               xp: 0,
               coins: 0,
               streak: 0,
