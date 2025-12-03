@@ -31,6 +31,22 @@ export default function AuthPage() {
     setTimeout(() => setShake(false), 500);
   };
 
+  const sendWelcomeEmail = async (userEmail, username) => {
+    try {
+      const { data, error } = await supabase.functions.invoke("send-welcome-email", {
+        body: { email: userEmail, username },
+      });
+      
+      if (error) {
+        console.warn("[WelcomeEmail] Failed to send:", error);
+      } else {
+        console.log("[WelcomeEmail] Sent successfully to:", userEmail);
+      }
+    } catch (err) {
+      console.warn("[WelcomeEmail] Error:", err.message);
+    }
+  };
+
   const handleSubmit = async () => {
     setErrorMsg("");
 
@@ -248,6 +264,9 @@ export default function AuthPage() {
           }
           
           console.log("PROFILE CREATED for user:", data.user.id);
+          
+          // Send welcome email (non-blocking)
+          sendWelcomeEmail(email.trim(), storedName);
           
           // Set local state
           setDisplayName(storedName);
