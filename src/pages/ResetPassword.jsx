@@ -62,7 +62,7 @@ export default function ResetPassword() {
       setLoading(false);
 
       setTimeout(() => {
-        navigate("/");
+        navigate("/auth");
       }, 2000);
     } catch (err) {
       setError("Something went wrong. Please try again.");
@@ -122,7 +122,7 @@ export default function ResetPassword() {
           </p>
 
           <button
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/auth")}
             style={{
               background: "linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%)",
               border: "none",
@@ -363,7 +363,7 @@ export default function ResetPassword() {
         </button>
 
         <button
-          onClick={() => navigate("/login")}
+          onClick={() => navigate("/auth")}
           style={{
             width: "100%",
             background: "transparent",

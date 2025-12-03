@@ -71,8 +71,9 @@ export default function Settings() {
     resetUserData();
     resetAllProgress();
     setOnboarded(false);
+    localStorage.removeItem("iq_onboarding_step");
 
-    navigate("/onboarding/bismillah", { replace: true });
+    navigate("/auth", { replace: true });
   };
 
   const handleDeleteAccount = async () => {

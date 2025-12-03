@@ -1,5 +1,5 @@
 // src/onboarding/UsernameScreen.jsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "../hooks/useNavigate";
 import { motion } from "framer-motion";
 import { useUserStore } from "../store/useUserStore";
@@ -11,6 +11,10 @@ export default function UsernameScreen() {
   const [input, setInput] = useState("");
   const [checking, setChecking] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    localStorage.setItem("iq_onboarding_step", "username");
+  }, []);
 
   const handleContinue = async () => {
     if (!input.trim()) {
@@ -63,12 +67,12 @@ export default function UsernameScreen() {
       return;
     }
     
-    // Navigate to homepage
-    navigate("/");
+    // Navigate to auth page for email/password setup
+    navigate("/auth");
   };
 
   const goToLogin = () => {
-    navigate("/login");
+    navigate("/auth");
   };
 
   const isValid = input.trim().length > 0;

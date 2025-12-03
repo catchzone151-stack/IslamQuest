@@ -26,6 +26,14 @@ The premium model offers free tier limits and premium plans (Individual £4.99/m
 
 **Supabase Integration**: Silent account creation on first launch with permanent Supabase UID. Auto-login on app open. `progressStore` automatically syncs to Supabase cloud on state changes with throttling and AES encryption. Cloud data is restored on app start if newer.
 
+**Email/Password Authentication System**: Proper email/password auth with combined login/signup page (`AuthPage.jsx`).
+-   **Auth Flow**: Onboarding (Bismillah → Salaam → Name → Avatar → Username) → Auth Page → Home.
+-   **AuthPage Features**: Toggle between Login/SignUp modes, email + password fields, Continue button (disabled until valid), Forgot Password link, Terms & Privacy footer.
+-   **Supabase Auth Methods**: `signUp` for registration, `signInWithPassword` for login, `resetPasswordForEmail` for forgot password (redirects to `/reset-password`), `updateUser` for password reset.
+-   **Onboarding Persistence**: Current step saved in localStorage (`iq_onboarding_step`), app resumes from saved step if closed mid-onboarding.
+-   **Session Handling**: If active Supabase session with complete profile exists → skip onboarding → go Home. Logout clears session and redirects to `/auth`.
+-   **Routes**: `/auth` (combined login/signup), `/reset-password` (password reset after email link).
+
 **Challenge System**: The challenge system operates in two modes:
 -   **Solo/Boss Challenges (Local)**: All single-player challenge functionality runs locally without Supabase dependency. `createChallenge()` builds local challenge objects, `submitChallengeAttempt()` generates random opponent results locally, and `saveBossAttempt()` stores Boss Level attempts in localStorage. Questions are pulled from completed lesson pools or a diverse fallback pool.
 -   **Friend Challenges (Supabase-Backed)**: Real-time multiplayer challenges use Supabase for synchronization. `friendChallengesStore.js` manages the full challenge lifecycle with Realtime subscriptions. The `friend_challenges` table stores challenge data, questions (as JSONB), scores, times, and completion status. Both players receive identical question sets for fairness. Four game modes are supported: Mind Battle (untimed), Lightning Round (timed), Sudden Death (chain-based), and Speed Run (speed-based). Winner determination considers score, time, and chain length depending on mode. Rewards are distributed only when both players complete their attempts.

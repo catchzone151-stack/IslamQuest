@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "../hooks/useNavigate";
 import { motion } from "framer-motion";
 import zayd from "../assets/mascots/mascot_onboarding.webp";
 
 export default function SalaamScreen() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.setItem("iq_onboarding_step", "salaam");
+  }, []);
 
   return (
     <div

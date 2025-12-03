@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "../hooks/useNavigate";
 import { useUserStore } from "../store/useUserStore";
 
@@ -6,6 +6,10 @@ export default function NameScreen() {
   const navigate = useNavigate();
   const { setName } = useUserStore();
   const [value, setValue] = useState("");
+
+  useEffect(() => {
+    localStorage.setItem("iq_onboarding_step", "name");
+  }, []);
 
   const handleContinue = () => {
     if (value.trim().length > 0) {

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "../hooks/useNavigate";
 import { useUserStore } from "../store/useUserStore";
 import { motion } from "framer-motion";
@@ -9,6 +9,10 @@ export default function AvatarScreen() {
   const navigate = useNavigate();
   const { setAvatar } = useUserStore();
   const [selected, setSelected] = useState(null);
+
+  useEffect(() => {
+    localStorage.setItem("iq_onboarding_step", "avatar");
+  }, []);
 
   // Only show AVAILABLE_AVATARS (excludes hidden ninja avatars)
   const sortedAvatars = useMemo(() => 

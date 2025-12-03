@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "../hooks/useNavigate";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { supabase } from "../lib/supabaseClient";
 import { useUserStore } from "../store/useUserStore";
@@ -9,11 +9,12 @@ import { avatarIndexToKey } from "../utils/avatarUtils";
 import ForgotPasswordModal from "../components/ForgotPasswordModal";
 import SittingMascot from "../assets/mascots/mascot_sitting.webp";
 
-export default function Login() {
+export default function AuthPage() {
   const navigate = useNavigate();
   const { setOnboarded, setDisplayName, setHandle, setAvatar } = useUserStore();
   const loadFromSupabase = useProgressStore((s) => s.loadFromSupabase);
 
+  const [mode, setMode] = useState("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -22,16 +23,39 @@ export default function Login() {
   const [shake, setShake] = useState(false);
   const [showForgotModal, setShowForgotModal] = useState(false);
 
+  const isLogin = mode === "login";
+  const isValidEmail = email.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  const isValidPassword = password.length >= 6;
+  const isFormValid = isValidEmail && isValidPassword;
+
   const triggerShake = () => {
     setShake(true);
     setTimeout(() => setShake(false), 500);
   };
 
-  const handleLogin = async () => {
+  const handleSubmit = async () => {
     setErrorMsg("");
-    
-    if (!email.trim() || !password) {
-      setErrorMsg("Please enter email and password.");
+
+    if (!email.trim()) {
+      setErrorMsg("Please enter your email address.");
+      triggerShake();
+      return;
+    }
+
+    if (!isValidEmail) {
+      setErrorMsg("Please enter a valid email address.");
+      triggerShake();
+      return;
+    }
+
+    if (!password) {
+      setErrorMsg("Please enter a password.");
+      triggerShake();
+      return;
+    }
+
+    if (!isValidPassword) {
+      setErrorMsg("Password must be at least 6 characters.");
       triggerShake();
       return;
     }
@@ -39,42 +63,93 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: email.trim().toLowerCase(),
-        password,
-      });
+      if (isLogin) {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: email.trim().toLowerCase(),
+          password,
+        });
 
-      if (error) {
-        setErrorMsg("Invalid email or password");
-        triggerShake();
+        if (error) {
+          setErrorMsg("Invalid email or password");
+          triggerShake();
+          setLoading(false);
+          return;
+        }
+
+        await loadFromSupabase();
+
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("user_id", data.user.id)
+          .maybeSingle();
+
+        if (profile) {
+          setDisplayName(profile.username || "Student");
+          setHandle(profile.handle || null);
+          const avatarKey = typeof profile.avatar === "number"
+            ? avatarIndexToKey(profile.avatar)
+            : profile.avatar;
+          setAvatar(avatarKey || "avatar_man_lantern");
+        }
+
+        setOnboarded(true);
+        localStorage.removeItem("iq_onboarding_step");
+        await useUserStore.getState().init();
         setLoading(false);
-        return;
+        navigate("/");
+      } else {
+        const { data, error } = await supabase.auth.signUp({
+          email: email.trim().toLowerCase(),
+          password,
+        });
+
+        if (error) {
+          if (error.message.includes("already registered")) {
+            setErrorMsg("This email is already registered. Try logging in.");
+          } else {
+            setErrorMsg(error.message || "Could not create account.");
+          }
+          triggerShake();
+          setLoading(false);
+          return;
+        }
+
+        if (data?.user) {
+          await loadFromSupabase();
+
+          const { data: profile } = await supabase
+            .from("profiles")
+            .select("*")
+            .eq("user_id", data.user.id)
+            .maybeSingle();
+
+          if (profile && profile.username && profile.handle) {
+            setDisplayName(profile.username || "Student");
+            setHandle(profile.handle || null);
+            const avatarKey = typeof profile.avatar === "number"
+              ? avatarIndexToKey(profile.avatar)
+              : profile.avatar;
+            setAvatar(avatarKey || "avatar_man_lantern");
+            setOnboarded(true);
+            localStorage.removeItem("iq_onboarding_step");
+            await useUserStore.getState().init();
+            setLoading(false);
+            navigate("/");
+          } else {
+            setLoading(false);
+            setErrorMsg("Account created! Complete your profile to continue.");
+            setTimeout(() => {
+              navigate("/onboarding/bismillah");
+            }, 1500);
+          }
+        } else {
+          setLoading(false);
+          setErrorMsg("Account created! Check your email to verify.");
+        }
       }
-
-      await loadFromSupabase();
-
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("user_id", data.user.id)
-        .maybeSingle();
-
-      if (profile) {
-        setDisplayName(profile.username || "Student");
-        setHandle(profile.handle || null);
-        const avatarKey = typeof profile.avatar === "number" 
-          ? avatarIndexToKey(profile.avatar) 
-          : profile.avatar;
-        setAvatar(avatarKey || "avatar_man_lantern");
-      }
-
-      setOnboarded(true);
-
-      await useUserStore.getState().init();
-
-      setLoading(false);
-      navigate("/");
     } catch (err) {
+      console.error("Auth error:", err);
       setErrorMsg("Something went wrong. Please try again.");
       triggerShake();
       setLoading(false);
@@ -98,6 +173,7 @@ export default function Login() {
         alignItems: "center",
         justifyContent: "center",
         width: "100%",
+        minHeight: "100vh",
       }}
     >
       <motion.img
@@ -132,21 +208,72 @@ export default function Login() {
         }}
       >
         <div className="text-center mb-6">
-          <h1
+          <AnimatePresence mode="wait">
+            <motion.h1
+              key={mode}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              style={{
+                fontSize: "1.75rem",
+                fontWeight: 700,
+                background: "linear-gradient(90deg, #fff 0%, #ffd88a 50%, #ffb700 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                marginBottom: "8px",
+              }}
+            >
+              {isLogin ? "Welcome Back" : "Create Account"}
+            </motion.h1>
+          </AnimatePresence>
+          <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem" }}>
+            {isLogin ? "Sign in to continue your journey" : "Start your Islamic learning journey"}
+          </p>
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            background: "rgba(0,0,0,0.3)",
+            borderRadius: "12px",
+            padding: "4px",
+            marginBottom: "20px",
+          }}
+        >
+          <button
+            onClick={() => { setMode("login"); setErrorMsg(""); }}
             style={{
-              fontSize: "1.75rem",
-              fontWeight: 700,
-              background: "linear-gradient(90deg, #fff 0%, #ffd88a 50%, #ffb700 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              marginBottom: "8px",
+              flex: 1,
+              padding: "10px",
+              borderRadius: "10px",
+              border: "none",
+              background: isLogin ? "linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%)" : "transparent",
+              color: isLogin ? "#fff" : "rgba(255,255,255,0.5)",
+              fontWeight: 600,
+              fontSize: "0.9rem",
+              cursor: "pointer",
+              transition: "all 0.2s",
             }}
           >
-            Welcome Back
-          </h1>
-          <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem" }}>
-            Sign in to continue your journey
-          </p>
+            Log In
+          </button>
+          <button
+            onClick={() => { setMode("signup"); setErrorMsg(""); }}
+            style={{
+              flex: 1,
+              padding: "10px",
+              borderRadius: "10px",
+              border: "none",
+              background: !isLogin ? "linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%)" : "transparent",
+              color: !isLogin ? "#fff" : "rgba(255,255,255,0.5)",
+              fontWeight: 600,
+              fontSize: "0.9rem",
+              cursor: "pointer",
+              transition: "all 0.2s",
+            }}
+          >
+            Sign Up
+          </button>
         </div>
 
         <div style={{ marginBottom: "16px" }}>
@@ -167,7 +294,7 @@ export default function Login() {
               placeholder="Email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleLogin()}
+              onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
               style={{
                 width: "100%",
                 background: "var(--card-bg, rgba(11, 30, 54, 0.8))",
@@ -206,10 +333,10 @@ export default function Login() {
             />
             <input
               type={showPassword ? "text" : "password"}
-              placeholder="Password"
+              placeholder={isLogin ? "Password" : "Create password (6+ characters)"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleLogin()}
+              onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
               style={{
                 width: "100%",
                 background: "var(--card-bg, rgba(11, 30, 54, 0.8))",
@@ -273,22 +400,22 @@ export default function Login() {
 
         <motion.button
           whileTap={{ scale: 0.98 }}
-          onClick={handleLogin}
-          disabled={loading}
+          onClick={handleSubmit}
+          disabled={loading || !isFormValid}
           style={{
             width: "100%",
             height: "50px",
-            background: loading
-              ? "rgba(139, 92, 246, 0.5)"
+            background: loading || !isFormValid
+              ? "rgba(139, 92, 246, 0.3)"
               : "linear-gradient(90deg, var(--accent, #6366f1) 0%, var(--accent-glow, #8b5cf6) 100%)",
             border: "none",
             borderRadius: "12px",
-            color: "#fff",
+            color: loading || !isFormValid ? "rgba(255,255,255,0.5)" : "#fff",
             fontSize: "1rem",
             fontWeight: 600,
-            cursor: loading ? "not-allowed" : "pointer",
+            cursor: loading || !isFormValid ? "not-allowed" : "pointer",
             transition: "all 0.2s",
-            boxShadow: loading ? "none" : "0 4px 20px rgba(139, 92, 246, 0.3)",
+            boxShadow: loading || !isFormValid ? "none" : "0 4px 20px rgba(139, 92, 246, 0.3)",
             marginTop: "8px",
           }}
         >
@@ -306,60 +433,49 @@ export default function Login() {
                   borderRadius: "50%",
                 }}
               />
-              Signing in...
+              {isLogin ? "Signing in..." : "Creating account..."}
             </span>
           ) : (
-            "Sign In"
+            "Continue"
           )}
         </motion.button>
 
-        <button
-          onClick={() => setShowForgotModal(true)}
-          style={{
-            background: "transparent",
-            border: "none",
-            color: "rgba(255,255,255,0.5)",
-            fontSize: "0.85rem",
-            marginTop: "16px",
-            cursor: "pointer",
-            textDecoration: "underline",
-            textUnderlineOffset: "3px",
-            width: "100%",
-            textAlign: "center",
-            transition: "color 0.2s",
-          }}
-          onMouseEnter={(e) => (e.target.style.color = "rgba(255,255,255,0.8)")}
-          onMouseLeave={(e) => (e.target.style.color = "rgba(255,255,255,0.5)")}
-        >
-          Forgot Password?
-        </button>
+        {isLogin && (
+          <button
+            onClick={() => setShowForgotModal(true)}
+            style={{
+              background: "transparent",
+              border: "none",
+              color: "rgba(255,255,255,0.5)",
+              fontSize: "0.85rem",
+              marginTop: "16px",
+              cursor: "pointer",
+              textDecoration: "underline",
+              textUnderlineOffset: "3px",
+              width: "100%",
+              textAlign: "center",
+              transition: "color 0.2s",
+            }}
+            onMouseEnter={(e) => (e.target.style.color = "rgba(255,255,255,0.8)")}
+            onMouseLeave={(e) => (e.target.style.color = "rgba(255,255,255,0.5)")}
+          >
+            Forgot Password?
+          </button>
+        )}
 
-        <div
+        <p
           style={{
             marginTop: "24px",
-            paddingTop: "20px",
+            paddingTop: "16px",
             borderTop: "1px solid rgba(255,255,255,0.08)",
+            color: "rgba(255,255,255,0.35)",
+            fontSize: "0.75rem",
             textAlign: "center",
+            lineHeight: 1.5,
           }}
         >
-          <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.85rem" }}>
-            Don't have an account?{" "}
-            <button
-              onClick={() => navigate("/auth")}
-              style={{
-                background: "transparent",
-                border: "none",
-                color: "#ffd88a",
-                fontSize: "0.85rem",
-                fontWeight: 600,
-                cursor: "pointer",
-                textDecoration: "none",
-              }}
-            >
-              Create one
-            </button>
-          </p>
-        </div>
+          By continuing you agree to our Terms of Service & Privacy Policy.
+        </p>
       </motion.div>
 
       <ForgotPasswordModal

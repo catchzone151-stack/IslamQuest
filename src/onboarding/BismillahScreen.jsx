@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "../hooks/useNavigate";
 import { motion } from "framer-motion";
 
 export default function BismillahScreen() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.setItem("iq_onboarding_step", "bismillah");
+  }, []);
 
   return (
     <div

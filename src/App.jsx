@@ -1,6 +1,6 @@
 // src/App.jsx
 import React, { useEffect, Suspense, lazy } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate, Navigate } from "react-router-dom";
 
 // ✅ Critical imports (loaded immediately)
 import GlobalErrorBoundary from "./components/GlobalErrorBoundary.jsx";
@@ -49,6 +49,7 @@ const Premium = lazy(() => import("./pages/Premium.jsx"));
 const Settings = lazy(() => import("./pages/Settings.jsx"));
 const Revise = lazy(() => import("./pages/Revise.jsx"));
 const Login = lazy(() => import("./pages/Login.jsx"));
+const AuthPage = lazy(() => import("./pages/AuthPage.jsx"));
 const QuizScreen = lazy(() => import("./screens/QuizScreen.jsx"));
 const GlobalEvents = lazy(() => import("./pages/GlobalEvents.jsx"));
 const ResetPremium = lazy(() => import("./pages/ResetPremium.jsx"));
@@ -125,6 +126,24 @@ function LoadingScreen() {
       `}</style>
     </div>
   );
+}
+
+// 🔄 Onboarding step redirector - resumes from saved step
+function OnboardingRedirector() {
+  const savedStep = localStorage.getItem("iq_onboarding_step");
+  const stepRoutes = {
+    bismillah: "/onboarding/bismillah",
+    salaam: "/onboarding/salaam",
+    name: "/onboarding/name",
+    avatar: "/onboarding/avatar",
+    username: "/onboarding/username",
+  };
+  
+  const targetRoute = (savedStep && stepRoutes[savedStep]) 
+    ? stepRoutes[savedStep] 
+    : "/onboarding/bismillah";
+  
+  return <Navigate to={targetRoute} replace />;
 }
 
 // ✅ Optional: temporary placeholder for future quiz
@@ -526,7 +545,16 @@ export default function App() {
                     path="/onboarding/username"
                     element={<UsernameScreen />}
                   />
-                  {/* Login route available during onboarding */}
+                  {/* Auth page (combined login/signup) */}
+                  <Route
+                    path="/auth"
+                    element={
+                      <Suspense fallback={<LoadingScreen />}>
+                        <AuthPage />
+                      </Suspense>
+                    }
+                  />
+                  {/* Login route (legacy, redirects to auth) */}
                   <Route
                     path="/login"
                     element={
@@ -553,8 +581,8 @@ export default function App() {
                       </Suspense>
                     }
                   />
-                  {/* Fallback — always go to Bismillah if not onboarded */}
-                  <Route path="*" element={<BismillahScreen />} />
+                  {/* Fallback — resume from saved step or start from bismillah */}
+                  <Route path="*" element={<OnboardingRedirector />} />
                 </>
               ) : (
                 <>
@@ -677,6 +705,14 @@ export default function App() {
                     element={
                       <Suspense fallback={<LoadingScreen />}>
                         <Revise />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="/auth"
+                    element={
+                      <Suspense fallback={<LoadingScreen />}>
+                        <AuthPage />
                       </Suspense>
                     }
                   />
