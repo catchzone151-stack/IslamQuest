@@ -28,41 +28,56 @@ export const HIDDEN_NINJA_AVATARS = [NINJA_MALE_KEY, NINJA_FEMALE_KEY];
 // EXCLUDES all ninja avatars (they are hidden)
 // ═══════════════════════════════════════════════════════════════════
 
-export const AVAILABLE_AVATARS = [
-  // Male avatars (9 total) - removed avatar_man_welldone (now a mascot)
-  "avatar_man_lantern",
-  "avatar_man_tasbih",
-  "avatar_man_cup",
-  "avatar_man_spoon",
-  "avatar_man_soccer",
-  "avatar_man_sunglasses",
-  "avatar_man_construction",
-  "avatar_man_thumbsup",
-  "avatar_man_scholar",
+// ═══════════════════════════════════════════════════════════════════
+// HISTORICAL AVATAR ORDER - DO NOT MODIFY!
+// This array maintains the exact original ordering for DB index mapping.
+// Existing users have avatar indices stored that depend on this order.
+// ═══════════════════════════════════════════════════════════════════
+export const HISTORICAL_AVATARS = [
+  // Male avatars (9 total)
+  "avatar_man_lantern",      // 0
+  "avatar_man_tasbih",       // 1
+  "avatar_man_cup",          // 2
+  "avatar_man_spoon",        // 3
+  "avatar_man_soccer",       // 4
+  "avatar_man_sunglasses",   // 5
+  "avatar_man_construction", // 6
+  "avatar_man_thumbsup",     // 7
+  "avatar_man_scholar",      // 8
   // Women avatars - cartoon/neon/pixel styles (3 total)
-  "avatar_woman_cartoon",
-  "avatar_woman_pixel",
-  "avatar_woman_neon",
-  // Female avatars - hijab/traditional styles (12 total) - NINJA_FEMALE and niqab removed
-  "avatar_woman_hijab_book",
-  "avatar_woman_hijab_dua",
-  "avatar_woman_hijab_tasbih",
-  "avatar_woman_hijab_studying",
-  "avatar_woman_hijab_beads",
-  "avatar_woman_crown",
-  "avatar_woman_cooking",
-  "avatar_woman_elder_cane",
-  "avatar_woman_hawa",
-  "avatar_woman_hijab_pink",
-  "avatar_woman_hijab_tan",
-  "avatar_woman_hijab_purse",
-  // Other avatars (5 total) - panda removed
-  "avatar_dino",
-  "avatar_fox",
-  "avatar_rabbit",
-  "avatar_robot",
-  "avatar_unicorn",
+  "avatar_woman_cartoon",    // 9
+  "avatar_woman_pixel",      // 10
+  "avatar_woman_neon",       // 11
+  // Female avatars - hijab/traditional styles (13 total)
+  "avatar_woman_hijab_book",     // 12
+  "avatar_woman_hijab_dua",      // 13
+  "avatar_woman_hijab_tasbih",   // 14
+  "avatar_woman_hijab_studying", // 15
+  "avatar_woman_hijab_beads",    // 16
+  "avatar_woman_niqab",          // 17 - HIDDEN from selection
+  "avatar_woman_crown",          // 18
+  "avatar_woman_cooking",        // 19
+  "avatar_woman_elder_cane",     // 20
+  "avatar_woman_hawa",           // 21
+  "avatar_woman_hijab_pink",     // 22
+  "avatar_woman_hijab_tan",      // 23
+  "avatar_woman_hijab_purse",    // 24
+  // Other avatars (6 total)
+  "avatar_dino",             // 25
+  "avatar_fox",              // 26
+  "avatar_panda",            // 27 - HIDDEN from selection
+  "avatar_rabbit",           // 28
+  "avatar_robot",            // 29
+  "avatar_unicorn",          // 30
 ];
+
+// Avatars hidden from user selection (but still valid in DB)
+export const HIDDEN_AVATARS = ["avatar_panda", "avatar_woman_niqab"];
+
+// AVAILABLE_AVATARS = what users can select in UI (excludes hidden avatars)
+export const AVAILABLE_AVATARS = HISTORICAL_AVATARS.filter(
+  (key) => !HIDDEN_AVATARS.includes(key) && !HIDDEN_NINJA_AVATARS.includes(key)
+);
 
 // Legacy avatar key mappings (for simulated friends and old data)
 const LEGACY_AVATAR_MAP = {
@@ -274,8 +289,9 @@ export function assignAvatarsToUsers(users, options = {}) {
 // ═══════════════════════════════════════════════════════════════════
 
 // Complete list of ALL avatars including hidden ninjas (for DB mapping)
+// Uses HISTORICAL_AVATARS to maintain stable indices for existing DB records
 export const ALL_AVATARS = [
-  ...AVAILABLE_AVATARS,
+  ...HISTORICAL_AVATARS,
   NINJA_MALE_KEY,
   NINJA_FEMALE_KEY,
 ];

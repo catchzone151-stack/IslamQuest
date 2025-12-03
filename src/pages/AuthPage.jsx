@@ -216,7 +216,7 @@ export default function AuthPage() {
           const storedAvatar = localStorage.getItem("iq_avatar") || useUserStore.getState().avatar || "avatar_man_lantern";
           
           // Convert avatar key to index for database (expects integer)
-          const avatarIndex = avatarKeyToIndex(storedAvatar) ?? 0;
+          const avatarIndex = avatarKeyToIndex(storedAvatar);
           
           // Get existing progress from localStorage/progressStore to preserve it
           const progressState = useProgressStore.getState();
