@@ -51,7 +51,9 @@ function enrichWeakPool(weakPool) {
         ...enriched,
         timesWrong: item.timesWrong || 0,
         timesCorrect: item.timesCorrect || 0,
+        reviewedOnce: item.reviewedOnce || false,
         lastReviewedAt: item.lastReviewedAt,
+        firstWrongAt: item.firstWrongAt,
       };
     })
     .filter(Boolean);
@@ -74,8 +76,8 @@ export default function Revise() {
   const [answers, setAnswers] = useState([]);
   const [showResults, setShowResults] = useState(false);
 
-  const { loadReviseData, getWeakPool, clearCorrectQuestion, saveWrongQuestion } = useReviseStore();
-  const { addXPAndCoins, reviewMistakesUnlocked, smartRevisionUnlocked, getTotalCompletedLessons, paths } = useProgressStore();
+  const { loadReviseData, getWeakPool, clearCorrectQuestion, saveWrongQuestion, markQuestionReviewed } = useReviseStore();
+  const { addXPAndCoins, reviewMistakesUnlocked, smartRevisionUnlocked, getTotalCompletedLessons, paths, unlockReviewMistakes } = useProgressStore();
   const analytics = useAnalytics();
 
   useEffect(() => {
@@ -88,7 +90,12 @@ export default function Revise() {
 
   const getRevisionSession = (count = 10) => {
     if (enrichedPool.length === 0) return [];
-    const sorted = [...enrichedPool].sort((a, b) => (b.timesWrong || 0) - (a.timesWrong || 0));
+    const sorted = [...enrichedPool].sort((a, b) => {
+      const aReviewed = a.reviewedOnce ? 1 : 0;
+      const bReviewed = b.reviewedOnce ? 1 : 0;
+      if (aReviewed !== bReviewed) return aReviewed - bReviewed;
+      return (b.timesWrong || 0) - (a.timesWrong || 0);
+    });
     return shuffle(sorted.slice(0, count));
   };
 
@@ -178,11 +185,7 @@ export default function Revise() {
 
     if (mode === "mistakes") {
       finalAnswers.forEach((ans) => {
-        if (ans.correct) {
-          clearCorrectQuestion(ans.cardId, ans.lessonId);
-        } else {
-          saveWrongQuestion(ans.cardId, ans.lessonId);
-        }
+        markQuestionReviewed(ans.cardId, ans.lessonId, ans.correct);
       });
 
       const xpPerCorrect = 4;
@@ -452,30 +455,34 @@ export default function Revise() {
         <div
           onClick={reviewMistakesUnlocked && hasWeakQuestions ? startMistakesReview : null}
           style={{
-            background:
-              reviewMistakesUnlocked && hasWeakQuestions
-                ? "linear-gradient(145deg, rgba(212,175,55,0.2), rgba(16,185,129,0.1))"
-                : "linear-gradient(145deg, rgba(107,114,128,0.2), rgba(75,85,99,0.1))",
-            border: `2px solid ${reviewMistakesUnlocked && hasWeakQuestions ? "rgba(212,175,55,0.5)" : "rgba(107,114,128,0.3)"}`,
+            background: reviewMistakesUnlocked
+              ? (hasWeakQuestions 
+                  ? "linear-gradient(145deg, rgba(212,175,55,0.2), rgba(16,185,129,0.1))"
+                  : "linear-gradient(145deg, rgba(16,185,129,0.1), rgba(107,114,128,0.1))")
+              : "linear-gradient(145deg, rgba(107,114,128,0.2), rgba(75,85,99,0.1))",
+            border: `2px solid ${reviewMistakesUnlocked ? (hasWeakQuestions ? "rgba(212,175,55,0.5)" : "rgba(16,185,129,0.3)") : "rgba(107,114,128,0.3)"}`,
             borderRadius: 20,
             padding: 24,
             marginBottom: 20,
-            cursor: reviewMistakesUnlocked && hasWeakQuestions ? "pointer" : "not-allowed",
+            cursor: reviewMistakesUnlocked && hasWeakQuestions ? "pointer" : "default",
             transition: "all 0.3s ease",
-            boxShadow:
-              reviewMistakesUnlocked && hasWeakQuestions
-                ? "0 8px 20px rgba(212,175,55,0.2)"
-                : "0 4px 10px rgba(0,0,0,0.1)",
-            opacity: reviewMistakesUnlocked && hasWeakQuestions ? 1 : 0.6,
+            boxShadow: reviewMistakesUnlocked
+              ? (hasWeakQuestions 
+                  ? "0 8px 20px rgba(212,175,55,0.2)"
+                  : "0 4px 15px rgba(16,185,129,0.1)")
+              : "0 4px 10px rgba(0,0,0,0.1)",
+            opacity: reviewMistakesUnlocked ? 1 : 0.6,
           }}
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
-              <h3 style={{ fontSize: "1.3rem", fontWeight: 700, color: "#D4AF37", margin: "0 0 8px" }}>
+              <h3 style={{ fontSize: "1.3rem", fontWeight: 700, color: reviewMistakesUnlocked ? "#D4AF37" : "#9CA3AF", margin: "0 0 8px" }}>
                 Review Mistakes
               </h3>
               <p style={{ opacity: 0.85, margin: "0 0 12px", fontSize: "0.9rem", lineHeight: 1.5 }}>
-                Fix mistakes from past lessons, quizzes, and challenges.
+                {reviewMistakesUnlocked && !hasWeakQuestions 
+                  ? "No mistakes to review - keep up the great work!"
+                  : "Fix mistakes from past lessons, quizzes, and challenges."}
               </p>
               <div style={{ display: "flex", gap: 10, flexWrap: "wrap", fontSize: "0.85rem", opacity: 0.7 }}>
                 <span>10 questions</span>
@@ -487,10 +494,9 @@ export default function Revise() {
             </div>
             <div
               style={{
-                background:
-                  reviewMistakesUnlocked && hasWeakQuestions
-                    ? "rgba(212,175,55,0.2)"
-                    : "rgba(107,114,128,0.2)",
+                background: reviewMistakesUnlocked
+                  ? (hasWeakQuestions ? "rgba(212,175,55,0.2)" : "rgba(16,185,129,0.2)")
+                  : "rgba(107,114,128,0.2)",
                 borderRadius: "50%",
                 width: 60,
                 height: 60,
@@ -499,9 +505,12 @@ export default function Revise() {
                 justifyContent: "center",
                 fontSize: "1.8rem",
                 flexShrink: 0,
+                color: reviewMistakesUnlocked 
+                  ? (hasWeakQuestions ? "#D4AF37" : "#10B981")
+                  : "#9CA3AF",
               }}
             >
-              {reviewMistakesUnlocked && hasWeakQuestions ? enrichedPool.length : "?"}
+              {reviewMistakesUnlocked ? (hasWeakQuestions ? enrichedPool.length : "✓") : "?"}
             </div>
           </div>
 

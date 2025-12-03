@@ -42,6 +42,7 @@ const QuizScreen = () => {
 
   const applyQuizResults = useProgressStore((s) => s.applyQuizResults);
   const getLessonLockState = useProgressStore((s) => s.getLessonLockState);
+  const unlockReviewMistakes = useProgressStore((s) => s.unlockReviewMistakes);
   const { showModal } = useModalStore();
   const saveWrongQuestion = useReviseStore((s) => s.saveWrongQuestion);
 
@@ -105,7 +106,7 @@ const QuizScreen = () => {
 
     if (!isCorrect) {
       const cardId = `${pathId}_${lessonId}_${currentQ}`;
-      saveWrongQuestion(cardId, parseInt(lessonId));
+      saveWrongQuestion(cardId, parseInt(lessonId), unlockReviewMistakes);
     }
 
     setTimeout(() => {
