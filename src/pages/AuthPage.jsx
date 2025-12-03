@@ -90,13 +90,33 @@ export default function AuthPage() {
             ? avatarIndexToKey(profile.avatar)
             : profile.avatar;
           setAvatar(avatarKey || "avatar_man_lantern");
+          
+          // Profile exists - mark as onboarded and go home
+          setOnboarded(true);
+          localStorage.removeItem("iq_onboarding_step");
+          localStorage.setItem("iq_profile_complete", "true");
+          
+          // Set profile ready state directly (don't call init() as it re-runs profile checks)
+          useUserStore.setState({ 
+            user: data.user, 
+            userId: data.user.id,
+            profileReady: true,
+            hasOnboarded: true,
+            loading: false,
+            isHydrated: true,
+          });
+          
+          setLoading(false);
+          navigate("/");
+        } else {
+          // No profile found for this account - need to complete onboarding
+          setLoading(false);
+          setErrorMsg("Please complete your profile setup.");
+          setTimeout(() => {
+            navigate("/onboarding/bismillah");
+          }, 1500);
         }
-
-        setOnboarded(true);
-        localStorage.removeItem("iq_onboarding_step");
-        await useUserStore.getState().init();
-        setLoading(false);
-        navigate("/");
+        return;
       } else {
         const { data, error } = await supabase.auth.signUp({
           email: email.trim().toLowerCase(),
