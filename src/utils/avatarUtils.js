@@ -43,13 +43,12 @@ export const AVAILABLE_AVATARS = [
   "avatar_woman_cartoon",
   "avatar_woman_pixel",
   "avatar_woman_neon",
-  // Female avatars - hijab/traditional styles (13 total) - NINJA_FEMALE removed from this list
+  // Female avatars - hijab/traditional styles (12 total) - NINJA_FEMALE and niqab removed
   "avatar_woman_hijab_book",
   "avatar_woman_hijab_dua",
   "avatar_woman_hijab_tasbih",
   "avatar_woman_hijab_studying",
   "avatar_woman_hijab_beads",
-  "avatar_woman_niqab",
   "avatar_woman_crown",
   "avatar_woman_cooking",
   "avatar_woman_elder_cane",
@@ -57,10 +56,9 @@ export const AVAILABLE_AVATARS = [
   "avatar_woman_hijab_pink",
   "avatar_woman_hijab_tan",
   "avatar_woman_hijab_purse",
-  // Other avatars (6 total)
+  // Other avatars (5 total) - panda removed
   "avatar_dino",
   "avatar_fox",
-  "avatar_panda",
   "avatar_rabbit",
   "avatar_robot",
   "avatar_unicorn",
@@ -72,8 +70,11 @@ const LEGACY_AVATAR_MAP = {
   avatar2: "avatar_woman_hijab_book",
   avatar3: "avatar_man_soccer",
   avatar4: "avatar_woman_hijab_dua",
-  avatar5: "avatar_panda",
-  avatar6: "avatar_fox",
+  avatar5: "avatar_fox",
+  avatar6: "avatar_rabbit",
+  // Map removed avatars to safe alternatives
+  avatar_panda: "avatar_fox",
+  avatar_woman_niqab: "avatar_woman_hijab_book",
 };
 
 // ═══════════════════════════════════════════════════════════════════
@@ -281,13 +282,43 @@ export const ALL_AVATARS = [
 
 /**
  * Convert avatar string key to integer index for Supabase storage
+ * Normalizes legacy keys and removed avatar keys before lookup
  * @param {string} avatarKey - Avatar key like "avatar_woman_crown"
- * @returns {number|null} Integer index or null if not found
+ * @returns {number} Integer index (defaults to 0 if not found after normalization)
  */
 export function avatarKeyToIndex(avatarKey) {
-  if (!avatarKey) return null;
-  const index = ALL_AVATARS.indexOf(avatarKey);
-  return index >= 0 ? index : null;
+  if (!avatarKey) {
+    console.warn("[avatarKeyToIndex] No avatar key provided, defaulting to index 0");
+    return 0;
+  }
+  
+  // Normalize the key - check legacy mappings first
+  let normalizedKey = avatarKey;
+  if (LEGACY_AVATAR_MAP[avatarKey]) {
+    normalizedKey = LEGACY_AVATAR_MAP[avatarKey];
+    console.log(`[avatarKeyToIndex] Normalized legacy key ${avatarKey} → ${normalizedKey}`);
+  }
+  
+  // Try to find in ALL_AVATARS
+  let index = ALL_AVATARS.indexOf(normalizedKey);
+  
+  // If still not found, try stripping any path or extension (for asset URLs)
+  if (index < 0 && normalizedKey.includes("/")) {
+    const keyFromPath = normalizedKey.split("/").pop()?.replace(/\.(webp|png|jpg)$/i, "");
+    if (keyFromPath) {
+      index = ALL_AVATARS.indexOf(keyFromPath);
+      if (index >= 0) {
+        console.log(`[avatarKeyToIndex] Extracted key from path: ${keyFromPath}`);
+      }
+    }
+  }
+  
+  if (index < 0) {
+    console.warn(`[avatarKeyToIndex] Unknown avatar key "${avatarKey}", defaulting to index 0`);
+    return 0;
+  }
+  
+  return index;
 }
 
 /**
