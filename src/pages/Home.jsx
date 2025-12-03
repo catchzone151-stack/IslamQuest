@@ -488,7 +488,7 @@ export default function Home() {
           style={{
             willChange: "transform",
             transform: "translateZ(0)",
-            fontFamily: "'Yuzarsif', serif",
+            fontFamily: "'Hidayatullah', serif",
             fontSize: "2.8rem",
             fontWeight: "normal",
             letterSpacing: "1px",
