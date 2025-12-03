@@ -40,6 +40,10 @@ The premium model offers free tier limits and premium plans (Individual £4.99/m
 -   **Friend Challenges (Supabase-Backed)**: Real-time multiplayer challenges use Supabase for synchronization. `friendChallengesStore.js` manages the full challenge lifecycle with Realtime subscriptions. The `friend_challenges` table stores challenge data, questions (as JSONB), scores, times, and completion status. Both players receive identical question sets for fairness. Four game modes are supported: Mind Battle (untimed), Lightning Round (timed), Sudden Death (chain-based), and Speed Run (speed-based). Winner determination considers score, time, and chain length depending on mode. Rewards are distributed only when both players complete their attempts.
 
 **Revision System**: The `reviseStore` stores lightweight data (cardId, lessonId, tracking counts) for weak questions, with full question content looked up at render time. Cloud sync is handled via `revisionSync.js` with specific Supabase table `revision_items`.
+-   **Permanent Unlock**: Once a user makes their first mistake, `reviewMistakesUnlocked` is set to `true` and persisted via `progressStore.saveProgress()`. This flag is never reset to `false`.
+-   **Question Tracking**: Each weak question tracks `reviewedOnce` (true if answered during revision), `firstWrongAt` (timestamp of first mistake), `lastReviewedAt` (null until reviewed), `timesCorrect`, and `timesWrong`.
+-   **Sorting Priority**: Unreviewed questions (`reviewedOnce: false`) appear at the top of revision sessions, followed by reviewed questions sorted by `timesWrong`.
+-   **Empty State**: When unlocked but no mistakes exist, the Review Mistakes card shows a green checkmark with "No mistakes to review" message instead of locking.
 
 **Events System**: Global Events load cloud entries on mount. Event quiz submissions pass completion time for tiebreaker rankings.
 
