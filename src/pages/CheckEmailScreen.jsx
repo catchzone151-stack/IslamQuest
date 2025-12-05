@@ -5,7 +5,7 @@ import { Mail, RefreshCw, CheckCircle } from "lucide-react";
 import { supabase } from "../lib/supabaseClient";
 import { useUserStore } from "../store/useUserStore";
 import { useProgressStore } from "../store/progressStore";
-import { avatarIndexToKey } from "../utils/avatarUtils";
+import { avatarIndexToKey, avatarKeyToIndex } from "../utils/avatarUtils";
 
 export default function CheckEmailScreen() {
   const navigate = useNavigate();
@@ -80,6 +80,68 @@ export default function CheckEmailScreen() {
           }, 100);
           
           navigate("/");
+        } else {
+          console.log("No profile found after email confirmation - creating from localStorage");
+          const storedName = localStorage.getItem("iq_name");
+          const storedHandle = localStorage.getItem("iq_handle");
+          const storedAvatar = localStorage.getItem("iq_avatar") || "avatar_man_lantern";
+          const avatarIndex = avatarKeyToIndex(storedAvatar);
+          
+          if (storedName && storedHandle) {
+            const { data: newProfile, error } = await supabase
+              .from("profiles")
+              .insert({
+                user_id: user.id,
+                username: storedName,
+                handle: storedHandle,
+                avatar: avatarIndex,
+              })
+              .select()
+              .single();
+            
+            if (error) {
+              console.error("Failed to create profile:", error);
+              if (error.code === "23505") {
+                localStorage.setItem("iq_onboarding_step", "handle");
+                navigate("/onboarding/handle");
+              }
+              return;
+            }
+            
+            console.log("Profile created successfully:", newProfile);
+            
+            setDisplayName(storedName);
+            setHandle(storedHandle);
+            setAvatar(storedAvatar);
+            setOnboarded(true);
+            
+            localStorage.removeItem("iq_onboarding_step");
+            localStorage.setItem("iq_profile_complete", "true");
+            
+            useUserStore.setState({ 
+              user: user, 
+              userId: user.id,
+              username: storedName,
+              handle: storedHandle,
+              avatar: storedAvatar,
+              name: storedName,
+              profile: newProfile,
+              profileReady: true,
+              hasOnboarded: true,
+              loading: false,
+              isHydrated: true,
+            });
+            
+            setTimeout(() => {
+              useProgressStore.getState().loadFromSupabase();
+            }, 100);
+            
+            navigate("/");
+          } else {
+            console.log("Missing localStorage data, redirecting to onboarding");
+            localStorage.setItem("iq_onboarding_step", "name");
+            navigate("/onboarding/name");
+          }
         }
       }
     };
