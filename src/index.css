@@ -18,6 +18,15 @@
   font-display: swap;
 }
 
+/* TT Chocolates font for greeting text */
+@font-face {
+  font-family: 'TT Chocolates';
+  src: url('./assets/fonts/TTChocolates.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Reset */
 * {
   margin: 0;

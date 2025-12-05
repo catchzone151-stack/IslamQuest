@@ -507,6 +507,7 @@ export default function Home() {
           color: "#FFD700",
           textShadow: "0 2px 8px rgba(212, 175, 55, 0.4)",
           letterSpacing: "0.5px",
+          fontFamily: "'TT Chocolates', sans-serif",
         }}
       >
         Assalamu Alaikum, {name || "Explorer"} 👋
