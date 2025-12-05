@@ -22,18 +22,13 @@ export default function AvatarScreen() {
   const handleContinue = () => {
     if (!selected) return;
     
-    // Extract avatar key from full path (e.g., "/src/assets/avatars/avatar_robot.png.webp" -> "avatar_robot")
     const avatarKey = selected.split("/").pop().split(".")[0];
     setAvatar(avatarKey);
     
-    // Save to localStorage for AuthPage to use after signup
-    // Profile will be created in AuthPage with the correct authenticated user ID
     localStorage.setItem("iq_avatar", avatarKey);
-    localStorage.setItem("iq_onboarding_step", "auth");
+    localStorage.setItem("iq_onboarding_step", "handle");
     
-    // Navigate to auth page for email/password setup
-    // Profile creation happens there after successful signup
-    navigate("/auth");
+    navigate("/onboarding/handle");
   };
 
   return (

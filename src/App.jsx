@@ -28,6 +28,7 @@ import BismillahScreen from "./onboarding/BismillahScreen.jsx";
 import SalaamScreen from "./onboarding/SalaamScreen.jsx";
 import NameHandleScreen from "./onboarding/NameHandleScreen.jsx";
 import AvatarScreen from "./onboarding/AvatarScreen.jsx";
+import HandleScreen from "./onboarding/HandleScreen.jsx";
 
 // 🚀 LAZY LOADED ROUTES - Split bundle for proper hydration
 const Home = lazy(() => import("./pages/Home"));
@@ -53,6 +54,7 @@ const GlobalEvents = lazy(() => import("./pages/GlobalEvents.jsx"));
 const ResetPremium = lazy(() => import("./pages/ResetPremium.jsx"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword.jsx"));
 const Goodbye = lazy(() => import("./pages/Goodbye.jsx"));
+const CheckEmailScreen = lazy(() => import("./pages/CheckEmailScreen.jsx"));
 
 // 🌙 Loading Component for lazy routes
 function LoadingScreen() {
@@ -130,11 +132,9 @@ function LoadingScreen() {
 function OnboardingRedirector() {
   const savedStep = localStorage.getItem("iq_onboarding_step");
   
-  // Check if user already completed name/handle setup (has data in localStorage)
   const hasName = localStorage.getItem("iq_name");
   const hasHandle = localStorage.getItem("iq_handle");
   
-  // If user has name/handle data, they already went through onboarding - send to auth
   if (hasName && hasHandle && !savedStep) {
     return <Navigate to="/auth" replace />;
   }
@@ -144,7 +144,9 @@ function OnboardingRedirector() {
     salaam: "/onboarding/salaam",
     namehandle: "/onboarding/namehandle",
     avatar: "/onboarding/avatar",
+    handle: "/onboarding/handle",
     auth: "/auth",
+    checkemail: "/check-email",
   };
   
   const targetRoute = (savedStep && stepRoutes[savedStep]) 
@@ -326,23 +328,36 @@ export default function App() {
     }
   }, []);
 
-  // 🔐 SUPABASE: Silent auth + profile check + cloud sync
-  // SEQUENCE: deviceId → silentAuth → check profile exists → onboarding OR load stores
-  // IMPORTANT: Profiles are ONLY created after onboarding via createProfileAfterOnboarding()
+  // 🔐 SUPABASE: Silent auth + profile check + email confirmation + cloud sync
+  // SEQUENCE: deviceId → auth check → email confirmation check → profile check → onboarding OR load stores
   useEffect(() => {
     async function initAuth() {
       const { setDeviceId } = useUserStore.getState();
 
-      // 1. Set device fingerprint
       const fp = getDeviceFingerprint();
       setDeviceId(fp);
 
-      // 2. Init user store (handles silentAuth + checks profile existence)
-      // NOTE: init() NEVER creates profiles - it only checks if one exists
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (session?.user) {
+        if (!session.user.email_confirmed_at && !session.user.email?.includes('@iq-hidden-')) {
+          console.log("User logged in but email not confirmed → check-email");
+          localStorage.setItem("iq_onboarding_step", "checkemail");
+          useUserStore.setState({ 
+            user: session.user, 
+            userId: session.user.id,
+            loading: false, 
+            isHydrated: true, 
+            profileReady: false,
+            hasOnboarded: false,
+          });
+          return;
+        }
+      }
+
       await useUserStore.getState().init();
 
-      // 3. Get user ID and profile status after init completes
-      const { user, profileReady } = useUserStore.getState();
+      const { user, profileReady, handle, hasOnboarded } = useUserStore.getState();
       
       if (!user) {
         console.warn("No user after init");
@@ -351,14 +366,22 @@ export default function App() {
 
       console.log("🔐 Signed in as", user.id);
 
-      // 4. Load progress stores ONLY after profile is ready (post-onboarding)
+      if (profileReady && hasOnboarded && !handle) {
+        console.error("🚨 CRITICAL: User marked as onboarded but missing handle - forcing handle screen");
+        localStorage.setItem("iq_onboarding_step", "handle");
+        useUserStore.setState({ 
+          profileReady: false,
+          hasOnboarded: false,
+        });
+        return;
+      }
+
       if (profileReady) {
         await useUserStore.getState().syncUserProfile();
         await useDailyQuestStore.getState().loadDailyQuestFromCloud(user.id);
         await useProgressStore.getState().loadStreakShieldFromCloud();
         console.log("✅ Cloud sync completed");
       }
-      // If profileReady is false, user needs onboarding - profile will be created there
     }
 
     initAuth();
@@ -541,7 +564,7 @@ export default function App() {
             <Routes>
               {!hasOnboarded ? (
                 <>
-                  {/* ✅ ONBOARDING FLOW: Bismillah → Salaam → NameHandle → Avatar → /auth */}
+                  {/* ✅ ONBOARDING FLOW: Bismillah → Salaam → Name → Avatar → Handle → Auth → CheckEmail */}
                   <Route
                     path="/onboarding/bismillah"
                     element={<BismillahScreen />}
@@ -549,12 +572,22 @@ export default function App() {
                   <Route path="/onboarding/salaam" element={<SalaamScreen />} />
                   <Route path="/onboarding/namehandle" element={<NameHandleScreen />} />
                   <Route path="/onboarding/avatar" element={<AvatarScreen />} />
+                  <Route path="/onboarding/handle" element={<HandleScreen />} />
                   {/* Auth page (combined login/signup) */}
                   <Route
                     path="/auth"
                     element={
                       <Suspense fallback={<LoadingScreen />}>
                         <AuthPage />
+                      </Suspense>
+                    }
+                  />
+                  {/* Check email confirmation screen */}
+                  <Route
+                    path="/check-email"
+                    element={
+                      <Suspense fallback={<LoadingScreen />}>
+                        <CheckEmailScreen />
                       </Suspense>
                     }
                   />

@@ -68,9 +68,20 @@ export default function AuthPage() {
         });
 
         if (error) {
+          if (error.message.includes("Email not confirmed")) {
+            setLoading(false);
+            navigate("/check-email");
+            return;
+          }
           setErrorMsg("Invalid email or password");
           triggerShake();
           setLoading(false);
+          return;
+        }
+
+        if (!data.user.email_confirmed_at) {
+          setLoading(false);
+          navigate("/check-email");
           return;
         }
 
@@ -81,29 +92,56 @@ export default function AuthPage() {
           .maybeSingle();
 
         if (profile) {
-          setDisplayName(profile.username || "Student");
-          setHandle(profile.handle || null);
+          const displayName = profile.username || "Student";
+          const handle = profile.handle || null;
           const avatarKey = typeof profile.avatar === "number"
             ? avatarIndexToKey(profile.avatar)
-            : profile.avatar;
-          setAvatar(avatarKey || "avatar_man_lantern");
+            : profile.avatar || "avatar_man_lantern";
           
-          // Profile exists - mark as onboarded and go home
+          if (!handle) {
+            console.log("Profile missing handle - redirecting to handle screen to complete setup");
+            localStorage.setItem("iq_onboarding_step", "handle");
+            localStorage.setItem("iq_name", displayName);
+            localStorage.setItem("iq_avatar", avatarKey);
+            useUserStore.setState({ 
+              user: data.user, 
+              userId: data.user.id,
+              username: displayName,
+              avatar: avatarKey,
+              profile: profile,
+              profileReady: false,
+              hasOnboarded: false,
+              loading: false,
+              isHydrated: true,
+            });
+            setLoading(false);
+            navigate("/onboarding/handle");
+            return;
+          }
+          
+          setDisplayName(displayName);
+          setHandle(handle);
+          setAvatar(avatarKey);
+          
           setOnboarded(true);
           localStorage.removeItem("iq_onboarding_step");
           localStorage.setItem("iq_profile_complete", "true");
+          localStorage.setItem("iq_name", displayName);
+          localStorage.setItem("iq_handle", handle);
+          localStorage.setItem("iq_avatar", avatarKey);
           
-          // Set profile ready state directly (don't call init() as it re-runs profile checks)
           useUserStore.setState({ 
             user: data.user, 
             userId: data.user.id,
+            username: displayName,
+            handle: handle,
+            avatar: avatarKey,
             profileReady: true,
             hasOnboarded: true,
             loading: false,
             isHydrated: true,
           });
           
-          // Load progress from cloud after successful login
           setTimeout(() => {
             useProgressStore.getState().loadFromSupabase();
             console.log("Progress loaded from cloud after login");
@@ -133,7 +171,7 @@ export default function AuthPage() {
             
             console.log("Preserving local progress:", { xp: localXp, coins: localCoins, streak: localStreak });
             
-            const { error: profileError } = await supabase
+            const { data: upsertData, error: profileError } = await supabase
               .from("profiles")
               .upsert({
                 user_id: data.user.id,
@@ -144,12 +182,32 @@ export default function AuthPage() {
                 coins: localCoins,
                 streak: localStreak,
                 created_at: new Date().toISOString(),
-              }, { onConflict: 'user_id' });
+              }, { onConflict: 'user_id' })
+              .select()
+              .single();
             
             if (profileError) {
               console.error("Profile creation error:", profileError);
               setErrorMsg("Could not restore your profile. Please try again.");
               setLoading(false);
+              return;
+            }
+            
+            if (!upsertData?.handle) {
+              console.log("Profile upserted but missing handle - redirecting to handle screen");
+              localStorage.setItem("iq_onboarding_step", "handle");
+              useUserStore.setState({ 
+                user: data.user, 
+                userId: data.user.id,
+                username: storedName,
+                avatar: storedAvatar,
+                profileReady: false,
+                hasOnboarded: false,
+                loading: false,
+                isHydrated: true,
+              });
+              setLoading(false);
+              navigate("/onboarding/handle");
               return;
             }
             
@@ -183,9 +241,18 @@ export default function AuthPage() {
             setLoading(false);
             navigate("/");
           } else {
-            // No stored data - user needs to complete onboarding
+            console.log("No profile and no stored data - signing out and starting fresh");
+            await supabase.auth.signOut();
+            useUserStore.setState({ 
+              user: null, 
+              userId: null,
+              profileReady: false,
+              hasOnboarded: false,
+              loading: false,
+            });
             setLoading(false);
-            setErrorMsg("Please complete your profile setup.");
+            setErrorMsg("Please complete your profile setup first.");
+            localStorage.setItem("iq_onboarding_step", "bismillah");
             setTimeout(() => {
               navigate("/onboarding/bismillah");
             }, 1500);
@@ -193,6 +260,19 @@ export default function AuthPage() {
         }
         return;
       } else {
+        const storedName = localStorage.getItem("iq_name") || useUserStore.getState().username || "Student";
+        const storedHandle = localStorage.getItem("iq_handle") || useUserStore.getState().handle;
+        const storedAvatar = localStorage.getItem("iq_avatar") || useUserStore.getState().avatar || "avatar_man_lantern";
+        
+        if (!storedHandle) {
+          console.error("Missing handle - cannot proceed with signup");
+          setErrorMsg("Please complete your profile setup first.");
+          setLoading(false);
+          localStorage.setItem("iq_onboarding_step", "handle");
+          navigate("/onboarding/handle");
+          return;
+        }
+        
         const { data, error } = await supabase.auth.signUp({
           email: email.trim().toLowerCase(),
           password,
@@ -210,15 +290,8 @@ export default function AuthPage() {
         }
 
         if (data?.user) {
-          // Get onboarding data from localStorage/store
-          const storedName = localStorage.getItem("iq_name") || useUserStore.getState().username || "Student";
-          const storedHandle = localStorage.getItem("iq_handle") || useUserStore.getState().handle;
-          const storedAvatar = localStorage.getItem("iq_avatar") || useUserStore.getState().avatar || "avatar_man_lantern";
-          
-          // Convert avatar key to index for database (expects integer)
           const avatarIndex = avatarKeyToIndex(storedAvatar);
           
-          // Get existing progress from localStorage/progressStore to preserve it
           const progressState = useProgressStore.getState();
           const localXp = progressState.xp || 0;
           const localCoins = progressState.coins || 0;
@@ -226,7 +299,6 @@ export default function AuthPage() {
           
           console.log("Preserving local progress on signup:", { xp: localXp, coins: localCoins, streak: localStreak });
           
-          // Create profile for the NEW authenticated user
           const { error: profileError } = await supabase
             .from("profiles")
             .upsert({
@@ -249,41 +321,44 @@ export default function AuthPage() {
           
           console.log("PROFILE CREATED for user:", data.user.id);
           
-          // Set local state
           setDisplayName(storedName);
           setHandle(storedHandle);
           setAvatar(storedAvatar);
-          setOnboarded(true);
           
-          // Clear onboarding step and mark complete
-          localStorage.removeItem("iq_onboarding_step");
-          localStorage.setItem("iq_profile_complete", "true");
-          
-          // Set store state
           useUserStore.setState({ 
             user: data.user, 
             userId: data.user.id,
             username: storedName,
             handle: storedHandle,
             avatar: storedAvatar,
-            profileReady: true,
-            hasOnboarded: true,
             loading: false,
             isHydrated: true,
           });
           
-          // Sync full progress to cloud (includes lessonStates, paths)
-          // This pushes local progress to the newly created profile
           setTimeout(() => {
             useProgressStore.getState().syncToSupabase();
             console.log("Progress synced to cloud after signup");
           }, 500);
           
           setLoading(false);
-          navigate("/");
+          
+          if (data.user.email_confirmed_at) {
+            setOnboarded(true);
+            localStorage.removeItem("iq_onboarding_step");
+            localStorage.setItem("iq_profile_complete", "true");
+            useUserStore.setState({ 
+              profileReady: true,
+              hasOnboarded: true,
+            });
+            navigate("/");
+          } else {
+            localStorage.setItem("iq_onboarding_step", "checkemail");
+            navigate("/check-email");
+          }
         } else {
           setLoading(false);
-          setErrorMsg("Account created! Check your email to verify.");
+          localStorage.setItem("iq_onboarding_step", "checkemail");
+          navigate("/check-email");
         }
       }
     } catch (err) {
