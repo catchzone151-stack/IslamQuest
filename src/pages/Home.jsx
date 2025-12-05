@@ -502,7 +502,7 @@ export default function Home() {
         style={{
           textAlign: "center",
           fontSize: "1.15rem",
-          margin: "0 16px 12px 16px",
+          margin: "0 16px 24px 16px",
           fontWeight: "800",
           color: "#FFD700",
           textShadow: "0 2px 8px rgba(212, 175, 55, 0.4)",
