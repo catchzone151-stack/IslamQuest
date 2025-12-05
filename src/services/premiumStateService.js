@@ -2,6 +2,13 @@ import { supabase } from "../lib/supabaseClient";
 import { getDeviceId, hashDeviceId } from "./deviceService";
 import { validatePremiumStatus, registerDevice } from "./purchaseVerificationService";
 
+// ================================================================
+// TESTING MODE: Premium status is determined ONLY by profiles.premium
+// This bypasses all IAP verification, device binding, and Edge Functions
+// When real Play Store / App Store verification is ready, restore the
+// original getPremiumStatus and syncPremiumOnAppOpen functions below
+// ================================================================
+
 const PREMIUM_CACHE_KEY = "iq_premium_cache";
 const CACHE_MAX_AGE = 24 * 60 * 60 * 1000;
 
@@ -42,31 +49,30 @@ export const clearPremiumCache = () => {
   localStorage.removeItem(PREMIUM_CACHE_KEY);
 };
 
+// TESTING MODE: Simplified premium check using only profiles.premium boolean
 export const getPremiumStatus = async (forceRefresh = false) => {
   const cache = getPremiumCache();
-  const deviceId = await getDeviceId();
-  const hashedDeviceId = await hashDeviceId(deviceId);
   
+  // Offline fallback - use cache if available
   if (!navigator.onLine) {
     console.log("[PremiumState] Offline - using cached status");
     if (cache) {
       return {
         premium: cache.premium,
         planType: cache.planType,
-        source: "offline_cache",
-        deviceId: hashedDeviceId
+        source: "offline_cache"
       };
     }
-    return { premium: false, planType: null, source: "offline_no_cache", deviceId: hashedDeviceId };
+    return { premium: false, planType: null, source: "offline_no_cache" };
   }
   
+  // Use cache if valid and not forcing refresh
   if (!forceRefresh && cache && !cache.expired) {
     console.log("[PremiumState] Using valid cache");
     return {
       premium: cache.premium,
       planType: cache.planType,
-      source: "cache",
-      deviceId: hashedDeviceId
+      source: "cache"
     };
   }
   
@@ -76,39 +82,53 @@ export const getPremiumStatus = async (forceRefresh = false) => {
     
     if (!userId) {
       console.log("[PremiumState] No user logged in");
-      return { premium: false, planType: null, source: "no_user", deviceId: hashedDeviceId };
+      return { premium: false, planType: null, source: "no_user" };
     }
     
-    const result = await validatePremiumStatus(userId, hashedDeviceId);
+    // TESTING MODE: Simply fetch profiles.premium boolean
+    console.log("[PremiumState] TESTING MODE - fetching profiles.premium for user:", userId);
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("premium")
+      .eq("user_id", userId)
+      .single();
     
-    if (!result.deviceMatch && result.premium) {
-      console.log("[PremiumState] Device mismatch detected");
+    if (error) {
+      console.error("[PremiumState] Error fetching premium status:", error);
+      if (cache) {
+        return {
+          premium: cache.premium,
+          planType: cache.planType,
+          source: "stale_cache"
+        };
+      }
+      return { premium: false, planType: null, source: "error" };
     }
     
-    setPremiumCache(result.premium, result.planType, hashedDeviceId);
+    const isPremium = data?.premium || false;
+    console.log("[PremiumState] TESTING MODE - profiles.premium =", isPremium);
+    
+    // Cache the result
+    setPremiumCache(isPremium, null, null);
     
     return {
-      premium: result.premium,
-      planType: result.planType,
-      familyGroupId: result.familyGroupId,
-      deviceMatch: result.deviceMatch,
-      source: "backend",
-      deviceId: hashedDeviceId
+      premium: isPremium,
+      planType: null,
+      source: "profiles_table"
     };
   } catch (error) {
-    console.error("[PremiumState] Backend validation failed:", error);
+    console.error("[PremiumState] Error in getPremiumStatus:", error);
     
     if (cache) {
       console.log("[PremiumState] Using stale cache as fallback");
       return {
         premium: cache.premium,
         planType: cache.planType,
-        source: "stale_cache",
-        deviceId: hashedDeviceId
+        source: "stale_cache"
       };
     }
     
-    return { premium: false, planType: null, source: "error", deviceId: hashedDeviceId };
+    return { premium: false, planType: null, source: "error" };
   }
 };
 
@@ -141,15 +161,14 @@ export const initializeDeviceBinding = async () => {
   }
 };
 
+// TESTING MODE: Simplified sync - just fetch profiles.premium, skip device binding
 export const syncPremiumOnAppOpen = async () => {
   try {
-    await initializeDeviceBinding();
-    
+    // TESTING MODE: Skip device binding, just get premium status from profiles table
     const status = await getPremiumStatus(true);
     
-    console.log("[PremiumState] App open sync complete:", {
+    console.log("[PremiumState] TESTING MODE - App open sync complete:", {
       premium: status.premium,
-      planType: status.planType,
       source: status.source
     });
     
