@@ -26,6 +26,7 @@ import { createDailyLeaderboardSnapshot } from "./backend/leaderboardSnapshots";
 // ✅ Onboarding screens (loaded immediately for first-time users)
 import BismillahScreen from "./onboarding/BismillahScreen.jsx";
 import SalaamScreen from "./onboarding/SalaamScreen.jsx";
+import AuthChoiceScreen from "./onboarding/AuthChoiceScreen.jsx";
 import NameHandleScreen from "./onboarding/NameHandleScreen.jsx";
 import AvatarScreen from "./onboarding/AvatarScreen.jsx";
 import HandleScreen from "./onboarding/HandleScreen.jsx";
@@ -49,6 +50,8 @@ const Premium = lazy(() => import("./pages/Premium.jsx"));
 const Settings = lazy(() => import("./pages/Settings.jsx"));
 const Revise = lazy(() => import("./pages/Revise.jsx"));
 const AuthPage = lazy(() => import("./pages/AuthPage.jsx"));
+const LoginPage = lazy(() => import("./pages/LoginPage.jsx"));
+const SignUpPage = lazy(() => import("./pages/SignUpPage.jsx"));
 const QuizScreen = lazy(() => import("./screens/QuizScreen.jsx"));
 const GlobalEvents = lazy(() => import("./pages/GlobalEvents.jsx"));
 const ResetPremium = lazy(() => import("./pages/ResetPremium.jsx"));
@@ -136,16 +139,19 @@ function OnboardingRedirector() {
   const hasHandle = localStorage.getItem("iq_handle");
   
   if (hasName && hasHandle && !savedStep) {
-    return <Navigate to="/auth" replace />;
+    return <Navigate to="/login" replace />;
   }
   
   const stepRoutes = {
     bismillah: "/onboarding/bismillah",
     salaam: "/onboarding/salaam",
+    authchoice: "/onboarding/auth-choice",
+    login: "/login",
+    signup: "/signup",
     namehandle: "/onboarding/namehandle",
     avatar: "/onboarding/avatar",
     handle: "/onboarding/handle",
-    auth: "/auth",
+    auth: "/login",
     checkemail: "/check-email",
   };
   
@@ -209,15 +215,49 @@ const PRODUCTION_VERSION = "iq_production_v1";
 export default function App() {
   const { hasOnboarded, isHydrated } = useUserStore();
   const { grantCoins, coins } = useProgressStore();
+  
+  // Force re-render workaround for Zustand subscription issues in React StrictMode
+  const [renderKey, setRenderKey] = React.useState(0);
+  
+  React.useEffect(() => {
+    // Subscribe to store changes and force re-render when hydration completes
+    const unsubscribe = useUserStore.subscribe(
+      (state) => {
+        if (state.isHydrated && !isHydrated) {
+          console.log("[App] Store hydrated, triggering re-render");
+          setRenderKey(prev => prev + 1);
+        }
+      }
+    );
+    
+    // Also check immediately in case we missed the update
+    const currentState = useUserStore.getState();
+    if (currentState.isHydrated && !isHydrated) {
+      console.log("[App] Store already hydrated, triggering re-render");
+      setRenderKey(prev => prev + 1);
+    }
+    
+    return unsubscribe;
+  }, [isHydrated]);
+  
+  // Get the most current state directly from store to avoid stale closure issues
+  const storeState = useUserStore.getState();
+  const actualIsHydrated = isHydrated || storeState.isHydrated;
+  const actualHasOnboarded = storeState.hasOnboarded;
 
   // 🔄 VERSIONED STORAGE RESET: Clear all legacy data on first production load
+  // IMPORTANT: Uses module-level flag to prevent reload loops from React StrictMode
   useEffect(() => {
-    // Module-level flag for storage failure (survives even when localStorage fails)
-    if (!window.__iq_storage_available_checked) {
-      window.__iq_storage_available_checked = false;
+    // Prevent double-run from React StrictMode
+    if (window.__iq_migration_running || window.__iq_migration_complete) {
+      console.log("⏭️ Skipping storage migration (already processed this session)");
+      return;
     }
+    window.__iq_migration_running = true;
+
     if (window.__iq_migration_failed) {
       console.warn("⚠️ Skipping storage migration (storage unavailable)");
+      window.__iq_migration_running = false;
       return;
     }
 
@@ -239,6 +279,7 @@ export default function App() {
       console.warn(
         "⚠️ Storage migration skipped: localStorage unavailable (private mode?)",
       );
+      window.__iq_migration_running = false;
       return;
     }
 
@@ -247,6 +288,8 @@ export default function App() {
       const migrationFailed = localStorage.getItem("iq_migration_failed");
       if (migrationFailed === "true") {
         console.warn("⚠️ Skipping storage migration (previous failure)");
+        window.__iq_migration_complete = true;
+        window.__iq_migration_running = false;
         return;
       }
 
@@ -297,12 +340,16 @@ export default function App() {
           allKeysRemoved = false;
         }
 
-        // Only reload if storage operations succeeded
+        // Only reload if storage operations succeeded AND not in dev mode reload loop
         if (allKeysRemoved) {
           console.log(
             "✅ Production migration complete. App will start fresh.",
           );
-          window.location.reload();
+          window.__iq_migration_complete = true;
+          // Use a short delay to ensure state is saved before reload
+          setTimeout(() => {
+            window.location.reload();
+          }, 100);
           return;
         } else {
           console.warn(
@@ -315,7 +362,12 @@ export default function App() {
             console.error("Cannot persist migration failure flag", e);
           }
         }
+      } else {
+        console.log("✅ Storage version matches, no migration needed");
       }
+
+      window.__iq_migration_complete = true;
+      window.__iq_migration_running = false;
     } catch (error) {
       // Fallback for private mode or localStorage errors
       console.error("Storage reset failed:", error);
@@ -324,63 +376,88 @@ export default function App() {
       } catch (e) {
         // Silently fail - app will continue with defaults
       }
+      window.__iq_migration_complete = true;
+      window.__iq_migration_running = false;
       // Continue app initialization with default state (no reload)
     }
   }, []);
 
   // 🔐 SUPABASE: Silent auth + profile check + email confirmation + cloud sync
   // SEQUENCE: deviceId → auth check → email confirmation check → profile check → onboarding OR load stores
+  // IMPORTANT: Uses module-level flag to prevent double-init from React StrictMode
   useEffect(() => {
+    // Prevent double-run from React StrictMode
+    if (window.__iq_auth_init_running || window.__iq_auth_init_complete) {
+      console.log("⏭️ Skipping auth init (already processed this session)");
+      return;
+    }
+    window.__iq_auth_init_running = true;
+
     async function initAuth() {
-      const { setDeviceId } = useUserStore.getState();
+      try {
+        const { setDeviceId } = useUserStore.getState();
 
-      const fp = getDeviceFingerprint();
-      setDeviceId(fp);
+        const fp = getDeviceFingerprint();
+        setDeviceId(fp);
 
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (session?.user) {
-        if (!session.user.email_confirmed_at && !session.user.email?.includes('@iq-hidden-')) {
-          console.log("User logged in but email not confirmed → check-email");
-          localStorage.setItem("iq_onboarding_step", "checkemail");
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (session?.user) {
+          if (!session.user.email_confirmed_at && !session.user.email?.includes('@iq-hidden-')) {
+            console.log("User logged in but email not confirmed → check-email");
+            localStorage.setItem("iq_onboarding_step", "checkemail");
+            useUserStore.setState({ 
+              user: session.user, 
+              userId: session.user.id,
+              loading: false, 
+              isHydrated: true, 
+              profileReady: false,
+              hasOnboarded: false,
+            });
+            window.__iq_auth_init_complete = true;
+            window.__iq_auth_init_running = false;
+            return;
+          }
+        }
+
+        await useUserStore.getState().init();
+
+        const { user, profileReady, handle, hasOnboarded } = useUserStore.getState();
+        
+        if (!user) {
+          console.warn("No user after init");
+          window.__iq_auth_init_complete = true;
+          window.__iq_auth_init_running = false;
+          return;
+        }
+
+        console.log("🔐 Signed in as", user.id);
+
+        if (profileReady && hasOnboarded && !handle) {
+          console.error("🚨 CRITICAL: User marked as onboarded but missing handle - forcing handle screen");
+          localStorage.setItem("iq_onboarding_step", "handle");
           useUserStore.setState({ 
-            user: session.user, 
-            userId: session.user.id,
-            loading: false, 
-            isHydrated: true, 
             profileReady: false,
             hasOnboarded: false,
           });
+          window.__iq_auth_init_complete = true;
+          window.__iq_auth_init_running = false;
           return;
         }
-      }
 
-      await useUserStore.getState().init();
+        if (profileReady) {
+          await useUserStore.getState().syncUserProfile();
+          await useDailyQuestStore.getState().loadDailyQuestFromCloud(user.id);
+          await useProgressStore.getState().loadStreakShieldFromCloud();
+          console.log("✅ Cloud sync completed");
+        }
 
-      const { user, profileReady, handle, hasOnboarded } = useUserStore.getState();
-      
-      if (!user) {
-        console.warn("No user after init");
-        return;
-      }
-
-      console.log("🔐 Signed in as", user.id);
-
-      if (profileReady && hasOnboarded && !handle) {
-        console.error("🚨 CRITICAL: User marked as onboarded but missing handle - forcing handle screen");
-        localStorage.setItem("iq_onboarding_step", "handle");
-        useUserStore.setState({ 
-          profileReady: false,
-          hasOnboarded: false,
-        });
-        return;
-      }
-
-      if (profileReady) {
-        await useUserStore.getState().syncUserProfile();
-        await useDailyQuestStore.getState().loadDailyQuestFromCloud(user.id);
-        await useProgressStore.getState().loadStreakShieldFromCloud();
-        console.log("✅ Cloud sync completed");
+        window.__iq_auth_init_complete = true;
+        window.__iq_auth_init_running = false;
+      } catch (error) {
+        console.error("initAuth error:", error);
+        window.__iq_auth_init_complete = true;
+        window.__iq_auth_init_running = false;
       }
     }
 
@@ -523,13 +600,13 @@ export default function App() {
       }
     };
 
-    if (hasOnboarded) {
+    if (actualHasOnboarded) {
       initOneSignal();
     }
-  }, [hasOnboarded]);
+  }, [actualHasOnboarded]);
 
   // ✅ Wait until Zustand store is rehydrated (prevents onboarding redirect)
-  if (!isHydrated) {
+  if (!actualIsHydrated) {
     return (
       <div
         className="screen no-extra-space"
@@ -562,23 +639,43 @@ export default function App() {
             }}
           >
             <Routes>
-              {!hasOnboarded ? (
+              {!actualHasOnboarded ? (
                 <>
-                  {/* ✅ ONBOARDING FLOW: Bismillah → Salaam → Name → Avatar → Handle → Auth → CheckEmail */}
+                  {/* ✅ ONBOARDING FLOW: Bismillah → Salaam → AuthChoice → (Login OR SignUp) → CheckEmail → Home */}
                   <Route
                     path="/onboarding/bismillah"
                     element={<BismillahScreen />}
                   />
                   <Route path="/onboarding/salaam" element={<SalaamScreen />} />
+                  <Route path="/onboarding/auth-choice" element={<AuthChoiceScreen />} />
+                  {/* Legacy routes (for resume support) */}
                   <Route path="/onboarding/namehandle" element={<NameHandleScreen />} />
                   <Route path="/onboarding/avatar" element={<AvatarScreen />} />
                   <Route path="/onboarding/handle" element={<HandleScreen />} />
-                  {/* Auth page (combined login/signup) */}
+                  {/* Login page */}
+                  <Route
+                    path="/login"
+                    element={
+                      <Suspense fallback={<LoadingScreen />}>
+                        <LoginPage />
+                      </Suspense>
+                    }
+                  />
+                  {/* Sign up page */}
+                  <Route
+                    path="/signup"
+                    element={
+                      <Suspense fallback={<LoadingScreen />}>
+                        <SignUpPage />
+                      </Suspense>
+                    }
+                  />
+                  {/* Legacy auth page (redirect to login) */}
                   <Route
                     path="/auth"
                     element={
                       <Suspense fallback={<LoadingScreen />}>
-                        <AuthPage />
+                        <LoginPage />
                       </Suspense>
                     }
                   />
@@ -736,13 +833,10 @@ export default function App() {
                       </Suspense>
                     }
                   />
+                  {/* /auth redirects to login for backward compatibility */}
                   <Route
                     path="/auth"
-                    element={
-                      <Suspense fallback={<LoadingScreen />}>
-                        <AuthPage />
-                      </Suspense>
-                    }
+                    element={<Navigate to="/" replace />}
                   />
                   <Route
                     path="/reset-premium"
@@ -784,7 +878,7 @@ export default function App() {
           </div>
 
           {/* ✅ Persistent bottom navigation */}
-          {hasOnboarded && <BottomNav />}
+          {actualHasOnboarded && <BottomNav />}
 
           {/* 💎 Centralized Modal System */}
           <ModalController />

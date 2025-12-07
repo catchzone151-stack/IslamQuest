@@ -27,15 +27,17 @@ The premium model offers free tier limits and premium plans (Individual £4.99/m
 **Supabase Integration**: Silent account creation on first launch with permanent Supabase UID. Auto-login on app open. `progressStore` automatically syncs to Supabase cloud on state changes with throttling and AES encryption. Cloud data is restored on app start if newer.
 
 **Email/Password Authentication System**: Proper email/password auth with email confirmation support.
--   **Auth Flow**: Onboarding (Bismillah → Salaam → Name → Avatar → Handle) → Auth Page → Check Email → (after confirmation) Home.
--   **Onboarding Screens**: Separate screens for name input (`NameHandleScreen`) and handle input (`HandleScreen`) with uniqueness validation.
--   **AuthPage Features**: Toggle between Login/SignUp modes, email + password fields, Continue button (disabled until valid), inline Forgot Password modal, Terms & Privacy footer.
--   **Email Confirmation**: After signup, users are redirected to `CheckEmailScreen` which polls for email confirmation. Once confirmed, profile is loaded and user proceeds to Home.
+-   **Auth Flow (Rebuilt Dec 2025)**: Bismillah → Salaam → AuthChoice → (Login OR SignUp) → CheckEmail → Data Preload → Home.
+-   **AuthChoiceScreen** (`/onboarding/auth-choice`): Central choice screen with "Create Account" and "I already have an account" buttons, mascot, and Terms/Privacy footer.
+-   **LoginPage** (`/login`): Email + password fields, Forgot Password link, Sign In button (disabled until valid), link to sign up page.
+-   **SignUpPage** (`/signup`): Consolidated single-page signup with Display Name, Username (handle), Email, Password, and Avatar Picker. All fields on one screen for faster onboarding. Handle uniqueness validation included.
+-   **Email Confirmation**: After signup, users are redirected to `CheckEmailScreen` which polls for email confirmation. Uses `useDataPreloader` hook to preload all data (friends, leaderboard, progress, quests, events, challenges) via Promise.all BEFORE navigating to Home for instant app experience.
 -   **Supabase Auth Methods**: `signUp` for registration, `signInWithPassword` for login, `resetPasswordForEmail` for forgot password (redirects to `/reset-password`), `updateUser` for password reset.
 -   **Password Reset**: `resetPasswordForEmail` sends a reset link, user clicks → `/reset-password` page → enters new password → `updateUser` → redirects to login. All user data preserved.
 -   **Onboarding Persistence**: Current step saved in localStorage (`iq_onboarding_step`), app resumes from saved step if closed mid-onboarding.
 -   **Session Handling**: On app start, checks email confirmation status. Unconfirmed users → CheckEmail screen. Confirmed users with profile → Home.
--   **Routes**: `/auth` (combined login/signup), `/check-email` (email confirmation), `/reset-password` (password reset after email link).
+-   **Routes**: `/onboarding/auth-choice` (choose login or signup), `/login` (login page), `/signup` (consolidated signup page), `/check-email` (email confirmation), `/reset-password` (password reset after email link).
+-   **Hooks**: `useOnboarding` manages onboarding state and flow, `useDataPreloader` handles instant data loading via Promise.all.
 
 **Challenge System**: The challenge system operates in two modes:
 -   **Solo/Boss Challenges (Local)**: All single-player challenge functionality runs locally without Supabase dependency. `createChallenge()` builds local challenge objects, `submitChallengeAttempt()` generates random opponent results locally, and `saveBossAttempt()` stores Boss Level attempts in localStorage. Questions are pulled from completed lesson pools or a diverse fallback pool.

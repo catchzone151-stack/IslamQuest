@@ -84,80 +84,103 @@ export const useUserStore = create((set, get) => ({
   // --------------------------------------------------
   // INIT → Called from App.jsx after silentAuth
   // Only CHECKS for profile - NEVER creates one
+  // Includes timeout to prevent app getting stuck
   // --------------------------------------------------
   init: async () => {
+    // Prevent double initialization
+    const currentState = get();
+    if (currentState.isHydrated) {
+      console.log("[UserStore] Already hydrated, skipping init");
+      return;
+    }
+
     set({ loading: true });
+    console.log("[UserStore] Starting init...");
+
+    // Timeout to ensure we never get stuck on loading screen
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error("Init timeout")), 10000)
+    );
 
     try {
-      const user = (await safeCall(() => ensureSignedIn())) ?? null;
+      const initLogic = async () => {
+        console.log("[UserStore] Calling ensureSignedIn...");
+        const user = (await safeCall(() => ensureSignedIn())) ?? null;
+        console.log("[UserStore] ensureSignedIn result:", user?.id || "null");
 
-      if (!user) {
-        console.error("Silent auth failed");
-        set({ loading: false, isHydrated: true, profileReady: false });
-        return;
-      }
-
-      set({ user, userId: user.id });
-
-      // Check if profile exists (DO NOT create it here)
-      const existingProfile = await checkProfileExists(user.id);
-
-      if (!existingProfile) {
-        // No profile = user needs onboarding
-        console.log("NO PROFILE → ONBOARDING REQUIRED");
-        localStorage.removeItem("iq_profile_complete");
-        set({ 
-          loading: false, 
-          isHydrated: true, 
-          profileReady: false,
-          hasOnboarded: false,
-        });
-        return;
-      }
-
-      // Profile exists - load full data
-      const fullProfile = await loadCloudProfile(user.id);
-
-      if (!fullProfile) {
-        console.warn("[UserStore] Missing profile from cloud");
-        set({ loading: false, isHydrated: true, profileReady: false });
-        return;
-      }
-      
-      // Determine if onboarding is complete
-      const needsOnboarding = !isProfileComplete(fullProfile);
-      
-      if (needsOnboarding) {
-        // Profile exists but is incomplete (missing username/handle)
-        localStorage.removeItem("iq_profile_complete");
-        console.log("INCOMPLETE PROFILE → ONBOARDING REQUIRED");
-      } else {
-        // Profile is complete - restore local state from cloud
-        localStorage.setItem("iq_profile_complete", "true");
-        if (fullProfile) {
-          localStorage.setItem("iq_username", fullProfile.username || "");
-          localStorage.setItem("iq_handle", fullProfile.handle || "");
-          localStorage.setItem("iq_avatar", fullProfile.avatar || DEFAULT_AVATAR);
+        if (!user) {
+          console.error("Silent auth failed");
+          set({ loading: false, isHydrated: true, profileReady: false, hasOnboarded: false });
+          return;
         }
-        console.log("PROFILE COMPLETE → Loading app");
-      }
 
-      set({
-        profile: fullProfile,
-        profileReady: !needsOnboarding,
-        hasOnboarded: !needsOnboarding,
-        loading: false,
-        isHydrated: true,
-        // Restore identity from cloud profile
-        username: fullProfile?.username || "",
-        handle: fullProfile?.handle || "",
-        avatar: fullProfile?.avatar || DEFAULT_AVATAR,
-        name: fullProfile?.username || "",
-      });
+        set({ user, userId: user.id });
+
+        // Check if profile exists (DO NOT create it here)
+        console.log("[UserStore] Checking profile for user:", user.id);
+        const existingProfile = await checkProfileExists(user.id);
+
+        if (!existingProfile) {
+          // No profile = user needs onboarding
+          console.log("NO PROFILE → ONBOARDING REQUIRED");
+          localStorage.removeItem("iq_profile_complete");
+          set({ 
+            loading: false, 
+            isHydrated: true, 
+            profileReady: false,
+            hasOnboarded: false,
+          });
+          return;
+        }
+
+        // Profile exists - load full data
+        const fullProfile = await loadCloudProfile(user.id);
+
+        if (!fullProfile) {
+          console.warn("[UserStore] Missing profile from cloud");
+          set({ loading: false, isHydrated: true, profileReady: false, hasOnboarded: false });
+          return;
+        }
+        
+        // Determine if onboarding is complete
+        const needsOnboarding = !isProfileComplete(fullProfile);
+        
+        if (needsOnboarding) {
+          // Profile exists but is incomplete (missing username/handle)
+          localStorage.removeItem("iq_profile_complete");
+          console.log("INCOMPLETE PROFILE → ONBOARDING REQUIRED");
+        } else {
+          // Profile is complete - restore local state from cloud
+          localStorage.setItem("iq_profile_complete", "true");
+          if (fullProfile) {
+            localStorage.setItem("iq_username", fullProfile.username || "");
+            localStorage.setItem("iq_handle", fullProfile.handle || "");
+            localStorage.setItem("iq_avatar", fullProfile.avatar || DEFAULT_AVATAR);
+          }
+          console.log("PROFILE COMPLETE → Loading app");
+        }
+
+        set({
+          profile: fullProfile,
+          profileReady: !needsOnboarding,
+          hasOnboarded: !needsOnboarding,
+          loading: false,
+          isHydrated: true,
+          // Restore identity from cloud profile
+          username: fullProfile?.username || "",
+          handle: fullProfile?.handle || "",
+          avatar: fullProfile?.avatar || DEFAULT_AVATAR,
+          name: fullProfile?.username || "",
+        });
+      };
+
+      await Promise.race([initLogic(), timeoutPromise]);
+      console.log("[UserStore] Init completed successfully");
 
     } catch (error) {
-      console.error("Init error:", error);
-      set({ loading: false, isHydrated: true, profileReady: false });
+      console.error("Init error:", error?.message || error);
+      // Always set isHydrated to prevent stuck loading screen
+      set({ loading: false, isHydrated: true, profileReady: false, hasOnboarded: false });
     }
   },
 

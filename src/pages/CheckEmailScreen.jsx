@@ -5,6 +5,7 @@ import { Mail, RefreshCw, CheckCircle } from "lucide-react";
 import { supabase } from "../lib/supabaseClient";
 import { useUserStore } from "../store/useUserStore";
 import { useProgressStore } from "../store/progressStore";
+import { preloadUserData } from "../hooks/useDataPreloader";
 import { avatarIndexToKey, avatarKeyToIndex } from "../utils/avatarUtils";
 
 export default function CheckEmailScreen() {
@@ -12,9 +13,15 @@ export default function CheckEmailScreen() {
   const { setOnboarded, setDisplayName, setHandle, setAvatar } = useUserStore();
   const [checking, setChecking] = useState(false);
   const [email, setEmail] = useState("");
+  const [loadingMessage, setLoadingMessage] = useState("");
 
   useEffect(() => {
     const getEmail = async () => {
+      const storedEmail = localStorage.getItem("iq_email");
+      if (storedEmail) {
+        setEmail(storedEmail);
+        return;
+      }
       const { data: { user } } = await supabase.auth.getUser();
       if (user?.email) {
         setEmail(user.email);
@@ -29,16 +36,16 @@ export default function CheckEmailScreen() {
     const storedAvatar = localStorage.getItem("iq_avatar") || "avatar_man_lantern";
     
     if (!storedHandle) {
-      console.log("No handle in localStorage - redirecting to handle screen");
-      localStorage.setItem("iq_onboarding_step", "handle");
-      navigate("/onboarding/handle");
+      console.log("No handle in localStorage - redirecting to signup");
+      localStorage.setItem("iq_onboarding_step", "signup");
+      navigate("/signup");
       return null;
     }
     
     const avatarIndex = avatarKeyToIndex(storedAvatar);
     const progressState = useProgressStore.getState();
     
-    console.log("Creating profile for confirmed user:", user.id);
+    console.log("[CheckEmail] Creating profile for confirmed user:", user.id);
     
     const { data: newProfile, error } = await supabase
       .from("profiles")
@@ -60,11 +67,81 @@ export default function CheckEmailScreen() {
       return null;
     }
     
-    console.log("Profile created successfully:", newProfile);
+    console.log("[CheckEmail] Profile created successfully");
     return {
       ...newProfile,
       avatar: storedAvatar,
     };
+  };
+
+  const completeLoginAndPreload = async (user) => {
+    setLoadingMessage("Loading your data...");
+    
+    let profile = null;
+    const { data: existingProfile } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (existingProfile) {
+      profile = existingProfile;
+    } else {
+      console.log("[CheckEmail] No profile found - creating one now...");
+      profile = await createProfileIfMissing(user);
+      if (!profile) return false;
+    }
+
+    const displayName = profile.username || "Student";
+    const handle = profile.handle || null;
+    const avatarKey = typeof profile.avatar === "number"
+      ? avatarIndexToKey(profile.avatar)
+      : profile.avatar || "avatar_man_lantern";
+    
+    if (!handle) {
+      console.error("[CheckEmail] Profile missing handle - redirecting to signup");
+      localStorage.setItem("iq_onboarding_step", "signup");
+      navigate("/signup");
+      return false;
+    }
+    
+    setDisplayName(displayName);
+    setHandle(handle);
+    setAvatar(avatarKey);
+    
+    localStorage.removeItem("iq_onboarding_step");
+    localStorage.removeItem("iq_email");
+    localStorage.setItem("iq_profile_complete", "true");
+    localStorage.setItem("iq_name", displayName);
+    localStorage.setItem("iq_handle", handle);
+    localStorage.setItem("iq_avatar", avatarKey);
+    
+    useUserStore.setState({ 
+      user: user, 
+      userId: user.id,
+      username: displayName,
+      handle: handle,
+      avatar: avatarKey,
+      name: displayName,
+      profile: profile,
+      loading: false,
+      isHydrated: true,
+    });
+
+    setLoadingMessage("Loading your progress, friends, and quests...");
+    
+    console.log("[CheckEmail] Starting parallel data preload...");
+    const preloadResult = await preloadUserData(user.id);
+    console.log(`[CheckEmail] Data preload complete in ${preloadResult.elapsed}ms`);
+    
+    setOnboarded(true);
+    useUserStore.setState({ 
+      profileReady: true,
+      hasOnboarded: true,
+    });
+    
+    navigate("/");
+    return true;
   };
 
   useEffect(() => {
@@ -72,66 +149,8 @@ export default function CheckEmailScreen() {
       const { data: { user } } = await supabase.auth.getUser();
       
       if (user?.email_confirmed_at) {
-        console.log("Email confirmed! Proceeding to home...");
-        
-        let profile = null;
-        const { data: existingProfile } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("user_id", user.id)
-          .maybeSingle();
-
-        if (existingProfile) {
-          profile = existingProfile;
-        } else {
-          console.log("No profile found - creating one now...");
-          profile = await createProfileIfMissing(user);
-          if (!profile) return;
-        }
-
-        const displayName = profile.username || "Student";
-        const handle = profile.handle || null;
-        const avatarKey = typeof profile.avatar === "number"
-          ? avatarIndexToKey(profile.avatar)
-          : profile.avatar || "avatar_man_lantern";
-        
-        if (!handle) {
-          console.error("Profile missing handle during auto-check - redirecting");
-          localStorage.setItem("iq_onboarding_step", "handle");
-          navigate("/onboarding/handle");
-          return;
-        }
-        
-        setDisplayName(displayName);
-        setHandle(handle);
-        setAvatar(avatarKey);
-        setOnboarded(true);
-        
-        localStorage.removeItem("iq_onboarding_step");
-        localStorage.setItem("iq_profile_complete", "true");
-        localStorage.setItem("iq_name", displayName);
-        localStorage.setItem("iq_handle", handle);
-        localStorage.setItem("iq_avatar", avatarKey);
-        
-        useUserStore.setState({ 
-          user: user, 
-          userId: user.id,
-          username: displayName,
-          handle: handle,
-          avatar: avatarKey,
-          name: displayName,
-          profile: profile,
-          profileReady: true,
-          hasOnboarded: true,
-          loading: false,
-          isHydrated: true,
-        });
-        
-        setTimeout(() => {
-          useProgressStore.getState().loadFromSupabase();
-        }, 100);
-        
-        navigate("/");
+        console.log("[CheckEmail] Email confirmed! Proceeding to preload...");
+        await completeLoginAndPreload(user);
       }
     };
 
@@ -172,74 +191,59 @@ export default function CheckEmailScreen() {
     const { data: { user } } = await supabase.auth.getUser();
     
     if (user?.email_confirmed_at) {
-      let profile = null;
-      const { data: existingProfile } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("user_id", user.id)
-        .maybeSingle();
-
-      if (existingProfile) {
-        profile = existingProfile;
-      } else {
-        console.log("No profile found on manual check - creating one now...");
-        profile = await createProfileIfMissing(user);
-        if (!profile) {
-          setChecking(false);
-          return;
-        }
-      }
-
-      const displayName = profile.username || "Student";
-      const handle = profile.handle || null;
-      const avatarKey = typeof profile.avatar === "number"
-        ? avatarIndexToKey(profile.avatar)
-        : profile.avatar || "avatar_man_lantern";
-      
-      if (!handle) {
-        console.error("Profile missing handle - redirecting to handle screen");
+      const success = await completeLoginAndPreload(user);
+      if (!success) {
         setChecking(false);
-        localStorage.setItem("iq_onboarding_step", "handle");
-        navigate("/onboarding/handle");
-        return;
       }
-      
-      setDisplayName(displayName);
-      setHandle(handle);
-      setAvatar(avatarKey);
-      setOnboarded(true);
-      
-      localStorage.removeItem("iq_onboarding_step");
-      localStorage.setItem("iq_profile_complete", "true");
-      localStorage.setItem("iq_name", displayName);
-      localStorage.setItem("iq_handle", handle);
-      localStorage.setItem("iq_avatar", avatarKey);
-      
-      useUserStore.setState({ 
-        user: user, 
-        userId: user.id,
-        username: displayName,
-        handle: handle,
-        avatar: avatarKey,
-        name: displayName,
-        profile: profile,
-        profileReady: true,
-        hasOnboarded: true,
-        loading: false,
-        isHydrated: true,
-      });
-      
-      setTimeout(() => {
-        useProgressStore.getState().loadFromSupabase();
-      }, 100);
-      
-      navigate("/");
       return;
     }
     
     alert("Email not confirmed yet. Please check your inbox and click the confirmation link.");
     setChecking(false);
   };
+
+  if (loadingMessage) {
+    return (
+      <div
+        className="onboarding-screen"
+        style={{
+          background: "linear-gradient(180deg, #0A1A2F 0%, #060D18 100%)",
+          color: "white",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "100vh",
+        }}
+      >
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "20px",
+          }}
+        >
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+            style={{
+              width: "50px",
+              height: "50px",
+              border: "3px solid rgba(212, 175, 55, 0.3)",
+              borderTopColor: "#D4AF37",
+              borderRadius: "50%",
+            }}
+          />
+          <p style={{ color: "#D4AF37", fontSize: "1rem", fontWeight: 500 }}>
+            {loadingMessage}
+          </p>
+        </motion.div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -342,7 +346,7 @@ export default function CheckEmailScreen() {
             marginBottom: "32px",
           }}
         >
-          <RefreshCw size={16} className="animate-spin" style={{ animation: "spin 2s linear infinite" }} />
+          <RefreshCw size={16} style={{ animation: "spin 2s linear infinite" }} />
           <span style={{ fontSize: "0.85rem" }}>Waiting for confirmation...</span>
         </motion.div>
 

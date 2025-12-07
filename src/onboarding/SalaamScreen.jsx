@@ -42,7 +42,7 @@ export default function SalaamScreen() {
         />
 
         <button
-          onClick={() => navigate("/onboarding/namehandle")}
+          onClick={() => navigate("/onboarding/auth-choice")}
           style={{
             marginTop: 28,
             background: "#D4AF37",
