@@ -66,6 +66,10 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
+      // Sign out any existing anonymous session before logging in
+      // This prevents session conflicts with old hidden.local accounts
+      await supabase.auth.signOut();
+
       const { data, error } = await supabase.auth.signInWithPassword({
         email: email.trim().toLowerCase(),
         password,

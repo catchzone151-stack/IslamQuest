@@ -54,7 +54,25 @@ export async function ensureSignedIn() {
     return session.user;
   }
 
-  // 2) No session → create or load hidden identity
+  // 2) Skip silent account creation during onboarding
+  // When user is going through signup/login, we don't want to create anonymous accounts
+  const onboardingStep = localStorage.getItem("iq_onboarding_step");
+  const profileComplete = localStorage.getItem("iq_profile_complete");
+  
+  // Skip silent signup if:
+  // - User is in onboarding flow, OR
+  // - Profile is not complete (first-time user)
+  if (onboardingStep && ["bismillah", "salaam", "auth-choice", "login", "signup", "checkemail"].includes(onboardingStep)) {
+    console.log("🔐 Skipping silent signup - user is in onboarding flow:", onboardingStep);
+    return null;
+  }
+  
+  if (!profileComplete) {
+    console.log("🔐 Skipping silent signup - no profile complete (first-time user)");
+    return null;
+  }
+
+  // 3) No session → create or load hidden identity
   let storedIdentity = JSON.parse(localStorage.getItem("iq_hidden_identity_v1"));
 
   if (!storedIdentity) {

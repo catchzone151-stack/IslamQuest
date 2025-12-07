@@ -119,6 +119,10 @@ export default function SignUpPage() {
       localStorage.setItem("iq_avatar", avatarKey);
       localStorage.setItem("iq_email", email.trim().toLowerCase());
 
+      // Sign out any existing anonymous session before creating new account
+      // This prevents the confirmation email from going to the wrong address
+      await supabase.auth.signOut();
+
       const { data, error } = await supabase.auth.signUp({
         email: email.trim().toLowerCase(),
         password,
