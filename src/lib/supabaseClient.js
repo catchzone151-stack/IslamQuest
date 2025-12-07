@@ -54,21 +54,20 @@ export async function ensureSignedIn() {
     return session.user;
   }
 
-  // 2) Skip silent account creation during onboarding
-  // When user is going through signup/login, we don't want to create anonymous accounts
+  // 2) Skip silent account creation during onboarding flow or for first-time users
+  // This prevents creating anonymous accounts that conflict with real email signup
   const onboardingStep = localStorage.getItem("iq_onboarding_step");
   const profileComplete = localStorage.getItem("iq_profile_complete");
   
-  // Skip silent signup if:
-  // - User is in onboarding flow, OR
-  // - Profile is not complete (first-time user)
-  if (onboardingStep && ["bismillah", "salaam", "auth-choice", "login", "signup", "checkemail"].includes(onboardingStep)) {
-    console.log("🔐 Skipping silent signup - user is in onboarding flow:", onboardingStep);
+  // If no profile complete AND no session, this is a first-time user - start onboarding
+  if (!profileComplete && !onboardingStep) {
+    console.log("🔐 First-time user detected - starting onboarding flow");
+    localStorage.setItem("iq_onboarding_step", "bismillah");
     return null;
   }
   
-  if (!profileComplete) {
-    console.log("🔐 Skipping silent signup - no profile complete (first-time user)");
+  if (onboardingStep) {
+    console.log("🔐 Skipping silent signup - user is in onboarding flow:", onboardingStep);
     return null;
   }
 

@@ -218,6 +218,7 @@ export default function App() {
   
   // Force re-render workaround for Zustand subscription issues in React StrictMode
   const [renderKey, setRenderKey] = React.useState(0);
+  const [forceReady, setForceReady] = React.useState(false);
   
   React.useEffect(() => {
     // Subscribe to store changes and force re-render when hydration completes
@@ -237,12 +238,30 @@ export default function App() {
       setRenderKey(prev => prev + 1);
     }
     
-    return unsubscribe;
+    // Fallback: Force ready after 5 seconds to prevent infinite loading
+    const timeout = setTimeout(() => {
+      const state = useUserStore.getState();
+      if (!state.isHydrated) {
+        console.warn("[App] Timeout: Forcing app ready after 5 seconds");
+        useUserStore.setState({ 
+          isHydrated: true, 
+          loading: false,
+          hasOnboarded: false,
+          profileReady: false,
+        });
+        setForceReady(true);
+      }
+    }, 5000);
+    
+    return () => {
+      unsubscribe();
+      clearTimeout(timeout);
+    };
   }, [isHydrated]);
   
   // Get the most current state directly from store to avoid stale closure issues
   const storeState = useUserStore.getState();
-  const actualIsHydrated = isHydrated || storeState.isHydrated;
+  const actualIsHydrated = isHydrated || storeState.isHydrated || forceReady;
   const actualHasOnboarded = storeState.hasOnboarded;
 
   // 🔄 VERSIONED STORAGE RESET: Clear all legacy data on first production load
@@ -387,7 +406,9 @@ export default function App() {
   // IMPORTANT: Uses module-level flag to prevent double-init from React StrictMode
   useEffect(() => {
     // Prevent double-run from React StrictMode
-    if (window.__iq_auth_init_running || window.__iq_auth_init_complete) {
+    // BUT: If store is not hydrated, we must run init even if flags are set (HMR recovery)
+    const storeState = useUserStore.getState();
+    if ((window.__iq_auth_init_running || window.__iq_auth_init_complete) && storeState.isHydrated) {
       console.log("⏭️ Skipping auth init (already processed this session)");
       return;
     }
