@@ -5,7 +5,7 @@ import { Mail, RefreshCw, CheckCircle } from "lucide-react";
 import { supabase } from "../lib/supabaseClient";
 import { useUserStore } from "../store/useUserStore";
 import { useProgressStore } from "../store/progressStore";
-import { avatarIndexToKey } from "../utils/avatarUtils";
+import { avatarIndexToKey, avatarKeyToIndex } from "../utils/avatarUtils";
 
 export default function CheckEmailScreen() {
   const navigate = useNavigate();
@@ -23,6 +23,50 @@ export default function CheckEmailScreen() {
     getEmail();
   }, []);
 
+  const createProfileIfMissing = async (user) => {
+    const storedName = localStorage.getItem("iq_name") || "Student";
+    const storedHandle = localStorage.getItem("iq_handle");
+    const storedAvatar = localStorage.getItem("iq_avatar") || "avatar_man_lantern";
+    
+    if (!storedHandle) {
+      console.log("No handle in localStorage - redirecting to handle screen");
+      localStorage.setItem("iq_onboarding_step", "handle");
+      navigate("/onboarding/handle");
+      return null;
+    }
+    
+    const avatarIndex = avatarKeyToIndex(storedAvatar);
+    const progressState = useProgressStore.getState();
+    
+    console.log("Creating profile for confirmed user:", user.id);
+    
+    const { data: newProfile, error } = await supabase
+      .from("profiles")
+      .upsert({
+        user_id: user.id,
+        username: storedName,
+        handle: storedHandle.trim().toLowerCase(),
+        avatar: avatarIndex,
+        xp: progressState.xp || 0,
+        coins: progressState.coins || 0,
+        streak: progressState.streak || 0,
+        created_at: new Date().toISOString(),
+      }, { onConflict: 'user_id' })
+      .select()
+      .single();
+    
+    if (error) {
+      console.error("Failed to create profile:", error);
+      return null;
+    }
+    
+    console.log("Profile created successfully:", newProfile);
+    return {
+      ...newProfile,
+      avatar: storedAvatar,
+    };
+  };
+
   useEffect(() => {
     const checkEmailConfirmation = async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -30,57 +74,64 @@ export default function CheckEmailScreen() {
       if (user?.email_confirmed_at) {
         console.log("Email confirmed! Proceeding to home...");
         
-        const { data: profile } = await supabase
+        let profile = null;
+        const { data: existingProfile } = await supabase
           .from("profiles")
           .select("*")
           .eq("user_id", user.id)
           .maybeSingle();
 
-        if (profile) {
-          const displayName = profile.username || "Student";
-          const handle = profile.handle || null;
-          const avatarKey = typeof profile.avatar === "number"
-            ? avatarIndexToKey(profile.avatar)
-            : profile.avatar || "avatar_man_lantern";
-          
-          if (!handle) {
-            console.error("Profile missing handle during auto-check - redirecting");
-            localStorage.setItem("iq_onboarding_step", "handle");
-            navigate("/onboarding/handle");
-            return;
-          }
-          
-          setDisplayName(displayName);
-          setHandle(handle);
-          setAvatar(avatarKey);
-          setOnboarded(true);
-          
-          localStorage.removeItem("iq_onboarding_step");
-          localStorage.setItem("iq_profile_complete", "true");
-          localStorage.setItem("iq_name", displayName);
-          localStorage.setItem("iq_handle", handle);
-          localStorage.setItem("iq_avatar", avatarKey);
-          
-          useUserStore.setState({ 
-            user: user, 
-            userId: user.id,
-            username: displayName,
-            handle: handle,
-            avatar: avatarKey,
-            name: displayName,
-            profile: profile,
-            profileReady: true,
-            hasOnboarded: true,
-            loading: false,
-            isHydrated: true,
-          });
-          
-          setTimeout(() => {
-            useProgressStore.getState().loadFromSupabase();
-          }, 100);
-          
-          navigate("/");
+        if (existingProfile) {
+          profile = existingProfile;
+        } else {
+          console.log("No profile found - creating one now...");
+          profile = await createProfileIfMissing(user);
+          if (!profile) return;
         }
+
+        const displayName = profile.username || "Student";
+        const handle = profile.handle || null;
+        const avatarKey = typeof profile.avatar === "number"
+          ? avatarIndexToKey(profile.avatar)
+          : profile.avatar || "avatar_man_lantern";
+        
+        if (!handle) {
+          console.error("Profile missing handle during auto-check - redirecting");
+          localStorage.setItem("iq_onboarding_step", "handle");
+          navigate("/onboarding/handle");
+          return;
+        }
+        
+        setDisplayName(displayName);
+        setHandle(handle);
+        setAvatar(avatarKey);
+        setOnboarded(true);
+        
+        localStorage.removeItem("iq_onboarding_step");
+        localStorage.setItem("iq_profile_complete", "true");
+        localStorage.setItem("iq_name", displayName);
+        localStorage.setItem("iq_handle", handle);
+        localStorage.setItem("iq_avatar", avatarKey);
+        
+        useUserStore.setState({ 
+          user: user, 
+          userId: user.id,
+          username: displayName,
+          handle: handle,
+          avatar: avatarKey,
+          name: displayName,
+          profile: profile,
+          profileReady: true,
+          hasOnboarded: true,
+          loading: false,
+          isHydrated: true,
+        });
+        
+        setTimeout(() => {
+          useProgressStore.getState().loadFromSupabase();
+        }, 100);
+        
+        navigate("/");
       }
     };
 
@@ -121,59 +172,69 @@ export default function CheckEmailScreen() {
     const { data: { user } } = await supabase.auth.getUser();
     
     if (user?.email_confirmed_at) {
-      const { data: profile } = await supabase
+      let profile = null;
+      const { data: existingProfile } = await supabase
         .from("profiles")
         .select("*")
         .eq("user_id", user.id)
         .maybeSingle();
 
-      if (profile) {
-        const displayName = profile.username || "Student";
-        const handle = profile.handle || null;
-        const avatarKey = typeof profile.avatar === "number"
-          ? avatarIndexToKey(profile.avatar)
-          : profile.avatar || "avatar_man_lantern";
-        
-        if (!handle) {
-          console.error("Profile missing handle - redirecting to handle screen");
+      if (existingProfile) {
+        profile = existingProfile;
+      } else {
+        console.log("No profile found on manual check - creating one now...");
+        profile = await createProfileIfMissing(user);
+        if (!profile) {
           setChecking(false);
-          localStorage.setItem("iq_onboarding_step", "handle");
-          navigate("/onboarding/handle");
           return;
         }
-        
-        setDisplayName(displayName);
-        setHandle(handle);
-        setAvatar(avatarKey);
-        setOnboarded(true);
-        
-        localStorage.removeItem("iq_onboarding_step");
-        localStorage.setItem("iq_profile_complete", "true");
-        localStorage.setItem("iq_name", displayName);
-        localStorage.setItem("iq_handle", handle);
-        localStorage.setItem("iq_avatar", avatarKey);
-        
-        useUserStore.setState({ 
-          user: user, 
-          userId: user.id,
-          username: displayName,
-          handle: handle,
-          avatar: avatarKey,
-          name: displayName,
-          profile: profile,
-          profileReady: true,
-          hasOnboarded: true,
-          loading: false,
-          isHydrated: true,
-        });
-        
-        setTimeout(() => {
-          useProgressStore.getState().loadFromSupabase();
-        }, 100);
-        
-        navigate("/");
+      }
+
+      const displayName = profile.username || "Student";
+      const handle = profile.handle || null;
+      const avatarKey = typeof profile.avatar === "number"
+        ? avatarIndexToKey(profile.avatar)
+        : profile.avatar || "avatar_man_lantern";
+      
+      if (!handle) {
+        console.error("Profile missing handle - redirecting to handle screen");
+        setChecking(false);
+        localStorage.setItem("iq_onboarding_step", "handle");
+        navigate("/onboarding/handle");
         return;
       }
+      
+      setDisplayName(displayName);
+      setHandle(handle);
+      setAvatar(avatarKey);
+      setOnboarded(true);
+      
+      localStorage.removeItem("iq_onboarding_step");
+      localStorage.setItem("iq_profile_complete", "true");
+      localStorage.setItem("iq_name", displayName);
+      localStorage.setItem("iq_handle", handle);
+      localStorage.setItem("iq_avatar", avatarKey);
+      
+      useUserStore.setState({ 
+        user: user, 
+        userId: user.id,
+        username: displayName,
+        handle: handle,
+        avatar: avatarKey,
+        name: displayName,
+        profile: profile,
+        profileReady: true,
+        hasOnboarded: true,
+        loading: false,
+        isHydrated: true,
+      });
+      
+      setTimeout(() => {
+        useProgressStore.getState().loadFromSupabase();
+      }, 100);
+      
+      navigate("/");
+      return;
     }
     
     alert("Email not confirmed yet. Please check your inbox and click the confirmation link.");
