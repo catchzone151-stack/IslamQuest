@@ -30,6 +30,33 @@ export default function CheckEmailScreen() {
     getEmail();
   }, []);
 
+  // Handle auth callback when user returns from confirmation link
+  useEffect(() => {
+    const handleAuthCallback = async () => {
+      // Check if there are auth tokens in the URL (from email confirmation link)
+      const hash = window.location.hash;
+      const searchParams = new URLSearchParams(window.location.search);
+      
+      if (hash.includes('access_token') || searchParams.has('code')) {
+        console.log("[CheckEmail] Auth callback detected in URL, processing...");
+        
+        // Give Supabase a moment to process the tokens
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        // Check if user is now confirmed
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user?.email_confirmed_at) {
+          console.log("[CheckEmail] User confirmed via callback, proceeding...");
+          // Clear the hash/params from URL
+          window.history.replaceState(null, '', window.location.pathname);
+          await completeLoginAndPreload(user);
+        }
+      }
+    };
+    
+    handleAuthCallback();
+  }, []);
+
   const createProfileIfMissing = async (user) => {
     const storedName = localStorage.getItem("iq_name") || "Student";
     const storedHandle = localStorage.getItem("iq_handle");
@@ -173,10 +200,15 @@ export default function CheckEmailScreen() {
     setChecking(true);
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      if (user?.email) {
+      const userEmail = user?.email || email;
+      if (userEmail) {
+        const appUrl = window.location.origin;
         await supabase.auth.resend({
           type: 'signup',
-          email: user.email,
+          email: userEmail,
+          options: {
+            emailRedirectTo: `${appUrl}/check-email`,
+          },
         });
         alert("Confirmation email sent! Check your inbox.");
       }

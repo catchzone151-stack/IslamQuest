@@ -123,9 +123,16 @@ export default function SignUpPage() {
       // This prevents the confirmation email from going to the wrong address
       await supabase.auth.signOut();
 
+      // Get the app URL for email confirmation redirect
+      const appUrl = window.location.origin;
+      console.log("[SignUp] Using redirect URL:", appUrl);
+
       const { data, error } = await supabase.auth.signUp({
         email: email.trim().toLowerCase(),
         password,
+        options: {
+          emailRedirectTo: `${appUrl}/check-email`,
+        },
       });
 
       if (error) {
