@@ -220,9 +220,12 @@ export default function CheckEmailScreen() {
 
   const handleCheckNow = async () => {
     setChecking(true);
+    
+    // First check if we have a current session
     const { data: { user } } = await supabase.auth.getUser();
     
     if (user?.email_confirmed_at) {
+      console.log("[CheckEmail] User confirmed, proceeding...");
       const success = await completeLoginAndPreload(user);
       if (!success) {
         setChecking(false);
@@ -230,6 +233,18 @@ export default function CheckEmailScreen() {
       return;
     }
     
+    // If no session or not confirmed, the confirmation link may have opened in another tab
+    // Redirect to login page where they can sign in with their confirmed account
+    if (!user) {
+      console.log("[CheckEmail] No session found - redirecting to login");
+      alert("Great! Now please sign in with your email and password to continue.");
+      localStorage.setItem("iq_onboarding_step", "login");
+      navigate("/login");
+      setChecking(false);
+      return;
+    }
+    
+    // User exists but not confirmed yet
     alert("Email not confirmed yet. Please check your inbox and click the confirmation link.");
     setChecking(false);
   };
