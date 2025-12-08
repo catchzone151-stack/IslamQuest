@@ -9,7 +9,6 @@ import { getQuizForLesson } from "../data/quizEngine";
 import { logStreakEvent } from "../backend/streakLogs";
 import { logXpEvent } from "../backend/xpLogs";
 import { logPurchase } from "../backend/purchaseLogs";
-import { addFamilyMember as addFamilyMemberCloud, removeFamilyMember as removeFamilyMemberCloud } from "../backend/familyMembers";
 
 const STORAGE_KEY = "islamQuestProgress_v4";
 
@@ -72,9 +71,7 @@ export const useProgressStore = create((set, get) => ({
   premium: false, // New: Simple boolean for premium status
   premiumType: null, // null | "individual" | "family"
   premiumActivatedAt: null, // Timestamp when premium was activated
-  premiumStatus: "free", // "free" | "individual" | "family" (kept for backwards compatibility)
-  familyPlanId: null, // For family plan sync (future Supabase feature)
-  familyMembers: [], // Array of { id, name, avatar, xp } for family plan
+  premiumStatus: "free", // "free" | "individual" (kept for backwards compatibility)
   
   // 🔊 System Preferences
   vibrationEnabled: true, // Haptic feedback toggle
@@ -157,9 +154,6 @@ export const useProgressStore = create((set, get) => ({
       // 💳 Migrate legacy hasPremium to premiumStatus
       if (!savedData.premiumStatus) {
         savedData.premiumStatus = savedData.hasPremium ? "individual" : "free";
-      }
-      if (savedData.familyPlanId === undefined) {
-        savedData.familyPlanId = null;
       }
       // Derive hasPremium from premiumStatus for backwards compatibility
       savedData.hasPremium = savedData.premiumStatus !== "free";
@@ -888,15 +882,12 @@ export const useProgressStore = create((set, get) => ({
     // Simulate async payment (will be real API call later)
     await new Promise(resolve => setTimeout(resolve, 100));
     
-    // Clear family data when switching to individual plan
     set({ 
       premium: true,
       premiumType: "individual",
       premiumActivatedAt: now,
       premiumStatus: "individual", // backwards compatibility
       hasPremium: true, // backwards compatibility
-      familyPlanId: null,
-      familyMembers: [],
     });
     get().saveProgress();
     setTimeout(() => get().syncToSupabase(), 50);
@@ -911,40 +902,6 @@ export const useProgressStore = create((set, get) => ({
     })();
     
     return { success: true, plan: "individual" };
-  },
-
-  // 💳 ASYNC PLACEHOLDER: Purchase Family Plan (£18 for 6 users)
-  // Later: integrate with payment provider + Supabase for family sync
-  purchaseFamily: async () => {
-    const now = Date.now();
-    // Generate random family plan ID (will come from Supabase later)
-    const familyId = `family_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
-    // Simulate async payment (will be real API call later)
-    await new Promise(resolve => setTimeout(resolve, 100));
-    
-    set({ 
-      premium: true,
-      premiumType: "family",
-      premiumActivatedAt: now,
-      premiumStatus: "family", // backwards compatibility
-      hasPremium: true, // backwards compatibility
-      familyPlanId: familyId,
-      familyMembers: [], // Owner can invite up to 5 members
-    });
-    get().saveProgress();
-    setTimeout(() => get().syncToSupabase(), 50);
-    
-    // Log purchase to Supabase
-    (async () => {
-      const { data } = await supabase.auth.getUser();
-      const userId = data?.user?.id;
-      if (userId) {
-        logPurchase(userId, "family_plan", 18.00, "GBP");
-      }
-    })();
-    
-    return { success: true, plan: "family", familyId };
   },
 
   // 💳 PLACEHOLDER: Restore previous purchases
@@ -967,14 +924,12 @@ export const useProgressStore = create((set, get) => ({
       set({ 
         premiumStatus: savedPremiumStatus,
         hasPremium: true,
-        familyPlanId: savedData.familyPlanId || null,
-        familyMembers: savedData.familyMembers || [],
       });
       get().saveProgress(); // Ensure consistency
       
       return { 
         success: true, 
-        message: `${savedPremiumStatus === "individual" ? "Individual" : "Family"} plan restored successfully!`,
+        message: "Premium plan restored successfully!",
         plan: savedPremiumStatus 
       };
     }
@@ -983,48 +938,6 @@ export const useProgressStore = create((set, get) => ({
       success: false, 
       message: "No previous purchases found" 
     };
-  },
-
-  // 👨‍👩‍👧‍👦 Add family member - syncs with Supabase
-  addFamilyMember: async (memberData) => {
-    const { familyMembers, familyPlanId } = get();
-    if (familyMembers.length >= 5) {
-      return { success: false, message: "Family plan is full (max 5 members)" };
-    }
-    
-    const newMember = {
-      id: memberData.userId || `member_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      userId: memberData.userId,
-      name: memberData.name || "Family Member",
-      avatar: memberData.avatar || null,
-      joinedAt: new Date().toISOString(),
-    };
-    
-    set({ familyMembers: [...familyMembers, newMember] });
-    get().saveProgress();
-    
-    // Sync to Supabase family_members table
-    if (familyPlanId && memberData.userId) {
-      addFamilyMemberCloud(familyPlanId, memberData.userId);
-    }
-    
-    return { success: true, member: newMember };
-  },
-
-  // 👨‍👩‍👧‍👦 Remove family member - syncs with Supabase
-  removeFamilyMember: async (memberId) => {
-    const { familyMembers, familyPlanId } = get();
-    const member = familyMembers.find(m => m.id === memberId);
-    
-    set({ familyMembers: familyMembers.filter(m => m.id !== memberId) });
-    get().saveProgress();
-    
-    // Sync to Supabase family_members table
-    if (familyPlanId && member?.userId) {
-      removeFamilyMemberCloud(familyPlanId, member.userId);
-    }
-    
-    return { success: true };
   },
 
   resetAllLocks: () => {
@@ -1117,8 +1030,6 @@ export const useProgressStore = create((set, get) => ({
       lockedLessons: {},
       paths: DEFAULT_PATHS,
       premiumStatus: "free",
-      familyPlanId: null,
-      familyMembers: [],
       hasPremium: false,
       reviewMistakesUnlocked: false,
       smartRevisionUnlocked: false,

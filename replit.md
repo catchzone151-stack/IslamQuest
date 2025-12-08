@@ -51,13 +51,14 @@ The premium model offers free tier limits and premium plans (Individual £4.99/m
 
 **Events System**: Global Events load cloud entries on mount. Event quiz submissions pass completion time for tiebreaker rankings.
 
-**In-App Purchase System**: A complete backend-verified IAP system with lifetime unlocks for individual (£4.99) and family (£18) plans.
--   **Architecture**: Uses `iapService.js` (Capacitor for native StoreKit/Google Play), `purchaseVerificationService.js` (Supabase Edge Functions), `premiumStateService.js` (offline caching, device binding), `deviceService.js` (unique device IDs), and `familyService.js` (family group management). Deep linking handles family invite acceptance.
--   **Backend (Supabase Edge Functions)**: Handles receipt verification (Apple/Google APIs), premium status validation, device registration, family invite acceptance, and webhook processing for refunds.
--   **Database Tables**: `users`, `purchases`, `family_groups`, `family_members` manage user, purchase, and family data.
+**In-App Purchase System**: A complete backend-verified IAP system with a single lifetime premium unlock (£4.99).
+-   **Architecture**: Uses `iapService.js` (Capacitor for native StoreKit/Google Play), `purchaseVerificationService.js` (Supabase Edge Functions), `premiumStateService.js` (offline caching, device binding), and `deviceService.js` (unique device IDs).
+-   **Backend (Supabase Edge Functions)**: Handles receipt verification (Apple/Google APIs), premium status validation, device registration, and webhook processing for refunds.
+-   **Database Tables**: `users`, `purchases` manage user and purchase data.
 -   **Security**: Nonce for replay attack prevention, hashed device IDs, backend-only premium activation, device limits, and refund webhooks.
 -   **Purchase Flow**: User initiates, native store handles, receipt sent to Supabase Edge Function for verification, which then updates user and purchase records.
 -   **Restore Purchases**: Calls native store's restore API, verifies receipts with backend, and restores premium status.
+-   **Single Product**: `premium_lifetime` (£4.99 one-time) - All features unlocked forever.
 
 **Account Deletion System**: A "Delete My Account" option in Settings triggers a Supabase Edge Function to delete all user-related data. A "Goodbye" screen is shown post-deletion.
 

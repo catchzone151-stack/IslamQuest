@@ -31,13 +31,9 @@ export default function Profile() {
     streak, 
     shieldCount,
     premiumStatus,
-    familyMembers,
     vibrationEnabled,
     setVibrationEnabled,
     purchaseIndividual,
-    purchaseFamily,
-    addFamilyMember,
-    removeFamilyMember,
   } = useProgressStore();
   
   const { showModal } = useModalStore();
@@ -356,7 +352,7 @@ export default function Profile() {
                 textTransform: "capitalize",
               }}
             >
-              {premiumStatus === "free" ? "Free 🆓" : premiumStatus === "individual" ? "Individual ⭐" : "Family 👨‍👩‍👧‍👦"}
+              {premiumStatus === "free" ? "Free 🆓" : "Premium ⭐"}
             </div>
           </div>
 
@@ -374,122 +370,11 @@ export default function Profile() {
                 fontWeight: 700,
                 width: "100%",
                 cursor: "pointer",
-                marginBottom: 16,
                 boxShadow: "0 4px 12px rgba(255, 215, 0, 0.3)",
               }}
             >
               ⭐ Upgrade to Premium
             </button>
-          )}
-
-          {/* Family Members (only show if family plan) */}
-          {premiumStatus === "family" && (
-            <div
-              style={{
-                background: "rgba(255, 255, 255, 0.03)",
-                padding: 16,
-                borderRadius: 12,
-              }}
-            >
-              <h4
-                style={{
-                  color: "#cbd5e1",
-                  fontSize: "1rem",
-                  fontWeight: 600,
-                  marginBottom: 12,
-                }}
-              >
-                Family Members ({familyMembers.length}/5)
-              </h4>
-
-              {familyMembers.length === 0 ? (
-                <p style={{ color: "#94a3b8", fontSize: "0.85rem", marginBottom: 12 }}>
-                  No family members yet. Invite up to 5 members!
-                </p>
-              ) : (
-                <div style={{ marginBottom: 12 }}>
-                  {familyMembers.map((member) => (
-                    <div
-                      key={member.id}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        padding: 10,
-                        background: "rgba(255, 255, 255, 0.05)",
-                        borderRadius: 8,
-                        marginBottom: 8,
-                      }}
-                    >
-                      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                        <div
-                          style={{
-                            width: 32,
-                            height: 32,
-                            borderRadius: "50%",
-                            background: "#4B5563",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            fontSize: "1rem",
-                          }}
-                        >
-                          👤
-                        </div>
-                        <span style={{ color: "#fff", fontSize: "0.9rem" }}>
-                          {member.name}
-                        </span>
-                      </div>
-                      <button
-                        onClick={() => {
-                          if (window.confirm(`Remove ${member.name} from your family plan?`)) {
-                            removeFamilyMember(member.id);
-                          }
-                        }}
-                        style={{
-                          background: "transparent",
-                          border: "1px solid rgba(239, 68, 68, 0.5)",
-                          color: "#ef4444",
-                          padding: "4px 12px",
-                          borderRadius: 6,
-                          fontSize: "0.75rem",
-                          cursor: "pointer",
-                        }}
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Invite Button */}
-              {familyMembers.length < 5 && (
-                <button
-                  onClick={() => showModal(MODAL_TYPES.INVITE_FAMILY, {
-                    onInvite: async (memberName) => {
-                      const result = await addFamilyMember({ name: memberName });
-                      if (result.success) {
-                        console.log("Family member invited:", memberName);
-                      }
-                    }
-                  })}
-                  style={{
-                    background: "linear-gradient(135deg, #FFD700 0%, #FFA500 100%)",
-                    color: "#111827",
-                    border: "none",
-                    borderRadius: 8,
-                    padding: "10px 16px",
-                    fontSize: "0.9rem",
-                    fontWeight: 700,
-                    width: "100%",
-                    cursor: "pointer",
-                  }}
-                >
-                  + Invite Member
-                </button>
-              )}
-            </div>
           )}
         </div>
 

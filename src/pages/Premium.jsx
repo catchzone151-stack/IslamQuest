@@ -10,7 +10,7 @@ import MainMascot from "../assets/mascots/mascot_sitting.webp";
 
 const Premium = () => {
   const navigate = useNavigate();
-  const { premium, premiumType, purchaseIndividual, purchaseFamily } = useProgressStore();
+  const { premium, purchaseIndividual } = useProgressStore();
   const [loading, setLoading] = useState(false);
   const [restoring, setRestoring] = useState(false);
   const [requiresNativeApp, setRequiresNativeApp] = useState(false);
@@ -54,12 +54,7 @@ const Premium = () => {
       const result = await restorePurchases();
       
       if (result.success && result.verified) {
-        const planType = result.planType || "single";
-        if (planType === "family") {
-          purchaseFamily();
-        } else {
-          purchaseIndividual();
-        }
+        purchaseIndividual();
         showNotification("Restored!", "Your purchases have been restored successfully.", "success");
         setTimeout(() => navigate("/"), 1500);
       } else if (result.requiresDeviceTransfer) {
@@ -87,7 +82,7 @@ const Premium = () => {
     }
   };
 
-  const handleIndividualPurchase = async () => {
+  const handlePurchase = async () => {
     if (requiresNativeApp) {
       return;
     }
@@ -100,40 +95,6 @@ const Premium = () => {
       if (result.success) {
         purchaseIndividual();
         markPremiumActivated("single");
-        setTimeout(() => navigate("/"), 1000);
-      } else {
-        console.error("Purchase failed:", result.error);
-        showNotification(
-          "Purchase Failed",
-          result.error || "Payment was not completed. Please try again.",
-          "error"
-        );
-      }
-    } catch (error) {
-      console.error("Purchase failed:", error);
-      showNotification(
-        "Payment Failed",
-        "Something went wrong with your payment. Please try again.",
-        "error"
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleFamilyPurchase = async () => {
-    if (requiresNativeApp) {
-      return;
-    }
-    
-    setLoading(true);
-    
-    try {
-      const result = await purchase("premium_family_lifetime");
-      
-      if (result.success) {
-        purchaseFamily();
-        markPremiumActivated("family");
         setTimeout(() => navigate("/"), 1000);
       } else {
         console.error("Purchase failed:", result.error);
@@ -183,7 +144,7 @@ const Premium = () => {
           </h1>
           
           <p className="text-gray-300 mb-6 text-sm">
-            Plan: {premiumType === "family" ? "Family Plan (6 users)" : "Individual Plan"}
+            Lifetime Premium Access
           </p>
 
           <button
@@ -231,51 +192,26 @@ const Premium = () => {
               </p>
             </div>
           ) : (
-            <>
-              {/* INDIVIDUAL PLAN */}
-              <div className="premium-card">
-                <h2 className="premium-plan-title">Individual</h2>
-                <div className="premium-price">£4.99 — One-time</div>
+            <div className="premium-card">
+              <h2 className="premium-plan-title">Lifetime Premium</h2>
+              <div className="premium-price">£4.99 — One-time</div>
 
-                <ul className="premium-list">
-                  <li>✔ All 14 Learning Paths</li>
-                  <li>✔ Unlimited Lessons</li>
-                  <li>✔ Global Events Access</li>
-                  <li>✔ No Ads Ever</li>
-                  <li>✔ Works Across Devices</li>
-                </ul>
+              <ul className="premium-list">
+                <li>✔ All 14 Learning Paths</li>
+                <li>✔ Unlimited Lessons</li>
+                <li>✔ Global Events Access</li>
+                <li>✔ No Ads Ever</li>
+                <li>✔ Works Across Devices</li>
+              </ul>
 
-                <button 
-                  className="premium-btn"
-                  onClick={handleIndividualPurchase}
-                  disabled={loading}
-                >
-                  {loading ? "Processing..." : "Unlock Individual — £4.99"}
-                </button>
-              </div>
-
-              {/* FAMILY PLAN */}
-              <div className="premium-card">
-                <h2 className="premium-plan-title">Family (Up to 6 Users)</h2>
-                <div className="premium-price">£18 — One-time</div>
-
-                <ul className="premium-list">
-                  <li>✔ All Individual Benefits</li>
-                  <li>✔ 6 Linked Accounts</li>
-                  <li>✔ Perfect for parents & children</li>
-                </ul>
-
-                <button 
-                  className="premium-btn"
-                  onClick={handleFamilyPurchase}
-                  disabled={loading}
-                >
-                  {loading ? "Processing..." : "Unlock Family — £18"}
-                </button>
-
-                <div className="premium-coming-soon">* More family features coming soon *</div>
-              </div>
-            </>
+              <button 
+                className="premium-btn"
+                onClick={handlePurchase}
+                disabled={loading}
+              >
+                {loading ? "Processing..." : "Unlock Premium — £4.99"}
+              </button>
+            </div>
           )}
 
           <p className="premium-footer">
@@ -388,12 +324,6 @@ const Premium = () => {
         .premium-btn:disabled {
           opacity: 0.7;
           cursor: not-allowed;
-        }
-
-        .premium-coming-soon {
-          margin-top: 10px;
-          font-size: 0.8rem;
-          color: #d0d0d0;
         }
 
         .premium-footer {

@@ -3,54 +3,21 @@ import ScreenContainer from "../components/ScreenContainer";
 import { useNavigate } from "../hooks/useNavigate";
 import { useProgressStore } from "../store/progressStore";
 import { useUserStore } from "../store/useUserStore";
-import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import { supabase } from "../lib/supabaseClient";
-import { ChevronLeft, Users, UserPlus, UserMinus, Crown, Trash2 } from "lucide-react";
-import RemoveFamilyMemberModal from "../components/RemoveFamilyMemberModal";
-import InviteFamilyMemberModal from "../components/InviteFamilyMemberModal";
+import { ChevronLeft, Trash2 } from "lucide-react";
 import DeleteAccountModal from "../components/DeleteAccountModal";
-import { getAvatarImage } from "../utils/avatarUtils";
 import { logEvent, ANALYTICS_EVENTS } from "../services/analyticsService";
 
 export default function Settings() {
   const navigate = useNavigate();
-  const { showModal } = useModalStore();
   const { 
     vibrationEnabled, 
     setVibrationEnabled, 
-    resetAllProgress,
-    premiumType,
-    familyMembers,
-    familyPlanId,
-    removeFamilyMember,
-    addFamilyMember
+    resetAllProgress
   } = useProgressStore();
   const { resetUserData, setOnboarded } = useUserStore();
-  const [showRemoveModal, setShowRemoveModal] = useState(false);
-  const [showInviteModal, setShowInviteModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [memberToRemove, setMemberToRemove] = useState(null);
-
-  const isFamilyPlanOwner = premiumType === "family";
-  const maxFamilyMembers = 5;
-  const availableSlots = maxFamilyMembers - (familyMembers?.length || 0);
-
-  const handleRemoveMember = (member) => {
-    setMemberToRemove(member);
-    setShowRemoveModal(true);
-  };
-
-  const confirmRemoveMember = async () => {
-    if (memberToRemove) {
-      await removeFamilyMember(memberToRemove.id);
-      setMemberToRemove(null);
-    }
-  };
-
-  const handleInviteMember = (memberData) => {
-    addFamilyMember(memberData);
-  };
 
   const handleVibrationToggle = () => {
     setVibrationEnabled(!vibrationEnabled);
@@ -72,7 +39,6 @@ export default function Settings() {
     resetAllProgress();
     setOnboarded(false);
     
-    // Set step to "auth" so user goes to login page (not back to first onboarding screen)
     localStorage.setItem("iq_onboarding_step", "auth");
 
     navigate("/auth", { replace: true });
@@ -125,7 +91,6 @@ export default function Settings() {
           color: "white",
         }}
       >
-        {/* Header with Back Button */}
         <div
           style={{
             display: "flex",
@@ -162,7 +127,6 @@ export default function Settings() {
           </h1>
         </div>
 
-        {/* Settings Panel */}
         <div
           style={{
             maxWidth: 400,
@@ -176,7 +140,6 @@ export default function Settings() {
             gap: 12,
           }}
         >
-          {/* Vibration Toggle */}
           <div
             style={{
               background: "rgba(255, 255, 255, 0.03)",
@@ -210,7 +173,6 @@ export default function Settings() {
             </button>
           </div>
 
-          {/* App Version */}
           <div
             style={{
               background: "rgba(255, 255, 255, 0.03)",
@@ -230,178 +192,6 @@ export default function Settings() {
           </div>
         </div>
 
-        {/* Family Plan Management - Only shown for family plan owners */}
-        {isFamilyPlanOwner && (
-          <div
-            style={{
-              maxWidth: 400,
-              margin: "20px auto 0",
-              padding: 20,
-              background: "linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(79, 213, 255, 0.05) 100%)",
-              border: "1px solid rgba(212, 175, 55, 0.3)",
-              borderRadius: 16,
-              display: "flex",
-              flexDirection: "column",
-              gap: 16,
-            }}
-          >
-            {/* Family Plan Header */}
-            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <div
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: "50%",
-                  background: "linear-gradient(135deg, #D4AF37 0%, #FFA500 100%)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Crown size={20} color="#0a2a43" />
-              </div>
-              <div>
-                <h3 style={{ margin: 0, fontSize: "1rem", fontWeight: 700, color: "#D4AF37" }}>
-                  Family Plan
-                </h3>
-                <p style={{ margin: 0, fontSize: "0.75rem", color: "rgba(255,255,255,0.6)" }}>
-                  {familyMembers?.length || 0} of {maxFamilyMembers} members
-                </p>
-              </div>
-            </div>
-
-            {/* Family Members List */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {familyMembers && familyMembers.length > 0 ? (
-                familyMembers.map((member) => (
-                  <div
-                    key={member.id}
-                    style={{
-                      background: "rgba(255, 255, 255, 0.05)",
-                      border: "1px solid rgba(255, 255, 255, 0.1)",
-                      borderRadius: 12,
-                      padding: "12px 14px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                      <img
-                        src={getAvatarImage(member.avatar)}
-                        alt={member.name}
-                        style={{
-                          width: 36,
-                          height: 36,
-                          borderRadius: "50%",
-                          border: "2px solid rgba(212, 175, 55, 0.3)",
-                        }}
-                      />
-                      <div>
-                        <p style={{ margin: 0, fontSize: "0.9rem", fontWeight: 600, color: "white" }}>
-                          {member.name}
-                        </p>
-                        <p style={{ margin: 0, fontSize: "0.7rem", color: "rgba(255,255,255,0.5)" }}>
-                          Joined {new Date(member.joinedAt).toLocaleDateString()}
-                        </p>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => handleRemoveMember(member)}
-                      style={{
-                        background: "rgba(239, 68, 68, 0.15)",
-                        border: "1px solid rgba(239, 68, 68, 0.3)",
-                        borderRadius: 8,
-                        padding: "8px 12px",
-                        color: "#ef4444",
-                        fontWeight: 600,
-                        fontSize: "0.75rem",
-                        cursor: "pointer",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 6,
-                        transition: "all 0.2s",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = "rgba(239, 68, 68, 0.25)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = "rgba(239, 68, 68, 0.15)";
-                      }}
-                    >
-                      <UserMinus size={14} />
-                      Remove
-                    </button>
-                  </div>
-                ))
-              ) : (
-                <div
-                  style={{
-                    background: "rgba(255, 255, 255, 0.03)",
-                    borderRadius: 12,
-                    padding: 20,
-                    textAlign: "center",
-                  }}
-                >
-                  <Users size={32} color="rgba(255,255,255,0.3)" style={{ marginBottom: 8 }} />
-                  <p style={{ margin: 0, fontSize: "0.85rem", color: "rgba(255,255,255,0.5)" }}>
-                    No family members added yet
-                  </p>
-                </div>
-              )}
-            </div>
-
-            {/* Add Member Button */}
-            {availableSlots > 0 && (
-              <button
-                onClick={() => setShowInviteModal(true)}
-                style={{
-                  background: "linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.15) 100%)",
-                  border: "1px solid rgba(16, 185, 129, 0.4)",
-                  borderRadius: 12,
-                  padding: "14px 16px",
-                  color: "#10b981",
-                  fontWeight: 600,
-                  fontSize: "0.9rem",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 8,
-                  transition: "all 0.2s",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = "linear-gradient(135deg, rgba(16, 185, 129, 0.3) 0%, rgba(5, 150, 105, 0.25) 100%)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.15) 100%)";
-                }}
-              >
-                <UserPlus size={18} />
-                Add Family Member ({availableSlots} slot{availableSlots !== 1 ? 's' : ''} available)
-              </button>
-            )}
-
-            {/* Full Message */}
-            {availableSlots === 0 && (
-              <div
-                style={{
-                  background: "rgba(251, 191, 36, 0.1)",
-                  border: "1px solid rgba(251, 191, 36, 0.3)",
-                  borderRadius: 10,
-                  padding: "12px 14px",
-                  textAlign: "center",
-                }}
-              >
-                <p style={{ margin: 0, fontSize: "0.8rem", color: "#fbbf24" }}>
-                  Family plan is full. Remove a member to add someone new.
-                </p>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Additional Settings Panel */}
         <div
           style={{
             maxWidth: 400,
@@ -415,7 +205,6 @@ export default function Settings() {
             gap: 12,
           }}
         >
-          {/* Rate App Button */}
           <a
             href="https://play.google.com/store"
             target="_blank"
@@ -446,7 +235,6 @@ export default function Settings() {
             </button>
           </a>
 
-          {/* Log Out Button */}
           <button
             onClick={handleLogout}
             style={{
@@ -473,7 +261,6 @@ export default function Settings() {
           </button>
         </div>
 
-        {/* Delete Account Section - At the very bottom with divider */}
         <div
           style={{
             maxWidth: 400,
@@ -481,7 +268,6 @@ export default function Settings() {
             padding: "0 20px",
           }}
         >
-          {/* Divider */}
           <div
             style={{
               height: 1,
@@ -490,7 +276,6 @@ export default function Settings() {
             }}
           />
           
-          {/* Delete Account Button */}
           <button
             onClick={() => setShowDeleteModal(true)}
             style={{
@@ -526,26 +311,6 @@ export default function Settings() {
         </div>
       </div>
 
-      {/* Remove Family Member Confirmation Modal */}
-      <RemoveFamilyMemberModal
-        isOpen={showRemoveModal}
-        onClose={() => {
-          setShowRemoveModal(false);
-          setMemberToRemove(null);
-        }}
-        memberName={memberToRemove?.name || ""}
-        onConfirm={confirmRemoveMember}
-      />
-
-      {/* Invite Family Member Modal */}
-      <InviteFamilyMemberModal
-        isOpen={showInviteModal}
-        onClose={() => setShowInviteModal(false)}
-        familyPlanId={familyPlanId}
-        onInvite={handleInviteMember}
-      />
-
-      {/* Delete Account Confirmation Modal */}
       <DeleteAccountModal
         isOpen={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}

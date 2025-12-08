@@ -10,7 +10,6 @@ import EditNameInput from './EditNameInput';
 import EditAvatarModal from './EditAvatarModal';
 import { ViewAllLevelsModal } from './ViewAllLevelsModal';
 import LevelDetailModal from './LevelDetailModal';
-import InviteFamilyMemberModal from './InviteFamilyMemberModal';
 
 import ChallengeExplainerModal from './challenges/ChallengeExplainerModal';
 import ChallengeCountdown from './challenges/ChallengeCountdown';
@@ -148,17 +147,6 @@ export default function ModalController() {
           <LevelDetailModal
             isOpen={true}
             onClose={hideModal}
-          />
-        );
-
-      case MODAL_TYPES.INVITE_FAMILY:
-        return (
-          <InviteFamilyMemberModal
-            isOpen={true}
-            onClose={hideModal}
-            onInvite={(memberName) => {
-              modalData.onInvite?.(memberName);
-            }}
           />
         );
 
@@ -398,10 +386,8 @@ export default function ModalController() {
                 animation: 'modalScaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
               }}
             >
-              {/* Moon Icon */}
               <div style={{ fontSize: '3.5rem', marginBottom: '16px' }}>🌙</div>
 
-              {/* Title */}
               <h2
                 style={{
                   fontSize: '1.4rem',
@@ -413,7 +399,6 @@ export default function ModalController() {
                 Ramadan Mode Coming Soon
               </h2>
 
-              {/* Subtitle */}
               <p
                 style={{
                   fontSize: '0.95rem',
@@ -425,7 +410,6 @@ export default function ModalController() {
                 Launching with Global Events, in shā' Allāh ✨
               </p>
 
-              {/* OK Button */}
               <button
                 onClick={hideModal}
                 style={{

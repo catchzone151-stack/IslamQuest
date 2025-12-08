@@ -10,13 +10,6 @@ const PRODUCTS = {
     appleId: "premium_lifetime",
     type: "non-consumable",
     planType: "single"
-  },
-  premium_family_lifetime: {
-    id: "premium_family_lifetime",
-    googleId: "premium_family_lifetime",
-    appleId: "premium_family_lifetime",
-    type: "non-consumable",
-    planType: "family"
   }
 };
 
@@ -109,10 +102,8 @@ export const loadProducts = async () => {
   if (!initResult.success) {
     return Object.values(PRODUCTS).map(p => ({
       id: p.id,
-      title: p.planType === "single" ? "Lifetime Premium" : "Family Lifetime Premium",
-      description: p.planType === "single" 
-        ? "Unlock all features forever" 
-        : "Unlock for your whole family (up to 6 users)",
+      title: "Lifetime Premium",
+      description: "Unlock all features forever",
       available: false,
       requiresNativeApp: true
     }));
@@ -128,7 +119,7 @@ export const loadProducts = async () => {
       return {
         id: product.id,
         storeId: storeId,
-        title: storeProduct?.title || (product.planType === "single" ? "Lifetime Premium" : "Family Lifetime Premium"),
+        title: storeProduct?.title || "Lifetime Premium",
         description: storeProduct?.description || "Unlock all features forever",
         price: storeProduct?.price || "Loading...",
         priceAmount: storeProduct?.priceMicros ? storeProduct.priceMicros / 1000000 : null,
@@ -330,7 +321,6 @@ export const restorePurchases = async () => {
     }, 30000);
     
     let restored = false;
-    
     let restoredPlanType = null;
     
     const handleRestored = async (product) => {
