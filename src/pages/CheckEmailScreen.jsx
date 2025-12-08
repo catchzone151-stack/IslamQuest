@@ -14,6 +14,7 @@ export default function CheckEmailScreen() {
   const [checking, setChecking] = useState(false);
   const [email, setEmail] = useState("");
   const [loadingMessage, setLoadingMessage] = useState("");
+  const [urlError, setUrlError] = useState("");
 
   useEffect(() => {
     const getEmail = async () => {
@@ -33,10 +34,31 @@ export default function CheckEmailScreen() {
   // Handle auth callback when user returns from confirmation link
   useEffect(() => {
     const handleAuthCallback = async () => {
-      // Check if there are auth tokens in the URL (from email confirmation link)
       const hash = window.location.hash;
       const searchParams = new URLSearchParams(window.location.search);
       
+      // Check for errors in URL (from failed confirmation link)
+      if (hash.includes('error=') || searchParams.has('error')) {
+        const hashParams = new URLSearchParams(hash.substring(1));
+        const errorCode = hashParams.get('error_code') || searchParams.get('error_code') || '';
+        const errorDesc = hashParams.get('error_description') || searchParams.get('error_description') || '';
+        
+        console.log("[CheckEmail] Auth error in URL:", errorCode, errorDesc);
+        
+        if (errorCode === 'otp_expired') {
+          setUrlError("Your confirmation link has expired. Please click 'Resend confirmation email' to get a new link.");
+        } else if (errorCode === 'access_denied') {
+          setUrlError("There was a problem with your confirmation link. Please request a new one.");
+        } else {
+          setUrlError("Something went wrong. Please try requesting a new confirmation email.");
+        }
+        
+        // Clear the URL
+        window.history.replaceState(null, '', window.location.pathname);
+        return;
+      }
+      
+      // Check if there are auth tokens in the URL (from successful email confirmation link)
       if (hash.includes('access_token') || searchParams.has('code')) {
         console.log("[CheckEmail] Auth callback detected in URL, processing...");
         
@@ -198,11 +220,13 @@ export default function CheckEmailScreen() {
 
   const handleResendEmail = async () => {
     setChecking(true);
+    setUrlError(""); // Clear any previous error
     try {
       const { data: { user } } = await supabase.auth.getUser();
       const userEmail = user?.email || email;
       if (userEmail) {
         const appUrl = window.location.origin;
+        console.log("[CheckEmail] Resending confirmation to:", userEmail);
         await supabase.auth.resend({
           type: 'signup',
           email: userEmail,
@@ -210,10 +234,13 @@ export default function CheckEmailScreen() {
             emailRedirectTo: `${appUrl}/check-email`,
           },
         });
-        alert("Confirmation email sent! Check your inbox.");
+        alert("New confirmation email sent! Please check your inbox and click the link.");
+      } else {
+        alert("Could not find your email. Please try signing up again.");
       }
     } catch (err) {
       console.error("Resend error:", err);
+      alert("Failed to resend email. Please try again.");
     }
     setChecking(false);
   };
@@ -370,32 +397,53 @@ export default function CheckEmailScreen() {
         <p style={{ 
           color: "#999", 
           fontSize: "0.9rem", 
-          marginBottom: "32px",
+          marginBottom: urlError ? "16px" : "32px",
           lineHeight: 1.5
         }}>
           Click the link in your email to confirm your account and start your learning journey.
         </p>
 
-        <motion.div
-          animate={{ 
-            scale: [1, 1.05, 1],
-          }}
-          transition={{ 
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-            color: "#888",
-            marginBottom: "32px",
-          }}
-        >
-          <RefreshCw size={16} style={{ animation: "spin 2s linear infinite" }} />
-          <span style={{ fontSize: "0.85rem" }}>Waiting for confirmation...</span>
-        </motion.div>
+        {urlError && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            style={{
+              background: "rgba(239, 68, 68, 0.15)",
+              border: "1px solid rgba(239, 68, 68, 0.3)",
+              borderRadius: "10px",
+              padding: "12px 16px",
+              marginBottom: "24px",
+              width: "100%",
+            }}
+          >
+            <p style={{ color: "#ef4444", fontSize: "0.9rem", lineHeight: 1.5 }}>
+              {urlError}
+            </p>
+          </motion.div>
+        )}
+
+        {!urlError && (
+          <motion.div
+            animate={{ 
+              scale: [1, 1.05, 1],
+            }}
+            transition={{ 
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              color: "#888",
+              marginBottom: "32px",
+            }}
+          >
+            <RefreshCw size={16} style={{ animation: "spin 2s linear infinite" }} />
+            <span style={{ fontSize: "0.85rem" }}>Waiting for confirmation...</span>
+          </motion.div>
+        )}
 
         <motion.button
           onClick={handleCheckNow}
