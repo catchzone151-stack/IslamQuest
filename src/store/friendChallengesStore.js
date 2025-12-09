@@ -108,8 +108,44 @@ export const useFriendChallengesStore = create((set, get) => ({
       }
       
       console.log("[FriendChallenges] Raw data from DB:", data?.length || 0, "rows");
-      if (data?.length > 0) {
-        console.log("[FriendChallenges] Challenge details:", data.map(c => ({
+      
+      // Get current friends list to filter out orphaned challenges
+      const { data: friendsData } = await supabase
+        .from("friends")
+        .select("user_id, friend_id")
+        .or(`user_id.eq.${currentUserId},friend_id.eq.${currentUserId}`)
+        .eq("status", "accepted");
+      
+      const friendIds = new Set(
+        (friendsData || []).map(f => f.user_id === currentUserId ? f.friend_id : f.user_id)
+      );
+      
+      // Filter out challenges from non-friends and delete orphaned ones
+      const validChallenges = [];
+      const orphanedIds = [];
+      
+      for (const c of (data || [])) {
+        const otherUserId = c.sender_id === currentUserId ? c.receiver_id : c.sender_id;
+        if (friendIds.has(otherUserId)) {
+          validChallenges.push(c);
+        } else {
+          orphanedIds.push(c.id);
+        }
+      }
+      
+      // Delete orphaned challenges in background
+      if (orphanedIds.length > 0) {
+        console.log("[FriendChallenges] Deleting orphaned challenges:", orphanedIds.length);
+        supabase
+          .from("friend_challenges")
+          .delete()
+          .in("id", orphanedIds)
+          .then(() => console.log("[FriendChallenges] Orphaned challenges deleted"))
+          .catch(err => console.warn("[FriendChallenges] Failed to delete orphaned:", err));
+      }
+      
+      if (validChallenges.length > 0) {
+        console.log("[FriendChallenges] Challenge details:", validChallenges.map(c => ({
           id: c.id?.slice(0,8),
           sender: c.sender_id?.slice(0,8),
           receiver: c.receiver_id?.slice(0,8),
@@ -120,7 +156,7 @@ export const useFriendChallengesStore = create((set, get) => ({
       }
       
       const now = new Date();
-      const challenges = (data || []).filter(c => {
+      const challenges = validChallenges.filter(c => {
         if (c.status === "cancelled" || c.status === "declined") return false;
         if (c.status === "pending") {
           const createdAt = new Date(c.created_at);
