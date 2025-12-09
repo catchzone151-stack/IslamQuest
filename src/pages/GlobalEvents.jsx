@@ -81,16 +81,20 @@ export default function GlobalEvents() {
 
   return (
     <div className="screen no-extra-space global-events-container" style={{ position: "relative" }}>
-      {/* Header */}
-      <div className="events-header" style={{ textAlign: "center" }}>
-        <button className="back-btn" onClick={() => navigate("/challenge")} style={{ position: "absolute", left: 16, top: 16 }}>
+      {/* Back Button */}
+      <div style={{ padding: "16px 16px 0" }}>
+        <button className="back-btn" onClick={() => navigate("/challenge")}>
           ← Back
         </button>
-        <h1 className="events-title" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+      </div>
+
+      {/* Header */}
+      <div className="events-header" style={{ textAlign: "center", padding: "16px 20px" }}>
+        <h1 className="events-title" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, margin: 0 }}>
           <Globe size={24} style={{ color: '#D4AF37' }} />
           Global Events
         </h1>
-        <p className="events-subtitle" style={{ textAlign: "center", margin: "4px 0 16px" }}>Compete with Muslims worldwide</p>
+        <p className="events-subtitle" style={{ textAlign: "center", margin: "8px 0 16px", color: "#94a3b8" }}>Compete with Muslims worldwide</p>
         
         {/* Info Section */}
         <div style={{ 
