@@ -13,171 +13,150 @@ export const useFriendsStore = create((set, get) => ({
   globalLeaderboard: [],
   loading: false,
   error: null,
+  currentUserId: null,
+  realtimeChannel: null,
+  initialized: false,
+
+  // Initialize with real-time subscription
+  initialize: async () => {
+    if (get().initialized) return;
+    
+    const { data: auth } = await supabase.auth.getUser();
+    if (!auth?.user?.id) return;
+    
+    const userId = auth.user.id;
+    set({ currentUserId: userId });
+    
+    await get().loadAll();
+    get().setupRealtimeSubscription(userId);
+    set({ initialized: true });
+  },
+
+  // Setup real-time subscription for instant friend updates
+  setupRealtimeSubscription: (userId) => {
+    const existingChannel = get().realtimeChannel;
+    if (existingChannel) {
+      supabase.removeChannel(existingChannel);
+    }
+
+    const channel = supabase
+      .channel(`friends_${userId}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "friends",
+          filter: `user_id=eq.${userId}`,
+        },
+        () => get().loadAll()
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "friends",
+          filter: `friend_id=eq.${userId}`,
+        },
+        () => get().loadAll()
+      )
+      .subscribe();
+
+    set({ realtimeChannel: channel });
+  },
+
+  cleanup: () => {
+    const { realtimeChannel } = get();
+    if (realtimeChannel) {
+      supabase.removeChannel(realtimeChannel);
+    }
+    set({
+      friends: [],
+      sentRequests: [],
+      receivedRequests: [],
+      users: [],
+      currentUserId: null,
+      realtimeChannel: null,
+      initialized: false,
+    });
+  },
 
   loadAll: async () => {
     try {
       set({ loading: true, error: null });
 
-      const { data: auth } = await supabase.auth.getUser();
-      if (!auth || !auth.user) {
-        set({
-          friends: [],
-          sentRequests: [],
-          receivedRequests: [],
-          users: [],
-          loading: false,
-        });
+      let userId = get().currentUserId;
+      if (!userId) {
+        const { data: auth } = await supabase.auth.getUser();
+        if (!auth?.user) {
+          set({ friends: [], sentRequests: [], receivedRequests: [], users: [], loading: false });
+          return;
+        }
+        userId = auth.user.id;
+        set({ currentUserId: userId });
+      }
+
+      // PARALLEL fetch: friends, sent requests, received requests
+      const [friendsResult, sentResult, receivedResult] = await Promise.all([
+        supabase.from("friends").select("*").or(`user_id.eq.${userId},friend_id.eq.${userId}`).eq("status", "accepted"),
+        supabase.from("friends").select("*").eq("user_id", userId).eq("status", "pending"),
+        supabase.from("friends").select("*").eq("friend_id", userId).eq("status", "pending"),
+      ]);
+
+      if (friendsResult.error) {
+        set({ friends: [], sentRequests: [], receivedRequests: [], users: [], loading: false, error: null });
         return;
       }
 
-      const userId = auth.user.id;
+      const friendsData = friendsResult.data || [];
+      const sent = sentResult.data || [];
+      const received = receivedResult.data || [];
 
-      // Load accepted friends (mutual friendship - both directions)
-      const { data: friendsData, error: friendsErr } = await supabase
-        .from("friends")
-        .select("*")
-        .or(`user_id.eq.${userId},friend_id.eq.${userId}`)
-        .eq("status", "accepted");
-      
-      console.log("🔍 loadAll - userId:", userId);
-      console.log("🔍 loadAll - friendsData:", friendsData);
-      console.log("🔍 loadAll - friendsErr:", friendsErr);
+      // Collect all profile IDs needed
+      const friendIds = friendsData.map(f => f.user_id === userId ? f.friend_id : f.user_id);
+      const sentIds = sent.map(s => s.friend_id);
+      const receivedIds = received.map(r => r.user_id);
+      const allProfileIds = [...new Set([...friendIds, ...sentIds, ...receivedIds])];
 
-      if (friendsErr) {
-        console.warn("Friends table not ready:", friendsErr.message);
-        set({
-          friends: [],
-          sentRequests: [],
-          receivedRequests: [],
-          users: [],
-          loading: false,
-          error: null,
-        });
-        return;
-      }
-
-      // For each row, resolve friendUserId (the other person)
-      const friendIds = (friendsData || []).map((f) => 
-        f.user_id === userId ? f.friend_id : f.user_id
-      );
-      let friendProfiles = [];
-      if (friendIds.length > 0) {
+      // Single batch profile fetch
+      let allProfiles = [];
+      if (allProfileIds.length > 0) {
         const { data: profiles } = await supabase
           .from("profiles")
           .select("user_id, username, handle, avatar, xp, streak, coins, shield_count")
-          .in("user_id", friendIds);
-        friendProfiles = profiles || [];
+          .in("user_id", allProfileIds);
+        allProfiles = profiles || [];
       }
 
-      const formattedFriends = friendProfiles.map((profile) => ({
+      const profileMap = new Map(allProfiles.map(p => [p.user_id, p]));
+
+      const formatProfile = (profile, includeExtras = false) => ({
         user_id: profile.user_id,
         id: profile.user_id,
         username: profile.username,
         handle: profile.handle,
         nickname: profile.username || profile.handle || "User",
-        avatar: typeof profile.avatar === "number"
-          ? avatarIndexToKey(profile.avatar)
-          : profile.avatar || "avatar_man_lantern",
+        avatar: typeof profile.avatar === "number" ? avatarIndexToKey(profile.avatar) : profile.avatar || "avatar_man_lantern",
         xp: profile.xp || 0,
-        streak: profile.streak || 0,
-        coins: profile.coins || 0,
-        shield_count: profile.shield_count || 0,
-      }));
-
-      // Load sent requests (where I am user_id, status pending)
-      const { data: sent, error: sentErr } = await supabase
-        .from("friends")
-        .select("*")
-        .eq("user_id", userId)
-        .eq("status", "pending");
-
-      console.log("🔍 loadAll - sent requests for userId:", userId);
-      console.log("🔍 loadAll - sent data:", sent);
-      console.log("🔍 loadAll - sent error:", sentErr);
-
-      const sentIds = (sent || []).map((s) => s.friend_id);
-      let sentProfiles = [];
-      if (sentIds.length > 0) {
-        const { data: profiles } = await supabase
-          .from("profiles")
-          .select("user_id, username, handle, avatar, xp")
-          .in("user_id", sentIds);
-        sentProfiles = profiles || [];
-      }
-
-      const formattedSent = (sent || []).map((row) => {
-        const profile = sentProfiles.find((p) => p.user_id === row.friend_id) || {};
-        return {
-          id: row.id,
-          requestId: row.id,
-          senderId: row.user_id,
-          receiverId: row.friend_id,
-          user_id: row.friend_id,
-          username: profile.username,
-          handle: profile.handle,
-          nickname: profile.username || profile.handle || "User",
-          avatar: typeof profile.avatar === "number"
-            ? avatarIndexToKey(profile.avatar)
-            : profile.avatar || "avatar_man_lantern",
-          xp: profile.xp || 0,
-        };
+        ...(includeExtras && { streak: profile.streak || 0, coins: profile.coins || 0, shield_count: profile.shield_count || 0 }),
       });
 
-      // Load pending requests where I am friend_id (someone sent TO me)
-      const { data: received, error: receivedErr } = await supabase
-        .from("friends")
-        .select("*")
-        .eq("friend_id", userId)
-        .eq("status", "pending");
-
-      console.log("🔍 loadAll - received requests query for userId:", userId);
-      console.log("🔍 loadAll - received data:", received);
-      console.log("🔍 loadAll - received error:", receivedErr);
-
-      const receivedIds = (received || []).map((r) => r.user_id);
-      let receivedProfiles = [];
-      if (receivedIds.length > 0) {
-        const { data: profiles } = await supabase
-          .from("profiles")
-          .select("user_id, username, handle, avatar, xp")
-          .in("user_id", receivedIds);
-        receivedProfiles = profiles || [];
-      }
-
-      const formattedReceived = (received || []).map((row) => {
-        const profile = receivedProfiles.find((p) => p.user_id === row.user_id) || {};
-        return {
-          id: row.id,
-          requestId: row.id,
-          senderId: row.user_id,
-          receiverId: row.friend_id,
-          user_id: row.user_id,
-          username: profile.username,
-          handle: profile.handle,
-          nickname: profile.username || profile.handle || "User",
-          avatar: typeof profile.avatar === "number"
-            ? avatarIndexToKey(profile.avatar)
-            : profile.avatar || "avatar_man_lantern",
-          xp: profile.xp || 0,
-        };
+      const formattedFriends = friendIds.map(id => profileMap.get(id)).filter(Boolean).map(p => formatProfile(p, true));
+      
+      const formattedSent = sent.map(row => {
+        const profile = profileMap.get(row.friend_id) || {};
+        return { id: row.id, requestId: row.id, senderId: row.user_id, receiverId: row.friend_id, user_id: row.friend_id, ...formatProfile(profile) };
       });
 
-      set({
-        friends: formattedFriends,
-        sentRequests: formattedSent,
-        receivedRequests: formattedReceived,
-        loading: false,
+      const formattedReceived = received.map(row => {
+        const profile = profileMap.get(row.user_id) || {};
+        return { id: row.id, requestId: row.id, senderId: row.user_id, receiverId: row.friend_id, user_id: row.user_id, ...formatProfile(profile) };
       });
+
+      set({ friends: formattedFriends, sentRequests: formattedSent, receivedRequests: formattedReceived, loading: false });
     } catch (err) {
-      console.warn("loadAll error:", err);
-      set({
-        friends: [],
-        sentRequests: [],
-        receivedRequests: [],
-        users: [],
-        loading: false,
-        error: null,
-      });
+      set({ friends: [], sentRequests: [], receivedRequests: [], users: [], loading: false, error: null });
     }
   },
 

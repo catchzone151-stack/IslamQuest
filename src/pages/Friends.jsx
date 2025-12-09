@@ -106,48 +106,39 @@ export default function Friends() {
 
   useEffect(() => {
     if (!currentUserId) return;
-    console.log("🔄 Friends page mounted - loading all friend data for userId:", currentUserId);
-    loadFriends();
-    loadRequests();
-    loadPendingRequests();
-    initFriendChallenges().then(() => {
-      loadChallenges();
-      console.log("🔄 Force loading challenges on Friends mount");
-    });
+    // Initial load - parallel for speed
+    Promise.all([
+      useFriendsStore.getState().loadAll(),
+      initFriendChallenges().then(() => loadChallenges()),
+    ]);
     clearPendingIncomingCount();
   }, [currentUserId]);
   
   useEffect(() => {
     const handleFocus = () => {
-      console.log("🔄 Window focused - refreshing friend data and challenges");
-      loadFriends();
-      loadRequests();
-      loadPendingRequests();
-      loadChallenges();
+      // Parallel refresh on window focus
+      Promise.all([
+        useFriendsStore.getState().loadAll(),
+        loadChallenges(),
+      ]);
     };
     window.addEventListener('focus', handleFocus);
     return () => window.removeEventListener('focus', handleFocus);
-  }, [loadFriends, loadRequests, loadPendingRequests, loadChallenges]);
+  }, [loadChallenges]);
 
+  // Lightweight background poll as fallback (real-time handles most updates)
   useEffect(() => {
     let isMounted = true;
-
-    const poll = async () => {
+    const poll = () => {
       if (!isMounted) return;
-      console.log("🔄 Polling friends data and challenges...");
-      await loadFriends();
-      await loadRequests();
-      await loadPendingRequests();
-      await loadChallenges();
+      Promise.all([
+        useFriendsStore.getState().loadAll(),
+        loadChallenges(),
+      ]);
     };
-
-    const intervalId = setInterval(poll, 7000);
-
-    return () => {
-      isMounted = false;
-      clearInterval(intervalId);
-    };
-  }, [loadFriends, loadRequests, loadPendingRequests, loadChallenges]);
+    const intervalId = setInterval(poll, 15000); // Reduced frequency since real-time handles instant updates
+    return () => { isMounted = false; clearInterval(intervalId); };
+  }, [loadChallenges]);
 
   const loadGlobalLeaderboard = useCallback(async () => {
     setLoadingGlobal(true);

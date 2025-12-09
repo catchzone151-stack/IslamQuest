@@ -114,7 +114,7 @@ async function loadDailyQuest(userId) {
 
 async function loadFriends() {
   try {
-    await useFriendsStore.getState().loadAll();
+    await useFriendsStore.getState().initialize();
     return { success: true };
   } catch (e) {
     console.warn("[DataPreloader] Friends load warning:", e);

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "../hooks/useNavigate";
 import { Home, BookOpen, Sword, Users, User } from "lucide-react";
@@ -10,19 +10,14 @@ const NAV_HEIGHT = 76;
 export default function BottomNav() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { receivedRequests, loadAll } = useFriendsStore();
-  const { unreadCount: challengeUnreadCount, initialize: initChallenges, initialized } = useFriendChallengesStore();
-  const friendsLoaded = useRef(false);
+  const { receivedRequests, initialized: friendsInitialized, initialize: initFriends } = useFriendsStore();
+  const { unreadCount: challengeUnreadCount, initialize: initChallenges, initialized: challengesInitialized } = useFriendChallengesStore();
 
   useEffect(() => {
-    if (!initialized) {
-      initChallenges();
-    }
-    if (!friendsLoaded.current) {
-      friendsLoaded.current = true;
-      loadAll();
-    }
-  }, [initialized, initChallenges, loadAll]);
+    // Initialize both stores with real-time subscriptions
+    if (!friendsInitialized) initFriends();
+    if (!challengesInitialized) initChallenges();
+  }, [friendsInitialized, challengesInitialized, initFriends, initChallenges]);
 
   const friendBadgeCount = (receivedRequests?.length || 0) + challengeUnreadCount;
 

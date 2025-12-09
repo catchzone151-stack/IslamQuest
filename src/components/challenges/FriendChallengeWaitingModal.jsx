@@ -10,7 +10,7 @@ export default function FriendChallengeWaitingModal({ friendName, modeId, score,
   const { hideModal } = useModalStore();
   const loadChallenges = useFriendChallengesStore(state => state.loadChallenges);
   const [challengeData, setChallengeData] = useState(null);
-  const pollIntervalRef = useRef(null);
+  const channelRef = useRef(null);
   const mountedRef = useRef(true);
   
   const receiverAccepted = challengeData && (
@@ -36,36 +36,40 @@ export default function FriendChallengeWaitingModal({ friendName, modeId, score,
       
       if (error || !data || !mountedRef.current) return;
       
-      console.log('[WaitingModal] Fetched:', data.status, 'receiver_score:', data.receiver_score);
       setChallengeData(data);
-      
-      await loadChallenges();
-    } catch (err) {
-      console.error('[WaitingModal] Fetch error:', err);
-    }
+      loadChallenges();
+    } catch (err) {}
   }, [challengeId, loadChallenges]);
   
   useEffect(() => {
     mountedRef.current = true;
     
-    if (!challengeId) {
-      console.log('[WaitingModal] No challengeId');
-      return;
-    }
+    if (!challengeId) return;
     
-    console.log('[WaitingModal] Starting poll for:', challengeId);
-    
+    // Initial fetch
     fetchChallenge();
-    pollIntervalRef.current = setInterval(fetchChallenge, 2500);
+    
+    // Real-time subscription for instant updates
+    channelRef.current = supabase
+      .channel(`waiting_${challengeId}`)
+      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "friend_challenges", filter: `id=eq.${challengeId}` },
+        (payload) => {
+          if (!mountedRef.current) return;
+          const data = payload.new;
+          setChallengeData({ status: data.status, receiver_score: data.receiver_score });
+          loadChallenges();
+        }
+      )
+      .subscribe();
     
     return () => {
       mountedRef.current = false;
-      if (pollIntervalRef.current) {
-        clearInterval(pollIntervalRef.current);
-        pollIntervalRef.current = null;
+      if (channelRef.current) {
+        supabase.removeChannel(channelRef.current);
+        channelRef.current = null;
       }
     };
-  }, [challengeId, fetchChallenge]);
+  }, [challengeId, fetchChallenge, loadChallenges]);
   
   const handleClose = () => {
     hideModal();

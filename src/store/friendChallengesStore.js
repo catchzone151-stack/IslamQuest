@@ -94,37 +94,24 @@ export const useFriendChallengesStore = create((set, get) => ({
     set({ loading: true, error: null });
     
     try {
-      console.log("[FriendChallenges] Loading challenges for user:", currentUserId);
+      // PARALLEL fetch: challenges and friends list together
+      const [challengesResult, friendsResult] = await Promise.all([
+        supabase.from("friend_challenges").select("*").or(`sender_id.eq.${currentUserId},receiver_id.eq.${currentUserId}`).order("created_at", { ascending: false }),
+        supabase.from("friends").select("user_id, friend_id").or(`user_id.eq.${currentUserId},friend_id.eq.${currentUserId}`).eq("status", "accepted"),
+      ]);
       
-      const { data, error } = await supabase
-        .from("friend_challenges")
-        .select("*")
-        .or(`sender_id.eq.${currentUserId},receiver_id.eq.${currentUserId}`)
-        .order("created_at", { ascending: false });
+      if (challengesResult.error) throw challengesResult.error;
       
-      if (error) {
-        console.error("[FriendChallenges] Load query error:", error);
-        throw error;
-      }
+      const data = challengesResult.data || [];
+      const friendsData = friendsResult.data || [];
       
-      console.log("[FriendChallenges] Raw data from DB:", data?.length || 0, "rows");
+      const friendIds = new Set(friendsData.map(f => f.user_id === currentUserId ? f.friend_id : f.user_id));
       
-      // Get current friends list to filter out orphaned challenges
-      const { data: friendsData } = await supabase
-        .from("friends")
-        .select("user_id, friend_id")
-        .or(`user_id.eq.${currentUserId},friend_id.eq.${currentUserId}`)
-        .eq("status", "accepted");
-      
-      const friendIds = new Set(
-        (friendsData || []).map(f => f.user_id === currentUserId ? f.friend_id : f.user_id)
-      );
-      
-      // Filter out challenges from non-friends and delete orphaned ones
+      // Filter out orphaned challenges (async delete in background)
       const validChallenges = [];
       const orphanedIds = [];
       
-      for (const c of (data || [])) {
+      for (const c of data) {
         const otherUserId = c.sender_id === currentUserId ? c.receiver_id : c.sender_id;
         if (friendIds.has(otherUserId)) {
           validChallenges.push(c);
@@ -133,26 +120,9 @@ export const useFriendChallengesStore = create((set, get) => ({
         }
       }
       
-      // Delete orphaned challenges in background
+      // Background delete orphaned challenges (fire and forget)
       if (orphanedIds.length > 0) {
-        console.log("[FriendChallenges] Deleting orphaned challenges:", orphanedIds.length);
-        supabase
-          .from("friend_challenges")
-          .delete()
-          .in("id", orphanedIds)
-          .then(() => console.log("[FriendChallenges] Orphaned challenges deleted"))
-          .catch(err => console.warn("[FriendChallenges] Failed to delete orphaned:", err));
-      }
-      
-      if (validChallenges.length > 0) {
-        console.log("[FriendChallenges] Challenge details:", validChallenges.map(c => ({
-          id: c.id?.slice(0,8),
-          sender: c.sender_id?.slice(0,8),
-          receiver: c.receiver_id?.slice(0,8),
-          status: c.status,
-          iAmSender: c.sender_id === currentUserId,
-          iAmReceiver: c.receiver_id === currentUserId
-        })));
+        supabase.from("friend_challenges").delete().in("id", orphanedIds).then(() => {});
       }
       
       const now = new Date();
@@ -195,14 +165,7 @@ export const useFriendChallengesStore = create((set, get) => ({
         loading: false,
       });
       
-      console.log("[FriendChallenges] Loaded:", {
-        incoming: pendingIncoming.length,
-        outgoing: pendingOutgoing.length,
-        active: activeChallenges.length,
-        results: resultsToView.length,
-      });
     } catch (error) {
-      console.error("[FriendChallenges] Load error:", error);
       set({ error: error.message, loading: false });
     }
   },
@@ -210,40 +173,14 @@ export const useFriendChallengesStore = create((set, get) => ({
   setupRealtimeSubscription: (userId) => {
     const channel = supabase
       .channel(`friend_challenges_${userId}`)
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "friend_challenges",
-          filter: `sender_id=eq.${userId}`,
-        },
-        (payload) => {
-          console.log("[FriendChallenges] Realtime update (sender):", payload);
-          get().handleRealtimeUpdate(payload);
-        }
-      )
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "friend_challenges",
-          filter: `receiver_id=eq.${userId}`,
-        },
-        (payload) => {
-          console.log("[FriendChallenges] Realtime update (receiver):", payload);
-          get().handleRealtimeUpdate(payload);
-        }
-      )
-      .subscribe((status) => {
-        console.log("[FriendChallenges] Realtime subscription:", status);
-      });
+      .on("postgres_changes", { event: "*", schema: "public", table: "friend_challenges", filter: `sender_id=eq.${userId}` }, () => get().loadChallenges())
+      .on("postgres_changes", { event: "*", schema: "public", table: "friend_challenges", filter: `receiver_id=eq.${userId}` }, () => get().loadChallenges())
+      .subscribe();
     
     set({ realtimeChannel: channel });
   },
 
-  handleRealtimeUpdate: (payload) => {
+  handleRealtimeUpdate: () => {
     get().loadChallenges();
   },
 
@@ -251,20 +188,15 @@ export const useFriendChallengesStore = create((set, get) => ({
     if (!challengeId) return null;
     
     try {
-      console.log("[FriendChallenges] Refreshing single challenge:", challengeId);
-      
       const { data, error } = await supabase
         .from("friend_challenges")
         .select("*")
         .eq("id", challengeId)
         .single();
       
-      if (error) {
-        console.error("[FriendChallenges] Refresh error:", error);
-        return null;
-      }
+      if (error) return null;
       
-      console.log("[FriendChallenges] Refreshed challenge:", {
+      console.log("[FriendChallenges] Refreshed:", {
         id: challengeId,
         status: data?.status,
         senderScore: data?.sender_score,
