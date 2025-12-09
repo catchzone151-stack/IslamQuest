@@ -26,23 +26,6 @@ export default function BossPlayedTodayModal({ onClose }) {
           This keeps the challenge special and gives you time to study!
         </p>
 
-        <div style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 8,
-          padding: 16,
-          background: "rgba(16, 185, 129, 0.1)",
-          border: "1px solid rgba(16, 185, 129, 0.2)",
-          borderRadius: 12,
-          marginBottom: 20
-        }}>
-          <span style={{ fontSize: "1.5rem" }}>🌙</span>
-          <span style={{ color: "#10b981", fontSize: "0.95rem", fontWeight: 600 }}>
-            Come back tomorrow for another attempt!
-          </span>
-        </div>
-
         <button 
           className="challenge-btn-primary"
           onClick={onClose}
