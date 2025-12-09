@@ -2,6 +2,9 @@ import { create } from 'zustand';
 
 const MODAL_TYPES = {
   NONE: null,
+  CONFIRM: 'CONFIRM',
+  SUCCESS: 'SUCCESS',
+  ERROR: 'ERROR',
   REWARD: 'REWARD',
   LEVEL_UP: 'LEVEL_UP',
   PURCHASE: 'PURCHASE',

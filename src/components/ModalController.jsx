@@ -41,6 +41,263 @@ export default function ModalController() {
 
   const renderModal = () => {
     switch (activeModal) {
+      case MODAL_TYPES.CONFIRM:
+        return (
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'rgba(0, 0, 0, 0.8)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 9999,
+            }}
+            onClick={hideModal}
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: 'linear-gradient(135deg, #0a2a43 0%, #000814 100%)',
+                border: '2px solid rgba(255, 215, 0, 0.4)',
+                borderRadius: '24px',
+                padding: '32px 24px',
+                maxWidth: '400px',
+                width: '90%',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 215, 0, 0.2)',
+                textAlign: 'center',
+              }}
+            >
+              <h2
+                style={{
+                  fontSize: '1.3rem',
+                  fontWeight: 700,
+                  color: '#FFD700',
+                  margin: '0 0 16px 0',
+                }}
+              >
+                {modalData.title || 'Confirm'}
+              </h2>
+
+              <p
+                style={{
+                  fontSize: '1rem',
+                  color: '#e8e8e8',
+                  margin: '0 0 24px 0',
+                  lineHeight: 1.5,
+                }}
+              >
+                {modalData.message || 'Are you sure?'}
+              </p>
+
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <button
+                  onClick={hideModal}
+                  style={{
+                    flex: 1,
+                    padding: '14px',
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    borderRadius: '12px',
+                    color: '#ffffff',
+                    fontSize: '1rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                  }}
+                >
+                  {modalData.cancelText || 'Cancel'}
+                </button>
+                <button
+                  onClick={() => {
+                    hideModal();
+                    modalData.onConfirm?.();
+                  }}
+                  style={{
+                    flex: 1,
+                    padding: '14px',
+                    background: 'linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)',
+                    border: 'none',
+                    borderRadius: '12px',
+                    color: '#ffffff',
+                    fontSize: '1rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                  }}
+                >
+                  {modalData.confirmText || 'Confirm'}
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+
+      case MODAL_TYPES.SUCCESS:
+        return (
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'rgba(0, 0, 0, 0.8)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 9999,
+            }}
+            onClick={() => {
+              hideModal();
+              modalData.onClose?.();
+            }}
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: 'linear-gradient(135deg, #0a2a43 0%, #000814 100%)',
+                border: '2px solid rgba(34, 197, 94, 0.4)',
+                borderRadius: '24px',
+                padding: '32px 24px',
+                maxWidth: '400px',
+                width: '90%',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5), 0 0 40px rgba(34, 197, 94, 0.2)',
+                textAlign: 'center',
+              }}
+            >
+              <div
+                style={{
+                  width: '60px',
+                  height: '60px',
+                  borderRadius: '50%',
+                  background: 'rgba(34, 197, 94, 0.2)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 16px',
+                }}
+              >
+                <span style={{ fontSize: '2rem' }}>✓</span>
+              </div>
+
+              <p
+                style={{
+                  fontSize: '1rem',
+                  color: '#e8e8e8',
+                  margin: '0 0 24px 0',
+                  lineHeight: 1.5,
+                }}
+              >
+                {modalData.message || 'Success!'}
+              </p>
+
+              <button
+                onClick={() => {
+                  hideModal();
+                  modalData.onClose?.();
+                }}
+                style={{
+                  width: '100%',
+                  padding: '14px',
+                  background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
+                  border: 'none',
+                  borderRadius: '12px',
+                  color: '#ffffff',
+                  fontSize: '1rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                }}
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        );
+
+      case MODAL_TYPES.ERROR:
+        return (
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'rgba(0, 0, 0, 0.8)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 9999,
+            }}
+            onClick={() => {
+              hideModal();
+              modalData.onClose?.();
+            }}
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: 'linear-gradient(135deg, #0a2a43 0%, #000814 100%)',
+                border: '2px solid rgba(239, 68, 68, 0.4)',
+                borderRadius: '24px',
+                padding: '32px 24px',
+                maxWidth: '400px',
+                width: '90%',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5), 0 0 40px rgba(239, 68, 68, 0.2)',
+                textAlign: 'center',
+              }}
+            >
+              <div
+                style={{
+                  width: '60px',
+                  height: '60px',
+                  borderRadius: '50%',
+                  background: 'rgba(239, 68, 68, 0.2)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 16px',
+                }}
+              >
+                <span style={{ fontSize: '2rem' }}>✕</span>
+              </div>
+
+              <p
+                style={{
+                  fontSize: '1rem',
+                  color: '#e8e8e8',
+                  margin: '0 0 24px 0',
+                  lineHeight: 1.5,
+                }}
+              >
+                {modalData.message || 'Something went wrong'}
+              </p>
+
+              <button
+                onClick={() => {
+                  hideModal();
+                  modalData.onClose?.();
+                }}
+                style={{
+                  width: '100%',
+                  padding: '14px',
+                  background: 'linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)',
+                  border: 'none',
+                  borderRadius: '12px',
+                  color: '#ffffff',
+                  fontSize: '1rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                }}
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        );
+
       case MODAL_TYPES.REWARD:
         return (
           <RewardModal
