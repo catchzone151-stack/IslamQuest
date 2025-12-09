@@ -3,6 +3,7 @@
 import { create } from "zustand";
 import { supabase } from "../lib/supabaseClient";
 import { avatarIndexToKey } from "../utils/avatarUtils";
+import { useFriendChallengesStore } from "./friendChallengesStore";
 
 export const useFriendsStore = create((set, get) => ({
   friends: [],
@@ -606,10 +607,24 @@ export const useFriendsStore = create((set, get) => ({
 
       console.log("🗑️ removeFriend - delete error:", deleteErr);
 
+      // Also delete any friend challenges between these users
+      const { error: challengeErr } = await supabase
+        .from("friend_challenges")
+        .delete()
+        .or(
+          `and(sender_id.eq.${myUserId},receiver_id.eq.${friendId}),and(sender_id.eq.${friendId},receiver_id.eq.${myUserId})`
+        );
+
+      console.log("🗑️ removeFriend - challenge delete error:", challengeErr);
+
       // Refresh friends and requests
       await get().loadFriends();
       await get().loadRequests();
       await get().loadPendingRequests();
+      
+      // Refresh friend challenges store
+      await useFriendChallengesStore.getState().loadChallenges();
+      
       return { success: true, message: "Friend removed" };
     } catch (err) {
       console.error("removeFriend error:", err);
