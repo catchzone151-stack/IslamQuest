@@ -100,24 +100,6 @@ export default function GlobalEvents() {
         <p className="events-subtitle">Compete with Muslims worldwide</p>
       </div>
 
-      {/* Timer Banner */}
-      <div className="events-timer-banner">
-        <div className="timer-icon">⏰</div>
-        <div className="timer-text">
-          {resultsUnlocked ? (
-            <>
-              <span className="timer-label">Results Available!</span>
-              <span className="timer-value">Tap events you entered to see rankings</span>
-            </>
-          ) : (
-            <>
-              <span className="timer-label">Results Unlock</span>
-              <span className="timer-value">{timeLeft}</span>
-            </>
-          )}
-        </div>
-      </div>
-
       {/* Info Card */}
       <div className="events-info-card">
         <p className="info-text">
