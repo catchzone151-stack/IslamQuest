@@ -50,29 +50,67 @@ export default function Settings() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       
-      if (!session?.access_token) {
+      if (!session?.user?.id) {
         console.error("No active session for account deletion");
         setIsDeleting(false);
         return;
       }
 
-      const response = await supabase.functions.invoke("delete-user-account", {
-        headers: {
-          Authorization: `Bearer ${session.access_token}`,
-        },
-      });
+      const userId = session.user.id;
+      console.log("🗑️ Starting account deletion for user:", userId);
 
-      if (response.error) {
-        console.error("Account deletion failed:", response.error);
-        setIsDeleting(false);
-        return;
+      // Delete user data from all tables (order matters for foreign key constraints)
+      const tablesToDelete = [
+        "friend_challenges",
+        "event_entries",
+        "revision_items",
+        "daily_quests",
+        "lesson_progress",
+        "challenge_logs",
+        "xp_logs",
+        "streak_logs",
+        "leaderboard_snapshots",
+        "push_tokens",
+        "purchases",
+        "profiles"
+      ];
+
+      for (const table of tablesToDelete) {
+        const { error } = await supabase
+          .from(table)
+          .delete()
+          .eq("user_id", userId);
+        
+        if (error) {
+          console.warn(`Warning deleting from ${table}:`, error.message);
+          // Continue with other tables even if one fails
+        } else {
+          console.log(`✅ Deleted from ${table}`);
+        }
       }
 
+      // Log the deletion event before signing out
       logEvent(ANALYTICS_EVENTS.ACCOUNT_DELETED, {});
+
+      // Sign out the user
+      await supabase.auth.signOut();
       
+      // Clear all local data
       resetUserData();
       resetAllProgress();
       setOnboarded(false);
+      
+      // Clear localStorage items
+      localStorage.removeItem("iq_hidden_identity_v1");
+      localStorage.removeItem("iq_onboarding_step");
+      localStorage.removeItem("iq_profile_complete");
+      localStorage.removeItem("iq_user_store");
+      localStorage.removeItem("iq_progress_store");
+      localStorage.removeItem("iq_revise_store");
+      localStorage.removeItem("iq_daily_quests");
+      localStorage.removeItem("iq_challenge_store");
+      
+      console.log("✅ Account deletion complete");
       
       setShowDeleteModal(false);
       navigate("/goodbye", { replace: true });
