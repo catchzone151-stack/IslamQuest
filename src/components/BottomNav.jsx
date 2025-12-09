@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "../hooks/useNavigate";
 import { Home, BookOpen, Sword, Users, User } from "lucide-react";
@@ -10,16 +10,21 @@ const NAV_HEIGHT = 76;
 export default function BottomNav() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { incomingRequests, hasUnseenRequests } = useFriendsStore();
+  const { receivedRequests, loadAll } = useFriendsStore();
   const { unreadCount: challengeUnreadCount, initialize: initChallenges, initialized } = useFriendChallengesStore();
+  const friendsLoaded = useRef(false);
 
   useEffect(() => {
     if (!initialized) {
       initChallenges();
     }
-  }, [initialized, initChallenges]);
+    if (!friendsLoaded.current) {
+      friendsLoaded.current = true;
+      loadAll();
+    }
+  }, [initialized, initChallenges, loadAll]);
 
-  const friendBadgeCount = (hasUnseenRequests ? incomingRequests.length : 0) + challengeUnreadCount;
+  const friendBadgeCount = (receivedRequests?.length || 0) + challengeUnreadCount;
 
   const tabs = [
     { path: "/", label: "Home", icon: <Home size={22} /> },
