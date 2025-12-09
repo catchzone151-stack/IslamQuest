@@ -82,35 +82,35 @@ export default function GlobalEvents() {
   return (
     <div className="screen no-extra-space global-events-container" style={{ position: "relative" }}>
       {/* Header */}
-      <div className="events-header">
-        <button className="back-btn" onClick={() => navigate("/challenge")}>
+      <div className="events-header" style={{ textAlign: "center" }}>
+        <button className="back-btn" onClick={() => navigate("/challenge")} style={{ position: "absolute", left: 16, top: 16 }}>
           ← Back
         </button>
-        <h1 className="events-title">
-          <span style={{ 
-            display: 'inline-flex',
-            alignItems: 'center',
-            marginRight: '8px',
-            color: '#D4AF37'
-          }}>
-            <Globe size={24} />
-          </span>
+        <h1 className="events-title" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+          <Globe size={24} style={{ color: '#D4AF37' }} />
           Global Events
         </h1>
-        <p className="events-subtitle">Compete with Muslims worldwide</p>
-      </div>
-
-      {/* Info Card */}
-      <div className="events-info-card">
-        <p className="info-text" style={{ marginBottom: 4 }}>
-          <span className="info-highlight">Entry fee:</span> 25 coins per event
-        </p>
-        <p className="info-text" style={{ marginBottom: 4 }}>
-          <span className="info-highlight">Weekly reset:</span> Friday 00:00 GMT
-        </p>
-        <p className="info-text" style={{ marginBottom: 0 }}>
-          <span className="info-highlight">Rewards:</span> Based on your rank
-        </p>
+        <p className="events-subtitle" style={{ textAlign: "center", margin: "4px 0 16px" }}>Compete with Muslims worldwide</p>
+        
+        {/* Info Section */}
+        <div style={{ 
+          background: "rgba(212, 175, 55, 0.1)", 
+          borderRadius: 12, 
+          padding: "12px 16px",
+          border: "1px solid rgba(212, 175, 55, 0.2)",
+          display: "inline-block",
+          textAlign: "center"
+        }}>
+          <p style={{ color: "#cbd5e1", fontSize: "0.85rem", margin: "0 0 4px" }}>
+            <span style={{ color: "#D4AF37" }}>Entry fee:</span> 25 coins per event
+          </p>
+          <p style={{ color: "#cbd5e1", fontSize: "0.85rem", margin: "0 0 4px" }}>
+            <span style={{ color: "#D4AF37" }}>Weekly reset:</span> Friday 00:00 GMT
+          </p>
+          <p style={{ color: "#cbd5e1", fontSize: "0.85rem", margin: 0 }}>
+            <span style={{ color: "#D4AF37" }}>Rewards:</span> Based on your rank
+          </p>
+        </div>
       </div>
 
       {/* Loading State */}
