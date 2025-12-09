@@ -102,10 +102,14 @@ export default function GlobalEvents() {
 
       {/* Info Card */}
       <div className="events-info-card">
-        <p className="info-text">
-          <span className="info-highlight">Entry fee:</span> 25 coins per event • 
-          <span className="info-highlight"> Weekly reset:</span> Friday 00:00 GMT •
-          <span className="info-highlight"> Rewards:</span> Based on your rank
+        <p className="info-text" style={{ marginBottom: 4 }}>
+          <span className="info-highlight">Entry fee:</span> 25 coins per event
+        </p>
+        <p className="info-text" style={{ marginBottom: 4 }}>
+          <span className="info-highlight">Weekly reset:</span> Friday 00:00 GMT
+        </p>
+        <p className="info-text" style={{ marginBottom: 0 }}>
+          <span className="info-highlight">Rewards:</span> Based on your rank
         </p>
       </div>
 
