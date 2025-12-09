@@ -39,7 +39,7 @@ export default function ExitConfirmationModal({ onConfirm, onCancel }) {
             fontWeight: 500,
           }}
         >
-          Are you sure you want to exit? Your challenge attempt will be lost.
+          Are you sure you want to exit mid-challenge? You'll lose your progress.
         </p>
 
         <div
