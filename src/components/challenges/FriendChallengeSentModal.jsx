@@ -1,7 +1,25 @@
 import { useModalStore } from "../../store/modalStore";
 import { getModeIcon, getModeName } from "../../utils/challengeQuestions";
-import assets from "../../assets/assets";
+import mascot_quiz from "../../assets/mascots/mascot_quiz.webp";
+import mascot_power from "../../assets/mascots/mascot_power.webp";
+import mascot_running from "../../assets/mascots/mascot_running.webp";
+import mascot_locked from "../../assets/mascots/mascot_locked.webp";
 import "./ChallengeModals.css";
+
+const getMascotForMode = (modeId) => {
+  switch (modeId) {
+    case "mind_battle":
+      return mascot_quiz;
+    case "lightning_round":
+      return mascot_power;
+    case "speed_run":
+      return mascot_running;
+    case "sudden_death":
+      return mascot_locked;
+    default:
+      return mascot_quiz;
+  }
+};
 
 export default function FriendChallengeSentModal({ friendName, modeId, onClose }) {
   const { hideModal } = useModalStore();
@@ -16,25 +34,14 @@ export default function FriendChallengeSentModal({ friendName, modeId, onClose }
       <div className="challenge-modal" onClick={(e) => e.stopPropagation()}>
         <div className="challenge-zayd-container">
           <img 
-            src={assets.mascots.mascot_sitting_v2} 
-            alt="Zayd" 
+            src={getMascotForMode(modeId)} 
+            alt="Challenge" 
             className="challenge-zayd-bounce"
             style={{ width: 100, height: "auto" }}
           />
           <div className="zayd-speech-bubble">
             Challenge sent! Now we wait...
           </div>
-        </div>
-
-        <div 
-          className="challenge-mode-icon"
-          style={{ 
-            background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
-            fontSize: "2rem",
-            margin: "16px auto"
-          }}
-        >
-          {getModeIcon(modeId)}
         </div>
 
         <h2 className="challenge-modal-title" style={{ color: "#10b981" }}>
