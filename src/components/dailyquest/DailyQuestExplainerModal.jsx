@@ -1,4 +1,4 @@
-import ZaydChallenge from "../../assets/mascots/mascot_waving.webp";
+import avatarManLantern from "../../assets/avatars/avatar_man_lantern.webp";
 
 export default function DailyQuestExplainerModal({ onStart, onCancel }) {
   return (
@@ -32,10 +32,9 @@ export default function DailyQuestExplainerModal({ onStart, onCancel }) {
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Zayd Mascot */}
         <img
-          src={ZaydChallenge}
-          alt="Zayd"
+          src={avatarManLantern}
+          alt="Daily Quest"
           style={{
             width: "100px",
             height: "auto",
