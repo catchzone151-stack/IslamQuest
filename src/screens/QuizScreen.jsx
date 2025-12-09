@@ -181,7 +181,17 @@ const QuizScreen = () => {
   };
 
   const handleContinue = () => {
-    navigate(`/path/${pathId}`);
+    // Check if next lesson is premium-locked
+    const nextLessonId = parseInt(lessonId, 10) + 1;
+    const nextLockState = getLessonLockState(parseInt(pathId, 10), nextLessonId);
+    
+    if (nextLockState === "premiumLocked") {
+      // Next lesson is premium - redirect to premium page
+      navigate("/premium", { replace: true });
+    } else {
+      // Go back to path view
+      navigate(`/path/${pathId}`);
+    }
   };
 
   if (!quizData || quizData.length === 0) {

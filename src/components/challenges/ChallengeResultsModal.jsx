@@ -5,6 +5,7 @@ import mascotCongrats from "../../assets/mascots/mascot_congratulation.webp";
 import mascotSittingV2 from "../../assets/mascots/mascot_sitting_v2.webp";
 import mascotDefeated from "../../assets/mascots/mascot_defeated.webp";
 import mascotBoss from "../../assets/mascots/mascot_boss.webp";
+import avatarManLantern from "../../assets/avatars/avatar_man_lantern.webp";
 import "./ChallengeModals.css";
 
 export default function ChallengeResultsModal({ 
@@ -72,7 +73,12 @@ export default function ChallengeResultsModal({
   
   const getMessage = () => {
     if (result === "win") return "You Won! 🎉";
-    if (result === "lose") return "Better luck next time! 💪";
+    if (result === "lose") {
+      if (isBossLevel) {
+        return "Keep going! You're improving every time!";
+      }
+      return "Better luck next time! 💪";
+    }
     if (result === "draw") return "It's a Draw! 🤝";
     return "Challenge Complete!";
   };
@@ -88,7 +94,7 @@ export default function ChallengeResultsModal({
     // Boss level shows appropriate mascot based on result
     if (isBossLevel) {
       if (result === "win") return mascotCongrats;
-      if (result === "lose") return mascotSittingV2;
+      if (result === "lose") return avatarManLantern;
       return mascotBoss;
     }
     

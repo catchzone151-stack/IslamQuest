@@ -39,7 +39,7 @@ export default function ExitConfirmationModal({ onConfirm, onCancel }) {
             fontWeight: 500,
           }}
         >
-          Are you sure you want to exit?
+          Are you sure you want to exit? Your challenge attempt will be lost.
         </p>
 
         <div
@@ -96,7 +96,7 @@ export default function ExitConfirmationModal({ onConfirm, onCancel }) {
               e.currentTarget.style.boxShadow = "0 4px 12px rgba(212, 175, 55, 0.3)";
             }}
           >
-            Yes
+            Exit
           </button>
         </div>
       </div>

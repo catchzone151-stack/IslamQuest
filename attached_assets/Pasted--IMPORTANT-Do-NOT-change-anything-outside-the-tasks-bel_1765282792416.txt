@@ -1,0 +1,114 @@
+🚨 IMPORTANT: Do NOT change anything outside the tasks below.
+🚨 No theme changes, no styling changes, no refactoring, no extra files, no renaming, no reorganising.
+🚨 Only implement exactly what is listed. Nothing else.
+
+Boss Level Result Screen
+
+Remove “Better luck next time!” entirely.
+
+Replace with: “Keep going! You’re improving every time!”
+
+Remove emojis on this line.
+
+Replace losing mascot with avatar_man_lantern.
+
+Ramadan Message
+
+Ramadan message must NOT show outside Ramadan.
+
+Outside Ramadan show: “Launching Ramadan 2026!”
+
+Use our rocket mascot image (not emoji).
+
+Countdown Locks
+
+Any page with a countdown must be fully locked until countdown ends:
+
+No taps
+
+No navigation
+
+No swiping
+
+No modals
+
+Lesson Navigation Bug
+
+Fix avatar jumping to bottom after the first 3 free lessons.
+
+After finishing a lesson:
+
+If next is premium and the user is NOT premium → go to Premium Upgrade page.
+
+Otherwise go to next lesson normally.
+
+Delete Account
+
+Fully fix delete account:
+
+Delete Supabase auth user
+
+Delete all user data rows
+
+Log out
+
+Redirect to onboarding
+
+Daily Quest Mascot
+
+Replace naked mascot with avatar_man_lantern.
+
+Challenge Limits
+
+User can challenge unlimited different friends.
+
+But only 1 active challenge per friend at a time.
+
+Boss Level Answer Logic
+
+Only for Boss Level quizzes:
+
+Wrong answers must not be short/obvious.
+
+Make all answers similar length/structure.
+
+Avoid Repeated Questions
+
+Apply to Boss Level, Friend Challenges, and all non-Learning-Path quizzes.
+
+Do not repeat until all available questions are used.
+
+Notifications
+
+Show red notification dot on Friends icon in bottom nav.
+
+Count = total unread notifications.
+
+Inside Friends page:
+
+Clicking a notification marks it as read
+
+Reduces count
+
+Disappears when all read
+
+This used to work; logic may have broken. Check previous system first.
+
+Exit Challenge Confirmation
+
+When exiting mid-challenge, show modal:
+“Are you sure you want to exit? Your challenge attempt will be lost.”
+Buttons: Cancel / Exit.
+
+Challenge Mascots
+
+Ensure mascots for Friend Challenge, Global Events, and Boss Challenge are consistent and correctly assigned.
+
+Remove Duplicate Quiz Indicator
+
+In Learning Path quizzes, remove the top-left “Question X of Y” element entirely.
+
+🚨 Final Reminder:
+Do NOT change anything outside the items above.
+No theme edits, no UI redesigns, no layout shifts, no refactoring, no renaming, no folder changes.
+Only perform exactly what is written.

@@ -85,8 +85,13 @@ export default function Pathway() {
   });
 
   // Active node = first not completed & not locked
+  // If all remaining lessons are premium-locked, stay at the last completed lesson
   let activeIndex = lessons.findIndex((l) => !l.isCompleted && !l.isLocked);
-  if (activeIndex === -1) activeIndex = lessons.length - 1;
+  if (activeIndex === -1) {
+    // Find the last completed lesson
+    const lastCompletedIndex = lessons.map((l, i) => l.isCompleted ? i : -1).filter(i => i !== -1).pop();
+    activeIndex = lastCompletedIndex !== undefined ? lastCompletedIndex : 0;
+  }
 
   const completedCount = lessons.filter((l) => l.isCompleted).length;
   const totalLessons = lessons.length;

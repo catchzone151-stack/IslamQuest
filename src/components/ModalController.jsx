@@ -32,6 +32,8 @@ import DailyQuestExplainerModal from './dailyquest/DailyQuestExplainerModal';
 
 import ExitConfirmationModal from './ExitConfirmationModal';
 
+import mascotRocket from '../assets/mascots/mascot_countdown.webp';
+
 export default function ModalController() {
   const { activeModal, modalData, hideModal, replaceModal } = useModalStore();
 
@@ -386,7 +388,16 @@ export default function ModalController() {
                 animation: 'modalScaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
               }}
             >
-              <div style={{ fontSize: '3.5rem', marginBottom: '16px' }}>🌙</div>
+              <img 
+                src={mascotRocket} 
+                alt="Rocket" 
+                style={{ 
+                  width: '80px', 
+                  height: 'auto', 
+                  marginBottom: '16px',
+                  filter: 'drop-shadow(0 0 12px rgba(255, 215, 0, 0.5))'
+                }} 
+              />
 
               <h2
                 style={{
@@ -396,7 +407,7 @@ export default function ModalController() {
                   margin: '0 0 12px 0',
                 }}
               >
-                Ramadan Mode Coming Soon
+                Launching Ramadan 2026!
               </h2>
 
               <p
@@ -407,7 +418,7 @@ export default function ModalController() {
                   lineHeight: 1.5,
                 }}
               >
-                Launching with Global Events, in shā' Allāh ✨
+                Coming soon with Global Events, in shā' Allāh
               </p>
 
               <button
