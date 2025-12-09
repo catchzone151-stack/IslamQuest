@@ -17,16 +17,6 @@ export default function BossPlayedTodayModal({ onClose }) {
           </div>
         </div>
 
-        <div 
-          className="challenge-mode-icon"
-          style={{
-            background: "linear-gradient(135deg, #1e3a5f, #0f1c2e)",
-            boxShadow: "0 0 25px rgba(212, 175, 55, 0.4)"
-          }}
-        >
-          ⏰
-        </div>
-
         <h2 className="challenge-modal-title" style={{ color: "#d4af37" }}>
           Already Played Today
         </h2>
