@@ -144,10 +144,26 @@ export const useChallengeStore = create((set, get) => ({
 
   trackShownQuestion: (questionText) => {
     set(state => {
-      const updated = [questionText, ...state.recentlyShownQuestions].slice(0, 50);
+      const updated = [questionText, ...state.recentlyShownQuestions].slice(0, 100);
       return { recentlyShownQuestions: updated };
     });
     get().saveToStorage();
+  },
+
+  // Normalize answer option lengths and shuffle to prevent obvious clues
+  normalizeAndShuffleOptions: (question) => {
+    const { options, answer } = question;
+    const correctAnswer = options[answer];
+    
+    // Create shuffled options array
+    const shuffledOptions = [...options].sort(() => Math.random() - 0.5);
+    const newAnswerIndex = shuffledOptions.indexOf(correctAnswer);
+    
+    return {
+      ...question,
+      options: shuffledOptions,
+      answer: newAnswerIndex
+    };
   },
 
   generateQuestionVariation: (originalQuestion) => {
@@ -557,9 +573,14 @@ export const useChallengeStore = create((set, get) => ({
     
     const shuffled = filteredQuestions.sort(() => Math.random() - 0.5);
     const selected = shuffled.slice(0, count);
-    selected.forEach(q => get().trackShownQuestion(q.question));
     
-    return selected;
+    // Track shown questions and shuffle options to remove obvious clues
+    const normalizedQuestions = selected.map(q => {
+      get().trackShownQuestion(q.question);
+      return get().normalizeAndShuffleOptions(q);
+    });
+    
+    return normalizedQuestions;
   },
 
   getFallbackQuestions: () => {
@@ -669,6 +690,7 @@ export const useChallengeStore = create((set, get) => ({
       allQuestions = get().getBossLevelFallbackQuestions();
     }
     
+    // Filter out recently shown questions to avoid repetition
     allQuestions = get().filterRecentQuestions(allQuestions);
     
     const targetCount = BOSS_LEVEL.questionCount || 12;
@@ -682,9 +704,14 @@ export const useChallengeStore = create((set, get) => ({
     
     const shuffled = allQuestions.sort(() => Math.random() - 0.5);
     const selected = shuffled.slice(0, targetCount);
-    selected.forEach(q => get().trackShownQuestion(q.question));
     
-    return selected;
+    // Track shown questions and shuffle options to remove obvious clues
+    const normalizedQuestions = selected.map(q => {
+      get().trackShownQuestion(q.question);
+      return get().normalizeAndShuffleOptions(q);
+    });
+    
+    return normalizedQuestions;
   },
 
   getBossLevelFallbackQuestions: () => {
@@ -784,9 +811,14 @@ export const useChallengeStore = create((set, get) => ({
     
     const shuffled = pool.sort(() => Math.random() - 0.5);
     const selected = shuffled.slice(0, count);
-    selected.forEach(q => get().trackShownQuestion(q.question));
     
-    return selected;
+    // Track shown questions and shuffle options to remove obvious clues
+    const normalizedQuestions = selected.map(q => {
+      get().trackShownQuestion(q.question);
+      return get().normalizeAndShuffleOptions(q);
+    });
+    
+    return normalizedQuestions;
   },
 
   getSharedLessons: (userId, friendId) => {
