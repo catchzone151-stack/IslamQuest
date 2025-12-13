@@ -5,9 +5,9 @@
       {
         "question": "What event earned Abu Bakr the title 'As-Siddiq' meaning 'The Truthful One'?",
         "options": [
-          "He freed enslaved Muslims",
-          "He believed the Night Journey",
-          "He became the first Caliph",
+          "Freed enslaved believers",
+          "Believed Night Journey",
+          "Became the first Caliph",
           "He preserved the Quran"
         ],
         "answer": 1
@@ -15,10 +15,10 @@
       {
         "question": "What major accomplishments did Abu Bakr achieve as the first Caliph?",
         "options": [
-          "He built the first mosque",
-          "He conquered all of Persia",
-          "Unity, Quran, expansion",
-          "He built Islamic schools"
+          "He built first mosque",
+          "He conquered all Persia",
+          "Unity, Quran, expand",
+          "Built Islamic schools"
         ],
         "answer": 2
       },
@@ -395,10 +395,10 @@
       {
         "question": "Which major battle did Saeed NOT participate in?",
         "options": [
-          "Battle of Uhud",
-          "Battle of Khandaq",
-          "Battle of Khaybar",
-          "Battle of Badr"
+          "The Battle of Uhud",
+          "Battle of the Khandaq",
+          "Battle of the Khaybar",
+          "The Battle of Badr"
         ],
         "answer": 3
       }

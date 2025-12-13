@@ -25,10 +25,10 @@
       {
         "question": "According to the Prophet ﷺ, what happens to those who die upon the Shahadah?",
         "options": [
-          "They will be tested more",
-          "Must wait for intercession",
-          "They will enter Paradise",
-          "Need more good deeds"
+          "Will be tested even more",
+          "Wait for intercession",
+          "Will enter into Paradise",
+          "Need many more deeds"
         ],
         "answer": 2
       },
@@ -50,20 +50,20 @@
       {
         "question": "How many times do Muslims pray each day?",
         "options": [
-          "Three times daily",
-          "Five times daily",
-          "Seven times daily",
-          "Twice each day"
+          "Three times per day",
+          "Five times per day",
+          "Seven times per day",
+          "Only twice per day"
         ],
         "answer": 1
       },
       {
         "question": "What will be the first thing questioned on the Day of Judgment?",
         "options": [
-          "Our charity given",
-          "Our fasting done",
-          "Our prayer",
-          "Our pilgrimage"
+          "Our charity we gave",
+          "Our fasting we did",
+          "Our prayer to Allah",
+          "Our pilgrimages made"
         ],
         "answer": 2
       },
@@ -71,9 +71,9 @@
         "question": "What does Salah cleanse according to the lesson?",
         "options": [
           "Only our major sins",
-          "Physical dirt only",
-          "Minor sins like bathing",
-          "Nothing at all"
+          "Physical dirt alone",
+          "Minor sins daily",
+          "Nothing whatsoever"
         ],
         "answer": 2
       },
@@ -105,10 +105,10 @@
       {
         "question": "What does Zakah purify?",
         "options": [
-          "Only our wealth",
-          "Only our hearts",
-          "Our wealth and hearts",
-          "Only our homes"
+          "Only our wealth now",
+          "Only our hearts now",
+          "Wealth and our hearts",
+          "Only our homes now"
         ],
         "answer": 2
       },
@@ -140,9 +140,9 @@
       {
         "question": "During which month do Muslims fast?",
         "options": [
-          "Muharram month",
-          "Ramadan month",
-          "Shawwal month",
+          "The Muharram month",
+          "The Ramadan month",
+          "The Shawwal month",
           "Dhul Hijjah month"
         ],
         "answer": 1
@@ -151,9 +151,9 @@
         "question": "What is the Arabic term for God-consciousness that fasting develops?",
         "options": [
           "Ihsan consciousness",
-          "Sabr patience",
-          "Taqwa awareness",
-          "Iman faith"
+          "Sabr as patience",
+          "Taqwa awareness now",
+          "Iman faith alone"
         ],
         "answer": 2
       },
@@ -185,19 +185,19 @@
       {
         "question": "Which prophet originally established the rituals of Hajj?",
         "options": [
-          "Prophet Musa",
-          "Prophet Isa",
+          "The Prophet Musa",
+          "The Prophet Isa",
           "Prophet Ibrahim",
-          "Prophet Nuh"
+          "The Prophet Nuh"
         ],
         "answer": 2
       },
       {
         "question": "What is the simple white clothing worn during Hajj called?",
         "options": [
-          "Thobe garment",
-          "Abaya garment",
-          "Ihram garment",
+          "The Thobe garment",
+          "The Abaya garment",
+          "The Ihram garment",
           "Jalabiya garment"
         ],
         "answer": 2
@@ -260,10 +260,10 @@
       {
         "question": "Which name of Allah means 'The Most Merciful'?",
         "options": [
-          "Al-Aleem name",
-          "Al-Qawiyy name",
-          "Ar-Rahman name",
-          "Al-Hakim name"
+          "The Al-Aleem name",
+          "The Al-Qawiyy name",
+          "The Ar-Rahman name",
+          "The Al-Hakim name"
         ],
         "answer": 2
       }
@@ -285,10 +285,10 @@
       {
         "question": "Which angel brought revelation to the prophets?",
         "options": [
-          "Mikail angel",
-          "Israfil angel",
-          "Jibra'il angel",
-          "Azrael angel"
+          "The Mikail angel",
+          "The Israfil angel",
+          "The Jibra'il angel",
+          "The Azrael angel"
         ],
         "answer": 2
       },
@@ -305,10 +305,10 @@
       {
         "question": "Which angel will blow the trumpet on Judgment Day?",
         "options": [
-          "Jibra'il angel",
-          "Mikail angel",
-          "Atid angel",
-          "Israfil angel"
+          "Angel Jibra'il here",
+          "Angel Mikail here",
+          "Angel Atid there",
+          "Angel Israfil here"
         ],
         "answer": 3
       }
@@ -410,10 +410,10 @@
       {
         "question": "Which angel will blow the trumpet to end the world?",
         "options": [
-          "Jibra'il angel",
-          "Israfil angel",
-          "Mikail angel",
-          "Atid angel"
+          "Angel Jibra'il here",
+          "Angel Israfil here",
+          "Angel Mikail there",
+          "Angel Atid here too"
         ],
         "answer": 1
       },
@@ -430,10 +430,10 @@
       {
         "question": "In which hand will believers receive their record?",
         "options": [
-          "Their left hand",
-          "In both hands",
-          "Their right hand",
-          "Behind their back"
+          "In their left hand",
+          "In their both hands",
+          "In their right hand",
+          "Behind their backs"
         ],
         "answer": 2
       },
@@ -467,8 +467,8 @@
         "options": [
           "In the Holy Qur'an",
           "In the Torah book",
-          "The Preserved Tablet",
-          "In our hearts"
+          "Preserved Tablet only",
+          "Within our hearts"
         ],
         "answer": 2
       },
@@ -530,10 +530,10 @@
       {
         "question": "What does sincerity purify hearts from?",
         "options": [
-          "Happiness and joy",
+          "Happiness and joy now",
           "Knowledge of Islam",
           "Pride and arrogance",
-          "Wealth we have"
+          "Wealth that we have"
         ],
         "answer": 2
       }
@@ -645,7 +645,7 @@
       {
         "question": "How many ways can we show gratitude according to the lesson?",
         "options": [
-          "One way only",
+          "Only one way total",
           "Two different ways",
           "Three different ways",
           "Five different ways"
@@ -680,9 +680,9 @@
       {
         "question": "What does Istiqamah mean?",
         "options": [
-          "Speed in worship",
+          "Speed in our worship",
           "Steadfastness on path",
-          "Changing often",
+          "Changing very often",
           "Doing everything fast"
         ],
         "answer": 1
@@ -725,10 +725,10 @@
       {
         "question": "What is the foundation of true faith?",
         "options": [
-          "Wealth and success",
-          "Love for Allah and Prophet",
-          "Knowledge alone",
-          "Prayer alone"
+          "Wealth and success here",
+          "Love Allah and Prophet",
+          "Knowledge alone here",
+          "Prayer alone at all"
         ],
         "answer": 1
       },

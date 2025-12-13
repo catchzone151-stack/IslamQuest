@@ -5,7 +5,7 @@
       {
         "question": "Who led the army with war elephants to destroy the Ka'bah?",
         "options": [
-          "Abraha the Abyssinian ruler",
+          "Abraha the Abyssinian",
           "The Persian king",
           "The Roman emperor",
           "The King of Yemen"
@@ -15,10 +15,10 @@
       {
         "question": "What did Allah send to destroy Abraha's army?",
         "options": [
-          "A great flood",
-          "A fierce wind",
-          "Flocks of birds carrying stones of baked clay",
-          "An earthquake"
+          "A great flood truly",
+          "A fierce wind truly",
+          "Flocks of birds w/ stones",
+          "An earthquake truly"
         ],
         "answer": 2
       },
@@ -38,7 +38,7 @@
           "Surah Al-Fil (105)",
           "Surah Al-Fatiha",
           "Surah Al-Ikhlas",
-          "Surah An-Nas"
+          "Surah An-Nas truly"
         ],
         "answer": 0
       }
@@ -50,40 +50,40 @@
       {
         "question": "On which day of the week was Muhammad ﷺ born?",
         "options": [
-          "Friday",
-          "Monday",
-          "Thursday",
-          "Saturday"
+          "Friday specifically",
+          "Monday specifically",
+          "Thursday indeed",
+          "Saturday indeed"
         ],
         "answer": 1
       },
       {
         "question": "What was the name of the Prophet's ﷺ mother?",
         "options": [
-          "Khadijah",
-          "Halimah",
-          "Aminah",
-          "Fatimah"
+          "Khadijah indeed",
+          "Halimah specifically",
+          "Aminah specifically",
+          "Fatimah specifically"
         ],
         "answer": 2
       },
       {
         "question": "What miraculous sign did his mother see on the night of his birth?",
         "options": [
-          "A light that illuminated the palaces of Syria",
-          "Stars falling from the sky",
+          "A light that illuminated",
+          "Stars falling from sky",
           "The moon splitting",
-          "Rain falling on the desert"
+          "Rain falling on desert"
         ],
         "answer": 0
       },
       {
         "question": "What does the name 'Muhammad ﷺ' mean?",
         "options": [
-          "The leader",
+          "The leader itself",
           "The trustworthy",
           "The praised one",
-          "The victorious"
+          "The victorious truly"
         ],
         "answer": 2
       }
@@ -95,19 +95,19 @@
       {
         "question": "Who was Muhammad ﷺ's ﷺ foster mother in the desert?",
         "options": [
-          "Aminah",
+          "Aminah specifically",
           "Halimah as-Sa'diyah",
-          "Khadijah",
-          "Sumayyah"
+          "Khadijah indeed",
+          "Sumayyah indeed"
         ],
         "answer": 1
       },
       {
         "question": "What blessings did Halimah experience after accepting baby Muhammad ﷺ?",
         "options": [
-          "She found gold",
-          "Her weak camel became strong and her goats gave abundant milk",
-          "She became wealthy from trade",
+          "She found gold truly",
+          "The weak camel got firm &",
+          "She got rich from trade",
           "She won a competition"
         ],
         "answer": 1
@@ -115,10 +115,10 @@
       {
         "question": "How many years did Muhammad ﷺ live with Halimah's family?",
         "options": [
-          "Two years",
-          "Four years",
-          "Six years",
-          "Eight years"
+          "Two years indeed",
+          "Four years indeed",
+          "Six years indeed",
+          "Eight years indeed"
         ],
         "answer": 1
       },
@@ -126,7 +126,7 @@
         "question": "Why did Arab nobles send their children to the desert?",
         "options": [
           "For military training",
-          "For better health and to learn pure Arabic",
+          "For better health & to",
           "To escape enemies",
           "To work as shepherds"
         ],
@@ -140,9 +140,9 @@
       {
         "question": "How old was Muhammad ﷺ when the Opening of the Chest occurred?",
         "options": [
-          "Two years old",
-          "Four years old",
-          "Six years old",
+          "Two years old truly",
+          "Four years old truly",
+          "Six years old truly",
           "Eight years old"
         ],
         "answer": 1
@@ -150,9 +150,9 @@
       {
         "question": "What did the angels remove from the Prophet's ﷺ heart?",
         "options": [
-          "A white stone",
-          "A golden coin",
-          "A black clot",
+          "A white stone truly",
+          "A golden coin truly",
+          "A black clot truly",
           "A piece of cloth"
         ],
         "answer": 2
@@ -160,10 +160,10 @@
       {
         "question": "What water did the angels use to wash his heart?",
         "options": [
-          "Rain water",
-          "Sea water",
-          "River water",
-          "Zamzam water"
+          "Rain water indeed",
+          "Sea water indeed",
+          "River water indeed",
+          "Zamzam water truly"
         ],
         "answer": 3
       },
@@ -173,7 +173,7 @@
           "Surah Al-Fatiha",
           "Surah Ash-Sharh (94)",
           "Surah Al-Ikhlas",
-          "Surah Al-Fil"
+          "Surah Al-Fil truly"
         ],
         "answer": 1
       }
@@ -195,20 +195,20 @@
       {
         "question": "Where did Aminah pass away?",
         "options": [
-          "In Makkah",
-          "At Abwa",
-          "In Madinah",
-          "In Ta'if"
+          "In Makkah indeed",
+          "At Abwa specifically",
+          "In Madinah indeed",
+          "In Ta'if indeed"
         ],
         "answer": 1
       },
       {
         "question": "Who became Muhammad ﷺ's ﷺ guardian after Abdul-Muttalib died?",
         "options": [
-          "Abu Jahl",
-          "Abu Sufyan",
-          "Abu Talib",
-          "Abu Lahab"
+          "Abu Jahl indeed",
+          "Abu Sufyan indeed",
+          "Abu Talib indeed",
+          "Abu Lahab indeed"
         ],
         "answer": 2
       },
@@ -218,7 +218,7 @@
           "When Muhammad ﷺ was six",
           "When Muhammad ﷺ was eight",
           "When Muhammad ﷺ was ten",
-          "When Muhammad ﷺ was twelve"
+          "When the was twelve"
         ],
         "answer": 1
       }
@@ -230,7 +230,7 @@
       {
         "question": "How old was Muhammad ﷺ when he traveled to Syria with Abu Talib?",
         "options": [
-          "Ten years old",
+          "Ten years old truly",
           "Twelve years old",
           "Fifteen years old",
           "Twenty years old"
@@ -240,20 +240,20 @@
       {
         "question": "Who was the Christian monk who recognized signs of prophethood in young Muhammad ﷺ?",
         "options": [
-          "Waraqah",
-          "Bahira",
-          "Negus",
-          "Salman"
+          "Waraqah specifically",
+          "Bahira specifically",
+          "Negus specifically",
+          "Salman specifically"
         ],
         "answer": 1
       },
       {
         "question": "What signs did Bahira witness?",
         "options": [
-          "A star following Muhammad ﷺ",
-          "Muhammad ﷺ speaking different languages",
-          "A cloud shading Muhammad ﷺ and trees bowing as he passed",
-          "Angels appearing around him"
+          "A star following",
+          "the speaking languages",
+          "A cloud shading the &",
+          "Angels appearing around"
         ],
         "answer": 2
       },
@@ -261,7 +261,7 @@
         "question": "Why did Abu Talib return Muhammad ﷺ to Makkah earlier than planned?",
         "options": [
           "Because of illness",
-          "To protect him from enemies after Bahira's warning",
+          "To protect him from",
           "Due to bad weather",
           "Because trade failed"
         ],
@@ -275,30 +275,30 @@
       {
         "question": "What job did young Muhammad ﷺ work as?",
         "options": [
-          "A merchant",
-          "A shepherd",
-          "A blacksmith",
-          "A builder"
+          "A merchant itself",
+          "A shepherd itself",
+          "A blacksmith truly",
+          "A builder itself"
         ],
         "answer": 1
       },
       {
         "question": "What were the two titles Muhammad ﷺ was known by in Makkah?",
         "options": [
-          "Al-Amin (The Trustworthy) and As-Sadiq (The Truthful)",
-          "Al-Hakim (The Wise) and Al-Adil (The Just)",
-          "Al-Qawi (The Strong) and Al-Karim (The Generous)",
-          "Al-Amir (The Leader) and Al-Malik (The King)"
+          "Al-Amin & As-Sadiq",
+          "Al-Hakim & Al-Adil",
+          "Al-Qawi & Al-Karim",
+          "Al-Amir & Al-Malik"
         ],
         "answer": 0
       },
       {
         "question": "Which Qur'anic verse praises the Prophet's ﷺ moral character?",
         "options": [
-          "Qur'an 2:1",
-          "Qur'an 68:4",
-          "Qur'an 112:1",
-          "Qur'an 1:1"
+          "Qur'an 2:1 indeed",
+          "Qur'an 68:4 indeed",
+          "Qur'an 112:1 truly",
+          "Qur'an 1:1 indeed"
         ],
         "answer": 1
       },
@@ -307,7 +307,7 @@
         "options": [
           "Fighting skills",
           "Business strategy",
-          "Patience, responsibility, and care for those under his authority",
+          "Patience, duty, & care",
           "Construction techniques"
         ],
         "answer": 2
@@ -330,20 +330,20 @@
       {
         "question": "How old was Khadijah when she married the Prophet ﷺ?",
         "options": [
-          "Twenty-five",
-          "Thirty",
-          "Forty",
-          "Fifty"
+          "Twenty-five indeed",
+          "Thirty specifically",
+          "Forty specifically",
+          "Fifty specifically"
         ],
         "answer": 2
       },
       {
         "question": "Who was Khadijah's servant that accompanied Muhammad ﷺ to Syria?",
         "options": [
-          "Bilal",
-          "Zayd",
-          "Maysarah",
-          "Salman"
+          "Bilal specifically",
+          "Zayd specifically",
+          "Maysarah indeed",
+          "Salman specifically"
         ],
         "answer": 2
       },
@@ -365,10 +365,10 @@
       {
         "question": "How old was Muhammad ﷺ when the Ka'bah was being rebuilt?",
         "options": [
-          "Twenty-five",
-          "Thirty",
-          "Thirty-five",
-          "Forty"
+          "Twenty-five indeed",
+          "Thirty specifically",
+          "Thirty-five indeed",
+          "Forty specifically"
         ],
         "answer": 2
       },
@@ -376,8 +376,8 @@
         "question": "What was the dispute among Quraysh tribes about?",
         "options": [
           "Who would lead prayers",
-          "Who would place the Black Stone in its corner",
-          "Who would guard the Ka'bah",
+          "Who would place the Black",
+          "Who would guard the",
           "Who would collect taxes"
         ],
         "answer": 1
@@ -385,9 +385,9 @@
       {
         "question": "How did Muhammad ﷺ solve the dispute?",
         "options": [
-          "He placed it himself alone",
-          "He gave it to the eldest chief",
-          "He placed the stone on a cloth and had all tribal leaders lift it together",
+          "He placed it himself",
+          "He gave it to eldest",
+          "He placed the stone on a",
           "He drew lots to decide"
         ],
         "answer": 2
@@ -397,7 +397,7 @@
         "options": [
           "He was the strongest",
           "He was the wealthiest",
-          "He was called 'Al-Amin, the Trustworthy One'",
+          "He was called 'Al-Amin,",
           "He was the oldest"
         ],
         "answer": 2
@@ -410,20 +410,20 @@
       {
         "question": "Where did Muhammad ﷺ retreat for solitude and contemplation?",
         "options": [
-          "Cave Thawr",
+          "Cave Thawr indeed",
           "Cave Hira on Mount Nur",
-          "Mount Arafat",
-          "The desert"
+          "Mount Arafat truly",
+          "The desert itself"
         ],
         "answer": 1
       },
       {
         "question": "Which month did he spend in the cave?",
         "options": [
-          "Muharram",
-          "Rajab",
-          "Ramadan",
-          "Dhul Hijjah"
+          "Muharram indeed",
+          "Rajab specifically",
+          "Ramadan specifically",
+          "Dhul Hijjah indeed"
         ],
         "answer": 2
       },
@@ -432,7 +432,7 @@
         "options": [
           "His uncle Abu Talib",
           "His wife Khadijah",
-          "His cousin Ali",
+          "His cousin Ali truly",
           "His friend Abu Bakr"
         ],
         "answer": 1
@@ -441,7 +441,7 @@
         "question": "What did he worship according to during these retreats?",
         "options": [
           "The way of his ancestors",
-          "The way of Prophet Ibrahim",
+          "The way of Ibrahim",
           "The way of the Quraysh",
           "No specific way"
         ],
@@ -465,30 +465,30 @@
       {
         "question": "What was the first word of Qur'an revealed?",
         "options": [
-          "Believe",
-          "Say",
-          "Read (Iqra)",
-          "Worship"
+          "Believe specifically",
+          "Say specifically",
+          "Read (Iqra) indeed",
+          "Worship specifically"
         ],
         "answer": 2
       },
       {
         "question": "Who was Khadijah's cousin that confirmed Muhammad ﷺ was a prophet?",
         "options": [
-          "Bahira",
-          "Waraqah",
-          "Negus",
-          "Salman"
+          "Bahira specifically",
+          "Waraqah specifically",
+          "Negus specifically",
+          "Salman specifically"
         ],
         "answer": 1
       },
       {
         "question": "What did Muhammad ﷺ say when he rushed home trembling?",
         "options": [
-          "Help me!",
-          "I am afraid!",
+          "Help me! indeed",
+          "I am afraid! truly",
           "Cover me! Cover me!",
-          "What happened?"
+          "What happened? truly"
         ],
         "answer": 2
       }
@@ -500,30 +500,30 @@
       {
         "question": "Who was the first person to accept Islam?",
         "options": [
-          "Abu Bakr",
-          "Ali",
-          "Khadijah",
-          "Zayd"
+          "Abu Bakr indeed",
+          "Ali specifically",
+          "Khadijah indeed",
+          "Zayd specifically"
         ],
         "answer": 2
       },
       {
         "question": "How long did the secret phase of da'wah last?",
         "options": [
-          "One year",
-          "Three years",
-          "Five years",
-          "Seven years"
+          "One year indeed",
+          "Three years indeed",
+          "Five years indeed",
+          "Seven years indeed"
         ],
         "answer": 1
       },
       {
         "question": "Who was the Prophet's ﷺ best friend that accepted Islam without hesitation?",
         "options": [
-          "Umar",
-          "Uthman",
-          "Abu Bakr",
-          "Ali"
+          "Umar specifically",
+          "Uthman specifically",
+          "Abu Bakr indeed",
+          "Ali specifically"
         ],
         "answer": 2
       },
@@ -532,8 +532,8 @@
         "options": [
           "Bilal and Ammar",
           "Hamzah and Abbas",
-          "Uthman, Zubayr, Abdur-Rahman ibn Awf, Sa'd ibn Abi Waqqas, and Talhah",
-          "Khalid and Amr"
+          "Uthman, Zubayr,",
+          "Khalid and Amr truly"
         ],
         "answer": 2
       }
@@ -545,37 +545,37 @@
       {
         "question": "From which mountain did the Prophet ﷺ call the Quraysh for public preaching?",
         "options": [
-          "Mount Uhud",
-          "Mount Safa",
-          "Mount Hira",
-          "Mount Thawr"
+          "Mount Uhud indeed",
+          "Mount Safa indeed",
+          "Mount Hira indeed",
+          "Mount Thawr indeed"
         ],
         "answer": 1
       },
       {
         "question": "Who cursed the Prophet ﷺ saying 'May you perish!'?",
         "options": [
-          "Abu Jahl",
-          "Abu Sufyan",
-          "Abu Lahab",
-          "Umayyah"
+          "Abu Jahl indeed",
+          "Abu Sufyan indeed",
+          "Abu Lahab indeed",
+          "Umayyah specifically"
         ],
         "answer": 2
       },
       {
         "question": "What did Allah command in Qur'an 15:94?",
         "options": [
-          "Pray regularly",
-          "Declare what you are commanded",
-          "Be patient",
-          "Migrate"
+          "Pray regularly truly",
+          "Declare what you are",
+          "Be patient indeed",
+          "Migrate specifically"
         ],
         "answer": 1
       },
       {
         "question": "What changed after this event?",
         "options": [
-          "Secret phase ended and public confrontation began",
+          "Secret phase ended &",
           "Muslims became wealthy",
           "Quraysh accepted Islam",
           "Muslims left Makkah"
@@ -590,9 +590,9 @@
       {
         "question": "What did Quraysh offer Muhammad ﷺ to stop preaching?",
         "options": [
-          "Only wealth",
-          "Only power",
-          "Wealth, kingship, and beautiful women",
+          "Only wealth indeed",
+          "Only power indeed",
+          "Wealth, kingship, & fine",
           "A leadership position"
         ],
         "answer": 2
@@ -600,18 +600,18 @@
       {
         "question": "What was the Prophet's ﷺ response to their offers?",
         "options": [
-          "He asked for time to think",
+          "He asked for time to",
           "He accepted some wealth",
-          "Even if they placed the sun in his right hand and moon in his left, he wouldn't abandon this message",
-          "He negotiated for better terms"
+          "Even if they placed the",
+          "He negotiated for better"
         ],
         "answer": 2
       },
       {
         "question": "What names did they call Muhammad ﷺ?",
         "options": [
-          "Liar and thief",
-          "Magician, poet, and madman",
+          "Liar and thief truly",
+          "Magician, poet, & madman",
           "Traitor and enemy",
           "Fool and weakling"
         ],
@@ -621,9 +621,9 @@
         "question": "Why did Quraysh reject Islam according to the lesson?",
         "options": [
           "They didn't understand it",
-          "They feared it would destroy their wealth, power, and social status",
-          "They were too busy with trade",
-          "They preferred their old traditions only"
+          "They feared it would",
+          "They were too busy w/",
+          "They preferred their old"
         ],
         "answer": 1
       }
@@ -637,7 +637,7 @@
         "options": [
           "La ilaha illallah",
           "Ahad, Ahad (One, One)",
-          "Allahu Akbar",
+          "Allahu Akbar truly",
           "Muhammad ﷺ Rasulullah"
         ],
         "answer": 1
@@ -645,19 +645,19 @@
       {
         "question": "Who was Islam's first martyr?",
         "options": [
-          "Yasir",
-          "Bilal",
-          "Sumayyah",
-          "Ammar"
+          "Yasir specifically",
+          "Bilal specifically",
+          "Sumayyah indeed",
+          "Ammar specifically"
         ],
         "answer": 2
       },
       {
         "question": "How was Sumayyah martyred?",
         "options": [
-          "She was burned",
-          "Abu Jahl murdered her with a spear",
-          "She was stoned",
+          "She was burned truly",
+          "Abu Jahl murdered her w/",
+          "She was stoned truly",
           "She died from beating"
         ],
         "answer": 1
@@ -667,8 +667,8 @@
         "options": [
           "He fought their masters",
           "He hid them in his house",
-          "He used his wealth to purchase and free them",
-          "He appealed to Quraysh leaders"
+          "He used his wealth to",
+          "He appealed to Quraysh"
         ],
         "answer": 2
       }
@@ -680,30 +680,30 @@
       {
         "question": "To which country did the first Muslims migrate?",
         "options": [
-          "Syria",
-          "Yemen",
+          "Syria specifically",
+          "Yemen specifically",
           "Abyssinia (Ethiopia)",
-          "Persia"
+          "Persia specifically"
         ],
         "answer": 2
       },
       {
         "question": "What was the name of the Christian king of Abyssinia?",
         "options": [
-          "Negus",
-          "Heraclius",
-          "Khosrow",
-          "Muqawqis"
+          "Negus specifically",
+          "Heraclius indeed",
+          "Khosrow specifically",
+          "Muqawqis indeed"
         ],
         "answer": 0
       },
       {
         "question": "Who spoke eloquently defending Muslims before Negus?",
         "options": [
-          "Abu Bakr",
-          "Uthman",
+          "Abu Bakr indeed",
+          "Uthman specifically",
           "Ja'far ibn Abi Talib",
-          "Bilal"
+          "Bilal specifically"
         ],
         "answer": 2
       },
@@ -711,7 +711,7 @@
         "question": "What did Ja'far recite that moved Negus to tears?",
         "options": [
           "Poetry about justice",
-          "Qur'an about Mary and Jesus",
+          "Qur'an on Mary & Jesus",
           "Hadith about mercy",
           "Prayers for peace"
         ],
@@ -725,10 +725,10 @@
       {
         "question": "Who was Hamzah to the Prophet ﷺ?",
         "options": [
-          "His brother",
-          "His cousin",
-          "His uncle",
-          "His friend"
+          "His brother indeed",
+          "His cousin indeed",
+          "His uncle indeed",
+          "His friend indeed"
         ],
         "answer": 2
       },
@@ -736,8 +736,8 @@
         "question": "What caused Hamzah to accept Islam?",
         "options": [
           "He read the Qur'an",
-          "He had a dream",
-          "He heard Abu Jahl had physically harmed the Prophet ﷺ and became furious",
+          "He had a dream truly",
+          "He heard Abu Jahl had",
           "His family convinced him"
         ],
         "answer": 2
@@ -746,9 +746,9 @@
         "question": "What did Hamzah do to Abu Jahl?",
         "options": [
           "He debated with him",
-          "He struck him with his bow and challenged him",
-          "He ignored him",
-          "He reported him to leaders"
+          "He struck him w/ his bow",
+          "He ignored him truly",
+          "He reported him to"
         ],
         "answer": 1
       },
@@ -756,8 +756,8 @@
         "question": "How did Hamzah's Islam strengthen Muslims?",
         "options": [
           "He brought wealth",
-          "His courage and fighting skills provided protection so Muslims could pray openly",
-          "He convinced Quraysh to stop torture",
+          "The courage & fighting",
+          "He convinced Quraysh to",
           "He became the new leader"
         ],
         "answer": 1
@@ -770,10 +770,10 @@
       {
         "question": "What was Umar planning to do before he accepted Islam?",
         "options": [
-          "Leave Makkah",
+          "Leave Makkah truly",
           "Kill Muhammad ﷺ",
           "Become a merchant",
-          "Join the army"
+          "Join the army truly"
         ],
         "answer": 1
       },
@@ -781,9 +781,9 @@
         "question": "What made Umar go to his sister's house?",
         "options": [
           "To visit for a meal",
-          "He was invited",
-          "Someone informed him his sister and brother-in-law had accepted Islam",
-          "He lived there"
+          "He was invited truly",
+          "Someone informed him his",
+          "He lived there truly"
         ],
         "answer": 2
       },
@@ -791,9 +791,9 @@
         "question": "Which surah did Umar read that touched his heart?",
         "options": [
           "Surah Al-Fatiha",
-          "Surah Ta-Ha",
-          "Surah Yaseen",
-          "Surah Al-Mulk"
+          "Surah Ta-Ha indeed",
+          "Surah Yaseen truly",
+          "Surah Al-Mulk truly"
         ],
         "answer": 1
       },
@@ -802,8 +802,8 @@
         "options": [
           "Nothing changed",
           "Muslims had to hide more",
-          "Muslims' strength doubled and they began praying openly at the Ka'bah",
-          "Quraysh immediately accepted Islam"
+          "Muslims' strength doubled",
+          "Quraysh at once accepted"
         ],
         "answer": 2
       }
@@ -816,19 +816,19 @@
         "question": "How did Muslims march to the Ka'bah to pray publicly?",
         "options": [
           "In one large group",
-          "Individually at different times",
-          "In two lines, one led by Hamzah and one by Umar",
-          "Only at night"
+          "Individually at times",
+          "In two lines, one led by",
+          "Only at night truly"
         ],
         "answer": 2
       },
       {
         "question": "What was significant about Muslims praying publicly?",
         "options": [
-          "It was the first time they prayed near the Ka'bah openly",
+          "the first time they",
           "It was during Ramadan",
           "They prayed in Arabic",
-          "They used a new prayer format"
+          "They used a new prayer"
         ],
         "answer": 0
       },
@@ -836,7 +836,7 @@
         "question": "How did Quraysh react to this public worship?",
         "options": [
           "They joined the Muslims",
-          "They were shocked and angered",
+          "They were shocked &",
           "They ignored it",
           "They celebrated with them"
         ],
@@ -846,7 +846,7 @@
         "question": "What did this event demonstrate?",
         "options": [
           "Muslims' weakness",
-          "Islam's growing strength and Muslims' readiness to face consequences",
+          "Islam's growing strength",
           "Quraysh's acceptance",
           "The end of persecution"
         ],
@@ -860,10 +860,10 @@
       {
         "question": "How long did the boycott last?",
         "options": [
-          "One year",
-          "Three years",
-          "Five years",
-          "Seven years"
+          "One year indeed",
+          "Three years indeed",
+          "Five years indeed",
+          "Seven years indeed"
         ],
         "answer": 1
       },
@@ -872,7 +872,7 @@
         "options": [
           "Only Banu Hashim",
           "Only Banu Muttalib",
-          "Banu Hashim and Banu Muttalib",
+          "Banu Hashim & Banu",
           "All Muslim clans"
         ],
         "answer": 2
@@ -880,8 +880,8 @@
       {
         "question": "What did the boycotted people eat during extreme hunger?",
         "options": [
-          "Only dates",
-          "Only bread",
+          "Only dates indeed",
+          "Only bread indeed",
           "Leaves and tree bark",
           "Fish from the sea"
         ],
@@ -890,10 +890,10 @@
       {
         "question": "What could be heard throughout Makkah at night?",
         "options": [
-          "Prayers",
-          "Music",
-          "Children's cries from hunger",
-          "Celebration"
+          "Prayers specifically",
+          "Music specifically",
+          "Children's cries from",
+          "Celebration indeed"
         ],
         "answer": 2
       }
@@ -905,9 +905,9 @@
       {
         "question": "What destroyed the boycott document?",
         "options": [
-          "Fire",
-          "Water",
-          "Termites ate everything except Allah's name",
+          "Fire specifically",
+          "Water specifically",
+          "Termites ate everything",
           "Someone tore it up"
         ],
         "answer": 2
@@ -916,7 +916,7 @@
         "question": "How did the Prophet ﷺ know about the termites?",
         "options": [
           "Someone told him",
-          "He guessed",
+          "He guessed indeed",
           "Allah informed him",
           "He found the document"
         ],
@@ -926,7 +926,7 @@
         "question": "Who were the compassionate Makkans that helped end the boycott?",
         "options": [
           "Abu Jahl and Abu Lahab",
-          "Hisham ibn Amr and others who felt ashamed",
+          "Hisham b. Amr & others",
           "The Quraysh elders",
           "Foreign merchants"
         ],
@@ -936,7 +936,7 @@
         "question": "What did the end of the boycott prove?",
         "options": [
           "Quraysh's power",
-          "Oppression cannot destroy truth; Allah supports those who stand firm",
+          "Oppression cannot destroy",
           "Muslims' weakness",
           "The boycott was effective"
         ],
@@ -950,9 +950,9 @@
       {
         "question": "Who passed away first in the Year of Sorrow?",
         "options": [
-          "Khadijah",
-          "Abu Talib",
-          "Abdul-Muttalib",
+          "Khadijah indeed",
+          "Abu Talib indeed",
+          "Abdul-Muttalib truly",
           "Abu Bakr's wife"
         ],
         "answer": 1
@@ -961,8 +961,8 @@
         "question": "What protection did Abu Talib provide even though he didn't accept Islam?",
         "options": [
           "Financial support",
-          "Tribal protection that prevented Quraysh from killing the Prophet ﷺ",
-          "Military power",
+          "Tribal protection that",
+          "Military power truly",
           "Political influence only"
         ],
         "answer": 1
@@ -970,10 +970,10 @@
       {
         "question": "How long was the Prophet ﷺ married to Khadijah?",
         "options": [
-          "Fifteen years",
-          "Twenty years",
+          "Fifteen years truly",
+          "Twenty years truly",
           "Twenty-five years",
-          "Thirty years"
+          "Thirty years truly"
         ],
         "answer": 2
       },
@@ -981,7 +981,7 @@
         "question": "Why was this year called the Year of Sorrow?",
         "options": [
           "Muslims lost a battle",
-          "The Prophet ﷺ lost his two greatest supporters: Khadijah and Abu Talib",
+          "The ﷺ lost his two",
           "There was a famine",
           "Many Muslims were killed"
         ],
@@ -995,39 +995,39 @@
       {
         "question": "Which city did the Prophet ﷺ travel to seeking support?",
         "options": [
-          "Madinah",
-          "Ta'if",
-          "Syria",
-          "Yemen"
+          "Madinah specifically",
+          "Ta'if specifically",
+          "Syria specifically",
+          "Yemen specifically"
         ],
         "answer": 1
       },
       {
         "question": "How did the people of Ta'if respond to his message?",
         "options": [
-          "They accepted Islam immediately",
-          "They listened politely but declined",
-          "They mocked him and ordered children and slaves to stone him",
-          "They gave him money to leave"
+          "They accepted Islam",
+          "They listened politely",
+          "They him & ordered",
+          "They gave him money to"
         ],
         "answer": 2
       },
       {
         "question": "Who was the freed slave that protected the Prophet ﷺ in Ta'if?",
         "options": [
-          "Bilal",
+          "Bilal specifically",
           "Zayd ibn Harithah",
-          "Salman",
-          "Ammar"
+          "Salman specifically",
+          "Ammar specifically"
         ],
         "answer": 1
       },
       {
         "question": "What did Angel Jibra'il offer to do to Ta'if?",
         "options": [
-          "Flood the city",
+          "Flood the city truly",
           "Send birds with stones",
-          "Crush it between two mountains",
+          "Crush it between two",
           "Burn it with fire"
         ],
         "answer": 2
@@ -1040,40 +1040,40 @@
       {
         "question": "What did the Prophet ﷺ pray for regarding Ta'if?",
         "options": [
-          "Their immediate destruction",
+          "The immediate destruction",
           "That they would be poor",
-          "O Allah, guide my people for they know not - hoping their descendants would believe",
-          "That they would never prosper"
+          "O Allah, guide my people",
+          "That they would never"
         ],
         "answer": 2
       },
       {
         "question": "Who were Addas?",
         "options": [
-          "A king",
-          "A Christian servant from Nineveh who gave the Prophet ﷺ grapes",
-          "A merchant",
-          "A warrior"
+          "A king specifically",
+          "A Christian servant from",
+          "A merchant itself",
+          "A warrior itself"
         ],
         "answer": 1
       },
       {
         "question": "What made Addas recognize the Prophet's ﷺ special status?",
         "options": [
-          "His appearance",
-          "His wealth",
-          "When the Prophet ﷺ mentioned Prophet Yunus from Nineveh",
-          "His miracles"
+          "His appearance truly",
+          "His wealth indeed",
+          "When the ﷺ mentioned",
+          "His miracles truly"
         ],
         "answer": 2
       },
       {
         "question": "What does this story teach about trials?",
         "options": [
-          "Avoid all difficult situations",
-          "Trials prepare believers for greater responsibilities and Allah sends comfort in hardship",
-          "Trials mean Allah is angry",
-          "Only weak people face trials"
+          "Avoid all difficult",
+          "Trials prepare believers",
+          "Trials mean Allah is",
+          "Only weak people face"
         ],
         "answer": 1
       }
@@ -1086,8 +1086,8 @@
         "question": "When did Isra and Mi'raj occur?",
         "options": [
           "Before prophethood",
-          "During the Year of Sorrow after Ta'if rejection",
-          "After Hijrah",
+          "During the Year of Sorrow",
+          "After Hijrah truly",
           "After Battle of Badr"
         ],
         "answer": 1
@@ -1095,29 +1095,29 @@
       {
         "question": "What was the name of the miraculous creature that carried the Prophet ﷺ?",
         "options": [
-          "Buraq",
-          "Qaswa",
-          "Duldul",
-          "Sakhr"
+          "Buraq specifically",
+          "Qaswa specifically",
+          "Duldul specifically",
+          "Sakhr specifically"
         ],
         "answer": 0
       },
       {
         "question": "Where did the night journey begin?",
         "options": [
-          "From Cave Hira",
+          "From Cave Hira truly",
           "From the Ka'bah",
-          "From Masjid al-Haram to Masjid al-Aqsa",
-          "From Madinah"
+          "From Masjid al-Haram to",
+          "From Madinah truly"
         ],
         "answer": 2
       },
       {
         "question": "What did the Prophet ﷺ lead at Masjid al-Aqsa?",
         "options": [
-          "A battle",
-          "A congregation",
-          "Prayer with all the prophets",
+          "A battle itself",
+          "A congregation truly",
+          "Prayer w/ all the",
           "A council meeting"
         ],
         "answer": 2
@@ -1130,10 +1130,10 @@
       {
         "question": "How many heavens did the Prophet ﷺ ascend through?",
         "options": [
-          "Three",
-          "Five",
-          "Seven",
-          "Ten"
+          "Three specifically",
+          "Five specifically",
+          "Seven specifically",
+          "Ten specifically"
         ],
         "answer": 2
       },
@@ -1141,29 +1141,29 @@
         "question": "Which prophet did the Prophet ﷺ meet in the sixth heaven?",
         "options": [
           "Prophet Ibrahim",
-          "Prophet Isa",
-          "Prophet Musa",
-          "Prophet Nuh"
+          "Prophet Isa indeed",
+          "Prophet Musa truly",
+          "Prophet Nuh indeed"
         ],
         "answer": 2
       },
       {
         "question": "Which prophet was met in the seventh heaven?",
         "options": [
-          "Prophet Musa",
-          "Prophet Isa",
+          "Prophet Musa truly",
+          "Prophet Isa indeed",
           "Prophet Ibrahim",
-          "Prophet Nuh"
+          "Prophet Nuh indeed"
         ],
         "answer": 2
       },
       {
         "question": "Originally, how many daily prayers were obligated?",
         "options": [
-          "Five",
-          "Ten",
-          "Fifty",
-          "One hundred"
+          "Five specifically",
+          "Ten specifically",
+          "Fifty specifically",
+          "One hundred indeed"
         ],
         "answer": 2
       }
@@ -1176,27 +1176,27 @@
         "question": "Who advised the Prophet ﷺ to request reduction in prayers?",
         "options": [
           "Prophet Ibrahim",
-          "Prophet Isa",
-          "Prophet Musa",
-          "Angel Jibra'il"
+          "Prophet Isa indeed",
+          "Prophet Musa truly",
+          "Angel Jibra'il truly"
         ],
         "answer": 2
       },
       {
         "question": "How many prayers were finally obligated?",
         "options": [
-          "Three",
-          "Five",
-          "Seven",
-          "Ten"
+          "Three specifically",
+          "Five specifically",
+          "Seven specifically",
+          "Ten specifically"
         ],
         "answer": 1
       },
       {
         "question": "What is the reward for the five daily prayers?",
         "options": [
-          "Reward of five",
-          "Reward of ten",
+          "Reward of five truly",
+          "Reward of ten truly",
           "Reward of fifty",
           "Reward of one hundred"
         ],
@@ -1206,7 +1206,7 @@
         "question": "What did Quraysh do when the Prophet ﷺ told them about this journey?",
         "options": [
           "They believed immediately",
-          "They mocked and called him a liar",
+          "They & called him a liar",
           "They asked for proof only",
           "They ignored him"
         ],
@@ -1220,19 +1220,19 @@
       {
         "question": "Who believed the Prophet ﷺ immediately about Isra and Mi'raj?",
         "options": [
-          "Umar",
-          "Uthman",
-          "Abu Bakr (earning the title As-Siddiq, the Truthful)",
-          "Ali"
+          "Umar specifically",
+          "Uthman specifically",
+          "Abu Bakr (earning the",
+          "Ali specifically"
         ],
         "answer": 2
       },
       {
         "question": "What did Abu Bakr say when asked if he believed?",
         "options": [
-          "I need proof",
+          "I need proof truly",
           "I'll think about it",
-          "If he said it, then I believe him",
+          "If he said it, then I",
           "That's impossible"
         ],
         "answer": 2
@@ -1241,7 +1241,7 @@
         "question": "What proof did the Prophet ﷺ provide to Quraysh?",
         "options": [
           "He showed them Buraq",
-          "He described Masjid al-Aqsa in perfect detail though he'd never been there before",
+          "He told Masjid al-Aqsa in",
           "He brought back a stone",
           "He performed a miracle"
         ],
@@ -1252,7 +1252,7 @@
         "options": [
           "Doubt everything",
           "Only believe what you see",
-          "True faith means trusting the Prophet ﷺ even when something seems impossible",
+          "True faith means trusting",
           "Question all miracles"
         ],
         "answer": 2
@@ -1265,29 +1265,29 @@
       {
         "question": "From which city did the Ansar (Helpers) come?",
         "options": [
-          "Makkah",
-          "Ta'if",
-          "Yathrib (later called Madinah)",
-          "Syria"
+          "Makkah specifically",
+          "Ta'if specifically",
+          "Yathrib (later called",
+          "Syria specifically"
         ],
         "answer": 2
       },
       {
         "question": "Where did the Prophet ﷺ meet them for the first time?",
         "options": [
-          "At the Ka'bah",
-          "In the market",
-          "At Aqabah during Hajj season",
-          "In Madinah"
+          "At the Ka'bah truly",
+          "In the market truly",
+          "At Aqabah in Hajj season",
+          "In Madinah indeed"
         ],
         "answer": 2
       },
       {
         "question": "How many people were in the first pledge of Aqabah?",
         "options": [
-          "Six men",
-          "Twelve men",
-          "Seventy men",
+          "Six men specifically",
+          "Twelve men indeed",
+          "Seventy men indeed",
           "One hundred men"
         ],
         "answer": 1
@@ -1296,7 +1296,7 @@
         "question": "What did they pledge in the first Aqabah?",
         "options": [
           "To fight enemies",
-          "To worship Allah alone, not steal, not commit adultery, not kill children, not slander",
+          "To worship Allah alone,",
           "To give all their wealth",
           "To migrate immediately"
         ],
@@ -1310,27 +1310,27 @@
       {
         "question": "How many people pledged in the Second Aqabah?",
         "options": [
-          "Twelve",
-          "Fifty",
-          "Seventy-three men and two women",
-          "One hundred"
+          "Twelve specifically",
+          "Fifty specifically",
+          "Seventy-three men & two",
+          "One hundred indeed"
         ],
         "answer": 2
       },
       {
         "question": "What did they pledge in the second Aqabah?",
         "options": [
-          "Only to pray",
-          "To protect the Prophet ﷺ as they protect their own families",
+          "Only to pray truly",
+          "To protect the ﷺ as they",
           "To give charity",
-          "To fast"
+          "To fast specifically"
         ],
         "answer": 1
       },
       {
         "question": "What did one Ansari ask the Prophet ﷺ?",
         "options": [
-          "What's our reward for this?",
+          "What's our reward for",
           "When will you come?",
           "How much will it cost?",
           "Is this dangerous?"
@@ -1342,8 +1342,8 @@
         "options": [
           "Wealth and power",
           "Victory in this life",
-          "Paradise",
-          "Fame and honor"
+          "Paradise indeed",
+          "Fame and honor truly"
         ],
         "answer": 2
       }
@@ -1355,10 +1355,10 @@
       {
         "question": "Why did Muslims begin migrating to Madinah?",
         "options": [
-          "For business",
-          "After the Second Pledge of Aqabah, the Prophet ﷺ permitted them to migrate for safety",
-          "They were expelled by force",
-          "To find food"
+          "For business truly",
+          "After the Second Pledge",
+          "They were expelled by",
+          "To find food truly"
         ],
         "answer": 1
       },
@@ -1367,7 +1367,7 @@
         "options": [
           "They celebrated",
           "They ignored it",
-          "They increased persecution and tried to prevent migration",
+          "They increased harm &",
           "They joined them"
         ],
         "answer": 2
@@ -1375,20 +1375,20 @@
       {
         "question": "Which companion was tortured for days for wanting to migrate?",
         "options": [
-          "Bilal",
-          "Suhayb ar-Rumi had to give up all his wealth",
-          "Abu Bakr",
-          "Umar"
+          "Bilal specifically",
+          "Suhayb ar-Rumi had to",
+          "Abu Bakr indeed",
+          "Umar specifically"
         ],
         "answer": 1
       },
       {
         "question": "What sacrifice did Muslims make to migrate?",
         "options": [
-          "Nothing",
-          "Only money",
-          "They left homes, businesses, and families for faith",
-          "Only time"
+          "Nothing specifically",
+          "Only money indeed",
+          "They left homes,",
+          "Only time indeed"
         ],
         "answer": 2
       }
@@ -1411,8 +1411,8 @@
         "question": "How did they plan to kill him?",
         "options": [
           "Poison his food",
-          "Burn his house",
-          "Young men from each tribe would strike together so blame is shared",
+          "Burn his house truly",
+          "Young men from each tribe",
           "Attack during prayer"
         ],
         "answer": 2
@@ -1420,20 +1420,20 @@
       {
         "question": "Who informed the Prophet ﷺ about the plot?",
         "options": [
-          "A spy",
-          "His uncle",
-          "Allah through Angel Jibra'il",
-          "Abu Bakr"
+          "A spy specifically",
+          "His uncle indeed",
+          "Allah via Angel Jibra'il",
+          "Abu Bakr indeed"
         ],
         "answer": 2
       },
       {
         "question": "Who slept in the Prophet's ﷺ bed as a decoy?",
         "options": [
-          "Abu Bakr",
-          "Umar",
-          "Ali",
-          "Zayd"
+          "Abu Bakr indeed",
+          "Umar specifically",
+          "Ali specifically",
+          "Zayd specifically"
         ],
         "answer": 2
       }
@@ -1445,38 +1445,38 @@
       {
         "question": "Which companion accompanied the Prophet ﷺ on Hijrah?",
         "options": [
-          "Umar",
-          "Ali",
-          "Abu Bakr",
-          "Uthman"
+          "Umar specifically",
+          "Ali specifically",
+          "Abu Bakr indeed",
+          "Uthman specifically"
         ],
         "answer": 2
       },
       {
         "question": "Where did they hide from Quraysh pursuers?",
         "options": [
-          "Cave Hira",
-          "Cave Thawr",
-          "A house",
-          "The desert"
+          "Cave Hira indeed",
+          "Cave Thawr indeed",
+          "A house specifically",
+          "The desert itself"
         ],
         "answer": 1
       },
       {
         "question": "What miracle protected them in the cave?",
         "options": [
-          "Rain",
-          "A spider's web and bird's nest at the cave entrance",
+          "Rain specifically",
+          "A spider's web & bird's",
           "Angels blocked it",
-          "An earthquake"
+          "An earthquake truly"
         ],
         "answer": 1
       },
       {
         "question": "What did Abu Bakr say when he was worried?",
         "options": [
-          "We will die!",
-          "We should run!",
+          "We will die! truly",
+          "We should run! truly",
           "They are too close!",
           "What if they find us?"
         ],
@@ -1490,19 +1490,19 @@
       {
         "question": "What did the Prophet ﷺ tell worried Abu Bakr?",
         "options": [
-          "Hide deeper",
-          "Do not grieve; indeed Allah is with us",
-          "Run away",
-          "Fight them"
+          "Hide deeper indeed",
+          "Do not grieve; indeed",
+          "Run away indeed",
+          "Fight them indeed"
         ],
         "answer": 1
       },
       {
         "question": "How did Quraysh pursuers miss finding them?",
         "options": [
-          "It was dark",
-          "They saw the spider web and bird nest and thought no one could have entered recently",
-          "They went the wrong direction",
+          "It was dark indeed",
+          "They saw the spider web &",
+          "They went the wrong",
           "Angels made them blind"
         ],
         "answer": 1
@@ -1510,20 +1510,20 @@
       {
         "question": "What bounty did Quraysh offer for capturing the Prophet ﷺ?",
         "options": [
-          "50 camels",
-          "100 camels",
-          "1000 camels",
-          "100 gold coins"
+          "50 camels indeed",
+          "100 camels indeed",
+          "1000 camels indeed",
+          "100 gold coins truly"
         ],
         "answer": 1
       },
       {
         "question": "Which Qur'anic verse references Allah being with them in the cave?",
         "options": [
-          "Qur'an 3:144",
-          "Qur'an 9:40",
-          "Qur'an 2:214",
-          "Qur'an 48:1"
+          "Qur'an 3:144 truly",
+          "Qur'an 9:40 indeed",
+          "Qur'an 2:214 truly",
+          "Qur'an 48:1 indeed"
         ],
         "answer": 1
       }
@@ -1535,20 +1535,20 @@
       {
         "question": "Who was Suraqah ibn Malik?",
         "options": [
-          "A companion",
-          "A bounty hunter who pursued the Prophet ﷺ",
+          "A companion itself",
+          "A bounty hunter who",
           "A Quraysh leader",
-          "A guide"
+          "A guide specifically"
         ],
         "answer": 1
       },
       {
         "question": "What happened to Suraqah's horse?",
         "options": [
-          "It ran away",
-          "It died",
-          "Its legs sank into the sand three times miraculously",
-          "It went faster"
+          "It ran away indeed",
+          "It died specifically",
+          "Its legs sank into the",
+          "It went faster truly"
         ],
         "answer": 2
       },
@@ -1556,7 +1556,7 @@
         "question": "What did the Prophet ﷺ promise Suraqah?",
         "options": [
           "Gold and silver",
-          "The bracelets of Khosrow, the Persian emperor",
+          "The bracelets of Khosrow,",
           "A position in government",
           "A house in Madinah"
         ],
@@ -1565,10 +1565,10 @@
       {
         "question": "When was this prophecy fulfilled?",
         "options": [
-          "Never",
-          "During the Prophet's ﷺ lifetime",
-          "Years later during Umar's caliphate after Persia was conquered",
-          "During Abu Bakr's caliphate"
+          "Never specifically",
+          "During 's ﷺ lifetime",
+          "Years later in Umar's",
+          "During Abu Bakr's"
         ],
         "answer": 2
       }
@@ -1580,29 +1580,29 @@
       {
         "question": "When did the Prophet ﷺ arrive in Quba?",
         "options": [
-          "On Friday",
-          "On Monday, 12th Rabi al-Awwal",
-          "On Saturday",
-          "On Sunday"
+          "On Friday indeed",
+          "On Monday, 12th Rabi",
+          "On Saturday indeed",
+          "On Sunday indeed"
         ],
         "answer": 1
       },
       {
         "question": "What was the first thing the Prophet ﷺ built in Quba?",
         "options": [
-          "A house",
-          "A market",
-          "A mosque",
-          "A well"
+          "A house specifically",
+          "A market itself",
+          "A mosque itself",
+          "A well specifically"
         ],
         "answer": 2
       },
       {
         "question": "How did Madinah residents welcome him?",
         "options": [
-          "With fear",
-          "With silence",
-          "With joy, singing 'Tala'al Badru Alayna'",
+          "With fear indeed",
+          "With silence truly",
+          "With joy, singing",
           "They didn't notice"
         ],
         "answer": 2
@@ -1611,7 +1611,7 @@
         "question": "What does 'Tala'al Badru Alayna' mean?",
         "options": [
           "Victory has come",
-          "The full moon has risen over us",
+          "The full moon risen over",
           "Welcome our leader",
           "Peace be upon you"
         ],
@@ -1627,7 +1627,7 @@
         "options": [
           "At the marketplace",
           "At Abu Bakr's house",
-          "At the land that would become Masjid an-Nabawi",
+          "At the land that would",
           "At the city gate"
         ],
         "answer": 2
@@ -1635,8 +1635,8 @@
       {
         "question": "Whose house did the Prophet ﷺ initially stay in?",
         "options": [
-          "Umar's",
-          "Ali's",
+          "Umar's specifically",
+          "Ali's specifically",
           "Abu Ayyub al-Ansari's",
           "Sa'd ibn Mu'adh's"
         ],
@@ -1645,10 +1645,10 @@
       {
         "question": "What was the first major project in Madinah?",
         "options": [
-          "Building homes",
+          "Building homes truly",
           "Building the market",
-          "Building Masjid an-Nabawi (the Prophet's Mosque)",
-          "Building walls"
+          "Building Masjid an-Nabawi",
+          "Building walls truly"
         ],
         "answer": 2
       },
@@ -1656,9 +1656,9 @@
         "question": "Who worked on building the mosque?",
         "options": [
           "Only skilled builders",
-          "Only the Ansar",
-          "Everyone including the Prophet ﷺ carried bricks and stones",
-          "Hired workers"
+          "Only the Ansar truly",
+          "Everyone including the ﷺ",
+          "Hired workers truly"
         ],
         "answer": 2
       }
@@ -1670,10 +1670,10 @@
       {
         "question": "What were Muhajirin?",
         "options": [
-          "Migrants from Makkah who sacrificed everything for Islam",
-          "The original people of Madinah",
-          "Guards",
-          "Merchants"
+          "Migrants from Makkah who",
+          "The original people of",
+          "Guards specifically",
+          "Merchants indeed"
         ],
         "answer": 0
       },
@@ -1681,9 +1681,9 @@
         "question": "What were Ansar?",
         "options": [
           "Migrants from Makkah",
-          "Helpers from Madinah who welcomed and supported Muhajirin",
-          "Slaves",
-          "Foreign allies"
+          "Helpers from Madinah who",
+          "Slaves specifically",
+          "Foreign allies truly"
         ],
         "answer": 1
       },
@@ -1691,8 +1691,8 @@
         "question": "What did the Prophet ﷺ establish between Muhajirin and Ansar?",
         "options": [
           "Business partnerships",
-          "Competition",
-          "Brotherhood bonds where Ansar shared wealth, homes, and farms",
+          "Competition indeed",
+          "Brotherhood bonds where",
           "Separate communities"
         ],
         "answer": 2
@@ -1701,8 +1701,8 @@
         "question": "What does this brotherhood teach?",
         "options": [
           "Keep wealth to yourself",
-          "Trust no one",
-          "Islamic bonds transcend tribal, racial, and ethnic divisions",
+          "Trust no one truly",
+          "Islamic bonds transcend",
           "Only help family"
         ],
         "answer": 2
@@ -1715,7 +1715,7 @@
       {
         "question": "What document did the Prophet ﷺ establish in Madinah?",
         "options": [
-          "The Constitution of Madinah",
+          "The Constitution of",
           "The Trade Agreement",
           "The Peace Treaty",
           "The War Declaration"
@@ -1725,10 +1725,10 @@
       {
         "question": "Who did the constitution include?",
         "options": [
-          "Only Muslims",
-          "Muslims, Jews, and other tribes",
-          "Only Arabs",
-          "Only Quraysh"
+          "Only Muslims truly",
+          "Muslims, Jews, & tribes",
+          "Only Arabs indeed",
+          "Only Quraysh truly"
         ],
         "answer": 1
       },
@@ -1736,8 +1736,8 @@
         "question": "What did the constitution guarantee?",
         "options": [
           "Muslim supremacy",
-          "Jewish rule",
-          "Religious freedom, mutual defense, and justice for all",
+          "Jewish rule indeed",
+          "Religious freedom, mutual",
           "Quraysh control"
         ],
         "answer": 2
@@ -1746,7 +1746,7 @@
         "question": "What does this constitution show?",
         "options": [
           "Islam oppresses others",
-          "Islam respects diversity and human rights when establishing governance",
+          "Islam respects diversity",
           "Only Muslims have rights",
           "Religion doesn't matter"
         ],
@@ -1760,20 +1760,20 @@
       {
         "question": "What was the direction of prayer before the change?",
         "options": [
-          "The Ka'bah",
-          "Jerusalem",
-          "Mount Sinai",
-          "Madinah"
+          "The Ka'bah itself",
+          "Jerusalem indeed",
+          "Mount Sinai indeed",
+          "Madinah specifically"
         ],
         "answer": 1
       },
       {
         "question": "What did the Prophet ﷺ wish for?",
         "options": [
-          "Wealth",
-          "To face the Ka'bah during prayer",
-          "Power",
-          "Victory"
+          "Wealth specifically",
+          "To face the Ka'bah in",
+          "Power specifically",
+          "Victory specifically"
         ],
         "answer": 1
       },
@@ -1781,9 +1781,9 @@
         "question": "What happened during a prayer in Masjid al-Qiblatain?",
         "options": [
           "Nothing changed",
-          "Angel Jibra'il commanded them to turn toward the Ka'bah mid-prayer",
-          "They finished then changed",
-          "They waited until next prayer"
+          "Angel Jibra'il commanded",
+          "They finished then",
+          "They waited until next"
         ],
         "answer": 1
       },
@@ -1792,7 +1792,7 @@
         "options": [
           "Directions don't matter",
           "Always face Jerusalem",
-          "Obedience to Allah means accepting changes even mid-action",
+          "Obedience to Allah means",
           "Prayer is not important"
         ],
         "answer": 2
@@ -1805,9 +1805,9 @@
       {
         "question": "Who were the hypocrites (Munafiqun)?",
         "options": [
-          "Open enemies",
-          "Those who pretended to be Muslim but secretly worked against Islam",
-          "New Muslims",
+          "Open enemies truly",
+          "Those who pretended to be",
+          "New Muslims indeed",
           "Jews and Christians"
         ],
         "answer": 1
@@ -1815,10 +1815,10 @@
       {
         "question": "Who was the leader of the hypocrites?",
         "options": [
-          "Abu Jahl",
-          "Abu Lahab",
+          "Abu Jahl indeed",
+          "Abu Lahab indeed",
           "Abdullah ibn Ubayy",
-          "Abu Sufyan"
+          "Abu Sufyan indeed"
         ],
         "answer": 2
       },
@@ -1827,7 +1827,7 @@
         "options": [
           "They were stronger",
           "They were wealthier",
-          "They spread doubt, lies, and division from within the Muslim community",
+          "They spread doubt, lies,",
           "They had more weapons"
         ],
         "answer": 2
@@ -1836,8 +1836,8 @@
         "question": "How did the Prophet ﷺ treat hypocrites?",
         "options": [
           "He killed them all",
-          "He expelled them immediately",
-          "He was patient, giving them chances to repent while protecting the community",
+          "He expelled them",
+          "He was patient, giving",
           "He ignored them"
         ],
         "answer": 2
@@ -1850,8 +1850,8 @@
       {
         "question": "What was the first battle in Islamic history?",
         "options": [
-          "Battle of Uhud",
-          "Battle of Badr",
+          "Battle of Uhud truly",
+          "Battle of Badr truly",
           "Battle of Khandaq",
           "Battle of Hunayn"
         ],
@@ -1860,30 +1860,30 @@
       {
         "question": "How many Muslims fought at Badr?",
         "options": [
-          "100",
-          "313",
-          "500",
-          "1000"
+          "Exactly 100 total",
+          "Exactly 313 total",
+          "Exactly 500 total",
+          "Exactly 1000 total"
         ],
         "answer": 1
       },
       {
         "question": "How many Quraysh fighters were there?",
         "options": [
-          "About 300",
-          "About 500",
-          "About 1000",
-          "About 2000"
+          "About 300 indeed",
+          "About 500 indeed",
+          "About 1000 indeed",
+          "About 2000 indeed"
         ],
         "answer": 2
       },
       {
         "question": "Why did Quraysh march to Badr?",
         "options": [
-          "For trade",
-          "For pilgrimage",
-          "To protect their caravan and punish Muslims",
-          "For tourism"
+          "For trade indeed",
+          "For pilgrimage truly",
+          "To protect their caravan",
+          "For tourism indeed"
         ],
         "answer": 2
       }
@@ -1896,29 +1896,29 @@
         "question": "What did the Prophet ﷺ do before deciding to fight at Badr?",
         "options": [
           "He decided alone",
-          "He consulted his companions (Shura)",
+          "He consulted his sahabi",
           "He waited for a sign",
-          "He sent spies"
+          "He sent spies truly"
         ],
         "answer": 1
       },
       {
         "question": "Who suggested moving camp to control water wells?",
         "options": [
-          "Abu Bakr",
-          "Umar",
+          "Abu Bakr indeed",
+          "Umar specifically",
           "Al-Hubab ibn al-Mundhir",
-          "Ali"
+          "Ali specifically"
         ],
         "answer": 2
       },
       {
         "question": "What did the Prophet ﷺ do when given this advice?",
         "options": [
-          "Rejected it",
-          "Got angry",
-          "Accepted it immediately, showing humility and wisdom",
-          "Ignored it"
+          "Rejected it indeed",
+          "Got angry indeed",
+          "Accepted it immediately,",
+          "Ignored it indeed"
         ],
         "answer": 2
       },
@@ -1926,7 +1926,7 @@
         "question": "What did the Ansar pledge before battle?",
         "options": [
           "To run if outnumbered",
-          "To fight until victory or martyrdom",
+          "To fight until victory or",
           "To watch from afar",
           "To negotiate peace"
         ],
@@ -1940,19 +1940,19 @@
       {
         "question": "What did Muslims do on the night before Badr?",
         "options": [
-          "They panicked",
-          "They fled",
-          "They prayed through the night while Allah sent rain and sleep",
-          "They partied"
+          "They panicked truly",
+          "They fled indeed",
+          "They prayed via the night",
+          "They partied truly"
         ],
         "answer": 2
       },
       {
         "question": "What did rain do for Muslims?",
         "options": [
-          "Made them cold",
-          "Purified them and firmed the sand under their feet",
-          "Delayed battle",
+          "Made them cold truly",
+          "Purified them & firmed",
+          "Delayed battle truly",
           "Flooded the area"
         ],
         "answer": 1
@@ -1960,19 +1960,19 @@
       {
         "question": "What did Allah send to help Muslims?",
         "options": [
-          "More soldiers",
+          "More soldiers truly",
           "Thousands of angels",
-          "Weapons",
-          "Food"
+          "Weapons specifically",
+          "Food specifically"
         ],
         "answer": 1
       },
       {
         "question": "What was the result of the Battle of Badr?",
         "options": [
-          "Muslims lost",
-          "A tie",
-          "Decisive Muslim victory - 70 Quraysh killed, 70 captured",
+          "Muslims lost truly",
+          "A tie specifically",
+          "Decisive victory - 70",
           "Both sides retreated"
         ],
         "answer": 2
@@ -1985,10 +1985,10 @@
       {
         "question": "Which leaders of Quraysh were killed at Badr?",
         "options": [
-          "Abu Sufyan",
-          "Abu Jahl and Umayyah ibn Khalaf",
-          "Abu Lahab",
-          "All survived"
+          "Abu Sufyan indeed",
+          "Abu Jahl & Umayyah b.",
+          "Abu Lahab indeed",
+          "All survived truly"
         ],
         "answer": 1
       },
@@ -1997,7 +1997,7 @@
         "options": [
           "He killed them all",
           "He enslaved them",
-          "With mercy - they could be freed for ransom or teaching Muslims to read",
+          "With mercy - they could",
           "He tortured them"
         ],
         "answer": 2
@@ -2007,8 +2007,8 @@
         "options": [
           "Numbers guarantee victory",
           "Wealth wins wars",
-          "Faith and divine support overcome material superiority",
-          "Muslims should avoid fighting"
+          "Faith & divine support",
+          "Muslims should avoid"
         ],
         "answer": 2
       },
@@ -2016,7 +2016,7 @@
         "question": "What did Qur'an call the Battle of Badr?",
         "options": [
           "The Day of Testing",
-          "The Day of Criterion (Yawm al-Furqan)",
+          "The Day of Criterion",
           "The Day of Victory",
           "The Day of Angels"
         ],
@@ -2030,20 +2030,20 @@
       {
         "question": "Why did Quraysh march to Uhud?",
         "options": [
-          "For trade",
-          "For revenge after defeat at Badr",
-          "To negotiate",
-          "For pilgrimage"
+          "For trade indeed",
+          "For revenge after defeat",
+          "To negotiate truly",
+          "For pilgrimage truly"
         ],
         "answer": 1
       },
       {
         "question": "How many fighters did Quraysh bring to Uhud?",
         "options": [
-          "1,000",
-          "2,000",
-          "3,000",
-          "5,000"
+          "It was 1,000 truly",
+          "It was 2,000 truly",
+          "It was 3,000 truly",
+          "It was 5,000 truly"
         ],
         "answer": 2
       },
@@ -2051,19 +2051,19 @@
         "question": "What did the hypocrite Abdullah ibn Ubayy do?",
         "options": [
           "He fought bravely",
-          "He withdrew with 300 men, weakening Muslim forces",
-          "He gave money",
-          "He supported the Prophet ﷺ"
+          "He withdrew w/ 300 men,",
+          "He gave money truly",
+          "He supported the ﷺ"
         ],
         "answer": 1
       },
       {
         "question": "How many Muslims remained to fight?",
         "options": [
-          "500",
-          "700",
-          "900",
-          "1,000"
+          "Exactly 500 total",
+          "Exactly 700 total",
+          "Exactly 900 total",
+          "It was 1,000 truly"
         ],
         "answer": 1
       }
@@ -2077,7 +2077,7 @@
         "options": [
           "Inside the valley",
           "The mountain of Uhud",
-          "Behind Quraysh",
+          "Behind Quraysh truly",
           "At the city gates"
         ],
         "answer": 1
@@ -2086,7 +2086,7 @@
         "question": "What were the archers' strict orders?",
         "options": [
           "Attack when ready",
-          "Stay on the mountain no matter what happens",
+          "Stay on mountain no",
           "Follow the cavalry",
           "Retreat if losing"
         ],
@@ -2096,7 +2096,7 @@
         "question": "What happened initially in the battle?",
         "options": [
           "Muslims were losing",
-          "Muslims were winning and Quraysh began retreating",
+          "Muslims were winning &",
           "Both sides were equal",
           "No fighting occurred"
         ],
@@ -2105,10 +2105,10 @@
       {
         "question": "What fatal mistake did most archers make?",
         "options": [
-          "They ran away",
-          "They slept",
-          "They left their position to collect war booty, disobeying orders",
-          "They attacked the wrong enemy"
+          "They ran away truly",
+          "They slept indeed",
+          "They left their position",
+          "They attacked the wrong"
         ],
         "answer": 2
       }
@@ -2122,7 +2122,7 @@
         "options": [
           "Muslims won faster",
           "Nothing changed",
-          "Quraysh cavalry circled and attacked from behind, turning victory into chaos",
+          "Quraysh cavalry circled &",
           "Quraysh retreated"
         ],
         "answer": 2
@@ -2130,20 +2130,20 @@
       {
         "question": "Who was martyred defending the Prophet ﷺ?",
         "options": [
-          "Abu Bakr",
-          "Umar",
-          "Hamzah, the Prophet's ﷺ uncle",
-          "Ali"
+          "Abu Bakr indeed",
+          "Umar specifically",
+          "Hamzah, 's ﷺ uncle",
+          "Ali specifically"
         ],
         "answer": 2
       },
       {
         "question": "What injuries did the Prophet ﷺ sustain?",
         "options": [
-          "None",
-          "Minor cuts",
-          "His tooth was broken and face was injured",
-          "Broken bones"
+          "None specifically",
+          "Minor cuts indeed",
+          "The tooth was broken &",
+          "Broken bones truly"
         ],
         "answer": 2
       },
@@ -2151,7 +2151,7 @@
         "question": "What lesson did Muslims learn from Uhud?",
         "options": [
           "Never fight again",
-          "Disobedience has consequences; victory comes from Allah, not our strength",
+          "Disobedience has",
           "Numbers guarantee victory",
           "Leadership was wrong"
         ],
@@ -2166,8 +2166,8 @@
         "question": "What rumor spread during Uhud?",
         "options": [
           "That Muslims were winning",
-          "That reinforcements arrived",
-          "That the Prophet ﷺ was killed",
+          "That reinforcements",
+          "That the ﷺ was killed",
           "That Quraysh retreated"
         ],
         "answer": 2
@@ -2176,7 +2176,7 @@
         "question": "How did some Muslims react to this rumor?",
         "options": [
           "They all ran away",
-          "Some lost hope and stopped fighting",
+          "Some lost hope & stopped",
           "They fought harder",
           "They celebrated"
         ],
@@ -2187,16 +2187,16 @@
         "options": [
           "Then we should surrender",
           "Then Islam is finished",
-          "Then let us die for what he died for",
-          "Let's run away"
+          "Then let us die for what",
+          "Let's run away truly"
         ],
         "answer": 2
       },
       {
         "question": "What verse was revealed after this?",
         "options": [
-          "Don't fight",
-          "Muhammad ﷺ is only a messenger; if he dies will you turn back?",
+          "Don't fight indeed",
+          "the is only a messenger;",
           "Victory is guaranteed",
           "Never trust anyone"
         ],
@@ -2210,9 +2210,9 @@
       {
         "question": "How did Quraysh mutilate martyrs' bodies?",
         "options": [
-          "They didn't",
+          "They didn't indeed",
           "They buried them",
-          "Hind bint Utbah cut off ears and noses in barbaric revenge",
+          "Hind bt. Utbah cut off",
           "They honored them"
         ],
         "answer": 2
@@ -2221,9 +2221,9 @@
         "question": "Whose body did Hind mutilate most severely?",
         "options": [
           "Any random martyr",
-          "Hamzah, because he killed her father at Badr",
-          "The Prophet ﷺ",
-          "Abu Bakr"
+          "Hamzah, as he killed her",
+          "The Prophet ﷺ truly",
+          "Abu Bakr indeed"
         ],
         "answer": 1
       },
@@ -2232,7 +2232,7 @@
         "options": [
           "With equal brutality",
           "With revenge plans",
-          "With grief but restraint, forbidding mutilation in war",
+          "With grief but restraint,",
           "By attacking immediately"
         ],
         "answer": 2
@@ -2242,8 +2242,8 @@
         "options": [
           "Anything goes in war",
           "Revenge is encouraged",
-          "Islam maintains moral limits even against brutal enemies",
-          "Show no mercy"
+          "Islam maintains moral",
+          "Show no mercy truly"
         ],
         "answer": 2
       }
@@ -2255,9 +2255,9 @@
       {
         "question": "What did the Prophet ﷺ do the day after Uhud despite injuries?",
         "options": [
-          "Rested",
-          "Pursued Quraysh to show Muslims were still strong (Hamra al-Asad)",
-          "Celebrated",
+          "Rested specifically",
+          "Pursued Quraysh to show",
+          "Celebrated indeed",
           "Retreated to Makkah"
         ],
         "answer": 1
@@ -2267,7 +2267,7 @@
         "options": [
           "Muslims were weak",
           "Muslims were defeated",
-          "Muslims remained defiant and ready to fight despite setback",
+          "Muslims remained defiant",
           "Muslims surrendered"
         ],
         "answer": 2
@@ -2276,8 +2276,8 @@
         "question": "How did Quraysh respond when they heard?",
         "options": [
           "They attacked again",
-          "They were intimidated and continued retreating to Makkah",
-          "They laughed",
+          "They were intimidated &",
+          "They laughed truly",
           "They negotiated"
         ],
         "answer": 1
@@ -2287,8 +2287,8 @@
         "options": [
           "Hide after defeat",
           "Give up when hurt",
-          "Rising after falling demonstrates true strength and faith",
-          "Wait for help"
+          "Rising after falling",
+          "Wait for help truly"
         ],
         "answer": 2
       }
@@ -2300,39 +2300,39 @@
       {
         "question": "Which Jewish tribe broke their treaty after Uhud?",
         "options": [
-          "Banu Qaynuqa",
-          "Banu Nadir",
-          "Banu Quraydhah",
-          "Banu Aws"
+          "Banu Qaynuqa truly",
+          "Banu Nadir indeed",
+          "Banu Quraydhah truly",
+          "Banu Aws indeed"
         ],
         "answer": 0
       },
       {
         "question": "What did they do to a Muslim woman?",
         "options": [
-          "Helped her",
-          "Ignored her",
-          "Humiliated her by exposing her in the marketplace",
-          "Protected her"
+          "Helped her indeed",
+          "Ignored her indeed",
+          "Humiliated her by",
+          "Protected her truly"
         ],
         "answer": 2
       },
       {
         "question": "How did a Muslim react to this?",
         "options": [
-          "He ran away",
-          "He killed the Jewish man who did this",
+          "He ran away indeed",
+          "He killed the Jewish man",
           "He complained to leaders",
-          "He ignored it"
+          "He ignored it truly"
         ],
         "answer": 1
       },
       {
         "question": "What was the consequence for Banu Qaynuqa?",
         "options": [
-          "Nothing",
+          "Nothing specifically",
           "They apologized",
-          "They were expelled from Madinah for breaking the treaty",
+          "They were expelled from",
           "They were rewarded"
         ],
         "answer": 2
@@ -2346,7 +2346,7 @@
         "question": "Who were massacred at Bi'r Ma'unah?",
         "options": [
           "Quraysh fighters",
-          "70 Qur'an teachers sent to teach tribes were treacherously killed",
+          "70 Qur'an teachers sent",
           "Jewish merchants",
           "Random travelers"
         ],
@@ -2355,30 +2355,30 @@
       {
         "question": "Why were they sent there?",
         "options": [
-          "To fight",
-          "To trade",
-          "Arab tribes requested teachers of Qur'an",
-          "To explore"
+          "To fight indeed",
+          "To trade indeed",
+          "Arab tribes requested",
+          "To explore indeed"
         ],
         "answer": 2
       },
       {
         "question": "What was this massacre?",
         "options": [
-          "An accident",
-          "Self-defense",
-          "A treacherous ambush and mass murder of unarmed teachers",
-          "A fair battle"
+          "An accident itself",
+          "Self-defense truly",
+          "A treacherous ambush &",
+          "A fair battle truly"
         ],
         "answer": 2
       },
       {
         "question": "How did the Prophet ﷺ react?",
         "options": [
-          "He ignored it",
-          "He celebrated",
-          "He was deeply grieved, making Qunut supplication against betrayers",
-          "He laughed"
+          "He ignored it truly",
+          "He celebrated truly",
+          "He was deeply grieved,",
+          "He laughed indeed"
         ],
         "answer": 2
       }
@@ -2390,9 +2390,9 @@
       {
         "question": "What does 'Ghazwah' mean?",
         "options": [
-          "A pilgrimage",
-          "A battle where the Prophet ﷺ personally participated",
-          "A treaty",
+          "A pilgrimage truly",
+          "A battle where the ﷺ",
+          "A treaty itself",
           "A trade mission"
         ],
         "answer": 1
@@ -2400,8 +2400,8 @@
       {
         "question": "What does 'Sariyyah' mean?",
         "options": [
-          "A battle with the Prophet ﷺ present",
-          "A military expedition led by companions while Prophet ﷺ stayed in Madinah",
+          "A battle w/ the ﷺ present",
+          "A military expedition led",
           "A peace mission",
           "A trade caravan"
         ],
@@ -2410,10 +2410,10 @@
       {
         "question": "Approximately how many total campaigns were there?",
         "options": [
-          "About 30",
-          "About 50",
+          "About 30 indeed",
+          "About 50 indeed",
           "About 80-100 combined",
-          "About 200"
+          "About 200 indeed"
         ],
         "answer": 2
       },
@@ -2421,9 +2421,9 @@
         "question": "What was the purpose of these campaigns?",
         "options": [
           "Conquest for wealth",
-          "Defense, treaty enforcement, responding to aggression",
-          "Slavery",
-          "Tourism"
+          "Defense, treaty",
+          "Slavery specifically",
+          "Tourism specifically"
         ],
         "answer": 1
       }
@@ -2437,28 +2437,28 @@
         "options": [
           "A peace conference",
           "A trade mission",
-          "A campaign against a tribe preparing to attack Muslims",
-          "A pilgrimage"
+          "A campaign against a",
+          "A pilgrimage truly"
         ],
         "answer": 2
       },
       {
         "question": "Who spread lies about Aisha after this campaign?",
         "options": [
-          "Quraysh",
-          "Hypocrites led by Abdullah ibn Ubayy",
-          "Jews",
-          "Persians"
+          "Quraysh specifically",
+          "Hypocrites led by",
+          "Jews specifically",
+          "Persians indeed"
         ],
         "answer": 1
       },
       {
         "question": "What were the false accusations called?",
         "options": [
-          "The Rumor",
-          "The Lie of Ifk",
-          "The Slander",
-          "The Gossip"
+          "The Rumor itself",
+          "The Lie of Ifk truly",
+          "The Slander itself",
+          "The Gossip itself"
         ],
         "answer": 1
       },
@@ -2467,8 +2467,8 @@
         "options": [
           "Witnesses testified",
           "Investigation found proof",
-          "Allah revealed Qur'anic verses declaring her innocence",
-          "The Prophet ﷺ just believed her"
+          "Allah shown Qur'anic",
+          "The ﷺ just believed her"
         ],
         "answer": 2
       }
@@ -2482,7 +2482,7 @@
         "options": [
           "Gossip is harmless",
           "Believe all rumors",
-          "Don't spread rumors without evidence; slander destroys innocent people",
+          "Don't spread rumors w/o",
           "Always suspect others"
         ],
         "answer": 2
@@ -2490,19 +2490,19 @@
       {
         "question": "What punishment did Qur'an establish for false accusations?",
         "options": [
-          "No punishment",
-          "Small fine",
-          "80 lashes for those who falsely accuse without four witnesses",
-          "Exile"
+          "No punishment truly",
+          "Small fine indeed",
+          "80 lashes for those who",
+          "Exile specifically"
         ],
         "answer": 2
       },
       {
         "question": "What was the worst part for Aisha?",
         "options": [
-          "The Prophet ﷺ divorced her",
+          "The ﷺ divorced her",
           "She was expelled",
-          "People she trusted believed and spread the lies",
+          "People she trusted trust",
           "She was imprisoned"
         ],
         "answer": 2
@@ -2511,7 +2511,7 @@
         "question": "What does this incident teach about rumors?",
         "options": [
           "Spread them quickly",
-          "Investigate and verify before speaking; slander is a major sin",
+          "Investigate & verify",
           "Believe everything",
           "Ignore all news"
         ],
@@ -2526,28 +2526,28 @@
         "question": "What did Banu Nadir plot to do?",
         "options": [
           "Trade with Muslims",
-          "Make peace",
-          "Drop a boulder on the Prophet ﷺ from above, violating their treaty",
-          "Leave Madinah"
+          "Make peace indeed",
+          "Drop a boulder on ﷺ from",
+          "Leave Madinah truly"
         ],
         "answer": 2
       },
       {
         "question": "How did the Prophet ﷺ know about their plot?",
         "options": [
-          "A spy told him",
-          "He guessed",
-          "Allah informed him through revelation",
-          "He saw them"
+          "A spy told him truly",
+          "He guessed indeed",
+          "Allah informed him via",
+          "He saw them indeed"
         ],
         "answer": 2
       },
       {
         "question": "What did the Prophet ﷺ give them after this treachery?",
         "options": [
-          "Nothing",
+          "Nothing specifically",
           "Punishment immediately",
-          "Ten days to leave Madinah peacefully",
+          "Ten days to leave Madinah",
           "A second chance to stay"
         ],
         "answer": 2
@@ -2555,10 +2555,10 @@
       {
         "question": "Who promised to help Banu Nadir but didn't?",
         "options": [
-          "Quraysh",
-          "Other Jews",
-          "The hypocrite Abdullah ibn Ubayy",
-          "Persians"
+          "Quraysh specifically",
+          "Other Jews indeed",
+          "The hypocrite Abdullah b.",
+          "Persians indeed"
         ],
         "answer": 2
       }
@@ -2570,10 +2570,10 @@
       {
         "question": "How many warriors marched toward Madinah in the coalition?",
         "options": [
-          "1,000",
-          "5,000",
-          "10,000",
-          "20,000"
+          "It was 1,000 truly",
+          "It was 5,000 truly",
+          "It was 10,000 truly",
+          "It was 20,000 truly"
         ],
         "answer": 2
       },
@@ -2582,18 +2582,18 @@
         "options": [
           "Abu Sufyan alone",
           "Exiled Banu Nadir leaders",
-          "Persians",
-          "Romans"
+          "Persians indeed",
+          "Romans specifically"
         ],
         "answer": 1
       },
       {
         "question": "What strategy did Salman al-Farisi suggest?",
         "options": [
-          "Run away",
-          "Surrender",
-          "Digging a trench around Madinah's vulnerable areas",
-          "Attack first"
+          "Run away indeed",
+          "Surrender indeed",
+          "Digging a trench around",
+          "Attack first truly"
         ],
         "answer": 2
       },
@@ -2601,7 +2601,7 @@
         "question": "Was this strategy known to Arabs?",
         "options": [
           "Yes, commonly used",
-          "No, it was unknown to Arabs",
+          "No, it was unknown to",
           "Yes, but rarely used",
           "Yes, invented by Arabs"
         ],
@@ -2615,40 +2615,40 @@
       {
         "question": "Who worked on digging the trench?",
         "options": [
-          "Only soldiers",
-          "Only young men",
-          "Everyone: men, women, and children worked desperately",
-          "Hired workers"
+          "Only soldiers truly",
+          "Only young men truly",
+          "Everyone: men, women, &",
+          "Hired workers truly"
         ],
         "answer": 2
       },
       {
         "question": "How many stones did the Prophet ﷺ tie to his stomach?",
         "options": [
-          "None",
-          "One",
-          "Two stones to suppress hunger",
-          "Three"
+          "None specifically",
+          "One specifically",
+          "Two stones to suppress",
+          "Three specifically"
         ],
         "answer": 2
       },
       {
         "question": "What happened when the Prophet ﷺ struck massive boulders?",
         "options": [
-          "Nothing",
+          "Nothing specifically",
           "They moved slightly",
-          "They shattered with sparks and he prophesied conquests of Persia, Rome, Yemen",
-          "He gave up"
+          "They shattered w/ sparks",
+          "He gave up indeed"
         ],
         "answer": 2
       },
       {
         "question": "What did companions see in those sparks?",
         "options": [
-          "Just fire",
+          "Just fire indeed",
           "Nothing special",
           "Light and future hope",
-          "Danger"
+          "Danger specifically"
         ],
         "answer": 2
       }
@@ -2662,7 +2662,7 @@
         "options": [
           "They crossed easily",
           "They gave up immediately",
-          "They were surprised; they'd never seen this strategy and couldn't cross",
+          "They were surprised;",
           "They dug their own"
         ],
         "answer": 2
@@ -2670,28 +2670,28 @@
       {
         "question": "How long did the siege last?",
         "options": [
-          "A few days",
-          "One week",
-          "Several weeks",
-          "Several months"
+          "A few days itself",
+          "One week indeed",
+          "Several weeks truly",
+          "Several months truly"
         ],
         "answer": 2
       },
       {
         "question": "Who killed the coalition champion in single combat?",
         "options": [
-          "Umar",
-          "Hamzah",
-          "Ali",
-          "Abu Bakr"
+          "Umar specifically",
+          "Hamzah specifically",
+          "Ali specifically",
+          "Abu Bakr indeed"
         ],
         "answer": 2
       },
       {
         "question": "What does Qur'an 33:11 say about this trial?",
         "options": [
-          "It was easy",
-          "Believers were tested and shaken with a severe shaking",
+          "It was easy indeed",
+          "Believers were tested &",
           "Everyone stayed calm",
           "No one was afraid"
         ],
@@ -2705,10 +2705,10 @@
       {
         "question": "Which Jewish tribe betrayed Muslims during the siege?",
         "options": [
-          "Banu Qaynuqa",
-          "Banu Nadir",
-          "Banu Quraydhah",
-          "Banu Aws"
+          "Banu Qaynuqa truly",
+          "Banu Nadir indeed",
+          "Banu Quraydhah truly",
+          "Banu Aws indeed"
         ],
         "answer": 2
       },
@@ -2716,7 +2716,7 @@
         "question": "What made their betrayal catastrophic?",
         "options": [
           "They were small",
-          "They exposed Madinah's undefended side, putting families at risk while men defended the trench",
+          "They exposed Madinah's",
           "They left the city",
           "They took supplies"
         ],
@@ -2726,7 +2726,7 @@
         "question": "What did hypocrites say during this darkest moment?",
         "options": [
           "Victory is near",
-          "Keep fighting",
+          "Keep fighting truly",
           "Islam is finished",
           "Everything is fine"
         ],
@@ -2735,9 +2735,9 @@
       {
         "question": "How did true believers respond according to Qur'an 33:22?",
         "options": [
-          "They panicked",
-          "They fled",
-          "They said 'This is what Allah promised' and it increased them in faith",
+          "They panicked truly",
+          "They fled indeed",
+          "They said 'This is what",
           "They surrendered"
         ],
         "answer": 2
@@ -2750,10 +2750,10 @@
       {
         "question": "What did Allah send to help Muslims?",
         "options": [
-          "More soldiers",
-          "Food",
-          "A fierce, freezing wind and angels",
-          "Weapons"
+          "More soldiers truly",
+          "Food specifically",
+          "A fierce, freezing wind &",
+          "Weapons specifically"
         ],
         "answer": 2
       },
@@ -2761,9 +2761,9 @@
         "question": "What did the wind do to the coalition camp?",
         "options": [
           "Cooled them down",
-          "Uprooted tents, scattered fires, overturned pots, and terrified horses",
-          "Helped them",
-          "Nothing"
+          "Uprooted tents, scattered",
+          "Helped them indeed",
+          "Nothing specifically"
         ],
         "answer": 1
       },
@@ -2771,9 +2771,9 @@
         "question": "Who ordered the coalition to retreat?",
         "options": [
           "The Persian king",
-          "Abu Jahl",
-          "Abu Sufyan",
-          "Khalid"
+          "Abu Jahl indeed",
+          "Abu Sufyan indeed",
+          "Khalid specifically"
         ],
         "answer": 2
       },
@@ -2781,9 +2781,9 @@
         "question": "How many Muslims died in this month-long siege?",
         "options": [
           "None - a miracle",
-          "Ten",
-          "Fifty",
-          "One hundred"
+          "Ten specifically",
+          "Fifty specifically",
+          "One hundred indeed"
         ],
         "answer": 0
       }
@@ -2796,7 +2796,7 @@
         "question": "What did the Prophet ﷺ declare after the coalition fled?",
         "options": [
           "Build higher walls",
-          "Quraysh would no longer attack; Muslims would now pressure Makkah",
+          "Quraysh would no longer",
           "Prepare for defense",
           "Celebrate for weeks"
         ],
@@ -2807,7 +2807,7 @@
         "options": [
           "Numbers always win",
           "Wealth guarantees victory",
-          "Faith, strategy, and divine help can overcome any material superiority",
+          "Faith, strategy, & divine",
           "Walls are unnecessary"
         ],
         "answer": 2
@@ -2815,9 +2815,9 @@
       {
         "question": "What changed after this battle?",
         "options": [
-          "Nothing",
-          "Muslims became defensive only",
-          "Islam's enemies were on defensive while Muslims expanded influence",
+          "Nothing specifically",
+          "Muslims got defensive",
+          "Islam's enemies were on",
           "Quraysh grew stronger"
         ],
         "answer": 2
@@ -2825,8 +2825,8 @@
       {
         "question": "What does Qur'an 33:25 say Allah did?",
         "options": [
-          "Nothing",
-          "Repelled disbelievers in their rage; sufficient was Allah for believers",
+          "Nothing specifically",
+          "Repelled in their rage;",
           "Made Muslims fight alone",
           "Gave victory to Quraysh"
         ],
@@ -2840,10 +2840,10 @@
       {
         "question": "Who did Banu Quraydhah choose to judge their case?",
         "options": [
-          "The Prophet ﷺ",
-          "Abu Bakr",
-          "Sa'd ibn Mu'adh, their former ally",
-          "Umar"
+          "The Prophet ﷺ truly",
+          "Abu Bakr indeed",
+          "Sa'd b. Mu'adh, their",
+          "Umar specifically"
         ],
         "answer": 2
       },
@@ -2851,9 +2851,9 @@
         "question": "Why did they choose Sa'd?",
         "options": [
           "He was their enemy",
-          "He was wise",
-          "They hoped for leniency from their old friend",
-          "Random choice"
+          "He was wise indeed",
+          "They hoped for leniency",
+          "Random choice truly"
         ],
         "answer": 2
       },
@@ -2861,18 +2861,18 @@
         "question": "What was Sa'd's judgment based on?",
         "options": [
           "His personal opinion",
-          "The Qur'an",
-          "Their own Torah's law for treason during war",
-          "Roman law"
+          "The Qur'an itself",
+          "The own Torah's law for",
+          "Roman law indeed"
         ],
         "answer": 2
       },
       {
         "question": "What was Sa'd's condition during judgment?",
         "options": [
-          "He was healthy",
+          "He was healthy truly",
           "He was celebrating",
-          "He was mortally wounded from the Trench siege",
+          "He was mortally wounded",
           "He was traveling"
         ],
         "answer": 2
@@ -2885,40 +2885,40 @@
       {
         "question": "How many Muslims accompanied the Prophet ﷺ to Hudaybiyyah?",
         "options": [
-          "500",
-          "1,000",
-          "1,400",
-          "3,000"
+          "Exactly 500 total",
+          "It was 1,000 truly",
+          "It was 1,400 truly",
+          "It was 3,000 truly"
         ],
         "answer": 2
       },
       {
         "question": "What did Muslims take to show peaceful intentions?",
         "options": [
-          "Full weapons",
-          "Only travelers' swords and wore ihram with sacrificial animals",
-          "Gifts of gold",
-          "Nothing"
+          "Full weapons truly",
+          "Only travelers' swords &",
+          "Gifts of gold truly",
+          "Nothing specifically"
         ],
         "answer": 1
       },
       {
         "question": "Why did the Prophet's ﷺ camel Qaswa sit down at Hudaybiyyah?",
         "options": [
-          "It was tired",
-          "It was sick",
-          "She was commanded by Allah to stop there",
-          "It was injured"
+          "It was tired truly",
+          "It was sick indeed",
+          "She was commanded by",
+          "It was injured truly"
         ],
         "answer": 2
       },
       {
         "question": "What Arab tradition did Quraysh violate?",
         "options": [
-          "Trading rules",
+          "Trading rules truly",
           "Marriage customs",
-          "Allowing all pilgrims access to Ka'bah during pilgrimage months",
-          "Hospitality"
+          "Allowing all pilgrims",
+          "Hospitality indeed"
         ],
         "answer": 2
       }
@@ -2931,7 +2931,7 @@
         "question": "What were the main terms of Hudaybiyyah treaty?",
         "options": [
           "Muslims conquer Makkah",
-          "Muslims return this year, come next year for 3 days, 10-year peace, return escapees",
+          "Muslims return this year,",
           "Quraysh accept Islam",
           "Both sides disarm forever"
         ],
@@ -2940,29 +2940,29 @@
       {
         "question": "Who felt the terms were humiliating?",
         "options": [
-          "Only Abu Bakr",
-          "No one",
-          "Many companions, especially Umar",
-          "Only Ali"
+          "Only Abu Bakr truly",
+          "No one specifically",
+          "Many companions,",
+          "Only Ali indeed"
         ],
         "answer": 2
       },
       {
         "question": "Who had to be returned in chains according to the treaty?",
         "options": [
-          "A spy",
-          "Abu Jandal, Suhay's son who escaped torture",
-          "A prisoner",
-          "A merchant"
+          "A spy specifically",
+          "Abu Jandal, Suhay's son",
+          "A prisoner itself",
+          "A merchant itself"
         ],
         "answer": 1
       },
       {
         "question": "What did Qur'an call this treaty?",
         "options": [
-          "A defeat",
-          "A clear conquest (Fath Mubeen)",
-          "A mistake",
+          "A defeat itself",
+          "A clear conquest (Fath",
+          "A mistake itself",
           "A temporary solution"
         ],
         "answer": 1
@@ -2975,10 +2975,10 @@
       {
         "question": "Who was sent as envoy to Quraysh during negotiations?",
         "options": [
-          "Abu Bakr",
-          "Ali",
-          "Uthman",
-          "Umar"
+          "Abu Bakr indeed",
+          "Ali specifically",
+          "Uthman specifically",
+          "Umar specifically"
         ],
         "answer": 2
       },
@@ -2986,18 +2986,18 @@
         "question": "What rumor spread about the envoy?",
         "options": [
           "He was captured",
-          "He was killed",
-          "He defected",
-          "He got lost"
+          "He was killed truly",
+          "He defected indeed",
+          "He got lost indeed"
         ],
         "answer": 1
       },
       {
         "question": "What did the Prophet ﷺ call Muslims to do?",
         "options": [
-          "Retreat",
-          "Negotiate",
-          "Pledge loyalty unto death under a tree",
+          "Retreat specifically",
+          "Negotiate indeed",
+          "Pledge loyalty unto death",
           "Attack immediately"
         ],
         "answer": 2
@@ -3006,7 +3006,7 @@
         "question": "What is this pledge called?",
         "options": [
           "Bay'ah al-Kubra",
-          "Bay'ah al-Ridwan (Pledge of Allah's Pleasure)",
+          "Bay'ah al-Ridwan (Pledge",
           "Bay'ah al-Aqabah",
           "Bay'ah al-Islam"
         ],
@@ -3020,10 +3020,10 @@
       {
         "question": "What did Suhay object to when writing the treaty?",
         "options": [
-          "The date",
-          "The location",
-          "Writing 'Muhammad ﷺ, Messenger of Allah' - refused to acknowledge prophethood",
-          "The terms"
+          "The date itself",
+          "The location truly",
+          "Writing ', Messenger of",
+          "The terms itself"
         ],
         "answer": 2
       },
@@ -3031,7 +3031,7 @@
         "question": "What did the Prophet ﷺ tell Ali to write instead?",
         "options": [
           "Muhammad ﷺ the Leader",
-          "Muhammad ﷺ son of Abdullah",
+          "the son of Abdullah",
           "Muhammad ﷺ the Prophet",
           "Muhammad ﷺ the Truthful"
         ],
@@ -3040,19 +3040,19 @@
       {
         "question": "Who erased 'Messenger of Allah'?",
         "options": [
-          "Ali did it",
-          "Abu Bakr",
-          "The Prophet ﷺ erased it himself, showing humility",
-          "Umar"
+          "Ali did it indeed",
+          "Abu Bakr indeed",
+          "The ﷺ erased it himself,",
+          "Umar specifically"
         ],
         "answer": 2
       },
       {
         "question": "What happened within two years after this treaty?",
         "options": [
-          "Islam declined",
-          "War resumed",
-          "Islam grew more than the previous twenty years combined",
+          "Islam declined truly",
+          "War resumed indeed",
+          "Islam grew more than the",
           "Nothing changed"
         ],
         "answer": 2
@@ -3066,8 +3066,8 @@
         "question": "To which world rulers did the Prophet ﷺ send letters?",
         "options": [
           "Only Arab leaders",
-          "Byzantine Emperor Heraclius, Persian Emperor Khosrow, Egyptian Muqawqis, Abyssinian Negus, and others",
-          "Only Muslims",
+          "Byzantine Emperor",
+          "Only Muslims truly",
           "Only nearby tribes"
         ],
         "answer": 1
@@ -3075,20 +3075,20 @@
       {
         "question": "Who secretly accepted Islam?",
         "options": [
-          "Heraclius",
-          "Khosrow",
+          "Heraclius indeed",
+          "Khosrow specifically",
           "Negus of Abyssinia",
-          "Muqawqis"
+          "Muqawqis indeed"
         ],
         "answer": 2
       },
       {
         "question": "What did Khosrow of Persia do with the letter?",
         "options": [
-          "Accepted it",
-          "Kept it",
-          "Arrogantly tore it and commanded his governor to capture Muhammad ﷺ",
-          "Ignored it"
+          "Accepted it indeed",
+          "Kept it specifically",
+          "Arrogantly tore it &",
+          "Ignored it indeed"
         ],
         "answer": 2
       },
@@ -3097,7 +3097,7 @@
         "options": [
           "He would become rich",
           "He would live long",
-          "His kingdom would be torn as he tore the letter",
+          "The kingdom would be torn",
           "He would become Muslim"
         ],
         "answer": 2
@@ -3110,30 +3110,30 @@
       {
         "question": "Where did Banu Nadir leaders settle after expulsion?",
         "options": [
-          "Makkah",
-          "Syria",
-          "Khaybar",
-          "Yemen"
+          "Makkah specifically",
+          "Syria specifically",
+          "Khaybar specifically",
+          "Yemen specifically"
         ],
         "answer": 2
       },
       {
         "question": "How many fortresses did Khaybar have?",
         "options": [
-          "Two",
-          "Four",
-          "Eight",
-          "Twelve"
+          "Two specifically",
+          "Four specifically",
+          "Eight specifically",
+          "Twelve specifically"
         ],
         "answer": 2
       },
       {
         "question": "Who was given the banner and opened the main fortress?",
         "options": [
-          "Umar",
-          "Abu Bakr",
-          "Ali",
-          "Khalid"
+          "Umar specifically",
+          "Abu Bakr indeed",
+          "Ali specifically",
+          "Khalid specifically"
         ],
         "answer": 2
       },
@@ -3142,7 +3142,7 @@
         "options": [
           "All were expelled",
           "All were enslaved",
-          "Jews could remain farming, paying half their produce as tax",
+          "Jews could remain",
           "They were all executed"
         ],
         "answer": 2
@@ -3155,10 +3155,10 @@
       {
         "question": "How many Muslims performed Umrah in 7 AH?",
         "options": [
-          "1,000",
-          "2,000",
-          "3,000",
-          "5,000"
+          "It was 1,000 truly",
+          "It was 2,000 truly",
+          "It was 3,000 truly",
+          "It was 5,000 truly"
         ],
         "answer": 1
       },
@@ -3166,8 +3166,8 @@
         "question": "What did Quraysh do during the Muslims' Umrah?",
         "options": [
           "They joined them",
-          "They attacked",
-          "They evacuated the city and watched from surrounding mountains",
+          "They attacked truly",
+          "They evacuated the city &",
           "They celebrated with them"
         ],
         "answer": 2
@@ -3175,9 +3175,9 @@
       {
         "question": "What did Quraysh witness that softened hearts?",
         "options": [
-          "Wealth",
-          "Islamic brotherhood, discipline, and devotion",
-          "Military power",
+          "Wealth specifically",
+          "Islamic brotherhood,",
+          "Military power truly",
           "Nothing special"
         ],
         "answer": 1
@@ -3186,7 +3186,7 @@
         "question": "What did this peaceful Umrah demonstrate?",
         "options": [
           "Muslim weakness",
-          "Islam's strength through spiritual discipline rather than military force",
+          "Islam's strength via",
           "Quraysh's power",
           "Nothing important"
         ],
@@ -3200,9 +3200,9 @@
       {
         "question": "Why did the Prophet ﷺ send 3,000 Muslims to Syria?",
         "options": [
-          "For trade",
-          "For pilgrimage",
-          "A Muslim envoy was killed by Ghassanid allies of Byzantine Empire",
+          "For trade indeed",
+          "For pilgrimage truly",
+          "A envoy was killed by",
           "For exploration"
         ],
         "answer": 2
@@ -3210,30 +3210,30 @@
       {
         "question": "How many enemy forces did Muslims face at Mu'tah?",
         "options": [
-          "10,000",
-          "50,000",
-          "100,000",
-          "200,000 Byzantine and Arab coalition"
+          "It was 10,000 truly",
+          "It was 50,000 truly",
+          "It was 100,000 here",
+          "200,000 Byzantine & Arab"
         ],
         "answer": 3
       },
       {
         "question": "Who became commander after all three appointed commanders were martyred?",
         "options": [
-          "Abu Bakr",
-          "Umar",
+          "Abu Bakr indeed",
+          "Umar specifically",
           "Khalid ibn Walid",
-          "Ali"
+          "Ali specifically"
         ],
         "answer": 2
       },
       {
         "question": "What title did the Prophet ﷺ give Khalid?",
         "options": [
-          "The Brave",
-          "Sword of Allah",
-          "The Wise",
-          "The Strong"
+          "The Brave itself",
+          "Sword of Allah truly",
+          "The Wise itself",
+          "The Strong itself"
         ],
         "answer": 1
       }
@@ -3245,9 +3245,9 @@
       {
         "question": "What did Quraysh's allied tribe do?",
         "options": [
-          "Made peace",
-          "Attacked a Muslim-allied tribe, violating the treaty",
-          "Left Arabia",
+          "Made peace indeed",
+          "Attacked a Muslim-allied",
+          "Left Arabia indeed",
           "Converted to Islam"
         ],
         "answer": 1
@@ -3255,10 +3255,10 @@
       {
         "question": "Who went to Madinah trying to renew the treaty?",
         "options": [
-          "Abu Jahl",
-          "Abu Lahab",
-          "Abu Sufyan",
-          "Khalid"
+          "Abu Jahl indeed",
+          "Abu Lahab indeed",
+          "Abu Sufyan indeed",
+          "Khalid specifically"
         ],
         "answer": 2
       },
@@ -3266,8 +3266,8 @@
         "question": "What did Abu Sufyan's daughter Umm Habibah do?",
         "options": [
           "Welcomed him warmly",
-          "Gave him gifts",
-          "Refused to let him sit on the Prophet's ﷺ mat, prioritizing Islam over father",
+          "Gave him gifts truly",
+          "Refused to let him sit on",
           "Helped him negotiate"
         ],
         "answer": 2
@@ -3276,9 +3276,9 @@
         "question": "How did the Prophet ﷺ prepare for Makkah's conquest?",
         "options": [
           "Publicly announced it",
-          "In secrecy, praying Quraysh wouldn't discover the plan",
+          "In secrecy, praying",
           "Asked permission first",
-          "Sent warnings"
+          "Sent warnings truly"
         ],
         "answer": 1
       }
@@ -3290,20 +3290,20 @@
       {
         "question": "How many Muslims marched to conquer Makkah?",
         "options": [
-          "5,000",
-          "10,000",
-          "15,000",
-          "20,000"
+          "It was 5,000 truly",
+          "It was 10,000 truly",
+          "It was 15,000 truly",
+          "It was 20,000 truly"
         ],
         "answer": 1
       },
       {
         "question": "Who brought Abu Sufyan to the Muslim camp?",
         "options": [
-          "Umar",
-          "Ali",
-          "Abbas, the Prophet's ﷺ uncle",
-          "Khalid"
+          "Umar specifically",
+          "Ali specifically",
+          "Abbas, 's ﷺ uncle",
+          "Khalid specifically"
         ],
         "answer": 2
       },
@@ -3311,8 +3311,8 @@
         "question": "What did the Prophet ﷺ promise for safety?",
         "options": [
           "Only for Muslims",
-          "No one",
-          "Those who stayed home, sought Abu Sufyan's house, or entered the sanctuary",
+          "No one specifically",
+          "Those who stayed home,",
           "Only for Quraysh leaders"
         ],
         "answer": 2
@@ -3322,8 +3322,8 @@
         "options": [
           "Execute all enemies",
           "Enslave Quraysh",
-          "General amnesty: 'Go, you are free'",
-          "Exile everyone"
+          "General amnesty: 'Go, you",
+          "Exile everyone truly"
         ],
         "answer": 2
       }
@@ -3335,29 +3335,29 @@
       {
         "question": "How many idols were in the Ka'bah?",
         "options": [
-          "100",
-          "200",
-          "360",
-          "500"
+          "Exactly 100 total",
+          "Exactly 200 total",
+          "Exactly 360 total",
+          "Exactly 500 total"
         ],
         "answer": 2
       },
       {
         "question": "What did the Prophet ﷺ recite as he pointed at each idol?",
         "options": [
-          "Allahu Akbar",
+          "Allahu Akbar truly",
           "La ilaha illallah",
-          "Truth has come and falsehood has vanished",
-          "Bismillah"
+          "Truth has come &",
+          "Bismillah indeed"
         ],
         "answer": 2
       },
       {
         "question": "Which painting did the Prophet ﷺ protect in the Ka'bah?",
         "options": [
-          "A landscape",
-          "A painting of Mary and baby Jesus",
-          "A battle scene",
+          "A landscape itself",
+          "A painting of Mary & baby",
+          "A battle scene truly",
           "A geometric pattern"
         ],
         "answer": 1
@@ -3365,10 +3365,10 @@
       {
         "question": "Who gave the adhan from atop the Ka'bah?",
         "options": [
-          "Abu Bakr",
-          "Umar",
+          "Abu Bakr indeed",
+          "Umar specifically",
           "Bilal, the former slave",
-          "Ali"
+          "Ali specifically"
         ],
         "answer": 2
       }
@@ -3390,20 +3390,20 @@
       {
         "question": "Which tribe that stoned the Prophet ﷺ at Ta'if now accepted Islam?",
         "options": [
-          "Quraysh",
-          "Aws",
-          "Thaqif",
-          "Khazraj"
+          "Quraysh specifically",
+          "Aws specifically",
+          "Thaqif specifically",
+          "Khazraj specifically"
         ],
         "answer": 2
       },
       {
         "question": "How long did it take for Islam to spread throughout Arabia?",
         "options": [
-          "Ten years",
+          "Ten years indeed",
           "Twenty-three years",
-          "Thirty years",
-          "Fifty years"
+          "Thirty years truly",
+          "Fifty years indeed"
         ],
         "answer": 1
       },
@@ -3411,8 +3411,8 @@
         "question": "What verse was revealed completing the religion?",
         "options": [
           "The first verse",
-          "This day I have perfected your religion (Qur'an 5:3)",
-          "The last verse",
+          "This day I have perfected",
+          "The last verse truly",
           "A verse about prayer"
         ],
         "answer": 1
@@ -3425,18 +3425,18 @@
       {
         "question": "How many Muslims accompanied the Prophet ﷺ on Farewell Hajj?",
         "options": [
-          "10,000",
-          "50,000",
-          "Over 100,000",
-          "200,000"
+          "It was 10,000 truly",
+          "It was 50,000 truly",
+          "Over 100,000 truly",
+          "It was 200,000 here"
         ],
         "answer": 2
       },
       {
         "question": "On which day did he deliver his final sermon?",
         "options": [
-          "Day of Eid",
-          "Day of Arafah",
+          "Day of Eid indeed",
+          "Day of Arafah truly",
           "Day of Sacrifice",
           "Day of Tarwiyah"
         ],
@@ -3447,7 +3447,7 @@
         "options": [
           "Only religious duties",
           "Only business rules",
-          "Sanctity of life, property, honor; racial equality; women's rights; following Qur'an and Sunnah",
+          "Sanctity of life,",
           "Only family relations"
         ],
         "answer": 2
@@ -3456,9 +3456,9 @@
         "question": "Why did the Prophet ﷺ weep after the verse was revealed?",
         "options": [
           "He was sad about the past",
-          "He was afraid",
-          "He understood it meant his mission was complete and death was near",
-          "He was angry"
+          "He was afraid truly",
+          "He understood it meant",
+          "He was angry truly"
         ],
         "answer": 2
       }
@@ -3480,19 +3480,19 @@
       {
         "question": "Who did the Prophet ﷺ ask to lead prayers when he was too ill?",
         "options": [
-          "Umar",
-          "Ali",
-          "Abu Bakr",
-          "Uthman"
+          "Umar specifically",
+          "Ali specifically",
+          "Abu Bakr indeed",
+          "Uthman specifically"
         ],
         "answer": 2
       },
       {
         "question": "What were the Prophet's ﷺ last words?",
         "options": [
-          "Pray regularly",
+          "Pray regularly truly",
           "Be kind to each other",
-          "Rather, the highest companion in Paradise",
+          "Rather, the highest",
           "Follow the Qur'an"
         ],
         "answer": 2
@@ -3500,10 +3500,10 @@
       {
         "question": "What did Abu Bakr say to the grieving companions?",
         "options": [
-          "Don't be sad",
+          "Don't be sad truly",
           "He will come back",
-          "Whoever worshipped Muhammad ﷺ, he is dead; whoever worships Allah, Allah is Ever-Living",
-          "We must choose a new prophet"
+          "Whoever worshipped , he",
+          "We must choose a new"
         ],
         "answer": 2
       }

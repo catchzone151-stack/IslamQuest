@@ -60,20 +60,20 @@
       {
         "question": "Why did Allah accept Habil's sacrifice but not Qabil's?",
         "options": [
-          "Habil was the older son",
-          "Habil's offering was larger",
-          "Habil gave with sincerity",
-          "Habil prayed much longer"
+          "Habil was the eldest son",
+          "Habil's gift was bigger",
+          "Habil gave sincerely",
+          "Habil prayed much more"
         ],
         "answer": 2
       },
       {
         "question": "What was the first major sin committed on earth?",
         "options": [
-          "Telling lies to others",
+          "Telling lies to people",
           "Stealing from family",
-          "Qabil murdered his brother",
-          "Disobeying one's parents"
+          "Qabil killed his brother",
+          "Disobeying the parents"
         ],
         "answer": 2
       },
@@ -160,9 +160,9 @@
       {
         "question": "Why did the leaders reject Nuh's message?",
         "options": [
-          "They could not understand",
-          "Only the poor followed him",
-          "He asked them for money",
+          "Could not understand it",
+          "Only the poor followed",
+          "He asked for donations",
           "He was far too young"
         ],
         "answer": 1
@@ -215,10 +215,10 @@
       {
         "question": "What does the story of Nuh's flood teach us?",
         "options": [
-          "Truth needs many believers",
-          "Truth is not in numbers",
-          "The majority is correct",
-          "Always follow the crowd"
+          "Truth needs believers",
+          "Truth not in numbers",
+          "Majority is correct",
+          "Follow the crowd always"
         ],
         "answer": 1
       }
@@ -305,10 +305,10 @@
       {
         "question": "What lesson does the destruction of 'Ad teach us?",
         "options": [
-          "Physical strength is all",
-          "Wealth ensures security",
-          "Gratitude to Allah matters",
-          "Build towers very tall"
+          "Strength is everything",
+          "Wealth ensures safety",
+          "Gratitude matters most",
+          "Build towers so tall"
         ],
         "answer": 2
       }
@@ -531,9 +531,9 @@
         "question": "Despite threats and mockery, what did Lut continue to do?",
         "options": [
           "He left the city fast",
-          "He stopped preaching truth",
+          "He stopped preaching it",
           "He joined them in sin",
-          "He called to righteousness"
+          "He called to goodness"
         ],
         "answer": 3
       }
@@ -568,7 +568,7 @@
           "With fire from the sky",
           "With a massive flood",
           "With a powerful wind",
-          "Ground flipped, stones rained"
+          "Ground flipped, rained"
         ],
         "answer": 3
       },
@@ -590,10 +590,10 @@
       {
         "question": "Who was Ismail's father?",
         "options": [
-          "Prophet Nuh alayhissalam",
-          "Prophet Ibrahim alayhissalam",
-          "Prophet Ishaq alayhissalam",
-          "Prophet Lut alayhissalam"
+          "Nuh alayhis-salam here",
+          "Ibrahim alayhis-salam",
+          "Ishaq alayhis-salam here",
+          "Lut alayhis-salam here"
         ],
         "answer": 1
       },
@@ -665,10 +665,10 @@
       {
         "question": "Which prophet descended from Ismail, fulfilling Ibrahim's prayer?",
         "options": [
-          "Prophet Musa alayhissalam",
-          "Prophet 'Isa alayhissalam",
-          "Prophet Muhammad ﷺ",
-          "Prophet Sulayman alayhissalam"
+          "Musa alayhis-salam here",
+          "'Isa alayhis-salam here",
+          "Muhammad ﷺ al-Amin",
+          "Sulayman alayhis-salam"
         ],
         "answer": 2
       }
@@ -680,10 +680,10 @@
       {
         "question": "Who were Ishaq's parents?",
         "options": [
-          "Adam and Hawwa",
-          "Ibrahim and Sarah",
-          "Ibrahim and Hajar",
-          "Nuh and his wife"
+          "Adam and Hawwa them",
+          "Ibrahim and his Sarah",
+          "Ibrahim and his Hajar",
+          "Nuh and his own wife"
         ],
         "answer": 1
       },
@@ -700,9 +700,9 @@
       {
         "question": "What did the angels assure Sarah about having a child?",
         "options": [
-          "It would take many years",
-          "She needed to travel first",
-          "Nothing impossible for Allah",
+          "It would take years",
+          "She needed to travel",
+          "Nothing impossible",
           "She was far too old"
         ],
         "answer": 2
@@ -755,10 +755,10 @@
       {
         "question": "What does Ishaq's story remind us about?",
         "options": [
-          "That we choose prophets",
-          "Allah chooses whom He wills",
-          "Prophethood is inherited",
-          "Wealth ensures prophethood"
+          "We can choose prophets",
+          "Allah chooses freely",
+          "Prophethood inherited",
+          "Wealth gives prophecy"
         ],
         "answer": 1
       }
@@ -1060,19 +1060,19 @@
       {
         "question": "What did the people say about Shu'ayb's prayers?",
         "options": [
-          "That they made him wise",
-          "That they made him strong",
-          "That they made him foolish",
-          "That they were beautiful"
+          "Made him very wise",
+          "Made him very strong",
+          "Made him very foolish",
+          "They were beautiful"
         ],
         "answer": 2
       },
       {
         "question": "What did Shu'ayb warn them not to repeat?",
         "options": [
-          "Blessings of past nations",
-          "Mistakes of destroyed ones",
-          "Wealth of their ancestors",
+          "Blessings of nations",
+          "Mistakes of destroyed",
+          "Wealth of ancestors",
           "Journeys of travelers"
         ],
         "answer": 1
@@ -1276,8 +1276,8 @@
         "question": "Why didn't Harun forcefully stop the people from worshipping the calf?",
         "options": [
           "He agreed with them",
-          "He was afraid of them",
-          "He feared causing division",
+          "Was afraid of them",
+          "Feared causing division",
           "He didn't care at all"
         ],
         "answer": 2
@@ -1501,8 +1501,8 @@
         "question": "What amazing ability did Sulayman have with animals?",
         "options": [
           "He could ride them all",
-          "He understood their speech",
-          "He could make them vanish",
+          "Understood their speech",
+          "He made them disappear",
           "He could change colors"
         ],
         "answer": 1
@@ -1735,10 +1735,10 @@
       {
         "question": "Who opposed Al-Yasa'?",
         "options": [
-          "His own family",
+          "His own family there",
           "Foreign army troops",
-          "Kings and corrupt priests",
-          "His own students"
+          "Kings and the priests",
+          "His own students too"
         ],
         "answer": 2
       },
@@ -2030,10 +2030,10 @@
       {
         "question": "How was 'Isa born?",
         "options": [
-          "Normally with a father",
-          "Miraculously without father",
+          "Normally with father",
+          "Miracle without father",
           "He was adopted child",
-          "From two prophets"
+          "Born from two prophets"
         ],
         "answer": 1
       },
@@ -2096,7 +2096,7 @@
         "question": "What will 'Isa do when he returns before the Day of Judgment?",
         "options": [
           "Rule as worldly king",
-          "Establish justice and truth",
+          "Establish justice now",
           "Punish everyone harshly",
           "Build a great temple"
         ],
