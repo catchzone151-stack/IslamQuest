@@ -6,9 +6,9 @@
         "question": "What does the Shahadah declare about Allah?",
         "options": [
           "That Allah has partners",
-          "That Allah alone deserves worship",
+          "Allah alone is worshipped",
           "That Allah needs our help",
-          "That we can worship other things too"
+          "We can worship others too"
         ],
         "answer": 1
       },
@@ -16,19 +16,19 @@
         "question": "What must accompany the Shahadah for it to be valid?",
         "options": [
           "Wealth and success",
-          "Belief in the heart, understanding, and sincere action",
+          "Belief and sincere action",
           "Just saying the words",
-          "Being born Muslim"
+          "Being born a Muslim"
         ],
         "answer": 1
       },
       {
         "question": "According to the Prophet ﷺ, what happens to those who die upon the Shahadah?",
         "options": [
-          "They will be tested longer",
-          "They must wait for intercession",
+          "They will be tested more",
+          "Must wait for intercession",
           "They will enter Paradise",
-          "They need to do more good deeds first"
+          "Need more good deeds"
         ],
         "answer": 2
       },
@@ -37,8 +37,8 @@
         "options": [
           "Once in a lifetime",
           "Only during Ramadan",
-          "Daily, reflecting on its meaning",
-          "Only when they make mistakes"
+          "Daily with reflection",
+          "Only when we sin"
         ],
         "answer": 2
       }
@@ -50,18 +50,18 @@
       {
         "question": "How many times do Muslims pray each day?",
         "options": [
-          "Three times",
-          "Five times",
-          "Seven times",
-          "Twice"
+          "Three times daily",
+          "Five times daily",
+          "Seven times daily",
+          "Twice each day"
         ],
         "answer": 1
       },
       {
         "question": "What will be the first thing questioned on the Day of Judgment?",
         "options": [
-          "Our charity",
-          "Our fasting",
+          "Our charity given",
+          "Our fasting done",
           "Our prayer",
           "Our pilgrimage"
         ],
@@ -70,9 +70,9 @@
       {
         "question": "What does Salah cleanse according to the lesson?",
         "options": [
-          "Only major sins",
-          "Physical dirt",
-          "Minor sins, like bathing cleanses the body",
+          "Only our major sins",
+          "Physical dirt only",
+          "Minor sins like bathing",
           "Nothing at all"
         ],
         "answer": 2
@@ -81,7 +81,7 @@
         "question": "What does prayer bring to our hearts?",
         "options": [
           "Wealth and success",
-          "Peace and strength to face challenges",
+          "Peace and strength",
           "Fame and recognition",
           "Power over others"
         ],
@@ -95,10 +95,10 @@
       {
         "question": "What percentage of wealth must Muslims give as Zakah yearly?",
         "options": [
-          "5%",
-          "10%",
-          "2.5%",
-          "1%"
+          "Five percent yearly",
+          "Ten percent yearly",
+          "Two point five percent",
+          "One percent yearly"
         ],
         "answer": 2
       },
@@ -107,8 +107,8 @@
         "options": [
           "Only our wealth",
           "Only our hearts",
-          "Our wealth and hearts from greed",
-          "Our homes"
+          "Our wealth and hearts",
+          "Only our homes"
         ],
         "answer": 2
       },
@@ -117,18 +117,18 @@
         "options": [
           "Charity makes you poor",
           "Charity decreases wealth",
-          "Charity never decreases wealth but increases it",
-          "Only the rich should give charity"
+          "Charity increases wealth",
+          "Only the rich give"
         ],
         "answer": 2
       },
       {
         "question": "On Judgment Day, what will charity be for those who gave?",
         "options": [
-          "Lost forever",
-          "Forgotten",
-          "A burden",
-          "Treasure waiting in Paradise"
+          "Lost forever to time",
+          "Forgotten completely",
+          "A burden on the soul",
+          "Treasure in Paradise"
         ],
         "answer": 3
       }
@@ -140,20 +140,20 @@
       {
         "question": "During which month do Muslims fast?",
         "options": [
-          "Muharram",
-          "Ramadan",
-          "Shawwal",
-          "Dhul Hijjah"
+          "Muharram month",
+          "Ramadan month",
+          "Shawwal month",
+          "Dhul Hijjah month"
         ],
         "answer": 1
       },
       {
         "question": "What is the Arabic term for God-consciousness that fasting develops?",
         "options": [
-          "Ihsan",
-          "Sabr",
-          "Taqwa",
-          "Iman"
+          "Ihsan consciousness",
+          "Sabr patience",
+          "Taqwa awareness",
+          "Iman faith"
         ],
         "answer": 2
       },
@@ -161,9 +161,9 @@
         "question": "What did the Prophet ﷺ promise for those who fast Ramadan with faith?",
         "options": [
           "Wealth and success",
-          "All previous sins forgiven",
-          "A long life",
-          "Fame"
+          "All past sins forgiven",
+          "A very long life",
+          "Fame and recognition"
         ],
         "answer": 1
       },
@@ -171,9 +171,9 @@
         "question": "Which night in Ramadan is better than a thousand months of worship?",
         "options": [
           "The first night",
-          "The 15th night",
-          "Laylatul Qadr",
-          "The last night"
+          "The fifteenth night",
+          "Laylatul Qadr night",
+          "The very last night"
         ],
         "answer": 2
       }
@@ -195,20 +195,20 @@
       {
         "question": "What is the simple white clothing worn during Hajj called?",
         "options": [
-          "Thobe",
-          "Abaya",
-          "Ihram",
-          "Jalabiya"
+          "Thobe garment",
+          "Abaya garment",
+          "Ihram garment",
+          "Jalabiya garment"
         ],
         "answer": 2
       },
       {
         "question": "What does the equality shown in Hajj teach us?",
         "options": [
-          "That wealth determines value",
-          "That race makes us different",
-          "That humility is key and we're all equal before Allah",
-          "That kings are superior"
+          "Wealth determines value",
+          "Race makes us different",
+          "All are equal to Allah",
+          "Kings are superior"
         ],
         "answer": 2
       },
@@ -217,7 +217,7 @@
         "options": [
           "Wealthy and famous",
           "Pure as a newborn",
-          "Unchanged",
+          "Completely unchanged",
           "Burdened with sins"
         ],
         "answer": 1
@@ -240,10 +240,10 @@
       {
         "question": "How many beautiful names does Allah have according to the Prophet ﷺ?",
         "options": [
-          "Seventy-seven",
-          "Eighty-eight",
-          "Ninety-nine",
-          "One hundred"
+          "Seventy-seven names",
+          "Eighty-eight names",
+          "Ninety-nine names",
+          "One hundred names"
         ],
         "answer": 2
       },
@@ -260,10 +260,10 @@
       {
         "question": "Which name of Allah means 'The Most Merciful'?",
         "options": [
-          "Al-Aleem",
-          "Al-Qawiyy",
-          "Ar-Rahman",
-          "Al-Hakim"
+          "Al-Aleem name",
+          "Al-Qawiyy name",
+          "Ar-Rahman name",
+          "Al-Hakim name"
         ],
         "answer": 2
       }
@@ -275,29 +275,29 @@
       {
         "question": "What are angels created from?",
         "options": [
-          "Fire",
-          "Light",
-          "Clay",
-          "Water"
+          "Created from fire",
+          "Created from light",
+          "Created from clay",
+          "Created from water"
         ],
         "answer": 1
       },
       {
         "question": "Which angel brought revelation to the prophets?",
         "options": [
-          "Mikail",
-          "Israfil",
-          "Jibra'il",
-          "Azrael"
+          "Mikail angel",
+          "Israfil angel",
+          "Jibra'il angel",
+          "Azrael angel"
         ],
         "answer": 2
       },
       {
         "question": "What does the angel Raqib record?",
         "options": [
-          "Bad deeds",
-          "Good deeds",
-          "Our dreams",
+          "Our bad deeds only",
+          "Our good deeds only",
+          "Our dreams at night",
           "Our prayers only"
         ],
         "answer": 1
@@ -305,10 +305,10 @@
       {
         "question": "Which angel will blow the trumpet on Judgment Day?",
         "options": [
-          "Jibra'il",
-          "Mikail",
-          "Atid",
-          "Israfil"
+          "Jibra'il angel",
+          "Mikail angel",
+          "Atid angel",
+          "Israfil angel"
         ],
         "answer": 3
       }
@@ -320,40 +320,40 @@
       {
         "question": "Which book was revealed to Prophet Musa?",
         "options": [
-          "Injil",
-          "Zabur",
-          "Tawrah",
-          "Qur'an"
+          "Injil scripture",
+          "Zabur scripture",
+          "Tawrah scripture",
+          "Qur'an scripture"
         ],
         "answer": 2
       },
       {
         "question": "Over how many years was the Qur'an revealed?",
         "options": [
-          "Ten years",
+          "Ten years total",
           "Twenty-three years",
-          "Forty years",
-          "Seven years"
+          "Forty years total",
+          "Seven years total"
         ],
         "answer": 1
       },
       {
         "question": "What makes the Qur'an different from previous scriptures?",
         "options": [
-          "It was written in Arabic",
+          "Written in Arabic",
           "It has more stories",
-          "It is universal and timeless for all people",
-          "It is shorter"
+          "Universal and timeless",
+          "It is much shorter"
         ],
         "answer": 2
       },
       {
         "question": "Who promised to protect the Qur'an from corruption?",
         "options": [
-          "The Prophet ﷺ",
-          "The Companions",
-          "The scholars",
-          "Allah Himself"
+          "The Prophet himself",
+          "The Companions all",
+          "The Islamic scholars",
+          "Allah Himself did"
         ],
         "answer": 3
       }
@@ -365,8 +365,8 @@
       {
         "question": "What is the core message all prophets taught?",
         "options": [
-          "Build great civilizations",
-          "Tawheed - worship Allah alone",
+          "Build civilizations",
+          "Tawheed, Allah alone",
           "Seek worldly success",
           "Perform many rituals"
         ],
@@ -375,10 +375,10 @@
       {
         "question": "Why is Prophet Muhammad ﷺ called the Seal of Prophets?",
         "options": [
-          "He was the first prophet",
+          "He was the first one",
           "He lived the longest",
-          "He is the final messenger, no prophet after him",
-          "He performed the most miracles"
+          "He is the final one",
+          "He had most miracles"
         ],
         "answer": 2
       },
@@ -386,19 +386,19 @@
         "question": "What were prophets known for?",
         "options": [
           "Wealth and power",
-          "Honesty, trustworthiness, and strong character",
-          "Fighting wars",
-          "Building empires"
+          "Honesty and character",
+          "Fighting many wars",
+          "Building great empires"
         ],
         "answer": 1
       },
       {
         "question": "How should we treat all prophets?",
         "options": [
-          "Worship them",
+          "We should worship them",
           "Prefer some over others",
           "Reject some of them",
-          "Respect all equally without worship"
+          "Respect all equally"
         ],
         "answer": 3
       }
@@ -410,29 +410,29 @@
       {
         "question": "Which angel will blow the trumpet to end the world?",
         "options": [
-          "Jibra'il",
-          "Israfil",
-          "Mikail",
-          "Atid"
+          "Jibra'il angel",
+          "Israfil angel",
+          "Mikail angel",
+          "Atid angel"
         ],
         "answer": 1
       },
       {
         "question": "What will weigh our deeds on the Day of Judgment?",
         "options": [
-          "Angels",
-          "The scales",
-          "Our families",
-          "Prophets"
+          "The angels above",
+          "The scales of justice",
+          "Our families there",
+          "The prophets there"
         ],
         "answer": 1
       },
       {
         "question": "In which hand will believers receive their record?",
         "options": [
-          "Left hand",
-          "Both hands",
-          "Right hand",
+          "Their left hand",
+          "In both hands",
+          "Their right hand",
           "Behind their back"
         ],
         "answer": 2
@@ -442,8 +442,8 @@
         "options": [
           "Ignore our actions",
           "Live without purpose",
-          "Motivate good deeds and avoid evil",
-          "Only focus on this world"
+          "Do good, avoid evil",
+          "Focus on this world"
         ],
         "answer": 2
       }
@@ -456,18 +456,18 @@
         "question": "What is Qadr?",
         "options": [
           "A type of prayer",
-          "Divine decree - Allah's knowledge of everything",
+          "Divine decree of Allah",
           "A pillar of Islam",
-          "Fasting"
+          "A type of fasting"
         ],
         "answer": 1
       },
       {
         "question": "Where did Allah write everything before creating the universe?",
         "options": [
-          "In the Qur'an",
-          "In the Torah",
-          "In the Preserved Tablet",
+          "In the Holy Qur'an",
+          "In the Torah book",
+          "The Preserved Tablet",
           "In our hearts"
         ],
         "answer": 2
@@ -475,10 +475,10 @@
       {
         "question": "What should we do when good things happen to us?",
         "options": [
-          "Become proud",
-          "Thank Allah",
-          "Think we earned it alone",
-          "Forget Allah"
+          "Become very proud",
+          "Thank Allah for it",
+          "Think we earned it",
+          "Forget about Allah"
         ],
         "answer": 1
       },
@@ -486,9 +486,9 @@
         "question": "What does belief in Qadr protect us from?",
         "options": [
           "Success and happiness",
-          "Hard work",
+          "Working very hard",
           "Arrogance and despair",
-          "Making choices"
+          "Making any choices"
         ],
         "answer": 2
       }
@@ -501,19 +501,19 @@
         "question": "What does Ikhlas mean?",
         "options": [
           "Praying five times",
-          "Sincerity - doing everything for Allah alone",
-          "Giving charity",
-          "Fasting"
+          "Sincerity for Allah",
+          "Giving charity daily",
+          "Fasting regularly"
         ],
         "answer": 1
       },
       {
         "question": "According to the Prophet ﷺ, what are actions judged by?",
         "options": [
-          "Their size",
+          "Their outward size",
           "Their appearance",
-          "Intentions",
-          "How many people see them"
+          "Our intentions only",
+          "How many people see"
         ],
         "answer": 2
       },
@@ -522,18 +522,18 @@
         "options": [
           "They are rewarded more",
           "The reward is lost",
-          "They count half",
-          "Nothing changes"
+          "They count as half",
+          "Nothing changes at all"
         ],
         "answer": 1
       },
       {
         "question": "What does sincerity purify hearts from?",
         "options": [
-          "Happiness",
-          "Knowledge",
+          "Happiness and joy",
+          "Knowledge of Islam",
           "Pride and arrogance",
-          "Wealth"
+          "Wealth we have"
         ],
         "answer": 2
       }
@@ -545,9 +545,9 @@
       {
         "question": "What does Akhlaq refer to?",
         "options": [
-          "Prayer times",
-          "Good character and manners",
-          "Fasting rules",
+          "Prayer times daily",
+          "Good character, manners",
+          "Fasting rules to follow",
           "Pilgrimage rituals"
         ],
         "answer": 1
@@ -555,8 +555,8 @@
       {
         "question": "According to the Prophet ﷺ, who has the most complete faith?",
         "options": [
-          "Those who pray the most",
-          "Those with the best character",
+          "Those who pray most",
+          "Those with best character",
           "Those who are wealthiest",
           "Those who fast the most"
         ],
@@ -565,9 +565,9 @@
       {
         "question": "What can bad manners do to good deeds?",
         "options": [
-          "Nothing at all",
-          "Strengthen them",
-          "Destroy them",
+          "Nothing at all to them",
+          "Strengthen them greatly",
+          "Destroy them completely",
           "Double their reward"
         ],
         "answer": 2
@@ -575,10 +575,10 @@
       {
         "question": "What is the heaviest thing on the scale of deeds?",
         "options": [
-          "Wealth",
-          "Knowledge",
-          "Good character",
-          "Fasting"
+          "Wealth accumulated",
+          "Knowledge gained",
+          "Good character shown",
+          "Fasting completed"
         ],
         "answer": 2
       }
@@ -591,18 +591,18 @@
         "question": "What is Niyyah?",
         "options": [
           "A type of charity",
-          "Intention in our hearts before action",
-          "A prayer",
-          "Fasting"
+          "Intention in the heart",
+          "A specific prayer",
+          "A type of fasting"
         ],
         "answer": 1
       },
       {
         "question": "Can everyday actions become worship with the right intention?",
         "options": [
-          "No, never",
+          "No, never at all",
           "Only prayer counts",
-          "Yes, even eating and working",
+          "Yes, even eating works",
           "Only during Ramadan"
         ],
         "answer": 2
@@ -610,20 +610,20 @@
       {
         "question": "Where is intention truly held?",
         "options": [
-          "On our tongues",
-          "In written words",
-          "In our hearts",
-          "In our hands"
+          "On our tongues only",
+          "In written words only",
+          "In our hearts truly",
+          "In our hands only"
         ],
         "answer": 2
       },
       {
         "question": "How often should we renew our intentions?",
         "options": [
-          "Once a year",
+          "Once a year is enough",
           "Only on Fridays",
-          "Frequently throughout the day",
-          "Never"
+          "Frequently each day",
+          "Never need to renew"
         ],
         "answer": 2
       }
@@ -635,20 +635,20 @@
       {
         "question": "What does Shukr mean?",
         "options": [
-          "Patience",
-          "Gratitude - thanking Allah",
-          "Prayer",
-          "Charity"
+          "Patience in hardship",
+          "Gratitude to Allah",
+          "Prayer to Allah",
+          "Charity to others"
         ],
         "answer": 1
       },
       {
         "question": "How many ways can we show gratitude according to the lesson?",
         "options": [
-          "One way",
-          "Two ways",
-          "Three ways",
-          "Five ways"
+          "One way only",
+          "Two different ways",
+          "Three different ways",
+          "Five different ways"
         ],
         "answer": 2
       },
@@ -656,8 +656,8 @@
         "question": "What does Allah promise if we are grateful?",
         "options": [
           "He will test us more",
-          "Nothing changes",
-          "He will increase our blessings",
+          "Nothing changes at all",
+          "He increases blessings",
           "We will become wealthy"
         ],
         "answer": 2
@@ -665,10 +665,10 @@
       {
         "question": "What should we say to express gratitude for blessings?",
         "options": [
-          "Thank you",
-          "Good luck",
-          "Alhamdulillah",
-          "Congratulations"
+          "Thank you very much",
+          "Good luck to you",
+          "Alhamdulillah always",
+          "Congratulations to all"
         ],
         "answer": 2
       }
@@ -681,38 +681,38 @@
         "question": "What does Istiqamah mean?",
         "options": [
           "Speed in worship",
-          "Steadfastness - staying firm on the straight path",
+          "Steadfastness on path",
           "Changing often",
-          "Doing everything at once"
+          "Doing everything fast"
         ],
         "answer": 1
       },
       {
         "question": "What did the Prophet ﷺ say about the most beloved deeds to Allah?",
         "options": [
-          "The biggest ones",
+          "The biggest actions",
           "The most public ones",
-          "Those done consistently, even if small",
-          "Only those done in Ramadan"
+          "Consistent even if small",
+          "Only in Ramadan"
         ],
         "answer": 2
       },
       {
         "question": "What does consistency build over time?",
         "options": [
-          "Arrogance",
-          "Discipline and stronger relationship with Allah",
-          "Laziness",
-          "Confusion"
+          "Arrogance in us",
+          "Discipline with Allah",
+          "Laziness and sloth",
+          "Confusion in faith"
         ],
         "answer": 1
       },
       {
         "question": "What should we prioritize in worship?",
         "options": [
-          "Intensity over sustainability",
-          "Doing everything at once",
-          "Commitment and sustainability over intensity",
+          "Intensity over balance",
+          "Doing everything fast",
+          "Sustainability over all",
           "Only big actions"
         ],
         "answer": 2
@@ -725,10 +725,10 @@
       {
         "question": "What is the foundation of true faith?",
         "options": [
-          "Wealth",
-          "Love for Allah and His Messenger ﷺ",
+          "Wealth and success",
+          "Love for Allah and Prophet",
           "Knowledge alone",
-          "Prayer only"
+          "Prayer alone"
         ],
         "answer": 1
       },
@@ -737,8 +737,8 @@
         "options": [
           "Through feelings only",
           "Through words only",
-          "Through obedience and following His commands",
-          "Through wealth"
+          "Through obedience",
+          "Through wealth given"
         ],
         "answer": 2
       },
@@ -746,19 +746,19 @@
         "question": "What does love for the Prophet ﷺ require?",
         "options": [
           "Just knowing his name",
-          "Following his example in everything",
-          "Only celebrating his birthday",
-          "Memorizing his appearance"
+          "Following his example",
+          "Celebrating his birthday",
+          "Memorizing appearance"
         ],
         "answer": 1
       },
       {
         "question": "What should we love more than anything else?",
         "options": [
-          "Our families",
-          "Our wealth",
-          "Our own lives",
-          "Allah and His Messenger ﷺ"
+          "Our dear families",
+          "Our wealth we have",
+          "Our own precious lives",
+          "Allah and His Messenger"
         ],
         "answer": 3
       }
