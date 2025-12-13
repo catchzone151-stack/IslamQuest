@@ -40,7 +40,7 @@
           "The strongest warriors",
           "The most educated scholars"
         ],
-        "answer": 2
+        "answer": 1
       }
     ]
   },
@@ -75,7 +75,7 @@
           "He patrolled Madinah at night checking on the poor and carried flour for a widow",
           "He appointed only family members"
         ],
-        "answer": 3
+        "answer": 2
       },
       {
         "question": "According to the hadith, what did the Prophet ﷺ pray for?",
@@ -85,7 +85,7 @@
           "More gold for the Muslims",
           "A larger army"
         ],
-        "answer": 1
+        "answer": 0
       }
     ]
   },
@@ -165,7 +165,7 @@
           "Fatimah, the Prophet's ﷺ beloved daughter",
           "Hafsa"
         ],
-        "answer": 3
+        "answer": 2
       },
       {
         "question": "According to Sahih Bukhari 3706, how did the Prophet ﷺ describe Ali's position?",
@@ -210,7 +210,7 @@
           "Islam's first muezzin, calling believers to prayer",
           "His cook"
         ],
-        "answer": 3
+        "answer": 2
       },
       {
         "question": "According to Sahih Bukhari 3697, what did the Prophet ﷺ say about Bilal?",
@@ -245,7 +245,7 @@
           "He checked his appearance",
           "He waited for a sign from heaven"
         ],
-        "answer": 2
+        "answer": 1
       },
       {
         "question": "What brilliant military strategy did Salman suggest during the Battle of the Trench?",
@@ -300,7 +300,7 @@
           "Forced words under extreme torture don't nullify sincere belief in the heart",
           "He could take revenge"
         ],
-        "answer": 3
+        "answer": 2
       },
       {
         "question": "How did Ammar die?",
@@ -335,7 +335,7 @@
           "The Quraysh beat him severely for his bold recitation",
           "He was forced to stop"
         ],
-        "answer": 3
+        "answer": 2
       },
       {
         "question": "What special permission did the Prophet ﷺ give Abdullah?",
@@ -355,7 +355,7 @@
           "Follow him in battle",
           "Give him all your wealth"
         ],
-        "answer": 2
+        "answer": 1
       }
     ]
   },
@@ -390,7 +390,7 @@
           "Only Abu Hurayrah prayed",
           "They took turns sleeping"
         ],
-        "answer": 3
+        "answer": 1
       },
       {
         "question": "Why is Abu Hurayrah so important to Muslims today?",
@@ -435,7 +435,7 @@
           "Ali",
           "Uthman"
         ],
-        "answer": 3
+        "answer": 1
       },
       {
         "question": "According to Qur'an 4:142, what do hypocrites think they can do to Allah?",
@@ -480,7 +480,7 @@
           "When three commanders died, he took command and saved the outnumbered Muslim army",
           "He stayed in the camp"
         ],
-        "answer": 3
+        "answer": 2
       },
       {
         "question": "How did Khalid die and how did he feel about it?",
@@ -525,7 +525,7 @@
           "When appointed as commander, he tried to decline and lived simply despite high rank",
           "He stopped praying in public"
         ],
-        "answer": 3
+        "answer": 2
       },
       {
         "question": "How did Abu Ubaydah die?",
@@ -535,7 +535,7 @@
           "From old age",
           "While traveling to Syria"
         ],
-        "answer": 2
+        "answer": 1
       }
     ]
   },
@@ -570,7 +570,7 @@
           "You are blessed",
           "Fight with courage"
         ],
-        "answer": 3
+        "answer": 1
       },
       {
         "question": "What major victory did Sa'd command?",
@@ -580,7 +580,7 @@
           "The Battle of Uhud",
           "The conquest of Makkah"
         ],
-        "answer": 0
+        "answer": 1
       }
     ]
   },
@@ -615,7 +615,7 @@
           "He is the richest companion",
           "He is the strongest warrior"
         ],
-        "answer": 3
+        "answer": 1
       },
       {
         "question": "What did Talha do when he received seventy thousand gold coins?",
@@ -625,7 +625,7 @@
           "He built a palace",
           "He couldn't sleep until he distributed every coin to the deserving"
         ],
-        "answer": 1
+        "answer": 3
       }
     ]
   },
@@ -670,7 +670,7 @@
           "A successful merchant and farmer who earned wealth through honest work",
           "A doctor only"
         ],
-        "answer": 3
+        "answer": 2
       }
     ]
   },
@@ -705,7 +705,7 @@
           "He narrated thousands of hadiths about the Prophet's ﷺ daily habits and character",
           "He painted pictures"
         ],
-        "answer": 3
+        "answer": 2
       },
       {
         "question": "How did the Prophet ﷺ treat Anas during ten years of service?",
@@ -715,7 +715,7 @@
           "He rarely spoke to him",
           "He gave him difficult tasks"
         ],
-        "answer": 2
+        "answer": 1
       }
     ]
   },
@@ -740,7 +740,7 @@
           "Worship and teaching over authority and power",
           "Traveling abroad"
         ],
-        "answer": 3
+        "answer": 2
       },
       {
         "question": "What made Abdullah one of the major sources of Islamic knowledge?",
@@ -750,7 +750,7 @@
           "He built many schools",
           "He traveled extensively"
         ],
-        "answer": 0
+        "answer": 1
       },
       {
         "question": "According to Sahih Bukhari 1122, what did the Prophet ﷺ say about Abdullah?",
@@ -760,7 +760,7 @@
           "Abdullah is the strongest",
           "Abdullah is the wisest"
         ],
-        "answer": 1
+        "answer": 0
       }
     ]
   },
@@ -785,7 +785,7 @@
           "His conversion to Islam",
           "Gold and jewelry"
         ],
-        "answer": 3
+        "answer": 2
       },
       {
         "question": "What did Umm Sulaym do at the Battle of Uhud while pregnant?",
@@ -795,7 +795,7 @@
           "She only prayed at home",
           "She sent others instead"
         ],
-        "answer": 0
+        "answer": 1
       },
       {
         "question": "How did Umm Sulaym show incredible patience when her young son died?",
@@ -805,7 +805,7 @@
           "She prepared the body, told no one, and waited for her husband using wisdom and patience",
           "She refused to accept it"
         ],
-        "answer": 1
+        "answer": 2
       }
     ]
   },
@@ -840,7 +840,7 @@
           "He lived extremely simply, preferring spiritual richness over material comfort",
           "He collected treasures"
         ],
-        "answer": 3
+        "answer": 2
       },
       {
         "question": "What did students do to learn from Abu Darda?",
@@ -850,7 +850,7 @@
           "They sent him letters",
           "They waited for him to travel"
         ],
-        "answer": 2
+        "answer": 1
       }
     ]
   },
@@ -875,7 +875,7 @@
           "They used their only blanket to soak up water, fearing a drop might disturb the Prophet ﷺ",
           "They asked for help"
         ],
-        "answer": 3
+        "answer": 2
       },
       {
         "question": "How long did the Prophet ﷺ live in Abu Ayyub's home?",
@@ -885,7 +885,7 @@
           "One year",
           "Two years"
         ],
-        "answer": 0
+        "answer": 1
       },
       {
         "question": "What showed Abu Ayyub's lifelong dedication even in old age?",
@@ -895,7 +895,7 @@
           "He participated in the campaign to conquer Constantinople at age eighty",
           "He taught at the mosque"
         ],
-        "answer": 1
+        "answer": 2
       }
     ]
   },
@@ -930,7 +930,7 @@
           "He walked alongside the Prophet's ﷺ animal not wanting to separate, and wept intensely",
           "He didn't say goodbye"
         ],
-        "answer": 3
+        "answer": 2
       },
       {
         "question": "According to the hadith, what will be Mu'adh's status on Judgment Day?",
@@ -940,7 +940,7 @@
           "With the wealthy",
           "At the back of the group"
         ],
-        "answer": 0
+        "answer": 1
       }
     ]
   },
@@ -975,7 +975,7 @@
           "He remembered how the Prophet ﷺ and early companions suffered hunger",
           "He was alone"
         ],
-        "answer": 3
+        "answer": 2
       },
       {
         "question": "According to Sahih Bukhari 3679, what guarantee was Abd al-Rahman given?",
@@ -985,7 +985,7 @@
           "He would live long",
           "He would be a leader"
         ],
-        "answer": 0
+        "answer": 1
       }
     ]
   },
@@ -1010,7 +1010,7 @@
           "Abyssinia during the first migration",
           "Yemen"
         ],
-        "answer": 3
+        "answer": 2
       },
       {
         "question": "How did Khalid die?",
@@ -1020,7 +1020,7 @@
           "He was martyred at the Battle of Marj al-Saffar fighting Byzantines",
           "In a trading accident"
         ],
-        "answer": 1
+        "answer": 2
       },
       {
         "question": "According to Qur'an 3:169, what about those killed in Allah's cause?",
@@ -1055,7 +1055,7 @@
           "Silver armor",
           "A white cloak"
         ],
-        "answer": 2
+        "answer": 1
       },
       {
         "question": "How did Abu Dujanah protect the Prophet ﷺ during Uhud?",
@@ -1065,7 +1065,7 @@
           "He used his own body as a shield, with arrows striking his back repeatedly",
           "He built a wall"
         ],
-        "answer": 3
+        "answer": 2
       },
       {
         "question": "Where was Abu Dujanah eventually martyred?",
@@ -1075,7 +1075,7 @@
           "At the Battle of Uhud",
           "At the Battle of Hunayn"
         ],
-        "answer": 0
+        "answer": 1
       }
     ]
   },
@@ -1100,7 +1100,7 @@
           "Some senior companions like Abu Bakr and Umar were in his army",
           "Only his enemies"
         ],
-        "answer": 3
+        "answer": 2
       },
       {
         "question": "What happened to Usama's father Zayd at the Battle of Mu'tah?",
@@ -1110,7 +1110,7 @@
           "He was martyred while carrying the Muslim banner",
           "He was captured"
         ],
-        "answer": 1
+        "answer": 2
       },
       {
         "question": "What does Usama's appointment teach about leadership in Islam?",
@@ -1120,7 +1120,7 @@
           "Only the oldest can lead",
           "Family connections matter most"
         ],
-        "answer": 0
+        "answer": 1
       }
     ]
   },
@@ -1155,7 +1155,7 @@
           "Governing a city",
           "Teaching children"
         ],
-        "answer": 3
+        "answer": 1
       },
       {
         "question": "According to Sahih Bukhari 3756, what was Zayd most knowledgeable about?",
@@ -1165,7 +1165,7 @@
           "Medicine",
           "Poetry"
         ],
-        "answer": 1
+        "answer": 0
       }
     ]
   },
@@ -1190,7 +1190,7 @@
           "Leading women's prayers",
           "Distributing charity"
         ],
-        "answer": 2
+        "answer": 1
       },
       {
         "question": "How long did Hafsa live after the Prophet's ﷺ death?",
@@ -1200,7 +1200,7 @@
           "Thirty-four years, continuing to teach and guide Muslims",
           "Twenty years"
         ],
-        "answer": 3
+        "answer": 2
       },
       {
         "question": "According to Qur'an 33:6, what title do the Prophet's ﷺ wives have?",
@@ -1245,7 +1245,7 @@
           "Zayd was the most beloved person to him",
           "Zayd was loyal"
         ],
-        "answer": 3
+        "answer": 2
       },
       {
         "question": "How did Zayd die?",
@@ -1255,7 +1255,7 @@
           "He was martyred at the Battle of Mu'tah while carrying the Muslim banner",
           "In a peaceful sleep"
         ],
-        "answer": 0
+        "answer": 2
       }
     ]
   },
@@ -1290,7 +1290,7 @@
           "Praying, barely sleeping",
           "Reading books"
         ],
-        "answer": 3
+        "answer": 2
       },
       {
         "question": "What did Abu Darda say when he was dying?",
@@ -1300,7 +1300,7 @@
           "He smiled and said he was eager to meet Allah and see His generous rewards",
           "He asked for more time"
         ],
-        "answer": 0
+        "answer": 2
       }
     ]
   },
@@ -1345,7 +1345,7 @@
           "The Generous for his wealth",
           "The Brave for his strength"
         ],
-        "answer": 3
+        "answer": 1
       }
     ]
   },
@@ -1380,7 +1380,7 @@
           "Her hand was cut off and she received eleven other wounds while fighting",
           "She only helped the wounded"
         ],
-        "answer": 3
+        "answer": 2
       },
       {
         "question": "According to Qur'an 33:35, what verses were revealed after Nusaybah's question?",
@@ -1415,7 +1415,7 @@
           "A position as governor",
           "Land and property"
         ],
-        "answer": 2
+        "answer": 1
       },
       {
         "question": "What sacrifice did Abu Sufyan make fighting for Islam after his conversion?",
@@ -1425,7 +1425,7 @@
           "He moved away",
           "He gave up leadership"
         ],
-        "answer": 3
+        "answer": 1
       },
       {
         "question": "According to Qur'an 8:38, what happens to those who cease disbelief?",
