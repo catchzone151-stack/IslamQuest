@@ -5,30 +5,30 @@
       {
         "question": "What event earned Abu Bakr the title 'As-Siddiq' meaning 'The Truthful One'?",
         "options": [
-          "Freed enslaved believers",
-          "Believed Night Journey",
-          "Became the first Caliph",
-          "He preserved the Quran"
+          "When he freed enslaved Muslims",
+          "When he believed instantly in the Prophet's Night Journey while others mocked",
+          "When he became the first Caliph",
+          "When he preserved the Quran"
         ],
         "answer": 1
       },
       {
         "question": "What major accomplishments did Abu Bakr achieve as the first Caliph?",
         "options": [
-          "He built first mosque",
-          "He conquered all Persia",
-          "Unity, Quran, expand",
-          "Built Islamic schools"
+          "He built the first mosque",
+          "He conquered Persia",
+          "He united Muslims during crisis, preserved the Quran, and expanded Islam",
+          "He established the first Islamic school"
         ],
         "answer": 2
       },
       {
         "question": "What was Abu Bakr's special distinction in accepting Islam?",
         "options": [
-          "First adult man to accept",
-          "Youngest to accept Islam",
-          "Richest to accept Islam",
-          "Last one to accept Islam"
+          "He was the first adult man to accept Islam",
+          "He was the youngest to accept Islam",
+          "He was the richest to accept Islam",
+          "He was the last to accept Islam"
         ],
         "answer": 0
       },
@@ -36,9 +36,9 @@
         "question": "According to the key lesson, what does true friendship with Allah's messenger require?",
         "options": [
           "Just praying regularly",
-          "Fasting during Ramadan",
-          "Memorizing all Quran",
-          "Belief and sacrifice"
+          "Only fasting during Ramadan",
+          "Memorizing the entire Quran",
+          "Believing, supporting, and sacrificing everything for Allah and His messenger"
         ],
         "answer": 3
       }
@@ -51,19 +51,19 @@
         "question": "What significant change occurred when Umar converted to Islam?",
         "options": [
           "The Ka'bah was rebuilt",
-          "Muslims prayed openly",
-          "Prophet went to Madinah",
-          "Battle of Badr was won"
+          "Islam gained strength and Muslims could finally pray openly at the Ka'bah",
+          "The Prophet ﷺ migrated to Madinah",
+          "The Battle of Badr was won"
         ],
         "answer": 1
       },
       {
         "question": "What does the key lesson teach about Umar's leadership?",
         "options": [
-          "Requires only strength",
-          "Requires only justice",
-          "Requires wealth and power",
-          "Strength with humility"
+          "Leadership requires only strength",
+          "Leadership requires only justice",
+          "Leadership requires wealth and power",
+          "True leadership combines strength with justice, and power with humility before Allah"
         ],
         "answer": 3
       },
@@ -72,7 +72,7 @@
         "options": [
           "He asked friends for food",
           "He fasted completely",
-          "Put pebbles in his mouth",
+          "He put pebbles in his mouth to forget hunger",
           "He ate only once a day"
         ],
         "answer": 2
@@ -80,9 +80,9 @@
       {
         "question": "Who feared encountering Umar according to the lesson?",
         "options": [
-          "Even Shaytan feared him",
-          "The Roman emperor only",
-          "The Persian king only",
+          "Even Shaytan feared encountering him",
+          "The Roman emperor feared him",
+          "The Persian king feared him",
           "His enemies feared him"
         ],
         "answer": 0
@@ -95,30 +95,30 @@
       {
         "question": "What special title did Uthman earn and why?",
         "options": [
-          "Two Lights, two wives",
-          "The Generous One",
-          "The Compiler of Quran",
-          "The Martyr of Islam"
+          "'Possessor of Two Lights' because he married two daughters of the Prophet",
+          "'The Generous One' for his wealth",
+          "'The Compiler' for organizing the Quran",
+          "'The Martyr' for his sacrifice"
         ],
         "answer": 0
       },
       {
         "question": "What generous act did Uthman do with a well during Muslim hardship?",
         "options": [
-          "He dug a new well",
-          "Bought and freed it",
-          "He guarded the well",
-          "Discovered hidden well"
+          "He dug a new well for Muslims",
+          "He bought a well and made it free for all Muslims forever",
+          "He guarded the well from enemies",
+          "He discovered a hidden well"
         ],
         "answer": 1
       },
       {
         "question": "How did Uthman die according to the lesson?",
         "options": [
-          "In battle with enemies",
-          "Peacefully from old age",
-          "Martyred reading Quran",
-          "While traveling abroad"
+          "In battle against enemies",
+          "From old age",
+          "He was martyred while reading Quran, with blood staining the blessed pages",
+          "While traveling to Madinah"
         ],
         "answer": 2
       },
@@ -140,40 +140,40 @@
       {
         "question": "What brave act did Ali perform on the night of Hijrah?",
         "options": [
-          "He fought the assassins",
-          "Escorted Prophet away",
-          "Slept in Prophet's bed",
-          "He warned the Muslims"
+          "He fought off the assassins",
+          "He escorted the Prophet ﷺ to Madinah",
+          "He slept in the Prophet's bed while assassins surrounded the house, risking his life",
+          "He warned the Muslims about danger"
         ],
         "answer": 2
       },
       {
         "question": "What was Ali's relationship to the Prophet?",
         "options": [
-          "Cousin and early believer",
-          "He was his brother",
-          "He was his uncle",
-          "He was his nephew only"
+          "He was the Prophet's cousin and among the first children to accept Islam",
+          "He was the Prophet's brother",
+          "He was the Prophet's uncle",
+          "He was the Prophet's nephew only"
         ],
         "answer": 0
       },
       {
         "question": "According to the hadith, how did the Prophet ﷺ describe Ali's position to him?",
         "options": [
-          "Like a dear brother",
-          "Like Harun to Musa",
-          "Like a beloved son",
-          "Like a great teacher"
+          "Like a brother",
+          "Like Harun was to Musa, except there will be no prophet after me",
+          "Like a son",
+          "Like a teacher"
         ],
         "answer": 1
       },
       {
         "question": "Who did Ali marry and what position did he later hold?",
         "options": [
-          "Aisha, became a judge",
-          "Khadijah, became general",
-          "Hafsa, became governor",
-          "Fatimah, fourth Caliph"
+          "Aisha and became a judge",
+          "Khadijah and became a general",
+          "Hafsa and became a governor",
+          "Fatimah and became fourth Caliph"
         ],
         "answer": 3
       }
@@ -185,40 +185,40 @@
       {
         "question": "What sacrifice did Talhah make at the Battle of Uhud?",
         "options": [
-          "Shielded the Prophet",
-          "He donated his weapons",
+          "He used his body as a shield for the Prophet, receiving over seventy wounds",
+          "He donated all his weapons",
           "He led the entire army",
-          "Carried wounded to safety"
+          "He carried the wounded to safety"
         ],
         "answer": 0
       },
       {
         "question": "What did the Prophet ﷺ say about Talhah on that day?",
         "options": [
-          "He is the bravest one",
-          "Paradise for Talhah",
+          "He is the bravest warrior",
+          "Paradise became obligatory for Talhah today",
           "Talhah is my right hand",
-          "Talhah will lead us"
+          "Talhah will lead the Muslims"
         ],
         "answer": 1
       },
       {
         "question": "How did Talhah demonstrate his generosity despite being wealthy?",
         "options": [
-          "He built mosques often",
+          "He built mosques everywhere",
           "He gave half his wealth",
-          "Gave all to the poor",
-          "He funded army expenses"
+          "He distributed his entire wealth to the poor, keeping nothing for himself",
+          "He funded the army expenses"
         ],
         "answer": 2
       },
       {
         "question": "Who invited Talhah to accept Islam early on?",
         "options": [
-          "The Prophet directly",
+          "The Prophet ﷺ directly",
           "Umar ibn al-Khattab",
           "Ali ibn Abi Talib",
-          "Abu Bakr invited him"
+          "Abu Bakr"
         ],
         "answer": 3
       }
@@ -230,40 +230,40 @@
       {
         "question": "At what age did Zubayr accept Islam?",
         "options": [
-          "At age ten years old",
-          "At age eight years old",
-          "At age fifteen years",
-          "At age twelve years"
+          "At age ten",
+          "At age eight",
+          "At age fifteen",
+          "At age twelve"
         ],
         "answer": 1
       },
       {
         "question": "How did Zubayr's uncle torture him to force him to renounce Islam?",
         "options": [
-          "By beating him harshly",
-          "Denied him food, water",
-          "Locked in a dark room",
-          "Hung in smoke-filled mats"
+          "By beating him severely",
+          "By denying him food and water",
+          "By locking him in a dark room",
+          "By hanging him in smoke-filled mats"
         ],
         "answer": 3
       },
       {
         "question": "What special title did the Prophet ﷺ give to Zubayr?",
         "options": [
-          "Called him his disciple",
-          "Named him brave warrior",
-          "Called trusted advisor",
-          "Named him best friend"
+          "His disciple, saying every prophet has a disciple and Zubayr was his",
+          "His brave warrior",
+          "His trusted advisor",
+          "His best friend"
         ],
         "answer": 0
       },
       {
         "question": "Who did Zubayr marry?",
         "options": [
-          "Fatimah, Prophet's girl",
-          "Khadijah's dear sister",
-          "Asma, Abu Bakr's girl",
-          "Aisha's older sister"
+          "Fatimah, the Prophet's daughter",
+          "Khadijah's sister",
+          "Asma, Abu Bakr's daughter",
+          "Aisha's sister"
         ],
         "answer": 2
       }
@@ -275,20 +275,20 @@
       {
         "question": "When Abd al-Rahman migrated to Madinah with nothing, what did he request?",
         "options": [
-          "A place to stay in",
-          "Some financial support",
-          "The marketplace only",
-          "Some food and clothing"
+          "A place to stay",
+          "Financial support",
+          "The marketplace instead of charity",
+          "Food and clothing"
         ],
         "answer": 2
       },
       {
         "question": "What massive donation did Abd al-Rahman make to the Muslim army?",
         "options": [
-          "Caravan of 700 camels",
+          "An entire caravan of 700 camels loaded with supplies",
           "A thousand gold coins",
-          "His entire large house",
-          "A fleet of many ships"
+          "His entire house",
+          "A fleet of ships"
         ],
         "answer": 0
       },
@@ -296,19 +296,19 @@
         "question": "Despite his immense wealth, how did Abd al-Rahman live?",
         "options": [
           "In a grand palace",
-          "Simply, giving charity",
-          "Like a powerful king",
-          "In luxury with charity"
+          "Simply, giving generously to widows, orphans, and the poor",
+          "Like a king",
+          "In luxury but gave some charity"
         ],
         "answer": 1
       },
       {
         "question": "According to the hadith, what is excellent for a righteous person?",
         "options": [
-          "Fame and great honor",
+          "Fame and honor",
           "Knowledge and wisdom",
           "Power and authority",
-          "Wealth used righteously"
+          "Righteous wealth"
         ],
         "answer": 3
       }
@@ -320,17 +320,17 @@
       {
         "question": "What was Saad's response when his mother threatened to starve herself unless he renounced Islam?",
         "options": [
-          "He agreed to leave it",
-          "Asked Prophet for help",
-          "Tried to convince her",
-          "Remained firm in faith"
+          "He agreed to leave Islam",
+          "He asked the Prophet ﷺ for help",
+          "He tried to convince her gently",
+          "He remained firm and refused to abandon Islam"
         ],
         "answer": 3
       },
       {
         "question": "What was Saad known as in defending Islam?",
         "options": [
-          "First archer of Islam",
+          "First to shoot an arrow defending Islam and a master archer",
           "The strongest warrior",
           "The fastest horseman",
           "The best swordsman"
@@ -341,9 +341,9 @@
         "question": "What special quality did the Prophet ﷺ mention about Saad's supplications?",
         "options": [
           "They were the longest",
-          "They were all answered",
-          "They were most eloquent",
-          "They were done secretly"
+          "They were always answered",
+          "They were the most eloquent",
+          "They were done in secret"
         ],
         "answer": 1
       },
@@ -352,8 +352,8 @@
         "options": [
           "You are my best archer",
           "Fight bravely for Islam",
-          "May my parents be yours",
-          "You are blessed greatly"
+          "May my parents be sacrificed for you",
+          "You are blessed among companions"
         ],
         "answer": 2
       }
@@ -365,40 +365,40 @@
       {
         "question": "When did Saeed accept Islam?",
         "options": [
-          "After Battle of Badr",
-          "Before Dar al-Arqam",
-          "During the Hijrah time",
-          "After moon was split"
+          "After the Battle of Badr",
+          "Before the Prophet ﷺ even entered Dar al-Arqam to teach secretly",
+          "During the Hijrah",
+          "After seeing the moon split"
         ],
         "answer": 1
       },
       {
         "question": "How did Saeed and his wife Fatimah contribute to Umar's conversion?",
         "options": [
-          "Their steadfastness",
-          "Invited him to a feast",
-          "Gave him the Quran",
-          "Debated him publicly"
+          "When Umar struck his sister, their steadfastness helped lead to his conversion",
+          "They invited him to a feast",
+          "They gave him a copy of the Quran",
+          "They debated with him publicly"
         ],
         "answer": 0
       },
       {
         "question": "What happened when Saeed was falsely accused of stealing land?",
         "options": [
-          "He took matter to court",
-          "He forgave her at once",
-          "Supplication came true",
-          "Proved it with witnesses"
+          "He took the matter to court",
+          "He forgave the accuser immediately",
+          "He made a supplication that if the accuser was lying, Allah would blind her, and it came true",
+          "He proved his innocence with witnesses"
         ],
         "answer": 2
       },
       {
         "question": "Which major battle did Saeed NOT participate in?",
         "options": [
-          "The Battle of Uhud",
-          "Battle of the Khandaq",
-          "Battle of the Khaybar",
-          "The Battle of Badr"
+          "Battle of Uhud",
+          "Battle of Khandaq",
+          "Battle of Khaybar",
+          "Battle of Badr"
         ],
         "answer": 3
       }
@@ -410,7 +410,7 @@
       {
         "question": "What was Abu Ubaydah's special title given by the Prophet?",
         "options": [
-          "Trustworthy of Ummah",
+          "The Trustworthy One of this Ummah",
           "The Brave Commander",
           "The Wise Leader",
           "The Generous Helper"
@@ -420,19 +420,19 @@
       {
         "question": "What sacrifice did Abu Ubaydah make at the Battle of Uhud to help the Prophet?",
         "options": [
-          "Fought ten men alone",
-          "Lost teeth saving him",
-          "Carried him to safety",
-          "Gave his shield to him"
+          "He fought off ten enemies alone",
+          "He removed two rings from the Prophet's helmet with his teeth, losing two front teeth",
+          "He carried the Prophet ﷺ to safety",
+          "He gave his shield to the Prophet"
         ],
         "answer": 1
       },
       {
         "question": "How did Abu Ubaydah die?",
         "options": [
-          "In battle with Romans",
+          "In battle against the Romans",
           "Of old age in Madinah",
-          "Stayed during plague",
+          "He chose to stay with his people during a plague rather than escape, dying as a martyr",
           "While leading prayers"
         ],
         "answer": 2
@@ -441,9 +441,9 @@
         "question": "According to the hadith, what did the Prophet ﷺ say about Abu Ubaydah?",
         "options": [
           "He is my closest friend",
-          "He is bravest warrior",
-          "He leads greatest win",
-          "Nation's trustworthy one"
+          "He is the bravest warrior",
+          "He will lead the greatest conquest",
+          "Every nation has a trustworthy person, and this nation's is Abu Ubaydah"
         ],
         "answer": 3
       }

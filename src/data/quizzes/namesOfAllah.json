@@ -7,15 +7,15 @@
         "options": [
           "The One True God",
           "The Most Merciful",
-          "The Provider truly",
-          "The Creator itself"
+          "The Provider",
+          "The Creator"
         ],
         "answer": 0
       },
       {
         "question": "Which of these is NOT a meaning of 'Allah'?",
         "options": [
-          "The Only Deity Worthy of",
+          "The Only Deity Worthy of Worship",
           "The Source of Peace",
           "The Son of Adam",
           "The Eternal One"
@@ -26,7 +26,7 @@
         "question": "How often should we remember the name of Allah?",
         "options": [
           "Only on Fridays",
-          "Once a day indeed",
+          "Once a day",
           "Often, in every action",
           "Only in Ramadan"
         ],
@@ -35,9 +35,9 @@
       {
         "question": "Why do Muslims start actions saying 'Bismillah'?",
         "options": [
-          "To ask for blessings &",
-          "Because it is tradition",
-          "To earn money truly",
+          "To ask for blessings and guidance",
+          "Because it is tradition only",
+          "To earn money",
           "To impress others"
         ],
         "answer": 0
@@ -50,30 +50,30 @@
       {
         "question": "What does 'Ar-Rahmaan' mean?",
         "options": [
-          "The King itself",
-          "The Provider truly",
+          "The King",
+          "The Provider",
           "The Most Merciful",
-          "The Creator itself"
+          "The Creator"
         ],
         "answer": 2
       },
       {
         "question": "Who does Ar-Rahmaan show mercy to?",
         "options": [
-          "Only believers truly",
+          "Only believers",
           "Only good people",
-          "All creation, believers &",
-          "Only humans indeed"
+          "All creation, believers and non-believers",
+          "Only humans"
         ],
         "answer": 2
       },
       {
         "question": "What comes from Allah's mercy?",
         "options": [
-          "Only rain indeed",
+          "Only rain",
           "Every good thing we see",
           "Only forgiveness",
-          "Only guidance truly"
+          "Only guidance"
         ],
         "answer": 1
       },
@@ -81,7 +81,7 @@
         "question": "How can we follow Allah's example of mercy?",
         "options": [
           "By being powerful",
-          "By being rich truly",
+          "By being rich",
           "By being gentle and kind",
           "By being strict"
         ],
@@ -96,9 +96,9 @@
         "question": "What does 'Ar-Raheem' mean?",
         "options": [
           "The Especially Merciful",
-          "The Most High truly",
-          "The Judge itself",
-          "The Owner itself"
+          "The Most High",
+          "The Judge",
+          "The Owner"
         ],
         "answer": 0
       },
@@ -107,27 +107,27 @@
         "options": [
           "Everyone equally",
           "Those who believe in Him",
-          "Only prophets truly",
-          "Only children truly"
+          "Only prophets",
+          "Only children"
         ],
         "answer": 1
       },
       {
         "question": "What never runs out according to this lesson?",
         "options": [
-          "Water specifically",
-          "Time specifically",
-          "Allah's mercy truly",
-          "Food specifically"
+          "Water",
+          "Time",
+          "Allah's mercy",
+          "Food"
         ],
         "answer": 2
       },
       {
         "question": "What should we do because Allah is Ar-Raheem?",
         "options": [
-          "Fear Him only truly",
+          "Fear Him only",
           "Ignore mistakes",
-          "Thank Him for being kind",
+          "Thank Him for being kind and loving",
           "Pray once a year"
         ],
         "answer": 2
@@ -140,10 +140,10 @@
       {
         "question": "What does 'Al-Malik' mean?",
         "options": [
-          "The Provider truly",
-          "The King itself",
-          "The Light itself",
-          "The Hearer itself"
+          "The Provider",
+          "The King",
+          "The Light",
+          "The Hearer"
         ],
         "answer": 1
       },
@@ -152,7 +152,7 @@
         "options": [
           "Everything happens freely",
           "Only big things",
-          "Nothing at all truly",
+          "Nothing at all",
           "Only bad things"
         ],
         "answer": 2
@@ -160,20 +160,20 @@
       {
         "question": "Who is the real King?",
         "options": [
-          "Human rulers truly",
-          "Rich people indeed",
-          "Allah alone indeed",
-          "Strong leaders truly"
+          "Human rulers",
+          "Rich people",
+          "Allah alone",
+          "Strong leaders"
         ],
         "answer": 2
       },
       {
         "question": "What does knowing Allah is the King teach us?",
         "options": [
-          "To be proud indeed",
-          "To stay humble & thankful",
-          "To seek power truly",
-          "To fear people truly"
+          "To be proud",
+          "To stay humble and thankful",
+          "To seek power",
+          "To fear people"
         ],
         "answer": 1
       }
@@ -185,17 +185,17 @@
       {
         "question": "What does 'Al-Maalik' mean?",
         "options": [
-          "The Guide itself",
-          "The Owner itself",
-          "The Wise itself",
-          "The Patient itself"
+          "The Guide",
+          "The Owner",
+          "The Wise",
+          "The Patient"
         ],
         "answer": 1
       },
       {
         "question": "What does Allah own?",
         "options": [
-          "Only the earth truly",
+          "Only the earth",
           "Only the heavens",
           "Everything completely",
           "Only living things"
@@ -206,7 +206,7 @@
         "question": "What belongs to us according to this lesson?",
         "options": [
           "Everything we buy",
-          "Nothing; it all belongs",
+          "Nothing; it all belongs to Allah",
           "Only our thoughts",
           "Our houses and cars"
         ],
@@ -216,9 +216,9 @@
         "question": "How should we feel about what we have?",
         "options": [
           "Proud and boastful",
-          "Grateful & use it to",
-          "Fearful specifically",
-          "Indifferent indeed"
+          "Grateful and use it to please Allah",
+          "Fearful",
+          "Indifferent"
         ],
         "answer": 1
       }
@@ -231,19 +231,19 @@
         "question": "What does 'Al-Maleek' mean?",
         "options": [
           "The Supreme Sovereign",
-          "The Forgiver truly",
-          "The Sustainer truly",
-          "The Generous truly"
+          "The Forgiver",
+          "The Sustainer",
+          "The Generous"
         ],
         "answer": 0
       },
       {
         "question": "What does Allah never do when He rules?",
         "options": [
-          "Show mercy indeed",
-          "Make mistakes truly",
-          "Give blessings truly",
-          "Answer prayers truly"
+          "Show mercy",
+          "Make mistakes",
+          "Give blessings",
+          "Answer prayers"
         ],
         "answer": 1
       },
@@ -251,9 +251,9 @@
         "question": "Who will stand before Al-Maleek one day?",
         "options": [
           "Only poor people",
-          "Only believers truly",
+          "Only believers",
           "All kings and leaders",
-          "Only sinners truly"
+          "Only sinners"
         ],
         "answer": 2
       },
@@ -261,9 +261,9 @@
         "question": "What does remembering Al-Maleek help us do?",
         "options": [
           "Become powerful",
-          "Make fair & honest",
-          "Avoid work indeed",
-          "Gain wealth indeed"
+          "Make fair and honest choices",
+          "Avoid work",
+          "Gain wealth"
         ],
         "answer": 1
       }
@@ -275,9 +275,9 @@
       {
         "question": "What does 'Al-Quddoos' mean?",
         "options": [
-          "The Most Pure truly",
-          "The Most Kind truly",
-          "The All-Seeing truly",
+          "The Most Pure",
+          "The Most Kind",
+          "The All-Seeing",
           "The Everlasting"
         ],
         "answer": 0
@@ -285,20 +285,20 @@
       {
         "question": "What is Allah free from?",
         "options": [
-          "Creation indeed",
-          "Power specifically",
+          "Creation",
+          "Power",
           "Any weakness or mistake",
-          "Knowledge indeed"
+          "Knowledge"
         ],
         "answer": 2
       },
       {
         "question": "How is everything Allah does described?",
         "options": [
-          "Random specifically",
-          "Right, wise, & beautiful",
-          "Simple specifically",
-          "Difficult indeed"
+          "Random",
+          "Right, wise, and beautiful",
+          "Simple",
+          "Difficult"
         ],
         "answer": 1
       },
@@ -306,9 +306,9 @@
         "question": "What should we try to keep pure?",
         "options": [
           "Only our clothes",
-          "Only our homes truly",
+          "Only our homes",
           "Our hearts and actions",
-          "Only our words truly"
+          "Only our words"
         ],
         "answer": 2
       }
@@ -320,30 +320,30 @@
       {
         "question": "What does 'As-Salaam' mean?",
         "options": [
-          "The Provider truly",
+          "The Provider",
           "The Source of Peace",
-          "The Protector truly",
-          "The Mighty itself"
+          "The Protector",
+          "The Mighty"
         ],
         "answer": 1
       },
       {
         "question": "Where do comfort and calmness come from?",
         "options": [
-          "From people indeed",
-          "From wealth indeed",
+          "From people",
+          "From wealth",
           "From Allah alone",
-          "From sleep indeed"
+          "From sleep"
         ],
         "answer": 2
       },
       {
         "question": "What will believers hear in Jannah?",
         "options": [
-          "Music specifically",
+          "Music",
           "'Peace!' as a greeting",
-          "Thunder specifically",
-          "Nothing specifically"
+          "Thunder",
+          "Nothing"
         ],
         "answer": 1
       },
@@ -351,7 +351,7 @@
         "question": "How can we spread peace?",
         "options": [
           "By staying quiet",
-          "By being kind & saying",
+          "By being kind and saying 'As-Salaamu Alaykum'",
           "By avoiding people",
           "By being serious"
         ],
@@ -365,40 +365,40 @@
       {
         "question": "What does 'Al-Mu'min' mean?",
         "options": [
-          "The Giver of Faith &",
-          "The Creator itself",
-          "The Judge itself",
-          "The Wise itself"
+          "The Giver of Faith and Security",
+          "The Creator",
+          "The Judge",
+          "The Wise"
         ],
         "answer": 0
       },
       {
         "question": "What does Al-Mu'min give to His servants?",
         "options": [
-          "Only wealth indeed",
+          "Only wealth",
           "Belief and safety",
-          "Only power indeed",
-          "Only food indeed"
+          "Only power",
+          "Only food"
         ],
         "answer": 1
       },
       {
         "question": "Who is the best protector?",
         "options": [
-          "Our parents indeed",
-          "The police itself",
-          "Allah specifically",
-          "Our friends indeed"
+          "Our parents",
+          "The police",
+          "Allah",
+          "Our friends"
         ],
         "answer": 2
       },
       {
         "question": "What does Allah keep firm?",
         "options": [
-          "Only buildings truly",
-          "Our hearts indeed",
-          "Only mountains truly",
-          "Only trees indeed"
+          "Only buildings",
+          "Our hearts",
+          "Only mountains",
+          "Only trees"
         ],
         "answer": 1
       }
@@ -410,10 +410,10 @@
       {
         "question": "What does 'Al-Muhaymin' mean?",
         "options": [
-          "The Guardian truly",
-          "The Opener itself",
-          "The Sustainer truly",
-          "The Light itself"
+          "The Guardian",
+          "The Opener",
+          "The Sustainer",
+          "The Light"
         ],
         "answer": 0
       },
@@ -422,8 +422,8 @@
         "options": [
           "Only good people",
           "Everything and everyone",
-          "Only the sky truly",
-          "Only mosques truly"
+          "Only the sky",
+          "Only mosques"
         ],
         "answer": 1
       },
@@ -432,7 +432,7 @@
         "options": [
           "Only our public actions",
           "Only our prayers",
-          "What we do in secret &",
+          "What we do in secret and public",
           "Only our mistakes"
         ],
         "answer": 2
@@ -440,10 +440,10 @@
       {
         "question": "How should we feel knowing Allah watches with care?",
         "options": [
-          "Afraid only indeed",
-          "Sad specifically",
+          "Afraid only",
+          "Sad",
           "Trusting that He is near",
-          "Confused indeed"
+          "Confused"
         ],
         "answer": 2
       }
@@ -455,10 +455,10 @@
       {
         "question": "What does 'Al-Azeez' mean?",
         "options": [
-          "The Mighty itself",
-          "The Gentle itself",
-          "The Patient itself",
-          "The Hidden itself"
+          "The Mighty",
+          "The Gentle",
+          "The Patient",
+          "The Hidden"
         ],
         "answer": 0
       },
@@ -468,17 +468,17 @@
           "Yes, with enough power",
           "Only in battles",
           "Nothing can defeat Him",
-          "Sometimes indeed"
+          "Sometimes"
         ],
         "answer": 2
       },
       {
         "question": "What does Allah give to whom He wills?",
         "options": [
-          "Only problems truly",
+          "Only problems",
           "Honour and strength",
-          "Only tests indeed",
-          "Only wealth indeed"
+          "Only tests",
+          "Only wealth"
         ],
         "answer": 1
       },
@@ -486,7 +486,7 @@
         "question": "When should we rely on Al-Azeez?",
         "options": [
           "Only on Fridays",
-          "Never specifically",
+          "Never",
           "In every challenge",
           "Only when scared"
         ],
@@ -500,20 +500,20 @@
       {
         "question": "What does 'Al-Jabbaar' mean?",
         "options": [
-          "The Compeller truly",
-          "The Forgiver truly",
-          "The Provider truly",
-          "The Guide itself"
+          "The Compeller",
+          "The Forgiver",
+          "The Provider",
+          "The Guide"
         ],
         "answer": 0
       },
       {
         "question": "What does Allah fix?",
         "options": [
-          "Only machines truly",
-          "What is broken & makes",
-          "Only buildings truly",
-          "Nothing specifically"
+          "Only machines",
+          "What is broken and makes things right",
+          "Only buildings",
+          "Nothing"
         ],
         "answer": 1
       },
@@ -521,7 +521,7 @@
         "question": "What does Allah heal?",
         "options": [
           "Only physical wounds",
-          "Only diseases truly",
+          "Only diseases",
           "The hearts of the sad",
           "Only old people"
         ],
@@ -530,9 +530,9 @@
       {
         "question": "What can Allah do with hard situations?",
         "options": [
-          "Ignore them indeed",
+          "Ignore them",
           "Make them worse",
-          "Make each hard situation",
+          "Make every hard situation better",
           "Only watch them"
         ],
         "answer": 2
@@ -546,29 +546,29 @@
         "question": "What does 'Al-Mutakabbir' mean?",
         "options": [
           "The Supreme in Greatness",
-          "The Merciful truly",
-          "The Wise itself",
-          "The Patient itself"
+          "The Merciful",
+          "The Wise",
+          "The Patient"
         ],
         "answer": 0
       },
       {
         "question": "How is Allah's greatness different from human pride?",
         "options": [
-          "It's the same truly",
-          "It's perfect & full of",
-          "It's smaller truly",
-          "It's hidden indeed"
+          "It's the same",
+          "It's perfect and full of honour, not like human pride",
+          "It's smaller",
+          "It's hidden"
         ],
         "answer": 1
       },
       {
         "question": "What is Allah above?",
         "options": [
-          "Only earth indeed",
-          "Only the sky truly",
-          "All weakness, need, or",
-          "Nothing specifically"
+          "Only earth",
+          "Only the sky",
+          "All weakness, need, or comparison",
+          "Nothing"
         ],
         "answer": 2
       },
@@ -576,9 +576,9 @@
         "question": "What does Al-Mutakabbir remind us to do?",
         "options": [
           "Boast about ourselves",
-          "Stay humble & never boast",
+          "Stay humble and never boast",
           "Compete with others",
-          "Seek fame indeed"
+          "Seek fame"
         ],
         "answer": 1
       }
@@ -590,28 +590,28 @@
       {
         "question": "What does 'Al-Khaaliq' mean?",
         "options": [
-          "The Creator itself",
-          "The Sustainer truly",
-          "The Guide itself",
-          "The Forgiver truly"
+          "The Creator",
+          "The Sustainer",
+          "The Guide",
+          "The Forgiver"
         ],
         "answer": 0
       },
       {
         "question": "What did Allah make everything from?",
         "options": [
-          "Old materials truly",
-          "Nothing specifically",
-          "Dust only indeed",
-          "Water only indeed"
+          "Old materials",
+          "Nothing",
+          "Dust only",
+          "Water only"
         ],
         "answer": 1
       },
       {
         "question": "How did Allah plan the universe?",
         "options": [
-          "Randomly indeed",
-          "With mistakes truly",
+          "Randomly",
+          "With mistakes",
           "Perfectly, every detail",
           "Quickly without care"
         ],
@@ -620,10 +620,10 @@
       {
         "question": "Where can we see signs of the Creator?",
         "options": [
-          "Only in books truly",
+          "Only in books",
           "Everywhere around us",
           "Only in mosques",
-          "Nowhere specifically"
+          "Nowhere"
         ],
         "answer": 1
       }
@@ -636,18 +636,18 @@
         "question": "What does 'Al-Baari'' mean?",
         "options": [
           "The Maker of Order",
-          "The Destroyer truly",
-          "The Hider itself",
-          "The Weak itself"
+          "The Destroyer",
+          "The Hider",
+          "The Weak"
         ],
         "answer": 0
       },
       {
         "question": "How does Allah shape His creation?",
         "options": [
-          "Carelessly indeed",
+          "Carelessly",
           "In the best way",
-          "Randomly indeed",
+          "Randomly",
           "Without purpose"
         ],
         "answer": 1
@@ -657,7 +657,7 @@
         "options": [
           "Yes, everything",
           "Most things are",
-          "No, Allah made it all fit",
+          "No, Allah made it all fit perfectly together",
           "Only natural things"
         ],
         "answer": 2
@@ -665,9 +665,9 @@
       {
         "question": "What is in every part of Allah's creation?",
         "options": [
-          "Chaos specifically",
-          "Mistakes indeed",
-          "His wisdom indeed",
+          "Chaos",
+          "Mistakes",
+          "His wisdom",
           "Nothing special"
         ],
         "answer": 2
@@ -680,30 +680,30 @@
       {
         "question": "What does 'Al-Musawwir' mean?",
         "options": [
-          "The Fashioner truly",
-          "The Punisher truly",
-          "The Hider itself",
-          "The Weak itself"
+          "The Fashioner",
+          "The Punisher",
+          "The Hider",
+          "The Weak"
         ],
         "answer": 0
       },
       {
         "question": "What does Allah give everything?",
         "options": [
-          "Only color indeed",
-          "Its special shape &",
-          "Only size indeed",
-          "Only sound indeed"
+          "Only color",
+          "Its special shape and beauty",
+          "Only size",
+          "Only sound"
         ],
         "answer": 1
       },
       {
         "question": "Why did Allah make each of us unique?",
         "options": [
-          "By accident indeed",
-          "So we can recognise The",
+          "By accident",
+          "So we can recognise His creativity",
           "To cause problems",
-          "No reason indeed"
+          "No reason"
         ],
         "answer": 1
       },
@@ -711,9 +711,9 @@
         "question": "What should we thank Allah for?",
         "options": [
           "Only our wealth",
-          "How He made us—perfectly",
+          "How He made us—perfectly for our purpose",
           "Only our clothes",
-          "Nothing specifically"
+          "Nothing"
         ],
         "answer": 1
       }
@@ -726,19 +726,19 @@
         "question": "What does 'Al-Ghaffaar' mean?",
         "options": [
           "The Oft-Forgiving",
-          "The Punisher truly",
-          "The Creator itself",
-          "The Provider truly"
+          "The Punisher",
+          "The Creator",
+          "The Provider"
         ],
         "answer": 0
       },
       {
         "question": "How many times does Allah forgive?",
         "options": [
-          "Only once indeed",
-          "Three times indeed",
+          "Only once",
+          "Three times",
           "Again and again",
-          "Never specifically"
+          "Never"
         ],
         "answer": 2
       },
@@ -746,19 +746,19 @@
         "question": "What does Allah do with our mistakes when we repent?",
         "options": [
           "Remembers them forever",
-          "Hides them & replaces w/",
-          "Ignores them truly",
-          "Shares them indeed"
+          "Hides them and replaces with good",
+          "Ignores them",
+          "Shares them"
         ],
         "answer": 1
       },
       {
         "question": "What should we also do easily, like Allah?",
         "options": [
-          "Judge others truly",
-          "Forgive others truly",
-          "Forget others truly",
-          "Avoid others truly"
+          "Judge others",
+          "Forgive others",
+          "Forget others",
+          "Avoid others"
         ],
         "answer": 1
       }
@@ -771,18 +771,18 @@
         "question": "What does 'Al-Qahhaar' mean?",
         "options": [
           "The All-Prevailing",
-          "The Gentle itself",
-          "The Hidden itself",
-          "The Small itself"
+          "The Gentle",
+          "The Hidden",
+          "The Small"
         ],
         "answer": 0
       },
       {
         "question": "What kind of power does Allah have?",
         "options": [
-          "Limited power truly",
-          "No power indeed",
-          "Complete power over",
+          "Limited power",
+          "No power",
+          "Complete power over everything",
           "Sometimes power"
         ],
         "answer": 2
@@ -790,9 +790,9 @@
       {
         "question": "What does Allah conquer?",
         "options": [
-          "Only armies indeed",
-          "All injustice & falsehood",
-          "Nothing specifically",
+          "Only armies",
+          "All injustice and falsehood with His truth",
+          "Nothing",
           "Only weak things"
         ],
         "answer": 1
@@ -800,10 +800,10 @@
       {
         "question": "What does remembering Al-Qahhaar give us?",
         "options": [
-          "Fear only indeed",
-          "Sadness specifically",
-          "Strength to resist",
-          "Confusion indeed"
+          "Fear only",
+          "Sadness",
+          "Strength to resist wrongdoing",
+          "Confusion"
         ],
         "answer": 2
       }
@@ -815,10 +815,10 @@
       {
         "question": "What does 'Al-Wahhaab' mean?",
         "options": [
-          "The Bestower truly",
-          "The Taker itself",
-          "The Hider itself",
-          "The Punisher truly"
+          "The Bestower",
+          "The Taker",
+          "The Hider",
+          "The Punisher"
         ],
         "answer": 0
       },
@@ -826,9 +826,9 @@
         "question": "Why does Allah give gifts?",
         "options": [
           "Because we deserve them",
-          "Freely out of kindness",
+          "Freely out of His kindness",
           "Only when we pay",
-          "By accident indeed"
+          "By accident"
         ],
         "answer": 1
       },
@@ -836,8 +836,8 @@
         "question": "When does Allah bless us?",
         "options": [
           "Only when we ask",
-          "Even as we forget to ask",
-          "Never specifically",
+          "Even when we forget to ask",
+          "Never",
           "Only on holidays"
         ],
         "answer": 1
@@ -846,9 +846,9 @@
         "question": "What should we do to follow Allah's example?",
         "options": [
           "Keep everything",
-          "Share what we have w/",
+          "Share what we have with others",
           "Hide our blessings",
-          "Complain indeed"
+          "Complain"
         ],
         "answer": 1
       }
@@ -860,20 +860,20 @@
       {
         "question": "What does 'Ar-Razzaaq' mean?",
         "options": [
-          "The Provider truly",
-          "The Judge itself",
-          "The Light itself",
-          "The First itself"
+          "The Provider",
+          "The Judge",
+          "The Light",
+          "The First"
         ],
         "answer": 0
       },
       {
         "question": "What does Allah give to every creature?",
         "options": [
-          "Only shelter truly",
-          "The food & help it needs",
-          "Only water indeed",
-          "Nothing specifically"
+          "Only shelter",
+          "The food and help it needs",
+          "Only water",
+          "Nothing"
         ],
         "answer": 1
       },
@@ -881,19 +881,19 @@
         "question": "Where does our rizq come from?",
         "options": [
           "From our job only",
-          "From people indeed",
-          "Only from Allah, not from",
-          "From luck indeed"
+          "From people",
+          "Only from Allah, not from people",
+          "From luck"
         ],
         "answer": 2
       },
       {
         "question": "What example is given of Allah's provision?",
         "options": [
-          "Cars specifically",
-          "Birds in sky depending on",
-          "Computers indeed",
-          "Money specifically"
+          "Cars",
+          "Birds in the sky depending on Him",
+          "Computers",
+          "Money"
         ],
         "answer": 1
       }
@@ -905,40 +905,40 @@
       {
         "question": "What does 'Al-Fattaah' mean?",
         "options": [
-          "The Opener itself",
-          "The Closer itself",
-          "The Hider itself",
-          "The Weak itself"
+          "The Opener",
+          "The Closer",
+          "The Hider",
+          "The Weak"
         ],
         "answer": 0
       },
       {
         "question": "What does Allah open?",
         "options": [
-          "Only doors indeed",
-          "Only windows truly",
-          "Doors of goodness &",
-          "Only books indeed"
+          "Only doors",
+          "Only windows",
+          "Doors of goodness and success",
+          "Only books"
         ],
         "answer": 2
       },
       {
         "question": "What does Allah help us find?",
         "options": [
-          "Only money indeed",
-          "Solutions as things seem",
-          "Only friends truly",
-          "Only food indeed"
+          "Only money",
+          "Solutions when things seem impossible",
+          "Only friends",
+          "Only food"
         ],
         "answer": 1
       },
       {
         "question": "What should we ask Al-Fattaah to open?",
         "options": [
-          "Only shops indeed",
-          "Our heart to faith & life",
-          "Only gates indeed",
-          "Only boxes indeed"
+          "Only shops",
+          "Our heart to faith and life to ease",
+          "Only gates",
+          "Only boxes"
         ],
         "answer": 1
       }
@@ -951,18 +951,18 @@
         "question": "What does 'Al-ʿAleem' mean?",
         "options": [
           "The All-Knowing",
-          "The Weak itself",
-          "The Small itself",
-          "The Forgetful truly"
+          "The Weak",
+          "The Small",
+          "The Forgetful"
         ],
         "answer": 0
       },
       {
         "question": "What does Allah know?",
         "options": [
-          "Only the past truly",
+          "Only the past",
           "Only the future",
-          "Everything—past, present,",
+          "Everything—past, present, and future",
           "Only big things"
         ],
         "answer": 2
@@ -971,9 +971,9 @@
         "question": "What does Allah know even when we hide them?",
         "options": [
           "Only our actions",
-          "Our thoughts, dreams, &",
-          "Only our words truly",
-          "Nothing specifically"
+          "Our thoughts, dreams, and feelings",
+          "Only our words",
+          "Nothing"
         ],
         "answer": 1
       },
@@ -981,7 +981,7 @@
         "question": "What should we remember about Allah's knowledge?",
         "options": [
           "He knows some things",
-          "He knows best what is",
+          "He knows best what is good for us",
           "He forgets sometimes",
           "He doesn't care"
         ],
@@ -995,40 +995,40 @@
       {
         "question": "What does 'Al-Qaabid' mean?",
         "options": [
-          "The Withholder truly",
-          "The Giver itself",
-          "The Opener itself",
-          "The Light itself"
+          "The Withholder",
+          "The Giver",
+          "The Opener",
+          "The Light"
         ],
         "answer": 0
       },
       {
         "question": "Why does Allah withhold something?",
         "options": [
-          "Out of cruelty truly",
+          "Out of cruelty",
           "For a good reason",
-          "By accident indeed",
-          "He never does truly"
+          "By accident",
+          "He never does"
         ],
         "answer": 1
       },
       {
         "question": "What does Allah sometimes withhold to teach?",
         "options": [
-          "Fear specifically",
-          "Anger specifically",
-          "Patience indeed",
-          "Sadness specifically"
+          "Fear",
+          "Anger",
+          "Patience",
+          "Sadness"
         ],
         "answer": 2
       },
       {
         "question": "What may delayed things protect us from?",
         "options": [
-          "Blessings indeed",
-          "Harm specifically",
-          "Success specifically",
-          "Nothing specifically"
+          "Blessings",
+          "Harm",
+          "Success",
+          "Nothing"
         ],
         "answer": 1
       }
@@ -1040,20 +1040,20 @@
       {
         "question": "What does 'Al-Baasit' mean?",
         "options": [
-          "The Expander truly",
-          "The Reducer itself",
-          "The Hider itself",
-          "The Weak itself"
+          "The Expander",
+          "The Reducer",
+          "The Hider",
+          "The Weak"
         ],
         "answer": 0
       },
       {
         "question": "What does Allah spread wide?",
         "options": [
-          "Only problems truly",
-          "His blessings truly",
-          "Only tests indeed",
-          "Nothing specifically"
+          "Only problems",
+          "His blessings",
+          "Only tests",
+          "Nothing"
         ],
         "answer": 1
       },
@@ -1061,18 +1061,18 @@
         "question": "When does life feel full of blessings?",
         "options": [
           "When we work hard only",
-          "By luck specifically",
+          "By luck",
           "From His kindness",
-          "Never specifically"
+          "Never"
         ],
         "answer": 2
       },
       {
         "question": "What should we do in times of ease?",
         "options": [
-          "Forget Allah truly",
-          "Become proud truly",
-          "Thank Him & share w/",
+          "Forget Allah",
+          "Become proud",
+          "Thank Him and share with others",
           "Hide our blessings"
         ],
         "answer": 2
@@ -1085,10 +1085,10 @@
       {
         "question": "What does 'Al-Khaafid' mean?",
         "options": [
-          "The Abaser itself",
-          "The Raiser itself",
-          "The Provider truly",
-          "The Light itself"
+          "The Abaser",
+          "The Raiser",
+          "The Provider",
+          "The Light"
         ],
         "answer": 0
       },
@@ -1097,8 +1097,8 @@
         "options": [
           "Only poor people",
           "Only weak people",
-          "The proud itself",
-          "Only children truly"
+          "The proud",
+          "Only children"
         ],
         "answer": 2
       },
@@ -1106,19 +1106,19 @@
         "question": "Why does Allah lower people through tests?",
         "options": [
           "To punish them forever",
-          "So they turn back to Him",
-          "By accident indeed",
-          "For no reason truly"
+          "So they turn back to Him with humility",
+          "By accident",
+          "For no reason"
         ],
         "answer": 1
       },
       {
         "question": "Where does honour come from?",
         "options": [
-          "From wealth indeed",
-          "From people indeed",
+          "From wealth",
+          "From people",
           "Only from Allah",
-          "From power indeed"
+          "From power"
         ],
         "answer": 2
       }
@@ -1130,20 +1130,20 @@
       {
         "question": "What does 'Ar-Raafiʿ' mean?",
         "options": [
-          "The Exalter itself",
-          "The Lowerer itself",
-          "The Hider itself",
-          "The Weak itself"
+          "The Exalter",
+          "The Lowerer",
+          "The Hider",
+          "The Weak"
         ],
         "answer": 0
       },
       {
         "question": "What does Allah raise in people?",
         "options": [
-          "Only wealth indeed",
+          "Only wealth",
           "Honour and faith",
-          "Only height indeed",
-          "Only age indeed"
+          "Only height",
+          "Only age"
         ],
         "answer": 1
       },
@@ -1151,19 +1151,19 @@
         "question": "Who does Allah lift up?",
         "options": [
           "Only rich people",
-          "People who remember Him &",
-          "Only adults indeed",
-          "Nobody specifically"
+          "People who remember Him and live honestly",
+          "Only adults",
+          "Nobody"
         ],
         "answer": 1
       },
       {
         "question": "What can lift our rank with Allah?",
         "options": [
-          "Knowledge, humility, &",
-          "Only money indeed",
-          "Only fame indeed",
-          "Only strength truly"
+          "Knowledge, humility, and good character",
+          "Only money",
+          "Only fame",
+          "Only strength"
         ],
         "answer": 0
       }
@@ -1177,8 +1177,8 @@
         "options": [
           "The Giver of Honour",
           "The Taker of Honour",
-          "The Hidden itself",
-          "The Weak itself"
+          "The Hidden",
+          "The Weak"
         ],
         "answer": 0
       },
@@ -1186,28 +1186,28 @@
         "question": "Who does Allah give honour to?",
         "options": [
           "Everyone equally",
-          "Only kings indeed",
-          "Those who obey Him & live",
-          "Only scholars truly"
+          "Only kings",
+          "Those who obey Him and live with truth",
+          "Only scholars"
         ],
         "answer": 2
       },
       {
         "question": "Where is true honour found?",
         "options": [
-          "In money indeed",
-          "In followers truly",
+          "In money",
+          "In followers",
           "In being close to Allah",
-          "In power indeed"
+          "In power"
         ],
         "answer": 2
       },
       {
         "question": "How should we seek dignity?",
         "options": [
-          "Through fame truly",
-          "Through wealth truly",
-          "Through faith & helping",
+          "Through fame",
+          "Through wealth",
+          "Through faith and helping others",
           "Through competitions"
         ],
         "answer": 2
@@ -1220,40 +1220,40 @@
       {
         "question": "What does 'Al-Mudhill' mean?",
         "options": [
-          "The Humiliator truly",
-          "The Honorer itself",
-          "The Provider truly",
-          "The Light itself"
+          "The Humiliator",
+          "The Honorer",
+          "The Provider",
+          "The Light"
         ],
         "answer": 0
       },
       {
         "question": "Who does Allah lower?",
         "options": [
-          "Everyone indeed",
+          "Everyone",
           "Only poor people",
-          "Those who turn away from",
-          "Only children truly"
+          "Those who turn away from Him and do wrong",
+          "Only children"
         ],
         "answer": 2
       },
       {
         "question": "What does Allah's justice protect?",
         "options": [
-          "Only the rich truly",
-          "Only adults indeed",
-          "The weak itself",
-          "Only men indeed"
+          "Only the rich",
+          "Only adults",
+          "The weak",
+          "Only men"
         ],
         "answer": 2
       },
       {
         "question": "What should we stay away from?",
         "options": [
-          "Good deeds indeed",
-          "People specifically",
-          "Pride specifically",
-          "Prayers specifically"
+          "Good deeds",
+          "People",
+          "Pride",
+          "Prayers"
         ],
         "answer": 2
       }
@@ -1266,9 +1266,9 @@
         "question": "What does 'As-Sameeʿ' mean?",
         "options": [
           "The All-Hearing",
-          "The All-Seeing truly",
-          "The Provider truly",
-          "The King itself"
+          "The All-Seeing",
+          "The Provider",
+          "The King"
         ],
         "answer": 0
       },
@@ -1277,8 +1277,8 @@
         "options": [
           "Only loud sounds",
           "Only prayers in Arabic",
-          "Every sound & each prayer",
-          "Nothing specifically"
+          "Every sound and every prayer",
+          "Nothing"
         ],
         "answer": 2
       },
@@ -1287,18 +1287,18 @@
         "options": [
           "Only on Fridays",
           "Only in Ramadan",
-          "Always, even before we",
-          "Never specifically"
+          "Always, even before we speak",
+          "Never"
         ],
         "answer": 2
       },
       {
         "question": "What does this Name help us do?",
         "options": [
-          "Speak loudly truly",
-          "Speak kindly, knowing",
-          "Stay silent indeed",
-          "Shout specifically"
+          "Speak loudly",
+          "Speak kindly, knowing Allah hears all words",
+          "Stay silent",
+          "Shout"
         ],
         "answer": 1
       }
@@ -1310,10 +1310,10 @@
       {
         "question": "What does 'Al-Baseer' mean?",
         "options": [
-          "The All-Seeing truly",
+          "The All-Seeing",
           "The All-Hearing",
-          "The Provider truly",
-          "The First itself"
+          "The Provider",
+          "The First"
         ],
         "answer": 0
       },
@@ -1322,7 +1322,7 @@
         "options": [
           "Only big things",
           "Only during day",
-          "Everything clearly, no",
+          "Everything clearly, no matter how small",
           "Nothing in secret"
         ],
         "answer": 2
@@ -1330,20 +1330,20 @@
       {
         "question": "What is Allah's watch full of?",
         "options": [
-          "Anger only indeed",
-          "Mercy specifically",
-          "Fear specifically",
-          "Nothing specifically"
+          "Anger only",
+          "Mercy",
+          "Fear",
+          "Nothing"
         ],
         "answer": 1
       },
       {
         "question": "When should we try to please Allah?",
         "options": [
-          "Only in public truly",
-          "Only in prayer truly",
+          "Only in public",
+          "Only in prayer",
           "In private and public",
-          "Only on Friday truly"
+          "Only on Friday"
         ],
         "answer": 2
       }
@@ -1355,19 +1355,19 @@
       {
         "question": "What does 'Al-Hakam' mean?",
         "options": [
-          "The Judge itself",
-          "The Provider truly",
-          "The Light itself",
-          "The First itself"
+          "The Judge",
+          "The Provider",
+          "The Light",
+          "The First"
         ],
         "answer": 0
       },
       {
         "question": "How does Allah judge?",
         "options": [
-          "With bias indeed",
+          "With bias",
           "Fairly between people",
-          "Randomly indeed",
+          "Randomly",
           "He doesn't judge"
         ],
         "answer": 1
@@ -1375,20 +1375,20 @@
       {
         "question": "What are Allah's rulings based on?",
         "options": [
-          "Anger specifically",
-          "Desire specifically",
+          "Anger",
+          "Desire",
           "Truth and wisdom",
-          "Luck specifically"
+          "Luck"
         ],
         "answer": 2
       },
       {
         "question": "What should we do when we deal with others?",
         "options": [
-          "Be unfair indeed",
-          "Be fair specifically",
-          "Ignore them indeed",
-          "Trick them indeed"
+          "Be unfair",
+          "Be fair",
+          "Ignore them",
+          "Trick them"
         ],
         "answer": 1
       }
@@ -1400,29 +1400,29 @@
       {
         "question": "What does 'Al-ʿAdl' mean?",
         "options": [
-          "The Just itself",
-          "The Unjust itself",
-          "The Weak itself",
-          "The Small itself"
+          "The Just",
+          "The Unjust",
+          "The Weak",
+          "The Small"
         ],
         "answer": 0
       },
       {
         "question": "How does Allah reward and punish?",
         "options": [
-          "Randomly indeed",
-          "Unfairly indeed",
+          "Randomly",
+          "Unfairly",
           "With full justice",
-          "Never specifically"
+          "Never"
         ],
         "answer": 2
       },
       {
         "question": "Does Allah forget justice?",
         "options": [
-          "Yes, sometimes truly",
-          "Always specifically",
-          "Never specifically",
+          "Yes, sometimes",
+          "Always",
+          "Never",
           "Only for small things"
         ],
         "answer": 2
@@ -1430,10 +1430,10 @@
       {
         "question": "What should we avoid?",
         "options": [
-          "Good deeds indeed",
-          "Cheating or hurting",
-          "Prayers specifically",
-          "Family specifically"
+          "Good deeds",
+          "Cheating or hurting others",
+          "Prayers",
+          "Family"
         ],
         "answer": 1
       }
@@ -1446,9 +1446,9 @@
         "question": "What does 'Al-Lateef' mean?",
         "options": [
           "The Gentle and Subtle",
-          "The Harsh itself",
-          "The Loud itself",
-          "The Visible itself"
+          "The Harsh",
+          "The Loud",
+          "The Visible"
         ],
         "answer": 0
       },
@@ -1456,7 +1456,7 @@
         "question": "How does Allah care for us?",
         "options": [
           "Only in obvious ways",
-          "In ways we don't even",
+          "In ways we don't even notice",
           "He doesn't care",
           "Only through people"
         ],
@@ -1466,8 +1466,8 @@
         "question": "How does Allah's kindness reach us?",
         "options": [
           "Only on special occasions",
-          "Through small blessings",
-          "Never specifically",
+          "Through small blessings every day",
+          "Never",
           "Only in Ramadan"
         ],
         "answer": 1
@@ -1476,9 +1476,9 @@
         "question": "Where should we look for Allah's gentle care?",
         "options": [
           "Only in mosques",
-          "Only in books truly",
+          "Only in books",
           "In every situation",
-          "Nowhere specifically"
+          "Nowhere"
         ],
         "answer": 2
       }
@@ -1490,19 +1490,19 @@
       {
         "question": "What does 'Al-Khabeer' mean?",
         "options": [
-          "The All-Aware truly",
-          "The Unaware itself",
-          "The Weak itself",
-          "The Small itself"
+          "The All-Aware",
+          "The Unaware",
+          "The Weak",
+          "The Small"
         ],
         "answer": 0
       },
       {
         "question": "How does Allah know things?",
         "options": [
-          "Partially indeed",
+          "Partially",
           "Deeply and fully",
-          "Not at all indeed",
+          "Not at all",
           "Only surface level"
         ],
         "answer": 1
@@ -1510,10 +1510,10 @@
       {
         "question": "What does Allah know about our future?",
         "options": [
-          "Nothing specifically",
-          "Some things indeed",
+          "Nothing",
+          "Some things",
           "What will happen next",
-          "He guesses indeed"
+          "He guesses"
         ],
         "answer": 2
       },
@@ -1521,8 +1521,8 @@
         "question": "When should we trust His wisdom?",
         "options": [
           "Only when things are good",
-          "Never specifically",
-          "Even as we don't",
+          "Never",
+          "Even when we don't understand His plans",
           "Only on Fridays"
         ],
         "answer": 2
@@ -1535,40 +1535,40 @@
       {
         "question": "What does 'Al-Haleem' mean?",
         "options": [
-          "The Forbearing truly",
-          "The Hasty itself",
-          "The Angry itself",
-          "The Weak itself"
+          "The Forbearing",
+          "The Hasty",
+          "The Angry",
+          "The Weak"
         ],
         "answer": 0
       },
       {
         "question": "When does Allah punish us?",
         "options": [
-          "Immediately indeed",
-          "He is patient & does not",
-          "Never specifically",
-          "Only on Friday truly"
+          "Immediately",
+          "He is patient and does not punish right away",
+          "Never",
+          "Only on Friday"
         ],
         "answer": 1
       },
       {
         "question": "Why does Allah give time to people?",
         "options": [
-          "He forgets indeed",
-          "So they can repent &",
-          "He is weak indeed",
-          "By accident indeed"
+          "He forgets",
+          "So they can repent and change",
+          "He is weak",
+          "By accident"
         ],
         "answer": 1
       },
       {
         "question": "What should we also be with others?",
         "options": [
-          "Angry specifically",
-          "Hasty specifically",
+          "Angry",
+          "Hasty",
           "Calm and forgiving",
-          "Strict specifically"
+          "Strict"
         ],
         "answer": 2
       }
@@ -1581,39 +1581,39 @@
         "question": "What does 'Al-ʿAzeem' mean?",
         "options": [
           "The Magnificent",
-          "The Small itself",
-          "The Weak itself",
-          "The Hidden itself"
+          "The Small",
+          "The Weak",
+          "The Hidden"
         ],
         "answer": 0
       },
       {
         "question": "What shows Allah's greatness?",
         "options": [
-          "Only the sky truly",
-          "The creation, power, &",
-          "Only the earth truly",
-          "Nothing specifically"
+          "Only the sky",
+          "His creation, power, and mercy",
+          "Only the earth",
+          "Nothing"
         ],
         "answer": 1
       },
       {
         "question": "When do we say 'Subhaana Rabbiyal-ʿAzeem'?",
         "options": [
-          "When we stand truly",
+          "When we stand",
           "When we bow in prayer",
-          "When we sleep truly",
-          "When we eat indeed"
+          "When we sleep",
+          "When we eat"
         ],
         "answer": 1
       },
       {
         "question": "What does thinking about His greatness fill our hearts with?",
         "options": [
-          "Fear only indeed",
-          "Sadness specifically",
-          "Awe and love truly",
-          "Confusion indeed"
+          "Fear only",
+          "Sadness",
+          "Awe and love",
+          "Confusion"
         ],
         "answer": 2
       }
@@ -1626,9 +1626,9 @@
         "question": "What does 'Al-Ghafoor' mean?",
         "options": [
           "The All-Forgiving",
-          "The Punisher truly",
-          "The Weak itself",
-          "The Small itself"
+          "The Punisher",
+          "The Weak",
+          "The Small"
         ],
         "answer": 0
       },
@@ -1636,29 +1636,29 @@
         "question": "What does Allah forgive for those who repent?",
         "options": [
           "Only small sins",
-          "Only some sins truly",
-          "All sins indeed",
-          "No sins specifically"
+          "Only some sins",
+          "All sins",
+          "No sins"
         ],
         "answer": 2
       },
       {
         "question": "What does Allah replace our bad deeds with?",
         "options": [
-          "Nothing specifically",
-          "More bad deeds truly",
-          "Good deeds indeed",
-          "Tests specifically"
+          "Nothing",
+          "More bad deeds",
+          "Good deeds",
+          "Tests"
         ],
         "answer": 2
       },
       {
         "question": "What does Al-Ghafoor help us stay?",
         "options": [
-          "Hopeless indeed",
-          "Hopeful & forgiving of",
-          "Angry specifically",
-          "Sad specifically"
+          "Hopeless",
+          "Hopeful and forgiving of others",
+          "Angry",
+          "Sad"
         ],
         "answer": 1
       }
@@ -1671,39 +1671,39 @@
         "question": "What does 'Ash-Shakoor' mean?",
         "options": [
           "The Appreciative",
-          "The Ungrateful truly",
-          "The Weak itself",
-          "The Hidden itself"
+          "The Ungrateful",
+          "The Weak",
+          "The Hidden"
         ],
         "answer": 0
       },
       {
         "question": "What does Allah appreciate?",
         "options": [
-          "Only big deeds truly",
-          "Every small good deed we",
-          "Nothing specifically",
-          "Only prayers truly"
+          "Only big deeds",
+          "Every small good deed we do",
+          "Nothing",
+          "Only prayers"
         ],
         "answer": 1
       },
       {
         "question": "How much does Allah multiply rewards?",
         "options": [
-          "Not at all indeed",
-          "A little itself",
+          "Not at all",
+          "A little",
           "Far more than we deserve",
-          "Equally specifically"
+          "Equally"
         ],
         "answer": 2
       },
       {
         "question": "What can earn Allah's appreciation?",
         "options": [
-          "Only fasting truly",
-          "Only charity truly",
-          "Even a smile or helping",
-          "Only hajj indeed"
+          "Only fasting",
+          "Only charity",
+          "Even a smile or helping hand",
+          "Only hajj"
         ],
         "answer": 2
       }
@@ -1715,20 +1715,20 @@
       {
         "question": "What does 'Al-ʿAliyy' mean?",
         "options": [
-          "The Most High truly",
-          "The Low specifically",
-          "The Weak itself",
-          "The Hidden itself"
+          "The Most High",
+          "The Low",
+          "The Weak",
+          "The Hidden"
         ],
         "answer": 0
       },
       {
         "question": "What is Allah higher than?",
         "options": [
-          "Only earth indeed",
-          "Only sky indeed",
-          "Everything in power &",
-          "Nothing specifically"
+          "Only earth",
+          "Only sky",
+          "Everything in power and honour",
+          "Nothing"
         ],
         "answer": 2
       },
@@ -1736,19 +1736,19 @@
         "question": "Can anyone compare to Allah?",
         "options": [
           "Yes, strong people",
-          "Yes, angels indeed",
-          "No one can reach The",
-          "Yes, prophets truly"
+          "Yes, angels",
+          "No one can reach His level",
+          "Yes, prophets"
         ],
         "answer": 2
       },
       {
         "question": "Why do we raise our hands in duʿaa?",
         "options": [
-          "To exercise indeed",
-          "Because He is the Most",
-          "To wave specifically",
-          "For no reason truly"
+          "To exercise",
+          "Because He is the Most High",
+          "To wave",
+          "For no reason"
         ],
         "answer": 1
       }
@@ -1760,39 +1760,39 @@
       {
         "question": "What does 'Al-Kabeer' mean?",
         "options": [
-          "The Most Great truly",
-          "The Small itself",
-          "The Weak itself",
-          "The Hidden itself"
+          "The Most Great",
+          "The Small",
+          "The Weak",
+          "The Hidden"
         ],
         "answer": 0
       },
       {
         "question": "What shows Allah's greatness?",
         "options": [
-          "Only humans indeed",
-          "Only animals truly",
-          "Mountains, planets, &",
-          "Only plants indeed"
+          "Only humans",
+          "Only animals",
+          "Mountains, planets, and stars",
+          "Only plants"
         ],
         "answer": 2
       },
       {
         "question": "Is Allah's greatness limited?",
         "options": [
-          "Yes, by space truly",
-          "Yes, by time truly",
-          "No, The greatness has no",
-          "Yes, by power truly"
+          "Yes, by space",
+          "Yes, by time",
+          "No, His greatness has no end",
+          "Yes, by power"
         ],
         "answer": 2
       },
       {
         "question": "When we say 'Allahu Akbar', what do we remember?",
         "options": [
-          "Allah is small truly",
-          "Nothing is greater than",
-          "We are great truly",
+          "Allah is small",
+          "Nothing is greater than Him",
+          "We are great",
           "People are powerful"
         ],
         "answer": 1
@@ -1805,30 +1805,30 @@
       {
         "question": "What does 'Al-Hafeedh' mean?",
         "options": [
-          "The Preserver truly",
-          "The Destroyer truly",
-          "The Weak itself",
-          "The Small itself"
+          "The Preserver",
+          "The Destroyer",
+          "The Weak",
+          "The Small"
         ],
         "answer": 0
       },
       {
         "question": "What does Allah protect?",
         "options": [
-          "Only humans indeed",
-          "Only earth indeed",
+          "Only humans",
+          "Only earth",
           "Everything He created",
-          "Nothing specifically"
+          "Nothing"
         ],
         "answer": 2
       },
       {
         "question": "What does Allah keep recorded?",
         "options": [
-          "Only bad deeds truly",
-          "Only prayers truly",
-          "Our good deeds truly",
-          "Nothing specifically"
+          "Only bad deeds",
+          "Only prayers",
+          "Our good deeds",
+          "Nothing"
         ],
         "answer": 2
       },
@@ -1837,8 +1837,8 @@
         "options": [
           "Yes, anything can",
           "Yes, strong things can",
-          "No, nothing can unless He",
-          "Sometimes indeed"
+          "No, nothing can unless He allows it",
+          "Sometimes"
         ],
         "answer": 2
       }
@@ -1850,40 +1850,40 @@
       {
         "question": "What does 'Al-Muqeet' mean?",
         "options": [
-          "The Nourisher truly",
-          "The Destroyer truly",
-          "The Weak itself",
-          "The Small itself"
+          "The Nourisher",
+          "The Destroyer",
+          "The Weak",
+          "The Small"
         ],
         "answer": 0
       },
       {
         "question": "What does Allah provide?",
         "options": [
-          "Only food indeed",
-          "Only water indeed",
-          "Strength & nourishment to",
-          "Nothing specifically"
+          "Only food",
+          "Only water",
+          "Strength and nourishment to everything",
+          "Nothing"
         ],
         "answer": 2
       },
       {
         "question": "What does Allah know we need?",
         "options": [
-          "Only money indeed",
-          "Food for body & faith for",
-          "Only clothes truly",
-          "Nothing specifically"
+          "Only money",
+          "Food for body and faith for soul",
+          "Only clothes",
+          "Nothing"
         ],
         "answer": 1
       },
       {
         "question": "What should we say for every meal?",
         "options": [
-          "Nothing specifically",
-          "Thank you indeed",
-          "Alhamdulillah truly",
-          "Goodbye specifically"
+          "Nothing",
+          "Thank you",
+          "Alhamdulillah",
+          "Goodbye"
         ],
         "answer": 2
       }
@@ -1895,20 +1895,20 @@
       {
         "question": "What does 'Al-Haseeb' mean?",
         "options": [
-          "The Reckoner truly",
-          "The Forgetful truly",
-          "The Weak itself",
-          "The Small itself"
+          "The Reckoner",
+          "The Forgetful",
+          "The Weak",
+          "The Small"
         ],
         "answer": 0
       },
       {
         "question": "What does Allah keep account of?",
         "options": [
-          "Only big deeds truly",
-          "Everything indeed",
-          "Only bad deeds truly",
-          "Nothing specifically"
+          "Only big deeds",
+          "Everything",
+          "Only bad deeds",
+          "Nothing"
         ],
         "answer": 1
       },
@@ -1916,9 +1916,9 @@
         "question": "Does Allah forget any deed?",
         "options": [
           "Yes, small ones",
-          "Yes, old ones truly",
+          "Yes, old ones",
           "Never, even the smallest",
-          "Always specifically"
+          "Always"
         ],
         "answer": 2
       },
@@ -1926,8 +1926,8 @@
         "question": "What does this remind us to do?",
         "options": [
           "Live dishonestly",
-          "Live honestly & depend",
-          "Fear people indeed",
+          "Live honestly and depend only on Him",
+          "Fear people",
           "Worry constantly"
         ],
         "answer": 1
@@ -1940,40 +1940,40 @@
       {
         "question": "What does 'Al-Jaleel' mean?",
         "options": [
-          "The Majestic truly",
-          "The Small itself",
-          "The Weak itself",
-          "The Hidden itself"
+          "The Majestic",
+          "The Small",
+          "The Weak",
+          "The Hidden"
         ],
         "answer": 0
       },
       {
         "question": "What is Allah worthy of?",
         "options": [
-          "Only fear indeed",
+          "Only fear",
           "All glory and honour",
-          "Only obedience truly",
-          "Nothing specifically"
+          "Only obedience",
+          "Nothing"
         ],
         "answer": 1
       },
       {
         "question": "What does Allah's majesty fill us with?",
         "options": [
-          "Sadness specifically",
-          "Fear only indeed",
+          "Sadness",
+          "Fear only",
           "Respect and awe",
-          "Confusion indeed"
+          "Confusion"
         ],
         "answer": 2
       },
       {
         "question": "How should we live knowing Allah is Al-Jaleel?",
         "options": [
-          "Carelessly indeed",
-          "With dignity & gratitude",
-          "With pride indeed",
-          "With sadness truly"
+          "Carelessly",
+          "With dignity and gratitude",
+          "With pride",
+          "With sadness"
         ],
         "answer": 1
       }
@@ -1986,18 +1986,18 @@
         "question": "What does 'Al-Kareem' mean?",
         "options": [
           "The Most Generous",
-          "The Stingy itself",
-          "The Weak itself",
-          "The Small itself"
+          "The Stingy",
+          "The Weak",
+          "The Small"
         ],
         "answer": 0
       },
       {
         "question": "How does Allah give?",
         "options": [
-          "Reluctantly indeed",
-          "Rarely specifically",
-          "Freely w/o expecting",
+          "Reluctantly",
+          "Rarely",
+          "Freely without expecting anything back",
           "Only to rich people"
         ],
         "answer": 2
@@ -2005,20 +2005,20 @@
       {
         "question": "What should we never do when we have something?",
         "options": [
-          "Share it indeed",
-          "Thank Allah indeed",
+          "Share it",
+          "Thank Allah",
           "Be stingy or selfish",
-          "Use it wisely truly"
+          "Use it wisely"
         ],
         "answer": 2
       },
       {
         "question": "What does Allah's generosity inspire us to be?",
         "options": [
-          "Selfish specifically",
+          "Selfish",
           "Kind and giving",
-          "Greedy specifically",
-          "Fearful specifically"
+          "Greedy",
+          "Fearful"
         ],
         "answer": 1
       }
@@ -2030,10 +2030,10 @@
       {
         "question": "What does 'Ar-Raqeeb' mean?",
         "options": [
-          "The Watchful truly",
-          "The Blind itself",
-          "The Weak itself",
-          "The Small itself"
+          "The Watchful",
+          "The Blind",
+          "The Weak",
+          "The Small"
         ],
         "answer": 0
       },
@@ -2043,7 +2043,7 @@
           "Only our prayers",
           "Only our public actions",
           "Everything we do and feel",
-          "Nothing specifically"
+          "Nothing"
         ],
         "answer": 2
       },
@@ -2051,7 +2051,7 @@
         "question": "When is Allah watching?",
         "options": [
           "Only during day",
-          "Only at night truly",
+          "Only at night",
           "Always, every moment",
           "Only on Fridays"
         ],
@@ -2060,8 +2060,8 @@
       {
         "question": "What does this Name help us do?",
         "options": [
-          "Act carelessly truly",
-          "Act w/ honesty even as",
+          "Act carelessly",
+          "Act with honesty even when alone",
           "Hide from Allah",
           "Ignore our actions"
         ],
@@ -2075,10 +2075,10 @@
       {
         "question": "What does 'Al-Mujeeb' mean?",
         "options": [
-          "The Responsive truly",
-          "The Ignoring truly",
-          "The Weak itself",
-          "The Deaf itself"
+          "The Responsive",
+          "The Ignoring",
+          "The Weak",
+          "The Deaf"
         ],
         "answer": 0
       },
@@ -2088,16 +2088,16 @@
           "Only big prayers",
           "Only Arabic prayers",
           "Every sincere prayer",
-          "No prayers indeed"
+          "No prayers"
         ],
         "answer": 2
       },
       {
         "question": "When does Allah respond?",
         "options": [
-          "Never specifically",
-          "Sometimes indeed",
-          "Always, in way that is",
+          "Never",
+          "Sometimes",
+          "Always, in the way that is best for us",
           "Only on Fridays"
         ],
         "answer": 2
@@ -2108,7 +2108,7 @@
           "He might forget",
           "He loves when we ask Him",
           "He needs reminding",
-          "For no reason truly"
+          "For no reason"
         ],
         "answer": 1
       }
@@ -2121,39 +2121,39 @@
         "question": "What does 'Al-Waasi'' mean?",
         "options": [
           "The All-Encompassing",
-          "The Limited itself",
-          "The Weak itself",
-          "The Small itself"
+          "The Limited",
+          "The Weak",
+          "The Small"
         ],
         "answer": 0
       },
       {
         "question": "What does Allah's knowledge and mercy cover?",
         "options": [
-          "Only earth indeed",
-          "Only heaven indeed",
+          "Only earth",
+          "Only heaven",
           "Everything in creation",
-          "Nothing specifically"
+          "Nothing"
         ],
         "answer": 2
       },
       {
         "question": "What never runs out?",
         "options": [
-          "Water specifically",
-          "Time specifically",
-          "Allah's gifts & blessings",
-          "Food specifically"
+          "Water",
+          "Time",
+          "Allah's gifts and blessings",
+          "Food"
         ],
         "answer": 2
       },
       {
         "question": "What should we trust?",
         "options": [
-          "Only ourselves truly",
-          "Only people indeed",
-          "Allah can provide for",
-          "Only luck indeed"
+          "Only ourselves",
+          "Only people",
+          "Allah can provide for everyone at the same time",
+          "Only luck"
         ],
         "answer": 2
       }
@@ -2165,40 +2165,40 @@
       {
         "question": "What does 'Al-Hakeem' mean?",
         "options": [
-          "The All-Wise truly",
-          "The Foolish itself",
-          "The Weak itself",
-          "The Confused truly"
+          "The All-Wise",
+          "The Foolish",
+          "The Weak",
+          "The Confused"
         ],
         "answer": 0
       },
       {
         "question": "How does Allah make decisions?",
         "options": [
-          "Randomly indeed",
-          "With perfect wisdom &",
-          "Carelessly indeed",
-          "By guessing indeed"
+          "Randomly",
+          "With perfect wisdom and knowledge",
+          "Carelessly",
+          "By guessing"
         ],
         "answer": 1
       },
       {
         "question": "What should we trust even when we don't understand?",
         "options": [
-          "Our feelings truly",
+          "Our feelings",
           "People's opinions",
-          "Allah's plan truly",
-          "Luck specifically"
+          "Allah's plan",
+          "Luck"
         ],
         "answer": 2
       },
       {
         "question": "What does Allah's wisdom bring to every situation?",
         "options": [
-          "Chaos specifically",
-          "Confusion indeed",
+          "Chaos",
+          "Confusion",
           "Good and purpose",
-          "Nothing specifically"
+          "Nothing"
         ],
         "answer": 2
       }
@@ -2211,19 +2211,19 @@
         "question": "What does 'Al-Wadood' mean?",
         "options": [
           "The Most Loving",
-          "The Hateful itself",
-          "The Weak itself",
-          "The Cold itself"
+          "The Hateful",
+          "The Weak",
+          "The Cold"
         ],
         "answer": 0
       },
       {
         "question": "Who does Allah love?",
         "options": [
-          "Only prophets truly",
-          "Only scholars truly",
-          "Those who turn to Him &",
-          "Nobody specifically"
+          "Only prophets",
+          "Only scholars",
+          "Those who turn to Him and do good",
+          "Nobody"
         ],
         "answer": 2
       },
@@ -2231,8 +2231,8 @@
         "question": "How does Allah show His love?",
         "options": [
           "Only through words",
-          "Through blessings,",
-          "He doesn't indeed",
+          "Through blessings, forgiveness, and guidance",
+          "He doesn't",
           "Only through punishment"
         ],
         "answer": 1
@@ -2240,10 +2240,10 @@
       {
         "question": "What should we do to earn Allah's love?",
         "options": [
-          "Nothing specifically",
-          "Be proud indeed",
-          "Show love & kindness to",
-          "Be harsh indeed"
+          "Nothing",
+          "Be proud",
+          "Show love and kindness to others",
+          "Be harsh"
         ],
         "answer": 2
       }
@@ -2256,39 +2256,39 @@
         "question": "What does 'Al-Majeed' mean?",
         "options": [
           "The Most Glorious",
-          "The Weak itself",
-          "The Small itself",
-          "The Hidden itself"
+          "The Weak",
+          "The Small",
+          "The Hidden"
         ],
         "answer": 0
       },
       {
         "question": "What is Allah full of?",
         "options": [
-          "Only power indeed",
-          "Glory, honour, &",
-          "Only anger indeed",
-          "Nothing specifically"
+          "Only power",
+          "Glory, honour, and generosity",
+          "Only anger",
+          "Nothing"
         ],
         "answer": 1
       },
       {
         "question": "What does Allah give to His servants?",
         "options": [
-          "Only tests indeed",
-          "Nothing specifically",
-          "Honour & respect via",
-          "Only problems truly"
+          "Only tests",
+          "Nothing",
+          "Honour and respect through faith",
+          "Only problems"
         ],
         "answer": 2
       },
       {
         "question": "What does praising Al-Majeed fill our hearts with?",
         "options": [
-          "Sadness specifically",
-          "Fear only indeed",
-          "Joy and peace truly",
-          "Confusion indeed"
+          "Sadness",
+          "Fear only",
+          "Joy and peace",
+          "Confusion"
         ],
         "answer": 2
       }
@@ -2301,29 +2301,29 @@
         "question": "What does 'Al-Baaʿith' mean?",
         "options": [
           "The Resurrector",
-          "The Destroyer truly",
-          "The Weak itself",
-          "The Small itself"
+          "The Destroyer",
+          "The Weak",
+          "The Small"
         ],
         "answer": 0
       },
       {
         "question": "What will Allah do to everyone?",
         "options": [
-          "Forget them indeed",
-          "Leave them indeed",
-          "Bring them back to life",
-          "Ignore them indeed"
+          "Forget them",
+          "Leave them",
+          "Bring them back to life on Judgement Day",
+          "Ignore them"
         ],
         "answer": 2
       },
       {
         "question": "What does belief in resurrection teach us?",
         "options": [
-          "This life is all that",
-          "To prepare for the",
-          "To be careless truly",
-          "Nothing specifically"
+          "This life is all that matters",
+          "To prepare for the Hereafter",
+          "To be careless",
+          "Nothing"
         ],
         "answer": 1
       },
@@ -2332,8 +2332,8 @@
         "options": [
           "Ignore our actions",
           "Live however we want",
-          "Live w/ purpose &",
-          "Be lazy specifically"
+          "Live with purpose and goodness",
+          "Be lazy"
         ],
         "answer": 2
       }
@@ -2345,10 +2345,10 @@
       {
         "question": "What does 'Ash-Shaheed' mean?",
         "options": [
-          "The Witness itself",
-          "The Blind itself",
-          "The Weak itself",
-          "The Absent itself"
+          "The Witness",
+          "The Blind",
+          "The Weak",
+          "The Absent"
         ],
         "answer": 0
       },
@@ -2358,26 +2358,26 @@
           "Only our prayers",
           "Only big events",
           "Everything we do and say",
-          "Nothing specifically"
+          "Nothing"
         ],
         "answer": 2
       },
       {
         "question": "On Judgement Day, who will testify?",
         "options": [
-          "Only prophets truly",
-          "Only angels indeed",
-          "Allah will be the",
-          "Nobody specifically"
+          "Only prophets",
+          "Only angels",
+          "Allah will be the ultimate Witness",
+          "Nobody"
         ],
         "answer": 2
       },
       {
         "question": "How should we live knowing Allah is watching?",
         "options": [
-          "With fear only truly",
-          "Carelessly indeed",
-          "With sincerity & honesty",
+          "With fear only",
+          "Carelessly",
+          "With sincerity and honesty",
           "Hiding our actions"
         ],
         "answer": 2
@@ -2390,40 +2390,40 @@
       {
         "question": "What does 'Al-Haqq' mean?",
         "options": [
-          "The Truth itself",
-          "The False itself",
-          "The Weak itself",
-          "The Confused truly"
+          "The Truth",
+          "The False",
+          "The Weak",
+          "The Confused"
         ],
         "answer": 0
       },
       {
         "question": "What is Allah's existence?",
         "options": [
-          "Uncertain indeed",
-          "Temporary indeed",
-          "The ultimate reality &",
-          "Imaginary indeed"
+          "Uncertain",
+          "Temporary",
+          "The ultimate reality and truth",
+          "Imaginary"
         ],
         "answer": 2
       },
       {
         "question": "What does Allah guide us to?",
         "options": [
-          "Confusion indeed",
-          "Falsehood indeed",
+          "Confusion",
+          "Falsehood",
           "Truth and away from lies",
-          "Darkness indeed"
+          "Darkness"
         ],
         "answer": 2
       },
       {
         "question": "What should we always speak?",
         "options": [
-          "Lies specifically",
-          "Half-truths indeed",
-          "The truth itself",
-          "Nothing specifically"
+          "Lies",
+          "Half-truths",
+          "The truth",
+          "Nothing"
         ],
         "answer": 2
       }
@@ -2435,39 +2435,39 @@
       {
         "question": "What does 'Al-Wakeel' mean?",
         "options": [
-          "The Trustee itself",
+          "The Trustee",
           "The Untrustworthy",
-          "The Weak itself",
-          "The Careless truly"
+          "The Weak",
+          "The Careless"
         ],
         "answer": 0
       },
       {
         "question": "What should we put our trust in?",
         "options": [
-          "Only ourselves truly",
-          "Only people indeed",
-          "Allah alone indeed",
-          "Money specifically"
+          "Only ourselves",
+          "Only people",
+          "Allah alone",
+          "Money"
         ],
         "answer": 2
       },
       {
         "question": "What does Allah manage for us?",
         "options": [
-          "Nothing specifically",
+          "Nothing",
           "Only small things",
           "All our affairs perfectly",
-          "Only prayers truly"
+          "Only prayers"
         ],
         "answer": 2
       },
       {
         "question": "When we say 'Hasbunallahu wa ni'mal-Wakeel', what do we mean?",
         "options": [
-          "We are alone truly",
+          "We are alone",
           "We need people's help",
-          "Allah is sufficient for",
+          "Allah is sufficient for us, the best Trustee",
           "We have no hope"
         ],
         "answer": 2
@@ -2480,40 +2480,40 @@
       {
         "question": "What does 'Al-Qawiyy' mean?",
         "options": [
-          "The All-Strong truly",
-          "The Weak itself",
-          "The Tired itself",
-          "The Limited itself"
+          "The All-Strong",
+          "The Weak",
+          "The Tired",
+          "The Limited"
         ],
         "answer": 0
       },
       {
         "question": "What is Allah's strength like?",
         "options": [
-          "Limited specifically",
-          "Temporary indeed",
+          "Limited",
+          "Temporary",
           "Perfect and never-ending",
-          "Weak specifically"
+          "Weak"
         ],
         "answer": 2
       },
       {
         "question": "Does Allah ever get tired?",
         "options": [
-          "Yes, often indeed",
-          "Sometimes indeed",
-          "Never specifically",
-          "At night indeed"
+          "Yes, often",
+          "Sometimes",
+          "Never",
+          "At night"
         ],
         "answer": 2
       },
       {
         "question": "When we feel weak, what should we remember?",
         "options": [
-          "We are alone truly",
-          "Nobody cares truly",
-          "Allah's strength can help",
-          "Give up specifically"
+          "We are alone",
+          "Nobody cares",
+          "Allah's strength can help us",
+          "Give up"
         ],
         "answer": 2
       }
@@ -2526,18 +2526,18 @@
         "question": "What does 'Al-Mateen' mean?",
         "options": [
           "The Firm and Steadfast",
-          "The Shaky itself",
-          "The Weak itself",
-          "The Changing truly"
+          "The Shaky",
+          "The Weak",
+          "The Changing"
         ],
         "answer": 0
       },
       {
         "question": "What never changes about Allah?",
         "options": [
-          "His mercy indeed",
+          "His mercy",
           "His strength and firmness",
-          "His knowledge truly",
+          "His knowledge",
           "All of the above"
         ],
         "answer": 3
@@ -2545,10 +2545,10 @@
       {
         "question": "What does Allah hold up?",
         "options": [
-          "Only earth indeed",
-          "The heavens & earth w/o",
-          "Nothing specifically",
-          "Only clouds indeed"
+          "Only earth",
+          "The heavens and earth without effort",
+          "Nothing",
+          "Only clouds"
         ],
         "answer": 1
       },
@@ -2558,7 +2558,7 @@
           "Only our bodies",
           "Only our wealth",
           "Our hearts on His path",
-          "Only our homes truly"
+          "Only our homes"
         ],
         "answer": 2
       }
@@ -2571,39 +2571,39 @@
         "question": "What does 'Al-Waliyy' mean?",
         "options": [
           "The Protecting Friend",
-          "The Enemy itself",
-          "The Stranger truly",
-          "The Weak itself"
+          "The Enemy",
+          "The Stranger",
+          "The Weak"
         ],
         "answer": 0
       },
       {
         "question": "What does Allah do for those who believe?",
         "options": [
-          "Ignores them truly",
+          "Ignores them",
           "Protects and guides them",
           "Tests them only",
-          "Forgets them truly"
+          "Forgets them"
         ],
         "answer": 1
       },
       {
         "question": "Who is the best friend and protector?",
         "options": [
-          "Our parents indeed",
-          "Our teachers truly",
-          "Allah specifically",
-          "Our classmates truly"
+          "Our parents",
+          "Our teachers",
+          "Allah",
+          "Our classmates"
         ],
         "answer": 2
       },
       {
         "question": "What should we be to others?",
         "options": [
-          "Enemies specifically",
-          "Strangers indeed",
+          "Enemies",
+          "Strangers",
           "Loyal and caring friends",
-          "Competitors indeed"
+          "Competitors"
         ],
         "answer": 2
       }
@@ -2616,19 +2616,19 @@
         "question": "What does 'Al-Hameed' mean?",
         "options": [
           "The Praiseworthy",
-          "The Unworthy truly",
-          "The Weak itself",
-          "The Hidden itself"
+          "The Unworthy",
+          "The Weak",
+          "The Hidden"
         ],
         "answer": 0
       },
       {
         "question": "What does Allah deserve?",
         "options": [
-          "Only fear indeed",
+          "Only fear",
           "All praise and thanks",
-          "Nothing specifically",
-          "Only obedience truly"
+          "Nothing",
+          "Only obedience"
         ],
         "answer": 1
       },
@@ -2636,18 +2636,18 @@
         "question": "When should we say 'Alhamdulillah'?",
         "options": [
           "Only when happy",
-          "Only when sad truly",
+          "Only when sad",
           "In all circumstances",
-          "Never specifically"
+          "Never"
         ],
         "answer": 2
       },
       {
         "question": "What does praising Allah do to our hearts?",
         "options": [
-          "Makes them sad truly",
+          "Makes them sad",
           "Makes them hard",
-          "Fills them w/ peace &",
+          "Fills them with peace and gratitude",
           "Makes them empty"
         ],
         "answer": 2
@@ -2661,9 +2661,9 @@
         "question": "What does 'Al-Muhsiy' mean?",
         "options": [
           "The All-Enumerating",
-          "The Forgetter truly",
-          "The Weak itself",
-          "The Careless truly"
+          "The Forgetter",
+          "The Weak",
+          "The Careless"
         ],
         "answer": 0
       },
@@ -2672,8 +2672,8 @@
         "options": [
           "Only our prayers",
           "Only our mistakes",
-          "Every single thing in",
-          "Nothing specifically"
+          "Every single thing in creation",
+          "Nothing"
         ],
         "answer": 2
       },
@@ -2681,18 +2681,18 @@
         "question": "Does Allah forget any of our deeds?",
         "options": [
           "Yes, small ones",
-          "Yes, old ones truly",
-          "Never, He counts",
-          "Always specifically"
+          "Yes, old ones",
+          "Never, He counts everything",
+          "Always"
         ],
         "answer": 2
       },
       {
         "question": "What should this inspire us to do?",
         "options": [
-          "Give up specifically",
-          "Be careless indeed",
-          "Do good deeds as they are",
+          "Give up",
+          "Be careless",
+          "Do good deeds because they are all counted",
           "Hide our actions"
         ],
         "answer": 2
@@ -2705,10 +2705,10 @@
       {
         "question": "What does 'Al-Mubdi'' mean?",
         "options": [
-          "The Originator truly",
-          "The Copier itself",
-          "The Weak itself",
-          "The Last itself"
+          "The Originator",
+          "The Copier",
+          "The Weak",
+          "The Last"
         ],
         "answer": 0
       },
@@ -2716,28 +2716,28 @@
         "question": "How did Allah create everything?",
         "options": [
           "From existing things",
-          "By copying indeed",
-          "From nothing, for the",
-          "By accident indeed"
+          "By copying",
+          "From nothing, for the first time",
+          "By accident"
         ],
         "answer": 2
       },
       {
         "question": "What shows Allah's perfect originality?",
         "options": [
-          "Only humans indeed",
-          "Every unique part of",
-          "Only animals truly",
-          "Nothing specifically"
+          "Only humans",
+          "Every unique part of creation",
+          "Only animals",
+          "Nothing"
         ],
         "answer": 1
       },
       {
         "question": "What should we remember about our existence?",
         "options": [
-          "It's random indeed",
+          "It's random",
           "It's an accident",
-          "Allah brought us into",
+          "Allah brought us into being with purpose",
           "It's meaningless"
         ],
         "answer": 2
@@ -2750,20 +2750,20 @@
       {
         "question": "What does 'Al-Muʿeed' mean?",
         "options": [
-          "The Restorer truly",
-          "The Destroyer truly",
-          "The Weak itself",
-          "The Forgetful truly"
+          "The Restorer",
+          "The Destroyer",
+          "The Weak",
+          "The Forgetful"
         ],
         "answer": 0
       },
       {
         "question": "What will Allah do after this life?",
         "options": [
-          "Forget us indeed",
-          "Leave us indeed",
-          "Bring us back to life",
-          "Ignore us indeed"
+          "Forget us",
+          "Leave us",
+          "Bring us back to life again",
+          "Ignore us"
         ],
         "answer": 2
       },
@@ -2771,9 +2771,9 @@
         "question": "What does knowing about resurrection help us do?",
         "options": [
           "Live carelessly",
-          "Prepare & live truly",
-          "Worry only indeed",
-          "Give up specifically"
+          "Prepare and live righteously",
+          "Worry only",
+          "Give up"
         ],
         "answer": 1
       },
@@ -2782,8 +2782,8 @@
         "options": [
           "Ending everything",
           "Justice and reward",
-          "Chaos specifically",
-          "Nothing specifically"
+          "Chaos",
+          "Nothing"
         ],
         "answer": 1
       }
@@ -2797,28 +2797,28 @@
         "options": [
           "The Giver of Life",
           "The Taker of Life",
-          "The Weak itself",
-          "The Dead itself"
+          "The Weak",
+          "The Dead"
         ],
         "answer": 0
       },
       {
         "question": "Who gives all life?",
         "options": [
-          "Parents specifically",
-          "Doctors specifically",
-          "Allah alone indeed",
-          "Nature specifically"
+          "Parents",
+          "Doctors",
+          "Allah alone",
+          "Nature"
         ],
         "answer": 2
       },
       {
         "question": "What does Allah bring to life besides bodies?",
         "options": [
-          "Only plants indeed",
-          "Hearts that were",
-          "Only animals truly",
-          "Nothing else truly"
+          "Only plants",
+          "Hearts that were spiritually dead",
+          "Only animals",
+          "Nothing else"
         ],
         "answer": 1
       },
@@ -2826,8 +2826,8 @@
         "question": "What should we ask Allah to bring to life?",
         "options": [
           "Only our plants",
-          "Only our pets truly",
-          "Our hearts w/ faith &",
+          "Only our pets",
+          "Our hearts with faith and guidance",
           "Only our dreams"
         ],
         "answer": 2
@@ -2842,38 +2842,38 @@
         "options": [
           "The Taker of Life",
           "The Giver of Life",
-          "The Weak itself",
-          "The Eternal itself"
+          "The Weak",
+          "The Eternal"
         ],
         "answer": 0
       },
       {
         "question": "When does Allah take life?",
         "options": [
-          "Randomly indeed",
-          "By accident indeed",
+          "Randomly",
+          "By accident",
           "When the time is right",
-          "Never specifically"
+          "Never"
         ],
         "answer": 2
       },
       {
         "question": "What is death according to this lesson?",
         "options": [
-          "The end specifically",
-          "A punishment truly",
+          "The end",
+          "A punishment",
           "A step to the next life",
-          "Nothing specifically"
+          "Nothing"
         ],
         "answer": 2
       },
       {
         "question": "How does Allah control life and death?",
         "options": [
-          "Randomly indeed",
-          "Carelessly indeed",
-          "With wisdom & perfect",
-          "He doesn't indeed"
+          "Randomly",
+          "Carelessly",
+          "With wisdom and perfect timing",
+          "He doesn't"
         ],
         "answer": 2
       }
@@ -2886,9 +2886,9 @@
         "question": "What does 'Al-Hayy' mean?",
         "options": [
           "The Ever-Living",
-          "The Mortal itself",
-          "The Weak itself",
-          "The Temporary truly"
+          "The Mortal",
+          "The Weak",
+          "The Temporary"
         ],
         "answer": 0
       },
@@ -2896,16 +2896,16 @@
         "question": "Will Allah ever die?",
         "options": [
           "Yes, eventually",
-          "Maybe specifically",
+          "Maybe",
           "Never, He is eternal",
-          "Sometimes indeed"
+          "Sometimes"
         ],
         "answer": 2
       },
       {
         "question": "What comes from Allah being Ever-Living?",
         "options": [
-          "Nothing specifically",
+          "Nothing",
           "All life in creation",
           "Only plant life",
           "Only animal life"
@@ -2916,9 +2916,9 @@
         "question": "What should we do when we call upon Al-Hayy?",
         "options": [
           "Doubt His response",
-          "Lose hope indeed",
-          "Trust He is always alive",
-          "Give up specifically"
+          "Lose hope",
+          "Trust He is always alive and listening",
+          "Give up"
         ],
         "answer": 2
       }
@@ -2931,29 +2931,29 @@
         "question": "What does 'Al-Qayyoom' mean?",
         "options": [
           "The Self-Sustaining",
-          "The Dependent truly",
-          "The Weak itself",
-          "The Needy itself"
+          "The Dependent",
+          "The Weak",
+          "The Needy"
         ],
         "answer": 0
       },
       {
         "question": "Does Allah need anything?",
         "options": [
-          "Yes, food indeed",
-          "Yes, rest indeed",
-          "No, He sustains Himself &",
-          "Yes, help indeed"
+          "Yes, food",
+          "Yes, rest",
+          "No, He sustains Himself and everything",
+          "Yes, help"
         ],
         "answer": 2
       },
       {
         "question": "What would happen if Allah stopped sustaining creation?",
         "options": [
-          "Nothing specifically",
+          "Nothing",
           "Everything would continue",
           "Everything would collapse",
-          "Only small things would"
+          "Only small things would stop"
         ],
         "answer": 2
       },
@@ -2963,7 +2963,7 @@
           "Allah depends on us",
           "We depend on Allah",
           "Nobody depends on anyone",
-          "We depend on ourselves"
+          "We depend on ourselves only"
         ],
         "answer": 1
       }
@@ -2975,10 +2975,10 @@
       {
         "question": "What does 'Al-Waajid' mean?",
         "options": [
-          "The Finder itself",
-          "The Lost itself",
-          "The Weak itself",
-          "The Seeker itself"
+          "The Finder",
+          "The Lost",
+          "The Weak",
+          "The Seeker"
         ],
         "answer": 0
       },
@@ -2987,28 +2987,28 @@
         "options": [
           "Only big things",
           "Everything He wants",
-          "Nothing specifically",
-          "Only sometimes truly"
+          "Nothing",
+          "Only sometimes"
         ],
         "answer": 1
       },
       {
         "question": "What is Allah never in need of?",
         "options": [
-          "Power specifically",
-          "Help specifically",
-          "Anything—He is fully",
-          "Worship specifically"
+          "Power",
+          "Help",
+          "Anything—He is completely independent",
+          "Worship"
         ],
         "answer": 2
       },
       {
         "question": "What should we ask Al-Waajid to help us find?",
         "options": [
-          "Only money indeed",
-          "The right path & guidance",
-          "Only friends truly",
-          "Only food indeed"
+          "Only money",
+          "The right path and guidance",
+          "Only friends",
+          "Only food"
         ],
         "answer": 1
       }
@@ -3021,39 +3021,39 @@
         "question": "What does 'Al-Maajid' mean?",
         "options": [
           "The Noble and Glorious",
-          "The Humble itself",
-          "The Weak itself",
-          "The Small itself"
+          "The Humble",
+          "The Weak",
+          "The Small"
         ],
         "answer": 0
       },
       {
         "question": "What is Allah full of?",
         "options": [
-          "Only power indeed",
+          "Only power",
           "Glory and generosity",
           "Only strictness",
-          "Nothing specifically"
+          "Nothing"
         ],
         "answer": 1
       },
       {
         "question": "How does Allah treat His servants?",
         "options": [
-          "Harshly specifically",
-          "With neglect truly",
+          "Harshly",
+          "With neglect",
           "With honour and kindness",
-          "Randomly indeed"
+          "Randomly"
         ],
         "answer": 2
       },
       {
         "question": "What should remembering Al-Maajid inspire?",
         "options": [
-          "Fear only indeed",
-          "Sadness specifically",
+          "Fear only",
+          "Sadness",
           "Gratitude and respect",
-          "Confusion indeed"
+          "Confusion"
         ],
         "answer": 2
       }
@@ -3066,39 +3066,39 @@
         "question": "What does 'Al-Waahid' mean?",
         "options": [
           "The One and Only",
-          "The Many itself",
-          "The Weak itself",
-          "The Divided itself"
+          "The Many",
+          "The Weak",
+          "The Divided"
         ],
         "answer": 0
       },
       {
         "question": "How many gods are there?",
         "options": [
-          "Many specifically",
-          "Two specifically",
-          "Only One—Allah truly",
-          "Three specifically"
+          "Many",
+          "Two",
+          "Only One—Allah",
+          "Three"
         ],
         "answer": 2
       },
       {
         "question": "What does Allah have no partners in?",
         "options": [
-          "Only creation truly",
-          "Only power indeed",
-          "The power, knowledge, &",
-          "Nothing specifically"
+          "Only creation",
+          "Only power",
+          "His power, knowledge, and worship",
+          "Nothing"
         ],
         "answer": 2
       },
       {
         "question": "What should we worship?",
         "options": [
-          "Many things indeed",
-          "Allah alone indeed",
-          "Created things truly",
-          "Nothing specifically"
+          "Many things",
+          "Allah alone",
+          "Created things",
+          "Nothing"
         ],
         "answer": 1
       }
@@ -3111,29 +3111,29 @@
         "question": "What does 'As-Samad' mean?",
         "options": [
           "The Eternal Refuge",
-          "The Weak itself",
-          "The Needy itself",
-          "The Temporary truly"
+          "The Weak",
+          "The Needy",
+          "The Temporary"
         ],
         "answer": 0
       },
       {
         "question": "Who depends on Allah?",
         "options": [
-          "Only humans indeed",
-          "Only animals truly",
+          "Only humans",
+          "Only animals",
           "Everyone and everything",
-          "Nobody specifically"
+          "Nobody"
         ],
         "answer": 2
       },
       {
         "question": "Does Allah depend on anyone?",
         "options": [
-          "Yes, on angels truly",
+          "Yes, on angels",
           "Yes, on prophets",
           "No, He depends on no one",
-          "Sometimes indeed"
+          "Sometimes"
         ],
         "answer": 2
       },
@@ -3141,7 +3141,7 @@
         "question": "When should we call on As-Samad?",
         "options": [
           "Only when desperate",
-          "Never specifically",
+          "Never",
           "When life feels hard",
           "Only on Fridays"
         ],
@@ -3155,30 +3155,30 @@
       {
         "question": "What does 'Al-Qaadir' mean?",
         "options": [
-          "The Able itself",
-          "The Unable itself",
-          "The Weak itself",
-          "The Limited itself"
+          "The Able",
+          "The Unable",
+          "The Weak",
+          "The Limited"
         ],
         "answer": 0
       },
       {
         "question": "What is too hard for Allah?",
         "options": [
-          "Big things indeed",
-          "Complex things truly",
-          "Nothing specifically",
-          "Everything indeed"
+          "Big things",
+          "Complex things",
+          "Nothing",
+          "Everything"
         ],
         "answer": 2
       },
       {
         "question": "How quickly can Allah change a situation?",
         "options": [
-          "Never specifically",
-          "In years indeed",
-          "In a moment indeed",
-          "Slowly specifically"
+          "Never",
+          "In years",
+          "In a moment",
+          "Slowly"
         ],
         "answer": 2
       },
@@ -3186,9 +3186,9 @@
         "question": "Why should we ask Allah for anything?",
         "options": [
           "He might say no",
-          "He is busy indeed",
+          "He is busy",
           "His power has no limit",
-          "He forgets indeed"
+          "He forgets"
         ],
         "answer": 2
       }
@@ -3201,39 +3201,39 @@
         "question": "What does 'Al-Muqtadir' mean?",
         "options": [
           "The All-Powerful",
-          "The Powerless truly",
-          "The Weak itself",
-          "The Limited itself"
+          "The Powerless",
+          "The Weak",
+          "The Limited"
         ],
         "answer": 0
       },
       {
         "question": "What does Allah's power control?",
         "options": [
-          "Only earth indeed",
-          "Only heaven indeed",
+          "Only earth",
+          "Only heaven",
           "Every part of creation",
-          "Nothing specifically"
+          "Nothing"
         ],
         "answer": 2
       },
       {
         "question": "How does Allah arrange everything?",
         "options": [
-          "Randomly indeed",
-          "Carelessly indeed",
-          "With strength, wisdom, &",
-          "Slowly specifically"
+          "Randomly",
+          "Carelessly",
+          "With strength, wisdom, and care",
+          "Slowly"
         ],
         "answer": 2
       },
       {
         "question": "What does Al-Muqtadir help us feel?",
         "options": [
-          "Afraid specifically",
-          "Lost specifically",
-          "Safe in Allah's perfect",
-          "Confused indeed"
+          "Afraid",
+          "Lost",
+          "Safe in Allah's perfect plan",
+          "Confused"
         ],
         "answer": 2
       }
@@ -3245,40 +3245,40 @@
       {
         "question": "What does 'Al-Muqaddim' mean?",
         "options": [
-          "The One Who Brings",
+          "The One Who Brings Forward",
           "The One Who Delays",
-          "The Weak itself",
-          "The Last itself"
+          "The Weak",
+          "The Last"
         ],
         "answer": 0
       },
       {
         "question": "When does Allah bring things forward?",
         "options": [
-          "Randomly indeed",
+          "Randomly",
           "At the perfect time",
-          "Too early indeed",
-          "Never specifically"
+          "Too early",
+          "Never"
         ],
         "answer": 1
       },
       {
         "question": "Through what does Allah advance His servants?",
         "options": [
-          "Only wealth indeed",
-          "Only power indeed",
-          "Faith, patience, & good",
-          "Only luck indeed"
+          "Only wealth",
+          "Only power",
+          "Faith, patience, and good deeds",
+          "Only luck"
         ],
         "answer": 2
       },
       {
         "question": "Can anyone come forward without Allah's permission?",
         "options": [
-          "Yes, via hard work only",
+          "Yes, through hard work only",
           "Yes, through connections",
-          "No, unless Allah allows",
-          "Always specifically"
+          "No, unless Allah allows it",
+          "Always"
         ],
         "answer": 2
       }
@@ -3292,38 +3292,38 @@
         "options": [
           "The One Who Delays",
           "The One Who Rushes",
-          "The Weak itself",
-          "The Forgetful truly"
+          "The Weak",
+          "The Forgetful"
         ],
         "answer": 0
       },
       {
         "question": "Why does Allah delay things?",
         "options": [
-          "He forgets indeed",
+          "He forgets",
           "For wise reasons",
-          "He is weak indeed",
-          "By accident indeed"
+          "He is weak",
+          "By accident"
         ],
         "answer": 1
       },
       {
         "question": "What does Allah want us to grow in when He delays?",
         "options": [
-          "Anger specifically",
-          "Impatience indeed",
-          "Patience indeed",
-          "Sadness specifically"
+          "Anger",
+          "Impatience",
+          "Patience",
+          "Sadness"
         ],
         "answer": 2
       },
       {
         "question": "What is Allah's timing?",
         "options": [
-          "Random specifically",
-          "Always perfect truly",
+          "Random",
+          "Always perfect",
           "Always too late",
-          "Unpredictable truly"
+          "Unpredictable"
         ],
         "answer": 1
       }
@@ -3335,29 +3335,29 @@
       {
         "question": "What does 'Al-Awwal' mean?",
         "options": [
-          "The First itself",
-          "The Last itself",
-          "The Middle itself",
-          "The Temporary truly"
+          "The First",
+          "The Last",
+          "The Middle",
+          "The Temporary"
         ],
         "answer": 0
       },
       {
         "question": "What existed before Allah?",
         "options": [
-          "The universe truly",
-          "Angels specifically",
-          "Nothing specifically",
-          "Time specifically"
+          "The universe",
+          "Angels",
+          "Nothing",
+          "Time"
         ],
         "answer": 2
       },
       {
         "question": "How did creation begin?",
         "options": [
-          "By accident indeed",
+          "By accident",
           "By Allah's command",
-          "Randomly indeed",
+          "Randomly",
           "From existing things"
         ],
         "answer": 1
@@ -3365,10 +3365,10 @@
       {
         "question": "Where do our lives start and end?",
         "options": [
-          "With ourselves truly",
-          "With people indeed",
-          "With Allah indeed",
-          "Nowhere specifically"
+          "With ourselves",
+          "With people",
+          "With Allah",
+          "Nowhere"
         ],
         "answer": 2
       }
@@ -3380,10 +3380,10 @@
       {
         "question": "What does 'Al-Aakhir' mean?",
         "options": [
-          "The Last itself",
-          "The First itself",
-          "The Middle itself",
-          "The Temporary truly"
+          "The Last",
+          "The First",
+          "The Middle",
+          "The Temporary"
         ],
         "answer": 0
       },
@@ -3393,27 +3393,27 @@
           "It will remain forever",
           "It will pass away",
           "It will get stronger",
-          "Nothing specifically"
+          "Nothing"
         ],
         "answer": 1
       },
       {
         "question": "What is Allah the final goal of?",
         "options": [
-          "Only prophets truly",
-          "Only scholars truly",
-          "Every heart that seeks",
-          "Nobody specifically"
+          "Only prophets",
+          "Only scholars",
+          "Every heart that seeks truth",
+          "Nobody"
         ],
         "answer": 2
       },
       {
         "question": "What should we focus on that really lasts?",
         "options": [
-          "Money specifically",
-          "Fame specifically",
-          "The Hereafter truly",
-          "Power specifically"
+          "Money",
+          "Fame",
+          "The Hereafter",
+          "Power"
         ],
         "answer": 2
       }
@@ -3425,19 +3425,19 @@
       {
         "question": "What does 'Az-Zaahir' mean?",
         "options": [
-          "The Most High & Apparent",
-          "The Hidden itself",
-          "The Weak itself",
-          "The Low specifically"
+          "The Most High and Apparent",
+          "The Hidden",
+          "The Weak",
+          "The Low"
         ],
         "answer": 0
       },
       {
         "question": "Where are Allah's signs visible?",
         "options": [
-          "Only in books truly",
+          "Only in books",
           "In everything around us",
-          "Nowhere specifically",
+          "Nowhere",
           "Only in mosques"
         ],
         "answer": 1
@@ -3445,20 +3445,20 @@
       {
         "question": "What is above Allah?",
         "options": [
-          "The sky specifically",
-          "Angels specifically",
-          "Nothing specifically",
-          "The universe truly"
+          "The sky",
+          "Angels",
+          "Nothing",
+          "The universe"
         ],
         "answer": 2
       },
       {
         "question": "What does seeing Allah's signs do to our faith?",
         "options": [
-          "Weakens it indeed",
-          "Destroys it indeed",
+          "Weakens it",
+          "Destroys it",
           "Makes it stronger",
-          "Confuses it indeed"
+          "Confuses it"
         ],
         "answer": 2
       }
@@ -3472,18 +3472,18 @@
         "options": [
           "The Hidden and Near",
           "The Visible and Far",
-          "The Weak itself",
-          "The Distant itself"
+          "The Weak",
+          "The Distant"
         ],
         "answer": 0
       },
       {
         "question": "Even though we cannot see Allah, where is He?",
         "options": [
-          "Far away indeed",
-          "Close & near to our",
-          "Nowhere specifically",
-          "Only in heaven truly"
+          "Far away",
+          "Close and near to our hearts",
+          "Nowhere",
+          "Only in heaven"
         ],
         "answer": 1
       },
@@ -3492,8 +3492,8 @@
         "options": [
           "Only our actions",
           "What is inside our hearts",
-          "Only our words truly",
-          "Nothing specifically"
+          "Only our words",
+          "Nothing"
         ],
         "answer": 1
       },
@@ -3501,8 +3501,8 @@
         "question": "What should we keep pure?",
         "options": [
           "Only our clothes",
-          "Only our homes truly",
-          "Our hearts indeed",
+          "Only our homes",
+          "Our hearts",
           "Only our appearance"
         ],
         "answer": 2
@@ -3515,20 +3515,20 @@
       {
         "question": "What does 'Al-Waali' mean?",
         "options": [
-          "The Governor truly",
-          "The Servant itself",
-          "The Weak itself",
-          "The Follower truly"
+          "The Governor",
+          "The Servant",
+          "The Weak",
+          "The Follower"
         ],
         "answer": 0
       },
       {
         "question": "What does Allah manage?",
         "options": [
-          "Only earth indeed",
-          "Only heaven indeed",
-          "All affairs in universe",
-          "Nothing specifically"
+          "Only earth",
+          "Only heaven",
+          "All affairs in the universe",
+          "Nothing"
         ],
         "answer": 2
       },
@@ -3537,18 +3537,18 @@
         "options": [
           "Yes, many things",
           "Yes, small things",
-          "No, nothing indeed",
-          "Sometimes indeed"
+          "No, nothing",
+          "Sometimes"
         ],
         "answer": 2
       },
       {
         "question": "What should we trust?",
         "options": [
-          "Only ourselves truly",
-          "Only people indeed",
-          "Allah is Take care of our",
-          "Nobody specifically"
+          "Only ourselves",
+          "Only people",
+          "Allah is taking care of our lives",
+          "Nobody"
         ],
         "answer": 2
       }
@@ -3561,26 +3561,26 @@
         "question": "What does 'Al-Mutaʿaali' mean?",
         "options": [
           "The Supremely Exalted",
-          "The Low specifically",
-          "The Weak itself",
-          "The Equal itself"
+          "The Low",
+          "The Weak",
+          "The Equal"
         ],
         "answer": 0
       },
       {
         "question": "What is Allah above?",
         "options": [
-          "Only earth indeed",
-          "Only creation truly",
-          "Any imperfection or",
-          "Nothing specifically"
+          "Only earth",
+          "Only creation",
+          "Any imperfection or weakness",
+          "Nothing"
         ],
         "answer": 2
       },
       {
         "question": "Can Allah's greatness be compared?",
         "options": [
-          "Yes, to kings truly",
+          "Yes, to kings",
           "Yes, to strong people",
           "No, to anyone or anything",
           "Yes, to prophets"
@@ -3590,10 +3590,10 @@
       {
         "question": "What does this Name keep our hearts full of?",
         "options": [
-          "Fear only indeed",
-          "Sadness specifically",
+          "Fear only",
+          "Sadness",
           "Awe and respect",
-          "Confusion indeed"
+          "Confusion"
         ],
         "answer": 2
       }
@@ -3606,9 +3606,9 @@
         "question": "What does 'Al-Barr' mean?",
         "options": [
           "The Most Kind and Good",
-          "The Harsh itself",
-          "The Strict itself",
-          "The Unkind itself"
+          "The Harsh",
+          "The Strict",
+          "The Unkind"
         ],
         "answer": 0
       },
@@ -3616,8 +3616,8 @@
         "question": "When does Allah give us blessings?",
         "options": [
           "Only when we ask",
-          "Even as we forget to",
-          "Never specifically",
+          "Even when we forget to thank Him",
+          "Never",
           "Only on special days"
         ],
         "answer": 1
@@ -3627,18 +3627,18 @@
         "options": [
           "Only our prayers",
           "Only our good deeds",
-          "Our mistakes truly",
-          "Nothing specifically"
+          "Our mistakes",
+          "Nothing"
         ],
         "answer": 2
       },
       {
         "question": "What should we be like Allah?",
         "options": [
-          "Harsh specifically",
+          "Harsh",
           "Kind and generous",
-          "Strict specifically",
-          "Distant specifically"
+          "Strict",
+          "Distant"
         ],
         "answer": 1
       }
@@ -3650,10 +3650,10 @@
       {
         "question": "What does 'At-Tawwaab' mean?",
         "options": [
-          "The Accepter of",
-          "The Rejector truly",
-          "The Punisher truly",
-          "The Ignorer itself"
+          "The Accepter of Repentance",
+          "The Rejector",
+          "The Punisher",
+          "The Ignorer"
         ],
         "answer": 0
       },
@@ -3663,27 +3663,27 @@
           "When we avoid Him",
           "When we repent sincerely",
           "When we give up",
-          "When we hide truly"
+          "When we hide"
         ],
         "answer": 1
       },
       {
         "question": "What does Allah turn our sins into?",
         "options": [
-          "Nothing specifically",
-          "More sins indeed",
-          "Good deeds as hearts",
-          "Tests specifically"
+          "Nothing",
+          "More sins",
+          "Good deeds when hearts truly change",
+          "Tests"
         ],
         "answer": 2
       },
       {
         "question": "What does repenting bring us?",
         "options": [
-          "Sadness specifically",
-          "Fear only indeed",
+          "Sadness",
+          "Fear only",
           "Closer to Allah and peace",
-          "Confusion indeed"
+          "Confusion"
         ],
         "answer": 2
       }
@@ -3695,40 +3695,40 @@
       {
         "question": "What does 'Al-Muntaqim' mean?",
         "options": [
-          "The Avenger itself",
+          "The Avenger",
           "The Merciful Only",
-          "The Weak itself",
-          "The Forgetful truly"
+          "The Weak",
+          "The Forgetful"
         ],
         "answer": 0
       },
       {
         "question": "Who does Allah give justice to?",
         "options": [
-          "Only the rich truly",
-          "Only believers truly",
-          "The wronged itself",
-          "Nobody specifically"
+          "Only the rich",
+          "Only believers",
+          "The wronged",
+          "Nobody"
         ],
         "answer": 2
       },
       {
         "question": "Why does Allah delay punishment sometimes?",
         "options": [
-          "He forgets indeed",
-          "To give chances for",
-          "He is weak indeed",
-          "By accident indeed"
+          "He forgets",
+          "To give chances for repentance",
+          "He is weak",
+          "By accident"
         ],
         "answer": 1
       },
       {
         "question": "What should we do instead of seeking revenge?",
         "options": [
-          "Get angry indeed",
-          "Fight back indeed",
-          "Forgive & trust Allah's",
-          "Hold grudges truly"
+          "Get angry",
+          "Fight back",
+          "Forgive and trust Allah's justice",
+          "Hold grudges"
         ],
         "answer": 2
       }
@@ -3740,10 +3740,10 @@
       {
         "question": "What does 'Al-ʿAfuww' mean?",
         "options": [
-          "The Pardoner truly",
-          "The Punisher truly",
-          "The Recorder truly",
-          "The Strict itself"
+          "The Pardoner",
+          "The Punisher",
+          "The Recorder",
+          "The Strict"
         ],
         "answer": 0
       },
@@ -3753,27 +3753,27 @@
           "Remembers our sins",
           "Erases sins completely",
           "Reduces punishment only",
-          "Ignores us indeed"
+          "Ignores us"
         ],
         "answer": 1
       },
       {
         "question": "What does Allah love to do?",
         "options": [
-          "Punish specifically",
-          "Pardon specifically",
-          "Test only indeed",
-          "Ignore specifically"
+          "Punish",
+          "Pardon",
+          "Test only",
+          "Ignore"
         ],
         "answer": 1
       },
       {
         "question": "What should we let go of?",
         "options": [
-          "Good deeds indeed",
-          "Hope specifically",
-          "Grudges specifically",
-          "Faith specifically"
+          "Good deeds",
+          "Hope",
+          "Grudges",
+          "Faith"
         ],
         "answer": 2
       }
@@ -3786,18 +3786,18 @@
         "question": "What does 'Ar-Ra'oof' mean?",
         "options": [
           "The Most Compassionate",
-          "The Harsh itself",
-          "The Strict itself",
-          "The Distant itself"
+          "The Harsh",
+          "The Strict",
+          "The Distant"
         ],
         "answer": 0
       },
       {
         "question": "How does Allah's compassion reach us?",
         "options": [
-          "Never specifically",
-          "Only sometimes truly",
-          "In each blessing,",
+          "Never",
+          "Only sometimes",
+          "In every blessing, comfort, and act of mercy",
           "Only through people"
         ],
         "answer": 2
@@ -3806,19 +3806,19 @@
         "question": "What does Allah give us even when we disobey?",
         "options": [
           "Punishment only",
-          "Nothing specifically",
+          "Nothing",
           "Chances to come back",
-          "Tests only indeed"
+          "Tests only"
         ],
         "answer": 2
       },
       {
         "question": "How should we treat others?",
         "options": [
-          "Harshly specifically",
+          "Harshly",
           "With care and gentleness",
-          "Strictly indeed",
-          "Distantly indeed"
+          "Strictly",
+          "Distantly"
         ],
         "answer": 1
       }
@@ -3831,39 +3831,39 @@
         "question": "What does 'Maalik-ul-Mulk' mean?",
         "options": [
           "Owner of All Dominion",
-          "Servant of All truly",
-          "Weak Ruler indeed",
-          "Temporary King truly"
+          "Servant of All",
+          "Weak Ruler",
+          "Temporary King"
         ],
         "answer": 0
       },
       {
         "question": "What does Allah own?",
         "options": [
-          "Only earth indeed",
-          "Only heaven indeed",
+          "Only earth",
+          "Only heaven",
           "Everything in existence",
-          "Nothing specifically"
+          "Nothing"
         ],
         "answer": 2
       },
       {
         "question": "What does Allah give to whom He wills?",
         "options": [
-          "Only tests indeed",
+          "Only tests",
           "Power, wealth, and honour",
-          "Only problems truly",
-          "Nothing specifically"
+          "Only problems",
+          "Nothing"
         ],
         "answer": 1
       },
       {
         "question": "What does this help us stay?",
         "options": [
-          "Proud specifically",
-          "Arrogant indeed",
+          "Proud",
+          "Arrogant",
           "Humble and grateful",
-          "Fearful only truly"
+          "Fearful only"
         ],
         "answer": 2
       }
@@ -3875,7 +3875,7 @@
       {
         "question": "What does 'Dhul-Jalaali wal-Ikraam' mean?",
         "options": [
-          "Lord of Majesty & Honour",
+          "Lord of Majesty and Honour",
           "Lord of Weakness",
           "Lord of Earth Only",
           "Lord of Humans Only"
@@ -3885,9 +3885,9 @@
       {
         "question": "What is Allah full of?",
         "options": [
-          "Only power indeed",
-          "Only mercy indeed",
-          "Majesty, power, &",
+          "Only power",
+          "Only mercy",
+          "Majesty, power, and generosity",
           "Only strictness"
         ],
         "answer": 2
@@ -3895,10 +3895,10 @@
       {
         "question": "What does Allah deserve?",
         "options": [
-          "Only fear indeed",
-          "Only obedience truly",
-          "Our deepest respect &",
-          "Nothing specifically"
+          "Only fear",
+          "Only obedience",
+          "Our deepest respect and love",
+          "Nothing"
         ],
         "answer": 2
       },
@@ -3906,8 +3906,8 @@
         "question": "How do we glorify Allah?",
         "options": [
           "Only in thought",
-          "In prayer & thankfulness",
-          "Never specifically",
+          "In prayer and thankfulness",
+          "Never",
           "Only on Fridays"
         ],
         "answer": 1
@@ -3921,39 +3921,39 @@
         "question": "What does 'Al-Muqsit' mean?",
         "options": [
           "The Just and Fair",
-          "The Unjust itself",
-          "The Biased itself",
-          "The Unfair itself"
+          "The Unjust",
+          "The Biased",
+          "The Unfair"
         ],
         "answer": 0
       },
       {
         "question": "How does Allah treat everyone?",
         "options": [
-          "Unfairly indeed",
-          "Randomly indeed",
+          "Unfairly",
+          "Randomly",
           "With complete fairness",
-          "With bias indeed"
+          "With bias"
         ],
         "answer": 2
       },
       {
         "question": "Does Allah wrong anyone?",
         "options": [
-          "Yes, sometimes truly",
-          "Yes, often indeed",
-          "Never specifically",
-          "Always specifically"
+          "Yes, sometimes",
+          "Yes, often",
+          "Never",
+          "Always"
         ],
         "answer": 2
       },
       {
         "question": "What should we try to be?",
         "options": [
-          "Unfair specifically",
-          "Selfish specifically",
+          "Unfair",
+          "Selfish",
           "Fair and honest",
-          "Greedy specifically"
+          "Greedy"
         ],
         "answer": 2
       }
@@ -3965,40 +3965,40 @@
       {
         "question": "What does 'Al-Jaamiʿ' mean?",
         "options": [
-          "The Gatherer truly",
-          "The Separator truly",
-          "The Divider itself",
-          "The Scatterer truly"
+          "The Gatherer",
+          "The Separator",
+          "The Divider",
+          "The Scatterer"
         ],
         "answer": 0
       },
       {
         "question": "When will Allah gather everyone?",
         "options": [
-          "Never specifically",
+          "Never",
           "On the Day of Judgement",
-          "Only believers truly",
-          "Only sinners truly"
+          "Only believers",
+          "Only sinners"
         ],
         "answer": 1
       },
       {
         "question": "What does Allah bring together?",
         "options": [
-          "Only families truly",
-          "Only friends truly",
-          "People, hearts, & events",
-          "Nothing specifically"
+          "Only families",
+          "Only friends",
+          "People, hearts, and events for a purpose",
+          "Nothing"
         ],
         "answer": 2
       },
       {
         "question": "What does Allah unite us through?",
         "options": [
-          "Only language truly",
-          "Only culture truly",
-          "Faith specifically",
-          "Only family indeed"
+          "Only language",
+          "Only culture",
+          "Faith",
+          "Only family"
         ],
         "answer": 2
       }
@@ -4011,9 +4011,9 @@
         "question": "What does 'Al-Ghaniyy' mean?",
         "options": [
           "The Self-Sufficient",
-          "The Needy itself",
-          "The Dependent truly",
-          "The Weak itself"
+          "The Needy",
+          "The Dependent",
+          "The Weak"
         ],
         "answer": 0
       },
@@ -4021,7 +4021,7 @@
         "question": "Does Allah need anything?",
         "options": [
           "Yes, our worship",
-          "Yes, our help truly",
+          "Yes, our help",
           "Nothing from anyone",
           "Yes, our prayers"
         ],
@@ -4040,10 +4040,10 @@
       {
         "question": "Who should we depend on?",
         "options": [
-          "People specifically",
-          "Money specifically",
-          "Allah, not people or",
-          "Ourselves only truly"
+          "People",
+          "Money",
+          "Allah, not people or things",
+          "Ourselves only"
         ],
         "answer": 2
       }
@@ -4055,20 +4055,20 @@
       {
         "question": "What does 'Al-Mughni' mean?",
         "options": [
-          "The Enricher truly",
+          "The Enricher",
           "The Impoverisher",
-          "The Weak itself",
-          "The Taker itself"
+          "The Weak",
+          "The Taker"
         ],
         "answer": 0
       },
       {
         "question": "What can Allah make a poor person?",
         "options": [
-          "Poorer specifically",
+          "Poorer",
           "Rich in heart or body",
-          "Sad specifically",
-          "Nothing specifically"
+          "Sad",
+          "Nothing"
         ],
         "answer": 1
       },
@@ -4076,19 +4076,19 @@
         "question": "What is true richness?",
         "options": [
           "Having money only",
-          "Having power truly",
-          "happy w/ what Allah gives",
-          "Having fame indeed"
+          "Having power",
+          "Being happy with what Allah gives",
+          "Having fame"
         ],
         "answer": 2
       },
       {
         "question": "What should we ask Allah to make us rich in?",
         "options": [
-          "Only wealth indeed",
-          "Only knowledge truly",
+          "Only wealth",
+          "Only knowledge",
           "Faith and good deeds",
-          "Only power indeed"
+          "Only power"
         ],
         "answer": 2
       }
@@ -4100,29 +4100,29 @@
       {
         "question": "What does 'Al-Maaniʿ' mean?",
         "options": [
-          "The Preventer truly",
-          "The Giver Only truly",
-          "The Weak itself",
-          "The Careless truly"
+          "The Preventer",
+          "The Giver Only",
+          "The Weak",
+          "The Careless"
         ],
         "answer": 0
       },
       {
         "question": "How does Allah protect us?",
         "options": [
-          "He doesn't indeed",
+          "He doesn't",
           "Only through people",
-          "By stopping harm or wrong",
-          "Only sometimes truly"
+          "By stopping harm or wrong things",
+          "Only sometimes"
         ],
         "answer": 2
       },
       {
         "question": "Why might Allah not give us what we want?",
         "options": [
-          "He forgot indeed",
+          "He forgot",
           "He is saving us from it",
-          "He is weak indeed",
+          "He is weak",
           "He doesn't care"
         ],
         "answer": 1
@@ -4130,10 +4130,10 @@
       {
         "question": "What should we be when things don't go our way?",
         "options": [
-          "Angry specifically",
-          "Ungrateful indeed",
+          "Angry",
+          "Ungrateful",
           "Grateful—Allah knows why",
-          "Sad only indeed"
+          "Sad only"
         ],
         "answer": 2
       }
@@ -4147,38 +4147,38 @@
         "options": [
           "The Bringer of Harm",
           "The Giver of Good Only",
-          "The Weak itself",
-          "The Kind Only truly"
+          "The Weak",
+          "The Kind Only"
         ],
         "answer": 0
       },
       {
         "question": "Why does Allah allow hardship?",
         "options": [
-          "Without reason truly",
-          "Out of cruelty truly",
+          "Without reason",
+          "Out of cruelty",
           "For a wise reason",
-          "By accident indeed"
+          "By accident"
         ],
         "answer": 2
       },
       {
         "question": "What does pain or test teach us?",
         "options": [
-          "To give up indeed",
-          "To be angry indeed",
-          "Patience & makes us",
-          "To complain indeed"
+          "To give up",
+          "To be angry",
+          "Patience and makes us stronger",
+          "To complain"
         ],
         "answer": 2
       },
       {
         "question": "What does Allah bring from every trial?",
         "options": [
-          "Only sadness truly",
-          "Nothing specifically",
-          "Good specifically",
-          "Only problems truly"
+          "Only sadness",
+          "Nothing",
+          "Good",
+          "Only problems"
         ],
         "answer": 2
       }
@@ -4192,25 +4192,25 @@
         "options": [
           "The Giver of Benefit",
           "The Giver of Harm Only",
-          "The Weak itself",
-          "The Useless itself"
+          "The Weak",
+          "The Useless"
         ],
         "answer": 0
       },
       {
         "question": "Where does all goodness come from?",
         "options": [
-          "From people indeed",
-          "From luck indeed",
+          "From people",
+          "From luck",
           "Only from Allah",
-          "From ourselves truly"
+          "From ourselves"
         ],
         "answer": 2
       },
       {
         "question": "How does Allah help His servants?",
         "options": [
-          "Never specifically",
+          "Never",
           "Only when asked",
           "In ways they don't expect",
           "Only through people"
@@ -4220,10 +4220,10 @@
       {
         "question": "What should we always ask Allah for?",
         "options": [
-          "Only wealth indeed",
-          "Only health indeed",
-          "Benefit & protection from",
-          "Only happiness truly"
+          "Only wealth",
+          "Only health",
+          "Benefit and protection from harm",
+          "Only happiness"
         ],
         "answer": 2
       }
@@ -4235,40 +4235,40 @@
       {
         "question": "What does 'An-Noor' mean?",
         "options": [
-          "The Light itself",
-          "The Darkness truly",
-          "The Shadow itself",
-          "The Night itself"
+          "The Light",
+          "The Darkness",
+          "The Shadow",
+          "The Night"
         ],
         "answer": 0
       },
       {
         "question": "What is Allah the light of?",
         "options": [
-          "Only earth indeed",
-          "Only heaven indeed",
+          "Only earth",
+          "Only heaven",
           "The heavens and the earth",
-          "Nothing specifically"
+          "Nothing"
         ],
         "answer": 2
       },
       {
         "question": "Where does Allah's light show?",
         "options": [
-          "Only in lamps truly",
-          "In the Qur'an, knowledge,",
+          "Only in lamps",
+          "In the Qur'an, knowledge, and goodness",
           "Only in the sun",
-          "Nowhere specifically"
+          "Nowhere"
         ],
         "answer": 1
       },
       {
         "question": "What should we ask Allah to fill with His light?",
         "options": [
-          "Only our homes truly",
+          "Only our homes",
           "Only our mosques",
           "Our life and heart",
-          "Only our rooms truly"
+          "Only our rooms"
         ],
         "answer": 2
       }
@@ -4280,20 +4280,20 @@
       {
         "question": "What does 'Al-Haadi' mean?",
         "options": [
-          "The Guide itself",
-          "The Misguider truly",
-          "The Lost itself",
-          "The Confused truly"
+          "The Guide",
+          "The Misguider",
+          "The Lost",
+          "The Confused"
         ],
         "answer": 0
       },
       {
         "question": "What does Allah guide people to?",
         "options": [
-          "Confusion indeed",
-          "Darkness indeed",
-          "Truth & the straight path",
-          "Nowhere specifically"
+          "Confusion",
+          "Darkness",
+          "Truth and the straight path",
+          "Nowhere"
         ],
         "answer": 2
       },
@@ -4301,8 +4301,8 @@
         "question": "How does Allah teach us?",
         "options": [
           "Only through books",
-          "Through the Qur'an, ﷺ, &",
-          "He doesn't indeed",
+          "Through the Qur'an, Prophet ﷺ, and signs in creation",
+          "He doesn't",
           "Only through people"
         ],
         "answer": 1
@@ -4310,10 +4310,10 @@
       {
         "question": "What should we always ask Al-Haadi?",
         "options": [
-          "Only wealth indeed",
-          "Only health indeed",
-          "To keep us firm on right",
-          "Only knowledge truly"
+          "Only wealth",
+          "Only health",
+          "To keep us firm on the right path",
+          "Only knowledge"
         ],
         "answer": 2
       }
@@ -4326,19 +4326,19 @@
         "question": "What does 'Al-Badeeʿ' mean?",
         "options": [
           "The Incomparable Creator",
-          "The Copier itself",
-          "The Imitator truly",
-          "The Follower truly"
+          "The Copier",
+          "The Imitator",
+          "The Follower"
         ],
         "answer": 0
       },
       {
         "question": "How does Allah create?",
         "options": [
-          "By copying indeed",
-          "By imitating truly",
-          "In new & perfect ways,",
-          "Randomly indeed"
+          "By copying",
+          "By imitating",
+          "In new and perfect ways, unlike anyone",
+          "Randomly"
         ],
         "answer": 2
       },
@@ -4346,8 +4346,8 @@
         "question": "How did Allah make the universe?",
         "options": [
           "From an old template",
-          "Without any example",
-          "By accident indeed",
+          "Without any example before it",
+          "By accident",
           "From existing things"
         ],
         "answer": 1
@@ -4355,10 +4355,10 @@
       {
         "question": "What shows Allah's unique creativity?",
         "options": [
-          "Only humans indeed",
-          "Only animals truly",
-          "Every sunset, leaf, &",
-          "Only plants indeed"
+          "Only humans",
+          "Only animals",
+          "Every sunset, leaf, and soul",
+          "Only plants"
         ],
         "answer": 2
       }
@@ -4371,9 +4371,9 @@
         "question": "What does 'Al-Baaqi' mean?",
         "options": [
           "The Everlasting",
-          "The Temporary truly",
-          "The Ending itself",
-          "The Mortal itself"
+          "The Temporary",
+          "The Ending",
+          "The Mortal"
         ],
         "answer": 0
       },
@@ -4381,29 +4381,29 @@
         "question": "Will Allah ever end?",
         "options": [
           "Yes, eventually",
-          "Maybe specifically",
-          "Never, He will never fade",
-          "Soon specifically"
+          "Maybe",
+          "Never, He will never fade away",
+          "Soon"
         ],
         "answer": 2
       },
       {
         "question": "What should we focus on?",
         "options": [
-          "Only this life truly",
-          "Actions that last into",
-          "Only wealth indeed",
-          "Only fame indeed"
+          "Only this life",
+          "Actions that last into the Hereafter",
+          "Only wealth",
+          "Only fame"
         ],
         "answer": 1
       },
       {
         "question": "What are the lasting words that lead to Jannah?",
         "options": [
-          "Any words indeed",
+          "Any words",
           "Laa ilaaha illa Allah",
-          "Only poetry indeed",
-          "Only stories truly"
+          "Only poetry",
+          "Only stories"
         ],
         "answer": 1
       }
@@ -4415,39 +4415,39 @@
       {
         "question": "What does 'Al-Waarith' mean?",
         "options": [
-          "The Inheritor truly",
-          "The Loser itself",
-          "The Borrower truly",
-          "The Weak itself"
+          "The Inheritor",
+          "The Loser",
+          "The Borrower",
+          "The Weak"
         ],
         "answer": 0
       },
       {
         "question": "What remains after everything passes away?",
         "options": [
-          "The earth itself",
-          "The sky specifically",
-          "Allah specifically",
-          "Nothing specifically"
+          "The earth",
+          "The sky",
+          "Allah",
+          "Nothing"
         ],
         "answer": 2
       },
       {
         "question": "What will Allah inherit?",
         "options": [
-          "Only gold indeed",
-          "Only buildings truly",
-          "The earth & all that was",
-          "Nothing specifically"
+          "Only gold",
+          "Only buildings",
+          "The earth and all that was ever owned",
+          "Nothing"
         ],
         "answer": 2
       },
       {
         "question": "How should we live?",
         "options": [
-          "As owners indeed",
-          "As caretakers using",
-          "As hoarders indeed",
+          "As owners",
+          "As caretakers using blessings wisely",
+          "As hoarders",
           "As wasteful people"
         ],
         "answer": 1
@@ -4460,10 +4460,10 @@
       {
         "question": "What does 'Ad-Dayyan' mean?",
         "options": [
-          "The Recompenser / The",
-          "The Guide to Right Path",
+          "The Recompenser / The Supreme Judge",
+          "The Guide to the Right Path",
           "The Most Merciful",
-          "The Provider truly"
+          "The Provider"
         ],
         "answer": 0
       },
@@ -4471,8 +4471,8 @@
         "question": "Where is the name 'Ad-Dayyan' mentioned?",
         "options": [
           "Only in the Qur'an",
-          "In the Sunnah (sayings &",
-          "In the Torah truly",
+          "In the Sunnah (sayings and actions of the Prophet Muhammad ﷺ)",
+          "In the Torah",
           "It is not an Islamic name"
         ],
         "answer": 1
@@ -4480,9 +4480,9 @@
       {
         "question": "What will Allah do on the Day of Judgement as Ad-Dayyan?",
         "options": [
-          "Forgive everyone",
+          "Forgive everyone automatically",
           "Ignore people's deeds",
-          "Perfectly recompense",
+          "Perfectly recompense people for their deeds with justice",
           "Punish everyone equally"
         ],
         "answer": 2
@@ -4491,8 +4491,8 @@
         "question": "What does the name Ad-Dayyan embody?",
         "options": [
           "Chaos and confusion",
-          "Perfect justice &",
-          "Only mercy w/o justice",
+          "Perfect justice and fairness",
+          "Only mercy without justice",
           "Random judgment"
         ],
         "answer": 1
@@ -4505,40 +4505,40 @@
       {
         "question": "What does 'As-Saboor' mean?",
         "options": [
-          "The Patient itself",
-          "The Hasty itself",
-          "The Rushing itself",
-          "The Impatient truly"
+          "The Patient",
+          "The Hasty",
+          "The Rushing",
+          "The Impatient"
         ],
         "answer": 0
       },
       {
         "question": "Is Allah ever in a hurry?",
         "options": [
-          "Yes, always indeed",
-          "Sometimes indeed",
-          "Never specifically",
-          "Often specifically"
+          "Yes, always",
+          "Sometimes",
+          "Never",
+          "Often"
         ],
         "answer": 2
       },
       {
         "question": "Why does Allah delay punishment?",
         "options": [
-          "He forgets indeed",
-          "Out of mercy & to give",
-          "He is weak indeed",
-          "By accident indeed"
+          "He forgets",
+          "Out of mercy and to give time to change",
+          "He is weak",
+          "By accident"
         ],
         "answer": 1
       },
       {
         "question": "What does patience show?",
         "options": [
-          "Weakness indeed",
-          "Fear specifically",
-          "Trust in Allah's plan &",
-          "Confusion indeed"
+          "Weakness",
+          "Fear",
+          "Trust in Allah's plan and timing",
+          "Confusion"
         ],
         "answer": 2
       }
@@ -4550,10 +4550,10 @@
       {
         "question": "What does 'Al-Jaabir' mean?",
         "options": [
-          "The Restorer of Broken",
-          "The Breaker itself",
-          "The Destroyer truly",
-          "The Weak itself"
+          "The Restorer of the Broken",
+          "The Breaker",
+          "The Destroyer",
+          "The Weak"
         ],
         "answer": 0
       },
@@ -4561,26 +4561,26 @@
         "question": "What does Allah heal?",
         "options": [
           "Only physical wounds",
-          "Hearts & mends what is",
-          "Only diseases truly",
-          "Nothing specifically"
+          "Hearts and mends what is broken",
+          "Only diseases",
+          "Nothing"
         ],
         "answer": 1
       },
       {
         "question": "What does Allah help people find after hurt?",
         "options": [
-          "More sadness truly",
-          "Anger specifically",
-          "Peace again indeed",
-          "Nothing specifically"
+          "More sadness",
+          "Anger",
+          "Peace again",
+          "Nothing"
         ],
         "answer": 2
       },
       {
         "question": "When should we call upon Al-Jaabir?",
         "options": [
-          "Never specifically",
+          "Never",
           "Only when happy",
           "When we feel broken",
           "Only on Fridays"
@@ -4596,7 +4596,7 @@
         "question": "What does 'Al-Qaadir-ul-Muqtadir' show?",
         "options": [
           "Allah's weakness",
-          "Allah's total control &",
+          "Allah's total control and perfect strength",
           "Allah's limitation",
           "Allah's uncertainty"
         ],
@@ -4605,30 +4605,30 @@
       {
         "question": "How does Allah plan and create?",
         "options": [
-          "Randomly indeed",
+          "Randomly",
           "With difficulty",
           "With wisdom and ease",
-          "He struggles truly"
+          "He struggles"
         ],
         "answer": 2
       },
       {
         "question": "Does Allah ever get tired?",
         "options": [
-          "Yes, often indeed",
-          "Sometimes indeed",
-          "Never, The power is",
-          "At night indeed"
+          "Yes, often",
+          "Sometimes",
+          "Never, His power is complete",
+          "At night"
         ],
         "answer": 2
       },
       {
         "question": "Who should we rely on for strength?",
         "options": [
-          "Only ourselves truly",
-          "Only people indeed",
-          "Allah alone indeed",
-          "Money specifically"
+          "Only ourselves",
+          "Only people",
+          "Allah alone",
+          "Money"
         ],
         "answer": 2
       }
@@ -4641,9 +4641,9 @@
         "question": "What does 'Al-Mannaan' mean?",
         "options": [
           "The Bestower of Favours",
-          "The Taker itself",
-          "The Withholder truly",
-          "The Strict itself"
+          "The Taker",
+          "The Withholder",
+          "The Strict"
         ],
         "answer": 0
       },
@@ -4651,29 +4651,29 @@
         "question": "How does Allah give blessings?",
         "options": [
           "Only when asked",
-          "Reluctantly indeed",
-          "Endless blessings w/o",
-          "Rarely specifically"
+          "Reluctantly",
+          "Endless blessings without being asked",
+          "Rarely"
         ],
         "answer": 2
       },
       {
         "question": "What does Allah expect back?",
         "options": [
-          "Payment specifically",
-          "Nothing but gratitude &",
-          "Worship from rich people",
-          "Money specifically"
+          "Payment",
+          "Nothing but gratitude and obedience",
+          "Worship from rich people only",
+          "Money"
         ],
         "answer": 1
       },
       {
         "question": "What should we always say for His favours?",
         "options": [
-          "Nothing specifically",
-          "Thank you only truly",
-          "Alhamdulillah truly",
-          "Goodbye specifically"
+          "Nothing",
+          "Thank you only",
+          "Alhamdulillah",
+          "Goodbye"
         ],
         "answer": 2
       }

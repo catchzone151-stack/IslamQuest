@@ -5,10 +5,10 @@
       {
         "question": "What is Paradise (Jannah)?",
         "options": [
-          "A reward for good deeds",
-          "A symbolic concept of",
-          "The home Allah prepared",
-          "A mind achieved via"
+          "A temporary reward for good deeds",
+          "A symbolic concept of peace",
+          "The eternal home Allah prepared for believers who do righteous deeds",
+          "A state of mind achieved through meditation"
         ],
         "answer": 2
       },
@@ -16,8 +16,8 @@
         "question": "According to hadith, what has no eye seen, no ear heard, and no mind conceived?",
         "options": [
           "The Day of Judgment",
-          "The beauty & bliss of",
-          "The of Hellfire",
+          "The beauty and bliss of Paradise",
+          "The punishment of Hellfire",
           "The creation of angels"
         ],
         "answer": 1
@@ -26,9 +26,9 @@
         "question": "How can we enter Paradise according to the Prophet ﷺ?",
         "options": [
           "By our deeds alone",
-          "By being born into a",
-          "By Allah's mercy combined",
-          "By simply believing w/o"
+          "By being born into a Muslim family",
+          "By Allah's mercy combined with sincere faith and good actions",
+          "By simply believing without actions"
         ],
         "answer": 2
       },
@@ -36,9 +36,9 @@
         "question": "According to Qur'an 3:133, how wide is Paradise?",
         "options": [
           "As wide as the Earth",
-          "As wide as the heavens &",
+          "As wide as the heavens and earth",
           "As wide as the seven seas",
-          "Unlimited & unmeasurable"
+          "Unlimited and unmeasurable"
         ],
         "answer": 1
       }
@@ -50,10 +50,10 @@
       {
         "question": "What is the most common name for Paradise in the Qur'an?",
         "options": [
-          "Jannah specifically",
-          "Firdaws specifically",
-          "Dar As-Salām truly",
-          "Jannat 'Adn indeed"
+          "Jannah",
+          "Firdaws",
+          "Dar As-Salām",
+          "Jannat 'Adn"
         ],
         "answer": 0
       },
@@ -71,7 +71,7 @@
         "question": "Which name refers to the highest Paradise?",
         "options": [
           "Jannat An-Na'eem",
-          "Dar As-Salām truly",
+          "Dar As-Salām",
           "Jannat Al-Firdaws",
           "Jannat Al-Ma'wā"
         ],
@@ -80,8 +80,8 @@
       {
         "question": "Why does Allah use many different names for Paradise?",
         "options": [
-          "To make the Qur'an more",
-          "To help us understand &",
+          "To make the Qur'an more poetic",
+          "To help us understand and desire Paradise's countless blessings",
           "To confuse disbelievers",
           "To test our memorization"
         ],
@@ -96,19 +96,19 @@
         "question": "When was Paradise created?",
         "options": [
           "Before creating humanity",
-          "After the Day of Judgment",
-          "During Adam's time on",
-          "It will be created in"
+          "After the Day of Judgment begins",
+          "During Adam's time on Earth",
+          "It will be created in the future"
         ],
         "answer": 0
       },
       {
         "question": "What is Paradise's soil made of?",
         "options": [
-          "Regular earth truly",
-          "Golden sand indeed",
-          "The answer is Musk",
-          "White pearls truly"
+          "Regular earth",
+          "Golden sand",
+          "Musk (the finest fragrance)",
+          "White pearls"
         ],
         "answer": 2
       },
@@ -116,8 +116,8 @@
         "question": "What are the buildings in Paradise made of?",
         "options": [
           "Stone and marble",
-          "Bricks of gold & silver",
-          "Pure light indeed",
+          "Bricks of gold and silver with musk mortar",
+          "Pure light",
           "Crystal and glass"
         ],
         "answer": 1
@@ -125,10 +125,10 @@
       {
         "question": "When did the Prophet ﷺ see Paradise?",
         "options": [
-          "In a dream indeed",
+          "In a dream",
           "During the Battle of Badr",
-          "During his Isra (Isra &",
-          "He never saw it in this"
+          "During his Night Journey (Isra and Mi'raj)",
+          "He never saw it in this life"
         ],
         "answer": 2
       }
@@ -140,9 +140,9 @@
       {
         "question": "How many gates does Paradise have?",
         "options": [
-          "Seven gates indeed",
-          "Eight gates indeed",
-          "Twelve gates truly",
+          "Seven gates",
+          "Eight gates",
+          "Twelve gates",
           "Countless gates"
         ],
         "answer": 1
@@ -150,10 +150,10 @@
       {
         "question": "What is the name of the gate specifically for those who fasted frequently?",
         "options": [
-          "Bāb As-Salāt truly",
-          "Bāb Al-Jihād truly",
-          "Ar-Rayyān indeed",
-          "Bāb As-Sadaqah truly"
+          "Bāb As-Salāt",
+          "Bāb Al-Jihād",
+          "Ar-Rayyān",
+          "Bāb As-Sadaqah"
         ],
         "answer": 2
       },
@@ -161,7 +161,7 @@
         "question": "How wide are Paradise's gates?",
         "options": [
           "As wide as a large door",
-          "So wide the distance",
+          "So wide the distance between two sides equals the distance between Mecca and Busra",
           "Ten meters wide",
           "As wide as a city street"
         ],
@@ -170,10 +170,10 @@
       {
         "question": "Who will be called from all eight gates of Paradise?",
         "options": [
-          "All prophets truly",
-          "All martyrs indeed",
-          "Exceptional people like",
-          "Everyone who enters"
+          "All prophets",
+          "All martyrs",
+          "Exceptional people like Abu Bakr who excelled in every type of worship",
+          "Everyone who enters Paradise"
         ],
         "answer": 2
       }
@@ -185,10 +185,10 @@
       {
         "question": "What is the key to entering Paradise?",
         "options": [
-          "wealthy & giving charity",
-          "Saying 'Lā ilāha illā",
-          "born into a Muslim family",
-          "Memorizing the entire"
+          "Being wealthy and giving charity",
+          "Saying 'Lā ilāha illā Allāh' with sincere belief and righteous actions",
+          "Being born into a Muslim family",
+          "Memorizing the entire Qur'an"
         ],
         "answer": 1
       },
@@ -196,7 +196,7 @@
         "question": "What are the 'teeth' of the key to Paradise?",
         "options": [
           "The five pillars of Islam",
-          "The actions that",
+          "The actions that demonstrate true belief",
           "The six articles of faith",
           "The 99 names of Allah"
         ],
@@ -205,8 +205,8 @@
       {
         "question": "Is saying 'Lā ilāha illā Allāh' alone enough to enter Paradise?",
         "options": [
-          "Yes, the words alone are",
-          "No, it must be combined",
+          "Yes, the words alone are sufficient",
+          "No, it must be combined with sincere belief and righteous actions",
           "Only if said before death",
           "Only if said in Arabic"
         ],
@@ -215,10 +215,10 @@
       {
         "question": "What happens to good deeds done without faith in Allah?",
         "options": [
-          "They are stored for the",
+          "They are stored for the afterlife",
           "They are worthless",
-          "They reduce in Hell",
-          "They help in this life"
+          "They reduce punishment in Hell",
+          "They help in this world only"
         ],
         "answer": 1
       }
@@ -231,7 +231,7 @@
         "question": "What will the person with the lowest rank in Paradise receive?",
         "options": [
           "A small house and garden",
-          "A kingdom ten times the",
+          "A kingdom ten times the size of Earth",
           "The same as everyone else",
           "Only spiritual blessings"
         ],
@@ -240,30 +240,30 @@
       {
         "question": "According to hadith, how far will the lowest person in Paradise see his kingdom?",
         "options": [
-          "One hundred years'",
-          "A thousand years'",
+          "One hundred years' distance",
+          "A thousand years' distance",
           "As far as the eye can see",
-          "Ten thousand years'"
+          "Ten thousand years' distance"
         ],
         "answer": 1
       },
       {
         "question": "What will Allah tell the person with the lowest rank?",
         "options": [
-          "That he barely made it to",
-          "That he has the same as",
-          "That he must work harder",
-          "That he will move to"
+          "That he barely made it to Paradise",
+          "That he has the same as what he sees and ten times more",
+          "That he must work harder in Paradise",
+          "That he will move to higher levels later"
         ],
         "answer": 1
       },
       {
         "question": "What does the lowest rank in Paradise teach us?",
         "options": [
-          "That Paradise has levels",
-          "That we should aim for",
-          "That even the weakest",
-          "That some people barely"
+          "That Paradise has levels of inequality",
+          "That we should aim for the minimum requirements",
+          "That even the weakest believers receive unimaginable blessings from Allah's generosity",
+          "That some people barely deserve Paradise"
         ],
         "answer": 2
       }
@@ -275,8 +275,8 @@
       {
         "question": "What is the highest level of Paradise called?",
         "options": [
-          "Jannat 'Adn indeed",
-          "Dar As-Salām truly",
+          "Jannat 'Adn",
+          "Dar As-Salām",
           "Jannat Al-Firdaws",
           "Jannat An-Na'eem"
         ],
@@ -285,9 +285,9 @@
       {
         "question": "Where is Firdaws located?",
         "options": [
-          "At the entrance of",
-          "Directly beneath Allah's",
-          "In the middle levels of",
+          "At the entrance of Paradise",
+          "Directly beneath Allah's Throne",
+          "In the middle levels of Paradise",
           "At the edge of Paradise"
         ],
         "answer": 1
@@ -297,7 +297,7 @@
         "options": [
           "The winds of Paradise",
           "The light of Paradise",
-          "The four main rivers of",
+          "The four main rivers of Paradise",
           "The fragrance of Paradise"
         ],
         "answer": 2
@@ -307,8 +307,8 @@
         "options": [
           "Any level of Paradise",
           "The middle level",
-          "The easiest path to",
-          "Al-Firdaws Al-A'lā"
+          "The easiest path to Paradise",
+          "Al-Firdaws Al-A'lā (the highest Firdaws)"
         ],
         "answer": 3
       }
@@ -321,18 +321,18 @@
         "question": "What types of rivers flow in Paradise?",
         "options": [
           "Only water rivers",
-          "Water, milk, wine",
+          "Water, milk, wine (non-intoxicating), and honey",
           "Water and milk only",
-          "Seven types of fruit"
+          "Seven different types of fruit juices"
         ],
         "answer": 1
       },
       {
         "question": "What is special about the wine in Paradise's rivers?",
         "options": [
-          "It is forbidden like",
-          "It is the same as worldly",
-          "It is delightful & does",
+          "It is forbidden like worldly wine",
+          "It is the same as worldly wine",
+          "It is delightful and does not intoxicate or cause harm",
           "It tastes like honey"
         ],
         "answer": 2
@@ -340,10 +340,10 @@
       {
         "question": "What is the name of the Prophet ﷺ Muhammad ﷺ's ﷺ special river?",
         "options": [
-          "Al-Firdaws indeed",
-          "As-Salām indeed",
-          "Al-Kawthar indeed",
-          "An-Na'eem indeed"
+          "Al-Firdaws",
+          "As-Salām",
+          "Al-Kawthar",
+          "An-Na'eem"
         ],
         "answer": 2
       },
@@ -365,9 +365,9 @@
       {
         "question": "What are Paradise's palaces built from?",
         "options": [
-          "Pure light indeed",
+          "Pure light",
           "Crystal and glass",
-          "Bricks of gold & silver",
+          "Bricks of gold and silver with musk mortar",
           "White marble and pearls"
         ],
         "answer": 2
@@ -375,19 +375,19 @@
       {
         "question": "How will people in lower Paradise see the palaces of higher levels?",
         "options": [
-          "They won't be able to see",
+          "They won't be able to see them",
           "Through special mirrors",
-          "Shining like stars in sky",
-          "Only in special occasions"
+          "Shining like stars in the sky",
+          "Only during special occasions"
         ],
         "answer": 2
       },
       {
         "question": "According to hadith, what earns a palace in Paradise?",
         "options": [
-          "Praying tahajjud each",
-          "Building a mosque for",
-          "Fasting each Monday &",
+          "Praying tahajjud every night",
+          "Building a mosque for Allah",
+          "Fasting every Monday and Thursday",
           "Memorizing the Qur'an"
         ],
         "answer": 1
@@ -395,10 +395,10 @@
       {
         "question": "What is special about some palaces in Paradise?",
         "options": [
-          "They can fly truly",
-          "They are invisible to",
-          "They are so transparent",
-          "They change colors"
+          "They can fly",
+          "They are invisible to others",
+          "They are so transparent people can see through them",
+          "They change colors constantly"
         ],
         "answer": 2
       }
@@ -411,8 +411,8 @@
         "question": "What will the people of Paradise wear?",
         "options": [
           "Simple white robes",
-          "The finest silk & brocade",
-          "Whatever they wore in",
+          "The finest silk and brocade adorned with gold and pearls",
+          "Whatever they wore in worldly life",
           "Transparent garments"
         ],
         "answer": 1
@@ -420,9 +420,9 @@
       {
         "question": "What will happen to clothes in Paradise?",
         "options": [
-          "They need to be washed",
-          "They will never tear,",
-          "They must be changed",
+          "They need to be washed regularly",
+          "They will never tear, wear out, or become dirty",
+          "They must be changed daily",
           "They fade over time"
         ],
         "answer": 1
@@ -430,7 +430,7 @@
       {
         "question": "What will everyone's sweat smell like in Paradise?",
         "options": [
-          "Fresh flowers truly",
+          "Fresh flowers",
           "Like ocean breeze",
           "Musk (the finest perfume)",
           "There will be no sweat"
@@ -440,9 +440,9 @@
       {
         "question": "According to Qur'an 76:21, what color garments will people wear?",
         "options": [
-          "White silk indeed",
-          "Golden brocade truly",
-          "Green garments of fine",
+          "White silk",
+          "Golden brocade",
+          "Green garments of fine silk and brocade",
           "Rainbow-colored robes"
         ],
         "answer": 2
@@ -455,8 +455,8 @@
       {
         "question": "What will people eat in Paradise?",
         "options": [
-          "Only fruits & vegetables",
-          "Whatever they desire",
+          "Only fruits and vegetables",
+          "Whatever they desire instantly without effort",
           "Simple bread and water",
           "They won't need to eat"
         ],
@@ -466,7 +466,7 @@
         "question": "What happens to waste from food in Paradise?",
         "options": [
           "It disappears magically",
-          "It leaves as indeed",
+          "It leaves as pleasant-smelling sweat like musk",
           "There is no waste at all",
           "Angels remove it"
         ],
@@ -475,19 +475,19 @@
       {
         "question": "According to Qur'an 56:21, what type of meat will be available?",
         "options": [
-          "Only lamb indeed",
-          "Fish from Paradise's",
-          "Meat of fowl, from",
-          "Meat is not served in"
+          "Only lamb",
+          "Fish from Paradise's rivers",
+          "Meat of fowl, from whatever they desire",
+          "Meat is not served in Paradise"
         ],
         "answer": 2
       },
       {
         "question": "What negative effects does Paradise's food have?",
         "options": [
-          "It can make people",
+          "It can make people temporarily sick",
           "It causes weight gain",
-          "It has no negative",
+          "It has no negative effects at all",
           "It makes people sleepy"
         ],
         "answer": 2
@@ -500,20 +500,20 @@
       {
         "question": "Who will believers enjoy companionship with in Paradise?",
         "options": [
-          "Only their immediate",
-          "The prophets, the",
-          "Only people from their",
-          "They will be alone in"
+          "Only their immediate family",
+          "The prophets, the truthful, the martyrs, and the righteous",
+          "Only people from their own time period",
+          "They will be alone in their palaces"
         ],
         "answer": 1
       },
       {
         "question": "What will Allah remove from people's hearts in Paradise?",
         "options": [
-          "All memories of worldly",
-          "All grudges & ill",
-          "The desire for truly",
-          "Knowledge of their past"
+          "All memories of worldly life",
+          "All grudges and ill feelings",
+          "The desire for companionship",
+          "Knowledge of their past sins"
         ],
         "answer": 1
       },
@@ -521,9 +521,9 @@
         "question": "According to Qur'an 15:47, how will believers sit in Paradise?",
         "options": [
           "Each person alone",
-          "In large crowds w/o",
-          "As brothers on thrones",
-          "In circles around the"
+          "In large crowds without organization",
+          "As brothers on thrones facing each other",
+          "In circles around the prophets"
         ],
         "answer": 2
       },
@@ -531,9 +531,9 @@
         "question": "Will there be any negative emotions in Paradise?",
         "options": [
           "Yes, occasional sadness",
-          "Only jealousy of higher",
-          "No, there will be no",
-          "Minor conflicts but"
+          "Only jealousy of higher levels",
+          "No, there will be no arguments, jealousy, or hatred",
+          "Minor conflicts but quickly resolved"
         ],
         "answer": 2
       }
@@ -545,18 +545,18 @@
       {
         "question": "What will happen to believing families in Paradise?",
         "options": [
-          "They will be separated by",
-          "They will be reunited at",
-          "Only spouses will be",
-          "Children will be separate"
+          "They will be separated by their deeds",
+          "They will be reunited at the highest level achieved by any member",
+          "Only spouses will be together",
+          "Children will be separate from parents"
         ],
         "answer": 1
       },
       {
         "question": "According to Qur'an 52:21, who will be joined with believers in Paradise?",
         "options": [
-          "All their relatives",
-          "The descendants who",
+          "All their relatives regardless of faith",
+          "Their descendants who followed them in faith",
           "Only their parents",
           "Only their children"
         ],
@@ -565,20 +565,20 @@
       {
         "question": "Can disbelieving family members enter Paradise?",
         "options": [
-          "Yes, if believers pray",
-          "Yes, after a long time in",
-          "No, only those who died",
-          "Yes, if they were kind"
+          "Yes, if believers pray for them enough",
+          "Yes, after a long time in Hellfire",
+          "No, only those who died with faith can reunite",
+          "Yes, if they were kind people"
         ],
         "answer": 2
       },
       {
         "question": "What should motivate us regarding family reunions in Paradise?",
         "options": [
-          "To worry on our family",
-          "To judge our family",
-          "To guide our families",
-          "To abandon family members"
+          "To worry about our family constantly",
+          "To judge our family members",
+          "To guide our families toward faith and righteousness",
+          "To abandon family members who don't practice"
         ],
         "answer": 2
       }
@@ -590,10 +590,10 @@
       {
         "question": "What are Hoor al-'Ayn?",
         "options": [
-          "Angels who serve in",
-          "Spouses of perfect beauty",
-          "Special fruits in",
-          "Guardians of Paradise's"
+          "Angels who serve in Paradise",
+          "Spouses of perfect beauty and character created for Paradise",
+          "Special fruits in Paradise",
+          "Guardians of Paradise's gates"
         ],
         "answer": 1
       },
@@ -601,7 +601,7 @@
         "question": "How are the Hoor al-'Ayn described?",
         "options": [
           "As ordinary people",
-          "As having large, fine",
+          "As having large, beautiful eyes and radiant faces",
           "As invisible spirits",
           "As angels in human form"
         ],
@@ -610,10 +610,10 @@
       {
         "question": "Will Paradise have perfect relationships?",
         "options": [
-          "No, there will be minor",
+          "No, there will be minor disagreements",
           "Only between spouses",
-          "Yes, relationships bring",
-          "Relationships are not"
+          "Yes, relationships bring only joy without worldly problems",
+          "Relationships are not important in Paradise"
         ],
         "answer": 2
       },
@@ -621,8 +621,8 @@
         "question": "According to Qur'an 55:56, what quality do the Hoor al-'Ayn have?",
         "options": [
           "They are very tall",
-          "They can fly truly",
-          "They are pure & untouched",
+          "They can fly",
+          "They are pure and untouched before by man or jinn",
           "They are made of light"
         ],
         "answer": 2
@@ -636,7 +636,7 @@
         "question": "Why do people gather in Paradise's markets?",
         "options": [
           "To buy and sell goods",
-          "To socialize & receive",
+          "To socialize and receive gifts from Allah",
           "To attend classes",
           "To work and earn rewards"
         ],
@@ -645,18 +645,18 @@
       {
         "question": "How often will people visit Paradise's markets?",
         "options": [
-          "Daily specifically",
-          "Monthly specifically",
-          "Every Friday truly",
-          "Once a year indeed"
+          "Daily",
+          "Monthly",
+          "Every Friday",
+          "Once a year"
         ],
         "answer": 2
       },
       {
         "question": "What happens when people attend Paradise's markets?",
         "options": [
-          "They trade goods w/ each",
-          "Winds blow w/ fragrances",
+          "They trade goods with each other",
+          "Winds blow carrying fragrances and increase their beauty",
           "They compete in games",
           "They listen to lectures"
         ],
@@ -667,8 +667,8 @@
         "options": [
           "They brought back gifts",
           "They learned new things",
-          "They are even more fine",
-          "They are tired from"
+          "They are even more beautiful than before",
+          "They are tired from the journey"
         ],
         "answer": 2
       }
@@ -681,7 +681,7 @@
         "question": "What age will everyone be in Paradise?",
         "options": [
           "Whatever age they died at",
-          "Thirty or thirty-three",
+          "Thirty or thirty-three years old",
           "Twenty-one years old",
           "They will be ageless"
         ],
@@ -692,7 +692,7 @@
         "options": [
           "They remain the same",
           "They improve slightly",
-          "They will be perfectly",
+          "They will be perfectly healthy and whole",
           "They wait to be healed"
         ],
         "answer": 2
@@ -701,7 +701,7 @@
         "question": "Will people age in Paradise?",
         "options": [
           "Yes, very slowly",
-          "No, they remain at",
+          "No, they remain at perfect age forever",
           "Only in appearance",
           "They age but stay healthy"
         ],
@@ -711,9 +711,9 @@
         "question": "According to hadith, how will people of Paradise enter it?",
         "options": [
           "As old and wise",
-          "As children indeed",
-          "Hairless, beardless, w/",
-          "In their worldly"
+          "As children",
+          "Hairless, beardless, with eyes anointed with kohl, aged thirty or thirty-three",
+          "In their worldly appearance"
         ],
         "answer": 2
       }
@@ -735,20 +735,20 @@
       {
         "question": "How often will believers see Allah in Paradise?",
         "options": [
-          "Only once indeed",
-          "Once a year indeed",
-          "Regularly, like gazing at",
-          "Never directly truly"
+          "Only once",
+          "Once a year",
+          "Regularly, like gazing at the full moon",
+          "Never directly"
         ],
         "answer": 2
       },
       {
         "question": "What will happen when believers see Allah?",
         "options": [
-          "They will feel slightly",
-          "They will forget each",
-          "They will ask to return",
-          "They will become"
+          "They will feel slightly happy",
+          "They will forget every other pleasure of Paradise",
+          "They will ask to return to their palaces",
+          "They will become unconscious"
         ],
         "answer": 1
       },
@@ -756,7 +756,7 @@
         "question": "According to Qur'an 75:22-23, what will some faces do on that Day?",
         "options": [
           "Be covered with veils",
-          "Be radiant, looking at",
+          "Be radiant, looking at their Lord",
           "Turn away in shame",
           "Glow with golden light"
         ],
@@ -772,7 +772,7 @@
         "options": [
           "Through angels only",
           "Through written messages",
-          "Directly w/o any",
+          "Directly without any translator or barrier",
           "Through the prophets"
         ],
         "answer": 2
@@ -780,30 +780,30 @@
       {
         "question": "What will Allah say to greet the people of Paradise?",
         "options": [
-          "Welcome specifically",
+          "Welcome",
           "Salāmun (Peace)",
           "Congratulations",
-          "Well done indeed"
+          "Well done"
         ],
         "answer": 1
       },
       {
         "question": "What will Allah ask the people of Paradise?",
         "options": [
-          "If they remember their",
+          "If they remember their sins",
           "If they are pleased",
-          "If they want more",
-          "If they miss the worldly"
+          "If they want more blessings",
+          "If they miss the worldly life"
         ],
         "answer": 1
       },
       {
         "question": "According to Qur'an 36:58, what is the word from the Merciful Lord?",
         "options": [
-          "Forgiveness indeed",
-          "Peace (Salām) truly",
-          "Mercy specifically",
-          "Love specifically"
+          "Forgiveness",
+          "Peace (Salām)",
+          "Mercy",
+          "Love"
         ],
         "answer": 1
       }
@@ -816,19 +816,19 @@
         "question": "What will NOT exist in Paradise?",
         "options": [
           "Rivers and gardens",
-          "Death, disease, pain,",
-          "Food and drink truly",
-          "Companionship truly"
+          "Death, disease, pain, sadness, or worry",
+          "Food and drink",
+          "Companionship"
         ],
         "answer": 1
       },
       {
         "question": "What will the announcer proclaim to the people of Paradise?",
         "options": [
-          "That they must continue",
-          "That they will live",
-          "That they can visit Earth",
-          "That they must wait for"
+          "That they must continue worshipping",
+          "That they will live forever, never die, be healthy, young, and in bliss",
+          "That they can visit Earth occasionally",
+          "That they must wait for judgment"
         ],
         "answer": 1
       },
@@ -837,8 +837,8 @@
         "options": [
           "Yes, occasionally",
           "Only if they wish to",
-          "No, except the first",
-          "Yes, but they are"
+          "No, except the first death (worldly death)",
+          "Yes, but they are resurrected"
         ],
         "answer": 2
       },
@@ -847,8 +847,8 @@
         "options": [
           "Time moves very fast",
           "Time stops completely",
-          "The security that",
-          "People can travel back in"
+          "The eternal security that families stay together and joy never ends",
+          "People can travel back in time"
         ],
         "answer": 2
       }
@@ -861,7 +861,7 @@
         "question": "What determines whether our actions are leading us to Paradise?",
         "options": [
           "How much money we donate",
-          "Whether we pray",
+          "Whether we pray faithfully, treat others kindly, avoid sins, and strive to please Allah",
           "Where we were born",
           "How many people we know"
         ],
@@ -870,9 +870,9 @@
       {
         "question": "What does the path to Paradise require?",
         "options": [
-          "Only praying five times",
-          "Sincere faith, consistent",
-          "perfect w/o any mistakes",
+          "Only praying five times daily",
+          "Sincere faith, consistent good deeds, and repentance from sins",
+          "Being perfect without any mistakes",
           "Only avoiding major sins"
         ],
         "answer": 1
@@ -880,20 +880,20 @@
       {
         "question": "According to hadith, how close is Paradise to us?",
         "options": [
-          "Very far away in heavens",
-          "Closer than the strap of",
+          "Very far away in the heavens",
+          "Closer than the strap of our shoe",
           "A lifetime of work away",
-          "Only accessible after"
+          "Only accessible after death"
         ],
         "answer": 1
       },
       {
         "question": "What should Paradise motivate us to do?",
         "options": [
-          "Ignore worldly truly",
-          "Judge others who don't",
-          "Live righteously & call",
-          "Worry constantly on our"
+          "Ignore worldly responsibilities",
+          "Judge others who don't practice",
+          "Live righteously and call others to the truth",
+          "Worry constantly about our deeds"
         ],
         "answer": 2
       }

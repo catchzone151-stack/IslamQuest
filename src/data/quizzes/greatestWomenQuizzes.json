@@ -6,9 +6,9 @@
         "question": "Who cared for Maryam when she grew up in the temple?",
         "options": [
           "Prophet Zakariyyah",
-          "Her mother indeed",
-          "Angel Jibra'il truly",
-          "Her father indeed"
+          "Her mother",
+          "Angel Jibra'il",
+          "Her father"
         ],
         "answer": 0
       },
@@ -18,14 +18,14 @@
           "Gold and jewels",
           "Fresh food from Heaven",
           "Beautiful clothes",
-          "Holy books indeed"
+          "Holy books"
         ],
         "answer": 1
       },
       {
         "question": "According to the Qur'an, how does Allah provide for whom He wills?",
         "options": [
-          "With hard work truly",
+          "With hard work",
           "Through other people",
           "Without account or limit",
           "Only to the righteous"
@@ -37,8 +37,8 @@
         "options": [
           "It makes life easier",
           "It guarantees wealth",
-          "It earns respect from",
-          "It brings miraculous"
+          "It earns respect from others",
+          "It brings miraculous blessings beyond human understanding"
         ],
         "answer": 3
       }
@@ -50,19 +50,19 @@
       {
         "question": "Who appeared to Maryam to announce she would have a miraculous child?",
         "options": [
-          "Angel Jibra'il in human",
+          "Angel Jibra'il in human form",
           "Prophet Zakariyyah",
-          "Her mother indeed",
-          "A stranger itself"
+          "Her mother",
+          "A stranger"
         ],
         "answer": 0
       },
       {
         "question": "How did the angel explain that Maryam could have a child?",
         "options": [
-          "Through a miracle of",
-          "Allah creates what He",
-          "It would happen in future",
+          "Through a miracle of medicine",
+          "Allah creates what He wills by saying 'Be' and it is",
+          "It would happen in the future",
           "She must wait many years"
         ],
         "answer": 1
@@ -71,8 +71,8 @@
         "question": "What did Allah provide for Maryam during her birth pains?",
         "options": [
           "Helpers to assist her",
-          "A safe shelter truly",
-          "A stream & fresh dates",
+          "A safe shelter",
+          "A stream and fresh dates from a palm tree",
           "Medicine for the pain"
         ],
         "answer": 2
@@ -81,9 +81,9 @@
         "question": "What does this lesson teach about Allah during our difficult trials?",
         "options": [
           "He tests us without help",
-          "He expects us to manage",
-          "He provides only",
-          "He provides comfort &"
+          "He expects us to manage alone",
+          "He provides only spiritual comfort",
+          "He provides comfort and sustenance when we trust His plan"
         ],
         "answer": 3
       }
@@ -95,10 +95,10 @@
       {
         "question": "When Maryam's people accused her, how did she respond?",
         "options": [
-          "She pointed to baby Isa",
-          "She explained everything",
+          "She pointed to baby Isa with complete trust",
+          "She explained everything herself",
           "She ran away in fear",
-          "She asked Zakariyyah for"
+          "She asked Zakariyyah for help"
         ],
         "answer": 0
       },
@@ -106,28 +106,28 @@
         "question": "What miracle happened when Maryam brought baby Isa to her people?",
         "options": [
           "The angel appeared again",
-          "Baby Isa spoke from",
-          "Lightning struck from sky",
-          "The people at once"
+          "Baby Isa spoke from the cradle declaring he was Allah's servant",
+          "Lightning struck from the sky",
+          "Her people immediately believed"
         ],
         "answer": 1
       },
       {
         "question": "According to the Qur'an, how did Allah honor Maryam?",
         "options": [
-          "He made her rich &",
+          "He made her wealthy and powerful",
           "He gave her a long life",
-          "He chose & purified her",
-          "He protected her from all"
+          "He chose and purified her above all women of the worlds",
+          "He protected her from all hardship"
         ],
         "answer": 2
       },
       {
         "question": "Who named Maryam among the four greatest women ever?",
         "options": [
-          "Angel Jibra'il truly",
+          "Angel Jibra'il",
           "Prophet Zakariyyah",
-          "Baby Isa indeed",
+          "Baby Isa",
           "The Prophet ﷺ Muhammad ﷺ"
         ],
         "answer": 3
@@ -140,7 +140,7 @@
       {
         "question": "Who was Asiyah married to?",
         "options": [
-          "Pharaoh, the tyrant who",
+          "Pharaoh, the tyrant who claimed divinity",
           "A righteous king",
           "A wealthy merchant",
           "A temple priest"
@@ -150,9 +150,9 @@
       {
         "question": "Despite living in a palace of disbelief, what did Asiyah do?",
         "options": [
-          "She left the palace",
-          "She secretly trust in One",
-          "She tried to convince",
+          "She left the palace immediately",
+          "She secretly believed in the One True Allah",
+          "She tried to convince Pharaoh",
           "She gave up her faith"
         ],
         "answer": 1
@@ -161,7 +161,7 @@
         "question": "According to the Qur'an, what example does Allah present through Asiyah?",
         "options": [
           "An example of patience",
-          "An example of those who",
+          "An example of those who believed",
           "An example of sacrifice",
           "An example of wisdom"
         ],
@@ -170,10 +170,10 @@
       {
         "question": "What does the key lesson teach about true faith?",
         "options": [
-          "It requires a supportive",
-          "It needs wealth & comfort",
+          "It requires a supportive environment",
+          "It needs wealth and comfort",
           "It only grows in mosques",
-          "It can flourish even in"
+          "It can flourish even in the most hostile environments"
         ],
         "answer": 3
       }
@@ -185,40 +185,40 @@
       {
         "question": "What did Asiyah do when baby Musa was found in the river?",
         "options": [
-          "She convinced Pharaoh to",
-          "She sent him away to",
+          "She convinced Pharaoh to spare him and let her raise him",
+          "She sent him away to safety",
           "She hid him in the palace",
-          "She returned him to river"
+          "She returned him to the river"
         ],
         "answer": 0
       },
       {
         "question": "What did Allah place in Asiyah's heart for baby Musa?",
         "options": [
-          "Fear and worry truly",
-          "Mercy & love for Allah's",
+          "Fear and worry",
+          "Mercy and love for Allah's chosen messenger",
           "Doubt about the future",
-          "Concern for Pharaoh's"
+          "Concern for Pharaoh's reaction"
         ],
         "answer": 1
       },
       {
         "question": "According to the Qur'an, what did Asiyah say to Pharaoh about baby Musa?",
         "options": [
-          "We should return him",
+          "We should return him immediately",
           "He is dangerous to us",
-          "He will be a comfort to",
-          "We should raise him as a"
+          "He will be a comfort to me and you, perhaps he may benefit us",
+          "We should raise him as a servant"
         ],
         "answer": 2
       },
       {
         "question": "Where did Musa grow up because of Asiyah's compassion?",
         "options": [
-          "In a temple indeed",
+          "In a temple",
           "With his birth family",
-          "In the desert truly",
-          "In Pharaoh's own palace,"
+          "In the desert",
+          "In Pharaoh's own palace, protected and nurtured"
         ],
         "answer": 3
       }
@@ -230,9 +230,9 @@
       {
         "question": "Why did Pharaoh order Asiyah to be tortured?",
         "options": [
-          "He discovered her faith",
-          "She tried to escape the",
-          "She refused to obey his",
+          "He discovered her faith in Musa's God",
+          "She tried to escape the palace",
+          "She refused to obey his orders",
           "She helped the Israelites"
         ],
         "answer": 0
@@ -240,10 +240,10 @@
       {
         "question": "What beautiful supplication did Asiyah make while being tortured?",
         "options": [
-          "She asked for revenge on",
-          "She asked Allah for a",
-          "She asked to be rescued",
-          "She asked for her"
+          "She asked for revenge on Pharaoh",
+          "She asked Allah for a house in Paradise near Him",
+          "She asked to be rescued immediately",
+          "She asked for her suffering to end"
         ],
         "answer": 1
       },
@@ -251,8 +251,8 @@
         "question": "According to the Qur'an, what did Asiyah ask Allah to save her from?",
         "options": [
           "Only from death",
-          "Only from pain truly",
-          "From Pharaoh, his deeds,",
+          "Only from pain",
+          "From Pharaoh, his deeds, and the wrongdoing people",
           "From poverty and hardship"
         ],
         "answer": 2
@@ -263,7 +263,7 @@
           "She was rescued by angels",
           "She escaped the torture",
           "The boulder missed her",
-          "Allah took her soul &"
+          "Allah took her soul and showed her the house in Paradise"
         ],
         "answer": 3
       }
@@ -275,7 +275,7 @@
       {
         "question": "What was Khadijah known as throughout Makkah?",
         "options": [
-          "The Pure One, as of her",
+          "The Pure One, because of her impeccable character",
           "The Wealthy One",
           "The Wise Teacher",
           "The Beautiful Lady"
@@ -285,10 +285,10 @@
       {
         "question": "Why did Khadijah hire Muhammad ﷺ to lead her trade caravan?",
         "options": [
-          "He was the cheapest",
-          "The legendary truly",
-          "He was recommended by",
-          "He had the most"
+          "He was the cheapest option",
+          "His legendary trustworthiness and honesty",
+          "He was recommended by friends",
+          "He had the most experience"
         ],
         "answer": 1
       },
@@ -296,8 +296,8 @@
         "question": "Who proposed marriage between Khadijah and Muhammad ﷺ?",
         "options": [
           "The Prophet's ﷺ uncle",
-          "Her father indeed",
-          "Khadijah via her uncle",
+          "Her father",
+          "Khadijah through her uncle",
           "Both families together"
         ],
         "answer": 2
@@ -305,10 +305,10 @@
       {
         "question": "According to the hadith, who is mentioned alongside Maryam as the best of women?",
         "options": [
-          "Asiyah specifically",
-          "Fatimah specifically",
-          "Aishah specifically",
-          "Khadijah indeed"
+          "Asiyah",
+          "Fatimah",
+          "Aishah",
+          "Khadijah"
         ],
         "answer": 3
       }
@@ -320,40 +320,40 @@
       {
         "question": "How did Khadijah comfort Muhammad ﷺ when revelation first came?",
         "options": [
-          "She said Allah would",
-          "She told him to rest &",
-          "She asked others for",
-          "She suggested he visit a"
+          "She declared Allah would never disgrace someone so noble",
+          "She told him to rest and forget about it",
+          "She asked others for advice",
+          "She suggested he visit a doctor"
         ],
         "answer": 0
       },
       {
         "question": "What was Khadijah's unique position in accepting Islam?",
         "options": [
-          "She was the youngest to",
-          "She was the very first",
-          "She was the last to",
-          "She convinced others"
+          "She was the youngest to believe",
+          "She was the very first person to accept Islam",
+          "She was the last to believe",
+          "She convinced others first"
         ],
         "answer": 1
       },
       {
         "question": "What did Khadijah do with her wealth during the boycott years?",
         "options": [
-          "She saved it for the",
+          "She saved it for the future",
           "She gave some to the poor",
-          "She spent her entire",
-          "She invested it in"
+          "She spent her entire wealth supporting Islam and feeding poor Muslims",
+          "She invested it in businesses"
         ],
         "answer": 2
       },
       {
         "question": "According to the hadith, which quality did Khadijah NOT possess?",
         "options": [
-          "She maintained family",
+          "She maintained family ties",
           "She supported the weak",
           "She honored guests",
-          "She sought wealth & power"
+          "She sought wealth and power"
         ],
         "answer": 3
       }
@@ -365,10 +365,10 @@
       {
         "question": "What was the Year of Sorrow?",
         "options": [
-          "When both Khadijah & Abu",
-          "When Muslims were",
-          "When the ﷺ migrated",
-          "When the Battle of Uhud"
+          "When both Khadijah and Abu Talib died within months",
+          "When Muslims were boycotted",
+          "When the Prophet ﷺ migrated",
+          "When the Battle of Uhud occurred"
         ],
         "answer": 0
       },
@@ -376,18 +376,18 @@
         "question": "How did the Prophet ﷺ honor Khadijah after her death?",
         "options": [
           "He built a monument",
-          "He sent meat to her",
+          "He sent meat to her friends and spoke of her virtues",
           "He wrote poetry about her",
-          "He named a mosque after"
+          "He named a mosque after her"
         ],
         "answer": 1
       },
       {
         "question": "What glad tidings did Angel Jibra'il bring to Khadijah from Allah?",
         "options": [
-          "She would have many",
-          "She would live a long",
-          "A palace in Paradise made",
+          "She would have many children",
+          "She would live a long life",
+          "A palace in Paradise made entirely of pearls",
           "Her wealth would multiply"
         ],
         "answer": 2
@@ -398,7 +398,7 @@
           "She was the wisest",
           "She was the most generous",
           "She was the strongest",
-          "I have been granted her"
+          "I have been granted her love"
         ],
         "answer": 3
       }
@@ -410,8 +410,8 @@
       {
         "question": "Who were Fatimah's parents?",
         "options": [
-          "The ﷺ the & Khadijah",
-          "Ali and Asiyah truly",
+          "The Prophet ﷺ Muhammad ﷺ and Khadijah",
+          "Ali and Asiyah",
           "Abu Bakr and Maryam",
           "Umar and Sawdah"
         ],
@@ -421,18 +421,18 @@
         "question": "How did the Prophet ﷺ show his love for Fatimah when she entered?",
         "options": [
           "He would smile at her",
-          "He would stand & kiss her",
+          "He would stand and kiss her forehead with tenderness",
           "He would greet her warmly",
-          "He would offer her his"
+          "He would offer her his seat"
         ],
         "answer": 1
       },
       {
         "question": "Who did Fatimah marry?",
         "options": [
-          "Abu Bakr indeed",
+          "Abu Bakr",
           "Umar ibn al-Khattab",
-          "Ali b. Abi Talib, 's",
+          "Ali ibn Abi Talib, the Prophet's cousin",
           "Uthman ibn Affan"
         ],
         "answer": 2
@@ -443,7 +443,7 @@
           "A guardian of the gates",
           "A teacher of women",
           "An angel's companion",
-          "The leader of all women"
+          "The leader of all women in Paradise"
         ],
         "answer": 3
       }
@@ -455,19 +455,19 @@
       {
         "question": "Despite being the Prophet's daughter, how did Fatimah live?",
         "options": [
-          "In poverty, working hard",
-          "In comfort w/ many",
+          "In poverty, working hard until her hands blistered",
+          "In comfort with many servants",
           "In a large palace",
-          "With wealth from her"
+          "With wealth from her father"
         ],
         "answer": 0
       },
       {
         "question": "When Fatimah asked for a servant, what did the Prophet ﷺ teach her instead?",
         "options": [
-          "How to work more",
+          "How to work more efficiently",
           "How to be more patient",
-          "Dhikr: glorifying,",
+          "Dhikr: glorifying, praising, and magnifying Allah after each prayer",
           "How to ask Allah directly"
         ],
         "answer": 2
@@ -477,17 +477,17 @@
         "options": [
           "Hard work and patience",
           "Wealth and comfort",
-          "Family help indeed",
-          "The dhikr the ﷺ taught"
+          "Family help",
+          "The dhikr the Prophet ﷺ taught Fatimah"
         ],
         "answer": 3
       },
       {
         "question": "What did Fatimah choose over worldly comfort?",
         "options": [
-          "Spiritual wealth via",
-          "A bigger house truly",
-          "More education truly",
+          "Spiritual wealth through remembrance of Allah",
+          "A bigger house",
+          "More education",
           "Travel and adventure"
         ],
         "answer": 0
@@ -500,8 +500,8 @@
       {
         "question": "Where did Fatimah learn her deep knowledge of Quran and Sunnah?",
         "options": [
-          "Directly from her father,",
-          "From teachers in mosque",
+          "Directly from her father, the Prophet ﷺ",
+          "From teachers in the mosque",
           "From reading books",
           "From other companions"
         ],
@@ -510,9 +510,9 @@
       {
         "question": "What did the Prophet ﷺ tell Fatimah privately that made her weep?",
         "options": [
-          "Islam would face many",
+          "Islam would face many trials",
           "She would face hardships",
-          "She would be the first of",
+          "She would be the first of his family to join him after death",
           "He would travel far away"
         ],
         "answer": 2
@@ -521,9 +521,9 @@
         "question": "When did Fatimah die, fulfilling the Prophet's prophecy?",
         "options": [
           "One year after her father",
-          "Six months after her",
-          "Ten years after her",
-          "Immediately after her"
+          "Six months after her father",
+          "Ten years after her father",
+          "Immediately after her father"
         ],
         "answer": 1
       },
@@ -533,7 +533,7 @@
           "Wealth and generosity",
           "Beauty and kindness",
           "Power and influence",
-          "Living w/ knowledge,"
+          "Living with knowledge, piety, and complete devotion to Allah"
         ],
         "answer": 3
       }

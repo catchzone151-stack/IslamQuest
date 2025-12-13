@@ -5,18 +5,18 @@
       {
         "question": "According to Qur'an 3:185, what will every soul taste?",
         "options": [
-          "Death specifically",
-          "Judgment indeed",
-          "Paradise indeed",
-          "Punishment indeed"
+          "Death",
+          "Judgment",
+          "Paradise",
+          "Punishment"
         ],
         "answer": 0
       },
       {
         "question": "What does death represent according to the lesson?",
         "options": [
-          "The full end of existence",
-          "A move from life to",
+          "The complete end of existence",
+          "A transition from this temporary world to the eternal Hereafter",
           "A punishment from Allah",
           "A state of eternal sleep"
         ],
@@ -25,10 +25,10 @@
       {
         "question": "Why should we remember death frequently?",
         "options": [
-          "To become sad & depressed",
+          "To become sad and depressed",
           "To frighten other people",
-          "To keep our hearts",
-          "To stop enjoying life"
+          "To keep our hearts focused on what truly matters and prioritize good deeds",
+          "To stop enjoying life completely"
         ],
         "answer": 2
       },
@@ -36,9 +36,9 @@
         "question": "Who alone decides when each person's life will end?",
         "options": [
           "The Angel of Death",
-          "Our parents indeed",
+          "Our parents",
           "Doctors and scientists",
-          "Allah specifically"
+          "Allah"
         ],
         "answer": 3
       }
@@ -50,9 +50,9 @@
       {
         "question": "How do the angels extract the soul of a believer?",
         "options": [
-          "Roughly like thorns",
-          "Gently like water flowing",
-          "Quickly w/o any feeling",
+          "Roughly like thorns tearing through wet wool",
+          "Gently like water flowing from a pitcher",
+          "Quickly without any feeling",
           "With warnings and threats"
         ],
         "answer": 1
@@ -61,7 +61,7 @@
         "question": "What do the angels bring to believers when taking their souls?",
         "options": [
           "Books of their deeds",
-          "Glad tidings of Allah's",
+          "Glad tidings of Allah's mercy, Paradise, and eternal peace",
           "Questions to answer",
           "Keys to their graves"
         ],
@@ -70,10 +70,10 @@
       {
         "question": "According to Qur'an 16:32, what do the angels say to the good souls?",
         "options": [
-          "Your time has come to",
+          "Your time has come to leave",
           "Prepare for questioning",
           "Follow us to the grave",
-          "Peace be upon you. Enter"
+          "Peace be upon you. Enter Paradise for what you used to do"
         ],
         "answer": 3
       },
@@ -82,8 +82,8 @@
         "options": [
           "How we lived our lives",
           "Our age when we die",
-          "Where we die truly",
-          "How many people attend"
+          "Where we die",
+          "How many people attend our funeral"
         ],
         "answer": 0
       }
@@ -105,9 +105,9 @@
       {
         "question": "What happens when the believer's soul reaches each heaven's gate?",
         "options": [
-          "It must wait for",
-          "It returns to earth",
-          "The angels welcome it",
+          "It must wait for permission",
+          "It returns to earth temporarily",
+          "The angels welcome it joyfully and open the gates",
           "It stops ascending"
         ],
         "answer": 2
@@ -115,10 +115,10 @@
       {
         "question": "What happens to the disbeliever's soul at the first heaven's gate?",
         "options": [
-          "It is rejected & thrown",
-          "It is welcomed like the",
-          "It waits until Qiyamah",
-          "It slowly descends over"
+          "It is rejected and thrown back down to earth violently",
+          "It is welcomed like the believer's soul",
+          "It waits until Judgment Day",
+          "It slowly descends over many days"
         ],
         "answer": 0
       },
@@ -140,20 +140,20 @@
       {
         "question": "How many angels come to question people in the grave?",
         "options": [
-          "One angel indeed",
-          "Four angels indeed",
-          "Seven angels truly",
-          "Two angels named Munkar &"
+          "One angel",
+          "Four angels",
+          "Seven angels",
+          "Two angels named Munkar and Nakir"
         ],
         "answer": 3
       },
       {
         "question": "What are the three questions asked in the grave?",
         "options": [
-          "Who is your Lord? What is",
-          "Did you pray? Did you",
-          "Where are you from? Who",
-          "Do you believe? Do you"
+          "Who is your Lord? What is your religion? Who is your Prophet?",
+          "Did you pray? Did you fast? Did you give charity?",
+          "Where are you from? Who are your parents? What did you do?",
+          "Do you believe? Do you repent? Do you remember?"
         ],
         "answer": 0
       },
@@ -161,19 +161,19 @@
         "question": "What happens to the believer's grave after answering correctly?",
         "options": [
           "It closes completely",
-          "The angels make it",
+          "The angels make it spacious, comfortable, and filled with light",
           "Nothing changes",
-          "It fills w/ fine flowers"
+          "It fills with beautiful flowers"
         ],
         "answer": 1
       },
       {
         "question": "According to Qur'an 14:27, who does Allah keep firm in this life and the Hereafter?",
         "options": [
-          "Those who memorized the",
-          "Those who were very",
+          "Those who memorized the entire Qur'an",
+          "Those who were very wealthy",
           "Those who believe",
-          "Those who lived to old"
+          "Those who lived to old age"
         ],
         "answer": 2
       }
@@ -185,19 +185,19 @@
       {
         "question": "What is Barzakh?",
         "options": [
-          "The barrier life between",
+          "The barrier world between death and the Day of Judgment",
           "Another name for Paradise",
           "The Angel of Death's home",
-          "A specific grave in"
+          "A specific grave in Madinah"
         ],
         "answer": 0
       },
       {
         "question": "Can anyone return from Barzakh to this world to fix their mistakes?",
         "options": [
-          "Yes, if they ask Allah",
-          "No, once death comes our",
-          "Yes, but only prophets",
+          "Yes, if they ask Allah sincerely",
+          "No, once death comes our record is sealed permanently",
+          "Yes, but only prophets can return",
           "Yes, for a few hours only"
         ],
         "answer": 1
@@ -205,9 +205,9 @@
       {
         "question": "What does the soul experience in Barzakh?",
         "options": [
-          "Complete sleep w/o",
-          "Nothing at all truly",
-          "Either comfort or torment",
+          "Complete sleep without awareness",
+          "Nothing at all",
+          "Either comfort or torment based on earthly deeds",
           "Only darkness and silence"
         ],
         "answer": 2
@@ -215,7 +215,7 @@
       {
         "question": "According to Qur'an 23:100, what is before people until they are resurrected?",
         "options": [
-          "A long sleep truly",
+          "A long sleep",
           "Complete darkness",
           "Endless questioning",
           "A barrier (Barzakh)"
@@ -230,9 +230,9 @@
       {
         "question": "What can save us from the grave's punishment?",
         "options": [
-          "buried in a special place",
-          "Having many people at our",
-          "very wealthy in life",
+          "Being buried in a special place",
+          "Having many people at our funeral",
+          "Being very wealthy in life",
           "Repenting before death"
         ],
         "answer": 3
@@ -240,8 +240,8 @@
       {
         "question": "What are some specific sins people are punished for in the grave?",
         "options": [
-          "Only major crimes like",
-          "Backbiting, lying, not",
+          "Only major crimes like murder",
+          "Backbiting, lying, not cleaning properly after using the bathroom, or abandoning prayer",
           "Only disbelief in Allah",
           "Eating forbidden foods"
         ],
@@ -252,18 +252,18 @@
         "options": [
           "The heat of summer",
           "Difficult journeys",
-          "Bad neighbors truly",
-          "The of the grave"
+          "Bad neighbors",
+          "The punishment of the grave"
         ],
         "answer": 3
       },
       {
         "question": "Who experiences punishment in the grave?",
         "options": [
-          "Those who died in",
-          "Everyone w/o exception",
-          "Only people who lived",
-          "Only those who were"
+          "Those who died in disbelief or with major unrepented sins",
+          "Everyone without exception",
+          "Only people who lived long lives",
+          "Only those who were buried improperly"
         ],
         "answer": 0
       }
@@ -275,8 +275,8 @@
       {
         "question": "What does the believer's grave feel like?",
         "options": [
-          "Cold and dark truly",
-          "Soft like silk w/",
+          "Cold and dark",
+          "Soft like silk with pleasant light",
           "Hard and uncomfortable",
           "Hot and suffocating"
         ],
@@ -287,7 +287,7 @@
         "options": [
           "A door to their old home",
           "A path back to earth",
-          "A window to Paradise",
+          "A window to Paradise showing their future home",
           "A book of their deeds"
         ],
         "answer": 2
@@ -295,7 +295,7 @@
       {
         "question": "What does the righteous believer's grave become?",
         "options": [
-          "A garden from Paradise's",
+          "A garden from Paradise's gardens",
           "A golden palace",
           "A regular grave",
           "A place of waiting only"
@@ -306,7 +306,7 @@
         "question": "According to Qur'an 41:30, what do angels tell those who say 'Our Lord is Allah' and remain steadfast?",
         "options": [
           "Your time has ended",
-          "Do not fear & do not",
+          "Do not fear and do not grieve but receive good tidings of Paradise",
           "You must now be judged",
           "Wait here until the Hour"
         ],
@@ -321,18 +321,18 @@
         "question": "How do souls of believers meet in Barzakh?",
         "options": [
           "They cannot meet at all",
-          "Only in special occasions",
-          "Only once before Qiyamah",
-          "They meet & recognize one"
+          "Only during special occasions",
+          "Only once before Judgment Day",
+          "They meet and recognize one another from their earthly lives"
         ],
         "answer": 3
       },
       {
         "question": "What do deceased believers' souls ask about when a righteous person dies?",
         "options": [
-          "The loved ones still",
+          "Their loved ones still living on earth",
           "The weather and seasons",
-          "The Day of Judgment's",
+          "The Day of Judgment's timing",
           "Their own graves"
         ],
         "answer": 0
@@ -341,7 +341,7 @@
         "question": "How do souls react when learning a loved one died in faith?",
         "options": [
           "They feel indifferent",
-          "They feel joy truly",
+          "They feel joy",
           "They feel anger",
           "They feel confused"
         ],
@@ -365,30 +365,30 @@
       {
         "question": "Why did the Prophet ﷺ Muhammad ﷺ encourage visiting graves?",
         "options": [
-          "To remind us of death &",
-          "To clean & maintain them",
-          "To count how many people",
-          "To find historical"
+          "To remind us of death and the Hereafter",
+          "To clean and maintain them",
+          "To count how many people have died",
+          "To find historical information"
         ],
         "answer": 0
       },
       {
         "question": "What should we say when visiting graves?",
         "options": [
-          "Peace be upon you, O",
-          "Goodbye to those who have",
-          "We remember your names &",
-          "May you rest in sleep"
+          "Peace be upon you, O inhabitants of the graves",
+          "Goodbye to those who have left us",
+          "We remember your names and stories",
+          "May you rest in eternal sleep"
         ],
         "answer": 0
       },
       {
         "question": "What should we do for the deceased when visiting?",
         "options": [
-          "Bring them gifts &",
-          "Make sincere prayers",
-          "Tell stories on their",
-          "Clean their gravestones"
+          "Bring them gifts and flowers",
+          "Make sincere prayers asking Allah to forgive them",
+          "Tell stories about their lives",
+          "Clean their gravestones only"
         ],
         "answer": 1
       },
@@ -398,7 +398,7 @@
           "Our ancestors and history",
           "The passage of time",
           "Our mortality and age",
-          "The Hereafter truly"
+          "The Hereafter"
         ],
         "answer": 3
       }
@@ -411,7 +411,7 @@
         "question": "What should we seek refuge from in every prayer?",
         "options": [
           "Worldly difficulties only",
-          "The of grave & the trial",
+          "The punishment of the grave and the trial of the Dajjal",
           "Natural disasters",
           "Difficult people"
         ],
@@ -421,7 +421,7 @@
         "question": "Which surah protects from grave punishment when recited regularly?",
         "options": [
           "Surah Al-Fatiha",
-          "Surah Al-Mulk truly",
+          "Surah Al-Mulk",
           "Surah Al-Ikhlas",
           "Surah Al-Baqarah"
         ],
@@ -432,7 +432,7 @@
         "options": [
           "Wealth and status",
           "Famous names and titles",
-          "Good deeds & righteous",
+          "Good deeds and righteous living",
           "Having many friends"
         ],
         "answer": 2
@@ -440,10 +440,10 @@
       {
         "question": "Which of these protects from the grave's punishment?",
         "options": [
-          "Sincere faith in Allah &",
-          "buried in an expensive",
+          "Sincere faith in Allah and dying as a martyr",
+          "Being buried in an expensive grave",
           "Having a large funeral",
-          "very old when we die"
+          "Being very old when we die"
         ],
         "answer": 0
       }
@@ -455,20 +455,20 @@
       {
         "question": "What happens to martyrs after death?",
         "options": [
-          "They wait in Barzakh like",
-          "They experience the",
-          "They must answer the",
-          "The souls go directly to"
+          "They wait in Barzakh like everyone else",
+          "They experience the grave's trial immediately",
+          "They must answer the angels' questions first",
+          "Their souls go directly to Paradise"
         ],
         "answer": 3
       },
       {
         "question": "Where do the martyrs' souls live?",
         "options": [
-          "In their graves",
+          "In their graves peacefully",
           "At the gates of Paradise",
-          "Inside green birds that",
-          "In the highest heaven"
+          "Inside green birds that roam Paradise freely",
+          "In the highest heaven waiting"
         ],
         "answer": 2
       },
@@ -476,8 +476,8 @@
         "question": "How much of death's pain do martyrs feel?",
         "options": [
           "Like a small pinch",
-          "Extreme agony truly",
-          "No pain at all truly",
+          "Extreme agony",
+          "No pain at all",
           "Pain that lasts for days"
         ],
         "answer": 0
@@ -486,7 +486,7 @@
         "question": "According to Qur'an 3:169, what are martyrs doing with their Lord?",
         "options": [
           "Sleeping peacefully",
-          "Alive & receiving",
+          "Alive and receiving provision",
           "Waiting for judgment",
           "Guarding Paradise's gates"
         ],
@@ -501,19 +501,19 @@
         "question": "What happens to major sinners who died believing?",
         "options": [
           "They stay in Hell forever",
-          "They will eventually",
+          "They will eventually enter Paradise after purification",
           "They cannot be forgiven",
-          "They wait in Barzakh"
+          "They wait in Barzakh eternally"
         ],
         "answer": 1
       },
       {
         "question": "How should reflecting on death and the grave affect us?",
         "options": [
-          "Make us fully afraid to",
-          "Have no effect on our",
-          "Motivate us toward good",
-          "Make us stop all worldly"
+          "Make us completely afraid to live",
+          "Have no effect on our daily lives",
+          "Motivate us toward good deeds, not paralyze us with fear",
+          "Make us stop all worldly activities"
         ],
         "answer": 2
       },
@@ -522,18 +522,18 @@
         "options": [
           "Erases them completely",
           "Reduces them by half",
-          "Records them but forgives",
-          "Has no effect on past"
+          "Records them but forgives some",
+          "Has no effect on past sins"
         ],
         "answer": 0
       },
       {
         "question": "According to Qur'an 39:53, what does Allah say to those who have transgressed?",
         "options": [
-          "Do not despair of mercy",
-          "Your sins are too many to",
-          "Only some sins can be",
-          "Repentance is no longer"
+          "Do not despair of the mercy of Allah. Indeed, Allah forgives all sins",
+          "Your sins are too many to be forgiven",
+          "Only some sins can be forgiven",
+          "Repentance is no longer accepted"
         ],
         "answer": 0
       }

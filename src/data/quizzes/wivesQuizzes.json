@@ -5,40 +5,40 @@
       {
         "question": "What was Khadijah's profession before marrying the Prophet ﷺ?",
         "options": [
-          "A teacher itself",
-          "A nurse specifically",
+          "A teacher",
+          "A nurse",
           "A noble businesswoman",
-          "A poet specifically"
+          "A poet"
         ],
         "answer": 2
       },
       {
         "question": "How old were Khadijah and Muhammad ﷺ when they married?",
         "options": [
-          "She was thirty & he was",
-          "She was twenty-five & he",
+          "She was thirty and he was twenty",
+          "She was twenty-five and he was forty",
           "They were both thirty",
-          "She was forty & he was"
+          "She was forty and he was twenty-five"
         ],
         "answer": 3
       },
       {
         "question": "Who was the first person to believe in Islam when revelation came?",
         "options": [
-          "Abu Bakr indeed",
-          "Khadijah indeed",
-          "Ali specifically",
-          "Umar specifically"
+          "Abu Bakr",
+          "Khadijah",
+          "Ali",
+          "Umar"
         ],
         "answer": 1
       },
       {
         "question": "All of the Prophet's ﷺ children were born to Khadijah except which one?",
         "options": [
-          "Fatimah specifically",
-          "Zaynab specifically",
-          "Ibrahim specifically",
-          "Ruqayyah indeed"
+          "Fatimah",
+          "Zaynab",
+          "Ibrahim",
+          "Ruqayyah"
         ],
         "answer": 2
       }
@@ -50,38 +50,38 @@
       {
         "question": "What did the Prophet ﷺ do to honor Khadijah's memory after her death?",
         "options": [
-          "He built a monument for",
-          "He would slaughter a",
+          "He built a monument for her",
+          "He would slaughter a sheep and send portions to her friends",
           "He wrote poetry about her",
-          "He visited her grave"
+          "He visited her grave daily"
         ],
         "answer": 1
       },
       {
         "question": "What was the Year of Sorrow?",
         "options": [
-          "When the ﷺ was persecuted",
-          "When Muslims were",
-          "When the Battle of Uhud",
-          "When both Khadijah & Abu"
+          "When the Prophet ﷺ was persecuted",
+          "When Muslims were boycotted",
+          "When the Battle of Uhud occurred",
+          "When both Khadijah and Abu Talib died"
         ],
         "answer": 3
       },
       {
         "question": "What glad tidings did Angel Jibra'il bring to Khadijah?",
         "options": [
-          "She would have many",
-          "She would live a long",
-          "A palace in Paradise made",
-          "The family would become"
+          "She would have many children",
+          "She would live a long life",
+          "A palace in Paradise made of pearls",
+          "Her family would become wealthy"
         ],
         "answer": 2
       },
       {
         "question": "According to the hadith, what did the Prophet ﷺ say about his love for Khadijah?",
         "options": [
-          "She was the most",
-          "I have been granted her",
+          "She was the most beautiful",
+          "I have been granted her love",
           "She was the wisest",
           "She was the strongest"
         ],
@@ -95,10 +95,10 @@
       {
         "question": "Where did Sawdah migrate to escape persecution?",
         "options": [
-          "Madinah specifically",
-          "Abyssinia indeed",
-          "Syria specifically",
-          "Yemen specifically"
+          "Madinah",
+          "Abyssinia",
+          "Syria",
+          "Yemen"
         ],
         "answer": 1
       },
@@ -106,29 +106,29 @@
         "question": "Why did the Prophet ﷺ marry Sawdah after Khadijah's death?",
         "options": [
           "She was very wealthy",
-          "She was from a powerful",
-          "She helped care for his",
-          "She was the youngest"
+          "She was from a powerful tribe",
+          "She helped care for his young daughters during a difficult time",
+          "She was the youngest available"
         ],
         "answer": 2
       },
       {
         "question": "What was Sawdah known for that made the Prophet ﷺ laugh?",
         "options": [
-          "Her cooking indeed",
+          "Her cooking",
           "Her sense of humor",
-          "Her poetry indeed",
-          "Her singing indeed"
+          "Her poetry",
+          "Her singing"
         ],
         "answer": 1
       },
       {
         "question": "What did Sawdah give to Aishah when she grew older?",
         "options": [
-          "Her jewelry indeed",
-          "Her home indeed",
-          "The scheduled night w/",
-          "Her wealth indeed"
+          "Her jewelry",
+          "Her home",
+          "Her scheduled night with the Prophet ﷺ",
+          "Her wealth"
         ],
         "answer": 2
       }
@@ -141,7 +141,7 @@
         "question": "Who was Aishah's father?",
         "options": [
           "Umar ibn al-Khattab",
-          "Abu Bakr, 's ﷺ closest",
+          "Abu Bakr, the Prophet's ﷺ closest companion",
           "Uthman ibn Affan",
           "Ali ibn Abi Talib"
         ],
@@ -150,10 +150,10 @@
       {
         "question": "What made Aishah unique among the Prophet's ﷺ wives regarding revelation?",
         "options": [
-          "The ﷺ received wahy while",
-          "She memorized the Quran",
-          "She received her own",
-          "She was present at the"
+          "The Prophet ﷺ received revelation while in her company more than with any other wife",
+          "She memorized the Quran fastest",
+          "She received her own revelation",
+          "She was present at the first revelation"
         ],
         "answer": 0
       },
@@ -170,10 +170,10 @@
       {
         "question": "According to the hadith, how is Aishah's superiority over other women described?",
         "options": [
-          "Like the sun over the",
+          "Like the sun over the moon",
           "Like gold over silver",
-          "Like the superiority of",
-          "Like the ocean over"
+          "Like the superiority of Tharid over other foods",
+          "Like the ocean over rivers"
         ],
         "answer": 2
       }
@@ -185,20 +185,20 @@
       {
         "question": "Approximately how many hadiths did Aishah narrate?",
         "options": [
-          "Five hundred truly",
-          "One thousand truly",
+          "Five hundred",
+          "One thousand",
           "Over two thousand",
-          "Five thousand truly"
+          "Five thousand"
         ],
         "answer": 2
       },
       {
         "question": "What was the incident of Ifk?",
         "options": [
-          "A battle itself",
-          "False accusations spread",
-          "A migration itself",
-          "A treaty itself"
+          "A battle",
+          "False accusations spread against Aishah's honor",
+          "A migration",
+          "A treaty"
         ],
         "answer": 1
       },
@@ -207,7 +207,7 @@
         "options": [
           "Through witnesses",
           "Through a trial",
-          "Allah shown verses in",
+          "Allah revealed verses in the Quran declaring her innocence",
           "The Prophet ﷺ had a dream"
         ],
         "answer": 2
@@ -215,8 +215,8 @@
       {
         "question": "Where did the Prophet ﷺ pass away?",
         "options": [
-          "In the mosque truly",
-          "In Aishah's home, resting",
+          "In the mosque",
+          "In Aishah's home, resting in her lap",
           "At the battlefield",
           "In his own room"
         ],
@@ -231,8 +231,8 @@
         "question": "Who was Hafsah's father?",
         "options": [
           "Ali ibn Abi Talib",
-          "Abu Bakr indeed",
-          "Umar b. al-Khattab, the",
+          "Abu Bakr",
+          "Umar ibn al-Khattab, the second Caliph",
           "Uthman ibn Affan"
         ],
         "answer": 2
@@ -240,8 +240,8 @@
       {
         "question": "What was Hafsah known for in terms of worship?",
         "options": [
-          "She frequently fasted &",
-          "She memorized the entire",
+          "She frequently fasted and prayed during the night",
+          "She memorized the entire Quran",
           "She led women in prayer",
           "She taught in the mosque"
         ],
@@ -251,7 +251,7 @@
         "question": "What precious treasure was entrusted to Hafsah for safekeeping?",
         "options": [
           "The Prophet's ﷺ ﷺ sword",
-          "The original written copy",
+          "The original written copy of the Quran",
           "The keys to the Ka'bah",
           "The Prophet's ﷺ ﷺ seal"
         ],
@@ -260,10 +260,10 @@
       {
         "question": "Who borrowed the Quran manuscript from Hafsah to make official copies?",
         "options": [
-          "Abu Bakr indeed",
-          "Umar specifically",
-          "Uthman specifically",
-          "Ali specifically"
+          "Abu Bakr",
+          "Umar",
+          "Uthman",
+          "Ali"
         ],
         "answer": 2
       }
@@ -276,7 +276,7 @@
         "question": "What title was Zaynab bint Khuzaymah known by?",
         "options": [
           "Mother of the Faithful",
-          "Umm al-Masakin, the",
+          "Umm al-Masakin, the Mother of the Poor",
           "The Generous One",
           "The Patient One"
         ],
@@ -285,10 +285,10 @@
       {
         "question": "How did Zaynab's first husband die?",
         "options": [
-          "Of illness indeed",
+          "Of illness",
           "In a trade accident",
-          "He was killed in Battle",
-          "Of old age indeed"
+          "He was killed in the Battle of Uhud",
+          "Of old age"
         ],
         "answer": 2
       },
@@ -296,19 +296,19 @@
         "question": "How long did Zaynab live after marrying the Prophet ﷺ?",
         "options": [
           "Only eight months",
-          "Two years indeed",
-          "One year indeed",
-          "Five years indeed"
+          "Two years",
+          "One year",
+          "Five years"
         ],
         "answer": 0
       },
       {
         "question": "Where is Zaynab bint Khuzaymah buried?",
         "options": [
-          "In Makkah indeed",
-          "In Jannat al-Baqi in",
-          "In Jerusalem truly",
-          "In Syria indeed"
+          "In Makkah",
+          "In Jannat al-Baqi in Madinah",
+          "In Jerusalem",
+          "In Syria"
         ],
         "answer": 1
       }
@@ -330,10 +330,10 @@
       {
         "question": "Where did Umm Salamah first migrate with her husband to escape persecution?",
         "options": [
-          "Madinah specifically",
-          "Abyssinia indeed",
-          "Syria specifically",
-          "Yemen specifically"
+          "Madinah",
+          "Abyssinia",
+          "Syria",
+          "Yemen"
         ],
         "answer": 1
       },
@@ -342,7 +342,7 @@
         "options": [
           "The Battle of Badr",
           "The opening of Makkah",
-          "The Treaty of Hudaybiyyah",
+          "The Treaty of Hudaybiyyah when companions were reluctant to obey",
           "The Battle of Uhud"
         ],
         "answer": 2
@@ -351,7 +351,7 @@
         "question": "What prayer is recommended during calamity according to Umm Salamah's hadith?",
         "options": [
           "Asking for revenge",
-          "Indeed we belong to Allah",
+          "Indeed we belong to Allah and to Him we shall return, asking Allah to reward in affliction and replace with something better",
           "Asking for patience only",
           "Asking for wealth"
         ],
@@ -365,10 +365,10 @@
       {
         "question": "Who was Zaynab bint Jahsh in relation to the Prophet ﷺ?",
         "options": [
-          "His aunt indeed",
-          "His niece indeed",
-          "His sister indeed",
-          "His cousin indeed"
+          "His aunt",
+          "His niece",
+          "His sister",
+          "His cousin"
         ],
         "answer": 3
       },
@@ -378,7 +378,7 @@
           "Leather work and crafts",
           "Cooking and weaving",
           "Poetry and singing",
-          "Archery & horseback"
+          "Archery and horseback riding"
         ],
         "answer": 0
       },
@@ -387,17 +387,17 @@
         "options": [
           "Physical hand size",
           "The longest in charity",
-          "The one who could reach",
-          "The strongest truly"
+          "The one who could reach highest",
+          "The strongest"
         ],
         "answer": 1
       },
       {
         "question": "Which wife died first after the Prophet ﷺ, fulfilling his prophecy?",
         "options": [
-          "Aishah specifically",
-          "Hafsah specifically",
-          "Sawdah specifically",
+          "Aishah",
+          "Hafsah",
+          "Sawdah",
           "Zaynab bint Jahsh"
         ],
         "answer": 3
@@ -411,17 +411,17 @@
         "question": "Who was Juwayriyyah's father?",
         "options": [
           "The king of Yemen",
-          "Abu Sufyan indeed",
+          "Abu Sufyan",
           "Umar ibn al-Khattab",
-          "Al-Harith, chief of Banu"
+          "Al-Harith, chief of the Banu Mustaliq tribe"
         ],
         "answer": 3
       },
       {
         "question": "What happened when the Prophet ﷺ married Juwayriyyah?",
         "options": [
-          "Muslims released all the",
-          "There was a great",
+          "Muslims released all the captives from her tribe out of respect",
+          "There was a great celebration",
           "Her tribe declared war",
           "Nothing significant"
         ],
@@ -430,10 +430,10 @@
       {
         "question": "What was Juwayriyyah extremely devoted to?",
         "options": [
-          "Charity work truly",
-          "Worship & remembrance of",
+          "Charity work",
+          "Worship and remembrance of Allah",
           "Teaching children",
-          "Poetry specifically"
+          "Poetry"
         ],
         "answer": 1
       },
@@ -442,7 +442,7 @@
         "options": [
           "From afternoon to evening",
           "All night until dawn",
-          "After Fajr until",
+          "After Fajr until mid-morning",
           "During the entire day"
         ],
         "answer": 2
@@ -455,9 +455,9 @@
       {
         "question": "From which prophets did Safiyyah descend?",
         "options": [
-          "Harun and Musa truly",
+          "Harun and Musa",
           "Ibrahim and Ismail",
-          "Adam and Nuh truly",
+          "Adam and Nuh",
           "Dawud and Sulayman"
         ],
         "answer": 0
@@ -467,28 +467,28 @@
         "options": [
           "Between wealth or poverty",
           "Between Makkah or Madinah",
-          "Between teaching or",
-          "Between returning to her"
+          "Between teaching or learning",
+          "Between returning to her people or accepting Islam and marrying him"
         ],
         "answer": 3
       },
       {
         "question": "What did the Prophet ﷺ tell Safiyyah to say if anyone insulted her lineage?",
         "options": [
-          "To remind them she",
+          "To remind them she descends from Prophets Harun and Musa",
           "To remain silent",
           "To ask him for help",
-          "To argue back truly"
+          "To argue back"
         ],
         "answer": 0
       },
       {
         "question": "What did Safiyyah's marriage demonstrate about Islam?",
         "options": [
-          "That only Arabs can be",
+          "That only Arabs can be Muslim",
           "That wealth is important",
-          "That military power is",
-          "That Islam transcends"
+          "That military power is key",
+          "That Islam transcends race and previous faith when one accepts true guidance"
         ],
         "answer": 3
       }
@@ -500,7 +500,7 @@
       {
         "question": "What was Umm Habibah's real name and who was her father?",
         "options": [
-          "Ramlah bt. Abi Sufyan,",
+          "Ramlah bint Abi Sufyan, daughter of Islam's fiercest early enemy",
           "Khadijah bint Abu Bakr",
           "Fatimah bint Umar",
           "Zaynab bint Ali"
@@ -511,8 +511,8 @@
         "question": "What tragic event happened to Umm Habibah in Abyssinia?",
         "options": [
           "She lost her wealth",
-          "The spouse left Islam &",
-          "She became ill truly",
+          "Her husband left Islam and became Christian, but she remained steadfast",
+          "She became ill",
           "She was captured"
         ],
         "answer": 1
@@ -521,7 +521,7 @@
         "question": "Who arranged Umm Habibah's marriage to the Prophet ﷺ?",
         "options": [
           "Her father Abu Sufyan",
-          "Her brother indeed",
+          "Her brother",
           "The Prophet ﷺ himself",
           "The Negus of Abyssinia"
         ],
@@ -530,10 +530,10 @@
       {
         "question": "According to the hadith narrated by Umm Habibah, what happens to someone who prays twelve rak'ahs in a day and night?",
         "options": [
-          "A house will be built for",
-          "They are forgiven all",
+          "A house will be built for them in Paradise",
+          "They are forgiven all sins",
           "They will become wealthy",
-          "They will have good"
+          "They will have good health"
         ],
         "answer": 0
       }
@@ -545,9 +545,9 @@
       {
         "question": "What was unique about Maymunah's marriage proposal to the Prophet ﷺ?",
         "options": [
-          "She offered herself in",
+          "She offered herself in marriage to the Prophet ﷺ",
           "Her family arranged it",
-          "The ﷺ proposed first",
+          "The Prophet ﷺ proposed first",
           "It was arranged by treaty"
         ],
         "answer": 0
@@ -557,7 +557,7 @@
         "options": [
           "Ali ibn Abi Talib",
           "Umar ibn al-Khattab",
-          "Abu Bakr indeed",
+          "Abu Bakr",
           "Khalid ibn al-Walid"
         ],
         "answer": 3
@@ -566,7 +566,7 @@
         "question": "What topics did Maymunah narrate many hadiths about?",
         "options": [
           "Battles and warfare",
-          "The Prophet's ﷺ ﷺ private",
+          "The Prophet's ﷺ ﷺ private life and worship habits",
           "Business and trade",
           "Poetry and literature"
         ],
@@ -575,9 +575,9 @@
       {
         "question": "Where was Maymunah buried?",
         "options": [
-          "In Madinah indeed",
-          "In Jerusalem truly",
-          "In Syria indeed",
+          "In Madinah",
+          "In Jerusalem",
+          "In Syria",
           "In Makkah at Sarif"
         ],
         "answer": 3

@@ -5,10 +5,10 @@
       {
         "question": "What is Jibra'il's main responsibility?",
         "options": [
-          "Delivering Allah's wahy",
-          "Distributing rain &",
-          "Blowing the horn on",
-          "Taking souls as death"
+          "Delivering Allah's revelation to all the prophets",
+          "Distributing rain and provisions",
+          "Blowing the trumpet on Judgment Day",
+          "Taking souls when death arrives"
         ],
         "answer": 0
       },
@@ -16,7 +16,7 @@
         "question": "How many wings did the Prophet ﷺ see when Jibra'il appeared in his true form?",
         "options": [
           "Two hundred wings",
-          "Six hundred wings over",
+          "Six hundred wings covering the horizon",
           "One thousand wings",
           "Four hundred wings"
         ],
@@ -25,9 +25,9 @@
       {
         "question": "According to the Qur'an 53:5-6, who taught the Prophet ﷺ?",
         "options": [
-          "His companions truly",
-          "His family indeed",
-          "One intense in strength",
+          "His companions",
+          "His family",
+          "One intense in strength who rose to his true form",
           "The scholars of Makkah"
         ],
         "answer": 2
@@ -38,7 +38,7 @@
           "By writing books for them",
           "By showing them visions",
           "By appearing in dreams",
-          "By asking the ﷺ questions"
+          "By asking the Prophet ﷺ questions while they listened"
         ],
         "answer": 3
       }
@@ -53,24 +53,24 @@
           "The stars and moon",
           "The oceans and seas",
           "The mountains and valleys",
-          "The winds, clouds, & rain"
+          "The winds, clouds, and rain"
         ],
         "answer": 3
       },
       {
         "question": "What is Mīkā'īl responsible for distributing?",
         "options": [
-          "Rain & rizq to all of",
+          "Rain and provisions to all of Allah's creation",
           "Knowledge to the scholars",
           "Guidance to the believers",
-          "Punishments to sinners"
+          "Punishments to the sinners"
         ],
         "answer": 0
       },
       {
         "question": "According to Qur'an 2:98, who is mentioned alongside Jibra'il?",
         "options": [
-          "Isrāfīl specifically",
+          "Isrāfīl",
           "Mīkā'īl (Michael)",
           "The Angel of Death",
           "Munkar and Nakir"
@@ -81,8 +81,8 @@
         "question": "What does Mīkā'īl remind us about our food and water?",
         "options": [
           "We must work hard for it",
-          "We should share it w/",
-          "Every drop & bite comes",
+          "We should share it with others",
+          "Every drop and bite comes from Allah's mercy and provision",
           "It will run out one day"
         ],
         "answer": 2
@@ -95,30 +95,30 @@
       {
         "question": "Why does the Prophet ﷺ teach us to always be prepared?",
         "options": [
-          "Because wars could happen",
-          "Because natural disasters",
-          "Because Isrāfīl has been",
-          "Because we need to help"
+          "Because wars could happen anytime",
+          "Because natural disasters are common",
+          "Because Isrāfīl has been ready since creation and the Hour could come at any moment",
+          "Because we need to help others"
         ],
         "answer": 2
       },
       {
         "question": "What happens when Isrāfīl blows the trumpet the first time?",
         "options": [
-          "Everyone wakes up from",
-          "The sun rises from west",
-          "All mountains turn to",
-          "Every living thing in"
+          "Everyone wakes up from sleep",
+          "The sun rises from the west",
+          "All mountains turn to dust",
+          "Every living thing in the heavens and earth dies except whom Allah wills"
         ],
         "answer": 3
       },
       {
         "question": "What is Isrāfīl's main task?",
         "options": [
-          "Blowing the horn to",
+          "Blowing the trumpet to signal the Day of Judgment",
           "Recording our deeds",
-          "Protecting believers from",
-          "Delivering messages to"
+          "Protecting believers from harm",
+          "Delivering messages to prophets"
         ],
         "answer": 0
       },
@@ -126,9 +126,9 @@
         "question": "What does the second blow of the trumpet do?",
         "options": [
           "It warns people to repent",
-          "It brings all creation",
-          "It destroys the earth",
-          "It opens the gates of"
+          "It brings all creation back to life for judgment",
+          "It destroys the earth completely",
+          "It opens the gates of Paradise"
         ],
         "answer": 1
       }
@@ -140,20 +140,20 @@
       {
         "question": "According to Qur'an 32:11, what happens after the Angel of Death takes our soul?",
         "options": [
-          "We sleep until Qiyamah",
+          "We sleep until Judgment Day",
           "We return to our families",
-          "To our Lord we will be",
-          "We wait in grave forever"
+          "To our Lord we will be returned",
+          "We wait in the grave forever"
         ],
         "answer": 2
       },
       {
         "question": "What is another name often used for the Angel of Death?",
         "options": [
-          "Ridwān specifically",
-          "Mālik specifically",
-          "Isrāfīl specifically",
-          "Azrael specifically"
+          "Ridwān",
+          "Mālik",
+          "Isrāfīl",
+          "Azrael"
         ],
         "answer": 3
       },
@@ -171,8 +171,8 @@
         "question": "Who will be the last to die before the Day of Judgment?",
         "options": [
           "All humans at once",
-          "The Angel of Death",
-          "Jibra'il the greatest",
+          "The Angel of Death himself",
+          "Jibra'il the greatest angel",
           "The disbelievers"
         ],
         "answer": 1
@@ -185,10 +185,10 @@
       {
         "question": "What are the three questions Munkar and Nakir ask in the grave?",
         "options": [
-          "Who is your Lord? What is",
-          "Did you pray? Did you",
-          "Where are you from? Who",
-          "Do you believe? Do you"
+          "Who is your Lord? What is your religion? Who is your Prophet?",
+          "Did you pray? Did you fast? Did you give charity?",
+          "Where are you from? Who are your parents? What did you do?",
+          "Do you believe? Do you repent? Do you remember?"
         ],
         "answer": 0
       },
@@ -196,7 +196,7 @@
         "question": "What happens to the grave of a sincere believer after answering correctly?",
         "options": [
           "Nothing changes",
-          "It becomes spacious,",
+          "It becomes spacious, filled with light and pleasant fragrance",
           "It closes completely",
           "It fills with flowers"
         ],
@@ -207,7 +207,7 @@
         "options": [
           "The heat of summer",
           "The anger of people",
-          "The of the grave",
+          "The punishment of the grave",
           "The trials of life"
         ],
         "answer": 2
@@ -215,10 +215,10 @@
       {
         "question": "What happens to those who cannot answer Munkar and Nakir's questions?",
         "options": [
-          "They get another chance",
+          "They get another chance to answer",
           "The angels forgive them",
-          "They wait until Qiyamah",
-          "The grave becomes tight,"
+          "They wait until Judgment Day in peace",
+          "Their grave becomes tight, dark, and filled with punishment"
         ],
         "answer": 3
       }
@@ -230,10 +230,10 @@
       {
         "question": "What do the guardian angels protect us from?",
         "options": [
-          "Harm & dangers we never",
+          "Harm and dangers we never even see or know about",
           "Only physical injuries",
           "Bad weather and storms",
-          "Loud noises & bright"
+          "Loud noises and bright lights"
         ],
         "answer": 0
       },
@@ -241,17 +241,17 @@
         "question": "According to Qur'an 13:11, where are the guardian angels positioned?",
         "options": [
           "Only above us in the sky",
-          "Before & behind us,",
+          "Before and behind us, protecting by Allah's command",
           "Only in our homes",
-          "At the mosques truly"
+          "At the mosques"
         ],
         "answer": 1
       },
       {
         "question": "When do the guardian angels draw closer to increase their protection?",
         "options": [
-          "When we are sleeping",
-          "When we remember Allah &",
+          "When we are sleeping peacefully",
+          "When we remember Allah and maintain good character",
           "When we are very young",
           "When we ask them directly"
         ],
@@ -261,9 +261,9 @@
         "question": "When can the guardian angels no longer protect us?",
         "options": [
           "When we travel far away",
-          "When we are alone at",
-          "When we enter dangerous",
-          "When our decreed time of"
+          "When we are alone at night",
+          "When we enter dangerous places",
+          "When our decreed time of death arrives"
         ],
         "answer": 3
       }
@@ -275,10 +275,10 @@
       {
         "question": "What does the angel on the left do before recording a sin?",
         "options": [
-          "Records it at once like",
-          "Asks permission first",
-          "Waits to give us time to",
-          "Warns us not to do it"
+          "Records it immediately like good deeds",
+          "Asks permission from Allah first",
+          "Waits to give us time to repent and seek forgiveness",
+          "Warns us not to do it again"
         ],
         "answer": 2
       },
@@ -287,25 +287,25 @@
         "options": [
           "In the sky above us",
           "In our homes only",
-          "At the mosque in prayer",
-          "One on right shoulder &"
+          "At the mosque during prayer",
+          "One on the right shoulder and one on the left"
         ],
         "answer": 3
       },
       {
         "question": "How does the angel on the right record good deeds?",
         "options": [
-          "Immediately & multiplies",
+          "Immediately and multiplies them by ten or more",
           "Only once a week",
           "Only during Ramadan",
-          "Exactly as they are w/o"
+          "Exactly as they are without multiplication"
         ],
         "answer": 0
       },
       {
         "question": "According to Qur'an 50:18, what is recorded by the angels?",
         "options": [
-          "Only our prayers &",
+          "Only our prayers and fasting",
           "Every word we utter",
           "Only major sins",
           "Only what we do in public"
@@ -321,36 +321,36 @@
         "question": "What does the Qur'an 43:77 say Mālik will respond when people beg for death?",
         "options": [
           "He will grant their wish",
-          "He will ask Allah for",
-          "Indeed, you will remain",
-          "You must wait one"
+          "He will ask Allah for permission",
+          "Indeed, you will remain forever",
+          "You must wait one thousand years"
         ],
         "answer": 2
       },
       {
         "question": "Why does Mālik never smile?",
         "options": [
-          "He is stern & serious,",
-          "Angels are not allowed to",
-          "He is always busy w/ his",
-          "He is waiting for Allah's"
+          "He is stern and serious, reflecting the terrible reality of Hellfire's punishment",
+          "Angels are not allowed to smile",
+          "He is always busy with his duties",
+          "He is waiting for Allah's next command"
         ],
         "answer": 0
       },
       {
         "question": "What is Mālik's role?",
         "options": [
-          "Recording the deeds of",
-          "Gatekeeper of Hellfire,",
-          "Welcoming people to",
-          "Delivering messages to"
+          "Recording the deeds of disbelievers",
+          "Gatekeeper of Hellfire, commanding nineteen chief angels",
+          "Welcoming people to Paradise",
+          "Delivering messages to prophets"
         ],
         "answer": 1
       },
       {
         "question": "What did the Prophet ﷺ teach us to do regarding Hellfire in every prayer?",
         "options": [
-          "Thank Allah for not being",
+          "Thank Allah for not being there",
           "Seek protection from it",
           "Remember those inside it",
           "Ask about its description"
@@ -365,10 +365,10 @@
       {
         "question": "Who is Ridwān?",
         "options": [
-          "The gatekeeper of",
-          "The angel who blows the",
-          "The angel who records",
-          "The angel who distributes"
+          "The gatekeeper of Paradise who welcomes believers",
+          "The angel who blows the trumpet",
+          "The angel who records good deeds",
+          "The angel who distributes rain"
         ],
         "answer": 0
       },
@@ -376,19 +376,19 @@
         "question": "According to Qur'an 39:73, what do the keepers of Paradise say to believers?",
         "options": [
           "Welcome home at last",
-          "Peace be upon you; you",
-          "Your struggles are over",
-          "Congratulations on your"
+          "Peace be upon you; you have become pure; so enter it to abide eternally",
+          "Your struggles are over now",
+          "Congratulations on your success"
         ],
         "answer": 1
       },
       {
         "question": "What is the highest level of Paradise that the Prophet ﷺ taught us to ask for?",
         "options": [
-          "Al-Wasilah indeed",
-          "Firdaws, the best &",
-          "Adn specifically",
-          "Na'im specifically"
+          "Al-Wasilah",
+          "Firdaws, the best and highest part",
+          "Adn",
+          "Na'im"
         ],
         "answer": 2
       },
@@ -396,8 +396,8 @@
         "question": "What does Ridwān oversee in Paradise?",
         "options": [
           "Only the main entrance",
-          "The angels who serve",
-          "The distribution of",
+          "The angels who serve there",
+          "The distribution of Paradise's levels according to each person's deeds",
           "The gardens and rivers"
         ],
         "answer": 3
@@ -410,20 +410,20 @@
       {
         "question": "Why did the Prophet ﷺ refuse to let the Angel of the Mountains destroy Taif?",
         "options": [
-          "He hoped Allah would",
-          "He was afraid of",
-          "He wanted to punish them",
-          "He thought they might"
+          "He hoped Allah would bring from their descendants people who worship Allah alone",
+          "He was afraid of the consequences",
+          "He wanted to punish them himself later",
+          "He thought they might apologize"
         ],
         "answer": 0
       },
       {
         "question": "What did the Angel of the Mountains offer to do to the people of Taif?",
         "options": [
-          "Send a flood to their",
-          "Crush them between two",
-          "Make the earth swallow",
-          "Send storms to destroy"
+          "Send a flood to their city",
+          "Crush them between two mountains",
+          "Make the earth swallow them",
+          "Send storms to destroy their homes"
         ],
         "answer": 1
       },
@@ -431,19 +431,19 @@
         "question": "According to Sahih Bukhari 3231, what quality did the Prophet ﷺ show by refusing revenge?",
         "options": [
           "Fear and weakness",
-          "Wisdom & mercy, choosing",
-          "Uncertainty on right",
-          "Inability to make"
+          "Wisdom and mercy, choosing forgiveness over revenge",
+          "Uncertainty about the right choice",
+          "Inability to make decisions"
         ],
         "answer": 2
       },
       {
         "question": "What happened to the people of Taif after the Prophet ﷺ showed them mercy?",
         "options": [
-          "They remained forever",
-          "They left Arabia",
-          "They attacked the Muslims",
-          "Many later accepted Islam"
+          "They remained disbelievers forever",
+          "They left Arabia completely",
+          "They attacked the Muslims again",
+          "Many later accepted Islam and became devoted believers"
         ],
         "answer": 3
       }
@@ -455,10 +455,10 @@
       {
         "question": "What did the Prophet ﷺ say happens in the heavens according to Sahih Muslim 2785?",
         "options": [
-          "Angels rest & take turns",
-          "The heavens creak from",
-          "Angels sleep in the night",
-          "Only a few angels worship"
+          "Angels rest and take turns worshipping",
+          "The heavens creak from angels in prostration in every space",
+          "Angels sleep during the night",
+          "Only a few angels worship at a time"
         ],
         "answer": 1
       },
@@ -467,28 +467,28 @@
         "options": [
           "Only on special occasions",
           "For a few hours each day",
-          "Day & night w/o stop,",
-          "When commanded by"
+          "Day and night without stop, never disobeying",
+          "When commanded by Jibra'il"
         ],
         "answer": 2
       },
       {
         "question": "What did the Prophet ﷺ say about the space in the heavens?",
         "options": [
-          "It is mostly empty &",
-          "There is not a hand's",
-          "Angels only gather in",
-          "The heavens have rooms"
+          "It is mostly empty and quiet",
+          "There is not a hand's width without an angel in worship",
+          "Angels only gather in certain areas",
+          "The heavens have rooms for angels to rest"
         ],
         "answer": 3
       },
       {
         "question": "What should we learn from the angels' constant worship?",
         "options": [
-          "We should dedicate our",
-          "We can worship less since",
-          "Worship is only for",
-          "We should only worship on"
+          "We should dedicate our lives to remembrance and obedience of Allah",
+          "We can worship less since angels do so much",
+          "Worship is only for angels, not humans",
+          "We should only worship on special days"
         ],
         "answer": 0
       }

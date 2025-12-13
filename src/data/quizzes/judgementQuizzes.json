@@ -5,10 +5,10 @@
       {
         "question": "What will Allah use to recreate people after death?",
         "options": [
-          "A tiny bone at the base",
+          "A tiny bone at the base of the spine that never decays",
           "Dust from their graves",
-          "The old bodies completely",
-          "Nothing, He creates them"
+          "Their old bodies completely",
+          "Nothing, He creates them from scratch"
         ],
         "answer": 0
       },
@@ -16,7 +16,7 @@
         "question": "How will people emerge from their graves on Resurrection Day?",
         "options": [
           "Fully clothed and ready",
-          "Barefoot, naked, &",
+          "Barefoot, naked, and uncircumcised, just as they were first created",
           "As spirits without bodies",
           "Elderly and weak"
         ],
@@ -27,7 +27,7 @@
         "options": [
           "Slowly and carefully",
           "In groups of families",
-          "Rapidly as if hastening",
+          "Rapidly as if hastening toward an erected idol",
           "One person at a time"
         ],
         "answer": 2
@@ -36,9 +36,9 @@
         "question": "What does resurrection prove about Allah?",
         "options": [
           "His patience with humans",
-          "The knowledge of future",
+          "His knowledge of the future",
           "His love for creation",
-          "The absolute power &"
+          "His absolute power and promise of accountability"
         ],
         "answer": 3
       }
@@ -51,19 +51,19 @@
         "question": "Where will people stand near the front at the gathering?",
         "options": [
           "The wealthy and powerful",
-          "The prophets, martyrs, &",
+          "The prophets, martyrs, and righteous",
           "The young children",
-          "Everyone stands in same"
+          "Everyone stands in the same place"
         ],
         "answer": 1
       },
       {
         "question": "What will the plain where people gather look like?",
         "options": [
-          "Full of buildings &",
-          "A vast, white, leveled",
+          "Full of buildings and landmarks",
+          "A vast, white, leveled plain stretching endlessly with no hiding places",
           "A beautiful garden",
-          "A dark desert truly"
+          "A dark desert"
         ],
         "answer": 1
       },
@@ -71,19 +71,19 @@
         "question": "Who will find shade and relief on that Day?",
         "options": [
           "Everyone equally",
-          "Those who were rich in",
+          "Those who were rich in the world",
           "Those who built mosques",
-          "Only those whom Allah"
+          "Only those whom Allah grants mercy"
         ],
         "answer": 3
       },
       {
         "question": "How will people be gathered on Judgment Day?",
         "options": [
-          "Barefoot & uncovered, in",
+          "Barefoot and uncovered, in groups according to their deeds and beliefs",
           "In their finest clothes",
           "With their families only",
-          "Completely alone w/o"
+          "Completely alone without seeing others"
         ],
         "answer": 0
       }
@@ -96,7 +96,7 @@
         "question": "According to Qur'an 70:4, how long will the Day of Standing be?",
         "options": [
           "One hundred years",
-          "Fifty thousand years per",
+          "Fifty thousand years according to our time",
           "One thousand years",
           "Forever without end"
         ],
@@ -108,27 +108,27 @@
           "At its normal distance",
           "Only a mile above",
           "Ten miles above",
-          "At the edge of atmosphere"
+          "At the edge of the atmosphere"
         ],
         "answer": 1
       },
       {
         "question": "What will happen to people's secrets on that Day?",
         "options": [
-          "They remain hidden",
-          "Only major sins are",
+          "They remain hidden forever",
+          "Only major sins are revealed",
           "Only Allah knows them",
-          "Every secret thought,"
+          "Every secret thought, hidden action, and private deed will be exposed publicly"
         ],
         "answer": 3
       },
       {
         "question": "How deeply will people sweat according to their sins?",
         "options": [
-          "Some ankle-deep, others",
-          "Everyone sweats the same",
+          "Some ankle-deep, others knee-deep, waist-deep, or drowning completely",
+          "Everyone sweats the same amount",
           "No one will sweat",
-          "Only will sweat"
+          "Only disbelievers will sweat"
         ],
         "answer": 0
       }
@@ -141,7 +141,7 @@
         "question": "How will the righteous receive their book of deeds?",
         "options": [
           "From an angel directly",
-          "In their right hand,",
+          "In their right hand, causing them joy and relief",
           "From behind their back",
           "In their left hand"
         ],
@@ -150,9 +150,9 @@
       {
         "question": "What will be recorded in the book of deeds?",
         "options": [
-          "Only major sins & good",
-          "Every single deed, word,",
-          "Only what happened in",
+          "Only major sins and good deeds",
+          "Every single deed, word, and thought from their entire life",
+          "Only what happened in public",
           "Only prayers and charity"
         ],
         "answer": 1
@@ -163,17 +163,17 @@
           "They won't receive one",
           "In their right hand",
           "From above their heads",
-          "In their left hand from"
+          "In their left hand from behind their back"
         ],
         "answer": 3
       },
       {
         "question": "Who recorded all our deeds throughout our lives?",
         "options": [
-          "The angels who watched us",
-          "Allah directly truly",
-          "Our own souls truly",
-          "The prophets truly"
+          "The angels who watched us constantly",
+          "Allah directly",
+          "Our own souls",
+          "The prophets"
         ],
         "answer": 0
       }
@@ -185,10 +185,10 @@
       {
         "question": "What is the name of the scale where deeds will be weighed?",
         "options": [
-          "Al-Haqq specifically",
-          "The Meezan itself",
-          "Al-Kawthar indeed",
-          "The Sirat itself"
+          "Al-Haqq",
+          "The Meezan",
+          "Al-Kawthar",
+          "The Sirat"
         ],
         "answer": 1
       },
@@ -196,8 +196,8 @@
         "question": "According to Qur'an 21:47, what weight will Allah bring forth for judgment?",
         "options": [
           "Only large deeds",
-          "Even the weight of a",
-          "Only sins recorded in",
+          "Even the weight of a mustard seed",
+          "Only sins recorded in writing",
           "Whatever we remember"
         ],
         "answer": 1
@@ -205,20 +205,20 @@
       {
         "question": "What happens if someone's good and bad deeds are exactly equal?",
         "options": [
-          "They automatically enter",
+          "They automatically enter Paradise",
           "They go to Hellfire",
-          "They must wait one",
-          "Allah will decide their"
+          "They must wait one thousand years",
+          "Allah will decide their fate with His infinite mercy"
         ],
         "answer": 3
       },
       {
         "question": "What will happen to even the tiniest good deed?",
         "options": [
-          "It will appear & have",
-          "It will be ignored as too",
-          "It only counts if we",
-          "It disappears if we did"
+          "It will appear and have weight on the scale",
+          "It will be ignored as too small",
+          "It only counts if we remember it",
+          "It disappears if we did any sin"
         ],
         "answer": 0
       }
@@ -230,9 +230,9 @@
       {
         "question": "Who will people approach first seeking intercession to begin judgment?",
         "options": [
-          "the Prophet immediately",
-          "Adam, then Noah, then",
-          "The angels itself",
+          "Prophet Muhammad ﷺ immediately",
+          "Adam, then Noah, then Abraham, then Moses, then Jesus",
+          "The angels",
           "Their own parents"
         ],
         "answer": 1
@@ -240,8 +240,8 @@
       {
         "question": "What will Prophet Muhammad ﷺ say when asked to intercede?",
         "options": [
-          "He will refuse like the",
-          "'I am the one for this' &",
+          "He will refuse like the others",
+          "'I am the one for this' and will accept",
           "'Ask someone else'",
           "'Wait until later'"
         ],
@@ -250,10 +250,10 @@
       {
         "question": "According to Qur'an 17:79, what station will Allah grant the Prophet ﷺ?",
         "options": [
-          "The highest level of",
-          "Leadership of all",
+          "The highest level of Paradise",
+          "Leadership of all prophets",
           "Authority over angels",
-          "The praised station of"
+          "The praised station of intercession"
         ],
         "answer": 3
       },
@@ -276,7 +276,7 @@
         "question": "What are the qualities of Al-Kawthar's water?",
         "options": [
           "Cold and refreshing",
-          "Whiter than milk, sweeter",
+          "Whiter than milk, sweeter than honey, more fragrant than musk",
           "Golden and sparkling",
           "Clear like crystal"
         ],
@@ -286,8 +286,8 @@
         "question": "Where does the water of Al-Kawthar come from?",
         "options": [
           "The clouds of Paradise",
-          "Directly from river in",
-          "A spring beneath the",
+          "Directly from the river in Paradise that Allah gave to the Prophet ﷺ",
+          "A spring beneath the Throne",
           "Rainfall on Judgment Day"
         ],
         "answer": 1
@@ -295,19 +295,19 @@
       {
         "question": "Who will be prevented from drinking from Al-Kawthar?",
         "options": [
-          "No one, everyone can",
+          "No one, everyone can drink",
           "Only major sinners",
           "Only disbelievers",
-          "Those who changed the"
+          "Those who changed the religion or abandoned Islamic practices"
         ],
         "answer": 3
       },
       {
         "question": "What happens after drinking from Al-Kawthar once?",
         "options": [
-          "Thirst is quenched",
-          "You must drink again each",
-          "You feel slightly",
+          "Thirst is quenched forever",
+          "You must drink again every hour",
+          "You feel slightly refreshed",
           "Nothing special"
         ],
         "answer": 0
@@ -321,7 +321,7 @@
         "question": "How is the Sirāt bridge described?",
         "options": [
           "Wide and easy to cross",
-          "Thinner than a hair &",
+          "Thinner than a hair and sharper than a sword",
           "Made of solid gold",
           "Invisible to the eye"
         ],
@@ -330,10 +330,10 @@
       {
         "question": "What will guide believers across the Sirāt?",
         "options": [
-          "Angels holding their",
+          "Angels holding their hands",
           "Ropes to hold onto",
-          "Light shining per their",
-          "The families calling them"
+          "Light shining according to their good deeds",
+          "Their families calling them"
         ],
         "answer": 2
       },
@@ -342,18 +342,18 @@
         "options": [
           "Wait for judgment",
           "Receive their books",
-          "Cross the fire truly",
-          "Come to Hellfire, then"
+          "Cross the fire",
+          "Come to Hellfire, then Allah will save those who feared Him"
         ],
         "answer": 3
       },
       {
         "question": "At what different speeds will people cross the Sirāt?",
         "options": [
-          "Like lightning, wind,",
-          "Everyone crosses at the",
-          "Only two speeds: fast or",
-          "Angels carry everyone"
+          "Like lightning, wind, horses, running, walking, or crawling",
+          "Everyone crosses at the same speed",
+          "Only two speeds: fast or slow",
+          "Angels carry everyone across"
         ],
         "answer": 0
       }
@@ -366,8 +366,8 @@
         "question": "What will happen when people see Hellfire displayed?",
         "options": [
           "They will look away",
-          "Believers will have hope",
-          "Everyone will be equally",
+          "Believers will have hope and disbelievers will feel terror",
+          "Everyone will be equally afraid",
           "Only children will see it"
         ],
         "answer": 1
@@ -375,10 +375,10 @@
       {
         "question": "How hot will the flames of Hellfire feel even from far away?",
         "options": [
-          "Not noticeable from a",
-          "So hot they can be felt",
+          "Not noticeable from a distance",
+          "So hot they can be felt from far away as it roars and breathes",
           "Only hot when very close",
-          "Cold and dark truly"
+          "Cold and dark"
         ],
         "answer": 1
       },
@@ -388,17 +388,17 @@
           "The scales of justice",
           "The records of deeds",
           "The Prophet's ﷺ pond",
-          "Hellfire indeed"
+          "Hellfire"
         ],
         "answer": 3
       },
       {
         "question": "Why will both destinations be displayed before crossing the bridge?",
         "options": [
-          "To make the reality of",
+          "To make the reality of eternal consequences completely clear",
           "To scare everyone equally",
           "As a test of courage",
-          "To give people a final"
+          "To give people a final choice"
         ],
         "answer": 0
       }
@@ -410,9 +410,9 @@
       {
         "question": "What are some names of Judgment Day mentioned in the Qur'an?",
         "options": [
-          "Only one name: Qiyamah",
-          "Al-Qiyamah, Al-Haqah,",
-          "The Last Day & The Final",
+          "Only one name: Judgment Day",
+          "Al-Qiyamah, Al-Haqah, Al-Waqiah, Al-Ghashiyah",
+          "The Last Day and The Final Day",
           "The Day of Gathering only"
         ],
         "answer": 1
@@ -432,18 +432,18 @@
         "options": [
           "Some will deny it",
           "It can be postponed",
-          "People can prepare at",
-          "There is no denying its"
+          "People can prepare at that time",
+          "There is no denying its occurrence"
         ],
         "answer": 3
       },
       {
         "question": "Why does the Day of Judgment have so many names?",
         "options": [
-          "Each name reveals aspects",
-          "To make it easier to",
-          "Different prophets gave",
-          "The names are all the"
+          "Each name reveals different aspects of its terror and reality",
+          "To make it easier to remember",
+          "Different prophets gave it different names",
+          "The names are all the same in meaning"
         ],
         "answer": 0
       }
@@ -455,10 +455,10 @@
       {
         "question": "Who will Allah permit to intercede on Judgment Day?",
         "options": [
-          "Only prophets truly",
-          "Righteous believers,",
+          "Only prophets",
+          "Righteous believers, angels, martyrs, scholars, and Qur'an memorizers",
           "Everyone who asks",
-          "No one at all truly"
+          "No one at all"
         ],
         "answer": 1
       },
@@ -466,9 +466,9 @@
         "question": "What will children who died before puberty do for their parents?",
         "options": [
           "Wait for them in Paradise",
-          "Intercede for them, Take",
+          "Intercede for them, taking their hands and leading them into Paradise",
           "Forget about them",
-          "Meet them at the"
+          "Meet them at the gathering"
         ],
         "answer": 1
       },
@@ -478,16 +478,16 @@
           "Anyone who wants to",
           "The wealthy and powerful",
           "The prophets only",
-          "No one except by The"
+          "No one except by His permission"
         ],
         "answer": 3
       },
       {
         "question": "Who can benefit from intercession on Judgment Day?",
         "options": [
-          "Only believers who died",
-          "Everyone including",
-          "Only those w/o any sins",
+          "Only believers who died with faith, not disbelievers",
+          "Everyone including disbelievers",
+          "Only those without any sins",
           "Only scholars and martyrs"
         ],
         "answer": 0
@@ -500,10 +500,10 @@
       {
         "question": "How will Allah multiply good deeds on Judgment Day?",
         "options": [
-          "Not at all, they stay the",
-          "By ten to seven hundred",
+          "Not at all, they stay the same",
+          "By ten to seven hundred times or more",
           "Only by two times",
-          "By exactly one hundred"
+          "By exactly one hundred times"
         ],
         "answer": 1
       },
@@ -511,9 +511,9 @@
         "question": "What will Allah do with believers' sins that He concealed in the world?",
         "options": [
           "Punish them severely",
-          "Show them privately &",
-          "Make them public for all",
-          "Ignore them w/o"
+          "Show them privately and then forgive them completely",
+          "Make them public for all to see",
+          "Ignore them without forgiveness"
         ],
         "answer": 1
       },
@@ -522,7 +522,7 @@
         "options": [
           "Everyone equally",
           "Those who were wealthy",
-          "Those who memorized",
+          "Those who memorized Qur'an",
           "The doers of good"
         ],
         "answer": 3
@@ -530,10 +530,10 @@
       {
         "question": "How will believers enter Paradise?",
         "options": [
-          "Not by their deeds alone",
-          "Only by their perfect",
+          "Not by their deeds alone but by Allah's mercy overwhelming their shortcomings",
+          "Only by their perfect deeds",
           "By paying with good deeds",
-          "By ancestral indeed"
+          "By ancestral righteousness"
         ],
         "answer": 0
       }
@@ -555,8 +555,8 @@
       {
         "question": "What happens to the skin of people in Hellfire?",
         "options": [
-          "It burns once & they die",
-          "It is renewed constantly",
+          "It burns once and they die",
+          "It is renewed constantly so they feel pain forever",
           "It becomes immune to fire",
           "It disappears completely"
         ],
@@ -566,9 +566,9 @@
         "question": "Who will receive the greatest punishment in Hellfire?",
         "options": [
           "Those who stole",
-          "Those who lied truly",
-          "Minor sinners truly",
-          "Those who associated"
+          "Those who lied occasionally",
+          "Minor sinners",
+          "Those who associated partners with Allah, denied Him, or led others astray"
         ],
         "answer": 3
       },
@@ -577,8 +577,8 @@
         "options": [
           "Not even an atom's weight",
           "Only to the worst people",
-          "A little bit to test",
-          "None to believers but"
+          "A little bit to test people",
+          "None to believers but some to disbelievers"
         ],
         "answer": 0
       }
@@ -590,9 +590,9 @@
       {
         "question": "What flows through the gardens of Paradise?",
         "options": [
-          "Only water indeed",
-          "Rivers of pure water,",
-          "Lava and gold truly",
+          "Only water",
+          "Rivers of pure water, milk, honey, and wine that doesn't intoxicate",
+          "Lava and gold",
           "Nothing, it is dry"
         ],
         "answer": 1
@@ -600,8 +600,8 @@
       {
         "question": "What are the palaces in Paradise made of?",
         "options": [
-          "Wood and stone truly",
-          "Gold, silver, & precious",
+          "Wood and stone",
+          "Gold, silver, and precious stones",
           "Light and clouds",
           "Glass and diamonds"
         ],
@@ -612,15 +612,15 @@
         "options": [
           "Simple pleasures",
           "Only food and drink",
-          "Things we already know",
-          "Comfort for eyes as"
+          "Things we already know about",
+          "Comfort for eyes as reward that no soul knows"
         ],
         "answer": 3
       },
       {
         "question": "What is the greatest pleasure in Paradise?",
         "options": [
-          "Seeing Allah's truly",
+          "Seeing Allah's magnificent Face",
           "The beautiful gardens",
           "The delicious food",
           "The grand palaces"
@@ -635,10 +635,10 @@
       {
         "question": "What will angels tell believers when they enter Paradise?",
         "options": [
-          "'Welcome home' truly",
-          "'Peace be upon you; you",
-          "'Congratulations on your",
-          "'Your journey is"
+          "'Welcome home'",
+          "'Peace be upon you; you have become pure, so enter it to abide eternally'",
+          "'Congratulations on your success'",
+          "'Your journey is complete'"
         ],
         "answer": 1
       },
@@ -646,7 +646,7 @@
         "question": "How will believers be escorted to Paradise?",
         "options": [
           "They walk alone",
-          "Angels will escort them",
+          "Angels will escort them to Paradise's gates which open wide",
           "They fly on their own",
           "Prophets lead them"
         ],
@@ -658,14 +658,14 @@
           "One by one slowly",
           "Dragged forcefully",
           "Flying through the air",
-          "In groups indeed"
+          "In groups"
         ],
         "answer": 3
       },
       {
         "question": "How will disbelievers be brought to Hellfire?",
         "options": [
-          "Dragged by harsh angels",
+          "Dragged by harsh angels in chains and disgrace",
           "They walk voluntarily",
           "They are carried gently",
           "They disappear into it"
@@ -681,7 +681,7 @@
         "question": "What will benefit us on Judgment Day when we stand alone before Allah?",
         "options": [
           "Our wealth and status",
-          "Only our faith &",
+          "Only our faith and righteous deeds",
           "Our family connections",
           "Our worldly achievements"
         ],
@@ -690,10 +690,10 @@
       {
         "question": "How should knowing about Judgment Day change how we live?",
         "options": [
-          "It should make us afraid",
-          "We should pray sincerely,",
-          "We should only think on",
-          "We should ignore worldly"
+          "It should make us afraid to do anything",
+          "We should pray sincerely, treat others kindly, avoid sins, and seek forgiveness",
+          "We should only think about it occasionally",
+          "We should ignore worldly life completely"
         ],
         "answer": 1
       },
@@ -703,17 +703,17 @@
           "Only our major deeds",
           "What others did to us",
           "Nothing from our past",
-          "Every atom's weight of"
+          "Every atom's weight of good and evil we did"
         ],
         "answer": 3
       },
       {
         "question": "What is the correct attitude of a wise believer?",
         "options": [
-          "Working hard doing good",
-          "Extreme despair on",
-          "False security w/o effort",
-          "Relying only on deeds w/o"
+          "Working hard doing good deeds while hoping for Allah's mercy",
+          "Extreme despair about salvation",
+          "False security without effort",
+          "Relying only on deeds without hope"
         ],
         "answer": 0
       }
