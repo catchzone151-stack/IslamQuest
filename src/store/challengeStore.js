@@ -389,7 +389,9 @@ export const useChallengeStore = create((set, get) => ({
   },
 
   saveBossAttempt: (score, answers, completionTime = null) => {
-    const passed = score >= Math.ceil(BOSS_LEVEL.questionCount * 0.75);
+    // Boss always scores 11/12 - user must get 11 or 12 to beat the Boss
+    const bossScore = 11;
+    const passed = score >= bossScore;
     const rewards = passed ? BOSS_LEVEL.rewards.win : BOSS_LEVEL.rewards.lose;
     
     const attempt = {

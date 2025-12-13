@@ -162,6 +162,11 @@ export default function ChallengeResultsModal({
               <span className="score-value" style={{ wordBreak: "break-word" }}>
                 {opponentChain !== null && opponentChain !== undefined ? `Chain: ${opponentChain}` : "Pending"}
               </span>
+            ) : isBossLevel ? (
+              <>
+                <span className="score-value" style={{ wordBreak: "break-word" }}>11/{totalQuestions}</span>
+                <span className="score-percentage">{Math.round((11 / totalQuestions) * 100)}%</span>
+              </>
             ) : (
               <>
                 <span className="score-value" style={{ wordBreak: "break-word" }}>
