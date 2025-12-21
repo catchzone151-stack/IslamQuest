@@ -120,20 +120,26 @@ export function initDeepLinkListener(navigate) {
   
   console.log("[DeepLink] Setting up native deep link listener");
   
-  CapApp.addListener("appUrlOpen", async ({ url }) => {
-    console.log("[DeepLink] App opened with URL:", url);
-    
-    if (url.startsWith(DEEP_LINK_SCHEME)) {
-      const handled = await handleDeepLinkAuth(url, navigate);
-      if (!handled) {
-        console.log("[DeepLink] URL not handled as auth, checking for other routes");
-        const path = url.replace(DEEP_LINK_SCHEME, "").replace("auth/callback", "");
-        if (path && navigate) {
-          navigate("/" + path);
+  let urlOpenListener = null;
+  
+  const setupListener = async () => {
+    urlOpenListener = await CapApp.addListener("appUrlOpen", async ({ url }) => {
+      console.log("[DeepLink] App opened with URL:", url);
+      
+      if (url.startsWith(DEEP_LINK_SCHEME)) {
+        const handled = await handleDeepLinkAuth(url, navigate);
+        if (!handled) {
+          console.log("[DeepLink] URL not handled as auth, checking for other routes");
+          const path = url.replace(DEEP_LINK_SCHEME, "").replace("auth/callback", "");
+          if (path && navigate) {
+            navigate("/" + path);
+          }
         }
       }
-    }
-  });
+    });
+  };
+  
+  setupListener();
   
   CapApp.getLaunchUrl().then(async (result) => {
     if (result?.url) {
@@ -145,7 +151,9 @@ export function initDeepLinkListener(navigate) {
   });
   
   return () => {
-    CapApp.removeAllListeners();
+    if (urlOpenListener) {
+      urlOpenListener.remove();
+    }
   };
 }
 
