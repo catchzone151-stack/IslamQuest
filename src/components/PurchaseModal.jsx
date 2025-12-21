@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { X, Crown } from "lucide-react";
 import { useProgressStore } from "../store/progressStore";
-import ZaydDefault from "../assets/mascots/mascot_waving.webp";
+import ZaydReading from "../assets/mascots/mascot_sitting.webp";
 
 export default function PurchaseModal({ onClose }) {
   const navigate = useNavigate();
@@ -61,12 +61,11 @@ export default function PurchaseModal({ onClose }) {
         </button>
         {/* Zayd Mascot */}
         <img
-          src={ZaydDefault}
+          src={ZaydReading}
           alt="Zayd"
           style={{
             width: 80,
             height: 80,
-            animation: "bounce 2s infinite",
             marginBottom: 12,
           }}
         />
@@ -99,9 +98,9 @@ export default function PurchaseModal({ onClose }) {
           borderRadius: "12px",
         }}>
           <div style={{ color: "#cbd5e1", fontSize: "0.85rem", lineHeight: 1.8 }}>
-            <div style={{ marginBottom: 8 }}>✓ All 14 learning paths</div>
-            <div style={{ marginBottom: 8 }}>✓ Unlimited lessons</div>
-            <div style={{ marginBottom: 8 }}>✓ Global Events access</div>
+            <div style={{ marginBottom: 8 }}>✓ Access to all topics</div>
+            <div style={{ marginBottom: 8 }}>✓ All lessons unlocked</div>
+            <div style={{ marginBottom: 8 }}>✓ Global Events</div>
             <div>✓ Premium badge</div>
           </div>
         </div>
@@ -126,16 +125,9 @@ export default function PurchaseModal({ onClose }) {
           }}
         >
           <Crown size={20} />
-          View Premium Plans
+          Unlock Premium
         </button>
 
-        {/* Bounce Animation */}
-        <style>{`
-          @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-          }
-        `}</style>
       </div>
     </div>
   );
