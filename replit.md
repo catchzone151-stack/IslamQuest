@@ -103,23 +103,42 @@ Asset management is centralized via `assets.js` for optimized WebP images, inclu
 ### One-Time Setup (Already Completed)
 These commands were run once to initialize Capacitor - DO NOT run again:
 ```bash
-npm install @capacitor/core @capacitor/cli @capacitor/android
+npm install @capacitor/core @capacitor/cli @capacitor/android @capacitor/ios
 npx cap init "IslamQuest" "com.islamquest.app" --web-dir dist
 npx cap add android
+npx cap add ios
 ```
 
 ### Every Build Commands
 Run these after making code changes:
 ```bash
 npm run build          # Build Vite app to dist/
-npx cap sync           # Sync web assets to android/
+npx cap sync           # Sync web assets to android/ and ios/
 ```
 
-### Open in Android Studio
+### Open in IDE
 ```bash
 npx cap open android   # Opens project in Android Studio for building APK/AAB
+npx cap open ios       # Opens project in Xcode for building IPA
 ```
 
 ### Key Files (Permanent - Do Not Delete)
 -   `capacitor.config.ts` - Capacitor configuration
 -   `android/` - Native Android project folder
+-   `ios/` - Native iOS project folder
+
+### In-App Purchase Configuration
+
+**Product ID**: `premium_lifetime` (one-time non-consumable purchase)
+
+**Android (Google Play Billing)**:
+-   Permission added: `com.android.vending.BILLING` in `AndroidManifest.xml`
+-   Product ID in Google Play Console: `premium_lifetime`
+-   Requires uploading APK/AAB to testing track before products are visible
+
+**iOS (StoreKit)**:
+-   Entitlements file: `ios/App/App/App.entitlements`
+-   Product ID in App Store Connect: `premium_lifetime`
+-   Enable "In-App Purchase" capability in Xcode when building
+
+**IAP Service**: `src/services/iapService.js` handles both platforms with backend verification via Supabase Edge Functions.
