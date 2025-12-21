@@ -41,6 +41,9 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation project(':capacitor-cordova-android-plugins')
     
+    // Google Play Billing Library 7.x (modern billing client, required by Google Play)
+    implementation 'com.android.billingclient:billing:7.0.0'
+    
     // Fix duplicate Kotlin stdlib classes
     constraints {
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.24") {

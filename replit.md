@@ -133,6 +133,7 @@ npx cap open ios       # Opens project in Xcode for building IPA
 
 **Android (Google Play Billing)**:
 -   Permission added: `com.android.vending.BILLING` in `AndroidManifest.xml`
+-   Billing Library: `com.android.billingclient:billing:7.0.0` in `app/build.gradle`
 -   Product ID in Google Play Console: `premium_lifetime`
 -   Requires uploading APK/AAB to testing track before products are visible
 
