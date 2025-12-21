@@ -6,6 +6,7 @@ import { supabase } from "../lib/supabaseClient";
 import { useUserStore } from "../store/useUserStore";
 import { preloadUserData } from "../hooks/useDataPreloader";
 import { avatarIndexToKey } from "../utils/avatarUtils";
+import { getPasswordResetRedirectUrl } from "../utils/deepLinkHandler";
 import SittingMascot from "../assets/mascots/mascot_sitting.webp";
 
 export default function LoginPage() {
@@ -162,9 +163,12 @@ export default function LoginPage() {
 
     setForgotSending(true);
     try {
+      const redirectUrl = getPasswordResetRedirectUrl();
+      console.log("[LoginPage] Using reset password redirect URL:", redirectUrl);
+      
       const { error } = await supabase.auth.resetPasswordForEmail(
         forgotEmail.trim().toLowerCase(),
-        { redirectTo: `${window.location.origin}/reset-password` }
+        { redirectTo: redirectUrl }
       );
 
       if (error) {

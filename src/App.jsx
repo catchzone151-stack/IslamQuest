@@ -21,6 +21,7 @@ import { getDeviceFingerprint } from "./lib/deviceFingerprint";
 import { syncOnAppOpen, syncOnForeground } from "./sync/engine.js";
 import OneSignal from "react-onesignal";
 import { createDailyLeaderboardSnapshot } from "./backend/leaderboardSnapshots";
+import { initDeepLinkListener } from "./utils/deepLinkHandler";
 
 
 // ✅ Onboarding screens (loaded immediately for first-time users)
@@ -129,6 +130,18 @@ function LoadingScreen() {
       `}</style>
     </div>
   );
+}
+
+// 📱 DEEP LINK HANDLER - Handles auth callbacks from email links on native apps
+function DeepLinkHandler() {
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    const cleanup = initDeepLinkListener(navigate);
+    return cleanup;
+  }, [navigate]);
+  
+  return null;
 }
 
 // 🔄 Onboarding step redirector - resumes from saved step
@@ -650,6 +663,7 @@ export default function App() {
         <OfflineConnectionBanner />
         <ModalProvider>
         <BrowserRouter>
+          <DeepLinkHandler />
           <ScrollToTop />
           <div
             className="screen no-extra-space app-root-container"

@@ -8,6 +8,7 @@ import { useProgressStore } from "../store/progressStore";
 import { avatarKeyToIndex } from "../utils/avatarUtils";
 import { AVAILABLE_AVATARS } from "../utils/avatarUtils";
 import { useOnboarding } from "../hooks/useOnboarding";
+import { getAuthRedirectUrl } from "../utils/deepLinkHandler";
 import assets from "../assets/assets";
 import SittingMascot from "../assets/mascots/mascot_sitting.webp";
 
@@ -123,15 +124,15 @@ export default function SignUpPage() {
       // This prevents the confirmation email from going to the wrong address
       await supabase.auth.signOut();
 
-      // Get the app URL for email confirmation redirect
-      const appUrl = window.location.origin;
-      console.log("[SignUp] Using redirect URL:", appUrl);
+      // Get the appropriate redirect URL (deep link for native, web URL for browser)
+      const redirectUrl = getAuthRedirectUrl();
+      console.log("[SignUp] Using redirect URL:", redirectUrl);
 
       const { data, error } = await supabase.auth.signUp({
         email: email.trim().toLowerCase(),
         password,
         options: {
-          emailRedirectTo: `${appUrl}/check-email`,
+          emailRedirectTo: redirectUrl,
         },
       });
 
