@@ -91,3 +91,35 @@ Asset management is centralized via `assets.js` for optimized WebP images, inclu
 -   **Media**: Locally bundled WebP images and an SVG favicon.
 -   **Mascots**: 16 WebP characters used across UI.
 -   **Avatars**: 34 total avatar options.
+
+## Mobile Build (Capacitor)
+
+### Configuration
+-   **App Name**: IslamQuest
+-   **App ID**: com.islamquest.app
+-   **Web Directory**: dist
+-   **Config File**: capacitor.config.ts
+
+### One-Time Setup (Already Completed)
+These commands were run once to initialize Capacitor - DO NOT run again:
+```bash
+npm install @capacitor/core @capacitor/cli @capacitor/android
+npx cap init "IslamQuest" "com.islamquest.app" --web-dir dist
+npx cap add android
+```
+
+### Every Build Commands
+Run these after making code changes:
+```bash
+npm run build          # Build Vite app to dist/
+npx cap sync           # Sync web assets to android/
+```
+
+### Open in Android Studio
+```bash
+npx cap open android   # Opens project in Android Studio for building APK/AAB
+```
+
+### Key Files (Permanent - Do Not Delete)
+-   `capacitor.config.ts` - Capacitor configuration
+-   `android/` - Native Android project folder

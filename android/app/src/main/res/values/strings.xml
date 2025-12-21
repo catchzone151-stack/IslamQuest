@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">IslamQuest</string>
+    <string name="title_activity_main">IslamQuest</string>
+    <string name="package_name">com.islamquest.app</string>
+    <string name="custom_url_scheme">com.islamquest.app</string>
+</resources>
