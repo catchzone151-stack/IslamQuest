@@ -521,35 +521,32 @@ export default function App() {
     ]);
   }, []);
 
-  // 🔙 GLOBAL BACK BUTTON HANDLER: Intercept physical phone back button
+  // 🔙 GLOBAL BACK BUTTON HANDLER: Only intercept on home page to prevent accidental exit
   useEffect(() => {
     const { showModal } = useModalStore.getState();
 
-    // Push initial state when app loads (creates back history entry)
-    window.history.pushState({ isAppEntry: true }, "", window.location.href);
-
     const handleBackButton = (event) => {
-      // Prevent default browser back behavior
+      const currentPath = window.location.pathname;
+      
+      // Only intercept back button on home page - let all other pages navigate normally
+      const isHomePage = currentPath === "/" || currentPath === "/home";
+      
+      if (!isHomePage) {
+        return;
+      }
+      
       event.preventDefault();
-
-      // Push another state to prevent actual navigation
       window.history.pushState({ isAppEntry: true }, "", window.location.href);
 
-      // Show custom exit confirmation modal
       showModal(MODAL_TYPES.EXIT_CONFIRMATION, {
         onConfirm: () => {
-          // User confirmed - actually exit the app
-          // For web apps, this will go back or close if opened as PWA
-          window.history.go(-2); // Go back twice (past our dummy states)
+          window.history.go(-2);
         },
-        // onCancel is handled by hideModal in ModalController (stays in app)
       });
     };
 
-    // Listen for popstate (back button press)
     window.addEventListener("popstate", handleBackButton);
 
-    // Cleanup
     return () => {
       window.removeEventListener("popstate", handleBackButton);
     };
