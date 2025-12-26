@@ -35,7 +35,13 @@ The application offers 14 learning paths with lessons and quizzes derived from Q
 
 **Events System**: Global Events load cloud entries on mount, with event quiz submissions using completion time for tie-breaking.
 
-**In-App Purchase System**: A complete backend-verified IAP system for a single lifetime premium unlock. It uses `iapService.js`, Supabase Edge Functions for verification, and handles device binding and security.
+**In-App Purchase System**: A complete backend-verified IAP system for a single lifetime premium unlock using `cordova-plugin-purchase` (CdvPurchase v13). Features include:
+- Local premium persistence (`iq_iap_premium_entitlement` in localStorage) for offline access
+- Auto-restore on app launch and paywall mount via `checkEntitlementOnMount()`
+- "Already owned" responses treated as success (not failure)
+- Deterministic UI states - never gets stuck on "Processing..."
+- Idempotent receipt validation with Supabase Edge Functions
+- Device binding and security via hashed device IDs
 
 **Account Deletion System**: A "Delete My Account" option triggers a Supabase Edge Function to delete all user-related data.
 
