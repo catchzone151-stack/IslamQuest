@@ -14,7 +14,6 @@ import ui_coin from "../assets/ui/ui_coin.webp";
 import ui_streak from "../assets/ui/ui_streak.webp";
 import ui_shield from "../assets/ui/ui_shield.webp";
 
-// Extract avatar key from full path (e.g., "/src/assets/avatars/avatar_robot.png.webp" -> "avatar_robot")
 const extractAvatarKey = (path) => {
   if (!path) return null;
   const file = path.split("/").pop();
@@ -30,9 +29,6 @@ export default function Profile() {
     streak, 
     shieldCount,
     premiumStatus,
-    vibrationEnabled,
-    setVibrationEnabled,
-    purchaseIndividual,
   } = useProgressStore();
   
   const { showModal } = useModalStore();
@@ -41,7 +37,6 @@ export default function Profile() {
   const xpProgress = getXPProgress(xp);
   const progress = xpProgress.percentage;
   
-  // Get the avatar image path from the stored key
   const avatarImage = avatar ? getAvatarImage(avatar, { userId }) : "/default-avatar.png";
 
   return (
@@ -49,14 +44,14 @@ export default function Profile() {
       <div
         style={{
           textAlign: "center",
-          padding: "clamp(20px, 6vw, 40px) 20px 90px",
+          padding: "16px 16px 90px",
           color: "white",
         }}
       >
         {/* === Header === */}
         <h1
           style={{
-            fontSize: "clamp(1.3rem, 5vw, 1.8rem)",
+            fontSize: "1.4rem",
             fontWeight: 800,
             margin: 0,
             background: "linear-gradient(90deg, #FFD700, #FFA500, #FFD700)",
@@ -68,22 +63,17 @@ export default function Profile() {
         >
           My Profile
         </h1>
-        <p style={{ opacity: 0.9, marginTop: 8 }}>
-          Review your XP, coins, and progress
-        </p>
 
         {/* === Avatar + Name + Level Header === */}
         <div style={{ 
-          marginTop: 24,
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          gap: 16,
-          maxWidth: 400,
-          margin: "24px auto 0",
+          gap: 12,
+          maxWidth: 380,
+          margin: "16px auto 0",
         }}>
-          {/* Left: Avatar + Name/Handle */}
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <button
               onClick={() => showModal(MODAL_TYPES.EDIT_AVATAR, {
                 currentAvatar: avatar,
@@ -102,10 +92,10 @@ export default function Profile() {
                 alt="Avatar"
                 loading="eager"
                 style={{
-                  width: 80,
-                  height: 80,
+                  width: 64,
+                  height: 64,
                   borderRadius: "50%",
-                  border: "3px solid #FFD700",
+                  border: "2px solid #FFD700",
                   objectFit: "contain",
                 }}
               />
@@ -119,20 +109,18 @@ export default function Profile() {
                 })}
                 style={{
                   cursor: "pointer",
-                  fontSize: "1.2rem",
+                  fontSize: "1.1rem",
                   fontWeight: 600,
                   color: "#FFD700",
                   margin: 0,
-                  marginBottom: 4,
                 }}
               >
                 {name || "Explorer"}
               </h2>
-              
               {handle && (
                 <p style={{
                   color: "rgba(255, 255, 255, 0.5)",
-                  fontSize: "0.85rem",
+                  fontSize: "0.8rem",
                   margin: 0,
                 }}>
                   @{handle}
@@ -141,47 +129,30 @@ export default function Profile() {
             </div>
           </div>
 
-          {/* Right: Level + XP */}
-          <div style={{ 
-            textAlign: "right",
-            flexShrink: 0,
-          }}>
+          <div style={{ textAlign: "right", flexShrink: 0 }}>
             <div style={{
-              fontSize: "1.1rem",
+              fontSize: "1rem",
               fontWeight: 700,
               color: currentLevel.color || "#FFD700",
-              marginBottom: 4,
             }}>
               Level {currentLevel.level}
             </div>
-            <div style={{
-              fontSize: "0.85rem",
-              color: "rgba(255, 255, 255, 0.7)",
-            }}>
+            <div style={{ fontSize: "0.8rem", color: "rgba(255, 255, 255, 0.7)" }}>
               {xp.toLocaleString()} XP
             </div>
-            {xpProgress.nextLevel && (
-              <div style={{
-                fontSize: "0.75rem",
-                color: "rgba(212, 175, 55, 0.6)",
-                marginTop: 2,
-              }}>
-                {xpProgress.currentLevelXP.toLocaleString()}/{xpProgress.requiredDelta.toLocaleString()} to next
-              </div>
-            )}
           </div>
         </div>
 
         {/* === XP Progress Bar === */}
         <div
           style={{
-            width: "80%",
-            maxWidth: 350,
-            margin: "16px auto 8px",
+            width: "85%",
+            maxWidth: 380,
+            margin: "12px auto 0",
             background: "rgba(255,255,255,0.1)",
-            borderRadius: 12,
+            borderRadius: 8,
             overflow: "hidden",
-            height: 14,
+            height: 10,
           }}
         >
           <div
@@ -194,185 +165,126 @@ export default function Profile() {
             }}
           />
         </div>
-
-        {/* View All Levels Button */}
-        <button
-          onClick={() => showModal(MODAL_TYPES.VIEW_ALL_LEVELS, { currentXP: xp })}
-          style={{
-            background: "linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(244, 208, 63, 0.1) 100%)",
-            border: "1px solid rgba(212, 175, 55, 0.4)",
-            borderRadius: 12,
-            padding: "10px 20px",
-            color: "#D4AF37",
-            fontWeight: "600",
-            cursor: "pointer",
-            fontSize: "0.9rem",
-            marginTop: 12,
-          }}
-        >
-          View All Levels
-        </button>
+        {xpProgress.nextLevel && (
+          <p style={{
+            margin: "4px 0 0",
+            fontSize: "0.75rem",
+            color: "rgba(212, 175, 55, 0.6)",
+          }}>
+            {xpProgress.currentLevelXP.toLocaleString()}/{xpProgress.requiredDelta.toLocaleString()} to Level {xpProgress.nextLevel.level}
+          </p>
+        )}
 
         {/* === Stats cards === */}
         <div
           style={{
             display: "flex",
-            gap: 12,
+            gap: 8,
             justifyContent: "center",
             flexWrap: "wrap",
-            marginTop: 20,
+            marginTop: 16,
           }}
         >
           <ProfileCard icon={ui_xp} label="XP" value={xp} />
-          <ProfileCard
-            icon={ui_coin}
-            label="Coins"
-            value={coins}
-            color="#FFA500"
-          />
-          <ProfileCard
-            icon={ui_streak}
-            label="Streak"
-            value={`${streak} 🔥`}
-            color="#FF6347"
-          />
-          <ProfileCard
-            icon={ui_shield}
-            label="Shields"
-            value={`${shieldCount}/3 🛡️`}
-            color="#4fd5ff"
-          />
+          <ProfileCard icon={ui_coin} label="Coins" value={coins} color="#FFA500" />
+          <ProfileCard icon={ui_streak} label="Streak" value={`${streak} 🔥`} color="#FF6347" />
+          <ProfileCard icon={ui_shield} label="Shields" value={`${shieldCount}/3 🛡️`} color="#4fd5ff" />
         </div>
 
-        {/* === Add Freeze Button === */}
-        <button
-          onClick={() => showModal(MODAL_TYPES.PURCHASE_STREAK_FREEZE)}
-          style={{
-            background: "linear-gradient(135deg, rgba(79, 213, 255, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%)",
-            border: "1px solid rgba(79, 213, 255, 0.4)",
-            borderRadius: 12,
-            padding: "12px 24px",
-            color: "#4fd5ff",
-            fontWeight: "600",
-            cursor: "pointer",
-            fontSize: "0.95rem",
-            marginTop: 20,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 8,
-            margin: "20px auto 0",
-          }}
-        >
-          <span>🛡️</span>
-          <span>Add Streak Freeze</span>
-        </button>
+        {/* === Action Buttons Row === */}
+        <div style={{
+          display: "flex",
+          gap: 8,
+          justifyContent: "center",
+          flexWrap: "wrap",
+          marginTop: 14,
+          maxWidth: 400,
+          margin: "14px auto 0",
+        }}>
+          <button
+            onClick={() => showModal(MODAL_TYPES.VIEW_ALL_LEVELS, { currentXP: xp })}
+            style={{
+              background: "linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(244, 208, 63, 0.1) 100%)",
+              border: "1px solid rgba(212, 175, 55, 0.4)",
+              borderRadius: 10,
+              padding: "8px 14px",
+              color: "#D4AF37",
+              fontWeight: "600",
+              cursor: "pointer",
+              fontSize: "0.85rem",
+            }}
+          >
+            View Levels
+          </button>
+          <button
+            onClick={() => showModal(MODAL_TYPES.PURCHASE_STREAK_FREEZE)}
+            style={{
+              background: "linear-gradient(135deg, rgba(79, 213, 255, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%)",
+              border: "1px solid rgba(79, 213, 255, 0.4)",
+              borderRadius: 10,
+              padding: "8px 14px",
+              color: "#4fd5ff",
+              fontWeight: "600",
+              cursor: "pointer",
+              fontSize: "0.85rem",
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+            }}
+          >
+            <span>🛡️</span>
+            <span>Add Freeze</span>
+          </button>
+        </div>
 
         {/* === Update Banner === */}
         {shouldShowUpdateBanner() && (
           <div
             style={{
-              maxWidth: 400,
-              margin: "20px auto 0",
-              padding: "16px",
+              maxWidth: 380,
+              margin: "14px auto 0",
+              padding: "12px",
               background: "linear-gradient(135deg, rgba(79, 213, 255, 0.15) 0%, rgba(16, 185, 129, 0.15) 100%)",
               border: "1px solid rgba(79, 213, 255, 0.4)",
-              borderRadius: 12,
+              borderRadius: 10,
               color: "#4fd5ff",
-              fontSize: "0.95rem",
+              fontSize: "0.9rem",
               fontWeight: "600",
-              textAlign: "center",
             }}
           >
             ✨ New update available!
           </div>
         )}
 
-        {/* === Settings Button === */}
-        <button
-          onClick={() => navigate("/settings")}
-          style={{
-            background: "linear-gradient(135deg, rgba(79, 213, 255, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%)",
-            border: "1px solid rgba(79, 213, 255, 0.3)",
-            borderRadius: 12,
-            padding: "14px 24px",
-            color: "#4fd5ff",
-            fontWeight: "600",
-            cursor: "pointer",
-            fontSize: "0.95rem",
-            marginTop: 20,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 8,
-            margin: "20px auto 0",
-            maxWidth: 400,
-            width: "100%",
-          }}
-        >
-          <span>⚙️</span>
-          <span>Settings</span>
-        </button>
-
-        {/* === Version Display (kept for logging) === */}
-        <div
-          style={{
-            marginTop: 20,
-            fontSize: "0.75rem",
-            color: "rgba(255,255,255,0.4)",
-            textAlign: "center",
-          }}
-        >
-          Version {LOCAL_VERSION}
-        </div>
-
         {/* === Premium Section === */}
         <div
           style={{
-            maxWidth: 400,
-            margin: "32px auto 0",
-            padding: 20,
+            maxWidth: 380,
+            margin: "16px auto 0",
+            padding: 14,
             background: "rgba(255, 215, 0, 0.05)",
             border: "1px solid rgba(255, 215, 0, 0.2)",
-            borderRadius: 16,
+            borderRadius: 12,
           }}
         >
-          <h3
-            style={{
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginBottom: premiumStatus === "free" ? 12 : 0,
+          }}>
+            <span style={{ color: "#FFD700", fontSize: "1rem", fontWeight: 700 }}>
+              Premium Status
+            </span>
+            <span style={{
               color: "#FFD700",
-              fontSize: "1.2rem",
-              fontWeight: 700,
-              marginBottom: 16,
-            }}
-          >
-            💳 Premium Status
-          </h3>
-
-          {/* Current Plan */}
-          <div
-            style={{
-              background: "rgba(255, 255, 255, 0.03)",
-              padding: 16,
-              borderRadius: 12,
-              marginBottom: 16,
-            }}
-          >
-            <div style={{ color: "#cbd5e1", fontSize: "0.9rem", marginBottom: 8 }}>
-              Current Plan:
-            </div>
-            <div
-              style={{
-                color: "#FFD700",
-                fontSize: "1.1rem",
-                fontWeight: 700,
-                textTransform: "capitalize",
-              }}
-            >
+              fontSize: "0.95rem",
+              fontWeight: 600,
+            }}>
               {premiumStatus === "free" ? "Free 🆓" : "Premium ⭐"}
-            </div>
+            </span>
           </div>
 
-          {/* Upgrade Button - Only show for free users */}
           {premiumStatus === "free" && (
             <button
               onClick={() => showModal(MODAL_TYPES.PURCHASE)}
@@ -380,18 +292,54 @@ export default function Profile() {
                 background: "linear-gradient(135deg, #FFD700 0%, #FFA500 100%)",
                 color: "#111827",
                 border: "none",
-                borderRadius: 12,
-                padding: "14px 24px",
-                fontSize: "1rem",
+                borderRadius: 10,
+                padding: "10px 20px",
+                fontSize: "0.9rem",
                 fontWeight: 700,
                 width: "100%",
                 cursor: "pointer",
-                boxShadow: "0 4px 12px rgba(255, 215, 0, 0.3)",
+                boxShadow: "0 3px 10px rgba(255, 215, 0, 0.3)",
               }}
             >
               ⭐ Upgrade to Premium
             </button>
           )}
+        </div>
+
+        {/* === Settings Button === */}
+        <button
+          onClick={() => navigate("/settings")}
+          style={{
+            background: "linear-gradient(135deg, rgba(79, 213, 255, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%)",
+            border: "1px solid rgba(79, 213, 255, 0.3)",
+            borderRadius: 10,
+            padding: "10px 20px",
+            color: "#4fd5ff",
+            fontWeight: "600",
+            cursor: "pointer",
+            fontSize: "0.9rem",
+            margin: "14px auto 0",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 6,
+            maxWidth: 380,
+            width: "100%",
+          }}
+        >
+          <span>⚙️</span>
+          <span>Settings</span>
+        </button>
+
+        {/* === Version === */}
+        <div
+          style={{
+            marginTop: 12,
+            fontSize: "0.7rem",
+            color: "rgba(255,255,255,0.35)",
+          }}
+        >
+          Version {LOCAL_VERSION}
         </div>
 
         <style>
