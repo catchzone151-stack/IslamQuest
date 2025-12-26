@@ -178,11 +178,12 @@ export default function Profile() {
         {/* === Stats cards === */}
         <div
           style={{
-            display: "flex",
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
             gap: 8,
-            justifyContent: "center",
-            flexWrap: "wrap",
             marginTop: 16,
+            maxWidth: 380,
+            margin: "16px auto 0",
           }}
         >
           <ProfileCard icon={ui_xp} label="XP" value={xp} />
