@@ -2,6 +2,7 @@ import { supabase } from "../lib/supabaseClient";
 import { getDeviceId, hashDeviceId } from "./deviceService";
 import { verifyReceipt, validatePremiumStatus } from "./purchaseVerificationService";
 import { logEvent, ANALYTICS_EVENTS } from "./analyticsService";
+import { Capacitor } from "@capacitor/core";
 
 const PRODUCTS = {
   premium_lifetime: {
@@ -13,87 +14,125 @@ const PRODUCTS = {
   }
 };
 
-let storeKit = null;
-let googleBilling = null;
+let store = null;
 let platformType = null;
+let initialized = false;
+let initPromise = null;
 
 const detectPlatform = () => {
   if (typeof window === "undefined") return null;
   
-  if (window.Capacitor?.isNativePlatform()) {
-    return window.Capacitor.getPlatform();
-  }
-  
-  const userAgent = navigator.userAgent || "";
-  if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-    return "ios";
-  }
-  if (/android/i.test(userAgent)) {
-    return "android";
+  if (Capacitor.isNativePlatform()) {
+    return Capacitor.getPlatform();
   }
   
   return null;
 };
 
-export const initializeIAP = async () => {
-  platformType = detectPlatform();
-  
-  if (!platformType) {
-    console.log("[IAP] Web environment - IAP not available");
-    return { success: false, platform: "web" };
-  }
-  
-  try {
-    if (platformType === "ios") {
-      if (window.webkit?.messageHandlers?.storeKit) {
-        storeKit = window.webkit.messageHandlers.storeKit;
-        console.log("[IAP] StoreKit initialized");
-        return { success: true, platform: "ios" };
-      }
-      
-      if (window.CdvPurchase?.store) {
-        storeKit = window.CdvPurchase.store;
-        await registerProducts(storeKit, "ios");
-        console.log("[IAP] CdvPurchase StoreKit initialized");
-        return { success: true, platform: "ios" };
-      }
+const waitForDeviceReady = () => {
+  return new Promise((resolve) => {
+    if (document.readyState === "complete" && window.CdvPurchase) {
+      resolve();
+      return;
     }
     
-    if (platformType === "android") {
-      if (window.CdvPurchase?.store) {
-        googleBilling = window.CdvPurchase.store;
-        await registerProducts(googleBilling, "android");
-        console.log("[IAP] Google Play Billing initialized");
-        return { success: true, platform: "android" };
+    const checkCdvPurchase = () => {
+      if (window.CdvPurchase) {
+        resolve();
+      } else {
+        setTimeout(checkCdvPurchase, 100);
       }
-      
-      if (window.PlayBilling) {
-        googleBilling = window.PlayBilling;
-        console.log("[IAP] PlayBilling initialized");
-        return { success: true, platform: "android" };
-      }
+    };
+    
+    if (document.readyState === "complete") {
+      checkCdvPurchase();
+    } else {
+      document.addEventListener("deviceready", () => checkCdvPurchase(), false);
+      window.addEventListener("load", () => checkCdvPurchase());
     }
     
-    console.log("[IAP] No native billing plugin found");
-    return { success: false, platform: platformType, error: "No billing plugin available" };
-  } catch (error) {
-    console.error("[IAP] Initialization error:", error);
-    return { success: false, platform: platformType, error: error.message };
-  }
+    setTimeout(() => resolve(), 5000);
+  });
 };
 
-const registerProducts = async (store, platform) => {
-  const productType = store.NON_CONSUMABLE || "non consumable";
+export const initializeIAP = async () => {
+  if (initialized && store) {
+    return { success: true, platform: platformType };
+  }
+  
+  if (initPromise) {
+    return initPromise;
+  }
+  
+  initPromise = (async () => {
+    platformType = detectPlatform();
+    
+    if (!platformType) {
+      console.log("[IAP] Web environment - IAP not available");
+      return { success: false, platform: "web" };
+    }
+    
+    console.log("[IAP] Detected platform:", platformType);
+    
+    try {
+      await waitForDeviceReady();
+      
+      if (!window.CdvPurchase) {
+        console.log("[IAP] CdvPurchase not available after wait");
+        return { success: false, platform: platformType, error: "Billing plugin not loaded" };
+      }
+      
+      store = window.CdvPurchase.store;
+      
+      if (!store) {
+        console.log("[IAP] CdvPurchase.store not available");
+        return { success: false, platform: platformType, error: "Store not available" };
+      }
+      
+      console.log("[IAP] CdvPurchase.store found, initializing...");
+      
+      store.verbosity = window.CdvPurchase.LogLevel.DEBUG;
+      
+      await registerProducts();
+      
+      initialized = true;
+      console.log("[IAP] Initialization complete for", platformType);
+      return { success: true, platform: platformType };
+    } catch (error) {
+      console.error("[IAP] Initialization error:", error);
+      return { success: false, platform: platformType, error: error.message };
+    }
+  })();
+  
+  return initPromise;
+};
+
+const registerProducts = async () => {
+  const CdvPurchase = window.CdvPurchase;
+  const platform = platformType === "ios" 
+    ? CdvPurchase.Platform.APPLE_APPSTORE 
+    : CdvPurchase.Platform.GOOGLE_PLAY;
   
   Object.values(PRODUCTS).forEach(product => {
-    const storeId = platform === "ios" ? product.appleId : product.googleId;
+    const storeId = platformType === "ios" ? product.appleId : product.googleId;
+    console.log("[IAP] Registering product:", storeId, "on platform:", platform);
+    
     store.register({
       id: storeId,
-      type: productType
+      platform: platform,
+      type: CdvPurchase.ProductType.NON_CONSUMABLE
     });
   });
   
-  await store.refresh();
+  store.error((error) => {
+    console.error("[IAP] Store error:", error.code, error.message);
+  });
+  
+  await store.initialize([platform]);
+  console.log("[IAP] Store initialized, refreshing products...");
+  
+  await store.update();
+  console.log("[IAP] Products updated");
 };
 
 export const loadProducts = async () => {
@@ -109,22 +148,20 @@ export const loadProducts = async () => {
     }));
   }
   
-  const store = platformType === "ios" ? storeKit : googleBilling;
-  
   try {
     const products = Object.values(PRODUCTS).map(product => {
       const storeId = platformType === "ios" ? product.appleId : product.googleId;
-      const storeProduct = store.get?.(storeId) || store.products?.find(p => p.id === storeId);
+      const storeProduct = store.get(storeId);
       
       return {
         id: product.id,
         storeId: storeId,
         title: storeProduct?.title || "Lifetime Premium",
         description: storeProduct?.description || "Unlock all features forever",
-        price: storeProduct?.price || "Loading...",
-        priceAmount: storeProduct?.priceMicros ? storeProduct.priceMicros / 1000000 : null,
-        currency: storeProduct?.currency || "GBP",
-        available: !!storeProduct
+        price: storeProduct?.pricing?.price || "Loading...",
+        priceAmount: storeProduct?.pricing?.priceMicros ? storeProduct.pricing.priceMicros / 1000000 : null,
+        currency: storeProduct?.pricing?.currency || "GBP",
+        available: !!storeProduct?.canPurchase
       };
     });
     
@@ -168,23 +205,29 @@ export const purchase = async (productId) => {
   
   logEvent(ANALYTICS_EVENTS.PURCHASE_INITIATED, { productId, platform: platformType });
   
-  const store = platformType === "ios" ? storeKit : googleBilling;
   const storeId = platformType === "ios" ? product.appleId : product.googleId;
+  const storeProduct = store.get(storeId);
+  
+  if (!storeProduct) {
+    console.error("[IAP] Product not found in store:", storeId);
+    return { success: false, error: "Product not available" };
+  }
   
   return new Promise((resolve) => {
     const timeout = setTimeout(() => {
       resolve({ success: false, error: "Purchase timed out" });
     }, 120000);
     
-    const handlePurchaseComplete = async (purchasedProduct) => {
+    const verifyAndFinish = async (transaction) => {
       clearTimeout(timeout);
       
       try {
-        const receipt = purchasedProduct.transaction?.receipt 
-          || purchasedProduct.receipt 
-          || purchasedProduct.purchaseToken;
+        const receipt = transaction.receipt 
+          || transaction.purchaseToken 
+          || transaction.transactionReceipt;
         
         if (!receipt) {
+          console.error("[IAP] No receipt in transaction:", transaction);
           resolve({ success: false, error: "No receipt received" });
           return;
         }
@@ -210,9 +253,7 @@ export const purchase = async (productId) => {
         
         logEvent(ANALYTICS_EVENTS.PURCHASE_VERIFIED_SERVER, { productId: product.id, platform: platformType });
         
-        if (store.finish) {
-          await store.finish(purchasedProduct);
-        }
+        transaction.finish();
         
         console.log("[IAP] Purchase verified and completed successfully");
         resolve({ 
@@ -227,38 +268,46 @@ export const purchase = async (productId) => {
       }
     };
     
-    const handlePurchaseError = (error) => {
-      clearTimeout(timeout);
-      console.error("[IAP] Purchase error:", error);
-      
-      if (error.code === "E_USER_CANCELLED" || error.message?.includes("cancel")) {
-        resolve({ success: false, error: "Purchase cancelled", cancelled: true });
-      } else {
-        resolve({ success: false, error: error.message || "Purchase failed" });
-      }
-    };
+    store.when()
+      .productUpdated((p) => {
+        if (p.id === storeId) {
+          console.log("[IAP] Product updated:", p.id, "owned:", p.owned);
+        }
+      })
+      .approved((transaction) => {
+        if (transaction.products.some(tp => tp.id === storeId)) {
+          console.log("[IAP] Transaction approved for:", storeId);
+          verifyAndFinish(transaction);
+        }
+      })
+      .finished((transaction) => {
+        console.log("[IAP] Transaction finished:", transaction.transactionId);
+      });
     
     try {
-      if (store.when) {
-        store.when(storeId).approved(handlePurchaseComplete);
-        store.when(storeId).error(handlePurchaseError);
-        store.when(storeId).cancelled(() => {
-          clearTimeout(timeout);
-          resolve({ success: false, error: "Purchase cancelled", cancelled: true });
-        });
-      }
-      
-      if (store.order) {
-        store.order(storeId);
-      } else if (store.purchase) {
-        store.purchase({ productId: storeId });
+      const offer = storeProduct.getOffer();
+      if (offer) {
+        console.log("[IAP] Ordering product:", storeId);
+        offer.order()
+          .then(() => console.log("[IAP] Order initiated"))
+          .catch((error) => {
+            clearTimeout(timeout);
+            console.error("[IAP] Order error:", error);
+            if (error.code === window.CdvPurchase.ErrorCode.PAYMENT_CANCELLED) {
+              resolve({ success: false, error: "Purchase cancelled", cancelled: true });
+            } else {
+              resolve({ success: false, error: error.message || "Purchase failed" });
+            }
+          });
       } else {
         clearTimeout(timeout);
-        resolve({ success: false, error: "Purchase method not available" });
+        console.error("[IAP] No offer available for product:", storeId);
+        resolve({ success: false, error: "Product not available for purchase" });
       }
     } catch (error) {
       clearTimeout(timeout);
-      handlePurchaseError(error);
+      console.error("[IAP] Purchase error:", error);
+      resolve({ success: false, error: error.message || "Purchase failed" });
     }
   });
 };
@@ -313,89 +362,91 @@ export const restorePurchases = async () => {
     };
   }
   
-  const store = platformType === "ios" ? storeKit : googleBilling;
-  
-  return new Promise((resolve) => {
+  return new Promise(async (resolve) => {
     const timeout = setTimeout(() => {
       resolve({ success: false, error: "Restore timed out" });
     }, 30000);
     
-    let restored = false;
-    let restoredPlanType = null;
-    
-    const handleRestored = async (product) => {
-      const config = Object.values(PRODUCTS).find(p => 
-        p.googleId === product.id || p.appleId === product.id
-      );
-      
-      if (config && product.owned) {
-        const receipt = product.transaction?.receipt || product.receipt || product.purchaseToken;
-        
-        if (receipt) {
-          const verificationResult = await verifyReceipt({
-            platform: platformType,
-            productId: config.id,
-            receipt: receipt,
-            userId: userId,
-            deviceId: hashedDeviceId,
-            nonce: generateNonce(),
-            isRestore: true
-          });
-          
-          if (verificationResult.success) {
-            console.log("[IAP] Restore verified by backend:", config.planType);
-            restored = true;
-            restoredPlanType = config.planType;
-            
-            if (store.finish) {
-              await store.finish(product);
-            }
-          } else {
-            console.log("[IAP] Restore verification failed:", verificationResult.error);
-          }
-        }
-      }
-    };
-    
     try {
-      Object.values(PRODUCTS).forEach(p => {
-        const storeId = platformType === "ios" ? p.appleId : p.googleId;
-        if (store.when) {
-          store.when(storeId).owned(handleRestored);
-        }
-      });
+      console.log("[IAP] Checking owned products...");
       
-      if (store.refresh) {
-        store.refresh().then(() => {
-          clearTimeout(timeout);
-          setTimeout(() => {
-            resolve({
-              success: restored,
-              verified: restored,
-              source: "store",
-              planType: restoredPlanType,
-              message: restored ? "Purchases restored!" : "No purchases found"
-            });
-          }, 1000);
-        });
-      } else if (store.restorePurchases) {
-        store.restorePurchases().then((purchases) => {
-          clearTimeout(timeout);
-          if (purchases && purchases.length > 0) {
-            purchases.forEach(handleRestored);
+      for (const productConfig of Object.values(PRODUCTS)) {
+        const storeId = platformType === "ios" ? productConfig.appleId : productConfig.googleId;
+        const storeProduct = store.get(storeId);
+        
+        if (storeProduct?.owned) {
+          console.log("[IAP] Found owned product:", storeId);
+          
+          const lastTransaction = storeProduct.lastTransaction;
+          if (lastTransaction) {
+            const receipt = lastTransaction.receipt 
+              || lastTransaction.purchaseToken 
+              || lastTransaction.transactionReceipt;
+            
+            if (receipt) {
+              const verificationResult = await verifyReceipt({
+                platform: platformType,
+                productId: productConfig.id,
+                receipt: receipt,
+                userId: userId,
+                deviceId: hashedDeviceId,
+                nonce: generateNonce(),
+                isRestore: true
+              });
+              
+              if (verificationResult.success) {
+                clearTimeout(timeout);
+                const { markPremiumActivated } = await import("./premiumStateService");
+                markPremiumActivated(productConfig.planType);
+                
+                console.log("[IAP] Restore verified by backend:", productConfig.planType);
+                logEvent(ANALYTICS_EVENTS.RESTORE_PURCHASES_SUCCESS, { source: "store", planType: productConfig.planType });
+                
+                resolve({
+                  success: true,
+                  verified: true,
+                  source: "store",
+                  planType: productConfig.planType,
+                  message: "Purchases restored!"
+                });
+                return;
+              }
+            }
           }
-          resolve({
-            success: restored,
-            verified: restored,
-            source: "store",
-            planType: restoredPlanType,
-            message: restored ? "Purchases restored!" : "No purchases found"
-          });
-        });
-      } else {
-        clearTimeout(timeout);
-        resolve({ success: false, error: "Restore not available" });
+        }
       }
+      
+      await store.restorePurchases();
+      await store.update();
+      
+      for (const productConfig of Object.values(PRODUCTS)) {
+        const storeId = platformType === "ios" ? productConfig.appleId : productConfig.googleId;
+        const storeProduct = store.get(storeId);
+        
+        if (storeProduct?.owned) {
+          clearTimeout(timeout);
+          const { markPremiumActivated } = await import("./premiumStateService");
+          markPremiumActivated(productConfig.planType);
+          
+          console.log("[IAP] Restore found owned product after refresh:", storeId);
+          resolve({
+            success: true,
+            verified: true,
+            source: "store",
+            planType: productConfig.planType,
+            message: "Purchases restored!"
+          });
+          return;
+        }
+      }
+      
+      clearTimeout(timeout);
+      resolve({
+        success: false,
+        verified: false,
+        source: "store",
+        message: "No purchases found"
+      });
     } catch (error) {
       clearTimeout(timeout);
       console.error("[IAP] Restore error:", error);
