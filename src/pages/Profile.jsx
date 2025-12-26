@@ -6,7 +6,6 @@ import { useUserStore } from "../store/useUserStore";
 import { useProgressStore } from "../store/progressStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import ProfileCard from "../components/ProfileCard";
-import { LevelBadge } from "../components/LevelBadge";
 import { getCurrentLevel, getXPProgress } from "../utils/diamondLevels";
 import { LOCAL_VERSION, shouldShowUpdateBanner } from "../config/versionConfig";
 import { getAvatarImage } from "../utils/avatarUtils";
@@ -70,88 +69,105 @@ export default function Profile() {
           My Profile
         </h1>
         <p style={{ opacity: 0.9, marginTop: 8 }}>
-          Review your XP, coins, and progress 🌙
+          Review your XP, coins, and progress
         </p>
 
-        {/* === Avatar + Nickname === */}
-        <div style={{ marginTop: 24 }}>
-          <button
-            onClick={() => showModal(MODAL_TYPES.EDIT_AVATAR, {
-              currentAvatar: avatar,
-              onSave: (selectedAvatar) => setAvatar(extractAvatarKey(selectedAvatar))
-            })}
-            style={{
-              border: "none",
-              background: "transparent",
-              cursor: "pointer",
-            }}
-          >
-            <img
-              src={avatarImage}
-              alt="Avatar"
-              loading="eager"
-              style={{
-                width: 100,
-                height: 100,
-                borderRadius: "50%",
-                border: "3px solid #FFD700",
-                objectFit: "contain",
-              }}
-            />
-          </button>
-
-          <div style={{ marginTop: 12 }}>
-            <h2
-              onClick={() => showModal(MODAL_TYPES.EDIT_NAME, {
-                initialName: name,
-                onSave: setName
+        {/* === Avatar + Name + Level Header === */}
+        <div style={{ 
+          marginTop: 24,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 16,
+          maxWidth: 400,
+          margin: "24px auto 0",
+        }}>
+          {/* Left: Avatar + Name/Handle */}
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <button
+              onClick={() => showModal(MODAL_TYPES.EDIT_AVATAR, {
+                currentAvatar: avatar,
+                onSave: (selectedAvatar) => setAvatar(extractAvatarKey(selectedAvatar))
               })}
               style={{
+                border: "none",
+                background: "transparent",
                 cursor: "pointer",
-                fontSize: "1.3rem",
-                fontWeight: 600,
-                color: "#FFD700",
-                marginBottom: 4,
+                padding: 0,
+                flexShrink: 0,
               }}
             >
-              {name || "Explorer"}
-            </h2>
-            
-            {handle && (
-              <p style={{
-                color: "rgba(255, 255, 255, 0.5)",
-                fontSize: "0.9rem",
-                margin: 0,
-              }}>
-                @{handle}
-              </p>
-            )}
-            
-            {/* 💎 Diamond Level Badge */}
-            <div 
-              style={{ 
-                marginTop: 16,
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <LevelBadge
-                xp={xp}
-                size="large"
-                showXP={true}
-                animated={false}
+              <img
+                src={avatarImage}
+                alt="Avatar"
+                loading="eager"
+                style={{
+                  width: 80,
+                  height: 80,
+                  borderRadius: "50%",
+                  border: "3px solid #FFD700",
+                  objectFit: "contain",
+                }}
               />
-            </div>
+            </button>
 
-            {/* XP Progress Info */}
+            <div style={{ textAlign: "left" }}>
+              <h2
+                onClick={() => showModal(MODAL_TYPES.EDIT_NAME, {
+                  initialName: name,
+                  onSave: setName
+                })}
+                style={{
+                  cursor: "pointer",
+                  fontSize: "1.2rem",
+                  fontWeight: 600,
+                  color: "#FFD700",
+                  margin: 0,
+                  marginBottom: 4,
+                }}
+              >
+                {name || "Explorer"}
+              </h2>
+              
+              {handle && (
+                <p style={{
+                  color: "rgba(255, 255, 255, 0.5)",
+                  fontSize: "0.85rem",
+                  margin: 0,
+                }}>
+                  @{handle}
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Right: Level + XP */}
+          <div style={{ 
+            textAlign: "right",
+            flexShrink: 0,
+          }}>
+            <div style={{
+              fontSize: "1.1rem",
+              fontWeight: 700,
+              color: currentLevel.color || "#FFD700",
+              marginBottom: 4,
+            }}>
+              Level {currentLevel.level}
+            </div>
+            <div style={{
+              fontSize: "0.85rem",
+              color: "rgba(255, 255, 255, 0.7)",
+            }}>
+              {xp.toLocaleString()} XP
+            </div>
             {xpProgress.nextLevel && (
-              <p style={{
-                marginTop: 8,
-                color: "rgba(212, 175, 55, 0.7)",
-                fontSize: "0.85rem",
+              <div style={{
+                fontSize: "0.75rem",
+                color: "rgba(212, 175, 55, 0.6)",
+                marginTop: 2,
               }}>
-                {xpProgress.currentLevelXP.toLocaleString()} / {xpProgress.requiredDelta.toLocaleString()} XP to Level {xpProgress.nextLevel.level}
-              </p>
+                {xpProgress.currentLevelXP.toLocaleString()}/{xpProgress.requiredDelta.toLocaleString()} to next
+              </div>
             )}
           </div>
         </div>
@@ -194,7 +210,7 @@ export default function Profile() {
             marginTop: 12,
           }}
         >
-          💎 View All Levels
+          View All Levels
         </button>
 
         {/* === Stats cards === */}
