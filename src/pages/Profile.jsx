@@ -180,10 +180,10 @@ export default function Profile() {
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(2, 1fr)",
-            gap: 8,
-            marginTop: 16,
-            maxWidth: 380,
-            margin: "16px auto 0",
+            gap: 6,
+            marginTop: 12,
+            maxWidth: 280,
+            margin: "12px auto 0",
           }}
         >
           <ProfileCard icon={ui_xp} label="XP" value={xp} />
