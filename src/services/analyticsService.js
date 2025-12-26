@@ -64,6 +64,7 @@ export const ANALYTICS_EVENTS = {
   ACTIVE_DEVICE_CHANGED: "active_device_changed",
   DEVICE_LIMIT_TRIGGERED: "device_limit_triggered",
   LOGOUT: "logout",
+  RATE_APP_CLICKED: "rate_app_clicked",
 
   RECEIPT_REPLAY_BLOCKED: "receipt_replay_blocked",
   INVALID_RECEIPT: "invalid_receipt",

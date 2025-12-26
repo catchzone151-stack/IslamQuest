@@ -7,6 +7,7 @@ import { supabase } from "../lib/supabaseClient";
 import { ChevronLeft, Trash2 } from "lucide-react";
 import DeleteAccountModal from "../components/DeleteAccountModal";
 import { logEvent, ANALYTICS_EVENTS } from "../services/analyticsService";
+import { openRateApp } from "../services/rateAppService";
 
 export default function Settings() {
   const navigate = useNavigate();
@@ -243,35 +244,32 @@ export default function Settings() {
             gap: 12,
           }}
         >
-          <a
-            href="https://play.google.com/store"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ textDecoration: "none", display: "block" }}
+          <button
+            onClick={() => {
+              logEvent(ANALYTICS_EVENTS.RATE_APP_CLICKED, {});
+              openRateApp();
+            }}
+            style={{
+              background: "linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(244, 208, 63, 0.1) 100%)",
+              border: "1px solid rgba(212, 175, 55, 0.3)",
+              borderRadius: 12,
+              padding: "12px 16px",
+              color: "#d4af37",
+              fontWeight: "600",
+              fontSize: "0.9rem",
+              width: "100%",
+              cursor: "pointer",
+              transition: "all 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(244, 208, 63, 0.2) 100%)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(244, 208, 63, 0.1) 100%)";
+            }}
           >
-            <button
-              style={{
-                background: "linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(244, 208, 63, 0.1) 100%)",
-                border: "1px solid rgba(212, 175, 55, 0.3)",
-                borderRadius: 12,
-                padding: "12px 16px",
-                color: "#d4af37",
-                fontWeight: "600",
-                fontSize: "0.9rem",
-                width: "100%",
-                cursor: "pointer",
-                transition: "all 0.2s ease",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(244, 208, 63, 0.2) 100%)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(244, 208, 63, 0.1) 100%)";
-              }}
-            >
-              ⭐ Rate this App
-            </button>
-          </a>
+            Rate this App
+          </button>
 
           <button
             onClick={handleLogout}
