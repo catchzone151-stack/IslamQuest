@@ -289,32 +289,6 @@ export default function Profile() {
           </div>
         )}
 
-        {/* === Settings Button === */}
-        <button
-          onClick={() => navigate("/settings")}
-          style={{
-            background: "linear-gradient(135deg, rgba(79, 213, 255, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%)",
-            border: "1px solid rgba(79, 213, 255, 0.3)",
-            borderRadius: 12,
-            padding: "14px 24px",
-            color: "#4fd5ff",
-            fontWeight: "600",
-            cursor: "pointer",
-            fontSize: "0.95rem",
-            marginTop: 20,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 8,
-            margin: "20px auto 0",
-            maxWidth: 400,
-            width: "100%",
-          }}
-        >
-          <span>⚙️</span>
-          <span>Settings</span>
-        </button>
-
         {/* === Premium Section === */}
         <div
           style={{
@@ -368,6 +342,58 @@ export default function Profile() {
             </button>
           )}
         </div>
+
+        {/* === Settings Button === */}
+        <button
+          onClick={() => navigate("/settings")}
+          style={{
+            background: "linear-gradient(135deg, rgba(79, 213, 255, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%)",
+            border: "1px solid rgba(79, 213, 255, 0.3)",
+            borderRadius: 12,
+            padding: "14px 24px",
+            color: "#4fd5ff",
+            fontWeight: "600",
+            cursor: "pointer",
+            fontSize: "0.95rem",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 8,
+            margin: "16px auto 0",
+            maxWidth: 340,
+            width: "100%",
+          }}
+        >
+          <span>⚙️</span>
+          <span>Settings</span>
+        </button>
+
+        {/* === Rate App Button === */}
+        <button
+          onClick={() => {
+            import("../services/rateAppService").then(({ openRateApp }) => openRateApp());
+          }}
+          style={{
+            background: "linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(244, 208, 63, 0.1) 100%)",
+            border: "1px solid rgba(212, 175, 55, 0.3)",
+            borderRadius: 12,
+            padding: "14px 24px",
+            color: "#d4af37",
+            fontWeight: "600",
+            cursor: "pointer",
+            fontSize: "0.95rem",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 8,
+            margin: "12px auto 0",
+            maxWidth: 340,
+            width: "100%",
+          }}
+        >
+          <span>⭐</span>
+          <span>Rate this App</span>
+        </button>
 
         <style>
           {`
