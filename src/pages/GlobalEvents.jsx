@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Globe } from "lucide-react";
+import { Globe, Lock } from "lucide-react";
 import { useNavigate } from "../hooks/useNavigate";
 import { useEventsStore } from "../store/eventsStore";
 import { useProgressStore } from "../store/progressStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import { useUserStore } from "../store/useUserStore";
 import { getAvatarImage } from "../utils/avatarUtils";
+import { openAppStore } from "../utils/appStoreUtils";
 import "./GlobalEvents.css";
 
 export default function GlobalEvents() {
@@ -24,10 +25,12 @@ export default function GlobalEvents() {
     claimEventRewards
   } = useEventsStore();
   
-  const { coins } = useProgressStore();
+  const { coins, premium, premiumStatus } = useProgressStore();
   const { showModal } = useModalStore();
   const events = getEvents();
   const resultsUnlocked = areResultsUnlocked();
+  
+  const isUserPremium = premium || premiumStatus !== "free";
   
   const [timeLeft, setTimeLeft] = useState("");
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -75,6 +78,10 @@ export default function GlobalEvents() {
   }, [getTimeUntilResults]);
 
   const handleEventClick = (event) => {
+    if (!isUserPremium) {
+      openAppStore();
+      return;
+    }
     // Show Ramadan coming soon modal
     showModal(MODAL_TYPES.RAMADAN_COMING_SOON);
   };
@@ -172,6 +179,45 @@ export default function GlobalEvents() {
               {/* New Event Badge (for un-entered events) */}
               {!entered && (
                 <div className="new-event-badge">Coming soon</div>
+              )}
+
+              {/* Premium Lock Overlay */}
+              {!isUserPremium && (
+                <div style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: "rgba(0, 0, 0, 0.6)",
+                  backdropFilter: "blur(2px)",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  zIndex: 10,
+                  borderRadius: "inherit",
+                }}>
+                  <div style={{
+                    width: "44px",
+                    height: "44px",
+                    background: "rgba(0,0,0,0.5)",
+                    borderRadius: "50%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginBottom: "8px",
+                    border: "2px solid #FFD700"
+                  }}>
+                    <Lock size={20} color="#FFD700" />
+                  </div>
+                  <span style={{ 
+                    color: "#FFD700", 
+                    fontWeight: 700, 
+                    fontSize: "0.85rem",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.5px"
+                  }}>
+                    Premium Only
+                  </span>
+                </div>
               )}
             </div>
           );
