@@ -217,9 +217,9 @@ export default function Profile() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
-            gap: 12,
-            maxWidth: 320,
+            gridTemplateColumns: "repeat(2, auto)",
+            gap: 8,
+            justifyContent: "center",
             margin: "20px auto 0",
           }}
         >
