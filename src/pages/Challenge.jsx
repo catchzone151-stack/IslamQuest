@@ -333,7 +333,7 @@ export default function Challenge() {
                       alt={mode.name} 
                       style={{ 
                         width: "auto", 
-                        height: mode.id === "lightning_round" ? "105px" : "70px", 
+                        height: mode.id === "lightning_round" ? "105px" : mode.id === "mind_battle" ? "70px" : "70px", 
                         objectFit: "contain" 
                       }}
                     />
