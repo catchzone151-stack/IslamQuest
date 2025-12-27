@@ -7,7 +7,7 @@ import { useProgressStore } from "../store/progressStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import ProfileCard from "../components/ProfileCard";
 import { getCurrentLevel, getXPProgress } from "../utils/diamondLevels";
-import { LOCAL_VERSION, shouldShowUpdateBanner } from "../config/versionConfig";
+import { shouldShowUpdateBanner } from "../config/versionConfig";
 import { getAvatarImage } from "../utils/avatarUtils";
 import ui_xp from "../assets/ui/ui_xp.webp";
 import ui_coin from "../assets/ui/ui_coin.webp";
@@ -213,14 +213,14 @@ export default function Profile() {
           View All Levels
         </button>
 
-        {/* === Stats cards === */}
+        {/* === Stats cards (2x2 grid) === */}
         <div
           style={{
-            display: "flex",
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
             gap: 12,
-            justifyContent: "center",
-            flexWrap: "wrap",
-            marginTop: 20,
+            maxWidth: 320,
+            margin: "20px auto 0",
           }}
         >
           <ProfileCard icon={ui_xp} label="XP" value={xp} />
@@ -314,65 +314,29 @@ export default function Profile() {
           <span>Settings</span>
         </button>
 
-        {/* === Version Display (kept for logging) === */}
+        {/* === Premium Section (compact) === */}
         <div
           style={{
-            marginTop: 20,
-            fontSize: "0.75rem",
-            color: "rgba(255,255,255,0.4)",
-            textAlign: "center",
-          }}
-        >
-          Version {LOCAL_VERSION}
-        </div>
-
-        {/* === Premium Section === */}
-        <div
-          style={{
-            maxWidth: 400,
-            margin: "32px auto 0",
-            padding: 20,
+            maxWidth: 320,
+            margin: "24px auto 0",
+            padding: 12,
             background: "rgba(255, 215, 0, 0.05)",
             border: "1px solid rgba(255, 215, 0, 0.2)",
-            borderRadius: 16,
+            borderRadius: 12,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 12,
           }}
         >
-          <h3
-            style={{
-              color: "#FFD700",
-              fontSize: "1.2rem",
-              fontWeight: 700,
-              marginBottom: 16,
-            }}
-          >
-            💳 Premium Status
-          </h3>
-
-          {/* Current Plan */}
-          <div
-            style={{
-              background: "rgba(255, 255, 255, 0.03)",
-              padding: 16,
-              borderRadius: 12,
-              marginBottom: 16,
-            }}
-          >
-            <div style={{ color: "#cbd5e1", fontSize: "0.9rem", marginBottom: 8 }}>
-              Current Plan:
+          <div style={{ textAlign: "left" }}>
+            <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.75rem" }}>
+              Plan
             </div>
-            <div
-              style={{
-                color: "#FFD700",
-                fontSize: "1.1rem",
-                fontWeight: 700,
-                textTransform: "capitalize",
-              }}
-            >
-              {premiumStatus === "free" ? "Free 🆓" : "Premium ⭐"}
+            <div style={{ color: "#FFD700", fontSize: "0.95rem", fontWeight: 600 }}>
+              {premiumStatus === "free" ? "Free" : "Premium"}
             </div>
           </div>
-
-          {/* Upgrade Button - Only show for free users */}
           {premiumStatus === "free" && (
             <button
               onClick={() => showModal(MODAL_TYPES.PURCHASE)}
@@ -380,16 +344,15 @@ export default function Profile() {
                 background: "linear-gradient(135deg, #FFD700 0%, #FFA500 100%)",
                 color: "#111827",
                 border: "none",
-                borderRadius: 12,
-                padding: "14px 24px",
-                fontSize: "1rem",
-                fontWeight: 700,
-                width: "100%",
+                borderRadius: 10,
+                padding: "8px 16px",
+                fontSize: "0.85rem",
+                fontWeight: 600,
                 cursor: "pointer",
-                boxShadow: "0 4px 12px rgba(255, 215, 0, 0.3)",
+                flexShrink: 0,
               }}
             >
-              ⭐ Upgrade to Premium
+              Upgrade
             </button>
           )}
         </div>
