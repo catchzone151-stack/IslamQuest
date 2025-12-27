@@ -9,25 +9,53 @@ export default function DailyQuestCard() {
   const navigate = useNavigate();
   const [showExplainer, setShowExplainer] = useState(false);
   const [showCountdown, setShowCountdown] = useState(false);
-  const { checkAndGenerateDailyQuest, getQuestStatus, isQuestAvailable } = useDailyQuestStore();
+  const [loading, setLoading] = useState(false);
+  const { checkAndGenerateDailyQuest, getQuestStatus, isQuestAvailable, questions } = useDailyQuestStore();
 
   const questStatus = getQuestStatus();
   const available = isQuestAvailable();
 
-  const handleQuestClick = () => {
+  const handleQuestClick = async () => {
     if (questStatus === "completed") {
       return;
     }
 
-    // Only generate new quest if it's a new day, otherwise use existing
-    if (questStatus === "new_day") {
-      checkAndGenerateDailyQuest();
+    setLoading(true);
+    
+    try {
+      // Always try to generate/check quest to ensure questions are ready
+      await checkAndGenerateDailyQuest();
+    } catch (error) {
+      console.error("Failed to generate daily quest:", error);
     }
-
-    setShowExplainer(true);
+    
+    setLoading(false);
+    
+    // Check if questions are now available
+    const currentQuestions = useDailyQuestStore.getState().questions;
+    if (currentQuestions.length > 0) {
+      setShowExplainer(true);
+    }
+    // If no questions, the button state will update to show "Complete Lessons First"
   };
 
-  const handleStartQuest = () => {
+  const handleStartQuest = async () => {
+    // Ensure questions are ready before starting countdown
+    const currentQuestions = useDailyQuestStore.getState().questions;
+    if (currentQuestions.length === 0) {
+      // Try to generate one more time
+      try {
+        await checkAndGenerateDailyQuest();
+      } catch (error) {
+        console.error("Failed to generate quest on start:", error);
+      }
+      const updatedQuestions = useDailyQuestStore.getState().questions;
+      if (updatedQuestions.length === 0) {
+        // Still no questions - user needs to complete lessons first
+        setShowExplainer(false);
+        return;
+      }
+    }
     setShowExplainer(false);
     setShowCountdown(true);
   };
@@ -40,7 +68,10 @@ export default function DailyQuestCard() {
   let buttonDisabled = false;
   let cardMessage = "Earn XP with today's mini challenge!";
 
-  if (!available) {
+  if (loading) {
+    buttonText = "Loading...";
+    buttonDisabled = true;
+  } else if (!available) {
     buttonText = "Complete Lessons First";
     buttonDisabled = true;
     cardMessage = "Complete your first lesson to unlock!";

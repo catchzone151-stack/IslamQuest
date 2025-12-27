@@ -18,18 +18,153 @@ export default function DailyQuestGame() {
   const [selected, setSelected] = useState(null);
   const [answers, setAnswers] = useState([]);
   const [showResults, setShowResults] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
 
-  // Guard: Prevent entry if quest isn't ready or questions not loaded
+  // Guard: Wait for questions to load, show loading state instead of redirecting immediately
   useEffect(() => {
-    const status = getQuestStatus();
-    if (status !== "ready" || questions.length === 0) {
-      navigate("/");
-    }
+    let isMounted = true;
+    
+    const checkQuest = async () => {
+      const status = getQuestStatus();
+      
+      // Already completed today
+      if (status === "completed") {
+        navigate("/");
+        return;
+      }
+      
+      // If questions already loaded, we're good
+      if (questions.length > 0) {
+        if (isMounted) setIsLoading(false);
+        return;
+      }
+      
+      // Wait a moment for store to sync
+      await new Promise(resolve => setTimeout(resolve, 300));
+      
+      // Check again after delay
+      let currentQuestions = useDailyQuestStore.getState().questions;
+      if (currentQuestions.length > 0) {
+        if (isMounted) setIsLoading(false);
+        return;
+      }
+      
+      // Still no questions - try generating
+      try {
+        const { checkAndGenerateDailyQuest } = useDailyQuestStore.getState();
+        await checkAndGenerateDailyQuest();
+      } catch (error) {
+        console.error("Failed to generate quest:", error);
+        if (isMounted) {
+          setLoadError(true);
+          setIsLoading(false);
+        }
+        return;
+      }
+      
+      // Final check
+      const finalQuestions = useDailyQuestStore.getState().questions;
+      if (isMounted) {
+        if (finalQuestions.length > 0) {
+          setIsLoading(false);
+        } else {
+          // No questions available - show error instead of redirecting
+          setLoadError(true);
+          setIsLoading(false);
+        }
+      }
+    };
+    
+    checkQuest();
+    
+    return () => { isMounted = false; };
   }, [navigate, getQuestStatus, questions.length]);
 
-  // Additional guard for direct navigation attempts
-  if (questions.length === 0) {
-    return null;
+  // Show error state if quest couldn't be loaded
+  if (loadError) {
+    return (
+      <div
+        className="screen no-extra-space"
+        style={{
+          background: "linear-gradient(135deg, #0B1E2D 0%, #1a3a52 100%)",
+          color: "#ffffff",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "20px",
+        }}
+      >
+        <div style={{ textAlign: "center", maxWidth: "400px" }}>
+          <img 
+            src={SittingMascot} 
+            alt="Mascot"
+            style={{ width: "100px", height: "auto", marginBottom: "20px" }}
+          />
+          <h2 style={{ color: "#D4AF37", marginBottom: "16px" }}>
+            Complete a Lesson First!
+          </h2>
+          <p style={{ color: "#f3f4f6", marginBottom: "24px", lineHeight: 1.6 }}>
+            Daily Quest questions are drawn from lessons you've completed. 
+            Complete at least one lesson to unlock Daily Quests!
+          </p>
+          <button
+            onClick={() => navigate("/")}
+            style={{
+              padding: "14px 40px",
+              fontSize: "1.1rem",
+              fontWeight: 600,
+              borderRadius: "12px",
+              border: "2px solid #D4AF37",
+              background: "linear-gradient(145deg, #D4AF37, #b8941f)",
+              color: "#0B1E2D",
+              cursor: "pointer",
+            }}
+          >
+            Go to Learning Paths
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Show loading state while waiting for questions
+  if (isLoading || questions.length === 0) {
+    return (
+      <div
+        className="screen no-extra-space"
+        style={{
+          background: "linear-gradient(135deg, #0B1E2D 0%, #1a3a52 100%)",
+          color: "#ffffff",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <div style={{ textAlign: "center" }}>
+          <div
+            style={{
+              width: "50px",
+              height: "50px",
+              border: "4px solid rgba(212, 175, 55, 0.3)",
+              borderTop: "4px solid #D4AF37",
+              borderRadius: "50%",
+              animation: "spin 1s linear infinite",
+              margin: "0 auto 20px",
+            }}
+          />
+          <p style={{ color: "#D4AF37", fontSize: "1.1rem", fontWeight: 600 }}>
+            Loading Daily Quest...
+          </p>
+        </div>
+        <style>{`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}</style>
+      </div>
+    );
   }
 
   const currentQuestion = questions[currentIndex];
