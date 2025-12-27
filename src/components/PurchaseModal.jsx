@@ -30,19 +30,25 @@ export default function PurchaseModal({ onClose }) {
   }, []);
 
   const handleUnlockPremium = async () => {
-    // ALWAYS try to open the App Store first for a reliable redirect
-    openAppStore();
+    if (!product) {
+      openAppStore();
+      onClose();
+      return;
+    }
     
-    // Then attempt native purchase in the background if available
-    if (product) {
-      try {
-        await buyProduct(product.id);
-        onClose();
-      } catch (err) {
-        console.error("[PurchaseModal] Native purchase attempt failed:", err);
+    try {
+      const result = await buyProduct(product.id);
+      
+      if (result.requiresNativeApp) {
+        openAppStore();
+      }
+      
+      if (result.success) {
         onClose();
       }
-    } else {
+    } catch (err) {
+      console.error("[PurchaseModal] Purchase failed:", err);
+      openAppStore();
       onClose();
     }
   };
