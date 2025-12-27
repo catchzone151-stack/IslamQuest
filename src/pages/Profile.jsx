@@ -102,106 +102,82 @@ export default function Profile() {
           </button>
         </div>
 
-        {/* === Name + Handle === */}
-        <div style={{ marginTop: 12 }}>
-          <h2
-            onClick={() => showModal(MODAL_TYPES.EDIT_NAME, {
-              initialName: name,
-              onSave: setName
-            })}
-            style={{
-              cursor: "pointer",
-              fontSize: "1.3rem",
-              fontWeight: 600,
-              color: "#FFD700",
-              margin: 0,
-            }}
-          >
-            {name || "Explorer"}
-          </h2>
-          {handle && (
-            <p style={{
-              color: "rgba(255, 255, 255, 0.5)",
-              fontSize: "0.85rem",
-              margin: "4px 0 0",
-            }}>
-              @{handle}
-            </p>
-          )}
-        </div>
-
-        {/* === Level + XP Stats === */}
+        {/* === Name/Handle (left) + Level/Progress (right) === */}
         <div style={{
           display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 24,
-          marginTop: 14,
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          marginTop: 16,
+          maxWidth: 340,
+          margin: "16px auto 0",
+          padding: "0 8px",
         }}>
-          <div style={{ textAlign: "center" }}>
+          {/* Left: Name + Handle */}
+          <div style={{ textAlign: "left" }}>
+            <h2
+              onClick={() => showModal(MODAL_TYPES.EDIT_NAME, {
+                initialName: name,
+                onSave: setName
+              })}
+              style={{
+                cursor: "pointer",
+                fontSize: "1.2rem",
+                fontWeight: 600,
+                color: "#FFD700",
+                margin: 0,
+              }}
+            >
+              {name || "Explorer"}
+            </h2>
+            {handle && (
+              <p style={{
+                color: "rgba(255, 255, 255, 0.5)",
+                fontSize: "0.8rem",
+                margin: "2px 0 0",
+              }}>
+                @{handle}
+              </p>
+            )}
+          </div>
+
+          {/* Right: Level + Progress Bar */}
+          <div style={{ textAlign: "right" }}>
             <div style={{
-              fontSize: "1.1rem",
+              fontSize: "1rem",
               fontWeight: 700,
               color: currentLevel.color || "#FFD700",
+              marginBottom: 6,
             }}>
               Level {currentLevel.level}
             </div>
-          </div>
-          <div style={{
-            width: 1,
-            height: 24,
-            background: "rgba(255, 255, 255, 0.2)",
-          }} />
-          <div style={{ textAlign: "center" }}>
-            <div style={{
-              fontSize: "1.1rem",
-              fontWeight: 700,
-              color: "#fff",
-            }}>
-              {xp.toLocaleString()}
+            <div
+              style={{
+                width: 100,
+                background: "rgba(255,255,255,0.1)",
+                borderRadius: 6,
+                overflow: "hidden",
+                height: 6,
+              }}
+            >
+              <div
+                style={{
+                  width: `${progress}%`,
+                  height: "100%",
+                  background: currentLevel.gradient,
+                  boxShadow: currentLevel.glow,
+                  transition: "width 0.6s ease",
+                }}
+              />
             </div>
             <div style={{
-              fontSize: "0.7rem",
-              color: "rgba(255, 255, 255, 0.5)",
-              textTransform: "uppercase",
-              letterSpacing: "0.5px",
+              fontSize: "0.65rem",
+              color: "rgba(212, 175, 55, 0.6)",
+              marginTop: 3,
             }}>
-              XP
+              {xp.toLocaleString()} XP
             </div>
           </div>
         </div>
-
-        {/* === XP Progress Bar (compact) === */}
-        <div
-          style={{
-            width: "60%",
-            maxWidth: 260,
-            margin: "12px auto 4px",
-            background: "rgba(255,255,255,0.1)",
-            borderRadius: 8,
-            overflow: "hidden",
-            height: 8,
-          }}
-        >
-          <div
-            style={{
-              width: `${progress}%`,
-              height: "100%",
-              background: currentLevel.gradient,
-              boxShadow: currentLevel.glow,
-              transition: "width 0.6s ease",
-            }}
-          />
-        </div>
-        {xpProgress.nextLevel && (
-          <div style={{
-            fontSize: "0.7rem",
-            color: "rgba(212, 175, 55, 0.6)",
-            marginBottom: 4,
-          }}>
-            {xpProgress.currentLevelXP.toLocaleString()} / {xpProgress.requiredDelta.toLocaleString()} to Level {xpProgress.nextLevel.level}
-          </div>
-        )}
 
         {/* View All Levels Button */}
         <button
