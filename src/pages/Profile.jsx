@@ -13,6 +13,7 @@ import ui_xp from "../assets/ui/ui_xp.webp";
 import ui_coin from "../assets/ui/ui_coin.webp";
 import ui_streak from "../assets/ui/ui_streak.webp";
 import ui_shield from "../assets/ui/ui_shield.webp";
+import mascotSitting from "../assets/mascots/mascot_sitting.webp";
 
 // Extract avatar key from full path (e.g., "/src/assets/avatars/avatar_robot.png.webp" -> "avatar_robot")
 const extractAvatarKey = (path) => {
@@ -314,27 +315,38 @@ export default function Profile() {
           <span>Settings</span>
         </button>
 
-        {/* === Premium Section (compact) === */}
+        {/* === Premium Section === */}
         <div
           style={{
-            maxWidth: 320,
+            maxWidth: 340,
             margin: "24px auto 0",
-            padding: 12,
+            padding: 16,
             background: "rgba(255, 215, 0, 0.05)",
             border: "1px solid rgba(255, 215, 0, 0.2)",
-            borderRadius: 12,
+            borderRadius: 14,
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-between",
-            gap: 12,
+            gap: 14,
           }}
         >
-          <div style={{ textAlign: "left" }}>
-            <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.75rem" }}>
-              Plan
+          <img
+            src={mascotSitting}
+            alt="Zayd"
+            style={{
+              width: 56,
+              height: 56,
+              objectFit: "contain",
+              flexShrink: 0,
+            }}
+          />
+          <div style={{ flex: 1, textAlign: "left" }}>
+            <div style={{ color: "#FFD700", fontSize: "1rem", fontWeight: 600, marginBottom: 2 }}>
+              {premiumStatus === "free" ? "Free Plan" : "Premium Plan"}
             </div>
-            <div style={{ color: "#FFD700", fontSize: "0.95rem", fontWeight: 600 }}>
-              {premiumStatus === "free" ? "Free" : "Premium"}
+            <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.75rem", lineHeight: 1.4 }}>
+              {premiumStatus === "free" 
+                ? "Unlock all lessons and features" 
+                : "You have full access to everything"}
             </div>
           </div>
           {premiumStatus === "free" && (
@@ -345,8 +357,8 @@ export default function Profile() {
                 color: "#111827",
                 border: "none",
                 borderRadius: 10,
-                padding: "8px 16px",
-                fontSize: "0.85rem",
+                padding: "10px 14px",
+                fontSize: "0.8rem",
                 fontWeight: 600,
                 cursor: "pointer",
                 flexShrink: 0,
