@@ -148,33 +148,8 @@ export default function SignUpPage() {
       }
 
       if (data?.user) {
-        const avatarIndex = avatarKeyToIndex(avatarKey);
-        const progressState = useProgressStore.getState();
-
-        const { error: profileError } = await supabase.from("profiles").upsert(
-          {
-            user_id: data.user.id,
-            username: trimmedName,
-            handle: trimmedHandle,
-            avatar: avatarIndex,
-            xp: progressState.xp || 0,
-            coins: progressState.coins || 0,
-            streak: progressState.streak || 0,
-            created_at: new Date().toISOString(),
-          },
-          { onConflict: "user_id" }
-        );
-
-        if (profileError) {
-          console.error("Profile creation error:", profileError);
-          if (profileError.code === "23505") {
-            setErrorMsg("Username already taken. Please choose another.");
-            triggerShake();
-            setLoading(false);
-            return;
-          }
-        }
-
+        // Store user info locally - profile will be created after email confirmation
+        // to avoid duplicates from race conditions
         setDisplayName(trimmedName);
         setStoreHandle(trimmedHandle);
         setStoreAvatar(avatarKey);
@@ -192,6 +167,25 @@ export default function SignUpPage() {
         setLoading(false);
 
         if (data.user.email_confirmed_at) {
+          // Email already confirmed (unlikely for new signup, but handle it)
+          // Create profile now since we're going straight to home
+          const avatarIndex = avatarKeyToIndex(avatarKey);
+          const progressState = useProgressStore.getState();
+          
+          await supabase.from("profiles").upsert(
+            {
+              user_id: data.user.id,
+              username: trimmedName,
+              handle: trimmedHandle,
+              avatar: avatarIndex,
+              xp: progressState.xp || 0,
+              coins: progressState.coins || 0,
+              streak: progressState.streak || 0,
+              created_at: new Date().toISOString(),
+            },
+            { onConflict: "user_id" }
+          );
+          
           localStorage.removeItem("iq_onboarding_step");
           localStorage.setItem("iq_profile_complete", "true");
           useUserStore.setState({
@@ -200,6 +194,7 @@ export default function SignUpPage() {
           });
           navigate("/");
         } else {
+          // Normal flow: go to check-email, profile created after confirmation
           localStorage.setItem("iq_onboarding_step", "checkemail");
           navigate("/check-email");
         }

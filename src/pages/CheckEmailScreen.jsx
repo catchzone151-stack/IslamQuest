@@ -8,6 +8,9 @@ import { useProgressStore } from "../store/progressStore";
 import { preloadUserData } from "../hooks/useDataPreloader";
 import { avatarIndexToKey, avatarKeyToIndex } from "../utils/avatarUtils";
 
+// Module-level flag to prevent duplicate profile creation
+let isProcessingLogin = false;
+
 export default function CheckEmailScreen() {
   const navigate = useNavigate();
   const { setOnboarded, setDisplayName, setHandle, setAvatar } = useUserStore();
@@ -138,6 +141,13 @@ export default function CheckEmailScreen() {
   };
 
   const completeLoginAndPreload = async (user) => {
+    // Prevent duplicate processing from concurrent calls
+    if (isProcessingLogin) {
+      console.log("[CheckEmail] Already processing login, skipping duplicate call");
+      return false;
+    }
+    isProcessingLogin = true;
+    
     setLoadingMessage("Loading your data...");
     
     let profile = null;
@@ -148,11 +158,15 @@ export default function CheckEmailScreen() {
       .maybeSingle();
 
     if (existingProfile) {
+      console.log("[CheckEmail] Using existing profile for user:", user.id);
       profile = existingProfile;
     } else {
       console.log("[CheckEmail] No profile found - creating one now...");
       profile = await createProfileIfMissing(user);
-      if (!profile) return false;
+      if (!profile) {
+        isProcessingLogin = false;
+        return false;
+      }
     }
 
     const displayName = profile.username || "Student";
@@ -164,6 +178,7 @@ export default function CheckEmailScreen() {
     if (!handle) {
       console.error("[CheckEmail] Profile missing handle - redirecting to signup");
       localStorage.setItem("iq_onboarding_step", "signup");
+      isProcessingLogin = false;
       navigate("/signup");
       return false;
     }
@@ -203,6 +218,8 @@ export default function CheckEmailScreen() {
       hasOnboarded: true,
     });
     
+    // Reset flag before navigation
+    isProcessingLogin = false;
     navigate("/");
     return true;
   };
