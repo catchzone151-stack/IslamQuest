@@ -96,14 +96,6 @@ export default function Challenge() {
 
   const handleBossClick = () => {
     vibrate(50); // Haptic feedback on boss click
-    // Check level requirement
-    if (level < BOSS_LEVEL.minLevel) {
-      showModal(MODAL_TYPES.BOSS_LOCKED, {
-        currentLevel: level,
-        requiredLevel: BOSS_LEVEL.minLevel
-      });
-      return;
-    }
 
     // Check local boss playability
     if (!bossPlayable) {
@@ -132,7 +124,7 @@ export default function Challenge() {
       currentFriend
     });
     
-    const isBossLevel = currentMode?.id === "boss_level" || currentMode?.name === "Boss Level";
+    const isBossLevel = currentMode?.id === "boss_level" || currentMode?.name === "Boss Level" || currentMode?.name === "The Boss Level";
     
     if (isBossLevel) {
       showModal(MODAL_TYPES.CHALLENGE_COUNTDOWN, {
@@ -360,53 +352,19 @@ export default function Challenge() {
         <div
           onClick={handleBossClick}
           style={{
-            background: level >= BOSS_LEVEL.minLevel 
-              ? BOSS_LEVEL.gradient 
-              : "linear-gradient(135deg, #374151, #1f2937)",
-            border: level >= BOSS_LEVEL.minLevel 
-              ? "2px solid rgba(212,175,55,0.5)"
-              : "2px solid rgba(107,114,128,0.3)",
+            background: BOSS_LEVEL.gradient,
+            border: "2px solid rgba(212,175,55,0.5)",
             borderRadius: 18,
             padding: "24px 20px 20px 20px",
-            boxShadow: level >= BOSS_LEVEL.minLevel 
-              ? BOSS_LEVEL.glow 
-              : "0 0 20px rgba(107,114,128,0.3)",
+            boxShadow: BOSS_LEVEL.glow,
             cursor: "pointer",
             transition: "all 0.3s ease",
             position: "relative",
-            animation: level >= BOSS_LEVEL.minLevel ? "bossGlow 2s ease-in-out infinite" : "none"
+            animation: "bossGlow 2s ease-in-out infinite",
+            zIndex: 10
           }}
         >
-          {false && level < BOSS_LEVEL.minLevel && (
-            <>
-              <div style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                background: "linear-gradient(135deg, rgba(55, 65, 81, 0.85), rgba(31, 41, 55, 0.85))",
-                borderRadius: 18,
-                pointerEvents: "none"
-              }} />
-              <div style={{
-                position: "absolute",
-                top: 10,
-                right: 10,
-                background: "rgba(0,0,0,0.7)",
-                borderRadius: 20,
-                padding: "4px 12px",
-                fontSize: "0.75rem",
-                fontWeight: 600,
-                color: "#94a3b8",
-                zIndex: 2
-              }}>
-                🔒 Level {BOSS_LEVEL.minLevel}+ Only
-              </div>
-            </>
-          )}
-
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12, marginTop: 8, position: "relative", zIndex: 1 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12, marginTop: 8, position: "relative", zIndex: 1, pointerEvents: "none" }}>
             <img 
               src={BossLevelMascot} 
               alt="Boss Level Mascot" 
@@ -414,20 +372,21 @@ export default function Challenge() {
                 width: "85px", 
                 height: "85px",
                 filter: "drop-shadow(0 0 20px rgba(59, 130, 246, 0.8)) drop-shadow(0 0 40px rgba(59, 130, 246, 0.5))",
-                animation: "bossAura 2s ease-in-out infinite"
+                animation: "bossAura 2s ease-in-out infinite",
+                pointerEvents: "none"
               }} 
             />
-            <div>
-              <h2 style={{ color: level >= BOSS_LEVEL.minLevel ? "#d4af37" : "#94a3b8", margin: "0 0 4px", fontSize: "1.4rem", fontWeight: 700 }}>
+            <div style={{ pointerEvents: "none" }}>
+              <h2 style={{ color: "#d4af37", margin: "0 0 4px", fontSize: "1.4rem", fontWeight: 700 }}>
                 Boss Level: Challenge the Dev
               </h2>
-              <p style={{ color: level >= BOSS_LEVEL.minLevel ? "#10b981" : "#6b7280", margin: 0, fontSize: "0.85rem", fontWeight: 600 }}>
-                {useChallengeStore.getState().canPlayBossToday() ? "✓ Available Today" : "⏰ Played Today"}
+              <p style={{ color: bossPlayable ? "#10b981" : "#6b7280", margin: 0, fontSize: "0.85rem", fontWeight: 600 }}>
+                {bossPlayable ? "✓ Available Today" : "⏰ Played Today"}
               </p>
             </div>
           </div>
 
-          <p style={{ opacity: 0.95, lineHeight: 1.5, fontSize: "0.9rem", marginBottom: 12, position: "relative", zIndex: 1 }}>
+          <p style={{ opacity: 0.95, lineHeight: 1.5, fontSize: "0.9rem", marginBottom: 12, position: "relative", zIndex: 1, pointerEvents: "none" }}>
             {BOSS_LEVEL.description}
           </p>
 
@@ -436,13 +395,14 @@ export default function Challenge() {
             borderRadius: 10, 
             padding: "10px 14px",
             fontSize: "0.85rem",
-            color: level >= BOSS_LEVEL.minLevel ? "#10b981" : "#6b7280",
+            color: "#10b981",
             fontWeight: 600,
             position: "relative",
             zIndex: 1,
             display: "flex",
             justifyContent: "space-between",
-            alignItems: "center"
+            alignItems: "center",
+            pointerEvents: "none"
           }}>
             <span>Rewards: +{BOSS_LEVEL.rewards.win.xp} XP • +{BOSS_LEVEL.rewards.win.coins} coins</span>
           </div>
