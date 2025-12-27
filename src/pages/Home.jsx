@@ -510,7 +510,7 @@ export default function Home() {
           fontFamily: "'TT Chocolates', sans-serif",
         }}
       >
-        Read · Learn · Grow · Connect · Compete
+        Learn · Grow · Connect · Compete
       </p>
 
       {/*
