@@ -7,6 +7,7 @@ import { getAvatarImage } from "../utils/avatarUtils";
 import { Lock, Crown } from "lucide-react";
 import { isPremiumOnlyPath, FREE_LESSON_LIMITS } from "../store/premiumConfig";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
+import { openAppStore } from "../utils/appStoreUtils";
 
 // Lesson data loader
 import { getLessonsForPath } from "../data/lessonLoader.js";
@@ -261,7 +262,7 @@ export default function Pathway() {
       {/* Premium Overlay for paths 11-14 */}
       {isPathPremiumOnly && !isUserPremium && (
         <div
-          onClick={() => navigate("/premium")}
+          onClick={() => openAppStore()}
           style={{
             position: "absolute",
             top: 0,

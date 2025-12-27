@@ -1,15 +1,12 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { X, Crown } from "lucide-react";
-import { useProgressStore } from "../store/progressStore";
+import { X, Crown, ExternalLink } from "lucide-react";
 import ZaydReading from "../assets/mascots/mascot_sitting.webp";
+import { openAppStore } from "../utils/appStoreUtils";
 
 export default function PurchaseModal({ onClose }) {
-  const navigate = useNavigate();
-
-  const handleViewPremium = () => {
+  const handleUnlockPremium = () => {
     onClose();
-    navigate("/premium");
+    openAppStore();
   };
 
   return (
@@ -40,7 +37,6 @@ export default function PurchaseModal({ onClose }) {
           position: "relative",
         }}
       >
-        {/* X Close Button */}
         <button
           onClick={onClose}
           style={{
@@ -59,7 +55,6 @@ export default function PurchaseModal({ onClose }) {
         >
           <X size={24} />
         </button>
-        {/* Zayd Mascot */}
         <img
           src={ZaydReading}
           alt="Zayd"
@@ -89,7 +84,6 @@ export default function PurchaseModal({ onClose }) {
           Unlock your full Islamic learning potential
         </p>
 
-        {/* Benefits */}
         <div style={{ 
           textAlign: "left", 
           marginBottom: "20px",
@@ -105,9 +99,8 @@ export default function PurchaseModal({ onClose }) {
           </div>
         </div>
 
-        {/* View Premium Plans Button */}
         <button
-          onClick={handleViewPremium}
+          onClick={handleUnlockPremium}
           style={{
             backgroundColor: "#FFD700",
             color: "#111827",
@@ -126,6 +119,7 @@ export default function PurchaseModal({ onClose }) {
         >
           <Crown size={20} />
           Unlock Premium
+          <ExternalLink size={16} style={{ marginLeft: 4 }} />
         </button>
 
       </div>

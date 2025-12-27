@@ -47,7 +47,6 @@ const DailyQuestGame = lazy(() => import("./pages/DailyQuestGame.jsx"));
 const Friends = lazy(() => import("./pages/Friends.jsx"));
 const FriendProfile = lazy(() => import("./pages/FriendProfile"));
 const Profile = lazy(() => import("./pages/Profile.jsx"));
-const Premium = lazy(() => import("./pages/Premium.jsx"));
 const Settings = lazy(() => import("./pages/Settings.jsx"));
 const Revise = lazy(() => import("./pages/Revise.jsx"));
 const AuthPage = lazy(() => import("./pages/AuthPage.jsx"));
@@ -868,14 +867,6 @@ export default function App() {
                     element={
                       <Suspense fallback={<LoadingScreen />}>
                         <Profile />
-                      </Suspense>
-                    }
-                  />
-                  <Route
-                    path="/premium"
-                    element={
-                      <Suspense fallback={<LoadingScreen />}>
-                        <Premium />
                       </Suspense>
                     }
                   />
