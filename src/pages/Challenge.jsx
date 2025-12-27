@@ -446,7 +446,7 @@ export default function Challenge() {
           }}>
             <span>Rewards: +{BOSS_LEVEL.rewards.win.xp} XP • +{BOSS_LEVEL.rewards.win.coins} coins</span>
             {level < BOSS_LEVEL.minLevel && (
-              <span style={{ fontSize: "0.75rem", opacity: 0.8 }}>Unlock at Level {BOSS_LEVEL.minLevel}</span>
+              <span style={{ fontSize: "0.75rem", opacity: 0.8 }}>Unlock at Level 8</span>
             )}
           </div>
         </div>
