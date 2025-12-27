@@ -71,7 +71,6 @@ export default function PurchaseModal({ onClose }) {
             fontSize: "1.6rem",
             marginBottom: "8px",
             fontWeight: 700,
-            fontStyle: "italic",
           }}
         >
           Unlock Your Full Potential
@@ -83,7 +82,7 @@ export default function PurchaseModal({ onClose }) {
           fontSize: "0.85rem",
           lineHeight: 1.4,
         }}>
-          Lifetime access • No ads • All learning paths • Works across devices
+          Lifetime access • No ads • All learning paths
         </p>
 
         <div style={{ 
@@ -121,7 +120,6 @@ export default function PurchaseModal({ onClose }) {
             <div>✔️ Unlimited Lessons</div>
             <div>✔️ Global Events Access</div>
             <div>✔️ No Ads Ever</div>
-            <div>✔️ Works Across Devices</div>
           </div>
 
           <button
