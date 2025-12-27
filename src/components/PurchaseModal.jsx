@@ -1,13 +1,55 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { X, RefreshCw } from "lucide-react";
 import ZaydReading from "../assets/mascots/mascot_sitting.webp";
 import { openAppStore } from "../utils/appStoreUtils";
+import { loadProducts, restorePurchases } from "../services/iapService";
 
 export default function PurchaseModal({ onClose }) {
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [restoring, setRestoring] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchProduct = async () => {
+      try {
+        const products = await loadProducts();
+        if (isMounted) {
+          // Find the lifetime premium product
+          const premiumProduct = products.find(p => p.id === "premium_lifetime");
+          setProduct(premiumProduct);
+        }
+      } catch (err) {
+        console.error("[PurchaseModal] Failed to load products:", err);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+    fetchProduct();
+    return () => { isMounted = false; };
+  }, []);
+
   const handleUnlockPremium = () => {
     onClose();
     openAppStore();
   };
+
+  const handleRestore = async () => {
+    if (restoring) return;
+    setRestoring(true);
+    try {
+      await restorePurchases();
+      // Usually restorePurchases handles the logic, we just provide the trigger
+    } catch (err) {
+      console.error("[PurchaseModal] Restore failed:", err);
+    } finally {
+      setRestoring(false);
+    }
+  };
+
+  // The store-provided localized price string (e.g., "£4.99", "$9.99", "€5.49")
+  // comes directly from iapService.loadProducts() -> storeProduct.pricing.price
+  const displayPrice = product?.price || "...";
 
   return (
     <div
@@ -107,7 +149,7 @@ export default function PurchaseModal({ onClose }) {
             fontWeight: 600,
             marginBottom: "16px",
           }}>
-            £4.99 — One-time
+            {loading ? "Loading..." : `${displayPrice} — One-time`}
           </p>
 
           <div style={{ 
@@ -137,7 +179,7 @@ export default function PurchaseModal({ onClose }) {
               marginTop: "16px",
             }}
           >
-            Unlock Premium — £4.99
+            {loading ? "Loading..." : `Unlock Premium — ${displayPrice}`}
           </button>
         </div>
 
@@ -150,7 +192,8 @@ export default function PurchaseModal({ onClose }) {
         </p>
 
         <button
-          onClick={handleUnlockPremium}
+          onClick={handleRestore}
+          disabled={restoring}
           style={{
             display: "inline-flex",
             alignItems: "center",
@@ -162,10 +205,11 @@ export default function PurchaseModal({ onClose }) {
             color: "#9CA3AF",
             fontSize: "0.85rem",
             cursor: "pointer",
+            opacity: restoring ? 0.5 : 1,
           }}
         >
-          <RefreshCw size={16} />
-          Restore Purchases
+          <RefreshCw size={16} className={restoring ? "animate-spin" : ""} />
+          {restoring ? "Restoring..." : "Restore Purchases"}
         </button>
       </div>
     </div>
