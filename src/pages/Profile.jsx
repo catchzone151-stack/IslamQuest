@@ -142,32 +142,43 @@ export default function Profile() {
 
           {/* Right: Level + Progress Bar */}
           <div style={{ textAlign: "right" }}>
-            <div style={{
-              fontSize: "1.2rem",
-              fontWeight: 600,
-              color: currentLevel.color || "#FFD700",
-              marginBottom: 6,
-            }}>
-              Level {currentLevel.level}
-            </div>
             <div
               style={{
                 width: 100,
                 background: "rgba(255,255,255,0.1)",
                 borderRadius: 6,
                 overflow: "hidden",
-                height: 6,
+                height: 14,
+                position: "relative",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
               <div
                 style={{
+                  position: "absolute",
+                  left: 0,
+                  top: 0,
+                  bottom: 0,
                   width: `${progress}%`,
-                  height: "100%",
                   background: currentLevel.gradient,
                   boxShadow: currentLevel.glow,
                   transition: "width 0.6s ease",
+                  zIndex: 1,
                 }}
               />
+              <div style={{
+                position: "relative",
+                zIndex: 2,
+                fontSize: "0.65rem",
+                fontWeight: 800,
+                color: "#fff",
+                textShadow: "0 1px 2px rgba(0,0,0,0.5)",
+                pointerEvents: "none",
+              }}>
+                Lvl {currentLevel.level}
+              </div>
             </div>
             <div style={{
               fontSize: "0.65rem",
