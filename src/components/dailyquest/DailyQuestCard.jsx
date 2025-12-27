@@ -24,9 +24,7 @@ export default function DailyQuestCard() {
       checkAndGenerateDailyQuest();
     }
 
-    if (questStatus === "ready" || questStatus === "new_day") {
-      setShowExplainer(true);
-    }
+    setShowExplainer(true);
   };
 
   const handleStartQuest = () => {
