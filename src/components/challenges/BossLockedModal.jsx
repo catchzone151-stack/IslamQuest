@@ -51,7 +51,6 @@ export default function BossLockedModal({ currentLevel, onClose }) {
           marginBottom: 20
         }}>
           <span style={{ color: "#94a3b8", fontSize: "0.9rem" }}>Your Level:</span>
-          <DiamondIcon level={currentLevel} size={40} />
           <span style={{ color: "#fff", fontSize: "1.2rem", fontWeight: 700 }}>Level {currentLevel}</span>
         </div>
 

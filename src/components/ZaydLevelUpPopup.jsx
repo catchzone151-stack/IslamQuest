@@ -107,36 +107,16 @@ export function ZaydLevelUpPopup({ levelUpData, onClose }) {
         <p style={{
           color: "rgba(212, 175, 55, 0.9)",
           fontSize: "1.1rem",
-          marginBottom: 24,
+          marginBottom: 12,
         }}>
           You've reached Level {levelUpData.newLevel}!
         </p>
-
-        {/* New Diamond */}
-        <div style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 16,
-          marginBottom: 24,
-        }}>
-          <div style={{
-            animation: "scaleIn 0.5s ease-out 0.3s both",
-          }}>
-            <DiamondIcon
-              level={levelUpData.newLevel}
-              size={64}
-              animated={true}
-              showGlow={true}
-            />
-          </div>
-        </div>
 
         <div style={{
           color: "#D4AF37",
           fontSize: "1.2rem",
           fontWeight: "bold",
-          marginBottom: 8,
+          marginBottom: 24,
         }}>
           {newLevelData?.name}
         </div>

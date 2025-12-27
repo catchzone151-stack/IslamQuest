@@ -29,13 +29,6 @@ export const LevelBadge = React.memo(function LevelBadge({
       alignItems: "center",
       gap: s.spacing,
     }}>
-      <DiamondIcon
-        xp={xp}
-        size={s.diamond}
-        animated={animated}
-        showGlow={true}
-      />
-      
       <div style={{
         display: "flex",
         flexDirection: "column",
@@ -88,17 +81,12 @@ export const LevelBadgeCompact = React.memo(function LevelBadgeCompact({ xp, siz
       borderRadius: 8,
       border: "1px solid rgba(212, 175, 55, 0.3)",
     }}>
-      <DiamondIcon
-        xp={xp}
-        size={size}
-        showGlow={false}
-      />
       <span style={{
         color: levelData.color,
         fontSize: "0.85rem",
         fontWeight: "600",
       }}>
-        {levelData.level}
+        Level {levelData.level}
       </span>
     </div>
   );
