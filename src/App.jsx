@@ -433,6 +433,18 @@ export default function App() {
         const fp = getDeviceFingerprint();
         setDeviceId(fp);
 
+        // Check if we're on the check-email page with auth tokens - let that page handle auth
+        const currentPath = window.location.pathname;
+        const hasAuthTokens = window.location.hash.includes('access_token') || 
+                              window.location.search.includes('code=');
+        
+        if (currentPath === '/check-email' && hasAuthTokens) {
+          console.log("[App] Auth tokens detected on check-email page, deferring to that handler");
+          window.__iq_auth_init_complete = true;
+          window.__iq_auth_init_running = false;
+          return;
+        }
+
         const { data: { session } } = await supabase.auth.getSession();
         
         if (session?.user) {

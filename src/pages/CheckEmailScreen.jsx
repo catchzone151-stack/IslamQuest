@@ -60,18 +60,32 @@ export default function CheckEmailScreen() {
       
       // Check if there are auth tokens in the URL (from successful email confirmation link)
       if (hash.includes('access_token') || searchParams.has('code')) {
-        console.log("[CheckEmail] Auth callback detected in URL, processing...");
+        console.log("[CheckEmail] Auth callback detected in URL, processing immediately...");
+        setLoadingMessage("Confirming your email...");
+        
+        // Clear the hash/params from URL immediately to prevent re-processing
+        window.history.replaceState(null, '', window.location.pathname);
         
         // Give Supabase a moment to process the tokens
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise(resolve => setTimeout(resolve, 300));
         
         // Check if user is now confirmed
         const { data: { user } } = await supabase.auth.getUser();
         if (user?.email_confirmed_at) {
-          console.log("[CheckEmail] User confirmed via callback, proceeding...");
-          // Clear the hash/params from URL
-          window.history.replaceState(null, '', window.location.pathname);
+          console.log("[CheckEmail] User confirmed via callback, proceeding to home...");
           await completeLoginAndPreload(user);
+        } else if (user) {
+          console.log("[CheckEmail] User exists but not confirmed yet, checking again...");
+          // Wait a bit more and try again
+          await new Promise(resolve => setTimeout(resolve, 500));
+          const { data: { user: refreshedUser } } = await supabase.auth.getUser();
+          if (refreshedUser?.email_confirmed_at) {
+            await completeLoginAndPreload(refreshedUser);
+          } else {
+            setLoadingMessage("");
+          }
+        } else {
+          setLoadingMessage("");
         }
       }
     };
