@@ -353,6 +353,10 @@ const generateNonce = () => {
 // 4. Deterministic timeout handling - never stays stuck
 // 5. Backend verification is optional for "already owned" (idempotent)
 // ================================================================
+export const buyProduct = async (productId) => {
+  return await purchase(productId);
+};
+
 export const purchase = async (productId) => {
   const product = PRODUCTS[productId];
   if (!product) {
