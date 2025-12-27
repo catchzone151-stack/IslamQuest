@@ -307,16 +307,16 @@ export const useFriendChallengesStore = create((set, get) => ({
       await get().loadChallenges();
       
       // Send push notification to the receiver (fire and forget, non-blocking)
-      // Get sender's display name from user_profiles
+      // Get sender's username from profiles table
       (async () => {
         try {
           const { data: senderProfile } = await supabase
-            .from("user_profiles")
-            .select("display_name")
+            .from("profiles")
+            .select("username")
             .eq("user_id", currentUserId)
             .single();
           
-          const senderName = senderProfile?.display_name || "A friend";
+          const senderName = senderProfile?.username || "A friend";
           sendChallengeNotification(
             "challenge_received",
             friendId,
@@ -371,12 +371,12 @@ export const useFriendChallengesStore = create((set, get) => ({
       (async () => {
         try {
           const { data: accepterProfile } = await supabase
-            .from("user_profiles")
-            .select("display_name")
+            .from("profiles")
+            .select("username")
             .eq("user_id", currentUserId)
             .single();
           
-          const accepterName = accepterProfile?.display_name || "A friend";
+          const accepterName = accepterProfile?.username || "A friend";
           const modeConfig = Object.values(CHALLENGE_MODES).find(m => m.id === data.challenge_type);
           
           sendChallengeNotification(
