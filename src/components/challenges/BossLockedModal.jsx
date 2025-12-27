@@ -36,7 +36,7 @@ export default function BossLockedModal({ currentLevel, onClose }) {
         </h2>
 
         <p style={{ color: "#cbd5e1", fontSize: "0.95rem", lineHeight: 1.6, marginBottom: 16 }}>
-          You need to reach <strong style={{ color: "#d4af37" }}>Level 8</strong> to unlock the Boss Level challenge.
+          You need to reach <strong style={{ color: "#d4af37" }}>Level 10</strong> to unlock the Boss Level challenge.
         </p>
 
         {/* Current Level Display */}

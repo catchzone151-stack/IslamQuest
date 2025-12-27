@@ -77,7 +77,7 @@ export const BOSS_LEVEL = {
   description: "Daily ultra-hard challenge — 12 questions, 30 seconds",
   questionCount: 12,
   totalTime: 30,
-  minLevel: 1, // TODO: Change back to 8 after testing
+  minLevel: 10,
   rewards: { win: { xp: 500, coins: 100 }, lose: { xp: 50, coins: 0 } },
   gradient: "linear-gradient(135deg, #1e3a5f 0%, #0f1c2e 100%)",
   glow: "0 0 30px rgba(30, 58, 95, 0.7)"

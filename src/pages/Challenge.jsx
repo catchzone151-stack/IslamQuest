@@ -439,9 +439,15 @@ export default function Challenge() {
             color: level >= BOSS_LEVEL.minLevel ? "#10b981" : "#6b7280",
             fontWeight: 600,
             position: "relative",
-            zIndex: 1
+            zIndex: 1,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center"
           }}>
-            Rewards: +{BOSS_LEVEL.rewards.win.xp} XP • +{BOSS_LEVEL.rewards.win.coins} coins
+            <span>Rewards: +{BOSS_LEVEL.rewards.win.xp} XP • +{BOSS_LEVEL.rewards.win.coins} coins</span>
+            {level < BOSS_LEVEL.minLevel && (
+              <span style={{ fontSize: "0.75rem", opacity: 0.8 }}>Unlock at Level {BOSS_LEVEL.minLevel}</span>
+            )}
           </div>
         </div>
       </div>
