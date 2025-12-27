@@ -143,8 +143,8 @@ export default function Profile() {
           {/* Right: Level + Progress Bar */}
           <div style={{ textAlign: "right" }}>
             <div style={{
-              fontSize: "1rem",
-              fontWeight: 700,
+              fontSize: "1.2rem",
+              fontWeight: 600,
               color: currentLevel.color || "#FFD700",
               marginBottom: 6,
             }}>
@@ -174,7 +174,7 @@ export default function Profile() {
               color: "rgba(212, 175, 55, 0.6)",
               marginTop: 3,
             }}>
-              {xp.toLocaleString()} XP
+              {xpProgress.currentLevelXP.toLocaleString()} / {xpProgress.requiredDelta.toLocaleString()} XP
             </div>
           </div>
         </div>
