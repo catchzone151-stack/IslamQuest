@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { X, RefreshCw } from "lucide-react";
 import ZaydReading from "../assets/mascots/mascot_sitting.webp";
 import { openAppStore } from "../utils/appStoreUtils";
-import { loadProducts, restorePurchases } from "../services/iapService";
+import { loadProducts, restorePurchases, buyProduct } from "../services/iapService";
 
 export default function PurchaseModal({ onClose }) {
   const [product, setProduct] = useState(null);
@@ -29,9 +29,17 @@ export default function PurchaseModal({ onClose }) {
     return () => { isMounted = false; };
   }, []);
 
-  const handleUnlockPremium = () => {
-    onClose();
-    openAppStore();
+  const handleUnlockPremium = async () => {
+    if (!product) return;
+    try {
+      await buyProduct(product.id);
+      onClose();
+    } catch (err) {
+      console.error("[PurchaseModal] Purchase failed:", err);
+      // Fallback to app store if purchase call fails or isn't native
+      openAppStore();
+      onClose();
+    }
   };
 
   const handleRestore = async () => {
