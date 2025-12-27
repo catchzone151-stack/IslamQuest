@@ -184,12 +184,12 @@ export const useDailyQuestStore = create((set, get) => ({
     const today = getTodayGMT();
     const state = get();
     
-    // If already today's quest, no need to regenerate
-    if (isToday(state.date)) {
+    // If already today's quest AND has questions, no need to regenerate
+    if (isToday(state.date) && state.questions.length > 0) {
       return true;
     }
 
-    // New day - generate new quest
+    // New day OR missing questions - generate new quest
     const questions = generateDailyQuestions();
 
     if (questions.length === 0) {

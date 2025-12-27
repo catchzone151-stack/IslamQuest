@@ -31,12 +31,8 @@ export default function DailyQuestCard() {
     
     setLoading(false);
     
-    // Check if questions are now available
-    const currentQuestions = useDailyQuestStore.getState().questions;
-    if (currentQuestions.length > 0) {
-      setShowExplainer(true);
-    }
-    // If no questions, the button state will update to show "Complete Lessons First"
+    // Show explainer - the game page will handle missing questions gracefully
+    setShowExplainer(true);
   };
 
   const handleStartQuest = async () => {
