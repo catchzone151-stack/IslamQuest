@@ -143,12 +143,40 @@ export default function Profile() {
           {/* Right: Level + Progress Bar */}
           <div style={{ textAlign: "right" }}>
             <div style={{
-              fontSize: "1.2rem",
-              fontWeight: 600,
-              color: currentLevel.color || "#FFD700",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              gap: 6,
               marginBottom: 6,
             }}>
-              Level {currentLevel.level}
+              <span style={{
+                fontSize: "1.2rem",
+                fontWeight: 600,
+                color: currentLevel.color || "#FFD700",
+              }}>
+                Level {currentLevel.level}
+              </span>
+              <button
+                onClick={() => showModal(MODAL_TYPES.VIEW_ALL_LEVELS, { currentXP: xp })}
+                style={{
+                  background: "rgba(255, 255, 255, 0.1)",
+                  border: "none",
+                  borderRadius: "50%",
+                  width: 18,
+                  height: 18,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  padding: 0,
+                }}
+              >
+                <span style={{
+                  fontSize: "0.7rem",
+                  fontWeight: 700,
+                  color: "rgba(255, 255, 255, 0.6)",
+                }}>?</span>
+              </button>
             </div>
             <div
               style={{
@@ -178,24 +206,6 @@ export default function Profile() {
             </div>
           </div>
         </div>
-
-        {/* View All Levels Button */}
-        <button
-          onClick={() => showModal(MODAL_TYPES.VIEW_ALL_LEVELS, { currentXP: xp })}
-          style={{
-            background: "linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(244, 208, 63, 0.1) 100%)",
-            border: "1px solid rgba(212, 175, 55, 0.4)",
-            borderRadius: 12,
-            padding: "10px 20px",
-            color: "#D4AF37",
-            fontWeight: "600",
-            cursor: "pointer",
-            fontSize: "0.9rem",
-            marginTop: 12,
-          }}
-        >
-          View All Levels
-        </button>
 
         {/* === Stats cards (2x2 grid) === */}
         <div
