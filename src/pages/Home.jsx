@@ -510,7 +510,7 @@ export default function Home() {
           fontFamily: "'TT Chocolates', sans-serif",
         }}
       >
-        Assalamu Alaikum, {name || "Explorer"} 👋
+        Read · Learn · Grow · Connect · Compete
       </p>
 
       {/*
