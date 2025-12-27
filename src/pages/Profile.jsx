@@ -74,7 +74,7 @@ export default function Profile() {
         </p>
 
         {/* === Avatar (centered, larger) === */}
-        <div style={{ marginTop: 20 }}>
+        <div style={{ marginTop: 24 }}>
           <button
             onClick={() => showModal(MODAL_TYPES.EDIT_AVATAR, {
               currentAvatar: avatar,
@@ -107,9 +107,9 @@ export default function Profile() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "flex-start",
-          marginTop: 16,
+          marginTop: 24,
           maxWidth: 340,
-          margin: "16px auto 0",
+          margin: "24px auto 0",
           padding: "0 8px",
         }}>
           {/* Left: Name + Handle */}
