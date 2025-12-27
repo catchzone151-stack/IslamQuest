@@ -249,8 +249,8 @@ export default function Challenge() {
               Global Events
             </h2>
           </div>
-          <p style={{ color: "#10b981", margin: 0, fontSize: "0.85rem", fontWeight: 600 }}>
-            🔴 LIVE NOW
+          <p style={{ color: "#D4AF37", margin: 0, fontSize: "0.85rem", fontWeight: 700 }}>
+            🚀 Launching Ramadan 2026
           </p>
         </div>
         <button style={{
