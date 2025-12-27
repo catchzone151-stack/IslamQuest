@@ -79,7 +79,7 @@ export default function GlobalEvents() {
 
   const handleEventClick = (event) => {
     if (!isUserPremium) {
-      openAppStore();
+      showModal(MODAL_TYPES.PURCHASE);
       return;
     }
     // Show Ramadan coming soon modal
@@ -185,35 +185,30 @@ export default function GlobalEvents() {
               {!isUserPremium && (
                 <div style={{
                   position: "absolute",
-                  inset: 0,
-                  background: "rgba(0, 0, 0, 0.6)",
-                  backdropFilter: "blur(2px)",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  background: "rgba(30, 30, 30, 0.85)",
+                  borderRadius: 18,
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
                   zIndex: 10,
-                  borderRadius: "inherit",
+                  gap: 8,
                 }}>
-                  <div style={{
-                    width: "44px",
-                    height: "44px",
-                    background: "rgba(0,0,0,0.5)",
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginBottom: "8px",
-                    border: "2px solid #FFD700"
-                  }}>
-                    <Lock size={20} color="#FFD700" />
-                  </div>
+                  <Lock 
+                    size={32} 
+                    color="#D4AF37" 
+                    strokeWidth={2.5}
+                    style={{ filter: "drop-shadow(0 0 4px rgba(212,175,55,0.5))" }}
+                  />
                   <span style={{ 
-                    color: "#FFD700", 
+                    fontSize: "0.75rem",
+                    color: "#D4AF37", 
                     fontWeight: 700, 
-                    fontSize: "0.85rem",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.5px"
+                    textShadow: "0 2px 4px rgba(0,0,0,0.5)",
                   }}>
                     Premium Only
                   </span>
