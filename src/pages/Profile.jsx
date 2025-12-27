@@ -50,7 +50,7 @@ export default function Profile() {
       <div
         style={{
           textAlign: "center",
-          padding: "clamp(20px, 6vw, 40px) 20px 90px",
+          padding: "clamp(20px, 6vw, 40px) 20px 20px",
           color: "white",
         }}
       >
