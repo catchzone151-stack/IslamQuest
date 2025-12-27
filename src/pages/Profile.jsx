@@ -73,116 +73,114 @@ export default function Profile() {
           Review your XP, coins, and progress
         </p>
 
-        {/* === Avatar + Name + Level Header === */}
-        <div style={{ 
-          marginTop: 24,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: 16,
-          maxWidth: 400,
-          margin: "24px auto 0",
-        }}>
-          {/* Left: Avatar + Name/Handle */}
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <button
-              onClick={() => showModal(MODAL_TYPES.EDIT_AVATAR, {
-                currentAvatar: avatar,
-                onSave: (selectedAvatar) => setAvatar(extractAvatarKey(selectedAvatar))
-              })}
+        {/* === Avatar (centered, larger) === */}
+        <div style={{ marginTop: 20 }}>
+          <button
+            onClick={() => showModal(MODAL_TYPES.EDIT_AVATAR, {
+              currentAvatar: avatar,
+              onSave: (selectedAvatar) => setAvatar(extractAvatarKey(selectedAvatar))
+            })}
+            style={{
+              border: "none",
+              background: "transparent",
+              cursor: "pointer",
+              padding: 0,
+            }}
+          >
+            <img
+              src={avatarImage}
+              alt="Avatar"
+              loading="eager"
               style={{
-                border: "none",
-                background: "transparent",
-                cursor: "pointer",
-                padding: 0,
-                flexShrink: 0,
+                width: 110,
+                height: 110,
+                borderRadius: "50%",
+                border: "3px solid #FFD700",
+                objectFit: "contain",
               }}
-            >
-              <img
-                src={avatarImage}
-                alt="Avatar"
-                loading="eager"
-                style={{
-                  width: 80,
-                  height: 80,
-                  borderRadius: "50%",
-                  border: "3px solid #FFD700",
-                  objectFit: "contain",
-                }}
-              />
-            </button>
+            />
+          </button>
+        </div>
 
-            <div style={{ textAlign: "left" }}>
-              <h2
-                onClick={() => showModal(MODAL_TYPES.EDIT_NAME, {
-                  initialName: name,
-                  onSave: setName
-                })}
-                style={{
-                  cursor: "pointer",
-                  fontSize: "1.2rem",
-                  fontWeight: 600,
-                  color: "#FFD700",
-                  margin: 0,
-                  marginBottom: 4,
-                }}
-              >
-                {name || "Explorer"}
-              </h2>
-              
-              {handle && (
-                <p style={{
-                  color: "rgba(255, 255, 255, 0.5)",
-                  fontSize: "0.85rem",
-                  margin: 0,
-                }}>
-                  @{handle}
-                </p>
-              )}
-            </div>
-          </div>
+        {/* === Name + Handle === */}
+        <div style={{ marginTop: 12 }}>
+          <h2
+            onClick={() => showModal(MODAL_TYPES.EDIT_NAME, {
+              initialName: name,
+              onSave: setName
+            })}
+            style={{
+              cursor: "pointer",
+              fontSize: "1.3rem",
+              fontWeight: 600,
+              color: "#FFD700",
+              margin: 0,
+            }}
+          >
+            {name || "Explorer"}
+          </h2>
+          {handle && (
+            <p style={{
+              color: "rgba(255, 255, 255, 0.5)",
+              fontSize: "0.85rem",
+              margin: "4px 0 0",
+            }}>
+              @{handle}
+            </p>
+          )}
+        </div>
 
-          {/* Right: Level + XP */}
-          <div style={{ 
-            textAlign: "right",
-            flexShrink: 0,
-          }}>
+        {/* === Level + XP Stats === */}
+        <div style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 24,
+          marginTop: 14,
+        }}>
+          <div style={{ textAlign: "center" }}>
             <div style={{
               fontSize: "1.1rem",
               fontWeight: 700,
               color: currentLevel.color || "#FFD700",
-              marginBottom: 4,
             }}>
               Level {currentLevel.level}
             </div>
+          </div>
+          <div style={{
+            width: 1,
+            height: 24,
+            background: "rgba(255, 255, 255, 0.2)",
+          }} />
+          <div style={{ textAlign: "center" }}>
             <div style={{
-              fontSize: "0.85rem",
-              color: "rgba(255, 255, 255, 0.7)",
+              fontSize: "1.1rem",
+              fontWeight: 700,
+              color: "#fff",
             }}>
-              {xp.toLocaleString()} XP
+              {xp.toLocaleString()}
             </div>
-            {xpProgress.nextLevel && (
-              <div style={{
-                fontSize: "0.75rem",
-                color: "rgba(212, 175, 55, 0.6)",
-                marginTop: 2,
-              }}>
-                {xpProgress.currentLevelXP.toLocaleString()}/{xpProgress.requiredDelta.toLocaleString()} to next
-              </div>
-            )}
+            <div style={{
+              fontSize: "0.7rem",
+              color: "rgba(255, 255, 255, 0.5)",
+              textTransform: "uppercase",
+              letterSpacing: "0.5px",
+            }}>
+              XP
+            </div>
           </div>
         </div>
 
-        {/* === XP Progress Bar === */}
+        {/* === XP Progress Bar (compact) === */}
         <div
           style={{
-            width: "80%",
-            maxWidth: 350,
-            margin: "16px auto 8px",
+            width: "60%",
+            maxWidth: 260,
+            margin: "12px auto 4px",
             background: "rgba(255,255,255,0.1)",
-            borderRadius: 12,
+            borderRadius: 8,
             overflow: "hidden",
-            height: 14,
+            height: 8,
           }}
         >
           <div
@@ -195,6 +193,15 @@ export default function Profile() {
             }}
           />
         </div>
+        {xpProgress.nextLevel && (
+          <div style={{
+            fontSize: "0.7rem",
+            color: "rgba(212, 175, 55, 0.6)",
+            marginBottom: 4,
+          }}>
+            {xpProgress.currentLevelXP.toLocaleString()} / {xpProgress.requiredDelta.toLocaleString()} to Level {xpProgress.nextLevel.level}
+          </div>
+        )}
 
         {/* View All Levels Button */}
         <button
