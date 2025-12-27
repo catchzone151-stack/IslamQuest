@@ -92,7 +92,20 @@ export default function PurchaseModal({ onClose }) {
         }}
       >
         <button
-          onClick={onClose}
+          onClick={() => {
+            onClose();
+            // If we are in the initial onboarding/startup phase and user cancels, exit the app
+            if (window.location.pathname.includes('/onboarding') || window.location.pathname === '/') {
+              if (window.App && window.App.exitApp) {
+                window.App.exitApp();
+              } else if (window.navigator && window.navigator.app && window.navigator.app.exitApp) {
+                window.navigator.app.exitApp();
+              } else {
+                // Fallback for browser/web if exitApp isn't available
+                window.close();
+              }
+            }
+          }}
           style={{
             position: "absolute",
             top: "12px",
