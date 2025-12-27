@@ -17,7 +17,6 @@ import {
   Clock,
   Trophy,
   Flame,
-  MessageCircle,
   Swords,
   Globe,
   Zap,
@@ -26,7 +25,6 @@ import { LevelBadgeCompact } from "../components/LevelBadge";
 import { getAvatarImage } from "../utils/avatarUtils";
 import { getCurrentLevel } from "../utils/diamondLevels";
 import { getModeIcon, getModeName } from "../utils/challengeQuestions";
-import QuickMessageModal from "../components/QuickMessageModal";
 import assets from "../assets/assets";
 
 const highlightStyle = `
@@ -99,7 +97,6 @@ export default function Friends() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
-  const [quickMessageFriend, setQuickMessageFriend] = useState(null);
   const [globalLeaderboard, setGlobalLeaderboard] = useState([]);
   const [loadingGlobal, setLoadingGlobal] = useState(true);
   const [acceptingChallengeId, setAcceptingChallengeId] = useState(null);
@@ -374,10 +371,6 @@ export default function Friends() {
         },
       },
     });
-  };
-
-  const handleQuickMessage = (friend) => {
-    setQuickMessageFriend(friend);
   };
 
   const getFriendChallengeState = (friendId) => {
@@ -1103,7 +1096,6 @@ export default function Friends() {
                           rank={index + 1}
                           isCurrentUser={friend.user_id === currentUserIdForHighlight}
                           onChallenge={() => handleChallengeFriend(friend)}
-                          onQuickMessage={() => handleQuickMessage(friend)}
                           challengeState={getFriendChallengeState(friend.user_id)}
                         />
                       ))}
@@ -1361,12 +1353,6 @@ export default function Friends() {
         </AnimatePresence>
       </div>
 
-      {quickMessageFriend && (
-        <QuickMessageModal
-          friend={quickMessageFriend}
-          onClose={() => setQuickMessageFriend(null)}
-        />
-      )}
     </div>
   );
 }
@@ -1448,7 +1434,7 @@ function SubTabButton({ active, onClick, label, icon }) {
   );
 }
 
-function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, onQuickMessage, challengeState }) {
+function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, challengeState }) {
   const avatarSrc = getAvatarImage(user.avatar, {
     userId: user.user_id,
     nickname: user.username || user.handle,
@@ -1592,21 +1578,6 @@ function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, onQuickMessag
       </div>
 
       <div style={{ display: "flex", gap: "6px" }}>
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={onQuickMessage}
-          style={{
-            padding: "8px",
-            background: "rgba(59, 130, 246, 0.2)",
-            border: "1px solid #3b82f6",
-            borderRadius: "8px",
-            color: "#3b82f6",
-            cursor: "pointer",
-          }}
-        >
-          <MessageCircle size={16} />
-        </motion.button>
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
