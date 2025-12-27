@@ -49,6 +49,13 @@ The application offers 14 learning paths with lessons and quizzes derived from Q
 
 **Styled Notification Modals**: Reusable `NotificationModal.jsx` provides consistent styled popups for feedback.
 
+**Push Notification System**: Minimal, non-spam push notifications via OneSignal with strict limits:
+- **Daily Streak Reminders**: Max 1 per day, only for users with active streaks who haven't opened the app today. Rotates between message variants. No generic "come back" messages.
+- **Challenge Notifications**: Only triggered when a challenge is received or accepted. No reminders or follow-ups.
+- **Token Registration**: Device tokens stored in `push_tokens` table with `user_id`, `device_token`, `platform`, `last_active`, `last_notification_sent`, and `updated_at` fields.
+- **Edge Functions**: `send-daily-notifications` (scheduled server-side) and `send-challenge-notification` (triggered on challenge create/accept).
+- **App Open Tracking**: `last_active` updated in `push_tokens` on each app open to filter out active users from streak reminders.
+
 Asset management is centralized for optimized WebP images, including 16 Islamic mascot characters and 34 avatar options.
 
 ## External Dependencies

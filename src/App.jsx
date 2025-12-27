@@ -584,6 +584,33 @@ export default function App() {
     runDailySnapshot();
   }, []);
 
+  // 📍 APP OPEN TRACKING (for push notification filtering)
+  // Updates last_active in push_tokens table independently of push permission status
+  // This ensures daily streak reminders are only sent to users who haven't opened today
+  useEffect(() => {
+    const updateLastActive = async () => {
+      try {
+        const { data: auth } = await supabase.auth.getUser();
+        if (!auth?.user) return;
+
+        // Update last_active for all push tokens belonging to this user
+        await supabase
+          .from("push_tokens")
+          .update({ last_active: new Date().toISOString() })
+          .eq("user_id", auth.user.id);
+
+        console.log("📍 App open tracked (last_active updated)");
+      } catch (err) {
+        // Silent fail - not critical
+        console.warn("Could not update last_active:", err.message);
+      }
+    };
+
+    if (actualHasOnboarded) {
+      updateLastActive();
+    }
+  }, [actualHasOnboarded]);
+
   // 🔔 ONESIGNAL PUSH NOTIFICATIONS
   useEffect(() => {
     const initOneSignal = async () => {
@@ -616,16 +643,19 @@ export default function App() {
           return;
         }
 
+        // Save/update push token with last_active timestamp
+        // This tracks when the user last opened the app (used for streak notification filtering)
         await supabase.from("push_tokens").upsert({
           user_id: auth.user.id,
           device_token: subscriptionId,
           platform: "web",
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
+          last_active: new Date().toISOString() // Track app open time
         }, {
           onConflict: "user_id,device_token"
         });
 
-        console.log("🔔 OneSignal initialized, subscription saved");
+        console.log("🔔 OneSignal initialized, subscription saved, last_active updated");
       } catch (err) {
         console.warn("OneSignal init failed:", err.message);
       }

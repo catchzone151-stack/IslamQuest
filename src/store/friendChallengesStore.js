@@ -7,6 +7,29 @@ import { CHALLENGE_MODES } from "./challengeStore";
 const CHALLENGE_EXPIRY_HOURS = 48;
 const VIEWED_RESULTS_KEY = "iq_viewed_challenge_results";
 
+// Helper function to send challenge push notifications (fire and forget)
+// Only sends for challenge_received and challenge_accepted events - NO spam
+const sendChallengeNotification = async (type, targetUserId, senderName, challengeType) => {
+  try {
+    const response = await supabase.functions.invoke("send-challenge-notification", {
+      body: {
+        type,
+        target_user_id: targetUserId,
+        sender_name: senderName,
+        challenge_type: challengeType,
+      },
+    });
+    
+    if (response.error) {
+      console.warn("[ChallengeNotification] Failed:", response.error);
+    } else {
+      console.log("[ChallengeNotification] Sent:", type, "to", targetUserId);
+    }
+  } catch (err) {
+    console.warn("[ChallengeNotification] Error:", err.message);
+  }
+};
+
 const getViewedResultIds = () => {
   try {
     const stored = localStorage.getItem(VIEWED_RESULTS_KEY);
@@ -283,6 +306,28 @@ export const useFriendChallengesStore = create((set, get) => ({
       
       await get().loadChallenges();
       
+      // Send push notification to the receiver (fire and forget, non-blocking)
+      // Get sender's display name from user_profiles
+      (async () => {
+        try {
+          const { data: senderProfile } = await supabase
+            .from("user_profiles")
+            .select("display_name")
+            .eq("user_id", currentUserId)
+            .single();
+          
+          const senderName = senderProfile?.display_name || "A friend";
+          sendChallengeNotification(
+            "challenge_received",
+            friendId,
+            senderName,
+            modeConfig.name
+          );
+        } catch (e) {
+          console.warn("[ChallengeNotification] Could not get sender name:", e);
+        }
+      })();
+      
       console.log("[FriendChallenges] Challenge created successfully:", data.id);
       return { success: true, challenge: data };
     } catch (error) {
@@ -320,6 +365,30 @@ export const useFriendChallengesStore = create((set, get) => ({
       }
       
       await get().loadChallenges();
+      
+      // Send push notification to the sender (fire and forget, non-blocking)
+      // Notify the original sender that their challenge was accepted
+      (async () => {
+        try {
+          const { data: accepterProfile } = await supabase
+            .from("user_profiles")
+            .select("display_name")
+            .eq("user_id", currentUserId)
+            .single();
+          
+          const accepterName = accepterProfile?.display_name || "A friend";
+          const modeConfig = Object.values(CHALLENGE_MODES).find(m => m.id === data.challenge_type);
+          
+          sendChallengeNotification(
+            "challenge_accepted",
+            data.sender_id,
+            accepterName,
+            modeConfig?.name || "Quiz Battle"
+          );
+        } catch (e) {
+          console.warn("[ChallengeNotification] Could not send accept notification:", e);
+        }
+      })();
       
       console.log("[FriendChallenges] Challenge accepted successfully:", challengeId, "Status:", data.status);
       return { success: true, challenge: data };
