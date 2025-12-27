@@ -108,7 +108,7 @@ export default function Profile() {
           justifyContent: "space-between",
           alignItems: "flex-start",
           marginTop: 16,
-          maxWidth: 340,
+          maxWidth: 260,
           margin: "16px auto 0",
           padding: "0 8px",
         }}>
