@@ -72,14 +72,14 @@ export default function ChallengeResultsModal({
   const modeGlow = typeof mode === "object" ? mode.glow : "0 0 20px rgba(212, 175, 55, 0.5)";
   
   const getMessage = () => {
-    if (result === "win") return "You Won! 🎉";
+    if (result === "win") return "You Won!";
     if (result === "lose") {
       if (isBossLevel) {
         return "Keep going! You're improving every time!";
       }
-      return "Better luck next time! 💪";
+      return "Better luck next time!";
     }
-    if (result === "draw") return "It's a Draw! 🤝";
+    if (result === "draw") return "It's a Draw!";
     return "Challenge Complete!";
   };
 
@@ -212,7 +212,7 @@ export default function ChallengeResultsModal({
             marginTop: 12
           }}
         >
-          Awesome! 🎯
+          Awesome!
         </button>
       </div>
     </div>

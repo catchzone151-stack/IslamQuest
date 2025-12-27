@@ -58,7 +58,6 @@ export default function FriendChallengeResultsModal({
   
   const resultColor = isDraw ? "#f59e0b" : (isWinner ? "#10b981" : "#ef4444");
   const resultText = isDraw ? "It's a Draw!" : (isWinner ? "You Won!" : "You Lost");
-  const resultEmoji = isDraw ? "🤝" : (isWinner ? "🏆" : "😔");
   
   const getMascot = () => {
     if (isWinner) return assets.mascots.mascot_congratulation;
@@ -72,17 +71,8 @@ export default function FriendChallengeResultsModal({
         <img 
           src={getMascot()} 
           alt="Zayd" 
-          style={{ width: 90, height: "auto", marginBottom: 8 }}
+          style={{ width: 90, height: "auto", marginBottom: 12 }}
         />
-
-        <div 
-          style={{ 
-            fontSize: "2.5rem",
-            margin: "4px 0"
-          }}
-        >
-          {resultEmoji}
-        </div>
 
         <h2 className="challenge-modal-title" style={{ color: resultColor, marginBottom: 4 }}>
           {resultText}
