@@ -377,7 +377,7 @@ export default function Challenge() {
             animation: level >= BOSS_LEVEL.minLevel ? "bossGlow 2s ease-in-out infinite" : "none"
           }}
         >
-          {level < BOSS_LEVEL.minLevel && (
+          {false && level < BOSS_LEVEL.minLevel && (
             <>
               <div style={{
                 position: "absolute",
@@ -445,9 +445,6 @@ export default function Challenge() {
             alignItems: "center"
           }}>
             <span>Rewards: +{BOSS_LEVEL.rewards.win.xp} XP • +{BOSS_LEVEL.rewards.win.coins} coins</span>
-            {level < BOSS_LEVEL.minLevel && (
-              <span style={{ fontSize: "0.75rem", opacity: 0.8 }}>Unlock at Level 8</span>
-            )}
           </div>
         </div>
       </div>
