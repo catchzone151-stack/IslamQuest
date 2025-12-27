@@ -114,8 +114,13 @@ export const initializeIAP = async () => {
   initPromise = (async () => {
     platformType = detectPlatform();
     
+    // REDIRECT TO WEB STORE FOR WEB USERS
     if (!platformType) {
-      console.log("[IAP] Web environment - IAP not available");
+      console.log("[IAP] Web environment - redirecting to app store");
+      // Use settimeout to allow any calling UI to handle the "failure" as a redirect
+      setTimeout(() => {
+        import("../utils/appStoreUtils").then(({ openAppStore }) => openAppStore());
+      }, 100);
       return { success: false, platform: "web" };
     }
     
