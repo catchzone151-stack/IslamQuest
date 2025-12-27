@@ -7,12 +7,15 @@ const ProfileCard = React.memo(function ProfileCard({ icon, label, value, color 
         textAlign: "center",
         background: "rgba(255,255,255,0.05)",
         borderRadius: "16px",
-        padding: "16px 20px",
+        padding: "12px",
         border: "1px solid rgba(255,215,0,0.2)",
         color: "white",
-        minWidth: "100px",
-        flex: "1 1 0",
-        maxWidth: "120px",
+        width: "120px",
+        height: "120px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
       {icon && (
