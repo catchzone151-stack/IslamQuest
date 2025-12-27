@@ -250,7 +250,7 @@ export default function Challenge() {
             </h2>
           </div>
           <p style={{ color: "#D4AF37", margin: 0, fontSize: "0.85rem", fontWeight: 700 }}>
-            🚀 Launching Ramadan 2026
+           LAUNCHING RAMADAN
           </p>
         </div>
         <button style={{
