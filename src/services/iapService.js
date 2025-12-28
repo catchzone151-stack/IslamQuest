@@ -194,6 +194,7 @@ const setupGlobalHandlers = () => {
           p.googleId === product.id || p.appleId === product.id
         );
         if (config) {
+          console.log("✅ PREMIUM UNLOCKED FROM STORE OWNERSHIP");
           console.log("[IAP] Product is OWNED - unlocking premium locally");
           setLocalPremiumState(true, config.planType);
           
@@ -375,14 +376,21 @@ const silentAutoRestore = async () => {
       if (storeProduct?.owned) {
         console.log("[IAP] OWNED PRODUCT DETECTED:", storeId);
         
-        // Reconcile with backend (creates verified_purchases if needed)
-        const reconcileResult = await reconcilePurchaseWithBackend(storeProduct, productConfig);
-        console.log("[IAP] Reconcile result:", JSON.stringify(reconcileResult));
+        // INVARIANT: owned === true → unlock IMMEDIATELY (backend sync is best-effort)
+        console.log("✅ PREMIUM UNLOCKED FROM STORE OWNERSHIP");
+        setLocalPremiumState(true, productConfig.planType);
+        const { markPremiumActivated } = await import("./premiumStateService");
+        markPremiumActivated(productConfig.planType);
         
-        if (reconcileResult.success) {
-          console.log("[IAP] ===== PREMIUM UNLOCKED (auto-restore) =====");
-          return;
-        }
+        // Best-effort backend sync (non-blocking for unlock)
+        reconcilePurchaseWithBackend(storeProduct, productConfig).then(result => {
+          console.log("[IAP] Backend sync result (best-effort):", JSON.stringify(result));
+        }).catch(err => {
+          console.log("[IAP] Backend sync failed (non-fatal):", err.message);
+        });
+        
+        console.log("[IAP] ===== PREMIUM UNLOCKED (auto-restore) =====");
+        return;
       }
     }
     
@@ -923,20 +931,24 @@ export const restorePurchases = async () => {
       if (storeProduct?.owned) {
         console.log("[IAP] OWNED PRODUCT DETECTED:", storeId);
         
-        // Use reconcile function to sync with Supabase
+        // INVARIANT: owned === true → unlock IMMEDIATELY (backend sync is best-effort)
+        console.log("✅ PREMIUM UNLOCKED FROM STORE OWNERSHIP");
+        setLocalPremiumState(true, productConfig.planType);
+        const { markPremiumActivated } = await import("./premiumStateService");
+        markPremiumActivated(productConfig.planType);
+        
+        // Best-effort backend sync
         const reconcileResult = await reconcilePurchaseWithBackend(storeProduct, productConfig);
         console.log("[IAP] Reconcile result:", JSON.stringify(reconcileResult));
         
-        if (reconcileResult.success) {
-          console.log("[IAP] ===== PREMIUM RESTORED SUCCESSFULLY =====");
-          return {
-            success: true,
-            verified: true,
-            source: reconcileResult.source,
-            planType: reconcileResult.planType || productConfig.planType,
-            message: "Purchases restored successfully!"
-          };
-        }
+        console.log("[IAP] ===== PREMIUM RESTORED SUCCESSFULLY =====");
+        return {
+          success: true,
+          verified: reconcileResult.success,
+          source: reconcileResult.source || "store_ownership",
+          planType: productConfig.planType,
+          message: "Purchases restored successfully!"
+        };
       }
     }
     
@@ -993,13 +1005,20 @@ export const checkEntitlementOnMount = async () => {
       if (storeProduct?.owned) {
         console.log("[IAP] Owned product found on paywall mount:", storeId);
         
-        // Reconcile with backend to ensure Supabase is synced
-        const reconcileResult = await reconcilePurchaseWithBackend(storeProduct, productConfig);
-        console.log("[IAP] Paywall mount reconcile result:", JSON.stringify(reconcileResult));
+        // INVARIANT: owned === true → unlock IMMEDIATELY (backend sync is best-effort)
+        console.log("✅ PREMIUM UNLOCKED FROM STORE OWNERSHIP");
+        setLocalPremiumState(true, productConfig.planType);
+        const { markPremiumActivated } = await import("./premiumStateService");
+        markPremiumActivated(productConfig.planType);
         
-        if (reconcileResult.success) {
-          return { isPremium: true, source: reconcileResult.source };
-        }
+        // Best-effort backend sync
+        reconcilePurchaseWithBackend(storeProduct, productConfig).then(result => {
+          console.log("[IAP] Paywall mount reconcile result:", JSON.stringify(result));
+        }).catch(err => {
+          console.log("[IAP] Paywall mount sync failed (non-fatal):", err.message);
+        });
+        
+        return { isPremium: true, source: "store_ownership" };
       }
     }
   }
