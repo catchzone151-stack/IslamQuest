@@ -7,16 +7,20 @@ import { loadProducts, restorePurchases, buyProduct } from "../services/iapServi
 export default function PurchaseModal({ onClose }) {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [purchasing, setPurchasing] = useState(false);
   const [restoring, setRestoring] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
     const fetchProduct = async () => {
       try {
+        console.log("[PurchaseModal] Loading products...");
         const products = await loadProducts();
+        console.log("[PurchaseModal] Products loaded:", products);
         if (isMounted) {
           // Find the lifetime premium product
           const premiumProduct = products.find(p => p.id === "premium_lifetime");
+          console.log("[PurchaseModal] Premium product:", premiumProduct);
           setProduct(premiumProduct);
         }
       } catch (err) {
@@ -30,26 +34,59 @@ export default function PurchaseModal({ onClose }) {
   }, []);
 
   const handleUnlockPremium = async () => {
+    console.log("[PurchaseModal] Unlock Premium clicked, product:", product);
+    
+    // Prevent double-click
+    if (purchasing) {
+      console.log("[PurchaseModal] Already purchasing, ignoring click");
+      return;
+    }
+    
     if (!product) {
+      console.log("[PurchaseModal] No product - opening app store");
       openAppStore();
       onClose();
       return;
     }
     
+    setPurchasing(true);
+    
     try {
+      console.log("[PurchaseModal] Calling buyProduct with:", product.id);
       const result = await buyProduct(product.id);
-      
-      if (result.requiresNativeApp) {
-        openAppStore();
-      }
+      console.log("[PurchaseModal] buyProduct result:", result);
       
       if (result.success) {
+        console.log("[PurchaseModal] Purchase successful!");
         onClose();
+        return;
+      }
+      
+      if (result.requiresNativeApp) {
+        console.log("[PurchaseModal] Requires native app - opening store");
+        openAppStore();
+        onClose();
+        return;
+      }
+      
+      // Purchase failed but doesn't require native app - IAP issue on device
+      // Log error and reset state so user can retry
+      console.error("[PurchaseModal] Purchase failed:", result.error);
+      setPurchasing(false);
+      
+      // If cancelled by user, just reset state
+      if (result.cancelled) {
+        return;
+      }
+      
+      // Show alert for actual errors
+      if (result.error) {
+        alert(result.error || "Purchase failed. Please try again.");
       }
     } catch (err) {
-      console.error("[PurchaseModal] Purchase failed:", err);
-      openAppStore();
-      onClose();
+      console.error("[PurchaseModal] Purchase exception:", err);
+      setPurchasing(false);
+      alert("Something went wrong. Please try again.");
     }
   };
 
@@ -198,20 +235,22 @@ export default function PurchaseModal({ onClose }) {
 
           <button
             onClick={handleUnlockPremium}
+            disabled={loading || purchasing}
             style={{
-              backgroundColor: "#FFD700",
+              backgroundColor: (loading || purchasing) ? "#9CA3AF" : "#FFD700",
               color: "#111827",
               fontWeight: 700,
               border: "none",
               borderRadius: "12px",
               padding: "14px 24px",
               width: "100%",
-              cursor: "pointer",
+              cursor: (loading || purchasing) ? "not-allowed" : "pointer",
               fontSize: "1rem",
               marginTop: "16px",
+              opacity: (loading || purchasing) ? 0.7 : 1,
             }}
           >
-            {loading ? "Loading..." : `Unlock Premium — ${displayPrice}`}
+            {loading ? "Loading..." : purchasing ? "Processing..." : `Unlock Premium — ${displayPrice}`}
           </button>
         </div>
 
