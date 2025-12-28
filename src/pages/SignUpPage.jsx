@@ -148,8 +148,38 @@ export default function SignUpPage() {
       }
 
       if (data?.user) {
-        // Store user info locally - profile will be created after email confirmation
-        // to avoid duplicates from race conditions
+        console.log("[SignUp] Auth user created:", data.user.id);
+        
+        // Create profile IMMEDIATELY after auth signup
+        // This prevents "no account found" if email confirmation callback fails on mobile
+        const avatarIndex = avatarKeyToIndex(avatarKey);
+        const progressState = useProgressStore.getState();
+        
+        const { error: profileError } = await supabase
+          .from("profiles")
+          .upsert(
+            {
+              user_id: data.user.id,
+              username: trimmedName,
+              handle: trimmedHandle,
+              avatar: avatarIndex,
+              xp: progressState.xp || 0,
+              coins: progressState.coins || 0,
+              streak: progressState.streak || 0,
+              created_at: new Date().toISOString(),
+            },
+            { onConflict: "user_id" }
+          );
+        
+        if (profileError) {
+          console.error("[SignUp] Profile creation error:", profileError);
+          setErrorMsg("Account created but profile setup failed. Please try logging in.");
+          setLoading(false);
+          return;
+        }
+        
+        console.log("[SignUp] Profile created for user:", data.user.id);
+        
         setDisplayName(trimmedName);
         setStoreHandle(trimmedHandle);
         setStoreAvatar(avatarKey);
@@ -167,25 +197,7 @@ export default function SignUpPage() {
         setLoading(false);
 
         if (data.user.email_confirmed_at) {
-          // Email already confirmed (unlikely for new signup, but handle it)
-          // Create profile now since we're going straight to home
-          const avatarIndex = avatarKeyToIndex(avatarKey);
-          const progressState = useProgressStore.getState();
-          
-          await supabase.from("profiles").upsert(
-            {
-              user_id: data.user.id,
-              username: trimmedName,
-              handle: trimmedHandle,
-              avatar: avatarIndex,
-              xp: progressState.xp || 0,
-              coins: progressState.coins || 0,
-              streak: progressState.streak || 0,
-              created_at: new Date().toISOString(),
-            },
-            { onConflict: "user_id" }
-          );
-          
+          // Email already confirmed - go straight to home
           localStorage.removeItem("iq_onboarding_step");
           localStorage.setItem("iq_profile_complete", "true");
           useUserStore.setState({
@@ -194,7 +206,8 @@ export default function SignUpPage() {
           });
           navigate("/");
         } else {
-          // Normal flow: go to check-email, profile created after confirmation
+          // Normal flow: go to check-email to confirm email
+          // Profile already exists, so login will work even if callback fails
           localStorage.setItem("iq_onboarding_step", "checkemail");
           navigate("/check-email");
         }
