@@ -184,6 +184,7 @@ const setupGlobalHandlers = () => {
   // Handle when a product's ownership status changes
   store.when()
     .productUpdated((product) => {
+      console.log("🔔🔔🔔 [IAP] productUpdated CALLBACK FIRED 🔔🔔🔔");
       console.log("[IAP] Product updated:", product.id, "owned:", product.owned, "canPurchase:", product.canPurchase);
       
       // KEY FIX: If product is owned, immediately unlock premium locally
@@ -394,6 +395,8 @@ const silentAutoRestore = async () => {
 
 // ================================================================
 // PRODUCT REGISTRATION
+// Correct order: register → initialize → ready → update
+// This ensures listeners receive all purchase events
 // ================================================================
 const registerProducts = async () => {
   const CdvPurchase = window.CdvPurchase;
@@ -413,10 +416,19 @@ const registerProducts = async () => {
   });
   
   await store.initialize([platform]);
-  console.log("[IAP] Store initialized, refreshing products...");
+  console.log("[IAP] Store initialized");
+  
+  // CRITICAL: Wait for store.ready() before querying purchases
+  // This ensures all listeners are wired before events fire
+  await new Promise((resolve) => {
+    store.ready(() => {
+      console.log("[IAP] Store ready - listeners are wired");
+      resolve();
+    });
+  });
   
   await store.update();
-  console.log("[IAP] Products updated");
+  console.log("[IAP] Products updated - ownership should now fire callbacks");
 };
 
 // ================================================================
