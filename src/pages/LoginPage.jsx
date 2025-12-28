@@ -101,10 +101,78 @@ export default function LoginPage() {
       const preloadResult = await preloadUserData(data.user.id);
 
       if (!preloadResult.success) {
-        console.log("[LoginPage] No profile found - redirecting to signup");
-        await supabase.auth.signOut();
-        setErrorMsg("No account found. Please sign up first.");
+        console.log("[LoginPage] No profile found - attempting to create from localStorage");
+        
+        const storedName = localStorage.getItem("iq_name");
+        const storedHandle = localStorage.getItem("iq_handle");
+        const storedAvatar = localStorage.getItem("iq_avatar") || "avatar_man_lantern";
+        
+        if (storedName && storedHandle) {
+          const { avatarKeyToIndex } = await import("../utils/avatarUtils");
+          const { useProgressStore } = await import("../store/progressStore");
+          const avatarIndex = avatarKeyToIndex(storedAvatar);
+          const progressState = useProgressStore.getState();
+          
+          console.log("[LoginPage] Creating profile with stored data:", { storedName, storedHandle });
+          
+          const { data: newProfile, error: profileError } = await supabase
+            .from("profiles")
+            .upsert({
+              user_id: data.user.id,
+              username: storedName,
+              handle: storedHandle.trim().toLowerCase(),
+              avatar: avatarIndex,
+              xp: progressState.xp || 0,
+              coins: progressState.coins || 0,
+              streak: progressState.streak || 0,
+              created_at: new Date().toISOString(),
+            }, { onConflict: 'user_id' })
+            .select()
+            .single();
+          
+          if (!profileError && newProfile) {
+            console.log("[LoginPage] Profile created successfully:", newProfile);
+            
+            setDisplayName(storedName);
+            setHandle(storedHandle);
+            setAvatar(storedAvatar);
+            setOnboarded(true);
+            
+            localStorage.removeItem("iq_onboarding_step");
+            localStorage.setItem("iq_profile_complete", "true");
+            
+            useUserStore.setState({
+              user: data.user,
+              userId: data.user.id,
+              username: storedName,
+              handle: storedHandle,
+              avatar: storedAvatar,
+              name: storedName,
+              profile: newProfile,
+              profileReady: true,
+              hasOnboarded: true,
+              loading: false,
+              isHydrated: true,
+            });
+            
+            setLoading(false);
+            navigate("/");
+            return;
+          }
+          
+          console.error("[LoginPage] Profile creation failed:", profileError);
+        }
+        
+        console.log("[LoginPage] No stored profile data - redirecting to complete profile");
+        localStorage.setItem("iq_onboarding_step", "handle");
+        useUserStore.setState({
+          user: data.user,
+          userId: data.user.id,
+          loading: false,
+          isHydrated: true,
+        });
         setLoading(false);
+        navigate("/onboarding/handle");
         return;
       }
 
