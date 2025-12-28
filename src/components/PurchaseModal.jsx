@@ -53,16 +53,28 @@ export default function PurchaseModal({ onClose }) {
     }
     
     if (!product) {
-      console.log("[PurchaseModal] No product loaded - FORCE opening store");
-      await forceOpenStore();
-      onClose();
+      console.log("[PurchaseModal] No product loaded - attempting store open");
+      const storeResult = await forceOpenStore();
+      if (storeResult.success) {
+        console.log("[PurchaseModal] Store opened successfully, closing modal");
+        onClose();
+      } else {
+        console.log("[PurchaseModal] Store failed to open:", storeResult.error);
+        setErrorMsg("Could not open store. Please try again.");
+      }
       return;
     }
     
     if (product.requiresNativeApp) {
-      console.log("[PurchaseModal] Product requires native app - FORCE opening store");
-      await forceOpenStore();
-      onClose();
+      console.log("[PurchaseModal] Product requires native app - attempting store open");
+      const storeResult = await forceOpenStore();
+      if (storeResult.success) {
+        console.log("[PurchaseModal] Store opened successfully, closing modal");
+        onClose();
+      } else {
+        console.log("[PurchaseModal] Store failed to open:", storeResult.error);
+        setErrorMsg("Could not open store. Please try again.");
+      }
       return;
     }
     
@@ -81,9 +93,16 @@ export default function PurchaseModal({ onClose }) {
       }
       
       if (result.requiresNativeApp) {
-        console.log("[PurchaseModal] Result says requiresNativeApp - FORCE opening store");
-        await forceOpenStore();
-        onClose();
+        console.log("[PurchaseModal] Result says requiresNativeApp - attempting store open");
+        const storeResult = await forceOpenStore();
+        if (storeResult.success) {
+          console.log("[PurchaseModal] Store opened successfully, closing modal");
+          onClose();
+        } else {
+          console.log("[PurchaseModal] Store failed to open:", storeResult.error);
+          setPurchasing(false);
+          setErrorMsg("Could not open store. Please try again.");
+        }
         return;
       }
       
