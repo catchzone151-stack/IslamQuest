@@ -1,26 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { X, RefreshCw } from "lucide-react";
 import ZaydReading from "../assets/mascots/mascot_sitting.webp";
-import { openAppStore } from "../utils/appStoreUtils";
+import { openAppStore, forceOpenStore } from "../utils/appStoreUtils";
 import { loadProducts, restorePurchases, buyProduct } from "../services/iapService";
+import { Capacitor } from "@capacitor/core";
 
 export default function PurchaseModal({ onClose }) {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [purchasing, setPurchasing] = useState(false);
   const [restoring, setRestoring] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
 
   useEffect(() => {
     let isMounted = true;
     const fetchProduct = async () => {
       try {
         console.log("[PurchaseModal] Loading products...");
+        console.log("[PurchaseModal] Platform:", Capacitor.isNativePlatform() ? Capacitor.getPlatform() : "web");
+        
         const products = await loadProducts();
-        console.log("[PurchaseModal] Products loaded:", products);
+        console.log("[PurchaseModal] Products loaded:", JSON.stringify(products));
+        
         if (isMounted) {
-          // Find the lifetime premium product
           const premiumProduct = products.find(p => p.id === "premium_lifetime");
-          console.log("[PurchaseModal] Premium product:", premiumProduct);
+          console.log("[PurchaseModal] Premium product:", JSON.stringify(premiumProduct));
           setProduct(premiumProduct);
         }
       } catch (err) {
@@ -34,77 +38,99 @@ export default function PurchaseModal({ onClose }) {
   }, []);
 
   const handleUnlockPremium = async () => {
-    console.log("[PurchaseModal] Unlock Premium clicked, product:", product);
+    console.log("=".repeat(60));
+    console.log("[PurchaseModal] === UNLOCK PREMIUM CLICKED ===");
+    console.log("[PurchaseModal] Timestamp:", new Date().toISOString());
+    console.log("[PurchaseModal] Platform:", Capacitor.isNativePlatform() ? Capacitor.getPlatform() : "web");
+    console.log("[PurchaseModal] Product state:", JSON.stringify(product));
+    console.log("[PurchaseModal] Purchasing state:", purchasing);
     
-    // Prevent double-click
+    setErrorMsg(null);
+    
     if (purchasing) {
-      console.log("[PurchaseModal] Already purchasing, ignoring click");
+      console.log("[PurchaseModal] Already purchasing - ignoring click");
       return;
     }
     
     if (!product) {
-      console.log("[PurchaseModal] No product - opening app store");
-      openAppStore();
+      console.log("[PurchaseModal] No product loaded - FORCE opening store");
+      await forceOpenStore();
+      onClose();
+      return;
+    }
+    
+    if (product.requiresNativeApp) {
+      console.log("[PurchaseModal] Product requires native app - FORCE opening store");
+      await forceOpenStore();
       onClose();
       return;
     }
     
     setPurchasing(true);
+    console.log("[PurchaseModal] Set purchasing=true, calling buyProduct...");
     
     try {
-      console.log("[PurchaseModal] Calling buyProduct with:", product.id);
+      console.log("[PurchaseModal] >>> Calling buyProduct with:", product.id);
       const result = await buyProduct(product.id);
-      console.log("[PurchaseModal] buyProduct result:", result);
+      console.log("[PurchaseModal] <<< buyProduct returned:", JSON.stringify(result));
       
       if (result.success) {
-        console.log("[PurchaseModal] Purchase successful!");
+        console.log("[PurchaseModal] SUCCESS! Purchase completed, closing modal");
         onClose();
         return;
       }
       
       if (result.requiresNativeApp) {
-        console.log("[PurchaseModal] Requires native app - opening store");
-        openAppStore();
+        console.log("[PurchaseModal] Result says requiresNativeApp - FORCE opening store");
+        await forceOpenStore();
         onClose();
         return;
       }
       
-      // Purchase failed but doesn't require native app - IAP issue on device
-      // Log error and reset state so user can retry
-      console.error("[PurchaseModal] Purchase failed:", result.error);
-      setPurchasing(false);
-      
-      // If cancelled by user, just reset state
       if (result.cancelled) {
+        console.log("[PurchaseModal] User cancelled purchase - resetting state");
+        setPurchasing(false);
         return;
       }
       
-      // Show alert for actual errors
-      if (result.error) {
-        alert(result.error || "Purchase failed. Please try again.");
-      }
-    } catch (err) {
-      console.error("[PurchaseModal] Purchase exception:", err);
+      console.log("[PurchaseModal] Purchase failed with error:", result.error);
       setPurchasing(false);
-      alert("Something went wrong. Please try again.");
+      setErrorMsg(result.error || "Purchase failed. Please try again.");
+      
+    } catch (err) {
+      console.error("[PurchaseModal] EXCEPTION during purchase:", err);
+      console.error("[PurchaseModal] Exception stack:", err.stack);
+      setPurchasing(false);
+      setErrorMsg("Something went wrong. Please try again.");
     }
+    
+    console.log("[PurchaseModal] === UNLOCK PREMIUM HANDLER END ===");
+    console.log("=".repeat(60));
   };
 
   const handleRestore = async () => {
     if (restoring) return;
     setRestoring(true);
+    setErrorMsg(null);
+    
     try {
-      await restorePurchases();
-      // Usually restorePurchases handles the logic, we just provide the trigger
+      console.log("[PurchaseModal] Restoring purchases...");
+      const result = await restorePurchases();
+      console.log("[PurchaseModal] Restore result:", JSON.stringify(result));
+      
+      if (result?.success) {
+        onClose();
+      } else if (result?.error) {
+        setErrorMsg(result.error);
+      }
     } catch (err) {
       console.error("[PurchaseModal] Restore failed:", err);
+      setErrorMsg("Failed to restore purchases.");
     } finally {
       setRestoring(false);
     }
   };
 
-  // The store-provided localized price string (e.g., "£4.99", "$9.99", "€5.49")
-  // comes directly from iapService.loadProducts() -> storeProduct.pricing.price
   const displayPrice = product?.price || "...";
 
   return (
@@ -137,14 +163,12 @@ export default function PurchaseModal({ onClose }) {
         <button
           onClick={() => {
             onClose();
-            // If we are in the initial onboarding/startup phase and user cancels, exit the app
             if (window.location.pathname.includes('/onboarding') || window.location.pathname === '/') {
               if (window.App && window.App.exitApp) {
                 window.App.exitApp();
               } else if (window.navigator && window.navigator.app && window.navigator.app.exitApp) {
                 window.navigator.app.exitApp();
               } else {
-                // Fallback for browser/web if exitApp isn't available
                 window.close();
               }
             }
@@ -252,6 +276,19 @@ export default function PurchaseModal({ onClose }) {
           >
             {loading ? "Loading..." : purchasing ? "Processing..." : `Unlock Premium — ${displayPrice}`}
           </button>
+          
+          {errorMsg && (
+            <p style={{
+              color: "#EF4444",
+              fontSize: "0.85rem",
+              marginTop: "12px",
+              padding: "8px",
+              background: "rgba(239, 68, 68, 0.1)",
+              borderRadius: "8px",
+            }}>
+              {errorMsg}
+            </p>
+          )}
         </div>
 
         <p style={{ 

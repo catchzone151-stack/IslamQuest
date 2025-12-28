@@ -369,16 +369,31 @@ export const buyProduct = async (productId) => {
 };
 
 export const purchase = async (productId) => {
+  console.log("=".repeat(60));
+  console.log("[IAP] === PURCHASE FLOW STARTED ===");
+  console.log("[IAP] ProductId:", productId);
+  console.log("[IAP] Timestamp:", new Date().toISOString());
+  
   const product = PRODUCTS[productId];
   if (!product) {
+    console.log("[IAP] ERROR: Invalid product ID");
     return { success: false, error: "Invalid product ID" };
   }
   
+  console.log("[IAP] Product config:", JSON.stringify(product));
+  console.log("[IAP] Calling initializeIAP...");
+  
   const initResult = await initializeIAP();
+  console.log("[IAP] initializeIAP result:", JSON.stringify(initResult));
+  
   if (!initResult.success) {
-    // CRITICAL FIX: Only set requiresNativeApp for actual web users
-    // Native init failures should show error and allow retry, NOT close modal
+    console.log("[IAP] Initialization failed, checking reason...");
+    console.log("[IAP] - requiresNativeApp:", initResult.requiresNativeApp);
+    console.log("[IAP] - platform:", initResult.platform);
+    console.log("[IAP] - error:", initResult.error);
+    
     if (initResult.requiresNativeApp || initResult.platform === "web") {
+      console.log("[IAP] >>> Returning requiresNativeApp=true (web user)");
       return { 
         success: false, 
         error: "Please download the app from App Store or Google Play to make purchases",
@@ -386,13 +401,14 @@ export const purchase = async (productId) => {
       };
     }
     
-    // Native platform but failed to initialize - show error, allow retry
-    console.log("[IAP] Native init failed, returning error for retry:", initResult.error);
+    console.log("[IAP] >>> Returning error for retry (native init failed)");
     return { 
       success: false, 
       error: initResult.error || "Billing service not ready. Please try again."
     };
   }
+  
+  console.log("[IAP] Initialization successful, platformType:", platformType);
   
   const storeId = platformType === "ios" ? product.appleId : product.googleId;
   const storeProduct = store.get(storeId);
@@ -575,12 +591,18 @@ export const purchase = async (productId) => {
     
     // Initiate the purchase
     try {
+      console.log("[IAP] Getting offer for product:", storeId);
       const offer = storeProduct.getOffer();
+      console.log("[IAP] Offer:", offer ? "found" : "NOT FOUND");
+      
       if (offer) {
-        console.log("[IAP] Ordering product:", storeId);
+        console.log("[IAP] >>> CALLING offer.order() - This should open billing UI <<<");
+        console.log("[IAP] Timestamp before order:", new Date().toISOString());
+        
         offer.order()
           .then(() => {
-            console.log("[IAP] Order initiated successfully");
+            console.log("[IAP] offer.order() promise resolved - billing UI should be open");
+            console.log("[IAP] Timestamp after order:", new Date().toISOString());
           })
           .catch((error) => {
             console.error("[IAP] Order error:", error);

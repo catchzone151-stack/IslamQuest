@@ -1,36 +1,64 @@
+import { Capacitor } from "@capacitor/core";
+import { NativeMarket } from "@capacitor-community/native-market";
+
 const IOS_APP_STORE_ID = "6745142588";
 const ANDROID_PACKAGE = "com.islamquest.app";
 
-export const openAppStore = () => {
-  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-  const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
-  const isAndroid = /android/i.test(userAgent);
-
-  if (isIOS) {
-    const url = `itms-apps://itunes.apple.com/app/id${IOS_APP_STORE_ID}`;
-    const webUrl = `https://apps.apple.com/app/id${IOS_APP_STORE_ID}`;
+export const openAppStore = async () => {
+  const platform = Capacitor.isNativePlatform() ? Capacitor.getPlatform() : "web";
+  
+  console.log("[AppStore] Opening store for platform:", platform);
+  
+  try {
+    if (platform === "android") {
+      console.log("[AppStore] Using NativeMarket for Android:", ANDROID_PACKAGE);
+      await NativeMarket.openStoreListing({ appId: ANDROID_PACKAGE });
+      console.log("[AppStore] NativeMarket.openStoreListing succeeded");
+      return { success: true, method: "native_market", platform };
+    }
+    
+    if (platform === "ios") {
+      console.log("[AppStore] Using NativeMarket for iOS:", IOS_APP_STORE_ID);
+      await NativeMarket.openStoreListing({ appId: `id${IOS_APP_STORE_ID}` });
+      console.log("[AppStore] NativeMarket.openStoreListing succeeded");
+      return { success: true, method: "native_market", platform };
+    }
+    
+    console.log("[AppStore] Web platform - opening URL in new tab");
+    const userAgent = navigator.userAgent || "";
+    const isIOSBrowser = /iPad|iPhone|iPod/.test(userAgent);
+    
+    if (isIOSBrowser) {
+      window.open(`https://apps.apple.com/app/id${IOS_APP_STORE_ID}`, "_blank");
+    } else {
+      window.open(`https://play.google.com/store/apps/details?id=${ANDROID_PACKAGE}`, "_blank");
+    }
+    
+    return { success: true, method: "web", platform };
+  } catch (error) {
+    console.error("[AppStore] NativeMarket failed, trying fallback:", error);
     
     try {
-      window.location.href = url;
-      setTimeout(() => {
-        window.open(webUrl, "_blank");
-      }, 1000);
-    } catch {
-      window.open(webUrl, "_blank");
+      const userAgent = navigator.userAgent || "";
+      const isIOS = /iPad|iPhone|iPod/.test(userAgent);
+      
+      if (isIOS) {
+        window.open(`https://apps.apple.com/app/id${IOS_APP_STORE_ID}`, "_blank");
+      } else {
+        window.open(`https://play.google.com/store/apps/details?id=${ANDROID_PACKAGE}`, "_blank");
+      }
+      
+      return { success: true, method: "web_fallback", platform };
+    } catch (fallbackError) {
+      console.error("[AppStore] All methods failed:", fallbackError);
+      return { success: false, error: fallbackError.message, platform };
     }
-  } else if (isAndroid) {
-    const url = `market://details?id=${ANDROID_PACKAGE}`;
-    const webUrl = `https://play.google.com/store/apps/details?id=${ANDROID_PACKAGE}`;
-    
-    try {
-      window.location.href = url;
-      setTimeout(() => {
-        window.open(webUrl, "_blank");
-      }, 1000);
-    } catch {
-      window.open(webUrl, "_blank");
-    }
-  } else {
-    window.open(`https://play.google.com/store/apps/details?id=${ANDROID_PACKAGE}`, "_blank");
   }
+};
+
+export const forceOpenStore = async () => {
+  console.log("[AppStore] FORCE opening store - this MUST trigger a visible action");
+  const result = await openAppStore();
+  console.log("[AppStore] Force open result:", result);
+  return result;
 };
