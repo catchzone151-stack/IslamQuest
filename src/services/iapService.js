@@ -114,14 +114,11 @@ export const initializeIAP = async () => {
   initPromise = (async () => {
     platformType = detectPlatform();
     
-    // REDIRECT TO WEB STORE FOR WEB USERS
+    // ONLY for web users: flag as requiresNativeApp
+    // Native failures should NOT set this flag
     if (!platformType) {
-      console.log("[IAP] Web environment - redirecting to app store");
-      // Use settimeout to allow any calling UI to handle the "failure" as a redirect
-      setTimeout(() => {
-        import("../utils/appStoreUtils").then(({ openAppStore }) => openAppStore());
-      }, 100);
-      return { success: false, platform: "web" };
+      console.log("[IAP] Web environment - purchases require native app");
+      return { success: false, platform: "web", requiresNativeApp: true };
     }
     
     console.log("[IAP] Detected platform:", platformType);
@@ -131,13 +128,17 @@ export const initializeIAP = async () => {
       
       if (!window.CdvPurchase) {
         console.log("[IAP] CdvPurchase not available after wait");
-        return { success: false, platform: platformType, error: "Billing plugin not loaded" };
+        // CRITICAL FIX: Clear initPromise so we can retry when plugin becomes available
+        initPromise = null;
+        return { success: false, platform: platformType, error: "Billing plugin not loaded yet" };
       }
       
       store = window.CdvPurchase.store;
       
       if (!store) {
         console.log("[IAP] CdvPurchase.store not available");
+        // CRITICAL FIX: Clear initPromise so we can retry
+        initPromise = null;
         return { success: false, platform: platformType, error: "Store not available" };
       }
       
@@ -163,6 +164,8 @@ export const initializeIAP = async () => {
       return { success: true, platform: platformType };
     } catch (error) {
       console.error("[IAP] Initialization error:", error);
+      // CRITICAL FIX: Clear initPromise so we can retry
+      initPromise = null;
       return { success: false, platform: platformType, error: error.message };
     }
   })();
@@ -286,12 +289,15 @@ export const loadProducts = async () => {
   const initResult = await initializeIAP();
   
   if (!initResult.success) {
+    // Only set requiresNativeApp for actual web users
+    const isWeb = initResult.requiresNativeApp || initResult.platform === "web";
     return Object.values(PRODUCTS).map(p => ({
       id: p.id,
       title: "Lifetime Premium",
       description: "Unlock all features forever",
       available: false,
-      requiresNativeApp: true
+      requiresNativeApp: isWeb,
+      initError: !isWeb ? initResult.error : null
     }));
   }
   
@@ -370,10 +376,21 @@ export const purchase = async (productId) => {
   
   const initResult = await initializeIAP();
   if (!initResult.success) {
+    // CRITICAL FIX: Only set requiresNativeApp for actual web users
+    // Native init failures should show error and allow retry, NOT close modal
+    if (initResult.requiresNativeApp || initResult.platform === "web") {
+      return { 
+        success: false, 
+        error: "Please download the app from App Store or Google Play to make purchases",
+        requiresNativeApp: true
+      };
+    }
+    
+    // Native platform but failed to initialize - show error, allow retry
+    console.log("[IAP] Native init failed, returning error for retry:", initResult.error);
     return { 
       success: false, 
-      error: "Please download the app from App Store or Google Play to make purchases",
-      requiresNativeApp: true
+      error: initResult.error || "Billing service not ready. Please try again."
     };
   }
   
