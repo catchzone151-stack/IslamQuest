@@ -1082,14 +1082,30 @@ export const useProgressStore = create((set, get) => ({
     
     const newLevel = getCurrentLevel(data.xp || 0);
     
+    // CRITICAL: Store-owned premium MUST override cloud false
+    // Check IAP local storage to prevent regression
+    let finalPremium = data.premium ?? get().premium;
+    try {
+      const iapState = localStorage.getItem("iq_iap_premium_entitlement");
+      if (iapState) {
+        const parsed = JSON.parse(iapState);
+        if (parsed?.isPremium === true) {
+          console.log("[CloudSync] IAP entitlement found - preserving premium despite cloud state");
+          finalPremium = true;
+        }
+      }
+    } catch (e) {
+      // Ignore parse errors
+    }
+    
     set({
       xp: data.xp ?? get().xp,
       coins: data.coins ?? get().coins,
       streak: data.streak ?? get().streak,
       shieldCount: data.shieldCount ?? get().shieldCount,
-      premium: data.premium ?? get().premium,
-      hasPremium: data.premium ?? get().hasPremium,
-      premiumStatus: data.premium ? (get().premiumStatus !== "free" ? get().premiumStatus : "individual") : "free",
+      premium: finalPremium,
+      hasPremium: finalPremium,
+      premiumStatus: finalPremium ? (get().premiumStatus !== "free" ? get().premiumStatus : "individual") : "free",
       level: newLevel?.level ?? get().level,
     });
     

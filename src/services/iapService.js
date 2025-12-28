@@ -54,6 +54,48 @@ export const clearLocalPremium = () => {
 };
 
 // ================================================================
+// ONE SOURCE OF TRUTH: CENTRAL ENTITLEMENT ACTIVATION
+// ALL ownership paths MUST call this function.
+// Sources: "purchase" | "restore" | "auto-restore" | "paywall-mount"
+// ================================================================
+const activatePremiumEntitlement = async (source, planType = "single") => {
+  console.log("[IAP] ═══════════════════════════════════════════════════");
+  console.log("[IAP] PREMIUM ENTITLEMENT ACTIVATED FROM:", source.toUpperCase());
+  console.log("[IAP] ═══════════════════════════════════════════════════");
+  
+  // 1. Set local premium state (localStorage persistence)
+  setLocalPremiumState(true, planType);
+  
+  // 2. Update premium state service cache
+  try {
+    const { markPremiumActivated } = await import("./premiumStateService");
+    markPremiumActivated(planType);
+  } catch (err) {
+    console.log("[IAP] Premium state service update failed (non-fatal):", err.message);
+  }
+  
+  // 3. Update React store (progressStore)
+  try {
+    const { default: useProgressStore } = await import("../store/progressStore");
+    const store = useProgressStore.getState();
+    if (store.setPremium) {
+      store.setPremium(planType);
+      console.log("[IAP] React store updated with premium");
+    }
+  } catch (err) {
+    console.log("[IAP] React store update failed (non-fatal):", err.message);
+  }
+  
+  console.log("✅ PREMIUM UNLOCKED FROM STORE OWNERSHIP");
+  console.log("[IAP] FINAL PREMIUM STATE = true (source:", source, ")");
+  
+  return { success: true, source, planType };
+};
+
+// Export for external use (e.g., forced unlock scenarios)
+export { activatePremiumEntitlement };
+
+// ================================================================
 // IAP STORE INITIALIZATION
 // ================================================================
 let store = null;
@@ -187,21 +229,15 @@ const setupGlobalHandlers = () => {
       console.log("🔔🔔🔔 [IAP] productUpdated CALLBACK FIRED 🔔🔔🔔");
       console.log("[IAP] Product updated:", product.id, "owned:", product.owned, "canPurchase:", product.canPurchase);
       
-      // KEY FIX: If product is owned, immediately unlock premium locally
+      // KEY FIX: If product is owned, immediately unlock premium via central function
       // This handles the "already owned" case automatically
       if (product.owned) {
         const config = Object.values(PRODUCTS).find(p => 
           p.googleId === product.id || p.appleId === product.id
         );
         if (config) {
-          console.log("✅ PREMIUM UNLOCKED FROM STORE OWNERSHIP");
-          console.log("[IAP] Product is OWNED - unlocking premium locally");
-          setLocalPremiumState(true, config.planType);
-          
-          // Also update the premium state service cache
-          import("./premiumStateService").then(({ markPremiumActivated }) => {
-            markPremiumActivated(config.planType);
-          });
+          // USE CENTRAL ENTITLEMENT FUNCTION
+          activatePremiumEntitlement("productUpdated", config.planType);
           
           // DEFENSIVE ACKNOWLEDGEMENT: If owned but not acknowledged, finish the transaction
           // This fixes purchases that failed to acknowledge due to earlier timing bugs
@@ -376,11 +412,8 @@ const silentAutoRestore = async () => {
       if (storeProduct?.owned) {
         console.log("[IAP] OWNED PRODUCT DETECTED:", storeId);
         
-        // INVARIANT: owned === true → unlock IMMEDIATELY (backend sync is best-effort)
-        console.log("✅ PREMIUM UNLOCKED FROM STORE OWNERSHIP");
-        setLocalPremiumState(true, productConfig.planType);
-        const { markPremiumActivated } = await import("./premiumStateService");
-        markPremiumActivated(productConfig.planType);
+        // USE CENTRAL ENTITLEMENT FUNCTION (owned → unlock IMMEDIATELY)
+        await activatePremiumEntitlement("auto-restore", productConfig.planType);
         
         // Best-effort backend sync (non-blocking for unlock)
         reconcilePurchaseWithBackend(storeProduct, productConfig).then(result => {
@@ -931,11 +964,8 @@ export const restorePurchases = async () => {
       if (storeProduct?.owned) {
         console.log("[IAP] OWNED PRODUCT DETECTED:", storeId);
         
-        // INVARIANT: owned === true → unlock IMMEDIATELY (backend sync is best-effort)
-        console.log("✅ PREMIUM UNLOCKED FROM STORE OWNERSHIP");
-        setLocalPremiumState(true, productConfig.planType);
-        const { markPremiumActivated } = await import("./premiumStateService");
-        markPremiumActivated(productConfig.planType);
+        // USE CENTRAL ENTITLEMENT FUNCTION (owned → unlock IMMEDIATELY)
+        await activatePremiumEntitlement("restore", productConfig.planType);
         
         // Best-effort backend sync
         const reconcileResult = await reconcilePurchaseWithBackend(storeProduct, productConfig);
@@ -1005,11 +1035,8 @@ export const checkEntitlementOnMount = async () => {
       if (storeProduct?.owned) {
         console.log("[IAP] Owned product found on paywall mount:", storeId);
         
-        // INVARIANT: owned === true → unlock IMMEDIATELY (backend sync is best-effort)
-        console.log("✅ PREMIUM UNLOCKED FROM STORE OWNERSHIP");
-        setLocalPremiumState(true, productConfig.planType);
-        const { markPremiumActivated } = await import("./premiumStateService");
-        markPremiumActivated(productConfig.planType);
+        // USE CENTRAL ENTITLEMENT FUNCTION (owned → unlock IMMEDIATELY)
+        await activatePremiumEntitlement("paywall-mount", productConfig.planType);
         
         // Best-effort backend sync
         reconcilePurchaseWithBackend(storeProduct, productConfig).then(result => {
