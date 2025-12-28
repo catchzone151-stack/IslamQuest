@@ -168,10 +168,24 @@ export default function FriendChallengeGame() {
     // If questions run out, the challenge ends naturally
     const gameQuestions = [...challengeQuestions];
     
+    // FAIL-FAST: Assert all question IDs are unique
+    const questionIds = gameQuestions.map(q => q.id);
+    const uniqueIds = new Set(questionIds);
+    if (uniqueIds.size !== questionIds.length) {
+      const duplicates = questionIds.filter((id, idx) => questionIds.indexOf(id) !== idx);
+      console.error('[FriendChallengeGame] DUPLICATE QUESTION IDS DETECTED:', {
+        total: questionIds.length,
+        unique: uniqueIds.size,
+        duplicateIds: [...new Set(duplicates)],
+        allIds: questionIds
+      });
+      throw new Error(`[FriendChallengeGame] Duplicate question IDs: ${[...new Set(duplicates)].join(', ')}`);
+    }
+    
     console.log('[FriendChallengeGame] Using questions:', {
       count: gameQuestions.length,
       mode: modeConfig?.id,
-      ids: gameQuestions.map(q => q.id)
+      ids: questionIds
     });
     
     setQuestions(gameQuestions);
