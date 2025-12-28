@@ -218,40 +218,176 @@ const setupGlobalHandlers = () => {
 };
 
 // ================================================================
-// SILENT AUTO-RESTORE
+// RECONCILE PURCHASE WITH BACKEND (IDEMPOTENT)
+// 
+// This function ensures Supabase is synced when the store says
+// the user owns premium. It's safe to call multiple times.
+// 
+// Logic:
+// 1. Check if backend already knows about premium
+// 2. If not, send receipt to backend to create verified_purchases record
+// 3. Set local premium state
+// 4. Return success/failure
+// ================================================================
+const reconcilePurchaseWithBackend = async (storeProduct, productConfig) => {
+  console.log("[IAP] ===== RECONCILE PURCHASE WITH BACKEND =====");
+  console.log("[IAP] Product:", productConfig.id, "Store owned:", storeProduct?.owned);
+  
+  if (!storeProduct?.owned) {
+    console.log("[IAP] Product not owned, nothing to reconcile");
+    return { success: false, reason: "not_owned" };
+  }
+  
+  // Get user and device info
+  const { data: userData } = await supabase.auth.getUser();
+  if (!userData?.user?.id) {
+    console.log("[IAP] No authenticated user, cannot reconcile with backend");
+    // Still unlock locally - user owns it
+    setLocalPremiumState(true, productConfig.planType);
+    const { markPremiumActivated } = await import("./premiumStateService");
+    markPremiumActivated(productConfig.planType);
+    return { success: true, source: "local_only", reason: "no_auth" };
+  }
+  
+  const userId = userData.user.id;
+  const deviceId = await getDeviceId();
+  const hashedDeviceId = await hashDeviceId(deviceId);
+  
+  // Step 1: Check if backend already knows about premium
+  console.log("[IAP] Checking backend premium status for user:", userId);
+  const backendStatus = await validatePremiumStatus(userId, hashedDeviceId);
+  console.log("[IAP] Backend status:", JSON.stringify(backendStatus));
+  
+  if (backendStatus.premium) {
+    console.log("[IAP] Backend already shows premium - synced");
+    setLocalPremiumState(true, backendStatus.planType || productConfig.planType);
+    const { markPremiumActivated } = await import("./premiumStateService");
+    markPremiumActivated(backendStatus.planType || productConfig.planType);
+    return { success: true, source: "backend_confirmed", planType: backendStatus.planType };
+  }
+  
+  // Step 2: Backend doesn't show premium, but store says owned
+  // We need to send the receipt to sync Supabase
+  console.log("[IAP] Backend NOT premium, but store owns product - syncing to Supabase...");
+  
+  const lastTransaction = storeProduct.lastTransaction;
+  const receipt = lastTransaction?.receipt 
+    || lastTransaction?.purchaseToken 
+    || lastTransaction?.transactionReceipt
+    || storeProduct.transactions?.[0]?.receipt
+    || storeProduct.transactions?.[0]?.purchaseToken;
+  
+  if (receipt) {
+    console.log("[IAP] Found receipt, calling verifyReceipt to sync Supabase");
+    try {
+      const verifyResult = await verifyReceipt({
+        platform: platformType,
+        productId: productConfig.id,
+        receipt: receipt,
+        userId: userId,
+        deviceId: hashedDeviceId,
+        nonce: generateNonce(),
+        isRestore: true
+      });
+      console.log("[IAP] verifyReceipt result:", JSON.stringify(verifyResult));
+      
+      if (verifyResult.success) {
+        console.log("[IAP] Supabase synced successfully via receipt verification");
+        setLocalPremiumState(true, verifyResult.planType || productConfig.planType);
+        const { markPremiumActivated } = await import("./premiumStateService");
+        markPremiumActivated(verifyResult.planType || productConfig.planType);
+        logEvent(ANALYTICS_EVENTS.RESTORE_PURCHASES_SUCCESS, { source: "reconcile_receipt", planType: productConfig.planType });
+        return { success: true, source: "receipt_verified", planType: verifyResult.planType };
+      } else {
+        console.log("[IAP] Receipt verification failed, but user owns in store - unlocking locally");
+      }
+    } catch (verifyError) {
+      console.error("[IAP] Receipt verification error:", verifyError);
+    }
+  } else {
+    console.log("[IAP] No receipt available for verification");
+  }
+  
+  // Step 3: Even if backend sync failed, unlock locally since store says owned
+  console.log("[IAP] Unlocking premium locally (store is source of truth)");
+  setLocalPremiumState(true, productConfig.planType);
+  const { markPremiumActivated } = await import("./premiumStateService");
+  markPremiumActivated(productConfig.planType);
+  logEvent(ANALYTICS_EVENTS.RESTORE_PURCHASES_SUCCESS, { source: "store_owned_local", planType: productConfig.planType });
+  
+  return { success: true, source: "store_owned", planType: productConfig.planType };
+};
+
+// ================================================================
+// SILENT AUTO-RESTORE (ENHANCED)
 // Runs on app launch to detect owned products without user interaction.
-// This ensures premium is unlocked even after reinstall/app update.
+// This ensures premium is unlocked even after:
+// - App reinstall
+// - App update
+// - Purchase timeout/crash
+// - Device switch
+// 
+// CRITICAL: This queries native billing, verifies, syncs Supabase
 // ================================================================
 const silentAutoRestore = async () => {
-  console.log("[IAP] Running silent auto-restore...");
+  console.log("[IAP] ===== SILENT AUTO-RESTORE START =====");
+  console.log("[IAP] Timestamp:", new Date().toISOString());
   
   try {
-    // First check locally cached state
-    if (isLocalPremium()) {
-      console.log("[IAP] Local premium state found - user is premium");
-      return;
+    // Step 1: Refresh store to get latest ownership from Google/Apple
+    console.log("[IAP] Calling store.restorePurchases() to refresh ownership...");
+    try {
+      await store.restorePurchases();
+      await store.update();
+      console.log("[IAP] Store ownership refreshed");
+    } catch (refreshError) {
+      console.log("[IAP] Store refresh failed (non-fatal):", refreshError.message);
     }
     
-    // Query the store for owned products
+    // Step 2: Check each product for ownership
     for (const productConfig of Object.values(PRODUCTS)) {
       const storeId = platformType === "ios" ? productConfig.appleId : productConfig.googleId;
       const storeProduct = store.get(storeId);
       
+      console.log("[IAP] Checking product:", storeId, "owned:", storeProduct?.owned);
+      
       if (storeProduct?.owned) {
-        console.log("[IAP] Auto-restore found owned product:", storeId);
-        setLocalPremiumState(true, productConfig.planType);
+        console.log("[IAP] OWNED PRODUCT DETECTED:", storeId);
         
-        const { markPremiumActivated } = await import("./premiumStateService");
-        markPremiumActivated(productConfig.planType);
+        // Reconcile with backend (creates verified_purchases if needed)
+        const reconcileResult = await reconcilePurchaseWithBackend(storeProduct, productConfig);
+        console.log("[IAP] Reconcile result:", JSON.stringify(reconcileResult));
         
-        logEvent(ANALYTICS_EVENTS.RESTORE_PURCHASES_SUCCESS, { source: "auto_restore", planType: productConfig.planType });
-        return;
+        if (reconcileResult.success) {
+          console.log("[IAP] ===== PREMIUM UNLOCKED (auto-restore) =====");
+          return;
+        }
       }
     }
     
-    console.log("[IAP] Auto-restore: No owned products found");
+    // Step 3: No owned products found - check if local cache exists
+    if (isLocalPremium()) {
+      console.log("[IAP] No store ownership but local premium exists - validating...");
+      
+      const { data: userData } = await supabase.auth.getUser();
+      if (userData?.user?.id) {
+        const deviceId = await getDeviceId();
+        const hashedDeviceId = await hashDeviceId(deviceId);
+        const backendStatus = await validatePremiumStatus(userData.user.id, hashedDeviceId);
+        
+        if (!backendStatus.premium) {
+          console.log("[IAP] Backend says not premium - clearing invalid local cache");
+          clearLocalPremium();
+        } else {
+          console.log("[IAP] Backend confirms premium - keeping local state");
+        }
+      }
+    }
+    
+    console.log("[IAP] ===== SILENT AUTO-RESTORE END (no premium found) =====");
   } catch (error) {
     console.error("[IAP] Auto-restore error:", error);
+    console.error("[IAP] Error stack:", error.stack);
   }
 };
 
@@ -737,59 +873,38 @@ export const restorePurchases = async () => {
   }
   
   try {
+    console.log("[IAP] ===== RESTORE PURCHASES (user-triggered) =====");
     console.log("[IAP] Querying store for owned products...");
     
-    // Refresh store to get latest ownership info
+    // Refresh store to get latest ownership info from Google/Apple
     await store.restorePurchases();
     await store.update();
+    console.log("[IAP] Store refreshed");
     
-    // Check each product for ownership
+    // Check each product for ownership and reconcile with backend
     for (const productConfig of Object.values(PRODUCTS)) {
       const storeId = platformType === "ios" ? productConfig.appleId : productConfig.googleId;
       const storeProduct = store.get(storeId);
       
+      console.log("[IAP] Checking product:", storeId, "owned:", storeProduct?.owned);
+      
       if (storeProduct?.owned) {
-        console.log("[IAP] Found owned product:", storeId);
+        console.log("[IAP] OWNED PRODUCT DETECTED:", storeId);
         
-        // Persist locally
-        setLocalPremiumState(true, productConfig.planType);
+        // Use reconcile function to sync with Supabase
+        const reconcileResult = await reconcilePurchaseWithBackend(storeProduct, productConfig);
+        console.log("[IAP] Reconcile result:", JSON.stringify(reconcileResult));
         
-        const { markPremiumActivated } = await import("./premiumStateService");
-        markPremiumActivated(productConfig.planType);
-        
-        // Optionally verify with backend (for device binding)
-        const lastTransaction = storeProduct.lastTransaction;
-        if (lastTransaction) {
-          const receipt = lastTransaction.receipt 
-            || lastTransaction.purchaseToken 
-            || lastTransaction.transactionReceipt;
-          
-          if (receipt) {
-            try {
-              await verifyReceipt({
-                platform: platformType,
-                productId: productConfig.id,
-                receipt: receipt,
-                userId: userId,
-                deviceId: hashedDeviceId,
-                nonce: generateNonce(),
-                isRestore: true
-              });
-            } catch (verifyError) {
-              console.log("[IAP] Backend verification during restore failed (non-blocking):", verifyError);
-            }
-          }
+        if (reconcileResult.success) {
+          console.log("[IAP] ===== PREMIUM RESTORED SUCCESSFULLY =====");
+          return {
+            success: true,
+            verified: true,
+            source: reconcileResult.source,
+            planType: reconcileResult.planType || productConfig.planType,
+            message: "Purchases restored successfully!"
+          };
         }
-        
-        logEvent(ANALYTICS_EVENTS.RESTORE_PURCHASES_SUCCESS, { source: "store", planType: productConfig.planType });
-        
-        return {
-          success: true,
-          verified: true,
-          source: "store",
-          planType: productConfig.planType,
-          message: "Purchases restored successfully!"
-        };
       }
     }
     
@@ -798,11 +913,12 @@ export const restorePurchases = async () => {
       success: false,
       verified: false,
       source: "store",
-      message: "No purchases found"
+      error: "No purchases found"
     };
     
   } catch (error) {
     console.error("[IAP] Restore error:", error);
+    console.error("[IAP] Error stack:", error.stack);
     
     // Fallback to local state
     if (isLocalPremium()) {
@@ -819,31 +935,39 @@ export const restorePurchases = async () => {
 };
 
 // ================================================================
-// PAYWALL MOUNT HOOK
+// PAYWALL MOUNT HOOK (ENHANCED)
 // Call this when the premium/paywall screen mounts.
-// It silently checks ownership and unlocks if owned.
-// Returns: { isPremium: boolean, loading: boolean }
+// It silently checks ownership, reconciles with backend, and unlocks if owned.
+// Returns: { isPremium: boolean, source: string }
 // ================================================================
 export const checkEntitlementOnMount = async () => {
+  console.log("[IAP] checkEntitlementOnMount called");
+  
   // First check local state (instant)
   if (isLocalPremium()) {
+    console.log("[IAP] Local premium state found");
     return { isPremium: true, source: "local" };
   }
   
   // Then check store if on native platform
   const initResult = await initializeIAP();
   if (initResult.success) {
+    console.log("[IAP] Checking store for owned products on paywall mount...");
+    
     for (const productConfig of Object.values(PRODUCTS)) {
       const storeId = platformType === "ios" ? productConfig.appleId : productConfig.googleId;
       const storeProduct = store.get(storeId);
       
       if (storeProduct?.owned) {
-        setLocalPremiumState(true, productConfig.planType);
+        console.log("[IAP] Owned product found on paywall mount:", storeId);
         
-        const { markPremiumActivated } = await import("./premiumStateService");
-        markPremiumActivated(productConfig.planType);
+        // Reconcile with backend to ensure Supabase is synced
+        const reconcileResult = await reconcilePurchaseWithBackend(storeProduct, productConfig);
+        console.log("[IAP] Paywall mount reconcile result:", JSON.stringify(reconcileResult));
         
-        return { isPremium: true, source: "store" };
+        if (reconcileResult.success) {
+          return { isPremium: true, source: reconcileResult.source };
+        }
       }
     }
   }
