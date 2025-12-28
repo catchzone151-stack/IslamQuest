@@ -22,6 +22,7 @@ import { syncOnAppOpen, syncOnForeground } from "./sync/engine.js";
 import OneSignal from "react-onesignal";
 import { createDailyLeaderboardSnapshot } from "./backend/leaderboardSnapshots";
 import { initDeepLinkListener } from "./utils/deepLinkHandler";
+import { initializeIAP } from "./services/iapService";
 
 
 // ✅ Onboarding screens (loaded immediately for first-time users)
@@ -567,6 +568,13 @@ export default function App() {
   useEffect(() => {
     // Sync on app open
     syncOnAppOpen();
+    
+    // Initialize IAP on app launch (triggers silentAutoRestore)
+    initializeIAP().then((result) => {
+      console.log("[App] IAP initialization result:", JSON.stringify(result));
+    }).catch((err) => {
+      console.log("[App] IAP initialization failed (non-fatal):", err.message);
+    });
 
     // Sync when app/tab regains focus
     const handleFocus = () => {

@@ -330,6 +330,7 @@ const reconcilePurchaseWithBackend = async (storeProduct, productConfig) => {
 // CRITICAL: This queries native billing, verifies, syncs Supabase
 // ================================================================
 const silentAutoRestore = async () => {
+  console.log("🔥🔥🔥 [IAP] silentAutoRestore() CALLED - FIRST LINE 🔥🔥🔥");
   console.log("[IAP] ===== SILENT AUTO-RESTORE START =====");
   console.log("[IAP] Timestamp:", new Date().toISOString());
   
