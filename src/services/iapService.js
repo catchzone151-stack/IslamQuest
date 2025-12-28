@@ -201,6 +201,25 @@ const setupGlobalHandlers = () => {
           import("./premiumStateService").then(({ markPremiumActivated }) => {
             markPremiumActivated(config.planType);
           });
+          
+          // DEFENSIVE ACKNOWLEDGEMENT: If owned but not acknowledged, finish the transaction
+          // This fixes purchases that failed to acknowledge due to earlier timing bugs
+          const unfinishedTransactions = (product.transactions || []).filter(t => 
+            t.state === CdvPurchase.TransactionState.APPROVED || 
+            t.state === CdvPurchase.TransactionState.INITIATED
+          );
+          
+          if (unfinishedTransactions.length > 0) {
+            console.log("[IAP] ⚠️ Found", unfinishedTransactions.length, "unacknowledged transaction(s) - finishing now");
+            unfinishedTransactions.forEach(transaction => {
+              console.log("[IAP] Finishing transaction:", transaction.transactionId);
+              transaction.finish().then(() => {
+                console.log("[IAP] ✅ Transaction acknowledged:", transaction.transactionId);
+              }).catch(err => {
+                console.log("[IAP] Transaction finish error (non-fatal):", err.message);
+              });
+            });
+          }
         }
       }
     })
