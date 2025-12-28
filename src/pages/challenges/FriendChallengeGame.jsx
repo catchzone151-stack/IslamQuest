@@ -162,20 +162,17 @@ export default function FriendChallengeGame() {
     }
     
     const modeConfig = getModeConfig(challenge.challenge_type);
-    let gameQuestions = [...challengeQuestions];
     
-    if ((modeConfig?.id === 'sudden_death' && modeConfig.questionCount) || 
-        (modeConfig?.id === 'speed_run' && modeConfig.questionCount)) {
-      const targetCount = modeConfig.questionCount;
-      while (gameQuestions.length < targetCount) {
-        const recycledQuestions = challengeQuestions.map((q, idx) => ({
-          ...q,
-          id: `${q.id || idx}_recycled_${Math.floor(gameQuestions.length / challengeQuestions.length)}`
-        }));
-        gameQuestions = [...gameQuestions, ...recycledQuestions];
-      }
-      gameQuestions = gameQuestions.slice(0, targetCount);
-    }
+    // IMPORTANT: Use challenge questions as-is, NO recycling/duplication
+    // This guarantees no repeats within a single challenge
+    // If questions run out, the challenge ends naturally
+    const gameQuestions = [...challengeQuestions];
+    
+    console.log('[FriendChallengeGame] Using questions:', {
+      count: gameQuestions.length,
+      mode: modeConfig?.id,
+      ids: gameQuestions.map(q => q.id)
+    });
     
     setQuestions(gameQuestions);
     
