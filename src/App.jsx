@@ -22,7 +22,8 @@ import { syncOnAppOpen, syncOnForeground } from "./sync/engine.js";
 import OneSignal from "react-onesignal";
 import { createDailyLeaderboardSnapshot } from "./backend/leaderboardSnapshots";
 import { initDeepLinkListener } from "./utils/deepLinkHandler";
-import { initializeIAP } from "./services/iapService";
+import { initializeIAP, restorePurchases } from "./services/iapService";
+import { Capacitor } from "@capacitor/core";
 
 
 // ✅ Onboarding screens (loaded immediately for first-time users)
@@ -572,6 +573,16 @@ export default function App() {
     // Initialize IAP on app launch (triggers silentAutoRestore)
     initializeIAP().then((result) => {
       console.log("[App] IAP initialization result:", JSON.stringify(result));
+      
+      // Auto-restore on native platforms (Android/iOS) for reinstall scenarios
+      if (Capacitor.isNativePlatform()) {
+        console.log("[App] Native platform detected - triggering auto-restore");
+        restorePurchases().then((restoreResult) => {
+          console.log("[App] Auto-restore result:", JSON.stringify(restoreResult));
+        }).catch((err) => {
+          console.log("[App] Auto-restore failed (non-fatal):", err.message);
+        });
+      }
     }).catch((err) => {
       console.log("[App] IAP initialization failed (non-fatal):", err.message);
     });

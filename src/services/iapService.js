@@ -882,6 +882,7 @@ export const purchase = async (productId) => {
 // First checks backend, then queries store for owned products.
 // ================================================================
 export const restorePurchases = async () => {
+  console.log("[IAP] RESTORE STARTED (RELEASE)");
   const { data: userData } = await supabase.auth.getUser();
   if (!userData?.user?.id) {
     return { success: false, error: "Please sign in to restore purchases" };
