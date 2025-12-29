@@ -127,18 +127,12 @@ export async function createProfileAfterOnboarding({ userId, deviceId, username,
 
   const { data: insertedProfile, error: insertError } = await supabase
     .from("profiles")
-    .insert(newProfileData)
+    .upsert(newProfileData, { onConflict: "user_id" })
     .select("user_id, username, handle, avatar, xp, coins, streak")
     .maybeSingle();
 
   if (insertError) {
-    // Duplicate key = profile already exists (race condition or re-onboarding)
-    if (insertError.code === "23505") {
-      console.log("createProfileAfterOnboarding: Profile already exists, updating instead");
-      // Update the existing profile instead
-      return await saveCloudProfile(userId, { username, avatar, handle });
-    }
-    console.error("createProfileAfterOnboarding: insert error", insertError);
+    console.error("createProfileAfterOnboarding: upsert error", insertError);
     return { success: false, error: insertError };
   }
 
