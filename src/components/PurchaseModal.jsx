@@ -6,6 +6,7 @@ import { loadProducts, restorePurchases, buyProduct } from "../services/iapServi
 import { Capacitor } from "@capacitor/core";
 
 export default function PurchaseModal({ onClose }) {
+  console.log("🔥 COMPONENT RENDERED ON ANDROID 🔥");
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [purchasing, setPurchasing] = useState(false);
@@ -128,6 +129,7 @@ export default function PurchaseModal({ onClose }) {
   };
 
   const handleRestore = async () => {
+    console.log("🔥🔥🔥 RESTORE BUTTON PRESSED 🔥🔥🔥");
     if (restoring) return;
     setRestoring(true);
     setErrorMsg(null);
