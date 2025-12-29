@@ -188,6 +188,20 @@ export const useProgressStore = create((set, get) => ({
       
       set({ locksReady: true }); // Mark locks as ready
       get().saveProgress(); // Persist the normalized locks, premium status, and migration flag
+      
+      // 💳 IAP ENTITLEMENT HYDRATION: Check for local IAP entitlement and apply
+      try {
+        const iapState = localStorage.getItem("iq_iap_premium_entitlement");
+        if (iapState) {
+          const parsed = JSON.parse(iapState);
+          if (parsed?.isPremium === true) {
+            console.log("[ProgressStore] IAP entitlement found during hydration - applying premium");
+            get().setPremium(parsed.planType || "single");
+          }
+        }
+      } catch (e) {
+        // Ignore parse errors
+      }
     } else {
       // 🔒 CRITICAL: For fresh installs (including post-storage-reset), ensure defaults exist and apply locking
       console.log("🔒 Initializing premium locking for fresh install...");
@@ -873,6 +887,16 @@ export const useProgressStore = create((set, get) => ({
     });
     get().saveProgress();
     setTimeout(() => get().syncToSupabase(), 50);
+  },
+
+  // 💳 Set premium from IAP entitlement (called by iapService)
+  setPremium: (planType = "single") => {
+    set({
+      premium: true,
+      premiumStatus: planType,
+      hasPremium: true,
+    });
+    get().saveProgress();
   },
 
   // 💳 ASYNC PLACEHOLDER: Purchase Individual Plan (£4.99)
