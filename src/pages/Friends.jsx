@@ -161,27 +161,22 @@ export default function Friends() {
         isPermanent: true,
       };
 
-      const userState = useUserStore.getState();
-      const progressState = useProgressStore.getState();
-      const CURRENT_USER_ENTRY = {
-        user_id: currentUserId || userState.id || "current_user",
-        username: name || userState.name || userState.username || "You",
-        handle: userState.handle || username || "you",
-        avatar: avatar || userState.avatar || "avatar_man_lantern",
-        xp: currentUserXP || progressState.xp || 0,
-        streak: currentUserStreak || progressState.streak || 0,
-        isCurrentUser: true,
-      };
+      // Mark current user in DB results (no manual injection)
+      const dbUsers = (data || []).map((u) => ({
+        ...u,
+        avatar: u.avatar || "avatar_man_lantern",
+        isCurrentUser: u.user_id === currentUserId,
+      }));
 
-      const dbUsers = (data || []).filter(
-        (u) =>
-          u.user_id !== currentUserId &&
-          u.user_id !== CURRENT_USER_ENTRY.user_id
-      );
+      // Deduplicate by user_id (profile entry wins)
+      const seen = new Map();
+      for (const u of dbUsers) {
+        seen.set(u.user_id, u);
+      }
+      seen.set(THE_DEV_ENTRY.user_id, THE_DEV_ENTRY);
+      const deduped = Array.from(seen.values());
 
-      const combined = [THE_DEV_ENTRY, CURRENT_USER_ENTRY, ...dbUsers].sort(
-        (a, b) => b.xp - a.xp
-      );
+      const combined = deduped.sort((a, b) => b.xp - a.xp);
 
       setGlobalLeaderboard(combined);
     } catch (err) {
@@ -189,7 +184,7 @@ export default function Friends() {
     } finally {
       setLoadingGlobal(false);
     }
-  }, [currentUserId, name, avatar, username, currentUserXP, currentUserStreak]);
+  }, [currentUserId]);
 
   useEffect(() => {
     loadGlobalLeaderboard();
@@ -221,16 +216,22 @@ export default function Friends() {
   const sentRequests = getSentRequests();
   const receivedRequests = getReceivedRequests();
 
-  const friendsLeaderboard = friends
-    .map((f) => ({
+  const friendsLeaderboard = (() => {
+    const mapped = friends.map((f) => ({
       user_id: f.user_id || f.id,
       username: f.username || f.handle || f.nickname,
       handle: f.handle || f.username,
-      avatar: f.avatar,
+      avatar: f.avatar || "avatar_man_lantern",
       xp: f.xp || 0,
       streak: f.streak || 0,
-    }))
-    .sort((a, b) => b.xp - a.xp);
+    }));
+    // Deduplicate by user_id
+    const seen = new Map();
+    for (const f of mapped) {
+      seen.set(f.user_id, f);
+    }
+    return Array.from(seen.values()).sort((a, b) => b.xp - a.xp);
+  })();
 
   const currentUserIdForHighlight =
     currentUserId || useUserStore.getState().user?.id || useUserStore.getState().id;
