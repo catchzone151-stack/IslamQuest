@@ -24,6 +24,7 @@ import { createDailyLeaderboardSnapshot } from "./backend/leaderboardSnapshots";
 import { initDeepLinkListener } from "./utils/deepLinkHandler";
 import { initializeIAP, restorePurchases } from "./services/iapService";
 import { Capacitor } from "@capacitor/core";
+import { App as CapacitorApp } from "@capacitor/app";
 
 
 // ✅ Onboarding screens (loaded immediately for first-time users)
@@ -534,28 +535,29 @@ export default function App() {
     ]);
   }, []);
 
-  // 🔙 GLOBAL BACK BUTTON HANDLER: Only intercept on home page to prevent accidental exit
+  // 🔙 ANDROID BACK BUTTON: Exit app on Home screen, normal navigation elsewhere
   useEffect(() => {
-    const { showModal } = useModalStore.getState();
-
     const handleBackButton = (event) => {
       const currentPath = window.location.pathname;
       
-      // Only intercept back button on home page - let all other pages navigate normally
+      // Only intercept back button on home page - exit app directly
       const isHomePage = currentPath === "/" || currentPath === "/home";
       
       if (!isHomePage) {
+        // Let all other pages navigate normally
         return;
       }
       
+      // On Home screen: exit app immediately (no modal)
       event.preventDefault();
-      window.history.pushState({ isAppEntry: true }, "", window.location.href);
-
-      showModal(MODAL_TYPES.EXIT_CONFIRMATION, {
-        onConfirm: () => {
-          window.history.go(-2);
-        },
-      });
+      
+      if (Capacitor.isNativePlatform()) {
+        // Use Capacitor to minimize/exit the app
+        CapacitorApp.minimizeApp();
+      } else {
+        // Web fallback: just go back in history
+        window.history.back();
+      }
     };
 
     window.addEventListener("popstate", handleBackButton);
