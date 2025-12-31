@@ -1,4 +1,5 @@
-import avatarManLantern from "../../assets/avatars/avatar_man_lantern.webp";
+import assets from "../../assets/assets";
+const avatarManLantern = assets.avatars.avatar_man_lantern;
 
 export default function DailyQuestExplainerModal({ onStart, onCancel }) {
   return (

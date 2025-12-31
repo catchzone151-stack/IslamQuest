@@ -5,7 +5,8 @@ import mascotCongrats from "../../assets/mascots/mascot_congratulation.webp";
 import mascotSittingV2 from "../../assets/mascots/mascot_sitting_v2.webp";
 import mascotDefeated from "../../assets/mascots/mascot_defeated.webp";
 import mascotBoss from "../../assets/mascots/mascot_boss.webp";
-import avatarManLantern from "../../assets/avatars/avatar_man_lantern.webp";
+import assets from "../../assets/assets";
+const avatarManLantern = assets.avatars.avatar_man_lantern;
 import "./ChallengeModals.css";
 
 export default function ChallengeResultsModal({ 
