@@ -857,19 +857,12 @@ export const useProgressStore = create((set, get) => ({
         .sort((a, b) => a - b);
       
       const totalLessons = pathLessonCounts[pathId] || 0;
-      const completedCount = passedLessons.length;
       
-      // 🎯 NEW: If path is fully completed, unlock ALL lessons for replay
-      if (completedCount === totalLessons && totalLessons > 0) {
-        for (let lessonId = 1; lessonId <= totalLessons; lessonId++) {
-          locks[pathId][lessonId] = { unlocked: true };
-        }
-      } else {
-        // Standard sequential unlocking: unlock up to next lesson
-        const maxCompleted = passedLessons.length > 0 ? Math.max(...passedLessons) : 0;
-        for (let lessonId = 1; lessonId <= maxCompleted + 1; lessonId++) {
-          locks[pathId][lessonId] = { unlocked: true };
-        }
+      // Standard sequential unlocking: unlock up to next lesson
+      // Completion NEVER locks anything - it just keeps everything unlocked
+      const maxPassed = passedLessons.length > 0 ? Math.max(...passedLessons) : 0;
+      for (let lessonId = 1; lessonId <= maxPassed + 1 && (totalLessons === 0 || lessonId <= totalLessons); lessonId++) {
+        locks[pathId][lessonId] = { unlocked: true };
       }
     }
     
