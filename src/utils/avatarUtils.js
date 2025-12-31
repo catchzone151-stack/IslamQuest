@@ -193,10 +193,15 @@ export function getAvatarImage(avatarKey, options = {}) {
     return assets.avatars[NINJA_FEMALE_KEY];
   }
   
-  // PRIORITY 3: Map legacy avatar keys to proper keys
+  // PRIORITY 2.5: Convert numeric avatar (from Supabase) to string key
   let properKey = avatarKey;
-  if (avatarKey && LEGACY_AVATAR_MAP[avatarKey]) {
-    properKey = LEGACY_AVATAR_MAP[avatarKey];
+  if (typeof avatarKey === "number") {
+    properKey = avatarIndexToKey(avatarKey);
+  }
+  
+  // PRIORITY 3: Map legacy avatar keys to proper keys
+  if (properKey && LEGACY_AVATAR_MAP[properKey]) {
+    properKey = LEGACY_AVATAR_MAP[properKey];
   }
   
   // PRIORITY 4: HIDDEN NINJA PROTECTION
