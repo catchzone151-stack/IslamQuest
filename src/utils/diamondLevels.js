@@ -112,7 +112,7 @@ export function calculateLevelThresholds() {
     14000,  // Level 7: 100 quizzes - significant achievement
     25000,  // Level 8: 178 quizzes - late game
     40000,  // Level 9: 285 quizzes - near completion
-    51000,  // Level 10: 364 quizzes - legendary (90% of total content)
+    60000,  // Level 10: 428 quizzes - legendary (requires full mastery)
   ];
 
   return fixedXP;
