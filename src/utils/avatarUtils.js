@@ -74,10 +74,38 @@ export const HISTORICAL_AVATARS = [
 // Avatars hidden from user selection (but still valid in DB)
 export const HIDDEN_AVATARS = ["avatar_panda"];
 
+// ═══════════════════════════════════════════════════════════════════
+// 🎯 SELECTABLE AVATARS - Exactly 23 avatars shown in UI (1-23.webp)
+// ═══════════════════════════════════════════════════════════════════
+export const SELECTABLE_AVATARS = [
+  "avatar_1",   // 1.webp
+  "avatar_2",   // 2.webp
+  "avatar_3",   // 3.webp
+  "avatar_4",   // 4.webp
+  "avatar_5",   // 5.webp
+  "avatar_6",   // 6.webp
+  "avatar_7",   // 7.webp
+  "avatar_8",   // 8.webp
+  "avatar_9",   // 9.webp
+  "avatar_10",  // 10.webp
+  "avatar_11",  // 11.webp
+  "avatar_12",  // 12.webp
+  "avatar_13",  // 13.webp
+  "avatar_14",  // 14.webp
+  "avatar_15",  // 15.webp
+  "avatar_16",  // 16.webp
+  "avatar_17",  // 17.webp
+  "avatar_18",  // 18.webp (cartoon)
+  "avatar_19",  // 19.webp (unicorn)
+  "avatar_20",  // 20.webp (robot)
+  "avatar_21",  // 21.webp (rabbit)
+  "avatar_22",  // 22.webp (fox)
+  "avatar_23",  // 23.webp (dino)
+];
+
 // AVAILABLE_AVATARS = what users can select in UI (excludes hidden avatars)
-export const AVAILABLE_AVATARS = HISTORICAL_AVATARS.filter(
-  (key) => !HIDDEN_AVATARS.includes(key) && !HIDDEN_NINJA_AVATARS.includes(key)
-);
+// Legacy: kept for backward compatibility with existing code
+export const AVAILABLE_AVATARS = SELECTABLE_AVATARS;
 
 // Legacy avatar key mappings (for simulated friends and old data)
 const LEGACY_AVATAR_MAP = {
@@ -290,10 +318,13 @@ export function assignAvatarsToUsers(users, options = {}) {
 
 // Complete list of ALL avatars including hidden ninjas (for DB mapping)
 // Uses HISTORICAL_AVATARS to maintain stable indices for existing DB records
+// Plus new numbered avatars for new user selections
 export const ALL_AVATARS = [
   ...HISTORICAL_AVATARS,
   NINJA_MALE_KEY,
   NINJA_FEMALE_KEY,
+  // New numbered avatar keys (these map to same files as historical for DB purposes)
+  ...SELECTABLE_AVATARS,
 ];
 
 /**

@@ -57,11 +57,14 @@ export default function AvatarScreen() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(90px, 1fr))",
+          gridTemplateColumns: "repeat(3, 90px)",
           gap: 16,
           width: "90%",
           maxWidth: 360,
-          justifyItems: "center",
+          justifyContent: "center",
+          maxHeight: "60vh",
+          overflowY: "auto",
+          paddingBottom: 16,
         }}
       >
         {sortedAvatars.map((src, i) => (
