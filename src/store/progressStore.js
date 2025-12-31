@@ -195,12 +195,9 @@ export const useProgressStore = create((set, get) => ({
       // 🔒 MIGRATION: Recalculate all locks for premium system (Nov 2025 premium rebuild)
       // This ensures legacy users who unlocked premium lessons before the premium
       // system rebuild have their locks re-evaluated based on new premium rules
-      const needsMigration = !savedData._premiumMigrationV1;
-      if (needsMigration) {
-        console.log("🔒 Running premium system migration...");
-        get().applyLockingRules(); // Recalculate all locks
-        set({ _premiumMigrationV1: true }); // Mark migration as complete
-      }
+      console.log("🔒 Running premium system migration...");
+      get().applyLockingRules(); // Recalculate all locks
+      set({ _premiumMigrationV1: true }); // Mark migration as complete
       
       set({ locksReady: true }); // Mark locks as ready
       get().saveProgress(); // Persist the normalized locks, premium status, and migration flag
@@ -246,6 +243,15 @@ export const useProgressStore = create((set, get) => ({
     // For each path, unlock lessons based on completion
     for (let pathId = 1; pathId <= 14; pathId++) {
       locks[pathId] = {};
+      
+      // 🔓 TEMPORARY: Unlock all lessons for "Ten Promised Jannah" (Path 6)
+      if (Number(pathId) === 6) {
+        for (let lessonId = 1; lessonId <= 10; lessonId++) {
+          locks[pathId][lessonId] = { unlocked: true };
+        }
+        continue;
+      }
+
       const pathState = lessonStates[pathId] || {};
       const passedLessons = Object.keys(pathState)
         .filter(lessonId => pathState[lessonId]?.passed)
@@ -850,26 +856,26 @@ export const useProgressStore = create((set, get) => ({
     // For each path, unlock lessons based on completion
     for (let pathId = 1; pathId <= 14; pathId++) {
       locks[pathId] = {};
-      const pathState = lessonStates[pathId] || {};
-      const passedLessons = Object.keys(pathState)
-        .filter(lessonId => pathState[lessonId]?.passed)
-        .map(Number)
-        .sort((a, b) => a - b);
-      
-      const totalLessons = pathLessonCounts[pathId] || 0;
-      
+      const totalLessonsCount = pathLessonCounts[pathId] || 0;
+
       // 🔓 TEMPORARY: Unlock all lessons for "Ten Promised Jannah" (Path 6)
-      if (pathId === 6) {
+      if (Number(pathId) === 6) {
         for (let lessonId = 1; lessonId <= 10; lessonId++) {
           locks[pathId][lessonId] = { unlocked: true };
         }
         continue;
       }
 
+      const pathState = lessonStates[pathId] || {};
+      const passedLessons = Object.keys(pathState)
+        .filter(lessonId => pathState[lessonId]?.passed)
+        .map(Number)
+        .sort((a, b) => a - b);
+      
       // Standard sequential unlocking: unlock up to next lesson
       // Completion NEVER locks anything - it just keeps everything unlocked
       const maxPassed = passedLessons.length > 0 ? Math.max(...passedLessons) : 0;
-      for (let lessonId = 1; lessonId <= maxPassed + 1 && (totalLessons === 0 || lessonId <= totalLessons); lessonId++) {
+      for (let lessonId = 1; lessonId <= maxPassed + 1 && (totalLessonsCount === 0 || lessonId <= totalLessonsCount); lessonId++) {
         locks[pathId][lessonId] = { unlocked: true };
       }
     }
