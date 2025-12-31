@@ -858,6 +858,14 @@ export const useProgressStore = create((set, get) => ({
       
       const totalLessons = pathLessonCounts[pathId] || 0;
       
+      // 🔓 TEMPORARY: Unlock all lessons for "Ten Promised Jannah" (Path 6)
+      if (pathId === 6) {
+        for (let lessonId = 1; lessonId <= 10; lessonId++) {
+          locks[pathId][lessonId] = { unlocked: true };
+        }
+        continue;
+      }
+
       // Standard sequential unlocking: unlock up to next lesson
       // Completion NEVER locks anything - it just keeps everything unlocked
       const maxPassed = passedLessons.length > 0 ? Math.max(...passedLessons) : 0;
