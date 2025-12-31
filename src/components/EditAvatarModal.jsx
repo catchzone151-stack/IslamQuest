@@ -5,12 +5,10 @@ import { AVAILABLE_AVATARS } from "../utils/avatarUtils";
 export default function EditAvatarModal({ isOpen, onClose, currentAvatar, onSave }) {
   if (!isOpen) return null;
 
-  // Only show AVAILABLE_AVATARS (excludes hidden ninja avatars)
-  const avatarList = AVAILABLE_AVATARS.map(key => assets.avatars[key]);
+  // Create array of {key, src} pairs for selection
+  const avatarData = AVAILABLE_AVATARS.map(key => ({ key, src: assets.avatars[key] })).filter(item => item.src);
 
-  const handleSelect = (avatar) => {
-    // Extract avatar key from full path (e.g., "/src/assets/avatars/avatar_robot.png.webp" -> "avatar_robot")
-    const key = avatar.split("/").pop().split(".")[0];
+  const handleSelect = (key) => {
     onSave(key);
     onClose();
   };
@@ -44,27 +42,27 @@ export default function EditAvatarModal({ isOpen, onClose, currentAvatar, onSave
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {avatarList.map((a, i) => (
+        {avatarData.map(({ key, src }) => (
           <img
-            key={i}
-            src={a}
+            key={key}
+            src={src}
             alt="avatar"
-            onClick={() => handleSelect(a)}
+            onClick={() => handleSelect(key)}
             style={{
               width: "80px",
               height: "80px",
               borderRadius: "50%",
               cursor: "pointer",
-              border: currentAvatar === a ? "3px solid #FFD700" : "2px solid transparent",
+              border: currentAvatar === key ? "3px solid #FFD700" : "2px solid transparent",
               transition: "all 0.2s",
             }}
             onMouseOver={(e) => {
-              if (currentAvatar !== a) {
+              if (currentAvatar !== key) {
                 e.target.style.border = "2px solid #FFD700";
               }
             }}
             onMouseOut={(e) => {
-              if (currentAvatar !== a) {
+              if (currentAvatar !== key) {
                 e.target.style.border = "2px solid transparent";
               }
             }}

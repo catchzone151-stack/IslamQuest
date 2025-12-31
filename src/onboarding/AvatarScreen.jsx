@@ -14,18 +14,16 @@ export default function AvatarScreen() {
     localStorage.setItem("iq_onboarding_step", "avatar");
   }, []);
 
-  // Only show AVAILABLE_AVATARS (excludes hidden ninja avatars)
-  const sortedAvatars = useMemo(() => 
-    AVAILABLE_AVATARS.map(key => assets.avatars[key]).filter(Boolean), 
+  // Create array of {key, src} pairs for selection
+  const avatarData = useMemo(() => 
+    AVAILABLE_AVATARS.map(key => ({ key, src: assets.avatars[key] })).filter(item => item.src), 
   []);
 
   const handleContinue = () => {
     if (!selected) return;
     
-    const avatarKey = selected.split("/").pop().split(".")[0];
-    setAvatar(avatarKey);
-    
-    localStorage.setItem("iq_avatar", avatarKey);
+    setAvatar(selected);
+    localStorage.setItem("iq_avatar", selected);
     localStorage.setItem("iq_onboarding_step", "handle");
     
     navigate("/onboarding/handle");
@@ -67,10 +65,10 @@ export default function AvatarScreen() {
           paddingBottom: 16,
         }}
       >
-        {sortedAvatars.map((src, i) => (
+        {avatarData.map(({ key, src }, i) => (
           <motion.button
-            key={src}
-            onClick={() => setSelected(src)}
+            key={key}
+            onClick={() => setSelected(key)}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.05 }}
@@ -82,7 +80,7 @@ export default function AvatarScreen() {
               borderRadius: "50%",
               padding: 0,
               border:
-                selected === src
+                selected === key
                   ? "3px solid #D4AF37"
                   : "2px solid transparent",
               background: "#0E1625",
