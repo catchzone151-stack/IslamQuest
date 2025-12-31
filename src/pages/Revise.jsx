@@ -619,7 +619,7 @@ export default function Revise() {
                 opacity: 0.8,
               }}
             >
-              Complete 40 lessons to unlock Smart Revision! ({totalCompleted}/40)
+              Complete 25 lessons to unlock Smart Revision! ({totalCompleted}/25)
             </div>
           )}
 

@@ -79,7 +79,7 @@ export const useProgressStore = create((set, get) => ({
 
   // 📚 Revise Feature Unlocks
   reviewMistakesUnlocked: false, // Unlocks after first mistake
-  smartRevisionUnlocked: false, // Unlocks after 40 completed lessons
+  smartRevisionUnlocked: false, // Unlocks after 25 completed lessons
 
   // 🌙 Learning Paths
   paths: DEFAULT_PATHS,
@@ -671,7 +671,7 @@ export const useProgressStore = create((set, get) => ({
       // 🛡️ Mark day as complete for streak tracking
       get().markDayComplete();
       
-      // 📚 Check and unlock Smart Revision if 40 lessons completed
+      // 📚 Check and unlock Smart Revision if 25 lessons completed
       get().checkAndUnlockSmartRevision();
     }
     
@@ -994,13 +994,13 @@ export const useProgressStore = create((set, get) => ({
     }
   },
 
-  // 📚 Check and unlock Smart Revision if 40 lessons completed
+  // 📚 Check and unlock Smart Revision if 25 lessons completed
   checkAndUnlockSmartRevision: () => {
     const { smartRevisionUnlocked } = get();
     if (smartRevisionUnlocked) return; // Already unlocked
     
     const totalCompleted = get().getTotalCompletedLessons();
-    if (totalCompleted >= 40) {
+    if (totalCompleted >= 25) {
       set({ smartRevisionUnlocked: true });
       get().saveProgress();
     }
@@ -1024,10 +1024,10 @@ export const useProgressStore = create((set, get) => ({
       }
     }
     
-    // Check Smart Revision: unlock if 40+ lessons completed
+    // Check Smart Revision: unlock if 25+ lessons completed
     if (!smartRevisionUnlocked) {
       const totalCompleted = get().getTotalCompletedLessons();
-      if (totalCompleted >= 40) {
+      if (totalCompleted >= 25) {
         set({ smartRevisionUnlocked: true });
         needsSave = true;
       }
