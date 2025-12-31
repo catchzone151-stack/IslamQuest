@@ -93,7 +93,7 @@ export default function AvatarScreen() {
             <motion.img
               src={src}
               alt="Avatar"
-              style={{ width: "100%", height: "100%", objectFit: "contain" }}
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.4 }}

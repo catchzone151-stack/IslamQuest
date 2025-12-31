@@ -57,6 +57,7 @@ export default function EditAvatarModal({ isOpen, onClose, currentAvatar, onSave
               cursor: "pointer",
               border: currentAvatar === a ? "3px solid #FFD700" : "2px solid transparent",
               transition: "all 0.2s",
+              objectFit: "cover",
             }}
             onMouseOver={(e) => {
               if (currentAvatar !== a) {
