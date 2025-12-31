@@ -665,6 +665,13 @@ export const useProgressStore = create((set, get) => ({
 
       get().setPathProgress(pathId, passedCount, path ? path.totalLessons : 0);
 
+      // Check if path is now completed
+      if (path && passedCount === path.totalLessons && path.totalLessons > 0) {
+        useModalStore.getState().showModal(MODAL_TYPES.PATH_COMPLETED, {
+          pathTitle: path.title
+        });
+      }
+
       // unlock next lesson
       get().unlockLesson(pathId, lessonId + 1);
       

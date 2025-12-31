@@ -31,6 +31,7 @@ import InsufficientCoinsModal from './events/InsufficientCoinsModal';
 import DailyQuestExplainerModal from './dailyquest/DailyQuestExplainerModal';
 
 import ExitConfirmationModal from './ExitConfirmationModal';
+import PathCompletedModal from './PathCompletedModal';
 
 import mascotRocket from '../assets/mascots/mascot_countdown.webp';
 
@@ -613,6 +614,14 @@ export default function ModalController() {
               hideModal();
               modalData.onConfirm?.();
             }}
+          />
+        );
+
+      case MODAL_TYPES.PATH_COMPLETED:
+        return (
+          <PathCompletedModal
+            pathTitle={modalData.pathTitle}
+            onClose={hideModal}
           />
         );
 
