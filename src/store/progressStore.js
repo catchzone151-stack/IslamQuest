@@ -423,7 +423,7 @@ export const useProgressStore = create((set, get) => ({
   // Phase 4: Now syncs shield count to Supabase cloud
   purchaseShield: async () => {
     const { coins, shieldCount } = get();
-    const SHIELD_COST = 100;
+    const SHIELD_COST = 250;
     const MAX_SHIELDS = 3;
 
     // Already at max
