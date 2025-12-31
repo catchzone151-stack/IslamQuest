@@ -5,7 +5,7 @@
 export const DIAMOND_LEVELS = [
   {
     level: 1,
-    name: "Bronze Diamond",
+    name: "Bronze",
     color: "#CD7F32",
     gradient: "linear-gradient(135deg, #CD7F32 0%, #B87333 100%)",
     glow: "0 0 20px rgba(205, 127, 50, 0.6)",
@@ -13,7 +13,7 @@ export const DIAMOND_LEVELS = [
   },
   {
     level: 2,
-    name: "Silver Diamond",
+    name: "Silver",
     color: "#C0C0C0",
     gradient: "linear-gradient(135deg, #C0C0C0 0%, #A8A8A8 100%)",
     glow: "0 0 20px rgba(192, 192, 192, 0.6)",
@@ -21,7 +21,7 @@ export const DIAMOND_LEVELS = [
   },
   {
     level: 3,
-    name: "Gold Diamond",
+    name: "Gold",
     color: "#FFD700",
     gradient: "linear-gradient(135deg, #FFD700 0%, #FFA500 100%)",
     glow: "0 0 25px rgba(255, 215, 0, 0.7)",
@@ -29,7 +29,7 @@ export const DIAMOND_LEVELS = [
   },
   {
     level: 4,
-    name: "Emerald Diamond",
+    name: "Emerald",
     color: "#10B981",
     gradient: "linear-gradient(135deg, #10B981 0%, #059669 100%)",
     glow: "0 0 25px rgba(16, 185, 129, 0.7)",
@@ -37,7 +37,7 @@ export const DIAMOND_LEVELS = [
   },
   {
     level: 5,
-    name: "Ruby Diamond",
+    name: "Ruby",
     color: "#E11D48",
     gradient: "linear-gradient(135deg, #E11D48 0%, #BE123C 100%)",
     glow: "0 0 25px rgba(225, 29, 72, 0.7)",
@@ -45,7 +45,7 @@ export const DIAMOND_LEVELS = [
   },
   {
     level: 6,
-    name: "Sapphire Diamond",
+    name: "Sapphire",
     color: "#3B82F6",
     gradient: "linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%)",
     glow: "0 0 25px rgba(59, 130, 246, 0.7)",
@@ -53,7 +53,7 @@ export const DIAMOND_LEVELS = [
   },
   {
     level: 7,
-    name: "Amethyst Diamond",
+    name: "Amethyst",
     color: "#A855F7",
     gradient: "linear-gradient(135deg, #A855F7 0%, #7C3AED 100%)",
     glow: "0 0 30px rgba(168, 85, 247, 0.8)",
@@ -61,7 +61,7 @@ export const DIAMOND_LEVELS = [
   },
   {
     level: 8,
-    name: "Diamond",
+    name: "Crystal",
     color: "#E0E7FF",
     gradient: "linear-gradient(135deg, #E0E7FF 0%, #C7D2FE 100%)",
     glow: "0 0 35px rgba(224, 231, 255, 0.9)",
@@ -69,7 +69,7 @@ export const DIAMOND_LEVELS = [
   },
   {
     level: 9,
-    name: "Radiant Diamond",
+    name: "Radiant",
     color: "#60A5FA",
     gradient: "linear-gradient(135deg, #60A5FA 0%, #3B82F6 50%, #1D4ED8 100%)",
     glow: "0 0 40px rgba(96, 165, 250, 1)",
@@ -77,7 +77,7 @@ export const DIAMOND_LEVELS = [
   },
   {
     level: 10,
-    name: "Legendary Diamond",
+    name: "Legendary",
     color: "#F4D03F",
     gradient: "linear-gradient(135deg, #D4AF37 0%, #F4D03F 50%, #FFD700 100%)",
     glow: "0 0 50px rgba(212, 175, 55, 1)",
