@@ -485,7 +485,7 @@ export default function Revise() {
                   : "Fix mistakes from past lessons, quizzes, and challenges."}
               </p>
               <div style={{ display: "flex", gap: 10, flexWrap: "wrap", fontSize: "0.85rem", opacity: 0.7 }}>
-                <span>10 questions</span>
+                <span>Max 10 questions</span>
                 <span>|</span>
                 <span>No timer</span>
                 <span>|</span>
@@ -569,7 +569,7 @@ export default function Revise() {
                 {isSmartActive ? `Revise your weakest topic: ${weakestPath.title}` : "Revise your weakest topics intelligently."}
               </p>
               <div style={{ display: "flex", gap: 10, flexWrap: "wrap", fontSize: "0.85rem", opacity: 0.7 }}>
-                <span>8 questions</span>
+                <span>Max 8 questions</span>
                 <span>|</span>
                 <span>No timer</span>
                 <span>|</span>
