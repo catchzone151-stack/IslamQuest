@@ -314,70 +314,166 @@ export function assignAvatarsToUsers(users, options = {}) {
 // ═══════════════════════════════════════════════════════════════════
 // Supabase stores avatar as integer. These functions convert between
 // string keys (used in app) and integer indices (stored in DB).
+// 
+// INDEX MAPPING:
+// - Index 0: Default fallback (avatar_1)
+// - Index 1-23: avatar_1 through avatar_23 (new numbered avatars)
+// - Index 31: ninja_male (hidden, reserved for The Dev)
+// - Index 32: ninja_female (hidden, reserved for special user)
 // ═══════════════════════════════════════════════════════════════════
 
-// Complete list of ALL avatars including hidden ninjas (for DB mapping)
-// Uses HISTORICAL_AVATARS to maintain stable indices for existing DB records
-// Plus new numbered avatars for new user selections
+// Direct index-to-key mapping for clean Supabase storage
+const INDEX_TO_KEY_MAP = {
+  0: "avatar_1",  // Default fallback
+  1: "avatar_1",
+  2: "avatar_2",
+  3: "avatar_3",
+  4: "avatar_4",
+  5: "avatar_5",
+  6: "avatar_6",
+  7: "avatar_7",
+  8: "avatar_8",
+  9: "avatar_9",
+  10: "avatar_10",
+  11: "avatar_11",
+  12: "avatar_12",
+  13: "avatar_13",
+  14: "avatar_14",
+  15: "avatar_15",
+  16: "avatar_16",
+  17: "avatar_17",
+  18: "avatar_18",
+  19: "avatar_19",
+  20: "avatar_20",
+  21: "avatar_21",
+  22: "avatar_22",
+  23: "avatar_23",
+  31: NINJA_MALE_KEY,   // Hidden ninja male
+  32: NINJA_FEMALE_KEY, // Hidden ninja female
+};
+
+// Reverse mapping: key to index
+const KEY_TO_INDEX_MAP = {
+  "avatar_1": 1,
+  "avatar_2": 2,
+  "avatar_3": 3,
+  "avatar_4": 4,
+  "avatar_5": 5,
+  "avatar_6": 6,
+  "avatar_7": 7,
+  "avatar_8": 8,
+  "avatar_9": 9,
+  "avatar_10": 10,
+  "avatar_11": 11,
+  "avatar_12": 12,
+  "avatar_13": 13,
+  "avatar_14": 14,
+  "avatar_15": 15,
+  "avatar_16": 16,
+  "avatar_17": 17,
+  "avatar_18": 18,
+  "avatar_19": 19,
+  "avatar_20": 20,
+  "avatar_21": 21,
+  "avatar_22": 22,
+  "avatar_23": 23,
+  [NINJA_MALE_KEY]: 31,
+  [NINJA_FEMALE_KEY]: 32,
+};
+
+// Legacy mapping: old historical avatar keys to new avatar indices
+const LEGACY_KEY_TO_INDEX = {
+  "avatar_man_lantern": 1,
+  "avatar_man_tasbih": 2,
+  "avatar_man_cup": 3,
+  "avatar_man_spoon": 4,
+  "avatar_man_soccer": 5,
+  "avatar_man_sunglasses": 6,
+  "avatar_man_construction": 7,
+  "avatar_man_thumbsup": 8,
+  "avatar_man_scholar": 9,
+  "avatar_woman_cartoon": 10,
+  "avatar_woman_pixel": 11,
+  "avatar_woman_neon": 12,
+  "avatar_woman_hijab_book": 13,
+  "avatar_woman_hijab_dua": 14,
+  "avatar_woman_hijab_tasbih": 15,
+  "avatar_woman_hijab_studying": 16,
+  "avatar_woman_hijab_beads": 17,
+  "avatar_woman_crown": 18,
+  "avatar_woman_cooking": 19,
+  "avatar_woman_elder_cane": 20,
+  "avatar_woman_hawa": 21,
+  "avatar_woman_hijab_pink": 22,
+  "avatar_woman_hijab_tan": 23,
+  "avatar_woman_hijab_purse": 1,
+  "avatar_dino": 1,
+  "avatar_fox": 1,
+  "avatar_panda": 1,
+  "avatar_rabbit": 1,
+  "avatar_robot": 1,
+  "avatar_unicorn": 1,
+  "avatar_woman_niqab": 1,
+};
+
+// For backward compatibility with code that uses ALL_AVATARS
 export const ALL_AVATARS = [
-  ...HISTORICAL_AVATARS,
-  NINJA_MALE_KEY,
-  NINJA_FEMALE_KEY,
-  // New numbered avatar keys (these map to same files as historical for DB purposes)
-  ...SELECTABLE_AVATARS,
+  "avatar_1", // index 0 (fallback)
+  ...SELECTABLE_AVATARS, // indices 1-23
 ];
 
 /**
  * Convert avatar string key to integer index for Supabase storage
- * Normalizes legacy keys and removed avatar keys before lookup
- * @param {string} avatarKey - Avatar key like "avatar_woman_crown"
- * @returns {number} Integer index (defaults to 0 if not found after normalization)
+ * @param {string} avatarKey - Avatar key like "avatar_1" or "avatar_ninja_male"
+ * @returns {number} Integer index (1-23 for regular, 31-32 for ninja, defaults to 1)
  */
 export function avatarKeyToIndex(avatarKey) {
   if (!avatarKey) {
-    console.warn("[avatarKeyToIndex] No avatar key provided, defaulting to index 0");
-    return 0;
+    console.warn("[avatarKeyToIndex] No avatar key provided, defaulting to index 1");
+    return 1;
   }
   
-  // Normalize the key - check legacy mappings first
-  let normalizedKey = avatarKey;
+  // Check direct mapping first (new keys)
+  if (KEY_TO_INDEX_MAP[avatarKey] !== undefined) {
+    return KEY_TO_INDEX_MAP[avatarKey];
+  }
+  
+  // Check legacy mapping (old historical keys)
+  if (LEGACY_KEY_TO_INDEX[avatarKey] !== undefined) {
+    console.log(`[avatarKeyToIndex] Mapped legacy key ${avatarKey} → index ${LEGACY_KEY_TO_INDEX[avatarKey]}`);
+    return LEGACY_KEY_TO_INDEX[avatarKey];
+  }
+  
+  // Check old-style legacy keys (avatar1, avatar2, etc.)
   if (LEGACY_AVATAR_MAP[avatarKey]) {
-    normalizedKey = LEGACY_AVATAR_MAP[avatarKey];
-    console.log(`[avatarKeyToIndex] Normalized legacy key ${avatarKey} → ${normalizedKey}`);
-  }
-  
-  // Try to find in ALL_AVATARS
-  let index = ALL_AVATARS.indexOf(normalizedKey);
-  
-  // If still not found, try stripping any path or extension (for asset URLs)
-  if (index < 0 && normalizedKey.includes("/")) {
-    const keyFromPath = normalizedKey.split("/").pop()?.replace(/\.(webp|png|jpg)$/i, "");
-    if (keyFromPath) {
-      index = ALL_AVATARS.indexOf(keyFromPath);
-      if (index >= 0) {
-        console.log(`[avatarKeyToIndex] Extracted key from path: ${keyFromPath}`);
-      }
+    const mappedKey = LEGACY_AVATAR_MAP[avatarKey];
+    if (LEGACY_KEY_TO_INDEX[mappedKey] !== undefined) {
+      return LEGACY_KEY_TO_INDEX[mappedKey];
     }
   }
   
-  if (index < 0) {
-    console.warn(`[avatarKeyToIndex] Unknown avatar key "${avatarKey}", defaulting to index 0`);
-    return 0;
-  }
-  
-  return index;
+  console.warn(`[avatarKeyToIndex] Unknown avatar key "${avatarKey}", defaulting to index 1`);
+  return 1;
 }
 
 /**
  * Convert integer index from Supabase to avatar string key
- * @param {number} index - Integer index from database
+ * @param {number} index - Integer index from database (1-23 or 31-32)
  * @returns {string|null} Avatar key or null if invalid index
  */
 export function avatarIndexToKey(index) {
-  if (index === null || index === undefined || index < 0 || index >= ALL_AVATARS.length) {
-    return null;
+  if (index === null || index === undefined) {
+    return "avatar_1";
   }
-  return ALL_AVATARS[index];
+  
+  // Check direct mapping
+  if (INDEX_TO_KEY_MAP[index] !== undefined) {
+    return INDEX_TO_KEY_MAP[index];
+  }
+  
+  // Invalid index - return default
+  console.warn(`[avatarIndexToKey] Unknown index ${index}, defaulting to avatar_1`);
+  return "avatar_1";
 }
 
 // ═══════════════════════════════════════════════════════════════════
