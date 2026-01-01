@@ -3,8 +3,7 @@ import { useNavigate } from "../../hooks/useNavigate";
 import { useDailyQuestStore } from "../../store/dailyQuestStore";
 import DailyQuestExplainerModal from "./DailyQuestExplainerModal";
 import DailyQuestCountdown from "./DailyQuestCountdown";
-import assets from "../../assets/assets";
-const DailyQuestMascot = assets.avatars.avatar_man_lantern;
+import DailyQuestMascot from "../../assets/mascots/mascot_pointing.webp";
 
 export default function DailyQuestCard() {
   const navigate = useNavigate();
