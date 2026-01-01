@@ -664,9 +664,10 @@ export default function App() {
 
         await OneSignal.login(auth.user.id);
 
-        const permission = await OneSignal.Notifications.permission;
-        if (!permission) {
-          await OneSignal.Slidedown.promptPush();
+        const permission = OneSignal.Notifications.permission;
+
+        if (permission !== 'granted') {
+          await OneSignal.Notifications.requestPermission();
         }
 
         const subscriptionId = await OneSignal.User.PushSubscription.id;
