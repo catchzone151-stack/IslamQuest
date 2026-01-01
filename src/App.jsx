@@ -25,6 +25,7 @@ import { initDeepLinkListener } from "./utils/deepLinkHandler";
 import { initializeIAP, restorePurchases } from "./services/iapService";
 import { Capacitor } from "@capacitor/core";
 import { App as CapacitorApp } from "@capacitor/app";
+import { PushNotifications } from "@capacitor/push-notifications";
 
 
 // ✅ Onboarding screens (loaded immediately for first-time users)
@@ -644,6 +645,7 @@ export default function App() {
   }, [actualHasOnboarded]);
 
   // 🔔 ONESIGNAL PUSH NOTIFICATIONS
+  // On Android 13+, request notification permission BEFORE OneSignal.init
   useEffect(() => {
     const initOneSignal = async () => {
       try {
@@ -654,20 +656,52 @@ export default function App() {
           return;
         }
 
+        const platform = Capacitor.getPlatform();
+        const isNativeAndroid = platform === "android";
+
+        // Android 13+ requires explicit permission BEFORE OneSignal init
+        if (isNativeAndroid) {
+          console.log("🔔 OneSignal: Android detected, requesting permission first...");
+          
+          // Check current permission status
+          const permStatus = await PushNotifications.checkPermissions();
+          console.log("🔔 OneSignal: Current permission status:", permStatus.receive);
+          
+          if (permStatus.receive === "prompt" || permStatus.receive === "prompt-with-rationale") {
+            // Request permission and wait for user response
+            const requestResult = await PushNotifications.requestPermissions();
+            console.log("🔔 OneSignal: Permission request result:", requestResult.receive);
+            
+            if (requestResult.receive !== "granted") {
+              console.log("🔔 OneSignal: Permission denied, skipping init");
+              return;
+            }
+          } else if (permStatus.receive === "denied") {
+            console.log("🔔 OneSignal: Permission previously denied, skipping init");
+            return;
+          }
+          // If already granted, continue to init
+        }
+
+        // Now initialize OneSignal (after permission is granted on Android)
         await OneSignal.init({
           appId: oneSignalAppId,
           allowLocalhostAsSecureOrigin: true,
         });
+        console.log("🔔 OneSignal: Initialized successfully");
 
         const { data: auth } = await supabase.auth.getUser();
         if (!auth?.user) return;
 
         await OneSignal.login(auth.user.id);
+        console.log("🔔 OneSignal: Logged in as", auth.user.id);
 
-        const permission = OneSignal.Notifications.permission;
-
-        if (permission !== 'granted') {
-          await OneSignal.Notifications.requestPermission();
+        // For web, still need to request permission through OneSignal
+        if (!isNativeAndroid) {
+          const permission = OneSignal.Notifications.permission;
+          if (permission !== 'granted') {
+            await OneSignal.Notifications.requestPermission();
+          }
         }
 
         const subscriptionId = await OneSignal.User.PushSubscription.id;
@@ -678,12 +712,13 @@ export default function App() {
 
         // Save/update push token with last_active timestamp
         // This tracks when the user last opened the app (used for streak notification filtering)
+        const tokenPlatform = isNativeAndroid ? "android" : (platform === "ios" ? "ios" : "web");
         await supabase.from("push_tokens").upsert({
           user_id: auth.user.id,
           device_token: subscriptionId,
-          platform: "web",
+          platform: tokenPlatform,
           updated_at: new Date().toISOString(),
-          last_active: new Date().toISOString() // Track app open time
+          last_active: new Date().toISOString()
         }, {
           onConflict: "user_id,device_token"
         });
