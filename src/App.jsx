@@ -19,13 +19,12 @@ import { useModalStore, MODAL_TYPES } from "./store/modalStore";
 import { supabase, ensureSignedIn } from "./lib/supabaseClient";
 import { getDeviceFingerprint } from "./lib/deviceFingerprint";
 import { syncOnAppOpen, syncOnForeground } from "./sync/engine.js";
-import OneSignal from "react-onesignal";
+import OneSignal from "onesignal-cordova-plugin";
 import { createDailyLeaderboardSnapshot } from "./backend/leaderboardSnapshots";
 import { initDeepLinkListener } from "./utils/deepLinkHandler";
 import { initializeIAP, restorePurchases } from "./services/iapService";
 import { Capacitor } from "@capacitor/core";
 import { App as CapacitorApp } from "@capacitor/app";
-import { PushNotifications } from "@capacitor/push-notifications";
 
 
 // ✅ Onboarding screens (loaded immediately for first-time users)
@@ -644,8 +643,8 @@ export default function App() {
     }
   }, [actualHasOnboarded]);
 
-  // 🔔 ONESIGNAL PUSH NOTIFICATIONS
-  // On Android 13+, request notification permission BEFORE OneSignal.init
+  // 🔔 ONESIGNAL PUSH NOTIFICATIONS (Native Capacitor Plugin)
+  // Uses onesignal-cordova-plugin for native Android/iOS registration
   useEffect(() => {
     const initOneSignal = async () => {
       try {
@@ -657,62 +656,52 @@ export default function App() {
         }
 
         const platform = Capacitor.getPlatform();
-        const isNativeAndroid = platform === "android";
+        const isNative = platform === "android" || platform === "ios";
 
-        // Android 13+ requires explicit permission BEFORE OneSignal init
-        if (isNativeAndroid) {
-          console.log("🔔 OneSignal: Android detected, requesting permission first...");
-          
-          // Check current permission status
-          const permStatus = await PushNotifications.checkPermissions();
-          console.log("🔔 OneSignal: Current permission status:", permStatus.receive);
-          
-          if (permStatus.receive === "prompt" || permStatus.receive === "prompt-with-rationale") {
-            // Request permission and wait for user response
-            const requestResult = await PushNotifications.requestPermissions();
-            console.log("🔔 OneSignal: Permission request result:", requestResult.receive);
-            
-            if (requestResult.receive !== "granted") {
-              console.log("🔔 OneSignal: Permission denied, skipping init");
-              return;
-            }
-          } else if (permStatus.receive === "denied") {
-            console.log("🔔 OneSignal: Permission previously denied, skipping init");
-            return;
-          }
-          // If already granted, continue to init
-        }
-
-        // Now initialize OneSignal (after permission is granted on Android)
-        await OneSignal.init({
-          appId: oneSignalAppId,
-          allowLocalhostAsSecureOrigin: true,
-        });
-        console.log("🔔 OneSignal: Initialized successfully");
-
-        const { data: auth } = await supabase.auth.getUser();
-        if (!auth?.user) return;
-
-        await OneSignal.login(auth.user.id);
-        console.log("🔔 OneSignal: Logged in as", auth.user.id);
-
-        // For web, still need to request permission through OneSignal
-        if (!isNativeAndroid) {
-          const permission = OneSignal.Notifications.permission;
-          if (permission !== 'granted') {
-            await OneSignal.Notifications.requestPermission();
-          }
-        }
-
-        const subscriptionId = await OneSignal.User.PushSubscription.id;
-        if (!subscriptionId) {
-          console.log("🔔 OneSignal: No subscription ID yet (permission pending)");
+        // Only initialize on native platforms (Android/iOS)
+        if (!isNative) {
+          console.log("🔔 OneSignal: Web platform detected, skipping native init");
           return;
         }
 
-        // Save/update push token with last_active timestamp
-        // This tracks when the user last opened the app (used for streak notification filtering)
-        const tokenPlatform = isNativeAndroid ? "android" : (platform === "ios" ? "ios" : "web");
+        console.log("🔔 OneSignal: Native platform detected:", platform);
+
+        // Initialize OneSignal with native plugin
+        OneSignal.initialize(oneSignalAppId);
+        console.log("🔔 OneSignal: Native SDK initialized");
+
+        // Request notification permission (Android 13+ will show system dialog)
+        const permissionGranted = await OneSignal.Notifications.requestPermission(true);
+        console.log("🔔 OneSignal: Permission result:", permissionGranted);
+
+        if (!permissionGranted) {
+          console.log("🔔 OneSignal: Permission denied by user");
+          return;
+        }
+
+        // Get authenticated user
+        const { data: auth } = await supabase.auth.getUser();
+        if (!auth?.user) {
+          console.log("🔔 OneSignal: No authenticated user, skipping login");
+          return;
+        }
+
+        // Login user to OneSignal (links device to user ID)
+        OneSignal.login(auth.user.id);
+        console.log("🔔 OneSignal: Logged in as", auth.user.id);
+
+        // Wait a moment for subscription to be ready
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        // Get subscription ID for database storage
+        const subscriptionId = OneSignal.User.pushSubscription.id;
+        if (!subscriptionId) {
+          console.log("🔔 OneSignal: No subscription ID yet");
+          return;
+        }
+
+        // Save push token to database
+        const tokenPlatform = platform === "android" ? "android" : "ios";
         await supabase.from("push_tokens").upsert({
           user_id: auth.user.id,
           device_token: subscriptionId,
@@ -723,7 +712,7 @@ export default function App() {
           onConflict: "user_id,device_token"
         });
 
-        console.log("🔔 OneSignal initialized, subscription saved, last_active updated");
+        console.log("🔔 OneSignal: Native init complete, subscription saved");
       } catch (err) {
         console.warn("OneSignal init failed:", err.message);
       }
