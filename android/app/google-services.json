@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "159405091192",
+    "project_id": "islamquest-48ffa",
+    "storage_bucket": "islamquest-48ffa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:159405091192:android:f09d436cd890c985fa808d",
+        "android_client_info": {
+          "package_name": "com.islamquest.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzCsEWr66tTQr-tnPEGvAW16XAvUp-x0w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
