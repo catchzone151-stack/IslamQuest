@@ -643,10 +643,10 @@ export default function App() {
     }
   }, [actualHasOnboarded]);
 
-  // 🔔 ONESIGNAL PUSH NOTIFICATIONS (Native Capacitor Plugin)
-  // Uses onesignal-cordova-plugin for native Android/iOS registration
+  // 🔔 ONESIGNAL: Initialize and request permission on first native app launch
+  // Runs unconditionally on native platforms (Android/iOS) at app startup
   useEffect(() => {
-    const initOneSignal = async () => {
+    const initOneSignalPermission = async () => {
       try {
         const oneSignalAppId = import.meta.env.VITE_ONESIGNAL_APP_ID;
         
@@ -658,7 +658,6 @@ export default function App() {
         const platform = Capacitor.getPlatform();
         const isNative = platform === "android" || platform === "ios";
 
-        // Only initialize on native platforms (Android/iOS)
         if (!isNative) {
           console.log("🔔 OneSignal: Web platform detected, skipping native init");
           return;
@@ -666,20 +665,31 @@ export default function App() {
 
         console.log("🔔 OneSignal: Native platform detected:", platform);
 
-        // Initialize OneSignal with native plugin
+        // Initialize OneSignal immediately on native
         OneSignal.initialize(oneSignalAppId);
         console.log("🔔 OneSignal: Native SDK initialized");
 
-        // Request notification permission (Android 13+ will show system dialog)
+        // Request permission immediately (Android 13+ shows system dialog)
         const permissionGranted = await OneSignal.Notifications.requestPermission(true);
         console.log("🔔 OneSignal: Permission result:", permissionGranted);
+      } catch (err) {
+        console.warn("OneSignal permission init failed:", err.message);
+      }
+    };
 
-        if (!permissionGranted) {
-          console.log("🔔 OneSignal: Permission denied by user");
-          return;
-        }
+    initOneSignalPermission();
+  }, []);
 
-        // Get authenticated user
+  // 🔔 ONESIGNAL: Login user and save token after authentication
+  // Runs only after onboarding is complete (user is authenticated)
+  useEffect(() => {
+    const loginOneSignalUser = async () => {
+      try {
+        const platform = Capacitor.getPlatform();
+        const isNative = platform === "android" || platform === "ios";
+
+        if (!isNative) return;
+
         const { data: auth } = await supabase.auth.getUser();
         if (!auth?.user) {
           console.log("🔔 OneSignal: No authenticated user, skipping login");
@@ -712,14 +722,14 @@ export default function App() {
           onConflict: "user_id,device_token"
         });
 
-        console.log("🔔 OneSignal: Native init complete, subscription saved");
+        console.log("🔔 OneSignal: User logged in, subscription saved");
       } catch (err) {
-        console.warn("OneSignal init failed:", err.message);
+        console.warn("OneSignal login failed:", err.message);
       }
     };
 
     if (actualHasOnboarded) {
-      initOneSignal();
+      loginOneSignalUser();
     }
   }, [actualHasOnboarded]);
 
