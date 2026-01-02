@@ -643,41 +643,56 @@ export default function App() {
     }
   }, [actualHasOnboarded]);
 
-  // 🔔 ONESIGNAL: Initialize and request permission on first native app launch
-  // Runs unconditionally on native platforms (Android/iOS) at app startup
+  // 🔔 ONESIGNAL: Initialize on startup, request permission when app becomes active
+  // Runs unconditionally on native platforms (Android/iOS)
   useEffect(() => {
-    const initOneSignalPermission = async () => {
-      try {
-        const oneSignalAppId = import.meta.env.VITE_ONESIGNAL_APP_ID;
-        
-        if (!oneSignalAppId || oneSignalAppId === "YOUR-ONESIGNAL-APP-ID") {
-          console.log("🔔 OneSignal: No App ID configured, skipping init");
-          return;
+    const oneSignalAppId = import.meta.env.VITE_ONESIGNAL_APP_ID;
+    
+    if (!oneSignalAppId || oneSignalAppId === "YOUR-ONESIGNAL-APP-ID") {
+      console.log("🔔 OneSignal: No App ID configured, skipping init");
+      return;
+    }
+
+    const platform = Capacitor.getPlatform();
+    const isNative = platform === "android" || platform === "ios";
+
+    if (!isNative) {
+      console.log("🔔 OneSignal: Web platform detected, skipping native init");
+      return;
+    }
+
+    console.log("🔔 OneSignal: Native platform detected:", platform);
+
+    // Initialize OneSignal immediately on native
+    OneSignal.initialize(oneSignalAppId);
+    console.log("🔔 OneSignal: Native SDK initialized");
+
+    // Track if permission has been requested to ensure it only runs once
+    let permissionRequested = false;
+
+    // Request permission when app becomes active
+    const requestPermissionOnActive = async (state) => {
+      if (state.isActive && !permissionRequested) {
+        permissionRequested = true;
+        console.log("🔔 OneSignal: App active, requesting permission...");
+        try {
+          const permissionGranted = await OneSignal.Notifications.requestPermission(true);
+          console.log("🔔 OneSignal: Permission result:", permissionGranted);
+        } catch (err) {
+          console.warn("OneSignal permission request failed:", err.message);
         }
-
-        const platform = Capacitor.getPlatform();
-        const isNative = platform === "android" || platform === "ios";
-
-        if (!isNative) {
-          console.log("🔔 OneSignal: Web platform detected, skipping native init");
-          return;
-        }
-
-        console.log("🔔 OneSignal: Native platform detected:", platform);
-
-        // Initialize OneSignal immediately on native
-        OneSignal.initialize(oneSignalAppId);
-        console.log("🔔 OneSignal: Native SDK initialized");
-
-        // Request permission immediately (Android 13+ shows system dialog)
-        const permissionGranted = await OneSignal.Notifications.requestPermission(true);
-        console.log("🔔 OneSignal: Permission result:", permissionGranted);
-      } catch (err) {
-        console.warn("OneSignal permission init failed:", err.message);
       }
     };
 
-    initOneSignalPermission();
+    // Listen for app state changes
+    const listenerPromise = CapacitorApp.addListener('appStateChange', requestPermissionOnActive);
+
+    // Also request immediately in case app is already active
+    requestPermissionOnActive({ isActive: true });
+
+    return () => {
+      listenerPromise.then(listener => listener.remove());
+    };
   }, []);
 
   // 🔔 ONESIGNAL: Login user and save token after authentication
