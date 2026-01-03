@@ -18,16 +18,21 @@ export default function NotificationCTA() {
   }, []);
 
   const handleEnable = async () => {
+    console.log("🔔 Enable notifications clicked, platform:", platform);
     try {
       if (platform === "android") {
         await NativeSettings.openAndroid({ option: AndroidSettings.AppNotification });
       } else if (platform === "ios") {
         await NativeSettings.openIOS({ option: IOSSettings.App });
+      } else {
+        console.log("🔔 Web platform - marking as enabled for testing");
       }
       localStorage.setItem(STORAGE_KEY, "enabled");
       setVisible(false);
     } catch (err) {
       console.warn("Could not open notification settings:", err.message);
+      localStorage.setItem(STORAGE_KEY, "enabled");
+      setVisible(false);
     }
   };
 
@@ -90,30 +95,26 @@ export default function NotificationCTA() {
               lineHeight: 1.4,
             }}
           >
-            {isNative
-              ? "Stay consistent with gentle reminders for your streak and daily quests."
-              : "Download the app to receive gentle reminders for your learning journey."}
+            Stay consistent with gentle reminders for your streak and daily quests.
           </p>
 
-          {isNative && (
-            <button
-              onClick={handleEnable}
-              style={{
-                marginTop: 10,
-                background: "linear-gradient(135deg, #d4af37, #b8962e)",
-                border: "none",
-                borderRadius: 8,
-                padding: "8px 16px",
-                color: "#1a1a2e",
-                fontWeight: 600,
-                fontSize: "0.8rem",
-                cursor: "pointer",
-                transition: "transform 0.2s",
-              }}
-            >
-              Enable Notifications
-            </button>
-          )}
+          <button
+            onClick={handleEnable}
+            style={{
+              marginTop: 10,
+              background: "linear-gradient(135deg, #d4af37, #b8962e)",
+              border: "none",
+              borderRadius: 8,
+              padding: "8px 16px",
+              color: "#1a1a2e",
+              fontWeight: 600,
+              fontSize: "0.8rem",
+              cursor: "pointer",
+              transition: "transform 0.2s",
+            }}
+          >
+            Enable Notifications
+          </button>
         </div>
       </div>
     </div>
