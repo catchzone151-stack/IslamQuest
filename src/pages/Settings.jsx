@@ -30,11 +30,18 @@ export default function Settings() {
 
   const handleOpenNotificationSettings = async () => {
     const platform = Capacitor.getPlatform();
+    console.log("🔔 Opening notification settings, platform:", platform);
     try {
       if (platform === "android") {
+        console.log("🔔 Calling NativeSettings.openAndroid...");
         await NativeSettings.openAndroid({ option: AndroidSettings.AppNotification });
+        console.log("🔔 NativeSettings.openAndroid completed");
       } else if (platform === "ios") {
+        console.log("🔔 Calling NativeSettings.openIOS...");
         await NativeSettings.openIOS({ option: IOSSettings.App });
+        console.log("🔔 NativeSettings.openIOS completed");
+      } else {
+        console.log("🔔 Web platform - notification settings not available");
       }
     } catch (err) {
       console.warn("Could not open notification settings:", err.message);
