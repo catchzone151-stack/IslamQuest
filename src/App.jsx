@@ -717,6 +717,20 @@ export default function App() {
 
         // Get subscription ID for database storage
         const subscriptionId = OneSignal.User.pushSubscription.id;
+
+        // Log debug record to Supabase (non-blocking)
+        supabase.from("onesignal_debug").insert({
+          user_id: auth.user.id,
+          platform: platform,
+          attempted_at: new Date().toISOString(),
+          has_subscription_id: !!subscriptionId,
+          subscription_id: subscriptionId || null
+        }).then(() => {
+          console.log("🔔 OneSignal: Debug record saved");
+        }).catch((err) => {
+          console.warn("🔔 OneSignal: Debug record failed:", err.message);
+        });
+
         if (!subscriptionId) {
           console.log("🔔 OneSignal: No subscription ID yet");
           return;
