@@ -30,7 +30,6 @@ import { isPremiumOnlyPath } from "../store/premiumConfig";
 
 // Components
 import DailyQuestCard from "../components/dailyquest/DailyQuestCard";
-import NotificationCTA from "../components/NotificationCTA";
 
 // Mascots & UI assets
 import Zayd from "../assets/mascots/mascot_waving.webp";
@@ -521,7 +520,6 @@ export default function Home() {
        */}
       <div style={{ padding: "0 16px" }}>
         <DailyQuestCard />
-        <NotificationCTA />
       </div>
 
       {/*
