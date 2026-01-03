@@ -4,9 +4,11 @@ import { useNavigate } from "../hooks/useNavigate";
 import { useProgressStore } from "../store/progressStore";
 import { useUserStore } from "../store/useUserStore";
 import { supabase } from "../lib/supabaseClient";
-import { ChevronLeft, Trash2 } from "lucide-react";
+import { ChevronLeft, Trash2, Bell } from "lucide-react";
 import DeleteAccountModal from "../components/DeleteAccountModal";
 import { logEvent, ANALYTICS_EVENTS } from "../services/analyticsService";
+import { Capacitor } from "@capacitor/core";
+import { NativeSettings, AndroidSettings, IOSSettings } from "capacitor-native-settings";
 
 export default function Settings() {
   const navigate = useNavigate();
@@ -25,6 +27,21 @@ export default function Settings() {
       navigator.vibrate(50);
     }
   };
+
+  const handleOpenNotificationSettings = async () => {
+    const platform = Capacitor.getPlatform();
+    try {
+      if (platform === "android") {
+        await NativeSettings.openAndroid({ option: AndroidSettings.AppNotification });
+      } else if (platform === "ios") {
+        await NativeSettings.openIOS({ option: IOSSettings.App });
+      }
+    } catch (err) {
+      console.warn("Could not open notification settings:", err.message);
+    }
+  };
+
+  const isNative = Capacitor.getPlatform() !== "web";
 
   const handleLogout = async () => {
     logEvent(ANALYTICS_EVENTS.LOGOUT, {});
@@ -210,6 +227,58 @@ export default function Settings() {
               {vibrationEnabled ? "ON" : "OFF"}
             </button>
           </div>
+
+          {isNative && (
+            <div
+              style={{
+                background: "rgba(255, 255, 255, 0.03)",
+                padding: 14,
+                borderRadius: 12,
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <Bell size={16} style={{ color: "#d4af37" }} />
+                  <span style={{ color: "#cbd5e1", fontSize: "0.9rem" }}>
+                    Notifications
+                  </span>
+                </div>
+                <button
+                  onClick={handleOpenNotificationSettings}
+                  style={{
+                    background: "linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(255, 215, 0, 0.08))",
+                    border: "1px solid rgba(212, 175, 55, 0.3)",
+                    borderRadius: 20,
+                    padding: "6px 14px",
+                    color: "#d4af37",
+                    fontWeight: "600",
+                    cursor: "pointer",
+                    fontSize: "0.85rem",
+                    transition: "all 0.3s",
+                  }}
+                >
+                  Manage
+                </button>
+              </div>
+              <p
+                style={{
+                  color: "rgba(203, 213, 225, 0.6)",
+                  fontSize: "0.75rem",
+                  marginTop: 8,
+                  marginBottom: 0,
+                  lineHeight: 1.4,
+                }}
+              >
+                Get gentle reminders for streaks, daily quests, and friend challenges
+              </p>
+            </div>
+          )}
 
           <div
             style={{

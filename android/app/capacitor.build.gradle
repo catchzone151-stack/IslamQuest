@@ -13,6 +13,7 @@ dependencies {
     implementation project(':capacitor-app')
     implementation project(':capacitor-browser')
     implementation project(':capacitor-push-notifications')
+    implementation project(':capacitor-native-settings')
     implementation "com.android.billingclient:billing:7.1.1"
     implementation "com.onesignal:OneSignal:5.1.38"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10"
