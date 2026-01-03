@@ -645,14 +645,10 @@ export default function App() {
 
   // 🔔 ONESIGNAL: Initialize on startup, request permission when app becomes active
   // Runs unconditionally on native platforms (Android/iOS)
+  // App ID is hardcoded to ensure it's bundled into the Android APK
+  const ONESIGNAL_APP_ID = "8540fbcb-05eb-411b-bc60-857801e4b099";
+  
   useEffect(() => {
-    const oneSignalAppId = import.meta.env.VITE_ONESIGNAL_APP_ID;
-    
-    if (!oneSignalAppId || oneSignalAppId === "YOUR-ONESIGNAL-APP-ID") {
-      console.log("🔔 OneSignal: No App ID configured, skipping init");
-      return;
-    }
-
     const platform = Capacitor.getPlatform();
     const isNative = platform === "android" || platform === "ios";
 
@@ -664,7 +660,7 @@ export default function App() {
     console.log("🔔 OneSignal: Native platform detected:", platform);
 
     // Initialize OneSignal immediately on native
-    OneSignal.initialize(oneSignalAppId);
+    OneSignal.initialize(ONESIGNAL_APP_ID);
     console.log("🔔 OneSignal: Native SDK initialized");
 
     // Track if permission has been requested to ensure it only runs once
