@@ -11,10 +11,9 @@ export default function NotificationCTA() {
   const isNative = platform === "android" || platform === "ios";
 
   useEffect(() => {
-    const dismissed = localStorage.getItem(STORAGE_KEY);
-    if (!dismissed) {
-      setVisible(true);
-    }
+    // Reset for testing - always show CTA
+    localStorage.removeItem(STORAGE_KEY);
+    setVisible(true);
   }, []);
 
   const handleEnable = async () => {
