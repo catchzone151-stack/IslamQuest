@@ -692,9 +692,10 @@ export default function App() {
   }, []);
 
   // 🔔 ONESIGNAL: Login user and save token after authentication
-  // Runs only after onboarding is complete (user is authenticated)
+  // Runs whenever an authenticated user exists (not tied to onboarding)
   useEffect(() => {
     const loginOneSignalUser = async () => {
+      console.log("🔔 OneSignal: loginOneSignalUser() starting...");
       try {
         const platform = Capacitor.getPlatform();
         const isNative = platform === "android" || platform === "ios";
@@ -728,7 +729,6 @@ export default function App() {
           device_token: subscriptionId,
           platform: tokenPlatform,
           updated_at: new Date().toISOString(),
-          last_active: new Date().toISOString()
         }, {
           onConflict: "user_id,device_token"
         });
@@ -739,10 +739,11 @@ export default function App() {
       }
     };
 
-    if (actualHasOnboarded) {
+    // Run when hydrated (stores ready) - auth check is inside the function
+    if (actualIsHydrated) {
       loginOneSignalUser();
     }
-  }, [actualHasOnboarded]);
+  }, [actualIsHydrated]);
 
   // ✅ Wait until Zustand store is rehydrated (prevents onboarding redirect)
   if (!actualIsHydrated) {
