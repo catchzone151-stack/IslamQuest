@@ -2,7 +2,7 @@
 // Daily notifications with STRICT spam prevention
 // 
 // RULES:
-// - Max 1 notification per user per day
+// - Max 1 notification per user per day (via profiles.last_notification_sent)
 // - Only send to users who have NOT opened the app today (profiles.updated_at)
 // - Rotates between different message variants
 // - NO generic "come back" messages
@@ -51,18 +51,11 @@ serve(async (req) => {
     // Get today's date at midnight (UTC) for comparison
     const today = new Date();
     today.setUTCHours(0, 0, 0, 0);
-    const todayStr = today.toISOString();
 
-    // Fetch push tokens joined with profiles to check last activity
-    // Users are eligible if profiles.updated_at is before today (or null)
+    // Fetch push tokens (only need user_id and device_token)
     const { data: tokenData, error: tokenError } = await supabase
       .from("push_tokens")
-      .select(`
-        user_id,
-        device_token,
-        platform,
-        last_notification_sent
-      `);
+      .select("user_id, device_token, platform");
 
     if (tokenError) {
       console.error("Error fetching tokens:", tokenError);
@@ -82,10 +75,10 @@ serve(async (req) => {
     // Get all unique user IDs from tokens
     const userIds = [...new Set(tokenData.map(t => t.user_id))];
 
-    // Fetch profiles to check updated_at (last app open)
+    // Fetch profiles to check updated_at (last app open) and last_notification_sent
     const { data: profilesData, error: profilesError } = await supabase
       .from("profiles")
-      .select("id, updated_at")
+      .select("id, updated_at, last_notification_sent")
       .in("id", userIds);
 
     if (profilesError) {
@@ -93,55 +86,52 @@ serve(async (req) => {
       return new Response(`Error: ${profilesError.message}`, { status: 500 });
     }
 
-    // Create map of user_id -> updated_at
-    const profileUpdateMap = new Map<string, string | null>();
+    // Create maps for user profile data
+    const profileMap = new Map<string, { updated_at: string | null; last_notification_sent: string | null }>();
     for (const p of profilesData || []) {
-      profileUpdateMap.set(p.id, p.updated_at);
+      profileMap.set(p.id, { 
+        updated_at: p.updated_at, 
+        last_notification_sent: p.last_notification_sent 
+      });
     }
 
-    // Filter tokens: exclude users who opened the app today
+    // Filter tokens: exclude users who opened the app today OR already notified today
     const eligibleTokens = tokenData.filter(t => {
-      const updatedAt = profileUpdateMap.get(t.user_id);
-      if (!updatedAt) return true; // No profile updated_at = eligible
-      const lastOpen = new Date(updatedAt);
-      lastOpen.setUTCHours(0, 0, 0, 0);
-      return lastOpen < today; // Only include if last open was before today
+      const profile = profileMap.get(t.user_id);
+      
+      // Check if user opened the app today (via profiles.updated_at)
+      if (profile?.updated_at) {
+        const lastOpen = new Date(profile.updated_at);
+        lastOpen.setUTCHours(0, 0, 0, 0);
+        if (lastOpen >= today) return false; // User already opened app today
+      }
+      
+      // Check if user already received notification today (via profiles.last_notification_sent)
+      if (profile?.last_notification_sent) {
+        const lastSent = new Date(profile.last_notification_sent);
+        lastSent.setUTCHours(0, 0, 0, 0);
+        if (lastSent >= today) return false; // Already notified today
+      }
+      
+      return true; // Eligible for notification
     });
 
     if (eligibleTokens.length === 0) {
       return new Response(JSON.stringify({ 
         message: "No eligible users for notifications",
-        reason: "All users have opened the app today"
+        reason: "All users either opened the app today or were already notified"
       }), { 
         headers: { "Content-Type": "application/json" },
         status: 200 
       });
     }
 
-    // Filter out users who already received a notification today
-    const usersToNotify = eligibleTokens.filter(u => {
-      if (!u.last_notification_sent) return true;
-      const lastSent = new Date(u.last_notification_sent);
-      lastSent.setUTCHours(0, 0, 0, 0);
-      return lastSent < today;
-    });
-
-    if (usersToNotify.length === 0) {
-      return new Response(JSON.stringify({ 
-        message: "All eligible users already notified today",
-        total_eligible: eligibleTokens.length
-      }), { 
-        headers: { "Content-Type": "application/json" },
-        status: 200 
-      });
-    }
-
-    // Get user progress for all users to check streaks
-    const notifyUserIds = usersToNotify.map(u => u.user_id);
+    // Get user progress for all eligible users to check streaks
+    const eligibleUserIds = [...new Set(eligibleTokens.map(t => t.user_id))];
     const { data: progressData, error: progressError } = await supabase
       .from("user_progress")
       .select("user_id, streak")
-      .in("user_id", notifyUserIds);
+      .in("user_id", eligibleUserIds);
 
     if (progressError) {
       console.error("Error fetching progress:", progressError);
@@ -155,15 +145,15 @@ serve(async (req) => {
     }
 
     // Split users into two groups
-    const usersWithStreak: typeof usersToNotify = [];
-    const usersWithoutStreak: typeof usersToNotify = [];
+    const usersWithStreak: typeof eligibleTokens = [];
+    const usersWithoutStreak: typeof eligibleTokens = [];
 
-    for (const user of usersToNotify) {
-      const streak = streakMap.get(user.user_id) || 0;
+    for (const token of eligibleTokens) {
+      const streak = streakMap.get(token.user_id) || 0;
       if (streak > 0) {
-        usersWithStreak.push(user);
+        usersWithStreak.push(token);
       } else {
-        usersWithoutStreak.push(user);
+        usersWithoutStreak.push(token);
       }
     }
 
@@ -173,9 +163,9 @@ serve(async (req) => {
     let learningFail = 0;
     const now = new Date().toISOString();
 
-    // Helper function to send notification and update timestamp
+    // Helper function to send notification and update profiles.last_notification_sent
     const sendNotification = async (
-      user: { user_id: string; device_token: string },
+      token: { user_id: string; device_token: string },
       msg: { heading: string; body: string }
     ): Promise<boolean> => {
       const response = await fetch("https://onesignal.com/api/v1/notifications", {
@@ -186,7 +176,7 @@ serve(async (req) => {
         },
         body: JSON.stringify({
           app_id: oneSignalAppId,
-          include_player_ids: [user.device_token],
+          include_player_ids: [token.device_token],
           headings: { en: msg.heading },
           contents: { en: msg.body },
           ios_badgeType: "Increase",
@@ -195,41 +185,54 @@ serve(async (req) => {
       });
 
       if (response.ok) {
+        // Update profiles.last_notification_sent (user-level, not token-level)
         await supabase
-          .from("push_tokens")
+          .from("profiles")
           .update({ last_notification_sent: now })
-          .eq("user_id", user.user_id)
-          .eq("device_token", user.device_token);
+          .eq("id", token.user_id);
         return true;
       } else {
-        console.error(`Failed to send to ${user.device_token}:`, await response.text());
+        console.error(`Failed to send to ${token.device_token}:`, await response.text());
         return false;
       }
     };
 
+    // Track which users we've already sent to (avoid duplicate sends for multi-device users)
+    const notifiedUsers = new Set<string>();
+
     // Send streak protection notifications
-    for (const user of usersWithStreak) {
+    for (const token of usersWithStreak) {
+      if (notifiedUsers.has(token.user_id)) continue; // Skip if already notified this user
       try {
         const msg = STREAK_MESSAGES[Math.floor(Math.random() * STREAK_MESSAGES.length)];
-        const success = await sendNotification(user, msg);
-        if (success) streakSuccess++;
-        else streakFail++;
+        const success = await sendNotification(token, msg);
+        if (success) {
+          streakSuccess++;
+          notifiedUsers.add(token.user_id);
+        } else {
+          streakFail++;
+        }
       } catch (err) {
         streakFail++;
-        console.error(`Error sending streak notification to ${user.device_token}:`, err);
+        console.error(`Error sending streak notification to ${token.device_token}:`, err);
       }
     }
 
     // Send learning encouragement notifications
-    for (const user of usersWithoutStreak) {
+    for (const token of usersWithoutStreak) {
+      if (notifiedUsers.has(token.user_id)) continue; // Skip if already notified this user
       try {
         const msg = LEARNING_MESSAGES[Math.floor(Math.random() * LEARNING_MESSAGES.length)];
-        const success = await sendNotification(user, msg);
-        if (success) learningSuccess++;
-        else learningFail++;
+        const success = await sendNotification(token, msg);
+        if (success) {
+          learningSuccess++;
+          notifiedUsers.add(token.user_id);
+        } else {
+          learningFail++;
+        }
       } catch (err) {
         learningFail++;
-        console.error(`Error sending learning notification to ${user.device_token}:`, err);
+        console.error(`Error sending learning notification to ${token.device_token}:`, err);
       }
     }
 
@@ -239,14 +242,12 @@ serve(async (req) => {
         streak_notifications: {
           success: streakSuccess,
           failed: streakFail,
-          total: usersWithStreak.length,
         },
         learning_notifications: {
           success: learningSuccess,
           failed: learningFail,
-          total: usersWithoutStreak.length,
         },
-        total_processed: usersToNotify.length,
+        total_users_notified: notifiedUsers.size,
       }),
       {
         headers: { "Content-Type": "application/json" },
