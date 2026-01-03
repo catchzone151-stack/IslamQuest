@@ -228,57 +228,58 @@ export default function Settings() {
             </button>
           </div>
 
-          {isNative && (
+          <div
+            style={{
+              background: "rgba(255, 255, 255, 0.03)",
+              padding: 14,
+              borderRadius: 12,
+            }}
+          >
             <div
               style={{
-                background: "rgba(255, 255, 255, 0.03)",
-                padding: 14,
-                borderRadius: 12,
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
               }}
             >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <Bell size={16} style={{ color: "#d4af37" }} />
-                  <span style={{ color: "#cbd5e1", fontSize: "0.9rem" }}>
-                    Notifications
-                  </span>
-                </div>
-                <button
-                  onClick={handleOpenNotificationSettings}
-                  style={{
-                    background: "linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(255, 215, 0, 0.08))",
-                    border: "1px solid rgba(212, 175, 55, 0.3)",
-                    borderRadius: 20,
-                    padding: "6px 14px",
-                    color: "#d4af37",
-                    fontWeight: "600",
-                    cursor: "pointer",
-                    fontSize: "0.85rem",
-                    transition: "all 0.3s",
-                  }}
-                >
-                  Manage
-                </button>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <Bell size={16} style={{ color: "#d4af37" }} />
+                <span style={{ color: "#cbd5e1", fontSize: "0.9rem" }}>
+                  Notifications
+                </span>
               </div>
-              <p
+              <button
+                onClick={handleOpenNotificationSettings}
                 style={{
-                  color: "rgba(203, 213, 225, 0.6)",
-                  fontSize: "0.75rem",
-                  marginTop: 8,
-                  marginBottom: 0,
-                  lineHeight: 1.4,
+                  background: "linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(255, 215, 0, 0.08))",
+                  border: "1px solid rgba(212, 175, 55, 0.3)",
+                  borderRadius: 20,
+                  padding: "6px 14px",
+                  color: "#d4af37",
+                  fontWeight: "600",
+                  cursor: "pointer",
+                  fontSize: "0.85rem",
+                  transition: "all 0.3s",
                 }}
               >
-                Get gentle reminders for streaks, daily quests, and friend challenges
-              </p>
+                Manage
+              </button>
             </div>
-          )}
+            <p
+              style={{
+                color: "rgba(203, 213, 225, 0.6)",
+                fontSize: "0.75rem",
+                marginTop: 8,
+                marginBottom: 0,
+                lineHeight: 1.4,
+              }}
+            >
+              {isNative 
+                ? "Get gentle reminders for streaks, daily quests, and friend challenges"
+                : "Download the app to receive streak and quest reminders"
+              }
+            </p>
+          </div>
 
           <div
             style={{
