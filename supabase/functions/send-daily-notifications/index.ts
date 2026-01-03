@@ -1,22 +1,34 @@
 // supabase/functions/send-daily-notifications/index.ts
-// Daily streak reminder notifications with STRICT spam prevention
+// Daily notifications with STRICT spam prevention
 // 
 // RULES:
-// - Only send to users with active streak (streak > 0)
-// - Only send to users who have NOT opened the app today
 // - Max 1 notification per user per day
+// - Only send to users who have NOT opened the app today
 // - Rotates between different message variants
 // - NO generic "come back" messages
+//
+// TWO GROUPS (mutually exclusive):
+// 1. streak > 0 → "protect your streak" templates
+// 2. streak = 0 OR NULL → "learning encouragement" templates
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-// Message variants for daily streak reminders (rotated randomly)
+// Message variants for users with active streaks (streak > 0)
 const STREAK_MESSAGES = [
   { heading: "Don't lose your streak! 🔥", body: "One lesson keeps your streak alive" },
   { heading: "Your streak is waiting! 🔥", body: "Complete a quick lesson to keep it going" },
   { heading: "Keep the fire burning! 🔥", body: "Your streak needs you today" },
   { heading: "Streak alert! 🔥", body: "A quick lesson protects your progress" },
+];
+
+// Message variants for users without streaks (streak = 0 or NULL)
+// Gentle, motivational learning prompts - no explicit "start a streak" language
+const LEARNING_MESSAGES = [
+  { heading: "Ready to learn something new? ✨", body: "Just 10 minutes today can grow your knowledge." },
+  { heading: "A moment to learn 📖", body: "Do you have a few minutes to discover something beneficial?" },
+  { heading: "Your learning journey awaits 🌱", body: "Open a lesson and begin today." },
+  { heading: "Let's learn together 🤍", body: "How about learning one of the beautiful Names of Allah today?" },
 ];
 
 serve(async (req) => {
@@ -41,11 +53,9 @@ serve(async (req) => {
     today.setUTCHours(0, 0, 0, 0);
     const todayStr = today.toISOString();
 
-    // Fetch push tokens with user progress data
-    // Only select users who:
+    // Fetch push tokens for users who:
     // 1. Have a valid push token
     // 2. Have NOT been active today (last_active < today OR last_active is NULL)
-    // 3. Have an active streak (streak > 0) from user_progress
     const { data: eligibleUsers, error: fetchError } = await supabase
       .from("push_tokens")
       .select(`
@@ -90,87 +100,117 @@ serve(async (req) => {
       });
     }
 
-    // Get user progress to check for active streaks
+    // Get user progress for all users to check streaks
     const userIds = usersToNotify.map(u => u.user_id);
     const { data: progressData, error: progressError } = await supabase
       .from("user_progress")
       .select("user_id, streak")
-      .in("user_id", userIds)
-      .gt("streak", 0); // Only users with active streaks
+      .in("user_id", userIds);
 
     if (progressError) {
       console.error("Error fetching progress:", progressError);
       return new Response(`Error: ${progressError.message}`, { status: 500 });
     }
 
-    // Create a set of user IDs with active streaks
-    const usersWithStreaks = new Set((progressData || []).map(p => p.user_id));
-
-    // Final filter: only users with active streaks
-    const finalUsers = usersToNotify.filter(u => usersWithStreaks.has(u.user_id));
-
-    if (finalUsers.length === 0) {
-      return new Response(JSON.stringify({ 
-        message: "No users with active streaks need notifications",
-        checked: usersToNotify.length,
-        with_streaks: usersWithStreaks.size
-      }), { 
-        headers: { "Content-Type": "application/json" },
-        status: 200 
-      });
+    // Create a map of user_id -> streak value
+    const streakMap = new Map<string, number>();
+    for (const p of progressData || []) {
+      streakMap.set(p.user_id, p.streak || 0);
     }
 
-    let successCount = 0;
-    let failCount = 0;
+    // Split users into two groups
+    const usersWithStreak: typeof usersToNotify = [];
+    const usersWithoutStreak: typeof usersToNotify = [];
+
+    for (const user of usersToNotify) {
+      const streak = streakMap.get(user.user_id) || 0;
+      if (streak > 0) {
+        usersWithStreak.push(user);
+      } else {
+        usersWithoutStreak.push(user);
+      }
+    }
+
+    let streakSuccess = 0;
+    let streakFail = 0;
+    let learningSuccess = 0;
+    let learningFail = 0;
     const now = new Date().toISOString();
 
-    for (const user of finalUsers) {
+    // Helper function to send notification and update timestamp
+    const sendNotification = async (
+      user: { user_id: string; device_token: string },
+      msg: { heading: string; body: string }
+    ): Promise<boolean> => {
+      const response = await fetch("https://onesignal.com/api/v1/notifications", {
+        method: "POST",
+        headers: {
+          "Authorization": `Basic ${oneSignalApiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          app_id: oneSignalAppId,
+          include_player_ids: [user.device_token],
+          headings: { en: msg.heading },
+          contents: { en: msg.body },
+          ios_badgeType: "Increase",
+          ios_badgeCount: 1,
+        }),
+      });
+
+      if (response.ok) {
+        await supabase
+          .from("push_tokens")
+          .update({ last_notification_sent: now })
+          .eq("user_id", user.user_id)
+          .eq("device_token", user.device_token);
+        return true;
+      } else {
+        console.error(`Failed to send to ${user.device_token}:`, await response.text());
+        return false;
+      }
+    };
+
+    // Send streak protection notifications
+    for (const user of usersWithStreak) {
       try {
-        // Select random message variant
         const msg = STREAK_MESSAGES[Math.floor(Math.random() * STREAK_MESSAGES.length)];
-
-        const response = await fetch("https://onesignal.com/api/v1/notifications", {
-          method: "POST",
-          headers: {
-            "Authorization": `Basic ${oneSignalApiKey}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            app_id: oneSignalAppId,
-            include_player_ids: [user.device_token],
-            headings: { en: msg.heading },
-            contents: { en: msg.body },
-            // iOS-specific settings
-            ios_badgeType: "Increase",
-            ios_badgeCount: 1,
-          }),
-        });
-
-        if (response.ok) {
-          successCount++;
-          // Update last_notification_sent timestamp
-          await supabase
-            .from("push_tokens")
-            .update({ last_notification_sent: now })
-            .eq("user_id", user.user_id)
-            .eq("device_token", user.device_token);
-        } else {
-          failCount++;
-          console.error(`Failed to send to ${user.device_token}:`, await response.text());
-        }
+        const success = await sendNotification(user, msg);
+        if (success) streakSuccess++;
+        else streakFail++;
       } catch (err) {
-        failCount++;
-        console.error(`Error sending to ${user.device_token}:`, err);
+        streakFail++;
+        console.error(`Error sending streak notification to ${user.device_token}:`, err);
+      }
+    }
+
+    // Send learning encouragement notifications
+    for (const user of usersWithoutStreak) {
+      try {
+        const msg = LEARNING_MESSAGES[Math.floor(Math.random() * LEARNING_MESSAGES.length)];
+        const success = await sendNotification(user, msg);
+        if (success) learningSuccess++;
+        else learningFail++;
+      } catch (err) {
+        learningFail++;
+        console.error(`Error sending learning notification to ${user.device_token}:`, err);
       }
     }
 
     return new Response(
       JSON.stringify({
-        message: "Streak notifications processed",
-        success: successCount,
-        failed: failCount,
-        total_eligible: finalUsers.length,
-        skipped_no_streak: usersToNotify.length - finalUsers.length,
+        message: "Daily notifications processed",
+        streak_notifications: {
+          success: streakSuccess,
+          failed: streakFail,
+          total: usersWithStreak.length,
+        },
+        learning_notifications: {
+          success: learningSuccess,
+          failed: learningFail,
+          total: usersWithoutStreak.length,
+        },
+        total_processed: usersToNotify.length,
       }),
       {
         headers: { "Content-Type": "application/json" },
