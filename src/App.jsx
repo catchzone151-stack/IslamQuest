@@ -617,29 +617,29 @@ export default function App() {
   }, []);
 
   // 📍 APP OPEN TRACKING (for push notification filtering)
-  // Updates last_active in push_tokens table independently of push permission status
-  // This ensures daily streak reminders are only sent to users who haven't opened today
+  // Updates profiles.updated_at to track last app open time
+  // This ensures daily notifications are only sent to users who haven't opened today
   useEffect(() => {
-    const updateLastActive = async () => {
+    const updateProfileTimestamp = async () => {
       try {
         const { data: auth } = await supabase.auth.getUser();
         if (!auth?.user) return;
 
-        // Update last_active for all push tokens belonging to this user
+        // Update profiles.updated_at to mark app open time
         await supabase
-          .from("push_tokens")
-          .update({ last_active: new Date().toISOString() })
-          .eq("user_id", auth.user.id);
+          .from("profiles")
+          .update({ updated_at: new Date().toISOString() })
+          .eq("id", auth.user.id);
 
-        console.log("📍 App open tracked (last_active updated)");
+        console.log("📍 App open tracked (profiles.updated_at updated)");
       } catch (err) {
         // Silent fail - not critical
-        console.warn("Could not update last_active:", err.message);
+        console.warn("Could not update profiles.updated_at:", err.message);
       }
     };
 
     if (actualHasOnboarded) {
-      updateLastActive();
+      updateProfileTimestamp();
     }
   }, [actualHasOnboarded]);
 

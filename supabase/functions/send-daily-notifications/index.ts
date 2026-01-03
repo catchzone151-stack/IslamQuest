@@ -3,7 +3,7 @@
 // 
 // RULES:
 // - Max 1 notification per user per day
-// - Only send to users who have NOT opened the app today
+// - Only send to users who have NOT opened the app today (profiles.updated_at)
 // - Rotates between different message variants
 // - NO generic "come back" messages
 //
@@ -53,29 +53,65 @@ serve(async (req) => {
     today.setUTCHours(0, 0, 0, 0);
     const todayStr = today.toISOString();
 
-    // Fetch push tokens for users who:
-    // 1. Have a valid push token
-    // 2. Have NOT been active today (last_active < today OR last_active is NULL)
-    const { data: eligibleUsers, error: fetchError } = await supabase
+    // Fetch push tokens joined with profiles to check last activity
+    // Users are eligible if profiles.updated_at is before today (or null)
+    const { data: tokenData, error: tokenError } = await supabase
       .from("push_tokens")
       .select(`
         user_id,
         device_token,
         platform,
-        last_active,
         last_notification_sent
-      `)
-      .or(`last_active.is.null,last_active.lt.${todayStr}`);
+      `);
 
-    if (fetchError) {
-      console.error("Error fetching tokens:", fetchError);
-      return new Response(`Error: ${fetchError.message}`, { status: 500 });
+    if (tokenError) {
+      console.error("Error fetching tokens:", tokenError);
+      return new Response(`Error: ${tokenError.message}`, { status: 500 });
     }
 
-    if (!eligibleUsers || eligibleUsers.length === 0) {
+    if (!tokenData || tokenData.length === 0) {
+      return new Response(JSON.stringify({ 
+        message: "No push tokens registered",
+        reason: "No users have push tokens"
+      }), { 
+        headers: { "Content-Type": "application/json" },
+        status: 200 
+      });
+    }
+
+    // Get all unique user IDs from tokens
+    const userIds = [...new Set(tokenData.map(t => t.user_id))];
+
+    // Fetch profiles to check updated_at (last app open)
+    const { data: profilesData, error: profilesError } = await supabase
+      .from("profiles")
+      .select("id, updated_at")
+      .in("id", userIds);
+
+    if (profilesError) {
+      console.error("Error fetching profiles:", profilesError);
+      return new Response(`Error: ${profilesError.message}`, { status: 500 });
+    }
+
+    // Create map of user_id -> updated_at
+    const profileUpdateMap = new Map<string, string | null>();
+    for (const p of profilesData || []) {
+      profileUpdateMap.set(p.id, p.updated_at);
+    }
+
+    // Filter tokens: exclude users who opened the app today
+    const eligibleTokens = tokenData.filter(t => {
+      const updatedAt = profileUpdateMap.get(t.user_id);
+      if (!updatedAt) return true; // No profile updated_at = eligible
+      const lastOpen = new Date(updatedAt);
+      lastOpen.setUTCHours(0, 0, 0, 0);
+      return lastOpen < today; // Only include if last open was before today
+    });
+
+    if (eligibleTokens.length === 0) {
       return new Response(JSON.stringify({ 
         message: "No eligible users for notifications",
-        reason: "All users either active today or no tokens registered"
+        reason: "All users have opened the app today"
       }), { 
         headers: { "Content-Type": "application/json" },
         status: 200 
@@ -83,7 +119,7 @@ serve(async (req) => {
     }
 
     // Filter out users who already received a notification today
-    const usersToNotify = eligibleUsers.filter(u => {
+    const usersToNotify = eligibleTokens.filter(u => {
       if (!u.last_notification_sent) return true;
       const lastSent = new Date(u.last_notification_sent);
       lastSent.setUTCHours(0, 0, 0, 0);
@@ -93,7 +129,7 @@ serve(async (req) => {
     if (usersToNotify.length === 0) {
       return new Response(JSON.stringify({ 
         message: "All eligible users already notified today",
-        total_eligible: eligibleUsers.length
+        total_eligible: eligibleTokens.length
       }), { 
         headers: { "Content-Type": "application/json" },
         status: 200 
@@ -101,11 +137,11 @@ serve(async (req) => {
     }
 
     // Get user progress for all users to check streaks
-    const userIds = usersToNotify.map(u => u.user_id);
+    const notifyUserIds = usersToNotify.map(u => u.user_id);
     const { data: progressData, error: progressError } = await supabase
       .from("user_progress")
       .select("user_id, streak")
-      .in("user_id", userIds);
+      .in("user_id", notifyUserIds);
 
     if (progressError) {
       console.error("Error fetching progress:", progressError);
