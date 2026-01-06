@@ -652,16 +652,34 @@ export default function App() {
     const platform = Capacitor.getPlatform();
     const isNative = platform === "android" || platform === "ios";
 
+    console.log("🔔 [OS-DEBUG] Platform check:", platform, "isNative:", isNative);
+
     if (!isNative) {
-      console.log("🔔 OneSignal: Web platform detected, skipping native init");
+      console.log("🔔 [OS-DEBUG] Web platform - skipping OneSignal native init");
       return;
     }
 
-    console.log("🔔 OneSignal: Native platform detected:", platform);
+    console.log("🔔 [OS-DEBUG] Initializing OneSignal with App ID:", ONESIGNAL_APP_ID);
 
-    // Initialize OneSignal immediately on native
-    OneSignal.initialize(ONESIGNAL_APP_ID);
-    console.log("🔔 OneSignal: Native SDK initialized");
+    try {
+      // Initialize OneSignal immediately on native
+      OneSignal.initialize(ONESIGNAL_APP_ID);
+      console.log("🔔 [OS-DEBUG] OneSignal.initialize() called successfully");
+    } catch (initErr) {
+      console.error("🔔 [OS-DEBUG] OneSignal.initialize() FAILED:", initErr);
+    }
+
+    // Log full OneSignal state after a delay
+    setTimeout(async () => {
+      try {
+        const subId = OneSignal.User?.pushSubscription?.id || null;
+        const optedIn = OneSignal.User?.pushSubscription?.optedIn || false;
+        const token = OneSignal.User?.pushSubscription?.token || null;
+        console.log("🔔 [OS-DEBUG] State after 2s - subscriptionId:", subId, "optedIn:", optedIn, "token:", token);
+      } catch (stateErr) {
+        console.error("🔔 [OS-DEBUG] Failed to read OneSignal state:", stateErr);
+      }
+    }, 2000);
 
     // Track if permission has been requested to ensure it only runs once
     let permissionRequested = false;
@@ -670,12 +688,16 @@ export default function App() {
     const requestPermissionOnActive = async (state) => {
       if (state.isActive && !permissionRequested) {
         permissionRequested = true;
-        console.log("🔔 OneSignal: App active, requesting permission...");
+        console.log("🔔 [OS-DEBUG] App active, requesting notification permission...");
         try {
           const permissionGranted = await OneSignal.Notifications.requestPermission(true);
-          console.log("🔔 OneSignal: Permission result:", permissionGranted);
+          console.log("🔔 [OS-DEBUG] Permission result:", permissionGranted);
+          
+          // Log state immediately after permission
+          const subIdAfter = OneSignal.User?.pushSubscription?.id || null;
+          console.log("🔔 [OS-DEBUG] After permission - subscriptionId:", subIdAfter);
         } catch (err) {
-          console.warn("OneSignal permission request failed:", err.message);
+          console.error("🔔 [OS-DEBUG] Permission request FAILED:", err.message, err);
         }
       }
     };
@@ -695,50 +717,73 @@ export default function App() {
   // Runs whenever an authenticated user exists (not tied to onboarding)
   useEffect(() => {
     const loginOneSignalUser = async () => {
-      console.log("🔔 OneSignal: loginOneSignalUser() starting...");
+      console.log("🔔 [OS-DEBUG] loginOneSignalUser() starting...");
+      const platform = Capacitor.getPlatform();
+      const isNative = platform === "android" || platform === "ios";
+
+      console.log("🔔 [OS-DEBUG] Login check - platform:", platform, "isNative:", isNative);
+
+      if (!isNative) {
+        console.log("🔔 [OS-DEBUG] Not native, skipping OneSignal login");
+        return;
+      }
+
       try {
-        const platform = Capacitor.getPlatform();
-        const isNative = platform === "android" || platform === "ios";
-
-        if (!isNative) return;
-
         const { data: auth } = await supabase.auth.getUser();
+        console.log("🔔 [OS-DEBUG] Auth check - user:", auth?.user?.id || "none");
+        
         if (!auth?.user) {
-          console.log("🔔 OneSignal: No authenticated user, skipping login");
+          console.log("🔔 [OS-DEBUG] No authenticated user, skipping OneSignal login");
           return;
         }
 
         // Login user to OneSignal (links device to user ID)
-        OneSignal.login(auth.user.id);
-        console.log("🔔 OneSignal: Logged in as", auth.user.id);
+        console.log("🔔 [OS-DEBUG] Calling OneSignal.login() with userId:", auth.user.id);
+        try {
+          OneSignal.login(auth.user.id);
+          console.log("🔔 [OS-DEBUG] OneSignal.login() completed");
+        } catch (loginErr) {
+          console.error("🔔 [OS-DEBUG] OneSignal.login() FAILED:", loginErr);
+        }
 
         // Wait a moment for subscription to be ready
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        console.log("🔔 [OS-DEBUG] Waiting 2s for subscription...");
+        await new Promise(resolve => setTimeout(resolve, 2000));
 
         // Get subscription ID for database storage
-        const subscriptionId = OneSignal.User.pushSubscription.id;
+        const subscriptionId = OneSignal.User?.pushSubscription?.id || null;
+        const optedIn = OneSignal.User?.pushSubscription?.optedIn || false;
+        const token = OneSignal.User?.pushSubscription?.token || null;
+        
+        console.log("🔔 [OS-DEBUG] After wait - subscriptionId:", subscriptionId, "optedIn:", optedIn, "token:", token);
 
-        // Log debug record to Supabase (non-blocking)
-        supabase.from("onesignal_debug").insert({
+        // Log debug record to Supabase (ALWAYS, even on failure)
+        const debugRecord = {
           user_id: auth.user.id,
           platform: platform,
           attempted_at: new Date().toISOString(),
           has_subscription_id: !!subscriptionId,
-          subscription_id: subscriptionId || null
-        }).then(() => {
-          console.log("🔔 OneSignal: Debug record saved");
-        }).catch((err) => {
-          console.warn("🔔 OneSignal: Debug record failed:", err.message);
+          subscription_id: subscriptionId
+        };
+        console.log("🔔 [OS-DEBUG] Inserting debug record:", JSON.stringify(debugRecord));
+        
+        supabase.from("onesignal_debug").insert(debugRecord).then(({ error }) => {
+          if (error) {
+            console.error("🔔 [OS-DEBUG] Debug insert failed:", error.message);
+          } else {
+            console.log("🔔 [OS-DEBUG] Debug record saved successfully");
+          }
         });
 
         if (!subscriptionId) {
-          console.log("🔔 OneSignal: No subscription ID yet");
+          console.log("🔔 [OS-DEBUG] No subscription ID available - registration may have failed");
           return;
         }
 
         // Save push token to database
         const tokenPlatform = platform === "android" ? "android" : "ios";
-        await supabase.from("push_tokens").upsert({
+        console.log("🔔 [OS-DEBUG] Upserting push_tokens...");
+        const { error: upsertErr } = await supabase.from("push_tokens").upsert({
           user_id: auth.user.id,
           device_token: subscriptionId,
           platform: tokenPlatform,
@@ -747,9 +792,13 @@ export default function App() {
           onConflict: "user_id,device_token"
         });
 
-        console.log("🔔 OneSignal: User logged in, subscription saved");
+        if (upsertErr) {
+          console.error("🔔 [OS-DEBUG] push_tokens upsert FAILED:", upsertErr.message);
+        } else {
+          console.log("🔔 [OS-DEBUG] push_tokens upsert SUCCESS");
+        }
       } catch (err) {
-        console.warn("OneSignal login failed:", err.message);
+        console.error("🔔 [OS-DEBUG] loginOneSignalUser() EXCEPTION:", err.message, err);
       }
     };
 
