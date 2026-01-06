@@ -714,7 +714,7 @@ export default function App() {
   }, []);
 
   // 🔔 ONESIGNAL: Login user and save token after authentication
-  // Runs whenever an authenticated user exists (not tied to onboarding)
+  // Triggered by Supabase auth state changes (not Zustand hydration)
   useEffect(() => {
     const loginOneSignalUser = async () => {
       console.log("🔔 [OS-DEBUG] loginOneSignalUser() starting...");
@@ -802,11 +802,18 @@ export default function App() {
       }
     };
 
-    // Run when hydrated (stores ready) - auth check is inside the function
-    if (actualIsHydrated) {
-      loginOneSignalUser();
-    }
-  }, [actualIsHydrated]);
+    // Listen to Supabase auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session?.user) {
+        console.log("🔔 [OS-DEBUG] Auth state triggered OneSignal login");
+        loginOneSignalUser();
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   // ✅ Wait until Zustand store is rehydrated (prevents onboarding redirect)
   if (!actualIsHydrated) {
