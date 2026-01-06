@@ -737,21 +737,30 @@ export default function App() {
           return;
         }
 
+        // Wait for subscription to be ready before login
+        let subscriptionId = OneSignal.User?.pushSubscription?.id || null;
+        console.log("🔔 [OS-DEBUG] Initial subscriptionId:", subscriptionId);
+
+        if (!subscriptionId) {
+          console.log("🔔 [OS-DEBUG] Subscription not ready, waiting 1s for retry...");
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          subscriptionId = OneSignal.User?.pushSubscription?.id || null;
+          console.log("🔔 [OS-DEBUG] After retry - subscriptionId:", subscriptionId);
+        }
+
+        if (!subscriptionId) {
+          console.log("🔔 [OS-DEBUG] Subscription not ready, login skipped");
+          return;
+        }
+
         // Login user to OneSignal (links device to user ID)
         console.log("🔔 [OS-DEBUG] Calling OneSignal.login() with userId:", auth.user.id);
         try {
           OneSignal.login(auth.user.id);
-          console.log("🔔 [OS-DEBUG] OneSignal.login() completed");
+          console.log("🔔 [OS-DEBUG] OneSignal login applied to subscription");
         } catch (loginErr) {
           console.error("🔔 [OS-DEBUG] OneSignal.login() FAILED:", loginErr);
         }
-
-        // Wait a moment for subscription to be ready
-        console.log("🔔 [OS-DEBUG] Waiting 2s for subscription...");
-        await new Promise(resolve => setTimeout(resolve, 2000));
-
-        // Get subscription ID for database storage
-        const subscriptionId = OneSignal.User?.pushSubscription?.id || null;
         const optedIn = OneSignal.User?.pushSubscription?.optedIn || false;
         const token = OneSignal.User?.pushSubscription?.token || null;
         
@@ -774,11 +783,6 @@ export default function App() {
             console.log("🔔 [OS-DEBUG] Debug record saved successfully");
           }
         });
-
-        if (!subscriptionId) {
-          console.log("🔔 [OS-DEBUG] No subscription ID available - registration may have failed");
-          return;
-        }
 
         // Save push token to database
         const tokenPlatform = platform === "android" ? "android" : "ios";
