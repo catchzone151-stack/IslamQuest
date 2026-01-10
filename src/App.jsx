@@ -761,6 +761,25 @@ export default function App() {
         } catch (loginErr) {
           console.error("🔔 [OS-DEBUG] OneSignal.login() FAILED:", loginErr);
         }
+
+        // Register device with Edge Function
+        try {
+          const registerRes = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/register-device`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
+            },
+            body: JSON.stringify({
+              device_token: subscriptionId,
+              platform: platform
+            })
+          });
+          console.log("🔔 [OS-DEBUG] register-device response:", registerRes.status);
+        } catch (registerErr) {
+          console.error("🔔 [OS-DEBUG] register-device FAILED:", registerErr.message);
+        }
+
         const optedIn = OneSignal.User?.pushSubscription?.optedIn || false;
         const token = OneSignal.User?.pushSubscription?.token || null;
         
