@@ -695,6 +695,10 @@ export const useProgressStore = create((set, get) => ({
       const passedCountAfter = Object.values(get().lessonStates[pathId] || {}).filter(
         (x) => x.passed
       ).length;
+      const totalLessons = path?.totalLessons || 0;
+
+      // [PATH_PROGRESS_DEBUG] Log state after update
+      console.log("[PATH_PROGRESS_DEBUG] pathId:", pathId, "passed:", passed, "passedCountBefore:", passedCountBefore, "passedCountAfter:", passedCountAfter, "totalLessons:", totalLessons);
 
       const ratio =
         path && path.totalLessons > 0
@@ -707,12 +711,13 @@ export const useProgressStore = create((set, get) => ({
       try {
         // setPathStarted: fires exactly once when count goes from 0 → 1
         if (passedCountBefore === 0 && passedCountAfter === 1) {
+          console.log("[PATH_PROGRESS_DEBUG] About to call setPathStarted for pathId:", pathId);
           setPathStarted(pathId);
           console.log("[PUSH-TAGS] setPathStarted called for path:", pathId);
         }
         // setPathCompleted: fires exactly once when count reaches totalLessons
-        const totalLessons = path?.totalLessons || 0;
         if (totalLessons > 0 && passedCountBefore < totalLessons && passedCountAfter === totalLessons) {
+          console.log("[PATH_PROGRESS_DEBUG] About to call setPathCompleted for pathId:", pathId);
           setPathCompleted(pathId);
           console.log("[PUSH-TAGS] setPathCompleted called for path:", pathId);
         }
