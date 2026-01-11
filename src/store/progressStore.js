@@ -9,7 +9,7 @@ import { getQuizForLesson } from "../data/quizEngine";
 import { logStreakEvent } from "../backend/streakLogs";
 import { logXpEvent } from "../backend/xpLogs";
 import { logPurchase } from "../backend/purchaseLogs";
-import { setPathStarted, setPathCompleted, setStreakActive, setStreakBroken } from "../services/pushTags";
+import { setPathStarted, setPathCompleted, setIqState } from "../services/pushTags";
 
 const STORAGE_KEY = "islamQuestProgress_v4";
 
@@ -303,12 +303,10 @@ export const useProgressStore = create((set, get) => ({
       get().calculateXPMultiplier();
       get().saveProgress();
       
-      // Push tag: streak active with new count
       try {
-        setStreakActive(newStreak);
-        console.log("[PUSH-TAGS] setStreakActive called with streak:", newStreak);
+        setIqState({ streakCount: newStreak, streakActive: true });
       } catch (err) {
-        console.warn("[PUSH-TAGS] setStreakActive failed:", err.message);
+        // Silent fail
       }
       
       // Log streak maintained
@@ -330,12 +328,10 @@ export const useProgressStore = create((set, get) => ({
         get().calculateXPMultiplier();
         get().saveProgress();
         
-        // Push tag: streak started fresh
         try {
-          setStreakActive(1);
-          console.log("[PUSH-TAGS] setStreakActive called with streak: 1");
+          setIqState({ streakCount: 1, streakActive: true });
         } catch (err) {
-          console.warn("[PUSH-TAGS] setStreakActive failed:", err.message);
+          // Silent fail
         }
       } else {
         // Already counted today with active streak
@@ -355,12 +351,10 @@ export const useProgressStore = create((set, get) => ({
       get().calculateXPMultiplier();
       get().saveProgress();
       
-      // Push tag: streak restarted after break
       try {
-        setStreakActive(1);
-        console.log("[PUSH-TAGS] setStreakActive called with streak: 1 (fresh start)");
+        setIqState({ streakCount: 1, streakActive: true });
       } catch (err) {
-        console.warn("[PUSH-TAGS] setStreakActive failed:", err.message);
+        // Silent fail
       }
     }
   },
@@ -434,12 +428,10 @@ export const useProgressStore = create((set, get) => ({
     get().calculateXPMultiplier();
     get().saveProgress();
     
-    // Push tag: streak broken
     try {
-      setStreakBroken();
-      console.log("[PUSH-TAGS] setStreakBroken called");
+      setIqState({ streakCount: 0, streakActive: false });
     } catch (err) {
-      console.warn("[PUSH-TAGS] setStreakBroken failed:", err.message);
+      // Silent fail
     }
     
     // Log streak break

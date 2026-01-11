@@ -3,7 +3,7 @@ import { supabase } from "../lib/supabaseClient";
 import { useProgressStore } from "./progressStore";
 import { useFriendsStore } from "./friendsStore";
 import { CHALLENGE_MODES } from "./challengeStore";
-import { setChallengePending, clearChallengePending } from "../services/pushTags";
+import { setIqState } from "../services/pushTags";
 
 const CHALLENGE_EXPIRY_HOURS = 48;
 const VIEWED_RESULTS_KEY = "iq_viewed_challenge_results";
@@ -166,18 +166,15 @@ export const useFriendChallengesStore = create((set, get) => ({
         loading: false,
       });
       
-      // Push tags: update challenge pending state
       try {
         if (pendingIncoming.length > 0) {
           const firstPending = pendingIncoming[0];
-          setChallengePending(firstPending.sender_id);
-          console.log("[PUSH-TAGS] setChallengePending called with sender:", firstPending.sender_id);
+          setIqState({ challengePending: true, challengeFrom: firstPending.sender_id });
         } else {
-          clearChallengePending();
-          console.log("[PUSH-TAGS] clearChallengePending called");
+          setIqState({ challengePending: false, challengeFrom: null });
         }
       } catch (err) {
-        console.warn("[PUSH-TAGS] Challenge tag update failed:", err.message);
+        // Silent fail
       }
       
     } catch (error) {

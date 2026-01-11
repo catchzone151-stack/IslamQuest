@@ -23,7 +23,6 @@ import OneSignal from "onesignal-cordova-plugin";
 import { createDailyLeaderboardSnapshot } from "./backend/leaderboardSnapshots";
 import { initDeepLinkListener } from "./utils/deepLinkHandler";
 import { initializeIAP, restorePurchases } from "./services/iapService";
-import { setLastActive } from "./services/pushTags";
 import { Capacitor } from "@capacitor/core";
 import { App as CapacitorApp } from "@capacitor/app";
 
@@ -703,36 +702,14 @@ export default function App() {
       }
     };
 
-    // Update last_active_at tag when app resumes from background
-    const handleAppResume = (state) => {
-      if (state.isActive) {
-        try {
-          setLastActive();
-          console.log("🔔 [PUSH-TAGS] setLastActive() called on resume");
-        } catch (err) {
-          console.warn("🔔 [PUSH-TAGS] setLastActive() failed:", err.message);
-        }
-      }
-    };
-
     // Listen for app state changes
     const listenerPromise = CapacitorApp.addListener('appStateChange', requestPermissionOnActive);
-    const resumeListenerPromise = CapacitorApp.addListener('appStateChange', handleAppResume);
 
     // Also request immediately in case app is already active
     requestPermissionOnActive({ isActive: true });
 
-    // Set last_active_at on initial mount
-    try {
-      setLastActive();
-      console.log("🔔 [PUSH-TAGS] setLastActive() called on initial mount");
-    } catch (err) {
-      console.warn("🔔 [PUSH-TAGS] setLastActive() failed on mount:", err.message);
-    }
-
     return () => {
       listenerPromise.then(listener => listener.remove());
-      resumeListenerPromise.then(listener => listener.remove());
     };
   }, []);
 

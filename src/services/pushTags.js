@@ -3,15 +3,19 @@ import { Capacitor } from "@capacitor/core";
 
 const isNative = () => Capacitor.isNativePlatform();
 
-export const setLastActive = () => {
-  if (!isNative()) return;
-  const timestamp = Math.floor(Date.now() / 1000).toString();
-  OneSignal.User.addTag("last_active_at", timestamp);
+let currentIqState = {
+  streakCount: 0,
+  streakActive: false,
+  challengePending: false,
+  challengeFrom: null,
 };
 
-export const setActivePath = (pathId) => {
+export const setIqState = (updates) => {
   if (!isNative()) return;
-  OneSignal.User.addTag("active_path", String(pathId));
+  currentIqState = { ...currentIqState, ...updates };
+  const { streakCount, streakActive, challengePending, challengeFrom } = currentIqState;
+  const value = `st=${streakCount}|sa=${streakActive ? 1 : 0}|cp=${challengePending ? 1 : 0}|cf=${challengeFrom || "none"}`;
+  OneSignal.User.addTag("iq_state", value);
 };
 
 export const setPathStarted = (pathId) => {
@@ -22,31 +26,4 @@ export const setPathStarted = (pathId) => {
 export const setPathCompleted = (pathId) => {
   if (!isNative()) return;
   OneSignal.User.addTag("path_state", `${pathId}:completed`);
-};
-
-export const setStreakActive = (count) => {
-  if (!isNative()) return;
-  OneSignal.User.addTags({
-    streak_active: "true",
-    streak_count: String(count),
-  });
-};
-
-export const setStreakBroken = () => {
-  if (!isNative()) return;
-  OneSignal.User.addTag("streak_active", "false");
-};
-
-export const setChallengePending = (fromUserId) => {
-  if (!isNative()) return;
-  OneSignal.User.addTags({
-    challenge_pending: "true",
-    challenge_from: String(fromUserId),
-  });
-};
-
-export const clearChallengePending = () => {
-  if (!isNative()) return;
-  OneSignal.User.addTag("challenge_pending", "false");
-  OneSignal.User.removeTag("challenge_from");
 };
