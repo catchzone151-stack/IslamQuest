@@ -655,9 +655,10 @@ export const useProgressStore = create((set, get) => ({
     if (!payload) return;
     const { xp, coins } = payload;
     
-    // Check if this lesson was already passed (to avoid duplicate push tags)
-    const previousLessonState = get().lessonStates?.[pathId]?.[lessonId] || { passed: false };
-    const isFirstTimePass = passed && !previousLessonState.passed;
+    // Capture passedCount BEFORE state update (for push tag transition detection)
+    const passedCountBefore = Object.values(get().lessonStates?.[pathId] || {}).filter(
+      (x) => x.passed
+    ).length;
     
     // Always record attempt in lessonStates (for tracking/analytics)
     set((state) => {
@@ -691,35 +692,36 @@ export const useProgressStore = create((set, get) => ({
       }
 
       const path = get().paths.find((x) => x.id === pathId);
-      const passedCount = Object.values(get().lessonStates[pathId] || {}).filter(
+      const passedCountAfter = Object.values(get().lessonStates[pathId] || {}).filter(
         (x) => x.passed
       ).length;
 
       const ratio =
         path && path.totalLessons > 0
-          ? Math.min(1, passedCount / path.totalLessons)
+          ? Math.min(1, passedCountAfter / path.totalLessons)
           : 0;
 
-      get().setPathProgress(pathId, passedCount, path ? path.totalLessons : 0);
+      get().setPathProgress(pathId, passedCountAfter, path ? path.totalLessons : 0);
 
-      // Push tags: only on first-time pass to avoid duplicates
-      if (isFirstTimePass) {
-        try {
-          if (passedCount === 1) {
-            setPathStarted(pathId);
-            console.log("[PUSH-TAGS] setPathStarted called for path:", pathId);
-          }
-          if (path && passedCount === path.totalLessons && path.totalLessons > 0) {
-            setPathCompleted(pathId);
-            console.log("[PUSH-TAGS] setPathCompleted called for path:", pathId);
-          }
-        } catch (err) {
-          console.warn("[PUSH-TAGS] Path progress tag failed:", err.message);
+      // Push tags: fire based on count transitions (deterministic, no duplicates)
+      try {
+        // setPathStarted: fires exactly once when count goes from 0 → 1
+        if (passedCountBefore === 0 && passedCountAfter === 1) {
+          setPathStarted(pathId);
+          console.log("[PUSH-TAGS] setPathStarted called for path:", pathId);
         }
+        // setPathCompleted: fires exactly once when count reaches totalLessons
+        const totalLessons = path?.totalLessons || 0;
+        if (totalLessons > 0 && passedCountBefore < totalLessons && passedCountAfter === totalLessons) {
+          setPathCompleted(pathId);
+          console.log("[PUSH-TAGS] setPathCompleted called for path:", pathId);
+        }
+      } catch (err) {
+        console.warn("[PUSH-TAGS] Path progress tag failed:", err.message);
       }
 
       // Check if path is now completed
-      if (path && passedCount === path.totalLessons && path.totalLessons > 0) {
+      if (path && passedCountAfter === path.totalLessons && path.totalLessons > 0) {
         useModalStore.getState().showModal(MODAL_TYPES.PATH_COMPLETED, {
           pathTitle: path.title
         });
