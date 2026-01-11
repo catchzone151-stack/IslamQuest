@@ -16,12 +16,12 @@ export const setActivePath = (pathId) => {
 
 export const setPathStarted = (pathId) => {
   if (!isNative()) return;
-  OneSignal.User.addTag(`path_${pathId}_progress`, "started");
+  OneSignal.User.addTag("path_state", `${pathId}:started`);
 };
 
 export const setPathCompleted = (pathId) => {
   if (!isNative()) return;
-  OneSignal.User.addTag(`path_${pathId}_progress`, "completed");
+  OneSignal.User.addTag("path_state", `${pathId}:completed`);
 };
 
 export const setStreakActive = (count) => {
