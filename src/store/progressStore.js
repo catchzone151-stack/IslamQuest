@@ -9,7 +9,7 @@ import { getQuizForLesson } from "../data/quizEngine";
 import { logStreakEvent } from "../backend/streakLogs";
 import { logXpEvent } from "../backend/xpLogs";
 import { logPurchase } from "../backend/purchaseLogs";
-import { setPathStarted, setPathCompleted } from "../services/pushTags";
+import { setPathStarted, setPathCompleted, setStreakActive, setStreakBroken } from "../services/pushTags";
 
 const STORAGE_KEY = "islamQuestProgress_v4";
 
@@ -303,6 +303,14 @@ export const useProgressStore = create((set, get) => ({
       get().calculateXPMultiplier();
       get().saveProgress();
       
+      // Push tag: streak active with new count
+      try {
+        setStreakActive(newStreak);
+        console.log("[PUSH-TAGS] setStreakActive called with streak:", newStreak);
+      } catch (err) {
+        console.warn("[PUSH-TAGS] setStreakActive failed:", err.message);
+      }
+      
       // Log streak maintained
       (async () => {
         const { data } = await supabase.auth.getUser();
@@ -321,6 +329,14 @@ export const useProgressStore = create((set, get) => ({
         });
         get().calculateXPMultiplier();
         get().saveProgress();
+        
+        // Push tag: streak started fresh
+        try {
+          setStreakActive(1);
+          console.log("[PUSH-TAGS] setStreakActive called with streak: 1");
+        } catch (err) {
+          console.warn("[PUSH-TAGS] setStreakActive failed:", err.message);
+        }
       } else {
         // Already counted today with active streak
         set({ 
@@ -338,6 +354,14 @@ export const useProgressStore = create((set, get) => ({
       });
       get().calculateXPMultiplier();
       get().saveProgress();
+      
+      // Push tag: streak restarted after break
+      try {
+        setStreakActive(1);
+        console.log("[PUSH-TAGS] setStreakActive called with streak: 1 (fresh start)");
+      } catch (err) {
+        console.warn("[PUSH-TAGS] setStreakActive failed:", err.message);
+      }
     }
   },
 
@@ -409,6 +433,14 @@ export const useProgressStore = create((set, get) => ({
     });
     get().calculateXPMultiplier();
     get().saveProgress();
+    
+    // Push tag: streak broken
+    try {
+      setStreakBroken();
+      console.log("[PUSH-TAGS] setStreakBroken called");
+    } catch (err) {
+      console.warn("[PUSH-TAGS] setStreakBroken failed:", err.message);
+    }
     
     // Log streak break
     (async () => {
