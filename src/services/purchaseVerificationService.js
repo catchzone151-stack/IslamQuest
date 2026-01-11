@@ -99,38 +99,9 @@ export const validatePremiumStatus = async (userId, deviceId) => {
 };
 
 export const registerDevice = async (userId, deviceId) => {
-  try {
-    const { data: session } = await supabase.auth.getSession();
-    const accessToken = session?.session?.access_token;
-    
-    if (!accessToken) {
-      return { success: false, error: "Not authenticated" };
-    }
-    
-    const response = await fetch(`${SUPABASE_FUNCTIONS_URL}/register-device`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${accessToken}`
-      },
-      body: JSON.stringify({ userId, deviceId })
-    });
-    
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      return { success: false, error: errorData.error || "Device registration failed" };
-    }
-    
-    const result = await response.json();
-    return {
-      success: true,
-      isNewDevice: result.isNewDevice,
-      previousDeviceLoggedOut: result.previousDeviceLoggedOut
-    };
-  } catch (error) {
-    console.error("[VerificationService] Device registration error:", error);
-    return { success: false, error: error.message };
-  }
+  // Device binding edge function removed - return success as no-op
+  console.log("[VerificationService] Device binding disabled");
+  return { success: true, isNewDevice: false, previousDeviceLoggedOut: false };
 };
 
 export default {
