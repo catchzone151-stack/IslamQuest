@@ -8,6 +8,7 @@ import { Lock, Crown } from "lucide-react";
 import { isPremiumOnlyPath, FREE_LESSON_LIMITS } from "../store/premiumConfig";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import { openAppStore } from "../utils/appStoreUtils";
+import { setActivePath } from "../services/pushTags";
 
 // Lesson data loader
 import { getLessonsForPath } from "../data/lessonLoader.js";
@@ -133,6 +134,11 @@ export default function Pathway() {
     
     // All checks passed - navigate
     console.log('✅ Navigating to lesson');
+    try {
+      setActivePath(numericPathId);
+    } catch (err) {
+      console.warn("[PUSH-TAGS] setActivePath failed:", err.message);
+    }
     navigate(`/path/${pathId}/lesson/${lesson.id}`);
   };
 

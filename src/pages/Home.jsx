@@ -27,6 +27,7 @@ import { useUserStore } from "../store/useUserStore";
 import { useDailyQuestStore } from "../store/dailyQuestStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import { isPremiumOnlyPath } from "../store/premiumConfig";
+import { setActivePath } from "../services/pushTags";
 
 // Components
 import DailyQuestCard from "../components/dailyquest/DailyQuestCard";
@@ -187,6 +188,12 @@ export default function Home() {
       // Show premium paywall modal instead of navigating
       showModal(MODAL_TYPES.PURCHASE);
       return;
+    }
+    
+    try {
+      setActivePath(p.id);
+    } catch (err) {
+      console.warn("[PUSH-TAGS] setActivePath failed:", err.message);
     }
     
     navigate(`/path/${p.id}`);
