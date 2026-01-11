@@ -761,65 +761,6 @@ export default function App() {
         } catch (loginErr) {
           console.error("🔔 [OS-DEBUG] OneSignal.login() FAILED:", loginErr);
         }
-
-        // Register device with Edge Function
-        try {
-          const registerRes = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/register-device`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
-            },
-            body: JSON.stringify({
-              device_token: subscriptionId,
-              platform: platform
-            })
-          });
-          console.log("🔔 [OS-DEBUG] register-device response:", registerRes.status);
-        } catch (registerErr) {
-          console.error("🔔 [OS-DEBUG] register-device FAILED:", registerErr.message);
-        }
-
-        const optedIn = OneSignal.User?.pushSubscription?.optedIn || false;
-        const token = OneSignal.User?.pushSubscription?.token || null;
-        
-        console.log("🔔 [OS-DEBUG] After wait - subscriptionId:", subscriptionId, "optedIn:", optedIn, "token:", token);
-
-        // Log debug record to Supabase (ALWAYS, even on failure)
-        const debugRecord = {
-          user_id: auth.user.id,
-          platform: platform,
-          attempted_at: new Date().toISOString(),
-          has_subscription_id: !!subscriptionId,
-          subscription_id: subscriptionId
-        };
-        console.log("🔔 [OS-DEBUG] Inserting debug record:", JSON.stringify(debugRecord));
-        
-        supabase.from("onesignal_debug").insert(debugRecord).then(({ error }) => {
-          if (error) {
-            console.error("🔔 [OS-DEBUG] Debug insert failed:", error.message);
-          } else {
-            console.log("🔔 [OS-DEBUG] Debug record saved successfully");
-          }
-        });
-
-        // Save push token to database
-        const tokenPlatform = platform === "android" ? "android" : "ios";
-        console.log("🔔 [OS-DEBUG] Upserting push_tokens...");
-        const { error: upsertErr } = await supabase.from("push_tokens").upsert({
-          user_id: auth.user.id,
-          device_token: subscriptionId,
-          platform: tokenPlatform,
-          updated_at: new Date().toISOString(),
-        }, {
-          onConflict: "user_id,device_token"
-        });
-
-        if (upsertErr) {
-          console.error("🔔 [OS-DEBUG] push_tokens upsert FAILED:", upsertErr.message);
-        } else {
-          console.log("🔔 [OS-DEBUG] push_tokens upsert SUCCESS");
-        }
       } catch (err) {
         console.error("🔔 [OS-DEBUG] loginOneSignalUser() EXCEPTION:", err.message, err);
       }
