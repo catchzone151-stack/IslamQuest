@@ -9,6 +9,7 @@ import { getQuizForLesson } from "../data/quizEngine";
 import { logStreakEvent } from "../backend/streakLogs";
 import { logXpEvent } from "../backend/xpLogs";
 import { logPurchase } from "../backend/purchaseLogs";
+import { setPathStarted, setPathCompleted } from "../services/pushTags";
 
 const STORAGE_KEY = "islamQuestProgress_v4";
 
@@ -622,6 +623,10 @@ export const useProgressStore = create((set, get) => ({
     if (!payload) return;
     const { xp, coins } = payload;
     
+    // Check if this lesson was already passed (to avoid duplicate push tags)
+    const previousLessonState = get().lessonStates?.[pathId]?.[lessonId] || { passed: false };
+    const isFirstTimePass = passed && !previousLessonState.passed;
+    
     // Always record attempt in lessonStates (for tracking/analytics)
     set((state) => {
       const lessonStates = { ...(state.lessonStates || {}) };
@@ -664,6 +669,22 @@ export const useProgressStore = create((set, get) => ({
           : 0;
 
       get().setPathProgress(pathId, passedCount, path ? path.totalLessons : 0);
+
+      // Push tags: only on first-time pass to avoid duplicates
+      if (isFirstTimePass) {
+        try {
+          if (passedCount === 1) {
+            setPathStarted(pathId);
+            console.log("[PUSH-TAGS] setPathStarted called for path:", pathId);
+          }
+          if (path && passedCount === path.totalLessons && path.totalLessons > 0) {
+            setPathCompleted(pathId);
+            console.log("[PUSH-TAGS] setPathCompleted called for path:", pathId);
+          }
+        } catch (err) {
+          console.warn("[PUSH-TAGS] Path progress tag failed:", err.message);
+        }
+      }
 
       // Check if path is now completed
       if (path && passedCount === path.totalLessons && path.totalLessons > 0) {
