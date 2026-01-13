@@ -23,6 +23,7 @@ import OneSignal from "onesignal-cordova-plugin";
 import { createDailyLeaderboardSnapshot } from "./backend/leaderboardSnapshots";
 import { initDeepLinkListener } from "./utils/deepLinkHandler";
 import { initializeIAP, restorePurchases } from "./services/iapService";
+import { syncStreakTags } from "./services/pushTags";
 import { Capacitor } from "@capacitor/core";
 import { App as CapacitorApp } from "@capacitor/app";
 
@@ -632,6 +633,8 @@ export default function App() {
           .eq("id", auth.user.id);
 
         console.log("📍 App open tracked (profiles.updated_at updated)");
+        
+        syncStreakTags("app_open");
       } catch (err) {
         // Silent fail - not critical
         console.warn("Could not update profiles.updated_at:", err.message);

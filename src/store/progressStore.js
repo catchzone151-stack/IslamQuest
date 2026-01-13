@@ -9,7 +9,7 @@ import { getQuizForLesson } from "../data/quizEngine";
 import { logStreakEvent } from "../backend/streakLogs";
 import { logXpEvent } from "../backend/xpLogs";
 import { logPurchase } from "../backend/purchaseLogs";
-import { setPathStarted, setPathCompleted, setIqState } from "../services/pushTags";
+import { setPathStarted, setPathCompleted, setIqState, syncStreakTags } from "../services/pushTags";
 
 const STORAGE_KEY = "islamQuestProgress_v4";
 
@@ -303,11 +303,7 @@ export const useProgressStore = create((set, get) => ({
       get().calculateXPMultiplier();
       get().saveProgress();
       
-      try {
-        setIqState({ streakCount: newStreak, streakActive: true });
-      } catch (err) {
-        // Silent fail
-      }
+      syncStreakTags("streak_increment");
       
       // Log streak maintained
       (async () => {
@@ -328,11 +324,7 @@ export const useProgressStore = create((set, get) => ({
         get().calculateXPMultiplier();
         get().saveProgress();
         
-        try {
-          setIqState({ streakCount: 1, streakActive: true });
-        } catch (err) {
-          // Silent fail
-        }
+        syncStreakTags("streak_increment");
       } else {
         // Already counted today with active streak
         set({ 
@@ -351,11 +343,7 @@ export const useProgressStore = create((set, get) => ({
       get().calculateXPMultiplier();
       get().saveProgress();
       
-      try {
-        setIqState({ streakCount: 1, streakActive: true });
-      } catch (err) {
-        // Silent fail
-      }
+      syncStreakTags("streak_increment");
     }
   },
 
@@ -428,11 +416,7 @@ export const useProgressStore = create((set, get) => ({
     get().calculateXPMultiplier();
     get().saveProgress();
     
-    try {
-      setIqState({ streakCount: 0, streakActive: false });
-    } catch (err) {
-      // Silent fail
-    }
+    syncStreakTags("streak_broken");
     
     // Log streak break
     (async () => {
