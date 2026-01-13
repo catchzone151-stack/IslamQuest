@@ -18,6 +18,32 @@ export const setIqState = (updates) => {
   OneSignal.User.addTag("iq_state", value);
 };
 
+export const syncStreakTags = (reason = "unknown") => {
+  if (!isNative()) return;
+  
+  try {
+    const { useProgressStore } = require("../store/progressStore");
+    const state = useProgressStore.getState();
+    
+    const streakCount = state?.streak ?? 0;
+    const lastStudyDate = state?.lastStudyDate;
+    
+    const today = new Date().toDateString();
+    const yesterday = new Date(Date.now() - 86400000).toDateString();
+    const streakActive = lastStudyDate === today || lastStudyDate === yesterday;
+    
+    currentIqState = { ...currentIqState, streakCount, streakActive };
+    const { challengePending, challengeFrom } = currentIqState;
+    const value = `st=${streakCount}|sa=${streakActive ? 1 : 0}|cp=${challengePending ? 1 : 0}|cf=${challengeFrom || "none"}`;
+    
+    OneSignal.User.addTag("iq_state", value);
+    
+    console.log(`PUSH_TAG_SYNC [${reason}] active=${streakActive} count=${streakCount} sent=${value}`);
+  } catch (err) {
+    console.warn(`PUSH_TAG_SYNC [${reason}] failed:`, err.message);
+  }
+};
+
 export const setPathStarted = (pathId) => {
   if (!isNative()) return;
   OneSignal.User.addTag("path_state", `${pathId}:started`);
