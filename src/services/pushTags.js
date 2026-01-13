@@ -38,7 +38,7 @@ export const syncStreakTags = (reason = "unknown") => {
     
     OneSignal.User.addTag("iq_state", value);
     
-    console.log(`PUSH_TAG_SYNC [${reason}] active=${streakActive} count=${streakCount} sent=${value}`);
+    console.log(`PUSH_TAG_SYNC [${reason}] iq_state=${value}`);
   } catch (err) {
     console.warn(`PUSH_TAG_SYNC [${reason}] failed:`, err.message);
   }
