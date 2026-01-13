@@ -271,11 +271,17 @@ export const useProgressStore = create((set, get) => ({
     const today = new Date().toDateString();
     const { lastCompletedActivityDate, streak } = get();
 
+    console.log(`[STREAK] markDayComplete called: today=${today} lastActivity=${lastCompletedActivityDate} streak=${streak}`);
+
     // Already counted today (but allow restart if streak is 0 from skip/break)
-    if (lastCompletedActivityDate === today && streak > 0) return;
+    if (lastCompletedActivityDate === today && streak > 0) {
+      console.log(`[STREAK] Already counted today with active streak=${streak}, skipping`);
+      return;
+    }
 
     // First time user
     if (!lastCompletedActivityDate) {
+      console.log(`[STREAK] First time user, setting streak=1`);
       set({ 
         streak: 1,
         lastCompletedActivityDate: today,
@@ -283,6 +289,7 @@ export const useProgressStore = create((set, get) => ({
       });
       get().calculateXPMultiplier();
       get().saveProgress();
+      syncStreakTags("streak_increment");
       return;
     }
 
@@ -292,9 +299,12 @@ export const useProgressStore = create((set, get) => ({
     const diffTime = currentDate - lastDate;
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
+    console.log(`[STREAK] diffDays=${diffDays} (lastDate=${lastDate.toDateString()} → currentDate=${currentDate.toDateString()})`);
+
     // Consecutive day - increment streak
     if (diffDays === 1) {
       const newStreak = streak + 1;
+      console.log(`[STREAK] Consecutive day! Incrementing streak: ${streak} → ${newStreak}`);
       set({ 
         streak: newStreak,
         lastCompletedActivityDate: today,
@@ -316,6 +326,7 @@ export const useProgressStore = create((set, get) => ({
     } else if (diffDays === 0) {
       // Same day - check if streak needs to be initialized (from skip repair)
       if (streak === 0) {
+        console.log(`[STREAK] Same day but streak=0, initializing streak=1`);
         set({ 
           streak: 1,
           lastCompletedActivityDate: today,
@@ -326,6 +337,7 @@ export const useProgressStore = create((set, get) => ({
         
         syncStreakTags("streak_increment");
       } else {
+        console.log(`[STREAK] Same day, already counted, just updating dates`);
         // Already counted today with active streak
         set({ 
           lastCompletedActivityDate: today,
@@ -335,6 +347,7 @@ export const useProgressStore = create((set, get) => ({
       }
     } else {
       // Gap > 1 day - streak was broken, start fresh
+      console.log(`[STREAK] Gap of ${diffDays} days detected, resetting streak=1`);
       set({ 
         streak: 1,
         lastCompletedActivityDate: today,
