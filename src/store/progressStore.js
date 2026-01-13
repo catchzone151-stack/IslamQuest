@@ -716,6 +716,7 @@ export const useProgressStore = create((set, get) => ({
       get().unlockLesson(pathId, lessonId + 1);
       
       // 🛡️ Mark day as complete for streak tracking
+      console.log("[STREAK_TRIGGER] quiz_complete");
       get().markDayComplete();
       
       // 📚 Check and unlock Smart Revision if 25 lessons completed

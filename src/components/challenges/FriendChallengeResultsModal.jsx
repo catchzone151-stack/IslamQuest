@@ -38,6 +38,9 @@ export default function FriendChallengeResultsModal({
       await markResultViewed(challenge.id);
       if (rewards.xp > 0) addXP(rewards.xp);
       if (rewards.coins > 0) addCoins(rewards.coins);
+      
+      console.log("[STREAK_TRIGGER] friend_challenge_complete");
+      useProgressStore.getState().markDayComplete();
     } catch (err) {
       console.error("[ResultsModal] handleClose error:", err);
     }
@@ -50,6 +53,9 @@ export default function FriendChallengeResultsModal({
       await markResultViewed(challenge.id);
       if (rewards.xp > 0) addXP(rewards.xp);
       if (rewards.coins > 0) addCoins(rewards.coins);
+      
+      console.log("[STREAK_TRIGGER] friend_challenge_complete");
+      useProgressStore.getState().markDayComplete();
     } catch (err) {
       console.error("[ResultsModal] handleChallengeAgain error:", err);
     }

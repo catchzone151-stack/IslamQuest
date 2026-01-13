@@ -379,6 +379,7 @@ export const useChallengeStore = create((set, get) => ({
       challengeHistory: [...state.challengeHistory, updatedChallenge]
     }));
     get().saveToStorage();
+    console.log("[STREAK_TRIGGER] solo_challenge_complete");
     useProgressStore.getState().markDayComplete();
     
     // Log challenge result
@@ -424,6 +425,7 @@ export const useChallengeStore = create((set, get) => ({
       bossAttempts: [...state.bossAttempts, attempt]
     }));
     get().saveToStorage();
+    console.log("[STREAK_TRIGGER] boss_challenge_complete");
     useProgressStore.getState().markDayComplete();
     
     return { success: true, attempt, rewards };
@@ -512,6 +514,7 @@ export const useChallengeStore = create((set, get) => ({
       }
     }
     
+    console.log("[STREAK_TRIGGER] solo_challenge_finalized");
     useProgressStore.getState().markDayComplete();
 
     set(state => ({
