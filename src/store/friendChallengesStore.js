@@ -169,12 +169,11 @@ export const useFriendChallengesStore = create((set, get) => ({
       try {
         if (pendingIncoming.length > 0) {
           const firstPending = pendingIncoming[0];
+          console.log("[CHALLENGE_PENDING] set (incoming challenges:", pendingIncoming.length, ")");
           setIqState({ challengePending: true, challengeFrom: firstPending.sender_id });
-        } else {
-          setIqState({ challengePending: false, challengeFrom: null });
         }
       } catch (err) {
-        // Silent fail
+        // Silent fail for OneSignal tag updates
       }
       
     } catch (error) {
@@ -334,6 +333,16 @@ export const useFriendChallengesStore = create((set, get) => ({
       await get().loadChallenges();
       
       console.log("[FriendChallenges] Challenge accepted successfully:", challengeId, "Status:", data.status);
+      
+      // Clear challenge pending only if no more pending incoming challenges
+      const { pendingIncoming } = get();
+      if (pendingIncoming.length === 0) {
+        console.log("[CHALLENGE_PENDING] cleared: accepted");
+        setIqState({ challengePending: false, challengeFrom: null });
+      } else {
+        console.log("[CHALLENGE_PENDING] still pending:", pendingIncoming.length, "remaining");
+      }
+      
       return { success: true, challenge: data };
     } catch (error) {
       console.error("[FriendChallenges] Accept error:", error);
@@ -358,6 +367,16 @@ export const useFriendChallengesStore = create((set, get) => ({
       await get().loadChallenges();
       
       console.log("[FriendChallenges] Challenge declined:", challengeId);
+      
+      // Clear challenge pending only if no more pending incoming challenges
+      const { pendingIncoming } = get();
+      if (pendingIncoming.length === 0) {
+        console.log("[CHALLENGE_PENDING] cleared: declined");
+        setIqState({ challengePending: false, challengeFrom: null });
+      } else {
+        console.log("[CHALLENGE_PENDING] still pending:", pendingIncoming.length, "remaining");
+      }
+      
       return { success: true };
     } catch (error) {
       console.error("[FriendChallenges] Decline error:", error);
@@ -382,6 +401,16 @@ export const useFriendChallengesStore = create((set, get) => ({
       await get().loadChallenges();
       
       console.log("[FriendChallenges] Challenge cancelled:", challengeId);
+      
+      // Clear challenge pending only if no more pending incoming challenges (for receiver)
+      const { pendingIncoming } = get();
+      if (pendingIncoming.length === 0) {
+        console.log("[CHALLENGE_PENDING] cleared: cancelled");
+        setIqState({ challengePending: false, challengeFrom: null });
+      } else {
+        console.log("[CHALLENGE_PENDING] still pending:", pendingIncoming.length, "remaining");
+      }
+      
       return { success: true };
     } catch (error) {
       console.error("[FriendChallenges] Cancel error:", error);
