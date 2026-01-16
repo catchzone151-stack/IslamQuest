@@ -12,10 +12,15 @@ let currentIqState = {
 
 export const setIqState = (updates) => {
   if (!isNative()) return;
+  const prevChallengePending = currentIqState.challengePending;
   currentIqState = { ...currentIqState, ...updates };
   const { streakCount, streakActive, challengePending, challengeFrom } = currentIqState;
   const value = `st=${streakCount}|sa=${streakActive ? 1 : 0}|cp=${challengePending ? 1 : 0}|cf=${challengeFrom || "none"}`;
   OneSignal.User.addTag("iq_state", value);
+  
+  if (updates.challengePending !== undefined && updates.challengePending !== prevChallengePending) {
+    console.log(`[PUSH_TAG_SYNC] challenge pending=${challengePending ? 1 : 0}`);
+  }
 };
 
 export const syncStreakTags = (reason = "unknown") => {
@@ -32,6 +37,7 @@ export const syncStreakTags = (reason = "unknown") => {
     const yesterday = new Date(Date.now() - 86400000).toDateString();
     const streakActive = lastStudyDate === today || lastStudyDate === yesterday;
     
+    const prevStreakActive = currentIqState.streakActive;
     currentIqState = { ...currentIqState, streakCount, streakActive };
     const { challengePending, challengeFrom } = currentIqState;
     const value = `st=${streakCount}|sa=${streakActive ? 1 : 0}|cp=${challengePending ? 1 : 0}|cf=${challengeFrom || "none"}`;
@@ -39,6 +45,10 @@ export const syncStreakTags = (reason = "unknown") => {
     OneSignal.User.addTag("iq_state", value);
     
     console.log(`PUSH_TAG_SYNC [${reason}] iq_state=${value}`);
+    
+    if (streakActive !== prevStreakActive) {
+      console.log(`[PUSH_TAG_SYNC] streak sa=${streakActive ? 1 : 0}`);
+    }
   } catch (err) {
     console.warn(`PUSH_TAG_SYNC [${reason}] failed:`, err.message);
   }
