@@ -267,21 +267,21 @@ export const useProgressStore = create((set, get) => ({
 
   // 🛡️ Mark day as complete (unified tracking for all activities)
   // Called from: applyQuizResults, daily quest completion, challenge completion, event completion
+  // Model: today→no change, yesterday→+1, older/null→=1
   markDayComplete: () => {
     const today = new Date().toDateString();
     const { lastCompletedActivityDate, streak } = get();
 
-    console.log(`[STREAK] markDayComplete called: today=${today} lastActivity=${lastCompletedActivityDate} streak=${streak}`);
+    console.log(`[STREAK] before update: streak=${streak} lastActivity=${lastCompletedActivityDate}`);
 
-    // Already counted today (but allow restart if streak is 0 from skip/break)
-    if (lastCompletedActivityDate === today && streak > 0) {
-      console.log(`[STREAK] Already counted today with active streak=${streak}, skipping`);
+    // Case 1: lastActivityDate === today → no change
+    if (lastCompletedActivityDate === today) {
+      console.log(`[STREAK] after update: no change (already today)`);
       return;
     }
 
-    // First time user
+    // Case 2: lastActivityDate is null → streakCount = 1
     if (!lastCompletedActivityDate) {
-      console.log(`[STREAK] First time user, setting streak=1`);
       set({ 
         streak: 1,
         lastCompletedActivityDate: today,
@@ -290,6 +290,7 @@ export const useProgressStore = create((set, get) => ({
       get().calculateXPMultiplier();
       get().saveProgress();
       syncStreakTags("streak_increment");
+      console.log(`[STREAK] after update: streak=1 (first activity)`);
       return;
     }
 
@@ -299,12 +300,9 @@ export const useProgressStore = create((set, get) => ({
     const diffTime = currentDate - lastDate;
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-    console.log(`[STREAK] diffDays=${diffDays} (lastDate=${lastDate.toDateString()} → currentDate=${currentDate.toDateString()})`);
-
-    // Consecutive day - increment streak
+    // Case 3: lastActivityDate === yesterday → streakCount += 1
     if (diffDays === 1) {
       const newStreak = streak + 1;
-      console.log(`[STREAK] Consecutive day! Incrementing streak: ${streak} → ${newStreak}`);
       set({ 
         streak: newStreak,
         lastCompletedActivityDate: today,
@@ -312,8 +310,8 @@ export const useProgressStore = create((set, get) => ({
       });
       get().calculateXPMultiplier();
       get().saveProgress();
-      
       syncStreakTags("streak_increment");
+      console.log(`[STREAK] after update: streak=${newStreak} (consecutive day)`);
       
       // Log streak maintained
       (async () => {
@@ -323,31 +321,8 @@ export const useProgressStore = create((set, get) => ({
           logStreakEvent(userId, true);
         }
       })();
-    } else if (diffDays === 0) {
-      // Same day - check if streak needs to be initialized (from skip repair)
-      if (streak === 0) {
-        console.log(`[STREAK] Same day but streak=0, initializing streak=1`);
-        set({ 
-          streak: 1,
-          lastCompletedActivityDate: today,
-          lastStudyDate: today,
-        });
-        get().calculateXPMultiplier();
-        get().saveProgress();
-        
-        syncStreakTags("streak_increment");
-      } else {
-        console.log(`[STREAK] Same day, already counted, just updating dates`);
-        // Already counted today with active streak
-        set({ 
-          lastCompletedActivityDate: today,
-          lastStudyDate: today,
-        });
-        get().saveProgress();
-      }
     } else {
-      // Gap > 1 day - streak was broken, start fresh
-      console.log(`[STREAK] Gap of ${diffDays} days detected, resetting streak=1`);
+      // Case 4: lastActivityDate < yesterday → streakCount = 1
       set({ 
         streak: 1,
         lastCompletedActivityDate: today,
@@ -355,8 +330,8 @@ export const useProgressStore = create((set, get) => ({
       });
       get().calculateXPMultiplier();
       get().saveProgress();
-      
       syncStreakTags("streak_increment");
+      console.log(`[STREAK] after update: streak=1 (gap of ${diffDays} days)`);
     }
   },
 
