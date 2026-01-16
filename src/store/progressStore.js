@@ -616,6 +616,7 @@ export const useProgressStore = create((set, get) => ({
 
   // ✅ Quiz results
   applyQuizResults: (payload, pathId, lessonId, passed = true, score = null) => {
+    console.log("[STREAK_TRACE] lesson_complete reached", { pathId, lessonId, passed, score });
     if (!payload) return;
     const { xp, coins } = payload;
     
@@ -640,6 +641,9 @@ export const useProgressStore = create((set, get) => ({
     });
     
     // Only award XP/coins, update progress, and unlock if passed
+    if (!passed) {
+      console.log("[STREAK_TRACE] quiz NOT passed - markDayComplete will NOT be called");
+    }
     if (passed) {
       if (xp) get().addXP(xp);
       if (coins) get().addCoins(coins);
@@ -692,7 +696,9 @@ export const useProgressStore = create((set, get) => ({
       
       // 🛡️ Mark day as complete for streak tracking
       console.log("[STREAK_TRIGGER] quiz_complete");
+      console.log("[STREAK_TRACE] calling markDayComplete");
       get().markDayComplete();
+      console.log("[STREAK_TRACE] markDayComplete finished (streak=" + get().streak + ")");
       
       // 📚 Check and unlock Smart Revision if 25 lessons completed
       get().checkAndUnlockSmartRevision();
