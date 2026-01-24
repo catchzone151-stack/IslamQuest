@@ -1100,6 +1100,7 @@ export const useProgressStore = create((set, get) => ({
       xp: state.xp,
       coins: state.coins,
       streak: state.streak,
+      last_completed_activity_date: state.lastCompletedActivityDate,
       premium: state.premium,
       shield_count: state.shieldCount,
       // Encrypt lesson progress data for cloud storage
@@ -1150,6 +1151,7 @@ export const useProgressStore = create((set, get) => ({
       xp: data.xp ?? get().xp,
       coins: data.coins ?? get().coins,
       streak: data.streak ?? get().streak,
+      lastCompletedActivityDate: data.last_completed_activity_date ?? get().lastCompletedActivityDate,
       shieldCount: data.shieldCount ?? get().shieldCount,
       premium: finalPremium,
       hasPremium: finalPremium,
@@ -1305,6 +1307,7 @@ export const useProgressStore = create((set, get) => ({
         xp: data.xp ?? get().xp,
         coins: data.coins ?? get().coins,
         streak: data.streak ?? get().streak,
+        lastCompletedActivityDate: data.last_completed_activity_date ?? get().lastCompletedActivityDate,
 
         premium: data.premium ?? false,
         hasPremium: data.premium ?? false,
