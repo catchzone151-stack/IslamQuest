@@ -289,6 +289,7 @@ export const useProgressStore = create((set, get) => ({
       });
       get().calculateXPMultiplier();
       get().saveProgress();
+      setTimeout(() => get().syncToSupabase(), 50);
       syncStreakTags("streak_increment");
       console.log(`[STREAK] after update: streak=1 (first activity)`);
       return;
@@ -310,6 +311,7 @@ export const useProgressStore = create((set, get) => ({
       });
       get().calculateXPMultiplier();
       get().saveProgress();
+      setTimeout(() => get().syncToSupabase(), 50);
       syncStreakTags("streak_increment");
       console.log(`[STREAK] after update: streak=${newStreak} (consecutive day)`);
       
@@ -330,6 +332,7 @@ export const useProgressStore = create((set, get) => ({
       });
       get().calculateXPMultiplier();
       get().saveProgress();
+      setTimeout(() => get().syncToSupabase(), 50);
       syncStreakTags("streak_increment");
       console.log(`[STREAK] after update: streak=1 (gap of ${diffDays} days)`);
     }
@@ -494,7 +497,7 @@ export const useProgressStore = create((set, get) => ({
           coins: coins - REPAIR_COST,
           shield_count: newShieldCount,
           last_completed_activity_date: today,
-        }).eq("id", userId);
+        }).eq("user_id", userId);
         console.log("✅ Streak repaired and synced to cloud:", restoredStreak);
       } catch (err) {
         console.error("Failed to sync repaired streak to cloud:", err);
@@ -1152,7 +1155,7 @@ export const useProgressStore = create((set, get) => ({
       coins: data.coins ?? get().coins,
       streak: data.streak ?? get().streak,
       lastCompletedActivityDate: data.last_completed_activity_date ?? get().lastCompletedActivityDate,
-      shieldCount: data.shieldCount ?? get().shieldCount,
+      shieldCount: data.shield_count ?? get().shieldCount,
       premium: finalPremium,
       hasPremium: finalPremium,
       premiumStatus: finalPremium ? (get().premiumStatus !== "free" ? get().premiumStatus : "individual") : "free",
