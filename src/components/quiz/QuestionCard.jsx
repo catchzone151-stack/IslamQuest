@@ -18,6 +18,8 @@ const QuestionCard = React.memo(({
     textAlign: "center",
     color: "#ffffff",
     paddingTop: "20px",
+    paddingLeft: "16px",
+    paddingRight: "16px",
   };
 
   const questionMeta = {

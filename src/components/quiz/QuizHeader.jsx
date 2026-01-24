@@ -5,11 +5,7 @@ const QuizHeader = ({ currentQ, totalQ, mascotMood, isQuizDone = false, progress
   const mascotImg = progressMascot || mascotQuizStates[mascotMood] || mascotQuizStates.start;
 
   return (
-    <div className="flex items-center justify-between px-4 pt-4 pb-3">
-      <div>
-        <h2 className="text-xl font-semibold text-white">Quiz</h2>
-      </div>
-
+    <div className="flex items-center justify-end px-4 pt-4 pb-3">
       {!isQuizDone && (
         <img
           src={mascotImg}
