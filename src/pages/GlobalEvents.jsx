@@ -82,8 +82,8 @@ export default function GlobalEvents() {
       showModal(MODAL_TYPES.PURCHASE);
       return;
     }
-    // Show Ramadan coming soon modal
-    showModal(MODAL_TYPES.RAMADAN_COMING_SOON);
+    // Show Eid coming soon modal
+    showModal(MODAL_TYPES.EID_COMING_SOON);
   };
 
   return (

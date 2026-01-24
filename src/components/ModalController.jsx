@@ -625,7 +625,7 @@ export default function ModalController() {
           />
         );
 
-      case MODAL_TYPES.RAMADAN_COMING_SOON:
+      case MODAL_TYPES.EID_COMING_SOON:
         return (
           <div
             style={{
@@ -673,7 +673,7 @@ export default function ModalController() {
                   margin: '0 0 12px 0',
                 }}
               >
-                Launching Ramadan 2026!
+                Launching Eid 2026!
               </h2>
 
               <p

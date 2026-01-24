@@ -59,8 +59,8 @@ export default function Home() {
   const tapTimeoutRef = useRef(null);
   const sparkleTimeoutRef = useRef(null);
 
-  // Ramadan countdown state (3-segment: months/weeks/days)
-  const [ramadanStats, setRamadanStats] = useState({
+  // Eid countdown state (3-segment: months/weeks/days)
+  const [eidStats, setEidStats] = useState({
     months: "--",
     weeks: "--",
     days: "--",
@@ -101,7 +101,7 @@ export default function Home() {
     }
   }, [needsRepairPrompt, showModal]);
 
-  // Ramadan countdown timer (updates every minute to GMT)
+  // Eid countdown timer (updates every minute to GMT)
   useEffect(() => {
     function calculateDiff() {
       // Target: 18 February 2026 00:00 GMT
@@ -111,7 +111,7 @@ export default function Home() {
       const diff = target.getTime() - now.getTime();
 
       if (diff <= 0) {
-        setRamadanStats({ months: "00", weeks: "00", days: "00" });
+        setEidStats({ months: "00", weeks: "00", days: "00" });
         return;
       }
 
@@ -123,7 +123,7 @@ export default function Home() {
       const weeks = Math.floor(remainingAfterMonths / 7);
       const days = Math.floor(remainingAfterMonths % 7);
 
-      setRamadanStats({
+      setEidStats({
         months: months.toString().padStart(2, "0"),
         weeks: weeks.toString().padStart(2, "0"),
         days: days.toString().padStart(2, "0"),
@@ -730,7 +730,7 @@ export default function Home() {
 
       {/*
        * ===============================================================
-       * RAMADAN COUNTDOWN WIDGET (3-Segment Pill) / GLOBAL EVENTS
+       * EID COUNTDOWN WIDGET (3-Segment Pill) / GLOBAL EVENTS
        * ===============================================================
        */}
       <div
@@ -740,7 +740,7 @@ export default function Home() {
             showModal(MODAL_TYPES.PURCHASE);
             return;
           }
-          showModal(MODAL_TYPES.RAMADAN_COMING_SOON);
+          showModal(MODAL_TYPES.EID_COMING_SOON);
         }}
         style={{
           margin: "10px 16px 0 16px",
@@ -765,7 +765,7 @@ export default function Home() {
             letterSpacing: "0.3px",
           }}
         >
-          🌙 Ramadan Countdown
+          🌙 Eid Countdown
         </div>
 
         {/* Segmented Pill Bar */}
@@ -777,9 +777,9 @@ export default function Home() {
           }}
         >
           {[
-            { value: ramadanStats.months, label: "Months" },
-            { value: ramadanStats.weeks, label: "Weeks" },
-            { value: ramadanStats.days, label: "Days" },
+            { value: eidStats.months, label: "Months" },
+            { value: eidStats.weeks, label: "Weeks" },
+            { value: eidStats.days, label: "Days" },
           ].map((seg, i) => (
             <div
               key={i}
