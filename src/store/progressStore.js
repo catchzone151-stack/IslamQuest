@@ -1214,7 +1214,10 @@ export const useProgressStore = create((set, get) => ({
         get().setLastUpdatedAt(now);
         console.log("[IQ_CLOUD_TRACE] UPDATE SUCCESS");
       } else {
-        console.log("[IQ_CLOUD_TRACE] UPDATE ERROR:", error);
+        console.log("[IQ_CLOUD_TRACE] UPDATE ERROR FULL:", JSON.stringify(error, null, 2));
+        console.log("[IQ_CLOUD_TRACE] ERROR MESSAGE:", error?.message);
+        console.log("[IQ_CLOUD_TRACE] ERROR DETAILS:", error?.details);
+        console.log("[IQ_CLOUD_TRACE] ERROR HINT:", error?.hint);
       }
 
     } catch (err) {
