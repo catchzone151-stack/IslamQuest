@@ -1,4 +1,5 @@
 console.log("🔥🔥🔥 APP BOOTED - JS RUNNING 🔥🔥🔥");
+console.log('[IQ_BUILD_TEST]', 'BUILD_PIPELINE_VERIFIED');
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
