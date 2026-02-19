@@ -1177,6 +1177,7 @@ export const useProgressStore = create((set, get) => ({
   },
 
   syncToSupabase: async () => {
+    console.log('[IQ_CLOUD_TRACE]', 'SYNC_TO_SUPABASE_ENTER');
     try {
       const user = await supabase.auth.getUser();
       if (!user || !user.data || !user.data.user) return;
@@ -1188,9 +1189,18 @@ export const useProgressStore = create((set, get) => ({
       const now = Date.now();
 
       // avoid excessive calls
-      if (now - last < 5000) return;
+      console.log('[IQ_CLOUD_TRACE]', 'THROTTLE_CHECK', {
+        now,
+        last,
+        diff: now - last
+      });
+      if (now - last < 5000) {
+        console.log('[IQ_CLOUD_TRACE]', 'THROTTLED_SKIP');
+        return;
+      }
 
       // write
+      console.log('[IQ_CLOUD_TRACE]', 'CLOUD_UPDATE_ATTEMPT', payload);
       const { error } = await supabase
         .from("profiles")
         .update(payload)
@@ -1198,9 +1208,9 @@ export const useProgressStore = create((set, get) => ({
 
       if (!error) {
         get().setLastUpdatedAt(now);
-        console.log("✅ Synced to Supabase");
+        console.log('[IQ_CLOUD_TRACE]', 'CLOUD_UPDATE_SUCCESS', payload.streak);
       } else {
-        console.log("❌ Sync error:", error);
+        console.log('[IQ_CLOUD_TRACE]', 'CLOUD_UPDATE_ERROR', error);
       }
 
     } catch (err) {
