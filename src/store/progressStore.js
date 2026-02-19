@@ -1180,9 +1180,10 @@ export const useProgressStore = create((set, get) => ({
   },
 
   syncToSupabase: async () => {
-    console.log('[IQ_CLOUD_TRACE]', 'SYNC_TO_SUPABASE_ENTER');
+    console.log("[IQ_CLOUD_TRACE] syncToSupabase CALLED");
     try {
       const user = await supabase.auth.getUser();
+      console.log("[IQ_CLOUD_TRACE] user:", user);
       if (!user || !user.data || !user.data.user) return;
 
       const userId = user.data.user.id;
@@ -1203,7 +1204,7 @@ export const useProgressStore = create((set, get) => ({
       }
 
       // write
-      console.log('[IQ_CLOUD_TRACE]', 'CLOUD_UPDATE_ATTEMPT', payload);
+      console.log("[IQ_CLOUD_TRACE] payload:", payload);
       const { error } = await supabase
         .from("profiles")
         .update(payload)
@@ -1211,9 +1212,9 @@ export const useProgressStore = create((set, get) => ({
 
       if (!error) {
         get().setLastUpdatedAt(now);
-        console.log('[IQ_CLOUD_TRACE]', 'CLOUD_UPDATE_SUCCESS', payload.streak);
+        console.log("[IQ_CLOUD_TRACE] UPDATE SUCCESS");
       } else {
-        console.log('[IQ_CLOUD_TRACE]', 'CLOUD_UPDATE_ERROR', error);
+        console.log("[IQ_CLOUD_TRACE] UPDATE ERROR:", error);
       }
 
     } catch (err) {
