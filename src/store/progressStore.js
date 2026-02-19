@@ -12,6 +12,7 @@ import { logPurchase } from "../backend/purchaseLogs";
 import { setPathStarted, setPathCompleted, setIqState, syncStreakTags } from "../services/pushTags";
 
 const STORAGE_KEY = "islamQuestProgress_v4";
+const STREAK_TRACE = '[IQ_STREAK_TRACE]';
 
 const DEFAULT_PATHS = [
   { id: 1, title: "Names of Allah", progress: 0, totalLessons: 104, completedLessons: 0, status: "available" },
@@ -619,7 +620,7 @@ export const useProgressStore = create((set, get) => ({
 
   // ✅ Quiz results
   applyQuizResults: (payload, pathId, lessonId, passed = true, score = null) => {
-    console.log("[STREAK_TRACE] lesson_complete reached", { pathId, lessonId, passed, score });
+    console.log(STREAK_TRACE, 'LESSON_COMPLETE_SUCCESS', { lessonId, ts: new Date().toISOString() });
     if (!payload) return;
     const { xp, coins } = payload;
     
@@ -645,7 +646,7 @@ export const useProgressStore = create((set, get) => ({
     
     // Only award XP/coins, update progress, and unlock if passed
     if (!passed) {
-      console.log("[STREAK_TRACE] quiz NOT passed - markDayComplete will NOT be called");
+      console.log(STREAK_TRACE, 'QUIZ_NOT_PASSED - markDayComplete will NOT be called');
     }
     if (passed) {
       if (xp) get().addXP(xp);
@@ -699,9 +700,9 @@ export const useProgressStore = create((set, get) => ({
       
       // 🛡️ Mark day as complete for streak tracking
       console.log("[STREAK_TRIGGER] quiz_complete");
-      console.log("[STREAK_TRACE] calling markDayComplete");
+      console.log(STREAK_TRACE, 'ABOUT_TO_CALL_markDayComplete');
       get().markDayComplete();
-      console.log("[STREAK_TRACE] markDayComplete finished (streak=" + get().streak + ")");
+      console.log(STREAK_TRACE, 'RETURNED_FROM_markDayComplete');
       
       // 📚 Check and unlock Smart Revision if 25 lessons completed
       get().checkAndUnlockSmartRevision();
@@ -1150,6 +1151,13 @@ export const useProgressStore = create((set, get) => ({
       // Ignore parse errors
     }
     
+    console.log(STREAK_TRACE, 'REHYDRATE_APPLY', {
+      cloudCount: data.streak,
+      cloudLastActiveAt: data.last_completed_activity_date,
+      localCount: get().streak,
+      localLastActiveAt: get().lastCompletedActivityDate,
+      ts: new Date().toISOString()
+    });
     set({
       xp: data.xp ?? get().xp,
       coins: data.coins ?? get().coins,
@@ -1339,6 +1347,13 @@ export const useProgressStore = create((set, get) => ({
       }
 
       // Apply restored state
+      console.log(STREAK_TRACE, 'REHYDRATE_APPLY', {
+        cloudCount: data.streak,
+        cloudLastActiveAt: data.last_completed_activity_date,
+        localCount: get().streak,
+        localLastActiveAt: get().lastCompletedActivityDate,
+        ts: new Date().toISOString()
+      });
       set(restored);
       get().saveProgress();
 
