@@ -290,6 +290,7 @@ export const useProgressStore = create((set, get) => ({
       });
       get().calculateXPMultiplier();
       get().saveProgress();
+      console.log('[IQ_FLOW_TRACE]', 'CALLING_SYNC_TO_SUPABASE');
       setTimeout(() => get().syncToSupabase(), 50);
       syncStreakTags("streak_increment");
       console.log(`[STREAK] after update: streak=1 (first activity)`);
@@ -312,6 +313,7 @@ export const useProgressStore = create((set, get) => ({
       });
       get().calculateXPMultiplier();
       get().saveProgress();
+      console.log('[IQ_FLOW_TRACE]', 'CALLING_SYNC_TO_SUPABASE');
       setTimeout(() => get().syncToSupabase(), 50);
       syncStreakTags("streak_increment");
       console.log(`[STREAK] after update: streak=${newStreak} (consecutive day)`);
@@ -333,6 +335,7 @@ export const useProgressStore = create((set, get) => ({
       });
       get().calculateXPMultiplier();
       get().saveProgress();
+      console.log('[IQ_FLOW_TRACE]', 'CALLING_SYNC_TO_SUPABASE');
       setTimeout(() => get().syncToSupabase(), 50);
       syncStreakTags("streak_increment");
       console.log(`[STREAK] after update: streak=1 (gap of ${diffDays} days)`);
