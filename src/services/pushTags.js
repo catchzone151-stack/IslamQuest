@@ -17,6 +17,10 @@ export const setIqState = (updates) => {
   const { streakCount, streakActive, challengePending, challengeFrom } = currentIqState;
   const value = `st=${streakCount}|sa=${streakActive ? 1 : 0}|cp=${challengePending ? 1 : 0}|cf=${challengeFrom || "none"}`;
   OneSignal.User.addTag("iq_state", value);
+  console.log('[IQ_PUSH_TRACE]', 'IQ_STATE_SENT', {
+    iq_state: value,
+    ts: new Date().toISOString()
+  });
   
   if (updates.challengePending !== undefined && updates.challengePending !== prevChallengePending) {
     console.log(`[PUSH_TAG_SYNC] challenge pending=${challengePending ? 1 : 0}`);
@@ -43,6 +47,10 @@ export const syncStreakTags = (reason = "unknown") => {
     const value = `st=${streakCount}|sa=${streakActive ? 1 : 0}|cp=${challengePending ? 1 : 0}|cf=${challengeFrom || "none"}`;
     
     OneSignal.User.addTag("iq_state", value);
+    console.log('[IQ_PUSH_TRACE]', 'IQ_STATE_SENT', {
+      iq_state: value,
+      ts: new Date().toISOString()
+    });
     
     console.log(`PUSH_TAG_SYNC [${reason}] iq_state=${value}`);
     
