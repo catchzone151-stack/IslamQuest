@@ -1,0 +1,49 @@
+GOAL: Restore the streak system to a simple, single-source-of-truth model using ONLY existing profiles.streak and profiles.last_streak_date (or the existing streak date column). Remove dependency on profiles.last_completed_activity_date entirely (keep the DB column for now if needed, but code must not read/write it).
+
+CONSTRAINTS:
+
+Do NOT change OneSignal tag formats.
+
+Keep changes minimal and reversible.
+
+Must work on Android device builds (console logs visible).
+
+TASKS:
+
+Trace the current streak pipeline end-to-end from “user completes a lesson” → the function that should trigger streak → local state update → syncToSupabase() → Supabase profiles row updated.
+
+Confirm whether markDayComplete() is only called when a quiz is PASSED. If so, implement “meaningful activity” as:
+
+quiz passed OR lesson completion event (whatever your app considers “done”).
+Ensure streak triggers on that event (without double-counting in the same day).
+
+Refactor streak logic to use only:
+
+streak (int)
+
+last_streak_date (date or ISO string)
+Eliminate lastCompletedActivityDate and any mapping to last_completed_activity_date.
+
+Fix any race/overwrite bug: if cloud sync loads streak=0 after local increment, add a merge guard so the newer state wins (use updated_at or an in-memory “localLastUpdatedAt” to prevent regressions).
+
+Ensure serializeForSupabase() includes the updated streak and last_streak_date. Remove last_completed_activity_date from the payload.
+
+Add very explicit logs (Android-visible) with a single tag STREAK_TRACE at these points:
+
+“MEANINGFUL_ACTIVITY_DETECTED” (include activity type)
+
+“STREAK_BEFORE” / “STREAK_AFTER” (include streak + last_streak_date)
+
+“SYNC_PAYLOAD_STREAK” (log exact payload fields for streak + last_streak_date)
+
+“CLOUD_MERGE_DECISION” (log why local/cloud won)
+
+Provide a 3-step manual test script I can follow on device to verify:
+
+streak increments from 0→1 on first meaningful activity
+
+does NOT increment again same day
+
+increments next day (don’t require manual time travel; just explain how you simulate next day safely if needed)
+
+DELIVERABLE: Commit the code changes and tell me exactly which files changed + where to look in Logcat (STREAK_TRACE only).

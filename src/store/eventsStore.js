@@ -199,7 +199,7 @@ export const useEventsStore = create(
             loading: false
           }));
           
-          console.log("[STREAK_TRIGGER] event_complete_cloud");
+          console.log("[IQ_STREAK_TRACE] MEANINGFUL_ACTIVITY_DETECTED", { source: "event_complete_cloud" });
           useProgressStore.getState().markDayComplete();
           
           return { success: true, entry: data, provisionalRank };
@@ -470,7 +470,7 @@ export const useEventsStore = create(
       enterEvent: (eventId, score, answers, completionTime = null) => {
         const { currentWeekId, weeklyEntries } = get();
         const provisionalRank = Math.floor(Math.random() * 50) + 1;
-        console.log("[STREAK_TRIGGER] event_complete");
+        console.log("[IQ_STREAK_TRACE] MEANINGFUL_ACTIVITY_DETECTED", { source: "event_complete" });
         useProgressStore.getState().markDayComplete();
         set({
           weeklyEntries: {

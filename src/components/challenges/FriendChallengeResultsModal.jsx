@@ -39,7 +39,7 @@ export default function FriendChallengeResultsModal({
       if (rewards.xp > 0) addXP(rewards.xp);
       if (rewards.coins > 0) addCoins(rewards.coins);
       
-      console.log("[STREAK_TRIGGER] friend_challenge_complete");
+      console.log("[IQ_STREAK_TRACE] MEANINGFUL_ACTIVITY_DETECTED", { source: "friend_challenge_complete" });
       useProgressStore.getState().markDayComplete();
     } catch (err) {
       console.error("[ResultsModal] handleClose error:", err);
@@ -54,7 +54,7 @@ export default function FriendChallengeResultsModal({
       if (rewards.xp > 0) addXP(rewards.xp);
       if (rewards.coins > 0) addCoins(rewards.coins);
       
-      console.log("[STREAK_TRIGGER] friend_challenge_complete");
+      console.log("[IQ_STREAK_TRACE] MEANINGFUL_ACTIVITY_DETECTED", { source: "friend_challenge_again" });
       useProgressStore.getState().markDayComplete();
     } catch (err) {
       console.error("[ResultsModal] handleChallengeAgain error:", err);

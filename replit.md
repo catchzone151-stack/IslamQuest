@@ -25,6 +25,8 @@ The application offers 14 learning paths with lessons and quizzes derived from Q
 
 **Supabase Integration**: Silent account creation on first launch with permanent Supabase UID. `progressStore` automatically syncs to Supabase cloud with throttling and AES encryption. Cloud data is restored if newer on app start.
 
+**Streak System (Feb 2026 Refactor)**: Local state uses `lastStreakDate` + `streak` fields (renamed from `lastCompletedActivityDate`). A `_localStreakTs` timestamp tracks when the local streak was last mutated. Cloud sync uses a merge guard: if `_localStreakTs > cloudUpdatedAt`, local streak data is preserved regardless of cloud values. The DB column remains `last_completed_activity_date` for backward compatibility. All streak mutations set `_localStreakTs = Date.now()`. Trace logs use `[IQ_STREAK_TRACE]` prefix with events: `MEANINGFUL_ACTIVITY_DETECTED`, `STREAK_BEFORE/AFTER`, `SYNC_PAYLOAD_STREAK`, `CLOUD_MERGE_DECISION`. Vite `drop_console` is disabled to allow trace logs in production builds.
+
 **Email/Password Authentication System**: A comprehensive email/password authentication system, including email confirmation and password reset. The authentication flow is streamlined from `Bismillah` to `Home`, with deep linking for native app callbacks. A consolidated single-page signup simplifies onboarding. `useDataPreloader` ensures instant data loading before navigating to the Home screen.
 
 **Challenge System**: Supports both Solo/Boss Challenges (local, single-player) and Friend Challenges (real-time, Supabase-backed multiplayer). Friend challenges use Realtime subscriptions for synchronization and offer four distinct game modes.

@@ -12,7 +12,7 @@ import { logPurchase } from "../backend/purchaseLogs";
 import { setPathStarted, setPathCompleted, setIqState, syncStreakTags } from "../services/pushTags";
 
 const STORAGE_KEY = "islamQuestProgress_v4";
-const STREAK_TRACE = '[IQ_STREAK_TRACE]';
+const STREAK_TRACE = 'IQ_STREAK_TRACE';
 
 const DEFAULT_PATHS = [
   { id: 1, title: "Names of Allah", progress: 0, totalLessons: 104, completedLessons: 0, status: "available" },
@@ -58,10 +58,11 @@ export const useProgressStore = create((set, get) => ({
   coins: 0,
   streak: 0,
   lastStudyDate: null,
-  lastCompletedActivityDate: null, // Unified tracking for all activities
-  shieldCount: 0, // Streak freeze shields (max 3)
-  needsRepairPrompt: false, // Show repair modal on next open
-  brokenStreakValue: 0, // Store streak value before break for repair
+  lastStreakDate: null,
+  _localStreakTs: 0,
+  shieldCount: 0,
+  needsRepairPrompt: false,
+  brokenStreakValue: 0,
   xpMultiplier: 0,
   level: 1, // Diamond level (1-10)
   lastLogin: null,
@@ -176,6 +177,11 @@ export const useProgressStore = create((set, get) => ({
         // Ignore parse errors
       }
       
+      if (!savedData.lastStreakDate && savedData.lastCompletedActivityDate) {
+        savedData.lastStreakDate = savedData.lastCompletedActivityDate;
+      }
+      delete savedData.lastCompletedActivityDate;
+
       if (savedData.vibrationEnabled === undefined) {
         savedData.vibrationEnabled = true;
       }
@@ -266,79 +272,46 @@ export const useProgressStore = create((set, get) => ({
     return locks;
   },
 
-  // 🛡️ Mark day as complete (unified tracking for all activities)
-  // Called from: applyQuizResults, daily quest completion, challenge completion, event completion
-  // Model: today→no change, yesterday→+1, older/null→=1
   markDayComplete: () => {
     const today = new Date().toDateString();
-    const { lastCompletedActivityDate, streak } = get();
+    const { lastStreakDate, streak } = get();
 
-    console.log('[STREAK_TRACE]', 'markDayComplete start', { streak: get().streak, last: get().lastCompletedActivityDate, today: new Date().toDateString() });
+    console.log(`[${STREAK_TRACE}] STREAK_BEFORE`, { streak, lastStreakDate, today });
 
-    // Case 1: lastActivityDate === today → no change
-    if (lastCompletedActivityDate === today) {
-      console.log('[STREAK_TRACE]', 'markDayComplete end', { streak: get().streak, last: get().lastCompletedActivityDate });
+    if (lastStreakDate === today) {
+      console.log(`[${STREAK_TRACE}] STREAK_AFTER (no change, already today)`, { streak });
       return;
     }
 
-    // Case 2: lastActivityDate is null → streakCount = 1
-    if (!lastCompletedActivityDate) {
-      set({ 
-        streak: 1,
-        lastCompletedActivityDate: today,
-        lastStudyDate: today,
-      });
-      get().calculateXPMultiplier();
-      get().saveProgress();
-      console.log('[IQ_FLOW_TRACE]', 'CALLING_SYNC_TO_SUPABASE');
-      setTimeout(() => get().syncToSupabase(), 50);
-      syncStreakTags("streak_increment");
-      console.log('[STREAK_TRACE]', 'markDayComplete end', { streak: get().streak, last: get().lastCompletedActivityDate });
-      return;
+    let newStreak;
+    if (!lastStreakDate) {
+      newStreak = 1;
+    } else {
+      const lastDate = new Date(lastStreakDate);
+      const currentDate = new Date(today);
+      const diffDays = Math.floor((currentDate - lastDate) / (1000 * 60 * 60 * 24));
+      newStreak = diffDays === 1 ? streak + 1 : 1;
     }
 
-    // Calculate days since last activity
-    const lastDate = new Date(lastCompletedActivityDate);
-    const currentDate = new Date(today);
-    const diffTime = currentDate - lastDate;
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    set({
+      streak: newStreak,
+      lastStreakDate: today,
+      lastStudyDate: today,
+      _localStreakTs: Date.now(),
+    });
+    get().calculateXPMultiplier();
+    get().saveProgress();
+    setTimeout(() => get().syncToSupabase(), 50);
+    syncStreakTags("streak_increment");
 
-    // Case 3: lastActivityDate === yesterday → streakCount += 1
-    if (diffDays === 1) {
-      const newStreak = streak + 1;
-      set({ 
-        streak: newStreak,
-        lastCompletedActivityDate: today,
-        lastStudyDate: today,
-      });
-      get().calculateXPMultiplier();
-      get().saveProgress();
-      console.log('[IQ_FLOW_TRACE]', 'CALLING_SYNC_TO_SUPABASE');
-      setTimeout(() => get().syncToSupabase(), 50);
-      syncStreakTags("streak_increment");
-      console.log('[STREAK_TRACE]', 'markDayComplete end', { streak: get().streak, last: get().lastCompletedActivityDate });
-      
-      // Log streak maintained
+    console.log(`[${STREAK_TRACE}] STREAK_AFTER`, { streak: newStreak, lastStreakDate: today });
+
+    if (newStreak > 1) {
       (async () => {
         const { data } = await supabase.auth.getUser();
         const userId = data?.user?.id;
-        if (userId) {
-          logStreakEvent(userId, true);
-        }
+        if (userId) logStreakEvent(userId, true);
       })();
-    } else {
-      // Case 4: lastActivityDate < yesterday → streakCount = 1
-      set({ 
-        streak: 1,
-        lastCompletedActivityDate: today,
-        lastStudyDate: today,
-      });
-      get().calculateXPMultiplier();
-      get().saveProgress();
-      console.log('[IQ_FLOW_TRACE]', 'CALLING_SYNC_TO_SUPABASE');
-      setTimeout(() => get().syncToSupabase(), 50);
-      syncStreakTags("streak_increment");
-      console.log('[STREAK_TRACE]', 'markDayComplete end', { streak: get().streak, last: get().lastCompletedActivityDate });
     }
   },
 
@@ -346,63 +319,41 @@ export const useProgressStore = create((set, get) => ({
   // This runs once per session to detect breaks and consume shields if needed
   checkStreakOnAppOpen: () => {
     const today = new Date().toDateString();
-    const { lastCompletedActivityDate, streak, shieldCount, needsRepairPrompt } = get();
+    const { lastStreakDate, streak, shieldCount, needsRepairPrompt } = get();
 
-    // Already checked today or already needs repair
-    if (lastCompletedActivityDate === today || needsRepairPrompt) return;
+    if (lastStreakDate === today || needsRepairPrompt) return;
+    if (!lastStreakDate) return;
 
-    // First time user
-    if (!lastCompletedActivityDate) {
-      return;
-    }
-
-    // Calculate days since last activity
-    const lastDate = new Date(lastCompletedActivityDate);
+    const lastDate = new Date(lastStreakDate);
     const currentDate = new Date(today);
-    const diffTime = currentDate - lastDate;
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    const diffDays = Math.floor((currentDate - lastDate) / (1000 * 60 * 60 * 24));
 
-    // Streak is safe (activity yesterday or today)
-    if (diffDays <= 1) {
-      return;
-    }
+    if (diffDays <= 1) return;
 
-    // Calculate how many shields needed to cover the gap
-    // If missed 2 days, need 1 shield. If missed 3 days, need 2 shields, etc.
     const shieldsNeeded = diffDays - 1;
 
-    // Try to use shields to cover the gap
     if (shieldCount >= shieldsNeeded) {
-      // Enough shields - consume them and preserve streak
-      // Set lastCompletedActivityDate to yesterday so next activity increments properly
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
       const yesterdayStr = yesterday.toDateString();
       
       set({ 
         shieldCount: shieldCount - shieldsNeeded,
-        lastCompletedActivityDate: yesterdayStr,
-        lastStudyDate: yesterdayStr, // Keep for consistency
+        lastStreakDate: yesterdayStr,
+        lastStudyDate: yesterdayStr,
       });
       get().saveProgress();
-      
-      // 🌐 Phase 4: Sync consumed shields to cloud
       setTimeout(() => get().syncStreakShieldToCloud(), 50);
       
-      // Log streak maintained (shield saved it)
       (async () => {
         const { data } = await supabase.auth.getUser();
         const userId = data?.user?.id;
-        if (userId) {
-          logStreakEvent(userId, true);
-        }
+        if (userId) logStreakEvent(userId, true);
       })();
       
       return;
     }
 
-    // No shields - streak breaks
-    const brokenValue = streak;
     set({ 
       brokenStreakValue: streak,
       streak: 0,
@@ -410,16 +361,12 @@ export const useProgressStore = create((set, get) => ({
     });
     get().calculateXPMultiplier();
     get().saveProgress();
-    
     syncStreakTags("streak_broken");
     
-    // Log streak break
     (async () => {
       const { data } = await supabase.auth.getUser();
       const userId = data?.user?.id;
-      if (userId) {
-        logStreakEvent(userId, false);
-      }
+      if (userId) logStreakEvent(userId, false);
     })();
   },
 
@@ -486,12 +433,12 @@ export const useProgressStore = create((set, get) => ({
       shieldCount: newShieldCount,
       needsRepairPrompt: false,
       brokenStreakValue: 0,
-      lastCompletedActivityDate: today,
+      lastStreakDate: today,
+      _localStreakTs: Date.now(),
     });
     get().calculateXPMultiplier();
     get().saveProgress();
     
-    // 🌐 Sync repaired streak + coins + shield to Supabase cloud immediately
     const { data } = await supabase.auth.getUser();
     const userId = data?.user?.id;
     if (userId) {
@@ -521,8 +468,9 @@ export const useProgressStore = create((set, get) => ({
       needsRepairPrompt: false,
       brokenStreakValue: 0,
       streak: 0,
-      lastCompletedActivityDate: today,
+      lastStreakDate: today,
       lastStudyDate: today,
+      _localStreakTs: Date.now(),
     });
     get().calculateXPMultiplier();
     get().saveProgress();
@@ -623,7 +571,7 @@ export const useProgressStore = create((set, get) => ({
 
   // ✅ Quiz results
   applyQuizResults: (payload, pathId, lessonId, passed = true, score = null) => {
-    console.log(STREAK_TRACE, 'LESSON_COMPLETE_SUCCESS', { lessonId, ts: new Date().toISOString() });
+    console.log(`[${STREAK_TRACE}] LESSON_COMPLETE_SUCCESS`, { lessonId, ts: new Date().toISOString() });
     if (!payload) return;
     const { xp, coins } = payload;
     
@@ -649,7 +597,7 @@ export const useProgressStore = create((set, get) => ({
     
     // Only award XP/coins, update progress, and unlock if passed
     if (!passed) {
-      console.log(STREAK_TRACE, 'QUIZ_NOT_PASSED - markDayComplete will NOT be called');
+      console.log(`[${STREAK_TRACE}] QUIZ_NOT_PASSED - markDayComplete will NOT be called`);
     }
     if (passed) {
       if (xp) get().addXP(xp);
@@ -701,11 +649,9 @@ export const useProgressStore = create((set, get) => ({
       // unlock next lesson
       get().unlockLesson(pathId, lessonId + 1);
       
-      // 🛡️ Mark day as complete for streak tracking
-      console.log("[STREAK_TRIGGER] quiz_complete");
-      console.log('[STREAK_TRACE]', 'LESSON_COMPLETED -> calling markDayComplete');
+      console.log(`[${STREAK_TRACE}] MEANINGFUL_ACTIVITY_DETECTED`, { source: 'quiz_complete', lessonId, pathId });
       get().markDayComplete();
-      console.log(STREAK_TRACE, 'RETURNED_FROM_markDayComplete');
+      console.log(`[${STREAK_TRACE}] RETURNED_FROM_markDayComplete`);
       
       // 📚 Check and unlock Smart Revision if 25 lessons completed
       get().checkAndUnlockSmartRevision();
@@ -1075,7 +1021,8 @@ export const useProgressStore = create((set, get) => ({
       streak: 0,
       level: 1, // Reset Diamond level
       lastStudyDate: null,
-      lastCompletedActivityDate: null,
+      lastStreakDate: null,
+      _localStreakTs: 0,
       lastLogin: null,
       shieldCount: 0,
       needsRepairPrompt: false,
@@ -1101,16 +1048,13 @@ export const useProgressStore = create((set, get) => ({
   serializeForSupabase: () => {
     const state = get();
 
-    // ONLY sync progress fields - NEVER identity fields
-    // Identity (username, avatar, handle) is managed by useUserStore
-    return {
+    const payload = {
       xp: state.xp,
       coins: state.coins,
       streak: state.streak,
-      last_completed_activity_date: state.lastCompletedActivityDate,
+      last_completed_activity_date: state.lastStreakDate,
       premium: state.premium,
       shield_count: state.shieldCount,
-      // Encrypt lesson progress data for cloud storage
       lesson_states: state.lessonStates && Object.keys(state.lessonStates).length > 0 
         ? encryptJSON(state.lessonStates) 
         : null,
@@ -1122,6 +1066,9 @@ export const useProgressStore = create((set, get) => ({
         : null,
       updated_at: new Date().toISOString()
     };
+
+    console.log(`[${STREAK_TRACE}] SYNC_PAYLOAD_STREAK`, { streak: payload.streak, last_completed_activity_date: payload.last_completed_activity_date });
+    return payload;
   },
 
   getLastUpdatedAt: () => {
@@ -1154,18 +1101,25 @@ export const useProgressStore = create((set, get) => ({
       // Ignore parse errors
     }
     
-    console.log(STREAK_TRACE, 'REHYDRATE_APPLY', {
-      cloudCount: data.streak,
-      cloudLastActiveAt: data.last_completed_activity_date,
-      localCount: get().streak,
-      localLastActiveAt: get().lastCompletedActivityDate,
-      ts: new Date().toISOString()
+    const localStreakTs = get()._localStreakTs || 0;
+    const cloudStreakDate = data.last_completed_activity_date;
+    const localStreak = get().streak;
+    const cloudStreak = data.streak;
+    const cloudTs = cloudUpdatedAt ? new Date(cloudUpdatedAt).getTime() : 0;
+    const keepLocalStreak = localStreakTs > 0 && localStreakTs > cloudTs;
+
+    console.log(`[${STREAK_TRACE}] CLOUD_MERGE_DECISION`, {
+      cloudStreak, cloudStreakDate, cloudTs,
+      localStreak, localStreakDate: get().lastStreakDate,
+      localStreakTs, keepLocalStreak,
+      source: 'setFromCloudSync',
     });
+
     set({
       xp: data.xp ?? get().xp,
       coins: data.coins ?? get().coins,
-      streak: data.streak ?? get().streak,
-      lastCompletedActivityDate: data.last_completed_activity_date ?? get().lastCompletedActivityDate,
+      streak: keepLocalStreak ? localStreak : (cloudStreak ?? localStreak),
+      lastStreakDate: keepLocalStreak ? get().lastStreakDate : (cloudStreakDate ?? get().lastStreakDate),
       shieldCount: data.shield_count ?? get().shieldCount,
       premium: finalPremium,
       hasPremium: finalPremium,
@@ -1329,22 +1283,29 @@ export const useProgressStore = create((set, get) => ({
         return;
       }
 
-      // Build final restored state
-      // NOTE: ONLY progress fields - identity (username, avatar, handle) is managed by useUserStore
+      const localStreakTs = get()._localStreakTs || 0;
+      const cloudStreak = data.streak;
+      const localStreak = get().streak;
+      const cloudStreakDate = data.last_completed_activity_date;
+      const keepLocalStreak = localStreakTs > 0 && localStreakTs > cloudTs;
+
+      console.log(`[${STREAK_TRACE}] CLOUD_MERGE_DECISION`, {
+        cloudStreak, cloudStreakDate, cloudTs,
+        localStreak, localStreakDate: get().lastStreakDate,
+        localStreakTs, keepLocalStreak,
+        source: 'loadFromSupabase',
+      });
+
       const restored = {
         xp: data.xp ?? get().xp,
         coins: data.coins ?? get().coins,
-        streak: data.streak ?? get().streak,
-        lastCompletedActivityDate: data.last_completed_activity_date ?? get().lastCompletedActivityDate,
-
+        streak: keepLocalStreak ? localStreak : (cloudStreak ?? localStreak),
+        lastStreakDate: keepLocalStreak ? get().lastStreakDate : (cloudStreakDate ?? get().lastStreakDate),
         premium: data.premium ?? false,
         hasPremium: data.premium ?? false,
-
-        // 🛡️ Phase 4: Streak shields cloud sync
         shieldCount: data.shield_count ?? get().shieldCount,
       };
       
-      // Restore lesson progress if cloud has data
       if (lessonStates && Object.keys(lessonStates).length > 0) {
         restored.lessonStates = lessonStates;
       }
@@ -1352,7 +1313,6 @@ export const useProgressStore = create((set, get) => ({
         restored.lockedLessons = lockedLessons;
       }
       if (paths && paths.length > 0) {
-        // Merge cloud paths with defaults to ensure totalLessons is correct
         restored.paths = paths.map(cloudPath => {
           const defaultPath = DEFAULT_PATHS.find(p => p.id === cloudPath.id);
           return {
@@ -1363,14 +1323,6 @@ export const useProgressStore = create((set, get) => ({
         });
       }
 
-      // Apply restored state
-      console.log(STREAK_TRACE, 'REHYDRATE_APPLY', {
-        cloudCount: data.streak,
-        cloudLastActiveAt: data.last_completed_activity_date,
-        localCount: get().streak,
-        localLastActiveAt: get().lastCompletedActivityDate,
-        ts: new Date().toISOString()
-      });
       set(restored);
       get().saveProgress();
 

@@ -248,8 +248,7 @@ export const useDailyQuestStore = create((set, get) => ({
       }
     })();
     
-    // 🛡️ Mark day as complete for streak tracking
-    console.log("[STREAK_TRIGGER] daily_quest_complete");
+    console.log("[IQ_STREAK_TRACE] MEANINGFUL_ACTIVITY_DETECTED", { source: "daily_quest_complete" });
     useProgressStore.getState().markDayComplete();
 
     set({
