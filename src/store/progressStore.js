@@ -273,11 +273,11 @@ export const useProgressStore = create((set, get) => ({
     const today = new Date().toDateString();
     const { lastCompletedActivityDate, streak } = get();
 
-    console.log(`[STREAK] before update: streak=${streak} lastActivity=${lastCompletedActivityDate}`);
+    console.log('[STREAK_TRACE]', 'markDayComplete start', { streak: get().streak, last: get().lastCompletedActivityDate, today: new Date().toDateString() });
 
     // Case 1: lastActivityDate === today → no change
     if (lastCompletedActivityDate === today) {
-      console.log(`[STREAK] after update: no change (already today)`);
+      console.log('[STREAK_TRACE]', 'markDayComplete end', { streak: get().streak, last: get().lastCompletedActivityDate });
       return;
     }
 
@@ -293,7 +293,7 @@ export const useProgressStore = create((set, get) => ({
       console.log('[IQ_FLOW_TRACE]', 'CALLING_SYNC_TO_SUPABASE');
       setTimeout(() => get().syncToSupabase(), 50);
       syncStreakTags("streak_increment");
-      console.log(`[STREAK] after update: streak=1 (first activity)`);
+      console.log('[STREAK_TRACE]', 'markDayComplete end', { streak: get().streak, last: get().lastCompletedActivityDate });
       return;
     }
 
@@ -316,7 +316,7 @@ export const useProgressStore = create((set, get) => ({
       console.log('[IQ_FLOW_TRACE]', 'CALLING_SYNC_TO_SUPABASE');
       setTimeout(() => get().syncToSupabase(), 50);
       syncStreakTags("streak_increment");
-      console.log(`[STREAK] after update: streak=${newStreak} (consecutive day)`);
+      console.log('[STREAK_TRACE]', 'markDayComplete end', { streak: get().streak, last: get().lastCompletedActivityDate });
       
       // Log streak maintained
       (async () => {
@@ -338,7 +338,7 @@ export const useProgressStore = create((set, get) => ({
       console.log('[IQ_FLOW_TRACE]', 'CALLING_SYNC_TO_SUPABASE');
       setTimeout(() => get().syncToSupabase(), 50);
       syncStreakTags("streak_increment");
-      console.log(`[STREAK] after update: streak=1 (gap of ${diffDays} days)`);
+      console.log('[STREAK_TRACE]', 'markDayComplete end', { streak: get().streak, last: get().lastCompletedActivityDate });
     }
   },
 
@@ -703,7 +703,7 @@ export const useProgressStore = create((set, get) => ({
       
       // 🛡️ Mark day as complete for streak tracking
       console.log("[STREAK_TRIGGER] quiz_complete");
-      console.log(STREAK_TRACE, 'ABOUT_TO_CALL_markDayComplete');
+      console.log('[STREAK_TRACE]', 'LESSON_COMPLETED -> calling markDayComplete');
       get().markDayComplete();
       console.log(STREAK_TRACE, 'RETURNED_FROM_markDayComplete');
       
