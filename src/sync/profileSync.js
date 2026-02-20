@@ -17,7 +17,7 @@ export async function pullProfileFromCloud() {
 
     const { data, error } = await supabase
       .from("profiles")
-      .select("xp, coins, streak, shield_count, premium, updated_at")
+      .select("xp, coins, streak, shield_count, premium, last_completed_activity_date, updated_at")
       .eq("user_id", userId)
       .maybeSingle();
 
@@ -86,6 +86,7 @@ export function mergeProfileData(cloud) {
       streak: cloud.streak ?? DEFAULT_PROFILE.streak,
       shieldCount: cloud.shield_count ?? DEFAULT_PROFILE.shield_count,
       premium: cloud.premium ?? false,
+      last_completed_activity_date: cloud.last_completed_activity_date ?? null,
     }, cloud.updated_at);
   }
 }
