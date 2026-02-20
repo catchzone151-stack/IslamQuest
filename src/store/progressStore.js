@@ -1198,10 +1198,10 @@ export const useProgressStore = create((set, get) => ({
         last,
         diff: now - last
       });
-      if (now - last < 5000) {
-        console.log('[IQ_CLOUD_TRACE]', 'THROTTLED_SKIP');
-        return;
-      }
+      // if (now - last < 5000) {
+      //   console.log('[IQ_CLOUD_TRACE]', 'THROTTLED_SKIP');
+      //   return;
+      // }
 
       // write
       console.log("[IQ_CLOUD_TRACE] payload:", payload);
