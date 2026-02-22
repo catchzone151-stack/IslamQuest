@@ -273,7 +273,7 @@ export default function Home() {
       style={{
         background: "#0e2340",
         color: "white",
-        overflowX: "hidden",
+        overflowX: "clip",
         position: "relative",
       }}
     >

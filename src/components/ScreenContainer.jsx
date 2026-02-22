@@ -14,7 +14,7 @@ export default function ScreenContainer({ children }) {
         maxWidth: "100%",
         width: "100%",
         boxSizing: "border-box",
-        overflowX: "hidden",
+        overflowX: "clip",
       }}
     >
       {children}

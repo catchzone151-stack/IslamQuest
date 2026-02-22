@@ -14,7 +14,7 @@ html {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
+  overflow: hidden;
   background: #0a2a43;
   overscroll-behavior: none;
 }
@@ -23,7 +23,7 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
+  overflow: hidden;
   background: #0a2a43;
   overscroll-behavior: none;
 }
@@ -32,7 +32,7 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
+  overflow: hidden;
   background: #0a2a43;
 }
 
@@ -61,13 +61,12 @@ body {
   padding-bottom: 56px;
   padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
   box-sizing: border-box;
 }
 
 /* Prevents extra space and scroll issues */
 .no-extra-space {
-  overflow-y: auto;
   overscroll-behavior: contain;
   margin-bottom: 0;
 }
@@ -88,12 +87,14 @@ body {
   overflow: hidden;
 }
 
-/* App root container - proper bounded scroll container */
+/* App root container - THE SINGLE scroll container for the entire app */
 .app-root-container {
-  flex: 1 1 0%;
+  flex: 1 1 0% !important;
   min-height: 0 !important;
+  overflow-x: hidden !important;
   overflow-y: auto !important;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
   padding-bottom: 90px !important;
   padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)) !important;
 }
