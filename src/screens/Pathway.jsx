@@ -97,12 +97,11 @@ export default function Pathway() {
   const completedCount = lessons.filter((l) => l.isCompleted).length;
   const totalLessons = lessons.length;
 
-  // Always start view at top when entering
   useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
+    const scrollContainer = document.querySelector('.app-root-container');
+    if (!scrollContainer) return;
     const handle = setTimeout(() => {
-      el.scrollTop = 0;
+      scrollContainer.scrollTop = 0;
     }, 200);
     return () => clearTimeout(handle);
   }, [numericPathId, totalLessons]);
@@ -246,7 +245,6 @@ export default function Pathway() {
       ref={scrollRef}
       className="screen no-extra-space"
       style={{
-        overflowY: "auto",
         background: "radial-gradient(circle at top, #0f2344 0%, #020815 70%)",
         color: "white",
         display: "flex",

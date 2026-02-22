@@ -239,7 +239,6 @@ export default function SignUpPage() {
         padding: "20px",
         paddingTop: "60px",
         paddingBottom: "40px",
-        overflowY: "auto",
       }}
     >
       <motion.button
