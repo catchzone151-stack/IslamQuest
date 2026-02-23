@@ -11,11 +11,13 @@ let currentIqState = {
 };
 
 export const setIqState = (updates) => {
+  console.log("[PUSH_TAG_SYNC] setIqState called", { updates, isNative: isNative() });
   if (!isNative()) return;
   const prevChallengePending = currentIqState.challengePending;
   currentIqState = { ...currentIqState, ...updates };
   const { streakCount, streakActive, challengePending, challengeFrom } = currentIqState;
   const value = `st=${streakCount}|sa=${streakActive ? 1 : 0}|cp=${challengePending ? 1 : 0}|cf=${challengeFrom || "none"}`;
+  console.log("[PUSH_TAG_SYNC] iq_state about to update", value);
   OneSignal.User.addTag("iq_state", value);
   console.log('[IQ_PUSH_TRACE]', 'IQ_STATE_SENT', {
     iq_state: value,
@@ -28,6 +30,7 @@ export const setIqState = (updates) => {
 };
 
 export const syncStreakTags = (reason = "unknown") => {
+  console.log("[PUSH_TAG_SYNC] syncStreakTags called", { reason, isNative: isNative() });
   if (!isNative()) return;
   
   try {

@@ -273,6 +273,7 @@ export const useProgressStore = create((set, get) => ({
   },
 
   markDayComplete: () => {
+    console.log("[STREAK] markDayComplete executed");
     const today = new Date().toDateString();
     const { lastStreakDate, streak } = get();
 
