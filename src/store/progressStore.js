@@ -9,7 +9,7 @@ import { getQuizForLesson } from "../data/quizEngine";
 import { logStreakEvent } from "../backend/streakLogs";
 import { logXpEvent } from "../backend/xpLogs";
 import { logPurchase } from "../backend/purchaseLogs";
-import { setPathStarted, setPathCompleted, setIqState, syncStreakTags } from "../services/pushTags";
+import { setPathStarted, setPathCompleted, setIqState, syncStreakTags, registerProgressStore } from "../services/pushTags";
 
 const STORAGE_KEY = "islamQuestProgress_v4";
 const STREAK_TRACE = 'IQ_STREAK_TRACE';
@@ -1341,6 +1341,8 @@ export const useProgressStore = create((set, get) => ({
     }
   },
 }));
+
+registerProgressStore(() => useProgressStore.getState());
 
 useProgressStore.getState().loadProgress();
 

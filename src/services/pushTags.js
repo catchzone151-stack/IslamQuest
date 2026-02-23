@@ -3,6 +3,12 @@ import { Capacitor } from "@capacitor/core";
 
 const isNative = () => Capacitor.isNativePlatform();
 
+let _getProgressState = null;
+
+export const registerProgressStore = (getStateFn) => {
+  _getProgressState = getStateFn;
+};
+
 let currentIqState = {
   streakCount: 0,
   streakActive: false,
@@ -34,8 +40,11 @@ export const syncStreakTags = (reason = "unknown") => {
   if (!isNative()) return;
   
   try {
-    const { useProgressStore } = require("../store/progressStore");
-    const state = useProgressStore.getState();
+    const state = _getProgressState ? _getProgressState() : null;
+    if (!state) {
+      console.warn(`PUSH_TAG_SYNC [${reason}] failed: progressStore not registered`);
+      return;
+    }
     
     const streakCount = state?.streak ?? 0;
     const lastStudyDate = state?.lastStudyDate;
