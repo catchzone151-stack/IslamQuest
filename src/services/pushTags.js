@@ -16,13 +16,20 @@ let currentIqState = {
   challengeFrom: null,
 };
 
+const getStateCode = (streakActive, challengePending) => {
+  if (streakActive && challengePending) return "AS_CP";
+  if (streakActive) return "AS";
+  if (challengePending) return "NS_CP";
+  return "NS";
+};
+
 export const setIqState = (updates) => {
   console.log("[PUSH_TAG_SYNC] setIqState called", { updates, isNative: isNative() });
   if (!isNative()) return;
   const prevChallengePending = currentIqState.challengePending;
   currentIqState = { ...currentIqState, ...updates };
-  const { streakCount, streakActive, challengePending, challengeFrom } = currentIqState;
-  const value = `st=${streakCount}|sa=${streakActive ? 1 : 0}|cp=${challengePending ? 1 : 0}|cf=${challengeFrom || "none"}`;
+  const { streakActive, challengePending } = currentIqState;
+  const value = getStateCode(streakActive, challengePending);
   console.log("[PUSH_TAG_SYNC] iq_state about to update", value);
   OneSignal.User.addTag("iq_state", value);
   console.log('[IQ_PUSH_TRACE]', 'IQ_STATE_SENT', {
@@ -55,8 +62,8 @@ export const syncStreakTags = (reason = "unknown") => {
     
     const prevStreakActive = currentIqState.streakActive;
     currentIqState = { ...currentIqState, streakCount, streakActive };
-    const { challengePending, challengeFrom } = currentIqState;
-    const value = `st=${streakCount}|sa=${streakActive ? 1 : 0}|cp=${challengePending ? 1 : 0}|cf=${challengeFrom || "none"}`;
+    const { challengePending } = currentIqState;
+    const value = getStateCode(streakActive, challengePending);
     
     OneSignal.User.addTag("iq_state", value);
     console.log('[IQ_PUSH_TRACE]', 'IQ_STATE_SENT', {
