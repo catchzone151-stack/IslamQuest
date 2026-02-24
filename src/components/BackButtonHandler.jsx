@@ -4,32 +4,48 @@ import { Capacitor } from "@capacitor/core";
 import { App as CapacitorApp } from "@capacitor/app";
 
 const HOME_PATHS = new Set(["/", "/home"]);
+const SENTINEL_KEY = "__iq_sentinel__";
+
+function isHomePath(pathname) {
+  return HOME_PATHS.has(pathname);
+}
+
+function hasSentinelState() {
+  return !!(window.history.state && window.history.state[SENTINEL_KEY]);
+}
+
+function pushSentinel() {
+  // Preserve existing state (some routers use it)
+  const prev = window.history.state || {};
+  if (prev && prev[SENTINEL_KEY]) return; // already sentinel at top
+  window.history.pushState({ ...prev, [SENTINEL_KEY]: true }, "");
+}
 
 export default function BackButtonHandler() {
   const navigate = useNavigate();
   const location = useLocation();
   const [showExitModal, setShowExitModal] = useState(false);
 
-  const isHome = HOME_PATHS.has(location.pathname);
+  const isHome = isHomePath(location.pathname);
   const isHomeRef = useRef(isHome);
-  useEffect(() => { isHomeRef.current = isHome; }, [isHome]);
+  useEffect(() => {
+    isHomeRef.current = isHome;
+  }, [isHome]);
 
-  const ignoringPopstateRef = useRef(false);
+  // Ignore multiple popstates triggered by our own exit attempts
+  const ignorePopCountRef = useRef(0);
 
-  // --- Web PWA: push a sentinel history entry on first mount ---
-  // This ensures pressing back fires popstate (our handler) instead of
-  // immediately exiting the PWA. Only needed on web; Capacitor handles
-  // Android via its own 'backButton' event.
+  // --- Web PWA: ensure we have a sentinel behind the app history ---
   useEffect(() => {
     if (Capacitor.isNativePlatform()) return;
-    if (!window.__iq_sentinel_pushed) {
-      window.__iq_sentinel_pushed = true;
-      window.history.pushState({ iq_sentinel: true }, "");
+
+    // In dev StrictMode, this effect can run twice. Sentinel check prevents duplication.
+    if (!hasSentinelState()) {
+      pushSentinel();
     }
   }, []);
 
-  // --- Capacitor Android: hardware / gesture back button ---
-  // Fires BEFORE any navigation so we have full control.
+  // --- Capacitor Android: hardware back ---
   useEffect(() => {
     if (!Capacitor.isNativePlatform()) return;
 
@@ -40,37 +56,47 @@ export default function BackButtonHandler() {
       } else {
         navigate(-1);
       }
-    }).then((h) => { handle = h; });
+    }).then((h) => {
+      handle = h;
+    });
 
-    return () => { handle?.remove(); };
+    return () => {
+      handle?.remove();
+    };
   }, [navigate]);
 
-  // --- Web PWA: popstate (fires after browser pops a history entry) ---
-  // Fires for both browser back button and Android back on web builds.
+  // --- Web PWA: popstate handling ---
   useEffect(() => {
     if (Capacitor.isNativePlatform()) return;
 
-    const handlePopstate = () => {
-      // Suppress if we initiated the back ourselves (e.g. user said "Yes, exit")
-      if (ignoringPopstateRef.current) {
-        ignoringPopstateRef.current = false;
+    const onPopState = () => {
+      if (ignorePopCountRef.current > 0) {
+        ignorePopCountRef.current -= 1;
         return;
       }
 
       if (isHomeRef.current) {
-        // Re-push the sentinel so we stay trapped on home.
-        // We popped one entry (the previous sentinel), then push a new one —
-        // net zero: stack size stays the same, no infinite accumulation.
-        window.history.pushState({ iq_sentinel: true }, "");
+        // Trap leaving the app from home:
+        // re-push sentinel so user stays in app, then show modal.
+        pushSentinel();
         setShowExitModal(true);
       }
-      // Non-home pages: React Router has already responded to the location
-      // change from the popstate event — nothing extra needed here.
+      // Non-home: let React Router handle it naturally.
     };
 
-    window.addEventListener("popstate", handlePopstate);
-    return () => window.removeEventListener("popstate", handlePopstate);
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
   }, []);
+
+  // ESC closes modal (web + native keyboards)
+  useEffect(() => {
+    if (!showExitModal) return;
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") setShowExitModal(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [showExitModal]);
 
   if (!showExitModal) return null;
 
@@ -78,19 +104,33 @@ export default function BackButtonHandler() {
 
   const handleExit = () => {
     setShowExitModal(false);
+
     if (Capacitor.isNativePlatform()) {
       CapacitorApp.minimizeApp();
-    } else {
-      // Web PWA: jump back 2 entries (sentinel + home) to reach the
-      // pre-app history entry, which causes the PWA to close/exit.
-      ignoringPopstateRef.current = true;
-      window.history.go(-2);
+      return;
     }
+
+    // Web PWA “exit” is not reliably possible; best effort:
+    // Try to go back a couple steps, but don’t assume -2 always exists.
+    // We ignore up to 2 popstates triggered by our own go().
+    const len = window.history.length;
+
+    if (len <= 2) {
+      // Nothing meaningful to go back to; just close modal.
+      // (This is the correct behavior for many standalone PWAs.)
+      return;
+    }
+
+    ignorePopCountRef.current = 2;
+    window.history.go(-2);
   };
 
   return (
     <div
       onClick={handleStay}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Exit app confirmation"
       style={{
         position: "fixed",
         inset: 0,
@@ -117,26 +157,12 @@ export default function BackButtonHandler() {
       >
         <div style={{ fontSize: "2.4rem", marginBottom: 12 }}>🚪</div>
 
-        <h2
-          style={{
-            fontSize: "1.3rem",
-            fontWeight: 800,
-            color: "#FFD700",
-            margin: "0 0 10px",
-          }}
-        >
+        <h2 style={{ fontSize: "1.3rem", fontWeight: 800, color: "#FFD700", margin: "0 0 10px" }}>
           Exit IslamQuest?
         </h2>
 
-        <p
-          style={{
-            fontSize: "0.9rem",
-            color: "#94a3b8",
-            margin: "0 0 28px",
-            lineHeight: 1.5,
-          }}
-        >
-          Your progress is saved. Come back soon, in shā' Allāh.
+        <p style={{ fontSize: "0.9rem", color: "#94a3b8", margin: "0 0 28px", lineHeight: 1.5 }}>
+          Your progress is saved. Come back soon, in shā&apos; Allāh.
         </p>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -152,18 +178,14 @@ export default function BackButtonHandler() {
               fontSize: "1rem",
               fontWeight: 700,
               cursor: "pointer",
-              transition: "background 0.2s",
             }}
-            onMouseDown={(e) => e.currentTarget.style.background = "rgba(239,68,68,0.25)"}
-            onMouseUp={(e) => e.currentTarget.style.background = "rgba(239,68,68,0.15)"}
-            onTouchStart={(e) => e.currentTarget.style.background = "rgba(239,68,68,0.25)"}
-            onTouchEnd={(e) => e.currentTarget.style.background = "rgba(239,68,68,0.15)"}
           >
             Yes, exit
           </button>
 
           <button
             onClick={handleStay}
+            autoFocus
             style={{
               width: "100%",
               padding: "14px",
@@ -175,12 +197,7 @@ export default function BackButtonHandler() {
               fontWeight: 700,
               cursor: "pointer",
               boxShadow: "0 4px 14px rgba(255,215,0,0.35)",
-              transition: "opacity 0.2s",
             }}
-            onMouseDown={(e) => e.currentTarget.style.opacity = "0.85"}
-            onMouseUp={(e) => e.currentTarget.style.opacity = "1"}
-            onTouchStart={(e) => e.currentTarget.style.opacity = "0.85"}
-            onTouchEnd={(e) => e.currentTarget.style.opacity = "1"}
           >
             Stay
           </button>

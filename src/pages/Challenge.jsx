@@ -137,13 +137,13 @@ export default function Challenge() {
     
     if (!currentFriend) {
       console.error('❌ No currentFriend!', { currentFriend, selectedFriend, friendRef: friendRef.current });
-      alert("Please select a friend to challenge.");
+      showModal(MODAL_TYPES.ERROR, { message: "Please select a friend to challenge." });
       return;
     }
     
     const existingChallenge = getActiveWithFriend(currentFriend.user_id || currentFriend.id);
     if (existingChallenge) {
-      alert("You already have an active challenge with this friend!");
+      showModal(MODAL_TYPES.ERROR, { message: "You already have an active challenge with this friend!" });
       return;
     }
     
@@ -154,7 +154,7 @@ export default function Challenge() {
       
       const questions = generateQuestionsForChallenge(currentMode.id);
       if (questions.length === 0) {
-        alert("Unable to generate questions. Please try again.");
+        showModal(MODAL_TYPES.ERROR, { message: "Unable to generate questions. Please try again." });
         setSendingChallenge(false);
         return;
       }
@@ -177,11 +177,16 @@ export default function Challenge() {
         });
       } else {
         console.error('Challenge creation failed:', result.error);
-        alert(result.error || "Failed to create challenge. Please try again.");
+        const isDuplicate = typeof result.error === 'string' && 
+          (result.error.includes('duplicate key') || result.error.includes('active_unique'));
+        const friendlyMessage = isDuplicate
+          ? "You already have an active challenge with this friend!"
+          : "Failed to send challenge. Please try again.";
+        showModal(MODAL_TYPES.ERROR, { message: friendlyMessage });
       }
     } catch (error) {
       console.error('Challenge creation error:', error);
-      alert("Something went wrong. Please try again.");
+      showModal(MODAL_TYPES.ERROR, { message: "Something went wrong. Please try again." });
     } finally {
       setSendingChallenge(false);
     }
