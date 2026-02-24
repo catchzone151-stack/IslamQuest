@@ -155,26 +155,15 @@ export default function Settings() {
       >
         <div
           style={{
+            textAlign: "center",
+            marginBottom: 32,
+            position: "relative",
             display: "flex",
             alignItems: "center",
-            gap: 12,
-            marginBottom: 32,
+            justifyContent: "center",
+            minHeight: "40px"
           }}
         >
-          <button
-            onClick={() => navigate("/profile")}
-            style={{
-              background: "transparent",
-              border: "none",
-              color: "#4fd5ff",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              padding: 0,
-            }}
-          >
-            <ChevronLeft size={24} />
-          </button>
           <h1
             style={{
               fontSize: "1.6rem",
@@ -351,13 +340,16 @@ export default function Settings() {
             maxWidth: 400,
             margin: "32px auto 0",
             padding: "0 20px",
+            display: "flex",
+            flexDirection: "column",
+            gap: 12
           }}
         >
           <div
             style={{
               height: 1,
               background: "linear-gradient(90deg, transparent 0%, rgba(239, 68, 68, 0.3) 50%, transparent 100%)",
-              marginBottom: 20,
+              marginBottom: 8,
             }}
           />
           
@@ -392,6 +384,31 @@ export default function Settings() {
           >
             <Trash2 size={16} />
             Delete My Account
+          </button>
+
+          <button
+            onClick={() => navigate("/profile")}
+            style={{
+              background: "transparent",
+              border: "none",
+              color: "#cbd5e1",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 4,
+              width: "100%",
+              marginTop: 16,
+              opacity: 0.7,
+              fontSize: "0.95rem",
+              fontWeight: "600",
+              transition: "opacity 0.2s"
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.opacity = "1"}
+            onMouseLeave={(e) => e.currentTarget.style.opacity = "0.7"}
+          >
+            <ChevronLeft size={20} />
+            Back to Profile
           </button>
         </div>
       </div>
