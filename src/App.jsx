@@ -26,6 +26,7 @@ import { initializeIAP, restorePurchases } from "./services/iapService";
 import { syncStreakTags } from "./services/pushTags";
 import { Capacitor } from "@capacitor/core";
 import { App as CapacitorApp } from "@capacitor/app";
+import BackButtonHandler from "./components/BackButtonHandler";
 
 
 // ✅ Onboarding screens (loaded immediately for first-time users)
@@ -533,37 +534,7 @@ export default function App() {
     ]);
   }, []);
 
-  // 🔙 ANDROID BACK BUTTON: Exit app on Home screen, normal navigation elsewhere
-  useEffect(() => {
-    const handleBackButton = (event) => {
-      const currentPath = window.location.pathname;
-      
-      // Only intercept back button on home page - exit app directly
-      const isHomePage = currentPath === "/" || currentPath === "/home";
-      
-      if (!isHomePage) {
-        // Let all other pages navigate normally
-        return;
-      }
-      
-      // On Home screen: exit app immediately (no modal)
-      event.preventDefault();
-      
-      if (Capacitor.isNativePlatform()) {
-        // Use Capacitor to minimize/exit the app
-        CapacitorApp.minimizeApp();
-      } else {
-        // Web fallback: just go back in history
-        window.history.back();
-      }
-    };
-
-    window.addEventListener("popstate", handleBackButton);
-
-    return () => {
-      window.removeEventListener("popstate", handleBackButton);
-    };
-  }, []);
+  // 🔙 BACK BUTTON: Handled by <BackButtonHandler /> mounted inside BrowserRouter
   
   // 🔄 SYNC ENGINE LIFECYCLE HOOKS
   useEffect(() => {
@@ -804,6 +775,7 @@ export default function App() {
         <BrowserRouter>
           <DeepLinkHandler />
           <ScrollToTop />
+          <BackButtonHandler />
           <div
             className="screen no-extra-space app-root-container"
             style={{
