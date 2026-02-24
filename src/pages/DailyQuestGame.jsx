@@ -87,7 +87,6 @@ export default function DailyQuestGame() {
       <div
         className="screen no-extra-space"
         style={{
-          background: "linear-gradient(135deg, #0B1E2D 0%, #1a3a52 100%)",
           color: "#ffffff",
           display: "flex",
           alignItems: "center",
@@ -134,7 +133,6 @@ export default function DailyQuestGame() {
       <div
         className="screen no-extra-space"
         style={{
-          background: "linear-gradient(135deg, #0B1E2D 0%, #1a3a52 100%)",
           color: "#ffffff",
           display: "flex",
           alignItems: "center",
@@ -215,7 +213,6 @@ export default function DailyQuestGame() {
       <div
         className="screen no-extra-space"
         style={{
-          background: "linear-gradient(135deg, #0B1E2D 0%, #1a3a52 100%)",
           color: "#ffffff",
           display: "flex",
           alignItems: "center",
@@ -360,7 +357,6 @@ export default function DailyQuestGame() {
     <div
       className="screen no-extra-space"
       style={{
-        background: "linear-gradient(135deg, #0B1E2D 0%, #1a3a52 100%)",
         color: "#ffffff",
         paddingLeft: "20px",
         paddingRight: "20px",

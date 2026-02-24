@@ -69,7 +69,6 @@ export default function FriendProfile() {
       <div
         className="screen no-extra-space"
         style={{
-          background: "#0B1E2D",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -87,7 +86,6 @@ export default function FriendProfile() {
       <div
         className="screen no-extra-space"
         style={{
-          background: "#0B1E2D",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -129,7 +127,6 @@ export default function FriendProfile() {
     <div
       className="screen no-extra-space"
       style={{
-        background: "#0B1E2D",
         minHeight: "100%",
       }}
     >

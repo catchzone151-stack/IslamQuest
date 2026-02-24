@@ -312,7 +312,6 @@ export default function CheckEmailScreen() {
       <div
         className="onboarding-screen"
         style={{
-          background: "linear-gradient(180deg, #0A1A2F 0%, #060D18 100%)",
           color: "white",
           display: "flex",
           flexDirection: "column",
@@ -354,7 +353,6 @@ export default function CheckEmailScreen() {
     <div
       className="onboarding-screen"
       style={{
-        background: "linear-gradient(180deg, #0A1A2F 0%, #060D18 100%)",
         color: "white",
         display: "flex",
         flexDirection: "column",

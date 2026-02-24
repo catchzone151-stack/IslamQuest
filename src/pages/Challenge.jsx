@@ -197,7 +197,6 @@ export default function Challenge() {
       paddingLeft: 16,
       paddingRight: 16,
       paddingTop: 16,
-      background: "linear-gradient(to bottom, #081426, #0e2340)",
       color: "white",
     }}>
       {/* Header */}

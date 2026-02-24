@@ -48,7 +48,7 @@ export default function ResetPremium() {
       style={{
         position: "fixed",
         inset: 0,
-        background: "#0a0f1e",
+        background: "#0e2340",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",

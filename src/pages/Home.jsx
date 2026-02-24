@@ -271,7 +271,6 @@ export default function Home() {
     <div
       className="screen no-extra-space page-transition"
       style={{
-        background: "#0e2340",
         color: "white",
         overflowX: "clip",
         position: "relative",

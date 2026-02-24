@@ -399,7 +399,6 @@ export default function Friends() {
     <div
       className="screen no-extra-space"
       style={{
-        background: "#0B1E2D",
         minHeight: "100%",
       }}
     >

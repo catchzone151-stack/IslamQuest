@@ -149,7 +149,7 @@ export default function Settings() {
     <ScreenContainer>
       <div
         style={{
-          padding: "20px 20px 90px",
+          padding: "20px",
           color: "white",
         }}
       >

@@ -69,8 +69,6 @@ function LoadingScreen() {
     <div
       className="screen no-extra-space"
       style={{
-        background:
-          "radial-gradient(circle at 20% 20%, rgba(10,15,30,1) 0%, rgba(3,6,20,1) 70%)",
         color: "white",
         padding: "20px",
       }}
@@ -184,8 +182,6 @@ function PlaceholderQuizPage() {
     <div
       className="screen no-extra-space"
       style={{
-        background:
-          "radial-gradient(circle at 20% 20%, rgba(10,15,30,1) 0%, rgba(3,6,20,1) 70%)",
         color: "white",
         padding: "16px",
       }}
@@ -789,7 +785,6 @@ export default function App() {
       <div
         className="screen no-extra-space"
         style={{
-          background: "radial-gradient(circle at 20% 20%, #0a0f1e, #030614)",
           color: "white",
           display: "flex",
           alignItems: "center",
@@ -812,8 +807,6 @@ export default function App() {
           <div
             className="screen no-extra-space app-root-container"
             style={{
-              background:
-                "radial-gradient(circle at 20% 20%, rgba(10,15,30,1) 0%, rgba(3,6,20,1) 70%)",
               color: "white",
             }}
           >

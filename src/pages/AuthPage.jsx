@@ -380,7 +380,6 @@ export default function AuthPage() {
     <div
       className="min-h-screen flex flex-col items-center justify-center px-5 py-10"
       style={{
-        background: "linear-gradient(180deg, #0a0f1e 0%, #030614 100%)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",

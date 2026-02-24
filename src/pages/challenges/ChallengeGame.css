@@ -1,6 +1,6 @@
 /* Challenge Game Container */
 .challenge-game-container {
-  background: linear-gradient(to bottom, #081426, #0e2340);
+  background: transparent;
   padding: 16px;
   color: white;
 }

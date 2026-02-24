@@ -260,7 +260,6 @@ export default function LoginPage() {
   return (
     <div
       style={{
-        background: "linear-gradient(180deg, #0a0f1e 0%, #030614 100%)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
