@@ -74,7 +74,7 @@ export default function FriendProfile() {
           alignItems: "center",
           justifyContent: "center",
           color: "white",
-          minHeight: "100vh",
+          minHeight: "100%",
         }}
       >
         <p>Loading profile...</p>
@@ -93,7 +93,7 @@ export default function FriendProfile() {
           alignItems: "center",
           justifyContent: "center",
           color: "white",
-          minHeight: "100vh",
+          minHeight: "100%",
           gap: "16px",
         }}
       >
@@ -130,8 +130,7 @@ export default function FriendProfile() {
       className="screen no-extra-space"
       style={{
         background: "#0B1E2D",
-        minHeight: "100vh",
-        paddingBottom: "80px",
+        minHeight: "100%",
       }}
     >
       <div

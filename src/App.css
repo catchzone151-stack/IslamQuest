@@ -1,9 +1,11 @@
 :root {
-  --navy: #0a2a43;        /* background */
-  --navy-dark: #0a2a43;   /* darker surfaces */
-  --gold: #D4AF37;        /* accents */
-  --green: #10B981;       /* emerald highlights */
-  --text: #f3f4f6;        /* light text */
+  --navy: #0a2a43;
+  --navy-dark: #0a2a43;
+  --gold: #D4AF37;
+  --green: #10B981;
+  --text: #f3f4f6;
+  --nav-height: 76px;
+  --nav-total: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px));
 }
 
 * {
@@ -15,7 +17,7 @@ html {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background: #0a2a43;
+  background: #0e2340;
   overscroll-behavior: none;
 }
 
@@ -24,7 +26,11 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background: #0a2a43;
+  background: #0e2340;
+  color: var(--text);
+  font-family: "Arabic Honorific", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+    "Helvetica Neue", Arial, sans-serif;
+  max-width: 100vw;
   overscroll-behavior: none;
 }
 
@@ -33,7 +39,8 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background: #0a2a43;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Arabic honorific font - forces ﷻ (U+FDFC) and ﷺ (U+FDFA) to use Arabic calligraphic style */
@@ -44,22 +51,21 @@ body {
   unicode-range: U+FDFA, U+FDFC;
 }
 
-/* 👇 KEY: this globally prevents content going under the fixed nav */
-body {
-  color: var(--text);
-  font-family: "Arabic Honorific", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
-    "Helvetica Neue", Arial, sans-serif;
-  max-width: 100vw;
-  padding-bottom: 0;
+/* App root container - THE SINGLE scroll container for the entire app */
+.app-root-container {
+  flex: 1 1 0% !important;
+  min-height: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  padding-bottom: var(--nav-total) !important;
 }
 
 /* Main screen wrapper used on most pages */
 .screen {
-  background-color: #0a2a43;
   min-height: 100%;
   padding: 0;
-  padding-bottom: 56px;
-  padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
   max-width: 100%;
   overflow-x: clip;
   box-sizing: border-box;
@@ -71,39 +77,13 @@ body {
   margin-bottom: 0;
 }
 
-/* Combined selector to restore bottom nav clearance when both classes are used */
-.screen.no-extra-space {
-  padding-bottom: 56px !important;
-  padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px)) !important;
-}
-
-/* Onboarding screens - remove bottom padding */
+/* Onboarding screens */
 .onboarding-screen {
   padding: 0 !important;
   margin: 0 !important;
-  min-height: 100vh;
+  min-height: 100%;
   width: 100%;
-  background: #0a2a43;
   overflow: hidden;
-}
-
-/* App root container - THE SINGLE scroll container for the entire app */
-.app-root-container {
-  flex: 1 1 0% !important;
-  min-height: 0 !important;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-y: contain;
-  padding-bottom: 90px !important;
-  padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)) !important;
-}
-
-/* ScreenContainer safe-area support */
-.screen-container-root {
-  min-height: 0 !important;
-  padding-bottom: 110px !important;
-  padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px)) !important;
 }
 
 /* Headings */
@@ -123,6 +103,6 @@ a {
 
 /* Bottom navigation styling */
 .bottom-nav {
-  background: var(--navy-dark);
+  background: #0e2340;
   border-top: none !important;
 }

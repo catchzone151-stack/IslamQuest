@@ -386,7 +386,7 @@ export default function AuthPage() {
         alignItems: "center",
         justifyContent: "center",
         width: "100%",
-        minHeight: "100vh",
+        minHeight: "100%",
       }}
     >
       <motion.img

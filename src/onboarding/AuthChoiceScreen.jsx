@@ -33,7 +33,7 @@ export default function AuthChoiceScreen() {
         paddingLeft: 24,
         paddingRight: 24,
         paddingTop: 24,
-        minHeight: "100vh",
+        minHeight: "100%",
       }}
     >
       <motion.div

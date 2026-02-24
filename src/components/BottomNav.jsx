@@ -37,15 +37,15 @@ export default function BottomNav() {
         bottom: 0,
         left: 0,
         right: 0,
-        height: `${NAV_HEIGHT}px`,
+        height: `calc(${NAV_HEIGHT}px + env(safe-area-inset-bottom, 0px))`,
         background: "#0e2340",
-        borderTop: "1px solid #0e2340",
+        borderTop: "none",
         boxShadow: "none",
         display: "flex",
         justifyContent: "space-around",
-        alignItems: "center",
+        alignItems: "flex-start",
+        paddingTop: "8px",
         zIndex: 1000,
-        paddingBottom: "env(safe-area-inset-bottom)",
       }}
     >
       {tabs.map((tab) => {

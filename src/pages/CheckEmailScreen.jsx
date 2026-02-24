@@ -318,7 +318,7 @@ export default function CheckEmailScreen() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          minHeight: "100vh",
+          minHeight: "100%",
         }}
       >
         <motion.div
@@ -364,7 +364,7 @@ export default function CheckEmailScreen() {
         paddingRight: "24px",
         paddingTop: "24px",
         justifyContent: "center",
-        minHeight: "100vh",
+        minHeight: "100%",
       }}
     >
       <motion.div

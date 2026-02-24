@@ -152,7 +152,7 @@ export default function Pathway() {
           justifyContent: "center",
           padding: "40px 20px",
           textAlign: "center",
-          minHeight: "100vh",
+          minHeight: "100%",
           gap: "20px",
         }}
       >

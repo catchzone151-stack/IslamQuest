@@ -235,7 +235,7 @@ export default function SignUpPage() {
         flexDirection: "column",
         alignItems: "center",
         width: "100%",
-        minHeight: "100vh",
+        minHeight: "100%",
         padding: "20px",
         paddingTop: "60px",
         paddingBottom: "40px",

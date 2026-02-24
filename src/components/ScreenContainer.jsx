@@ -1,13 +1,10 @@
 import React from "react";
 
-const NAV_HEIGHT = 76;
-
 export default function ScreenContainer({ children }) {
   return (
     <div
-      className="screen no-extra-space screen-container-root"
+      className="screen no-extra-space"
       style={{
-        background: "var(--navy)",
         paddingLeft: "clamp(12px, 3vw, 24px)",
         paddingRight: "clamp(12px, 3vw, 24px)",
         paddingTop: "clamp(12px, 3vw, 24px)",

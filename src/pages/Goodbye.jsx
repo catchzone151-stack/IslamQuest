@@ -14,7 +14,7 @@ export default function Goodbye() {
     <ScreenContainer>
       <div
         style={{
-          minHeight: "100vh",
+          minHeight: "100%",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",

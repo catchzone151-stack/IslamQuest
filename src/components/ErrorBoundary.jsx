@@ -22,7 +22,7 @@ export default class ErrorBoundary extends React.Component {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            height: "100vh",
+            height: "100%",
             background: "#0a2a43",
             color: "white",
             textAlign: "center",

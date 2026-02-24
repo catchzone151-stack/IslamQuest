@@ -400,8 +400,7 @@ export default function Friends() {
       className="screen no-extra-space"
       style={{
         background: "#0B1E2D",
-        minHeight: "100vh",
-        paddingBottom: "80px",
+        minHeight: "100%",
       }}
     >
       <style>{highlightStyle}</style>
