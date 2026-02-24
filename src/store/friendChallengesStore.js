@@ -5,7 +5,8 @@ import { useFriendsStore } from "./friendsStore";
 import { CHALLENGE_MODES } from "./challengeStore";
 import { setIqState } from "../services/pushTags";
 
-const CHALLENGE_EXPIRY_HOURS = 48;
+const CHALLENGE_EXPIRY_HOURS = 48; // fallback only — DB expires_at takes precedence
+const CHALLENGE_EXPIRY_DAYS = 7;   // set on insert
 const VIEWED_RESULTS_KEY = "iq_viewed_challenge_results";
 
 const getViewedResultIds = () => {
@@ -95,43 +96,52 @@ export const useFriendChallengesStore = create((set, get) => ({
     set({ loading: true, error: null });
     
     try {
-      // PARALLEL fetch: challenges and friends list together
+      const now = new Date();
+      
+      // PARALLEL fetch: challenges (server-side filtered) and friends list
       const [challengesResult, friendsResult] = await Promise.all([
-        supabase.from("friend_challenges").select("*").or(`sender_id.eq.${currentUserId},receiver_id.eq.${currentUserId}`).order("created_at", { ascending: false }),
-        supabase.from("friends").select("user_id, friend_id").or(`user_id.eq.${currentUserId},friend_id.eq.${currentUserId}`).eq("status", "accepted"),
+        supabase
+          .from("friend_challenges")
+          .select("*")
+          .or(`sender_id.eq.${currentUserId},receiver_id.eq.${currentUserId}`)
+          .not("status", "in", "(cancelled,declined)")
+          .order("created_at", { ascending: false }),
+        supabase
+          .from("friends")
+          .select("user_id, friend_id")
+          .or(`user_id.eq.${currentUserId},friend_id.eq.${currentUserId}`)
+          .eq("status", "accepted"),
       ]);
       
       if (challengesResult.error) throw challengesResult.error;
       
       const data = challengesResult.data || [];
-      const friendsData = friendsResult.data || [];
       
-      const friendIds = new Set(friendsData.map(f => f.user_id === currentUserId ? f.friend_id : f.user_id));
-      
-      // Filter out orphaned challenges (async delete in background)
-      const validChallenges = [];
-      const orphanedIds = [];
-      
-      for (const c of data) {
-        const otherUserId = c.sender_id === currentUserId ? c.receiver_id : c.sender_id;
-        if (friendIds.has(otherUserId)) {
-          validChallenges.push(c);
-        } else {
-          orphanedIds.push(c.id);
-        }
+      // Build friend set — only used for display filtering, NEVER for deletion
+      // If friends query failed, skip filtering and show all challenges
+      let friendIds = null;
+      if (!friendsResult.error) {
+        const friendsData = friendsResult.data || [];
+        friendIds = new Set(friendsData.map(f => f.user_id === currentUserId ? f.friend_id : f.user_id));
+      } else {
+        console.warn("[FriendChallenges] Friends query failed — skipping friend filter:", friendsResult.error.message);
       }
       
-      // Background delete orphaned challenges (fire and forget)
-      if (orphanedIds.length > 0) {
-        supabase.from("friend_challenges").delete().in("id", orphanedIds).then(() => {});
-      }
+      // Filter orphaned challenges out of local display only — NEVER delete from DB
+      const validChallenges = (friendIds !== null && friendIds.size > 0)
+        ? data.filter(c => {
+            const otherUserId = c.sender_id === currentUserId ? c.receiver_id : c.sender_id;
+            return friendIds.has(otherUserId);
+          })
+        : data;
       
-      const now = new Date();
+      // Expiry: use DB expires_at if present; fall back to created_at + 48h for old rows
       const challenges = validChallenges.filter(c => {
-        if (c.status === "cancelled" || c.status === "declined") return false;
         if (c.status === "pending") {
-          const createdAt = new Date(c.created_at);
-          const hoursSinceCreation = (now - createdAt) / (1000 * 60 * 60);
+          if (c.expires_at) {
+            return new Date(c.expires_at) > now;
+          }
+          const hoursSinceCreation = (now - new Date(c.created_at)) / (1000 * 60 * 60);
           return hoursSinceCreation < CHALLENGE_EXPIRY_HOURS;
         }
         return true;
@@ -149,10 +159,7 @@ export const useFriendChallengesStore = create((set, get) => ({
       const completedChallenges = challenges.filter(c => c.status === "finished");
       
       const viewedIds = getViewedResultIds();
-      const resultsToView = completedChallenges.filter(c => {
-        if (viewedIds.includes(c.id)) return false;
-        return true;
-      });
+      const resultsToView = completedChallenges.filter(c => !viewedIds.includes(c.id));
       
       const unreadCount = pendingIncoming.length + resultsToView.length;
       
@@ -274,6 +281,7 @@ export const useFriendChallengesStore = create((set, get) => ({
         questionCount: questions?.length
       });
       
+      const now = new Date();
       const { data, error } = await supabase
         .from("friend_challenges")
         .insert({
@@ -282,7 +290,8 @@ export const useFriendChallengesStore = create((set, get) => ({
           challenge_type: modeId,
           status: "pending",
           questions: questions,
-          created_at: new Date().toISOString(),
+          created_at: now.toISOString(),
+          expires_at: new Date(now.getTime() + CHALLENGE_EXPIRY_DAYS * 24 * 60 * 60 * 1000).toISOString(),
         })
         .select()
         .single();
