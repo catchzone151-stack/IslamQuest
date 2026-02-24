@@ -177,10 +177,11 @@ export default function Challenge() {
         });
       } else {
         console.error('Challenge creation failed:', result.error);
-        const isDuplicate = typeof result.error === 'string' && 
-          (result.error.includes('duplicate key') || result.error.includes('active_unique'));
+        const isDuplicate = result.error === 'DUPLICATE_CHALLENGE' ||
+          (typeof result.error === 'string' && 
+           (result.error.includes('duplicate key') || result.error.includes('active_unique')));
         const friendlyMessage = isDuplicate
-          ? "You already have an active challenge with this friend!"
+          ? "You already have a pending challenge with this friend — check your challenge list below."
           : "Failed to send challenge. Please try again.";
         showModal(MODAL_TYPES.ERROR, { message: friendlyMessage });
       }

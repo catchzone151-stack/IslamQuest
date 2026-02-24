@@ -298,6 +298,14 @@ export const useFriendChallengesStore = create((set, get) => ({
       return { success: true, challenge: data };
     } catch (error) {
       console.error("[FriendChallenges] Create error:", error);
+      // Duplicate constraint means there's an existing challenge the local store
+      // didn't know about (stale state). Reload from DB so the UI shows it.
+      const isDuplicate = error.message?.includes('friend_challenges_active_unique') || 
+                          error.message?.includes('duplicate key');
+      if (isDuplicate) {
+        try { await get().loadChallenges(); } catch (_) {}
+        return { success: false, error: "DUPLICATE_CHALLENGE" };
+      }
       return { success: false, error: error.message };
     }
   },
