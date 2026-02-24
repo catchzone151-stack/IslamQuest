@@ -5,8 +5,6 @@ import mascotCongrats from "../../assets/mascots/mascot_congratulation.webp";
 import mascotSittingV2 from "../../assets/mascots/mascot_sitting_v2.webp";
 import mascotDefeated from "../../assets/mascots/mascot_defeated.webp";
 import mascotBoss from "../../assets/mascots/mascot_boss.webp";
-import assets from "../../assets/assets";
-const avatarManLantern = assets.avatars.avatar_man_lantern;
 import "./ChallengeModals.css";
 
 export default function ChallengeResultsModal({ 
@@ -95,7 +93,7 @@ export default function ChallengeResultsModal({
     // Boss level shows appropriate mascot based on result
     if (isBossLevel) {
       if (result === "win") return mascotCongrats;
-      if (result === "lose") return avatarManLantern;
+      if (result === "lose") return mascotSittingV2;
       return mascotBoss;
     }
     
@@ -116,8 +114,8 @@ export default function ChallengeResultsModal({
           <img 
             src={getMascot()} 
             alt="Zayd" 
-            className="challenge-zayd-bounce"
-            style={{ width: 100, height: "auto" }}
+            className={isBossLevel && result === "lose" ? "" : "challenge-zayd-bounce"}
+            style={{ width: 100, height: "auto", filter: "drop-shadow(0 6px 10px rgba(0,0,0,0.35))" }}
           />
           <div className="zayd-speech-bubble">{getZaydMessage()}</div>
         </div>
