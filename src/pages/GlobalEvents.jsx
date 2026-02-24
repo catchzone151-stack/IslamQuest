@@ -103,13 +103,33 @@ export default function GlobalEvents() {
         </h1>
         <p className="events-subtitle" style={{ textAlign: "center", margin: "8px 0 16px", color: "#94a3b8" }}>Compete with Muslims worldwide</p>
         
+        {/* Launch Date Banner */}
+        <div style={{
+          background: "linear-gradient(135deg, rgba(255,215,0,0.12) 0%, rgba(212,175,55,0.06) 100%)",
+          border: "1.5px solid rgba(255,215,0,0.35)",
+          borderRadius: 16,
+          padding: "16px 20px",
+          textAlign: "center",
+          marginBottom: 12,
+        }}>
+          <div style={{ fontSize: "1.5rem", marginBottom: 8 }}>🚀</div>
+          <div style={{ color: "#FFD700", fontWeight: 800, fontSize: "1rem", marginBottom: 4 }}>
+            Launching 1 Muharram 1448
+          </div>
+          <div style={{ color: "rgba(212,175,55,0.8)", fontSize: "0.82rem", fontWeight: 600, marginBottom: 10 }}>
+            16 June 2026 · Islamic New Year
+          </div>
+          <div style={{ color: "#94a3b8", fontSize: "0.8rem", lineHeight: 1.5 }}>
+            Get ready to compete with Muslims worldwide, in shā' Allāh
+          </div>
+        </div>
+
         {/* Info Section */}
         <div style={{ 
           background: "rgba(212, 175, 55, 0.1)", 
           borderRadius: 12, 
           padding: "12px 16px",
           border: "1px solid rgba(212, 175, 55, 0.2)",
-          display: "inline-block",
           textAlign: "center"
         }}>
           <p style={{ color: "#cbd5e1", fontSize: "0.85rem", margin: "0 0 4px" }}>
@@ -178,7 +198,7 @@ export default function GlobalEvents() {
 
               {/* New Event Badge (for un-entered events) */}
               {!entered && (
-                <div className="new-event-badge">Coming soon</div>
+                <div className="new-event-badge">Launching 16 June</div>
               )}
 
               {/* Premium Lock Overlay */}

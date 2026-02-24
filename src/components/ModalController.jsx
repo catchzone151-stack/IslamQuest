@@ -670,11 +670,22 @@ export default function ModalController() {
                   fontSize: '1.4rem',
                   fontWeight: 700,
                   color: '#FFD700',
-                  margin: '0 0 12px 0',
+                  margin: '0 0 8px 0',
                 }}
               >
-                Launching Eid 2026!
+                Launching 1 Muharram 1448
               </h2>
+
+              <p
+                style={{
+                  fontSize: '0.8rem',
+                  color: 'rgba(212,175,55,0.7)',
+                  margin: '0 0 12px 0',
+                  fontWeight: 600,
+                }}
+              >
+                16 June 2026 · Islamic New Year
+              </p>
 
               <p
                 style={{
@@ -684,7 +695,7 @@ export default function ModalController() {
                   lineHeight: 1.5,
                 }}
               >
-                Coming soon with Global Events, in shā' Allāh
+                Global Events are coming soon, in shā' Allāh. Compete with Muslims worldwide!
               </p>
 
               <button

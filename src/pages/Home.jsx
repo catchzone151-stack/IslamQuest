@@ -59,7 +59,7 @@ export default function Home() {
   const tapTimeoutRef = useRef(null);
   const sparkleTimeoutRef = useRef(null);
 
-  // Eid countdown state (3-segment: months/weeks/days)
+  // New Year countdown state (3-segment: months/weeks/days)
   const [eidStats, setEidStats] = useState({
     months: "--",
     weeks: "--",
@@ -101,11 +101,11 @@ export default function Home() {
     }
   }, [needsRepairPrompt, showModal]);
 
-  // Eid countdown timer (updates every minute to GMT)
+  // New Year countdown timer (updates every minute to GMT)
   useEffect(() => {
     function calculateDiff() {
-      // Target: 18 February 2026 00:00 GMT
-      const target = new Date(Date.UTC(2026, 1, 18, 0, 0, 0));
+      // Target: 16 June 2026 00:00 GMT — 1st Muharram 1448, Global Events launch
+      const target = new Date(Date.UTC(2026, 5, 16, 0, 0, 0));
       const now = new Date();
 
       const diff = target.getTime() - now.getTime();
@@ -754,17 +754,28 @@ export default function Home() {
         }}
       >
         {/* Title */}
-        <div
-          style={{
-            textAlign: "center",
-            fontWeight: 700,
-            fontSize: "0.95rem",
-            color: "#FFD700",
-            marginBottom: 10,
-            letterSpacing: "0.3px",
-          }}
-        >
-          🌙 Eid Countdown
+        <div style={{ textAlign: "center", marginBottom: 14 }}>
+          <div
+            style={{
+              fontWeight: 800,
+              fontSize: "1.05rem",
+              color: "#FFD700",
+              letterSpacing: "0.3px",
+              marginBottom: 4,
+            }}
+          >
+            🌙 Islamic New Year
+          </div>
+          <div
+            style={{
+              fontSize: "0.78rem",
+              color: "rgba(212,175,55,0.75)",
+              fontWeight: 500,
+              letterSpacing: "0.2px",
+            }}
+          >
+            Global Events launch · 1 Muharram 1448 · 16 June 2026
+          </div>
         </div>
 
         {/* Segmented Pill Bar */}
@@ -772,7 +783,7 @@ export default function Home() {
           style={{
             display: "flex",
             justifyContent: "space-between",
-            gap: 8,
+            gap: 10,
           }}
         >
           {[
@@ -785,30 +796,34 @@ export default function Home() {
               style={{
                 flex: 1,
                 background: "rgba(255,215,0,0.08)",
-                borderRadius: 16,
-                padding: "10px 0",
+                borderRadius: 18,
+                padding: "14px 0 12px",
                 border: "1px solid rgba(255,215,0,0.25)",
-                boxShadow: "0 0 8px rgba(255,215,0,0.12)",
+                boxShadow: "0 0 10px rgba(255,215,0,0.12)",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                gap: 2,
+                gap: 4,
               }}
             >
               <div
                 style={{
-                  fontSize: "1.15rem",
-                  fontWeight: 700,
+                  fontSize: "1.5rem",
+                  fontWeight: 800,
                   color: "#FFD700",
+                  lineHeight: 1,
                 }}
               >
                 {seg.value}
               </div>
               <div
                 style={{
-                  fontSize: "0.7rem",
-                  color: "#d4d4d4",
+                  fontSize: "0.72rem",
+                  color: "rgba(212,175,55,0.7)",
+                  fontWeight: 600,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.5px",
                 }}
               >
                 {seg.label}
