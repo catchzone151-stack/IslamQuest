@@ -52,6 +52,22 @@ function decryptJSON(cipher) {
   }
 }
 
+// Normalise any date string to YYYY-MM-DD ISO format.
+// Handles legacy toDateString() values like "Tue Feb 24 2026" and
+// ISO strings like "2026-02-24" or "2026-02-24T00:00:00.000Z".
+function toISODateStr(dateStr) {
+  if (!dateStr) return null;
+  // Already ISO date-only  
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return dateStr;
+  try {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return null;
+    return d.toISOString().split("T")[0];
+  } catch {
+    return null;
+  }
+}
+
 export const useProgressStore = create((set, get) => ({
   // 🪙 Base user stats
   xp: 0,
@@ -70,6 +86,9 @@ export const useProgressStore = create((set, get) => ({
   lockedLessons: {},
   hasPremium: false, // Deprecated: derived from premiumStatus, kept for backwards compatibility
   
+  // 🛡️ Shield saved notification (toast, no modal)
+  showShieldSaved: false,
+
   // 💳 Premium System (Supabase-ready)
   premium: false, // New: Simple boolean for premium status
   premiumType: null, // null | "individual" | "family"
@@ -181,6 +200,13 @@ export const useProgressStore = create((set, get) => ({
         savedData.lastStreakDate = savedData.lastCompletedActivityDate;
       }
       delete savedData.lastCompletedActivityDate;
+      // Normalise legacy toDateString() format → ISO YYYY-MM-DD
+      if (savedData.lastStreakDate) {
+        savedData.lastStreakDate = toISODateStr(savedData.lastStreakDate);
+      }
+      if (savedData.lastStudyDate) {
+        savedData.lastStudyDate = toISODateStr(savedData.lastStudyDate);
+      }
 
       if (savedData.vibrationEnabled === undefined) {
         savedData.vibrationEnabled = true;
@@ -272,98 +298,165 @@ export const useProgressStore = create((set, get) => ({
     return locks;
   },
 
-  markDayComplete: () => {
-    console.log("[STREAK] markDayComplete executed");
-    const today = new Date().toDateString();
-    const { lastStreakDate, streak } = get();
+  // 🌙 Single canonical streak entry point — call this for every meaningful activity
+  recordDailyActivity: async () => {
+    const today = new Date().toISOString().split("T")[0];
+    const { lastStreakDate, streak, shieldCount } = get();
 
-    console.log(`[${STREAK_TRACE}] STREAK_BEFORE`, { streak, lastStreakDate, today });
+    console.log(`[${STREAK_TRACE}] MEANINGFUL_ACTIVITY_DETECTED`, { today, lastStreakDate, streak });
 
+    // Dedup: already counted today
     if (lastStreakDate === today) {
       console.log(`[${STREAK_TRACE}] STREAK_AFTER (no change, already today)`, { streak });
       return;
     }
 
-    let newStreak;
+    let newStreak = streak;
+    let newShieldCount = shieldCount;
+    let shieldSaved = false;
+    let streakBroken = false;
+    let updateLastDate = true;
+    const previousStreak = streak;
+
     if (!lastStreakDate) {
       newStreak = 1;
     } else {
-      const lastDate = new Date(lastStreakDate);
-      const currentDate = new Date(today);
-      const diffDays = Math.floor((currentDate - lastDate) / (1000 * 60 * 60 * 24));
-      newStreak = diffDays === 1 ? streak + 1 : 1;
+      const diffDays = Math.round(
+        (new Date(today) - new Date(lastStreakDate)) / (1000 * 60 * 60 * 24)
+      );
+      console.log(`[${STREAK_TRACE}] STREAK_BEFORE`, { streak, lastStreakDate, today, diffDays });
+
+      if (diffDays === 1) {
+        newStreak = streak + 1;
+      } else if (diffDays > 1) {
+        if (shieldCount > 0) {
+          newShieldCount = shieldCount - 1;
+          shieldSaved = true;
+          // streak unchanged — shield saved it
+        } else if (streak > 0) {
+          // Meaningful streak broken — show repair prompt, allow same-day restart
+          streakBroken = true;
+          newStreak = 0;
+          updateLastDate = false;
+        } else {
+          // Streak was already 0 (e.g. after skip/break) — start fresh silently
+          newStreak = 1;
+        }
+      }
     }
 
-    set({
+    const updates = {
       streak: newStreak,
-      lastStreakDate: today,
-      lastStudyDate: today,
+      shieldCount: newShieldCount,
+      _localStreakTs: Date.now(),
+      showShieldSaved: shieldSaved,
+    };
+    if (updateLastDate) {
+      updates.lastStreakDate = today;
+      updates.lastStudyDate = today;
+    }
+    if (streakBroken) {
+      updates.needsRepairPrompt = true;
+      updates.brokenStreakValue = previousStreak;
+    }
+    if (!streakBroken && streak === 0) {
+      // Fresh start after a prior break/skip — clear any stale repair state
+      updates.needsRepairPrompt = false;
+      updates.brokenStreakValue = 0;
+    }
+
+    set(updates);
+    get().calculateXPMultiplier();
+    get().saveProgress();
+    syncStreakTags(streakBroken ? "streak_broken" : "streak_increment");
+
+    console.log(`[${STREAK_TRACE}] STREAK_AFTER`, {
+      streak: newStreak, shieldSaved, streakBroken,
+      lastStreakDate: updateLastDate ? today : lastStreakDate,
+    });
+
+    // Sync streak fields to Supabase (awaited)
+    try {
+      const { data } = await supabase.auth.getUser();
+      const userId = data?.user?.id;
+      if (userId) {
+        const syncPayload = {
+          streak: newStreak,
+          shield_count: newShieldCount,
+          updated_at: new Date().toISOString(),
+        };
+        if (updateLastDate) {
+          syncPayload.last_completed_activity_date = today;
+        }
+        console.log(`[${STREAK_TRACE}] SYNC_PAYLOAD_STREAK`, syncPayload);
+        const { error } = await supabase.from("profiles").update(syncPayload).eq("user_id", userId);
+        if (error) console.error(`[${STREAK_TRACE}] Supabase sync error:`, error.message);
+
+        // Insert streak log row (upsert — safe if called twice today)
+        logStreakEvent(userId, !streakBroken);
+      }
+    } catch (err) {
+      console.error(`[${STREAK_TRACE}] Supabase sync failed:`, err);
+    }
+  },
+
+  // 🌙 Legacy alias — kept so all existing call sites continue to work
+  markDayComplete: () => {
+    get().recordDailyActivity();
+  },
+
+  // 🌙 Check streak status on app open
+  // Detects breaks and auto-consumes one shield if available (passive check, no activity required)
+  checkStreakOnAppOpen: () => {
+    const today = new Date().toISOString().split("T")[0];
+    const { lastStreakDate, streak, shieldCount, needsRepairPrompt } = get();
+
+    if (needsRepairPrompt) return; // repair prompt already active
+    if (!lastStreakDate) return;
+    if (lastStreakDate === today) return; // already active today
+
+    const diffDays = Math.round(
+      (new Date(today) - new Date(lastStreakDate)) / (1000 * 60 * 60 * 24)
+    );
+
+    if (diffDays <= 1) return;
+
+    // Auto-consume one shield for exactly one missed day
+    if (shieldCount >= 1) {
+      const yesterday = new Date(today);
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yesterdayStr = yesterday.toISOString().split("T")[0];
+
+      set({
+        shieldCount: shieldCount - 1,
+        lastStreakDate: yesterdayStr,
+        lastStudyDate: yesterdayStr,
+        showShieldSaved: true,
+        _localStreakTs: Date.now(),
+      });
+      get().saveProgress();
+      setTimeout(() => get().syncStreakShieldToCloud(), 50);
+
+      (async () => {
+        const { data } = await supabase.auth.getUser();
+        const userId = data?.user?.id;
+        if (userId) logStreakEvent(userId, true);
+      })();
+
+      return;
+    }
+
+    // No shield — streak broke
+    set({
+      brokenStreakValue: streak,
+      streak: 0,
+      needsRepairPrompt: true,
       _localStreakTs: Date.now(),
     });
     get().calculateXPMultiplier();
     get().saveProgress();
-    setTimeout(() => get().syncToSupabase(), 50);
-    syncStreakTags("streak_increment");
-
-    console.log(`[${STREAK_TRACE}] STREAK_AFTER`, { streak: newStreak, lastStreakDate: today });
-
-    if (newStreak > 1) {
-      (async () => {
-        const { data } = await supabase.auth.getUser();
-        const userId = data?.user?.id;
-        if (userId) logStreakEvent(userId, true);
-      })();
-    }
-  },
-
-  // 🌙 Check streak status on app open
-  // This runs once per session to detect breaks and consume shields if needed
-  checkStreakOnAppOpen: () => {
-    const today = new Date().toDateString();
-    const { lastStreakDate, streak, shieldCount, needsRepairPrompt } = get();
-
-    if (lastStreakDate === today || needsRepairPrompt) return;
-    if (!lastStreakDate) return;
-
-    const lastDate = new Date(lastStreakDate);
-    const currentDate = new Date(today);
-    const diffDays = Math.floor((currentDate - lastDate) / (1000 * 60 * 60 * 24));
-
-    if (diffDays <= 1) return;
-
-    const shieldsNeeded = diffDays - 1;
-
-    if (shieldCount >= shieldsNeeded) {
-      const yesterday = new Date();
-      yesterday.setDate(yesterday.getDate() - 1);
-      const yesterdayStr = yesterday.toDateString();
-      
-      set({ 
-        shieldCount: shieldCount - shieldsNeeded,
-        lastStreakDate: yesterdayStr,
-        lastStudyDate: yesterdayStr,
-      });
-      get().saveProgress();
-      setTimeout(() => get().syncStreakShieldToCloud(), 50);
-      
-      (async () => {
-        const { data } = await supabase.auth.getUser();
-        const userId = data?.user?.id;
-        if (userId) logStreakEvent(userId, true);
-      })();
-      
-      return;
-    }
-
-    set({ 
-      brokenStreakValue: streak,
-      streak: 0,
-      needsRepairPrompt: true,
-    });
-    get().calculateXPMultiplier();
-    get().saveProgress();
     syncStreakTags("streak_broken");
-    
+
     (async () => {
       const { data } = await supabase.auth.getUser();
       const userId = data?.user?.id;
@@ -411,35 +504,30 @@ export const useProgressStore = create((set, get) => ({
     return { success: true };
   },
 
-  // 🔧 Repair broken streak
-  // Phase 4: Now syncs shield count AND full progress to Supabase cloud
+  // 🔧 Repair broken streak — restores previous streak, does NOT gift a shield
   repairStreak: async () => {
-    const { coins, brokenStreakValue, shieldCount } = get();
+    const { coins, brokenStreakValue } = get();
     const REPAIR_COST = 200;
-    const MAX_SHIELDS = 3;
 
-    // Not enough coins
     if (coins < REPAIR_COST) {
       return { success: false, reason: "insufficient_coins" };
     }
 
-    // Repair successful - restore streak to previous value
     const restoredStreak = brokenStreakValue;
-    const newShieldCount = Math.min(shieldCount + 1, MAX_SHIELDS);
-    const today = new Date().toDateString();
-    
-    set({ 
+    const today = new Date().toISOString().split("T")[0];
+
+    set({
       coins: coins - REPAIR_COST,
       streak: restoredStreak,
-      shieldCount: newShieldCount,
       needsRepairPrompt: false,
       brokenStreakValue: 0,
       lastStreakDate: today,
+      lastStudyDate: today,
       _localStreakTs: Date.now(),
     });
     get().calculateXPMultiplier();
     get().saveProgress();
-    
+
     const { data } = await supabase.auth.getUser();
     const userId = data?.user?.id;
     if (userId) {
@@ -447,30 +535,26 @@ export const useProgressStore = create((set, get) => ({
         await supabase.from("profiles").update({
           streak: restoredStreak,
           coins: coins - REPAIR_COST,
-          shield_count: newShieldCount,
           last_completed_activity_date: today,
+          updated_at: new Date().toISOString(),
         }).eq("user_id", userId);
         console.log("✅ Streak repaired and synced to cloud:", restoredStreak);
       } catch (err) {
         console.error("Failed to sync repaired streak to cloud:", err);
       }
-      
-      // Log streak repaired event
       logStreakEvent(userId, true);
     }
-    
-    return { success: true, giftedShield: true, restoredStreak };
+
+    return { success: true, giftedShield: false, restoredStreak };
   },
 
-  // ❌ Skip streak repair
+  // ❌ Skip streak repair — resets streak to 0, does NOT set lastStreakDate
+  // so the user can start a new streak the same day they skip
   skipRepair: () => {
-    const today = new Date().toDateString();
-    set({ 
+    set({
       needsRepairPrompt: false,
       brokenStreakValue: 0,
       streak: 0,
-      lastStreakDate: today,
-      lastStudyDate: today,
       _localStreakTs: Date.now(),
     });
     get().calculateXPMultiplier();
@@ -596,10 +680,7 @@ export const useProgressStore = create((set, get) => ({
       return { lessonStates };
     });
     
-    // Only award XP/coins, update progress, and unlock if passed
-    if (!passed) {
-      console.log(`[${STREAK_TRACE}] QUIZ_NOT_PASSED - markDayComplete will NOT be called`);
-    }
+    // Award XP/coins, update progress, and unlock only if passed
     if (passed) {
       if (xp) get().addXP(xp);
       if (coins) get().addCoins(coins);
@@ -620,11 +701,6 @@ export const useProgressStore = create((set, get) => ({
         (x) => x.passed
       ).length;
       const totalLessons = path?.totalLessons || 0;
-
-      const ratio =
-        path && path.totalLessons > 0
-          ? Math.min(1, passedCountAfter / path.totalLessons)
-          : 0;
 
       get().setPathProgress(pathId, passedCountAfter, path ? path.totalLessons : 0);
 
@@ -650,13 +726,12 @@ export const useProgressStore = create((set, get) => ({
       // unlock next lesson
       get().unlockLesson(pathId, lessonId + 1);
       
-      console.log(`[${STREAK_TRACE}] MEANINGFUL_ACTIVITY_DETECTED`, { source: 'quiz_complete', lessonId, pathId });
-      get().markDayComplete();
-      console.log(`[${STREAK_TRACE}] RETURNED_FROM_markDayComplete`);
-      
       // 📚 Check and unlock Smart Revision if 25 lessons completed
       get().checkAndUnlockSmartRevision();
     }
+
+    // 🌙 Record streak activity regardless of pass/fail (lessons count either way)
+    get().recordDailyActivity();
     
     get().saveProgress();
     setTimeout(() => get().syncToSupabase(), 50);
@@ -1103,7 +1178,7 @@ export const useProgressStore = create((set, get) => ({
     }
     
     const localStreakTs = get()._localStreakTs || 0;
-    const cloudStreakDate = data.last_completed_activity_date;
+    const cloudStreakDate = toISODateStr(data.last_completed_activity_date);
     const localStreak = get().streak;
     const cloudStreak = data.streak;
     const cloudTs = cloudUpdatedAt ? new Date(cloudUpdatedAt).getTime() : 0;
@@ -1287,7 +1362,7 @@ export const useProgressStore = create((set, get) => ({
       const localStreakTs = get()._localStreakTs || 0;
       const cloudStreak = data.streak;
       const localStreak = get().streak;
-      const cloudStreakDate = data.last_completed_activity_date;
+      const cloudStreakDate = toISODateStr(data.last_completed_activity_date);
       const keepLocalStreak = localStreakTs > 0 && localStreakTs > cloudTs;
 
       console.log(`[${STREAK_TRACE}] CLOUD_MERGE_DECISION`, {

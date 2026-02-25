@@ -13,7 +13,7 @@ export default function RepairStreakModal({ onClose }) {
     if (result.success) {
       onClose?.();
     } else if (result.reason === "insufficient_coins") {
-      alert("Not enough coins! You need 200 coins to repair your streak.");
+      onClose?.();
     }
   };
 
@@ -91,10 +91,6 @@ export default function RepairStreakModal({ onClose }) {
           textAlign: "center"
         }}>
           Your balance: {coins} coins
-        </div>
-
-        <div className="modal-note" style={{ marginTop: "16px" }}>
-          <p>🛡️ Includes 1 free Streak Freeze Shield!</p>
         </div>
 
         <div className="modal-actions">

@@ -574,7 +574,7 @@ export default function App() {
   useEffect(() => {
     const runDailySnapshot = async () => {
       const lastRun = localStorage.getItem("last_snapshot_run");
-      const today = new Date().toDateString();
+      const today = new Date().toISOString().split("T")[0];
 
       if (lastRun !== today) {
         await createDailyLeaderboardSnapshot();

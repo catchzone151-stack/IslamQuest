@@ -77,7 +77,7 @@ export default function Revise() {
   const [showResults, setShowResults] = useState(false);
 
   const { loadReviseData, getWeakPool, clearCorrectQuestion, saveWrongQuestion, markQuestionReviewed } = useReviseStore();
-  const { addXPAndCoins, reviewMistakesUnlocked, smartRevisionUnlocked, getTotalCompletedLessons, paths, unlockReviewMistakes } = useProgressStore();
+  const { addXPAndCoins, recordDailyActivity, reviewMistakesUnlocked, smartRevisionUnlocked, getTotalCompletedLessons, paths, unlockReviewMistakes } = useProgressStore();
   const analytics = useAnalytics();
 
   useEffect(() => {
@@ -232,6 +232,9 @@ export default function Revise() {
         }
       })();
     }
+
+    // 🌙 Record streak activity when full revise session completes
+    recordDailyActivity();
 
     setShowResults(true);
   };
