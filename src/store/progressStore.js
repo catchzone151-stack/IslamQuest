@@ -14,6 +14,17 @@ import { setPathStarted, setPathCompleted, setIqState, syncStreakTags, registerP
 const STORAGE_KEY = "islamQuestProgress_v4";
 const STREAK_TRACE = 'IQ_STREAK_TRACE';
 
+const SHIELD_COST = 250;
+const REPAIR_COST = 300;
+const MAX_SHIELDS = 2;
+
+const STREAK_MILESTONES = {
+  5: 50,
+  10: 120,
+  30: 400,
+  100: 1500,
+};
+
 const DEFAULT_PATHS = [
   { id: 1, title: "Names of Allah", progress: 0, totalLessons: 104, completedLessons: 0, status: "available" },
   { id: 2, title: "Foundations of Islam", progress: 0, totalLessons: 17, completedLessons: 0, status: "available" },
@@ -88,6 +99,9 @@ export const useProgressStore = create((set, get) => ({
   
   // 🛡️ Shield saved notification (toast, no modal)
   showShieldSaved: false,
+  showMilestoneModal: false,
+  milestoneDays: null,
+  milestoneReward: 0,
 
   // 💳 Premium System (Supabase-ready)
   premium: false, // New: Simple boolean for premium status
@@ -316,10 +330,12 @@ export const useProgressStore = create((set, get) => ({
     let shieldSaved = false;
     let streakBroken = false;
     let updateLastDate = true;
+    let isNaturalIncrement = false;
     const previousStreak = streak;
 
     if (!lastStreakDate) {
       newStreak = 1;
+      isNaturalIncrement = true;
     } else {
       const diffDays = Math.round(
         (new Date(today) - new Date(lastStreakDate)) / (1000 * 60 * 60 * 24)
@@ -328,6 +344,7 @@ export const useProgressStore = create((set, get) => ({
 
       if (diffDays === 1) {
         newStreak = streak + 1;
+        isNaturalIncrement = true;
       } else if (diffDays > 1) {
         if (shieldCount > 0) {
           newShieldCount = shieldCount - 1;
@@ -371,7 +388,7 @@ export const useProgressStore = create((set, get) => ({
     syncStreakTags(streakBroken ? "streak_broken" : "streak_increment");
 
     console.log(`[${STREAK_TRACE}] STREAK_AFTER`, {
-      streak: newStreak, shieldSaved, streakBroken,
+      streak: newStreak, shieldSaved, streakBroken, isNaturalIncrement,
       lastStreakDate: updateLastDate ? today : lastStreakDate,
     });
 
@@ -394,6 +411,26 @@ export const useProgressStore = create((set, get) => ({
 
         // Insert streak log row (upsert — safe if called twice today)
         logStreakEvent(userId, !streakBroken);
+
+        // 🏆 Milestone reward — only on natural increments, never on repair or shield save
+        if (isNaturalIncrement) {
+          const milestoneCoins = STREAK_MILESTONES[newStreak];
+          if (milestoneCoins) {
+            const currentCoins = get().coins;
+            const updatedCoins = currentCoins + milestoneCoins;
+            set({
+              coins: updatedCoins,
+              showMilestoneModal: true,
+              milestoneDays: newStreak,
+              milestoneReward: milestoneCoins,
+            });
+            get().saveProgress();
+            await supabase
+              .from("profiles")
+              .update({ coins: updatedCoins })
+              .eq("user_id", userId);
+          }
+        }
       }
     } catch (err) {
       console.error(`[${STREAK_TRACE}] Supabase sync failed:`, err);
@@ -468,8 +505,6 @@ export const useProgressStore = create((set, get) => ({
   // Phase 4: Now syncs shield count to Supabase cloud
   purchaseShield: async () => {
     const { coins, shieldCount } = get();
-    const SHIELD_COST = 250;
-    const MAX_SHIELDS = 3;
 
     // Already at max
     if (shieldCount >= MAX_SHIELDS) {
@@ -507,7 +542,6 @@ export const useProgressStore = create((set, get) => ({
   // 🔧 Repair broken streak — restores previous streak, does NOT gift a shield
   repairStreak: async () => {
     const { coins, brokenStreakValue } = get();
-    const REPAIR_COST = 200;
 
     if (coins < REPAIR_COST) {
       return { success: false, reason: "insufficient_coins" };

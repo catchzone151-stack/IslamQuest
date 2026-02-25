@@ -1,0 +1,149 @@
+We are finalising streak economy and milestone rewards.
+
+DO NOT TOUCH:
+- Push notification logic
+- XP system
+- Leaderboard logic
+- Supabase schema
+- Challenge system
+
+We are only modifying:
+- progressStore
+- Repair pricing
+- Shield max enforcement
+- Adding milestone rewards + modal
+
+--------------------------------------------------
+STEP 1 — ECONOMY CONSTANTS
+--------------------------------------------------
+
+Inside progressStore define constants at top:
+
+const SHIELD_COST = 250;
+const REPAIR_COST = 300;
+const MAX_SHIELDS = 2;
+
+const STREAK_MILESTONES = {
+  5: 50,
+  10: 120,
+  30: 400,
+  100: 1500
+};
+
+--------------------------------------------------
+STEP 2 — ENFORCE MAX SHIELDS
+--------------------------------------------------
+
+Where shield is purchased:
+
+Before incrementing shields:
+
+if (state.streak_shields >= MAX_SHIELDS) return;
+
+Ensure shields never exceed 2.
+
+--------------------------------------------------
+STEP 3 — UPDATE REPAIR COST
+--------------------------------------------------
+
+Where repairStreak deducts coins:
+
+Change cost to REPAIR_COST (300).
+
+Repair must:
+- Deduct coins
+- Restore streak
+- NOT add shield
+- NOT trigger milestone
+
+--------------------------------------------------
+STEP 4 — ADD MILESTONE CHECK
+--------------------------------------------------
+
+Inside recordDailyActivity AFTER streak increments
+AND ONLY when diff === 1 OR first streak day:
+
+const reward = STREAK_MILESTONES[newStreak];
+
+if (reward) {
+
+  const updatedCoins = state.coins + reward;
+
+  // Update local state
+  set({
+    coins: updatedCoins,
+    showMilestoneModal: true,
+    milestoneDays: newStreak,
+    milestoneReward: reward
+  });
+
+  // Sync coins to Supabase
+  await supabase
+    .from("profiles")
+    .update({ coins: updatedCoins })
+    .eq("id", user.id);
+}
+
+IMPORTANT:
+- Do not trigger milestone on repair
+- Do not trigger on shield save
+- Do not trigger twice same day
+
+--------------------------------------------------
+STEP 5 — ADD MODAL STATE DEFAULTS
+--------------------------------------------------
+
+In initial state:
+
+showMilestoneModal: false,
+milestoneDays: null,
+milestoneReward: 0,
+
+--------------------------------------------------
+STEP 6 — CREATE MilestoneModal.jsx
+--------------------------------------------------
+
+Design:
+
+Title: "🔥 Streak Milestone!"
+Subtitle: "{milestoneDays} Days Strong!"
+Text: "You earned +{milestoneReward} Coins 💰"
+
+Single button:
+"Continue"
+
+On click:
+set({ showMilestoneModal: false })
+
+Style:
+- Same theme as other modals
+- Gold accent
+- Clean centered
+- No auto-dismiss
+- Always include close button
+
+--------------------------------------------------
+STEP 7 — RENDER MODAL
+--------------------------------------------------
+
+In App.jsx top-level render:
+
+{showMilestoneModal && (
+  <MilestoneModal
+    days={milestoneDays}
+    reward={milestoneReward}
+    onClose={() => set({ showMilestoneModal: false })}
+  />
+)}
+
+--------------------------------------------------
+VALIDATION RULES
+--------------------------------------------------
+
+- Milestone only triggers when streak increments naturally
+- No XP bonus added
+- Coins sync must be awaited
+- No duplicate milestone on same day
+- Shield count never exceeds 2
+- Repair cost is exactly 300 coins
+- UI consistent with theme

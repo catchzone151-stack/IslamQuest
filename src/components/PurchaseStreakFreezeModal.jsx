@@ -7,7 +7,7 @@ import "./PurchaseStreakFreezeModal.css";
 export default function PurchaseStreakFreezeModal({ onClose, onSuccess }) {
   const { coins, shieldCount, purchaseShield } = useProgressStore();
   const SHIELD_COST = 250;
-  const MAX_SHIELDS = 3;
+  const MAX_SHIELDS = 2;
 
   const handlePurchase = () => {
     const result = purchaseShield();

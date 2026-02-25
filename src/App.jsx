@@ -8,6 +8,7 @@ import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import BottomNav from "./components/BottomNav.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 import ModalController from "./components/ModalController.jsx";
+import MilestoneModal from "./components/MilestoneModal.jsx";
 import OfflineConnectionBanner from "./components/OfflineConnectionBanner.jsx";
 import { ModalProvider, ModalRoot } from "./providers/ModalProvider.jsx";
 import { ShimmerCard, ShimmerImage } from "./components/ShimmerLoader.jsx";
@@ -228,7 +229,7 @@ const PRODUCTION_VERSION = "iq_production_v1";
 export default function App() {
   console.log('[IQ_BUILD_TEST]', 'BUILD_VERSION_3');
   const { hasOnboarded, isHydrated } = useUserStore();
-  const { grantCoins, coins } = useProgressStore();
+  const { grantCoins, coins, showMilestoneModal, milestoneDays, milestoneReward } = useProgressStore();
   
   // Force re-render workaround for Zustand subscription issues in React StrictMode
   const [renderKey, setRenderKey] = React.useState(0);
@@ -1018,6 +1019,15 @@ export default function App() {
 
           {/* 💎 Centralized Modal System */}
           <ModalController />
+
+          {/* 🏆 Streak milestone reward modal */}
+          {showMilestoneModal && (
+            <MilestoneModal
+              days={milestoneDays}
+              reward={milestoneReward}
+              onClose={() => useProgressStore.setState({ showMilestoneModal: false })}
+            />
+          )}
 
           {/* 🚪 Portal root for heavy modals */}
           <ModalRoot />

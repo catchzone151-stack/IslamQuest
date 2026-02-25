@@ -5,7 +5,7 @@ import "./events/EventModals.css";
 
 export default function RepairStreakModal({ onClose }) {
   const { coins, brokenStreakValue, repairStreak, skipRepair } = useProgressStore();
-  const REPAIR_COST = 200;
+  const REPAIR_COST = 300;
 
   const handleRepair = async () => {
     const result = await repairStreak();
@@ -81,7 +81,7 @@ export default function RepairStreakModal({ onClose }) {
           fontWeight: "700"
         }}>
           <span>💰</span>
-          <span style={{ color: "#d4af37" }}>200 coins</span>
+          <span style={{ color: "#d4af37" }}>300 coins</span>
         </div>
 
         <div style={{

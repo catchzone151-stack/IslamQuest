@@ -227,7 +227,7 @@ export default function Profile() {
           <ProfileCard
             icon={ui_shield}
             label="Shields"
-            value={`${shieldCount}/3 🛡️`}
+            value={`${shieldCount}/2 🛡️`}
             color="#4fd5ff"
           />
         </div>
