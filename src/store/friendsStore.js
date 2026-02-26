@@ -109,6 +109,11 @@ export const useFriendsStore = create((set, get) => ({
         return;
       }
 
+      if (sentResult.error || receivedResult.error) {
+        set({ friends: [], sentRequests: [], receivedRequests: [], users: [], loading: false, error: sentResult.error?.message || receivedResult.error?.message });
+        return;
+      }
+
       const friendsData = friendsResult.data || [];
       const sent = sentResult.data || [];
       const received = receivedResult.data || [];
@@ -156,7 +161,7 @@ export const useFriendsStore = create((set, get) => ({
 
       set({ friends: formattedFriends, sentRequests: formattedSent, receivedRequests: formattedReceived, loading: false });
     } catch (err) {
-      set({ friends: [], sentRequests: [], receivedRequests: [], users: [], loading: false, error: null });
+      set({ friends: [], sentRequests: [], receivedRequests: [], users: [], loading: false, error: err.message });
     }
   },
 
