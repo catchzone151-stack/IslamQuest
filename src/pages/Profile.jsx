@@ -218,6 +218,7 @@ export default function Profile() {
             color="#FFD700"
             gradient="linear-gradient(135deg, rgba(255,215,0,0.35), rgba(255,140,0,0.18))"
             borderColor="rgba(255,215,0,0.5)"
+            boxShadow="0 0 18px rgba(255,215,0,0.65), 0 0 36px rgba(255,140,0,0.35)"
           />
           <ProfileCard
             icon={ui_coin}
@@ -226,6 +227,7 @@ export default function Profile() {
             color="#FFA500"
             gradient="linear-gradient(135deg, rgba(255,140,0,0.35), rgba(255,69,0,0.18))"
             borderColor="rgba(255,140,0,0.5)"
+            boxShadow="0 0 18px rgba(255,140,0,0.65), 0 0 36px rgba(255,69,0,0.35)"
           />
           <ProfileCard
             icon={ui_streak}
@@ -234,6 +236,7 @@ export default function Profile() {
             color="#FF6347"
             gradient="linear-gradient(135deg, rgba(255,99,71,0.4), rgba(220,20,60,0.18))"
             borderColor="rgba(255,99,71,0.5)"
+            boxShadow="0 0 18px rgba(255,99,71,0.65), 0 0 36px rgba(220,20,60,0.35)"
           />
           <ProfileCard
             icon={ui_shield}
@@ -242,6 +245,7 @@ export default function Profile() {
             color="#4fd5ff"
             gradient="linear-gradient(135deg, rgba(79,213,255,0.35), rgba(16,185,129,0.18))"
             borderColor="rgba(79,213,255,0.5)"
+            boxShadow="0 0 18px rgba(79,213,255,0.65), 0 0 36px rgba(16,185,129,0.35)"
           />
         </div>
 
