@@ -972,6 +972,8 @@ export default function Friends() {
                         onClick={() => handleUserClick(friend.user_id || friend.id)}
                         badge="Friends"
                         badgeColor="#10b981"
+                        onChallenge={() => handleChallengeFriend(friend)}
+                        challengeState={getFriendChallengeState(friend.user_id)}
                       />
                     ))}
                 </div>
@@ -1730,7 +1732,7 @@ function GlobalLeaderboardCard({
   );
 }
 
-function UserCard({ user, onClick, action, badge, badgeColor }) {
+function UserCard({ user, onClick, action, badge, badgeColor, onChallenge, challengeState }) {
   const avatarSrc = resolveAvatar(user.avatar, {
     userId: user.user_id || user.id,
     nickname: user.nickname || user.username,
@@ -1828,23 +1830,73 @@ function UserCard({ user, onClick, action, badge, badgeColor }) {
         </div>
       </div>
 
-      {badge ? (
-        <div
-          style={{
-            padding: "6px 12px",
-            background: `${badgeColor}22`,
-            border: `1px solid ${badgeColor}`,
-            borderRadius: "8px",
-            color: badgeColor,
-            fontSize: "0.8rem",
-            fontWeight: "600",
-          }}
-        >
-          {badge}
-        </div>
-      ) : (
-        action
-      )}
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px", flexShrink: 0 }}>
+        {onChallenge && (
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={(e) => { e.stopPropagation(); onChallenge(); }}
+            style={{
+              padding: "8px",
+              background: challengeState?.type === "pending_received"
+                ? "rgba(34, 197, 94, 0.3)"
+                : challengeState?.type === "ready_to_play"
+                  ? "rgba(251, 191, 36, 0.3)"
+                  : "rgba(239, 68, 68, 0.2)",
+              border: challengeState?.type === "pending_received"
+                ? "2px solid #22c55e"
+                : challengeState?.type === "ready_to_play"
+                  ? "2px solid #fbbf24"
+                  : "1px solid #ef4444",
+              borderRadius: "8px",
+              color: challengeState?.type === "pending_received"
+                ? "#22c55e"
+                : challengeState?.type === "ready_to_play"
+                  ? "#fbbf24"
+                  : "#ef4444",
+              cursor: "pointer",
+              position: "relative",
+              animation: challengeState?.type === "pending_received" ? "pulse 1.5s infinite" : "none",
+            }}
+          >
+            <Swords size={16} />
+            {challengeState?.type === "pending_received" && (
+              <span style={{
+                position: "absolute", top: "-4px", right: "-4px",
+                width: "12px", height: "12px",
+                background: "#22c55e", borderRadius: "50%",
+                border: "2px solid #0B1E2D",
+                animation: "pulse 1.5s infinite",
+              }} />
+            )}
+            {challengeState?.type === "ready_to_play" && (
+              <span style={{
+                position: "absolute", top: "-4px", right: "-4px",
+                width: "12px", height: "12px",
+                background: "#fbbf24", borderRadius: "50%",
+                border: "2px solid #0B1E2D",
+              }} />
+            )}
+          </motion.button>
+        )}
+        {badge ? (
+          <div
+            style={{
+              padding: "6px 12px",
+              background: `${badgeColor}22`,
+              border: `1px solid ${badgeColor}`,
+              borderRadius: "8px",
+              color: badgeColor,
+              fontSize: "0.8rem",
+              fontWeight: "600",
+            }}
+          >
+            {badge}
+          </div>
+        ) : (
+          action
+        )}
+      </div>
     </motion.div>
   );
 }
