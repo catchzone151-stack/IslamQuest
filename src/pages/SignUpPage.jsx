@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { Eye, EyeOff, Mail, Lock, User, AtSign, ArrowLeft, Check, X } from "lucide-react";
 import { supabase } from "../lib/supabaseClient";
 import { useUserStore } from "../store/useUserStore";
-import { useProgressStore } from "../store/progressStore";
 import { avatarKeyToIndex } from "../utils/avatarUtils";
 import { AVAILABLE_AVATARS } from "../utils/avatarUtils";
 import { useOnboarding } from "../hooks/useOnboarding";
@@ -120,11 +119,6 @@ export default function SignUpPage() {
       localStorage.setItem("iq_avatar", avatarKey);
       localStorage.setItem("iq_email", email.trim().toLowerCase());
 
-      // Sign out any existing anonymous session before creating new account
-      // This prevents the confirmation email from going to the wrong address
-      await supabase.auth.signOut();
-
-      // Get the appropriate redirect URL (deep link for native, web URL for browser)
       const redirectUrl = getAuthRedirectUrl();
       console.log("[SignUp] Using redirect URL:", redirectUrl);
 
@@ -133,11 +127,20 @@ export default function SignUpPage() {
         password,
         options: {
           emailRedirectTo: redirectUrl,
+          data: {
+            desired_username: trimmedName,
+            desired_handle: trimmedHandle,
+            desired_avatar_index: avatarKeyToIndex(avatarKey),
+          },
         },
       });
 
       if (error) {
-        if (error.message.includes("already registered")) {
+        const isDuplicate =
+          error.code === "user_already_exists" ||
+          error.code === "email_exists" ||
+          (error.status === 400 && error.message?.toLowerCase().includes("already registered"));
+        if (isDuplicate) {
           setErrorMsg("This email is already registered. Try logging in.");
         } else {
           setErrorMsg(error.message || "Could not create account.");
@@ -149,37 +152,7 @@ export default function SignUpPage() {
 
       if (data?.user) {
         console.log("[SignUp] Auth user created:", data.user.id);
-        
-        // Create profile IMMEDIATELY after auth signup
-        // This prevents "no account found" if email confirmation callback fails on mobile
-        const avatarIndex = avatarKeyToIndex(avatarKey);
-        const progressState = useProgressStore.getState();
-        
-        const { error: profileError } = await supabase
-          .from("profiles")
-          .upsert(
-            {
-              user_id: data.user.id,
-              username: trimmedName,
-              handle: trimmedHandle,
-              avatar: avatarIndex,
-              xp: progressState.xp || 0,
-              coins: progressState.coins || 0,
-              streak: progressState.streak || 0,
-              created_at: new Date().toISOString(),
-            },
-            { onConflict: "user_id" }
-          );
-        
-        if (profileError) {
-          console.error("[SignUp] Profile creation error:", profileError);
-          setErrorMsg("Account created but profile setup failed. Please try logging in.");
-          setLoading(false);
-          return;
-        }
-        
-        console.log("[SignUp] Profile created for user:", data.user.id);
-        
+
         setDisplayName(trimmedName);
         setStoreHandle(trimmedHandle);
         setStoreAvatar(avatarKey);
@@ -195,22 +168,8 @@ export default function SignUpPage() {
         });
 
         setLoading(false);
-
-        if (data.user.email_confirmed_at) {
-          // Email already confirmed - go straight to home
-          localStorage.removeItem("iq_onboarding_step");
-          localStorage.setItem("iq_profile_complete", "true");
-          useUserStore.setState({
-            profileReady: true,
-            hasOnboarded: true,
-          });
-          navigate("/");
-        } else {
-          // Normal flow: go to check-email to confirm email
-          // Profile already exists, so login will work even if callback fails
-          localStorage.setItem("iq_onboarding_step", "checkemail");
-          navigate("/check-email");
-        }
+        localStorage.setItem("iq_onboarding_step", "checkemail");
+        navigate("/check-email");
       }
     } catch (err) {
       console.error("Signup error:", err);

@@ -2,48 +2,15 @@
 // -------------------------------------------------------
 // Cloud Profile Management - Identity Pipeline
 // -------------------------------------------------------
-// ARCHITECTURE (Nov 2025):
+// ARCHITECTURE:
 // - Profiles are created by the database trigger on auth.users insert
-// - NO profile creation in app code - trigger is single source of truth
+// - Frontend never inserts into profiles directly — only the trigger and
+//   the create_profile_if_missing RPC (called post-email-confirmation) do so
 // - Avatar stored as INTEGER (index) in DB, string key in app
 // - saveCloudProfile() only updates existing profiles, never inserts
 
 import { supabase } from "./supabaseClient";
 import { avatarKeyToIndex, avatarIndexToKey } from "../utils/avatarUtils";
-
-
-/**
- * 🔹 ensureSignedIn()
- * Silent authentication:
- * - Checks existing session
- * - Creates hidden account on first launch
- */
-export async function ensureSignedIn() {
-  // Check for existing session
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  if (session?.user) {
-    return session.user;
-  }
-
-  // Create hidden account
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.signUp({
-    email: `hidden_${crypto.randomUUID()}@hidden.local`,
-    password: crypto.randomUUID(),
-  });
-
-  if (error) {
-    console.error("Silent signup failed:", error);
-    return null;
-  }
-
-  return user;
-}
 
 /**
  * 🔹 checkProfileExists(userId)

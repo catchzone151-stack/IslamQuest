@@ -1,0 +1,55 @@
+You are working on IslamQuest (React + Supabase). Goal: harden signup/login/onboarding so there are NO timing races, NO fragile string-matching, and NO localStorage dependency for profile creation.
+
+Implement ALL changes below in one pass. Keep edits tight and production-safe. Remove dead code.
+
+A) Remove “hidden account / ensureSignedIn()” flow
+- Find src/lib/userProfile.js ensureSignedIn() (and any callers) that creates hidden_xxx@hidden.local users.
+- DELETE this behaviour entirely.
+- App must not create any auth.users unless the user explicitly signs up/signs in.
+
+B) SignUpPage: eliminate signOut→signUp race + stop fragile duplicate-email handling
+File: src/pages/SignUpPage.jsx
+- Remove any pre-emptive `supabase.auth.signOut()` before calling `signUp()`.
+- When calling signUp, store onboarding basics in auth metadata:
+  - options.data: { desired_username, desired_avatar }
+  (use whatever variables you already have for name/handle/avatar)
+- Improve duplicate email detection:
+  - Prefer `error.code` if present (e.g. user_already_exists / email_exists)
+  - Fallback to status===400 + message contains "already registered" ONLY if code missing.
+- After signUp success: DO NOT insert/upsert into profiles.
+  - Instead navigate to /check-email (existing behaviour).
+  - Profile creation is server-side (trigger + RPC fallback).
+
+C) CheckEmailScreen: remove timing-based delays; use proper code exchange/session handling
+File: src/pages/CheckEmailScreen.jsx
+- If URL has `code` param (PKCE flow), call `supabase.auth.exchangeCodeForSession(code)` (supabase-js v2).
+- If URL has access_token/refresh_token hash, let supabase client hydrate session normally, then call getSession().
+- Replace “wait 300ms then getUser()” with:
+  - await supabase.auth.getSession()
+  - if session exists AND user.email_confirmed_at is truthy → proceed
+  - else show “waiting for verification” + allow resend
+- After confirmation success, immediately ensure profile exists by calling RPC:
+  - supabase.rpc("create_profile_if_missing", { p_username: desired_username, p_avatar: desired_avatar })
+  - desired_username/avatar should come from:
+    - user.user_metadata.desired_username / desired_avatar if present
+    - fallback to existing UI state if still available
+  - Never overwrite if profile already exists.
+- Then continue normal app routing.
+
+D) LoginPage: add the SAME profile wait logic used in init (poll), then RPC fallback
+File: src/pages/LoginPage.jsx
+- On successful signInWithPassword:
+  1) If email not confirmed → redirect to /check-email (keep)
+  2) Poll for profile existence up to 10 attempts, 250ms interval:
+     - Use your existing checkProfileExists / preloadUserData helper
+  3) If still missing, call RPC create_profile_if_missing using user_metadata desired_username/desired_avatar (or safe defaults).
+  4) Re-check profile once after RPC, then proceed.
+
+E) Update any architecture comments to match reality:
+- “frontend never inserts profiles” should be true after these changes.
+- Make sure NO frontend .insert()/.upsert() into profiles remains.
+
+Deliverable:
+- Commit changes cleanly.
+- Search the codebase for `hidden_`, `hidden.local`, `upsert("profiles")`, `.from("profiles").insert`, `.from("profiles").upsert` and remove/replace appropriately.
+- Ensure the app still works end-to-end: signup → verify email → profile exists → onboarding/handle works → login works.

@@ -5,6 +5,7 @@ import { Eye, EyeOff, Mail, Lock, X, Send, ArrowLeft } from "lucide-react";
 import { supabase } from "../lib/supabaseClient";
 import { useUserStore } from "../store/useUserStore";
 import { preloadUserData } from "../hooks/useDataPreloader";
+import { checkProfileExists } from "../lib/userProfile";
 import { avatarIndexToKey } from "../utils/avatarUtils";
 import { getPasswordResetRedirectUrl } from "../utils/deepLinkHandler";
 import SittingMascot from "../assets/mascots/mascot_sitting.webp";
@@ -67,23 +68,19 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      // Sign out any existing anonymous session before logging in
-      // This prevents session conflicts with old hidden.local accounts
-      await supabase.auth.signOut();
-
       const { data, error } = await supabase.auth.signInWithPassword({
         email: email.trim().toLowerCase(),
         password,
       });
 
       if (error) {
-        if (error.message.includes("Email not confirmed")) {
+        if (error.message?.includes("Email not confirmed")) {
           localStorage.setItem("iq_email", email.trim().toLowerCase());
           setLoading(false);
           navigate("/check-email");
           return;
         }
-        setErrorMsg("Invalid email or password");
+        setErrorMsg("Incorrect email or password. Please try again.");
         triggerShake();
         setLoading(false);
         return;
@@ -96,97 +93,57 @@ export default function LoginPage() {
         return;
       }
 
-      console.log("[LoginPage] Login successful, preloading data...");
+      console.log("[LoginPage] Login successful, waiting for profile...");
 
-      const preloadResult = await preloadUserData(data.user.id);
+      // Poll for profile up to 10 attempts (250ms apart) to allow for DB trigger latency
+      let profile = null;
+      for (let i = 0; i < 10; i++) {
+        profile = await checkProfileExists(data.user.id);
+        if (profile) break;
+        if (i < 9) await new Promise(r => setTimeout(r, 250));
+      }
 
-      if (!preloadResult.success) {
-        console.log("[LoginPage] No profile found - attempting to create from localStorage");
-        
-        const storedName = localStorage.getItem("iq_name");
-        const storedHandle = localStorage.getItem("iq_handle");
-        const storedAvatar = localStorage.getItem("iq_avatar") || "avatar_man_lantern";
-        
-        if (storedName && storedHandle) {
-          const { avatarKeyToIndex } = await import("../utils/avatarUtils");
-          const { useProgressStore } = await import("../store/progressStore");
-          const avatarIndex = avatarKeyToIndex(storedAvatar);
-          const progressState = useProgressStore.getState();
-          
-          console.log("[LoginPage] Creating profile with stored data:", { storedName, storedHandle });
-          
-          const { data: newProfile, error: profileError } = await supabase
-            .from("profiles")
-            .upsert({
-              user_id: data.user.id,
-              username: storedName,
-              handle: storedHandle.trim().toLowerCase(),
-              avatar: avatarIndex,
-              xp: progressState.xp || 0,
-              coins: progressState.coins || 0,
-              streak: progressState.streak || 0,
-              created_at: new Date().toISOString(),
-            }, { onConflict: 'user_id' })
-            .select()
-            .single();
-          
-          if (!profileError && newProfile) {
-            console.log("[LoginPage] Profile created successfully:", newProfile);
-            
-            setDisplayName(storedName);
-            setHandle(storedHandle);
-            setAvatar(storedAvatar);
-            setOnboarded(true);
-            
-            localStorage.removeItem("iq_onboarding_step");
-            localStorage.setItem("iq_profile_complete", "true");
-            
-            useUserStore.setState({
-              user: data.user,
-              userId: data.user.id,
-              username: storedName,
-              handle: storedHandle,
-              avatar: storedAvatar,
-              name: storedName,
-              profile: newProfile,
-              profileReady: true,
-              hasOnboarded: true,
-              loading: false,
-              isHydrated: true,
-            });
-            
-            setLoading(false);
-            navigate("/");
-            return;
-          }
-          
-          console.error("[LoginPage] Profile creation failed:", profileError);
-        }
-        
-        console.log("[LoginPage] No stored profile data - redirecting to complete profile");
-        localStorage.setItem("iq_onboarding_step", "handle");
-        useUserStore.setState({
-          user: data.user,
-          userId: data.user.id,
-          loading: false,
-          isHydrated: true,
+      // If still missing after polling, call RPC to create from auth metadata
+      if (!profile) {
+        console.log("[LoginPage] Profile not found after polling — calling create_profile_if_missing RPC");
+        const meta = data.user.user_metadata || {};
+        await supabase.rpc("create_profile_if_missing", {
+          p_username: meta.desired_username || "User",
+          p_handle: meta.desired_handle || null,
+          p_avatar_index: typeof meta.desired_avatar_index === "number" ? meta.desired_avatar_index : 0,
         });
+        profile = await checkProfileExists(data.user.id);
+      }
+
+      if (!profile) {
+        console.log("[LoginPage] Profile still missing — sending to handle screen");
+        localStorage.setItem("iq_onboarding_step", "handle");
+        useUserStore.setState({ user: data.user, userId: data.user.id, loading: false, isHydrated: true });
         setLoading(false);
         navigate("/onboarding/handle");
         return;
       }
 
-      const profile = preloadResult.profile;
-      const displayName = profile.username || "Student";
-      const handle = profile.handle || null;
-      const avatarKey = typeof profile.avatar === "number"
-        ? avatarIndexToKey(profile.avatar)
-        : profile.avatar || "avatar_man_lantern";
+      // Profile found — preload all stores
+      const preloadResult = await preloadUserData(data.user.id);
+      if (!preloadResult.success) {
+        console.warn("[LoginPage] preloadUserData failed, using profile from poll");
+      }
+
+      // Use preloaded profile if available, otherwise use the polled profile
+      const finalProfile = preloadResult?.profile || profile;
+      const displayName = finalProfile.username || "Student";
+      const handle = finalProfile.handle || null;
+      const avatarKey = typeof finalProfile.avatar === "number"
+        ? avatarIndexToKey(finalProfile.avatar)
+        : finalProfile.avatar || "avatar_man_lantern";
 
       if (!handle) {
-        console.log("[LoginPage] Profile missing handle");
-        setErrorMsg("Your profile is incomplete. Please contact support.");
+        console.log("[LoginPage] Profile missing handle — sending to handle screen");
+        localStorage.setItem("iq_onboarding_step", "handle");
+        useUserStore.setState({ user: data.user, userId: data.user.id, loading: false, isHydrated: true });
         setLoading(false);
+        navigate("/onboarding/handle");
         return;
       }
 
@@ -208,14 +165,13 @@ export default function LoginPage() {
         handle: handle,
         avatar: avatarKey,
         name: displayName,
-        profile: profile,
+        profile: finalProfile,
         profileReady: true,
         hasOnboarded: true,
         loading: false,
         isHydrated: true,
       });
 
-      console.log(`[LoginPage] Data preloaded in ${preloadResult.elapsed}ms`);
       setLoading(false);
       navigate("/");
     } catch (err) {

@@ -62,35 +62,44 @@ export default function CheckEmailScreen() {
         return;
       }
       
-      // Check if there are auth tokens in the URL (from successful email confirmation link)
-      if (hash.includes('access_token') || searchParams.has('code')) {
-        console.log("[CheckEmail] Auth callback detected in URL, processing immediately...");
+      // PKCE flow: exchange the code for a session
+      if (searchParams.has('code')) {
+        console.log("[CheckEmail] PKCE code detected, exchanging for session...");
         setLoadingMessage("Confirming your email...");
-        
-        // Clear the hash/params from URL immediately to prevent re-processing
         window.history.replaceState(null, '', window.location.pathname);
-        
-        // Give Supabase a moment to process the tokens
-        await new Promise(resolve => setTimeout(resolve, 300));
-        
-        // Check if user is now confirmed
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user?.email_confirmed_at) {
-          console.log("[CheckEmail] User confirmed via callback, proceeding to home...");
-          await completeLoginAndPreload(user);
-        } else if (user) {
-          console.log("[CheckEmail] User exists but not confirmed yet, checking again...");
-          // Wait a bit more and try again
-          await new Promise(resolve => setTimeout(resolve, 500));
-          const { data: { user: refreshedUser } } = await supabase.auth.getUser();
-          if (refreshedUser?.email_confirmed_at) {
-            await completeLoginAndPreload(refreshedUser);
-          } else {
-            setLoadingMessage("");
-          }
+
+        const { data: sessionData, error: exchangeError } = await supabase.auth.exchangeCodeForSession(searchParams.get('code'));
+        if (exchangeError) {
+          console.error("[CheckEmail] Code exchange failed:", exchangeError);
+          setUrlError("Failed to confirm your email. Please request a new link.");
+          setLoadingMessage("");
+          return;
+        }
+        if (sessionData?.user?.email_confirmed_at) {
+          console.log("[CheckEmail] PKCE confirmation success, proceeding...");
+          await completeLoginAndPreload(sessionData.user);
         } else {
+          setUrlError("Could not confirm your email. Please request a new link.");
           setLoadingMessage("");
         }
+        return;
+      }
+
+      // Implicit flow: Supabase client auto-hydrates session from hash via detectSessionInUrl
+      if (hash.includes('access_token')) {
+        console.log("[CheckEmail] Implicit token detected, reading session...");
+        setLoadingMessage("Confirming your email...");
+        window.history.replaceState(null, '', window.location.pathname);
+
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user?.email_confirmed_at) {
+          console.log("[CheckEmail] Implicit confirmation success, proceeding...");
+          await completeLoginAndPreload(session.user);
+        } else {
+          setUrlError("Could not confirm your email. Please try the link again or request a new one.");
+          setLoadingMessage("");
+        }
+        return;
       }
     };
     
@@ -118,11 +127,30 @@ export default function CheckEmailScreen() {
       console.log("[CheckEmail] Using existing profile for user:", user.id);
       profile = existingProfile;
     } else {
-      console.log("[CheckEmail] No profile found - redirecting to signup");
-      localStorage.setItem("iq_onboarding_step", "signup");
-      isProcessingLogin = false;
-      navigate("/signup");
-      return false;
+      console.log("[CheckEmail] Profile missing — calling create_profile_if_missing RPC...");
+      const meta = user.user_metadata || {};
+      await supabase.rpc("create_profile_if_missing", {
+        p_username: meta.desired_username || "User",
+        p_handle: meta.desired_handle || null,
+        p_avatar_index: typeof meta.desired_avatar_index === "number" ? meta.desired_avatar_index : 0,
+      });
+
+      const { data: createdProfile } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      if (createdProfile) {
+        console.log("[CheckEmail] Profile created via RPC for user:", user.id);
+        profile = createdProfile;
+      } else {
+        console.error("[CheckEmail] Profile creation failed — redirecting to signup");
+        localStorage.setItem("iq_onboarding_step", "signup");
+        isProcessingLogin = false;
+        navigate("/signup");
+        return false;
+      }
     }
 
     const displayName = profile.username || "Student";
@@ -130,12 +158,12 @@ export default function CheckEmailScreen() {
     const avatarKey = typeof profile.avatar === "number"
       ? avatarIndexToKey(profile.avatar)
       : profile.avatar || "avatar_man_lantern";
-    
+
     if (!handle) {
-      console.error("[CheckEmail] Profile missing handle - redirecting to signup");
-      localStorage.setItem("iq_onboarding_step", "signup");
+      console.log("[CheckEmail] Profile missing handle — sending to handle screen");
+      localStorage.setItem("iq_onboarding_step", "handle");
       isProcessingLogin = false;
-      navigate("/signup");
+      navigate("/onboarding/handle");
       return false;
     }
     

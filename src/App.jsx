@@ -18,7 +18,7 @@ import { useProgressStore } from "./store/progressStore";
 import { useDailyQuestStore } from "./store/dailyQuestStore";
 import { preloadAllAssets } from "./utils/imagePreloader";
 import { useModalStore, MODAL_TYPES } from "./store/modalStore";
-import { supabase, ensureSignedIn } from "./lib/supabaseClient";
+import { supabase } from "./lib/supabaseClient";
 import { getDeviceFingerprint } from "./lib/deviceFingerprint";
 import { syncOnAppOpen, syncOnForeground } from "./sync/engine.js";
 import OneSignal from "onesignal-cordova-plugin";
@@ -453,7 +453,7 @@ export default function App() {
         const { data: { session } } = await supabase.auth.getSession();
         
         if (session?.user) {
-          if (!session.user.email_confirmed_at && !session.user.email?.includes('@iq-hidden-')) {
+          if (!session.user.email_confirmed_at) {
             console.log("User logged in but email not confirmed → check-email");
             localStorage.setItem("iq_onboarding_step", "checkemail");
             useUserStore.setState({ 
