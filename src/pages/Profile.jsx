@@ -211,24 +211,37 @@ export default function Profile() {
             margin: "20px auto 0",
           }}
         >
-          <ProfileCard icon={ui_xp} label="XP" value={xp} />
+          <ProfileCard
+            icon={ui_xp}
+            label="XP"
+            value={xp}
+            color="#FFD700"
+            gradient="linear-gradient(135deg, rgba(255,215,0,0.35), rgba(255,140,0,0.18))"
+            borderColor="rgba(255,215,0,0.5)"
+          />
           <ProfileCard
             icon={ui_coin}
             label="Coins"
             value={coins}
             color="#FFA500"
+            gradient="linear-gradient(135deg, rgba(255,140,0,0.35), rgba(255,69,0,0.18))"
+            borderColor="rgba(255,140,0,0.5)"
           />
           <ProfileCard
             icon={ui_streak}
             label="Streak"
             value={`${streak} 🔥`}
             color="#FF6347"
+            gradient="linear-gradient(135deg, rgba(255,99,71,0.4), rgba(220,20,60,0.18))"
+            borderColor="rgba(255,99,71,0.5)"
           />
           <ProfileCard
             icon={ui_shield}
             label="Shields"
             value={`${shieldCount}/2 🛡️`}
             color="#4fd5ff"
+            gradient="linear-gradient(135deg, rgba(79,213,255,0.35), rgba(16,185,129,0.18))"
+            borderColor="rgba(79,213,255,0.5)"
           />
         </div>
 
@@ -282,8 +295,8 @@ export default function Profile() {
             maxWidth: 340,
             margin: "24px auto 0",
             padding: 16,
-            background: "rgba(255, 215, 0, 0.05)",
-            border: "1px solid rgba(255, 215, 0, 0.2)",
+            background: "linear-gradient(135deg, rgba(147,51,234,0.35), rgba(79,70,229,0.18))",
+            border: "1px solid rgba(147,51,234,0.5)",
             borderRadius: 14,
             display: "flex",
             alignItems: "center",
