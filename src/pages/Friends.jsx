@@ -1409,14 +1409,7 @@ function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, challengeStat
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: Math.min(rank * 0.03, 0.5) }}
       style={{
-        background:
-          rankClass === "gold"
-            ? "linear-gradient(135deg, #7a5c00, #c8960c, #f0c040)"
-            : rankClass === "silver"
-              ? "linear-gradient(135deg, #3a4a5c, #6e8fa8, #b0c8dc)"
-              : rankClass === "bronze"
-                ? "linear-gradient(135deg, #5c2e00, #9e5a1a, #c8823c)"
-                : "linear-gradient(135deg, rgba(168,85,247,0.28) 0%, rgba(126,34,206,0.14) 100%)",
+        background: "linear-gradient(135deg, rgba(168,85,247,0.28) 0%, rgba(126,34,206,0.14) 100%)",
         border: `1px solid ${borderColor}`,
         borderRadius: "12px",
         padding: "12px",
