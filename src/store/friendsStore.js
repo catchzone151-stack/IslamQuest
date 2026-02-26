@@ -173,7 +173,14 @@ export const useFriendsStore = create((set, get) => ({
 
       if (error) throw error;
 
-      set({ globalLeaderboard: data || [], leaderboardLoading: false });
+      const rows = data || [];
+      const DEV_ID = "the_dev_permanent";
+      const devExists = rows.some(r => r.user_id === DEV_ID);
+      const withDev = devExists ? rows : [
+        { user_id: DEV_ID, username: "The Dev", handle: "thedev", avatar: "avatar_ninja_male", xp: 168542, streak: 82, isPermanent: true },
+        ...rows,
+      ];
+      set({ globalLeaderboard: withDev.sort((a, b) => b.xp - a.xp), leaderboardLoading: false });
     } catch (err) {
       set({ leaderboardLoading: false, error: err.message });
     }

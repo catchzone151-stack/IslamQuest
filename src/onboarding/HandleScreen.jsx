@@ -104,6 +104,7 @@ export default function HandleScreen() {
           profile: updatedProfile,
           profileReady: true,
           hasOnboarded: true,
+          requiresHandle: false,
           loading: false,
           isHydrated: true,
         });

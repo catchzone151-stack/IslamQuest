@@ -53,6 +53,7 @@ export const useUserStore = create((set, get) => ({
   hasOnboarded: checkOnboardedFromStorage(),
   profileReady: false,  // True when profile is fully loaded from cloud
   awaitingProfileSetup: false, // True when DB trigger hasn't created the profile yet
+  requiresHandle: false, // True when user has a generated "User_" username and must set a real one
   retryCount: 0,
   maxRetriesReached: false,
   
@@ -158,10 +159,14 @@ export const useUserStore = create((set, get) => ({
           console.log("PROFILE COMPLETE → Loading app");
         }
 
+        // If the profile is complete but username is still auto-generated, force handle setup
+        const hasGeneratedUsername = !needsOnboarding && fullProfile?.username?.startsWith("User_");
+
         set({
           profile: fullProfile,
           profileReady: !needsOnboarding,
           hasOnboarded: !needsOnboarding,
+          requiresHandle: hasGeneratedUsername,
           loading: false,
           isHydrated: true,
           // Restore identity from cloud profile
@@ -191,6 +196,10 @@ export const useUserStore = create((set, get) => ({
     }
     set({ awaitingProfileSetup: false, isHydrated: false, loading: true, retryCount: retryCount + 1 });
     await get().init();
+  },
+
+  clearRequiresHandle: () => {
+    set({ requiresHandle: false });
   },
 
   // --------------------------------------------------

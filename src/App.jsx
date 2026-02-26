@@ -229,7 +229,7 @@ const PRODUCTION_VERSION = "iq_production_v1";
 
 export default function App() {
   console.log('[IQ_BUILD_TEST]', 'BUILD_VERSION_3');
-  const { hasOnboarded, isHydrated, awaitingProfileSetup } = useUserStore();
+  const { hasOnboarded, isHydrated, awaitingProfileSetup, requiresHandle } = useUserStore();
   const { grantCoins, coins, showMilestoneModal, milestoneDays, milestoneReward } = useProgressStore();
   
   // Force re-render workaround for Zustand subscription issues in React StrictMode
@@ -279,6 +279,7 @@ export default function App() {
   const storeState = useUserStore.getState();
   const actualIsHydrated = isHydrated || storeState.isHydrated || forceReady;
   const actualHasOnboarded = storeState.hasOnboarded;
+  const actualRequiresHandle = storeState.requiresHandle || requiresHandle;
 
   // 🔄 VERSIONED STORAGE RESET: Clear all legacy data on first production load
   // IMPORTANT: Uses module-level flag to prevent reload loops from React StrictMode
@@ -861,6 +862,12 @@ export default function App() {
                   {/* Fallback — resume from saved step or start from bismillah */}
                   <Route path="*" element={<OnboardingRedirector />} />
                 </>
+              ) : actualRequiresHandle ? (
+                <>
+                  {/* ✅ HANDLE GATE — user has auto-generated username, must set a real one */}
+                  <Route path="/onboarding/handle" element={<HandleScreen />} />
+                  <Route path="*" element={<Navigate to="/onboarding/handle" replace />} />
+                </>
               ) : (
                 <>
                   {/* ✅ MAIN APP ROUTES - Lazy loaded for proper hydration */}
@@ -1022,7 +1029,7 @@ export default function App() {
           </div>
 
           {/* ✅ Persistent bottom navigation */}
-          {actualHasOnboarded && <BottomNav />}
+          {actualHasOnboarded && !actualRequiresHandle && <BottomNav />}
 
           {/* 💎 Centralized Modal System */}
           <ModalController />
