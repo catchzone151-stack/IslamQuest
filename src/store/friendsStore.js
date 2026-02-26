@@ -16,6 +16,7 @@ export const useFriendsStore = create((set, get) => ({
   currentUserId: null,
   realtimeChannel: null,
   initialized: false,
+  busyRequestIds: [],
 
   // Initialize with real-time subscription
   initialize: async () => {
@@ -477,30 +478,17 @@ export const useFriendsStore = create((set, get) => ({
   },
 
   acceptFriendRequest: async (requestId) => {
+    if (get().busyRequestIds.includes(requestId)) return { success: false, error: "Already processing" };
+    set(state => ({ busyRequestIds: [...state.busyRequestIds, requestId] }));
     try {
       const { data: auth } = await supabase.auth.getUser();
       if (!auth?.user) return { success: false, error: "Not logged in" };
 
-      const myUserId = auth.user.id;
-      console.log("🤝 acceptFriendRequest - myUserId:", myUserId, "requestId:", requestId);
+      const { error: rpcErr } = await supabase.rpc("accept_friend_request", { p_request_id: requestId });
 
-      // Update status to accepted using the row id
-      const { data: updateData, error: updateErr } = await supabase
-        .from("friends")
-        .update({ status: "accepted" })
-        .eq("id", requestId)
-        .select();
-
-      console.log("🤝 acceptFriendRequest - update result:", updateData, "error:", updateErr);
-
-      if (updateErr) {
-        console.error("Accept friend request error:", updateErr);
+      if (rpcErr) {
+        console.error("Accept friend request error:", rpcErr);
         return { success: false, error: "Failed to accept request" };
-      }
-
-      if (!updateData || updateData.length === 0) {
-        console.warn("🤝 acceptFriendRequest - No request found with id:", requestId);
-        return { success: false, error: "Request not found or already accepted" };
       }
 
       // Refresh friends, sent requests, and pending requests
@@ -508,30 +496,28 @@ export const useFriendsStore = create((set, get) => ({
       await get().loadRequests();
       await get().loadPendingRequests();
       
-      const { friends } = get();
-      console.log("🤝 acceptFriendRequest - friends after refresh:", friends);
-      
       return { success: true, message: "Friend added!" };
     } catch (err) {
       console.error("acceptFriendRequest error:", err);
       return { success: false, error: "Failed to accept request" };
+    } finally {
+      set(state => ({ busyRequestIds: state.busyRequestIds.filter(id => id !== requestId) }));
     }
   },
 
   declineFriendRequest: async (requestId) => {
+    if (get().busyRequestIds.includes(requestId)) return { success: false, error: "Already processing" };
+    set(state => ({ busyRequestIds: [...state.busyRequestIds, requestId] }));
     try {
       const { data: auth } = await supabase.auth.getUser();
       if (!auth?.user) return { success: false, error: "Not logged in" };
 
-      console.log("❌ declineFriendRequest - requestId:", requestId);
+      const { error: rpcErr } = await supabase.rpc("delete_friend_request", { p_request_id: requestId });
 
-      // Delete the request by id
-      const { error: deleteErr } = await supabase
-        .from("friends")
-        .delete()
-        .eq("id", requestId);
-
-      console.log("❌ declineFriendRequest - delete error:", deleteErr);
+      if (rpcErr) {
+        console.error("declineFriendRequest error:", rpcErr);
+        return { success: false, error: "Failed to decline request" };
+      }
 
       // Refresh friends, sent requests, and pending requests
       await get().loadFriends();
@@ -541,6 +527,8 @@ export const useFriendsStore = create((set, get) => ({
     } catch (err) {
       console.error("declineFriendRequest error:", err);
       return { success: false, error: "Failed to decline request" };
+    } finally {
+      set(state => ({ busyRequestIds: state.busyRequestIds.filter(id => id !== requestId) }));
     }
   },
 
