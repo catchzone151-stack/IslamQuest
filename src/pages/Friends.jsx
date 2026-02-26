@@ -1757,8 +1757,8 @@ function UserCard({ user, onClick, action, badge, badgeColor }) {
       whileTap={onClick ? { scale: 0.98 } : {}}
       onClick={onClick}
       style={{
-        background: "linear-gradient(135deg, rgba(16,185,129,0.28) 0%, rgba(5,150,105,0.14) 100%)",
-        border: "1px solid rgba(16,185,129,0.4)",
+        background: "linear-gradient(135deg, rgba(168,85,247,0.28) 0%, rgba(126,34,206,0.14) 100%)",
+        border: "1px solid rgba(168,85,247,0.4)",
         borderRadius: "12px",
         padding: "14px",
         display: "flex",
@@ -1772,7 +1772,7 @@ function UserCard({ user, onClick, action, badge, badgeColor }) {
           width: "56px",
           height: "56px",
           borderRadius: "50%",
-          border: "2px solid #a855f7",
+          border: "2px solid #D4AF37",
           overflow: "hidden",
           flexShrink: 0,
           background: "#0E1625",
@@ -1893,7 +1893,7 @@ function RequestCard({ user, type, onAccept, onDecline, onCancel }) {
           width: "56px",
           height: "56px",
           borderRadius: "50%",
-          border: "2px solid #a855f7",
+          border: "2px solid #D4AF37",
           overflow: "hidden",
           flexShrink: 0,
           background: "#0E1625",
