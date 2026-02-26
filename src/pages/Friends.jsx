@@ -418,9 +418,7 @@ export default function Friends() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              onAnimationComplete={() => {
-                console.log("[Friends] Rendering friends tab, pendingIncoming:", pendingIncoming.length);
-              }}
+              onAnimationComplete={() => {}}
             >
               {/* Incoming Challenge Requests Section */}
               {/* Challenge Activity Section */}
@@ -525,11 +523,11 @@ export default function Friends() {
                                   if (result.success) {
                                     navigate(`/challenge/friend/${challenge.id}`);
                                   } else {
-                                    alert(result.error || "Could not accept challenge");
+                                    showModal(MODAL_TYPES.ERROR, { message: result.error || "Could not accept challenge" });
                                   }
                                 }).catch((err) => {
                                   setAcceptingChallengeId(null);
-                                  alert("Error: " + err.message);
+                                  showModal(MODAL_TYPES.ERROR, { message: err.message || "Could not accept challenge" });
                                 });
                               }}
                               style={{
@@ -551,11 +549,9 @@ export default function Friends() {
                               onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                console.log("[Friends] Declining challenge:", challenge.id);
                                 declineChallenge(challenge.id).then((result) => {
-                                  console.log("[Friends] Decline result:", result);
                                   if (!result.success) {
-                                    alert(result.error || "Could not decline challenge");
+                                    showModal(MODAL_TYPES.ERROR, { message: result.error || "Could not decline challenge" });
                                   }
                                 });
                               }}
@@ -1599,7 +1595,6 @@ function GlobalLeaderboardCard({
   });
   const displayName = user.username || user.handle || "Unknown";
   const userLevel = getCurrentLevel(user.xp);
-  const isPermanentEntry = user.isPermanent === true;
 
   const getRankClass = () => {
     if (rank === 1) return "gold";
@@ -1624,7 +1619,7 @@ function GlobalLeaderboardCard({
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: Math.min(rank * 0.03, 0.5) }}
-      onClick={!isPermanentEntry && isFriend ? onUserClick : undefined}
+      onClick={isFriend ? onUserClick : undefined}
       style={{
         background:
           rankClass === "gold"
@@ -1640,14 +1635,13 @@ function GlobalLeaderboardCard({
         display: "flex",
         alignItems: "center",
         gap: "10px",
-        cursor: !isPermanentEntry && isFriend ? "pointer" : "default",
+        cursor: isFriend ? "pointer" : "default",
         boxShadow:
           rankClass === "gold"
             ? "0 0 20px rgba(212, 175, 55, 0.4)"
             : rankClass === "silver"
               ? "0 0 15px rgba(192, 192, 192, 0.3)"
               : "none",
-        opacity: isPermanentEntry ? 0.95 : 1,
       }}
     >
       <div
@@ -1730,21 +1724,7 @@ function GlobalLeaderboardCard({
         </div>
       </div>
 
-      {isPermanentEntry ? (
-        <div
-          style={{
-            padding: "4px 8px",
-            background: "rgba(139, 92, 246, 0.2)",
-            border: "1px solid #8b5cf6",
-            borderRadius: "6px",
-            color: "#a78bfa",
-            fontSize: "0.7rem",
-            fontWeight: "600",
-          }}
-        >
-          Dev
-        </div>
-      ) : isFriend ? (
+      {isFriend ? (
         <div
           style={{
             padding: "4px 8px",

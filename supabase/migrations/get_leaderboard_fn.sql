@@ -52,3 +52,46 @@ AS $$
 $$;
 
 GRANT EXECUTE ON FUNCTION public.search_profiles(text) TO authenticated, anon;
+
+-- 4. Send friend request — handles duplicate/mutual/already-friends cases atomically
+CREATE OR REPLACE FUNCTION public.send_friend_request(p_target uuid)
+RETURNS jsonb
+SECURITY DEFINER
+SET search_path = public
+LANGUAGE plpgsql
+AS $$
+DECLARE
+  v_me uuid := auth.uid();
+  v_row friends%ROWTYPE;
+BEGIN
+  IF v_me IS NULL THEN
+    RAISE EXCEPTION 'Not authenticated';
+  END IF;
+
+  IF v_me = p_target THEN
+    RETURN '{"status":"self"}'::jsonb;
+  END IF;
+
+  SELECT * INTO v_row
+  FROM friends
+  WHERE (user_id = v_me AND friend_id = p_target)
+     OR (user_id = p_target AND friend_id = v_me)
+  LIMIT 1;
+
+  IF FOUND THEN
+    IF v_row.status = 'accepted' THEN
+      RETURN '{"status":"already_friends"}'::jsonb;
+    ELSIF v_row.user_id = v_me AND v_row.status = 'pending' THEN
+      RETURN '{"status":"pending_sent"}'::jsonb;
+    ELSIF v_row.friend_id = v_me AND v_row.status = 'pending' THEN
+      UPDATE friends SET status = 'accepted' WHERE id = v_row.id;
+      RETURN '{"status":"accepted"}'::jsonb;
+    END IF;
+  END IF;
+
+  INSERT INTO friends (user_id, friend_id, status) VALUES (v_me, p_target, 'pending');
+  RETURN '{"status":"sent"}'::jsonb;
+END;
+$$;
+
+GRANT EXECUTE ON FUNCTION public.send_friend_request(uuid) TO authenticated;

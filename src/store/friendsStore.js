@@ -107,7 +107,7 @@ export const useFriendsStore = create((set, get) => ({
       ]);
 
       if (friendsResult.error) {
-        set({ friends: [], sentRequests: [], receivedRequests: [], users: [], loading: false, error: null });
+        set({ friends: [], sentRequests: [], receivedRequests: [], users: [], loading: false, error: friendsResult.error.message });
         return;
       }
 
@@ -343,15 +343,7 @@ export const useFriendsStore = create((set, get) => ({
 
       if (error) throw error;
 
-      const DEV_ID = "the_dev_permanent";
-      const rows = data || [];
-      const devExists = rows.some(r => r.user_id === DEV_ID);
-      const withDev = devExists ? rows : [
-        ...rows,
-        { user_id: DEV_ID, username: "The Dev", handle: "thedev", avatar: "avatar_ninja_male", xp: 168542, streak: 82, isPermanent: true },
-      ];
-
-      set({ globalLeaderboard: withDev.sort((a, b) => b.xp - a.xp), leaderboardLoading: false });
+      set({ globalLeaderboard: data || [], leaderboardLoading: false });
     } catch (err) {
       set({ leaderboardLoading: false, error: err.message });
     }
@@ -394,55 +386,25 @@ export const useFriendsStore = create((set, get) => ({
       if (!auth?.user) return { success: false, error: "Not logged in" };
 
       const myUserId = auth.user.id;
-      console.log("📤 sendFriendRequest - myUserId:", myUserId, "targetUserId:", targetUserId);
 
       if (myUserId === targetUserId) {
         return { success: false, error: "You cannot add yourself" };
       }
 
-      // Check database directly for any existing relationship
-      const { data: existingRow, error: checkErr } = await supabase
-        .from("friends")
-        .select("user_id, friend_id, status")
-        .or(`and(user_id.eq.${myUserId},friend_id.eq.${targetUserId}),and(user_id.eq.${targetUserId},friend_id.eq.${myUserId})`)
-        .maybeSingle();
+      const { data, error: rpcErr } = await supabase.rpc("send_friend_request", { p_target: targetUserId });
 
-      console.log("📤 sendFriendRequest - existing check:", existingRow, checkErr);
-
-      if (existingRow) {
-        if (existingRow.status === "accepted") {
-          return { success: false, error: "Already friends" };
-        }
-        if (existingRow.user_id === myUserId && existingRow.status === "pending") {
-          return { success: false, error: "Request already sent" };
-        }
-        if (existingRow.friend_id === myUserId && existingRow.status === "pending") {
-          return { success: false, error: "They already sent you a request - check your requests!" };
-        }
+      if (rpcErr) {
+        console.error("sendFriendRequest error:", rpcErr);
+        return { success: false, error: rpcErr.message || "Failed to send request" };
       }
 
-      // Insert new friend request: user_id = sender, friend_id = receiver
-      const { error: insertErr } = await supabase.from("friends").insert({
-        user_id: myUserId,
-        friend_id: targetUserId,
-        status: "pending",
-      });
+      const status = data?.status;
+      if (status === "already_friends") return { success: false, error: "Already friends" };
+      if (status === "pending_sent") return { success: false, error: "Request already sent" };
+      if (status === "self") return { success: false, error: "You cannot add yourself" };
 
-      console.log("📤 sendFriendRequest - insert result:", insertErr);
-
-      if (insertErr) {
-        if (insertErr.code === "23505") {
-          return { success: false, error: "Request already exists" };
-        }
-        console.error("sendFriendRequest insert error:", insertErr);
-        return { success: false, error: "Failed to send request" };
-      }
-
-      // Refresh friends, sent requests, and pending requests
-      await get().loadFriends();
-      await get().loadRequests();
-      await get().loadPendingRequests();
-      return { success: true, message: "Friend request sent!" };
+      await get().loadAll();
+      return { success: true, message: status === "accepted" ? "Friend added!" : "Friend request sent!" };
     } catch (err) {
       console.error("sendFriendRequest error:", err);
       return { success: false, error: "Failed to send request" };
@@ -510,7 +472,6 @@ export const useFriendsStore = create((set, get) => ({
       if (!auth?.user) return { success: false, error: "Not logged in" };
 
       const myUserId = auth.user.id;
-      console.log("🚫 cancelSentRequest - myUserId:", myUserId, "receiverId:", receiverId);
 
       // Delete where I am user_id (sender), target is friend_id (receiver)
       const { error: deleteErr } = await supabase
@@ -519,8 +480,6 @@ export const useFriendsStore = create((set, get) => ({
         .eq("user_id", myUserId)
         .eq("friend_id", receiverId)
         .eq("status", "pending");
-
-      console.log("🚫 cancelSentRequest - delete error:", deleteErr);
 
       // Refresh friends, sent requests, and pending requests
       await get().loadFriends();
@@ -539,7 +498,6 @@ export const useFriendsStore = create((set, get) => ({
       if (!auth?.user) return { success: false, error: "Not logged in" };
 
       const myUserId = auth.user.id;
-      console.log("🗑️ removeFriend - myUserId:", myUserId, "friendId:", friendId);
 
       // Delete row where either direction matches (both must be accepted to be friends)
       const { error: deleteErr } = await supabase
@@ -549,7 +507,7 @@ export const useFriendsStore = create((set, get) => ({
           `and(user_id.eq.${myUserId},friend_id.eq.${friendId}),and(user_id.eq.${friendId},friend_id.eq.${myUserId})`
         );
 
-      console.log("🗑️ removeFriend - delete error:", deleteErr);
+      if (deleteErr) console.error("removeFriend delete error:", deleteErr);
 
       // Also delete any friend challenges between these users
       const { error: challengeErr } = await supabase
@@ -559,7 +517,7 @@ export const useFriendsStore = create((set, get) => ({
           `and(sender_id.eq.${myUserId},receiver_id.eq.${friendId}),and(sender_id.eq.${friendId},receiver_id.eq.${myUserId})`
         );
 
-      console.log("🗑️ removeFriend - challenge delete error:", challengeErr);
+      if (challengeErr) console.error("removeFriend challenge delete error:", challengeErr);
 
       // Refresh friends and requests
       await get().loadFriends();
