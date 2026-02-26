@@ -407,7 +407,7 @@ export default function Challenge() {
 
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12, marginTop: 8, position: "relative", zIndex: 1, pointerEvents: "none" }}>
             <img
-              src={bossLocked ? mascot_locked : BossLevelMascot}
+              src={BossLevelMascot}
               alt="Boss Level Mascot"
               style={{
                 width: "85px",
