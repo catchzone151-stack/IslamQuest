@@ -98,13 +98,18 @@ export default function Profile() {
 
         {/* === Name/Handle (left) + Level/Progress (right) === */}
         <div style={{
+          maxWidth: 300,
+          margin: "16px auto 0",
+          background: "linear-gradient(135deg, rgba(255,215,0,0.18) 0%, rgba(255,140,0,0.1) 100%)",
+          border: "1px solid rgba(255,215,0,0.4)",
+          borderRadius: 16,
+          padding: "14px 16px",
+        }}>
+        <div style={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "flex-start",
-          marginTop: 16,
-          maxWidth: 260,
-          margin: "16px auto 0",
-          padding: "0 8px",
+          padding: "0",
         }}>
           {/* Left: Name + Handle */}
           <div style={{ textAlign: "left" }}>
@@ -199,6 +204,7 @@ export default function Profile() {
               {xpProgress.currentLevelXP.toLocaleString()} / {xpProgress.requiredDelta.toLocaleString()} XP
             </div>
           </div>
+        </div>
         </div>
 
         {/* === Stats cards (2x2 grid) === */}
