@@ -1400,7 +1400,7 @@ function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, challengeStat
         ? "#c0c0c0"
         : rankClass === "bronze"
           ? "#cd7f32"
-          : "rgba(212, 175, 55, 0.3)";
+          : "rgba(168,85,247,0.4)";
 
   return (
     <motion.div
@@ -1416,7 +1416,7 @@ function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, challengeStat
               ? "linear-gradient(135deg, #3a4a5c, #6e8fa8, #b0c8dc)"
               : rankClass === "bronze"
                 ? "linear-gradient(135deg, #5c2e00, #9e5a1a, #c8823c)"
-                : "rgba(59,130,246,0.28)",
+                : "linear-gradient(135deg, rgba(168,85,247,0.28) 0%, rgba(126,34,206,0.14) 100%)",
         border: `1px solid ${borderColor}`,
         borderRadius: "12px",
         padding: "12px",
@@ -1610,7 +1610,7 @@ function GlobalLeaderboardCard({
         ? "#c0c0c0"
         : rankClass === "bronze"
           ? "#cd7f32"
-          : "rgba(168,85,247,0.4)";
+          : "rgba(212, 175, 55, 0.3)";
 
   return (
     <motion.div
@@ -1627,7 +1627,7 @@ function GlobalLeaderboardCard({
               ? "linear-gradient(135deg, #3a4a5c, #6e8fa8, #b0c8dc)"
               : rankClass === "bronze"
                 ? "linear-gradient(135deg, #5c2e00, #9e5a1a, #c8823c)"
-                : "linear-gradient(135deg, rgba(168,85,247,0.28) 0%, rgba(126,34,206,0.14) 100%)",
+                : "rgba(59,130,246,0.28)",
         border: `1px solid ${borderColor}`,
         borderRadius: "10px",
         padding: "10px",
