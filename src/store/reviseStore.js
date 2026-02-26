@@ -73,7 +73,6 @@ const useReviseStore = create((set, get) => ({
     }
 
     set({ weakPool: pool, needsSync: true });
-    console.log("[ReviseStore] mutation triggered");
     pushLocalRevision();
     get().saveReviseData();
     
@@ -98,7 +97,6 @@ const useReviseStore = create((set, get) => ({
       }
     }
     set({ weakPool: pool, needsSync: true });
-    console.log("[ReviseStore] mutation triggered");
     pushLocalRevision();
     get().saveReviseData();
   },
@@ -115,7 +113,6 @@ const useReviseStore = create((set, get) => ({
       item.updatedAt = Date.now();
     }
     set({ weakPool: pool, needsSync: true });
-    console.log("[ReviseStore] mutation triggered");
     pushLocalRevision();
     get().saveReviseData();
   },
