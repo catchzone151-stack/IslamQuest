@@ -1,0 +1,60 @@
+We have a bug: Global leaderboard only shows a couple users. It used to work before recent Supabase hardening changes.
+Your job: diagnose using evidence (console logs + code trace), then fix so Global always shows ALL profiles and Dev stays #1 by XP.
+
+Rules
+
+Do NOT assume. Confirm with logs.
+
+Global leaderboard must ALWAYS fetch directly from public.profiles (not friends, not local merging).
+
+Do NOT add .limit() unless you also implement pagination.
+
+Keep “Dev entry” behaviour as intended (if it’s a real profile, do nothing; if it’s injected, keep injection but don’t break global list).
+
+Step A — Verify data from Supabase
+
+In src/store/friendsStore.js inside loadLeaderboard() add TEMP logs:
+
+console.log("[LB] loadLeaderboard called");
+
+After the Supabase query:
+
+console.log("[LB] profiles rows:", data?.length);
+console.log("[LB] top 10:", (data || []).slice(0, 10).map(x => ({ u: x.username, xp: x.xp })));
+
+Ensure the query is EXACTLY:
+
+const { data, error } = await supabase
+  .from("profiles")
+  .select("user_id, username, handle, avatar, xp, streak")
+  .order("xp", { ascending: false });
+
+No filters, no joins, no .in, no .eq, no .limit.
+
+Step B — Verify UI wiring
+
+In src/pages/Friends.jsx:
+
+Confirm loadLeaderboard() is called when the Friends page mounts:
+
+useEffect(() => { loadLeaderboard(); }, []);
+
+Confirm the Global tab renders ONLY globalLeaderboard from the store:
+
+globalLeaderboard.map(...)
+
+Remove any .slice(), .filter(), or computed arrays that reduce results.
+
+Step C — Fix based on findings
+
+If logs show Supabase returns ~41 rows but UI shows fewer: fix rendering source to use store globalLeaderboard directly and remove any reduction logic.
+
+If logs show Supabase returns only a few rows: find what’s restricting the query (RLS/policies, wrong schema/table, wrong client, wrong supabase key/project) and correct it.
+
+Step D — Clean up
+
+After fix is confirmed, remove the TEMP console logs.
+
+Output required
+
+Tell me: (1) how many rows Supabase returned, (2) how many rows UI renders, (3) exact file + line changes made.
