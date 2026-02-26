@@ -161,70 +161,55 @@ export function isHiddenNinjaAvatar(avatarKey) {
 // ═══════════════════════════════════════════════════════════════════
 
 /**
- * Get proper avatar image from any avatar key
- * Handles hidden ninja avatars, user selection, and fallbacks
- * @param {string} avatarKey - Avatar key (can be legacy or proper key)
- * @param {object} options - Options { userId, nickname, isDevCheck }
- * @returns {string} Avatar image path
+ * Resolve any avatar input (numeric DB index or string key) to an image src.
+ * Pure function — no store dependency. Safe for all non-current-user contexts
+ * (friend cards, leaderboards, request cards, challenge cards, etc.).
+ *
+ * Special avatar keys (index 31 = ninja_male, index 32 = ninja_female) are
+ * displayed as-is when a user legitimately holds them — they are NOT stripped.
+ *
+ * @param {number|string} avatarInput - Numeric DB index or string avatar key
+ * @param {object} options - { userId, nickname }
+ * @returns {string} Image path
+ */
+export function resolveAvatar(avatarInput, { userId, nickname } = {}) {
+  // 1. Identity overrides — Dev always gets ninja male, special user gets ninja female
+  if (userId) {
+    if (isDevAccount(userId, nickname)) return assets.avatars[NINJA_MALE_KEY];
+    if (isSpecialUser(userId, nickname)) return assets.avatars[NINJA_FEMALE_KEY];
+  }
+
+  // 2. Convert numeric DB index to string key (handles 31 → ninja_male, 32 → ninja_female)
+  let key = typeof avatarInput === "number" ? avatarIndexToKey(avatarInput) : avatarInput;
+
+  // 3. Map legacy string keys to current keys
+  if (key && LEGACY_AVATAR_MAP[key]) key = LEGACY_AVATAR_MAP[key];
+
+  // 4. Return image — special keys are trusted here, no stripping
+  if (key && assets.avatars[key]) return assets.avatars[key];
+
+  // 5. Deterministic fallback
+  return assets.avatars[getRandomAvatar(userId)];
+}
+
+/**
+ * Get avatar image for any user, with current-user store override.
+ * Use resolveAvatar() for all non-current-user rendering instead.
+ * @param {string|number} avatarKey - Avatar key or DB index
+ * @param {object} options - { userId, nickname }
+ * @returns {string} Image path
  */
 export function getAvatarImage(avatarKey, options = {}) {
-  const { userId, nickname, isDevCheck = true } = options;
-  
-  // PRIORITY 0: FORCE current user to always use their selected avatar from store
-  // This ensures the store is the single source of truth for the logged-in user
+  const { userId, nickname } = options;
+
+  // Current user → always read from Zustand store for instant local updates
   const { id: currentUserId, avatar: currentUserAvatar } = useUserStore.getState();
   if (userId === currentUserId) {
-    // Current user must have their selected avatar, always
-    if (currentUserAvatar && assets.avatars[currentUserAvatar]) {
-      return assets.avatars[currentUserAvatar];
-    }
-    // Fallback: return a valid default if no avatar is set
+    if (currentUserAvatar && assets.avatars[currentUserAvatar]) return assets.avatars[currentUserAvatar];
     return assets.avatars[AVAILABLE_AVATARS[0]];
   }
-  
-  // PRIORITY 1: Check if this is The Dev (gets male ninja)
-  if (isDevCheck && isDevAccount(userId, nickname)) {
-    return assets.avatars[NINJA_MALE_KEY];
-  }
-  
-  // PRIORITY 2: Check if this is the special user (gets female ninja)
-  // This will automatically work when SPECIAL_USER_ID is set via Supabase
-  if (isDevCheck && isSpecialUser(userId, nickname)) {
-    return assets.avatars[NINJA_FEMALE_KEY];
-  }
-  
-  // PRIORITY 2.5: Convert numeric avatar (from Supabase) to string key
-  let properKey = avatarKey;
-  if (typeof avatarKey === "number") {
-    properKey = avatarIndexToKey(avatarKey);
-  }
-  
-  // PRIORITY 3: Map legacy avatar keys to proper keys
-  if (properKey && LEGACY_AVATAR_MAP[properKey]) {
-    properKey = LEGACY_AVATAR_MAP[properKey];
-  }
-  
-  // PRIORITY 4: HIDDEN NINJA PROTECTION
-  // If avatar is a hidden ninja but user is NOT authorized, assign fallback
-  if (isHiddenNinjaAvatar(properKey)) {
-    const isAuthorizedForNinja = 
-      (properKey === NINJA_MALE_KEY && isDevAccount(userId, nickname)) ||
-      (properKey === NINJA_FEMALE_KEY && isSpecialUser(userId, nickname));
-    
-    if (!isAuthorizedForNinja) {
-      // Unauthorized user trying to use ninja avatar - assign deterministic fallback
-      properKey = getRandomAvatar(userId);
-    }
-  }
-  
-  // PRIORITY 5: Return avatar if it exists in assets
-  if (properKey && assets.avatars[properKey]) {
-    return assets.avatars[properKey];
-  }
-  
-  // PRIORITY 6: Final fallback - assign deterministic avatar
-  const deterministicKey = getRandomAvatar(userId);
-  return assets.avatars[deterministicKey];
+
+  return resolveAvatar(avatarKey, { userId, nickname });
 }
 
 // ═══════════════════════════════════════════════════════════════════

@@ -21,7 +21,7 @@ import {
   Zap,
 } from "lucide-react";
 import { LevelBadgeCompact } from "../components/LevelBadge";
-import { getAvatarImage } from "../utils/avatarUtils";
+import { resolveAvatar } from "../utils/avatarUtils";
 import { getCurrentLevel } from "../utils/diamondLevels";
 import { getModeIcon, getModeName } from "../utils/challengeQuestions";
 import assets from "../assets/assets";
@@ -452,7 +452,7 @@ export default function Friends() {
                       const sender = friends.find(f => (f.user_id || f.id) === challenge.sender_id);
                       const senderName = sender?.nickname || sender?.username || "Friend";
                       const senderAvatar = sender?.avatar;
-                      const avatarSrc = getAvatarImage(senderAvatar, { userId: challenge.sender_id, nickname: senderName });
+                      const avatarSrc = resolveAvatar(senderAvatar, { userId: challenge.sender_id, nickname: senderName });
                       
                       return (
                         <motion.div
@@ -582,7 +582,7 @@ export default function Friends() {
                       const friend = friends.find(f => (f.user_id || f.id) === friendId);
                       const friendName = friend?.nickname || friend?.username || "Friend";
                       const friendAvatar = friend?.avatar;
-                      const avatarSrc = getAvatarImage(friendAvatar, { userId: friendId, nickname: friendName });
+                      const avatarSrc = resolveAvatar(friendAvatar, { userId: friendId, nickname: friendName });
                       
                       return (
                         <motion.div
@@ -670,7 +670,7 @@ export default function Friends() {
                       const friend = friends.find(f => (f.user_id || f.id) === friendId);
                       const friendName = friend?.nickname || friend?.username || "Friend";
                       const friendAvatar = friend?.avatar;
-                      const avatarSrc = getAvatarImage(friendAvatar, { userId: friendId, nickname: friendName });
+                      const avatarSrc = resolveAvatar(friendAvatar, { userId: friendId, nickname: friendName });
                       
                       return (
                         <motion.div
@@ -751,7 +751,7 @@ export default function Friends() {
                       const friend = friends.find(f => (f.user_id || f.id) === friendId);
                       const friendName = friend?.nickname || friend?.username || "Friend";
                       const friendAvatar = friend?.avatar;
-                      const avatarSrc = getAvatarImage(friendAvatar, { userId: friendId, nickname: friendName });
+                      const avatarSrc = resolveAvatar(friendAvatar, { userId: friendId, nickname: friendName });
                       
                       return (
                         <motion.div
@@ -856,7 +856,7 @@ export default function Friends() {
                       const receiver = friends.find(f => (f.user_id || f.id) === challenge.receiver_id);
                       const receiverName = receiver?.nickname || receiver?.username || "Friend";
                       const receiverAvatar = receiver?.avatar;
-                      const avatarSrc = getAvatarImage(receiverAvatar, { userId: challenge.receiver_id, nickname: receiverName });
+                      const avatarSrc = resolveAvatar(receiverAvatar, { userId: challenge.receiver_id, nickname: receiverName });
                       
                       return (
                         <motion.div
@@ -1384,7 +1384,7 @@ function SubTabButton({ active, onClick, label, icon }) {
 }
 
 function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, challengeState }) {
-  const avatarSrc = getAvatarImage(user.avatar, {
+  const avatarSrc = resolveAvatar(user.avatar, {
     userId: user.user_id,
     nickname: user.username || user.handle,
   });
@@ -1593,7 +1593,7 @@ function GlobalLeaderboardCard({
   isFriend,
   onUserClick,
 }) {
-  const avatarSrc = getAvatarImage(user.avatar, {
+  const avatarSrc = resolveAvatar(user.avatar, {
     userId: user.user_id,
     nickname: user.username || user.handle,
   });
@@ -1764,7 +1764,7 @@ function GlobalLeaderboardCard({
 }
 
 function UserCard({ user, onClick, action, badge, badgeColor }) {
-  const avatarSrc = getAvatarImage(user.avatar, {
+  const avatarSrc = resolveAvatar(user.avatar, {
     userId: user.user_id || user.id,
     nickname: user.nickname || user.username,
   });
@@ -1884,7 +1884,7 @@ function UserCard({ user, onClick, action, badge, badgeColor }) {
 }
 
 function RequestCard({ user, type, onAccept, onDecline, onCancel }) {
-  const avatarSrc = getAvatarImage(user.avatar, {
+  const avatarSrc = resolveAvatar(user.avatar, {
     userId: user.user_id || user.id,
     nickname: user.nickname || user.username,
   });

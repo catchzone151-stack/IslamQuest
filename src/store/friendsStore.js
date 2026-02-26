@@ -126,11 +126,13 @@ export const useFriendsStore = create((set, get) => ({
       const receivedIds = received.map(r => r.user_id);
       const allProfileIds = [...new Set([...friendIds, ...sentIds, ...receivedIds])];
 
-      // Single batch profile fetch — uses SECURITY DEFINER RPC to bypass RLS
       let allProfiles = [];
       if (allProfileIds.length > 0) {
-        const { data: profiles } = await supabase.rpc("get_profiles_by_ids", { ids: allProfileIds });
-        allProfiles = profiles || [];
+        const { data: profileRows, error: profileError } =
+          await supabase.rpc("get_profiles_by_ids", {
+            ids: allProfileIds
+          });
+        allProfiles = profileRows || [];
       }
 
       const profileMap = new Map(allProfiles.map(p => [p.user_id, p]));
