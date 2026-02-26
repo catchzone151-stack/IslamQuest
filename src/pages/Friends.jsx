@@ -1489,7 +1489,7 @@ function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, challengeStat
           >
             {displayName}
           </p>
-          <LevelBadgeCompact level={userLevel} size="small" />
+          <LevelBadgeCompact xp={user.xp || 0} />
         </div>
         {user.handle && (
           <p
@@ -1810,7 +1810,7 @@ function UserCard({ user, onClick, action, badge, badgeColor }) {
           >
             {displayName}
           </p>
-          <LevelBadgeCompact level={userLevel} size="small" />
+          <LevelBadgeCompact xp={user.xp || 0} />
         </div>
         {(user.handle || user.username) && (
           <p
@@ -1925,7 +1925,7 @@ function RequestCard({ user, type, onAccept, onDecline, onCancel }) {
           >
             {displayName}
           </p>
-          <LevelBadgeCompact level={userLevel} size="small" />
+          <LevelBadgeCompact xp={user.xp || 0} />
         </div>
         {(user.handle || user.username) && (
           <p

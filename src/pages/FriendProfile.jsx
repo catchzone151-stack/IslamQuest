@@ -7,7 +7,6 @@ import { motion } from "framer-motion";
 import { ArrowLeft, UserMinus, Trophy, Flame, Coins, Shield } from "lucide-react";
 import { LevelBadgeCompact } from "../components/LevelBadge";
 import { getAvatarImage } from "../utils/avatarUtils";
-import { getCurrentLevel } from "../utils/diamondLevels";
 
 export default function FriendProfile() {
   const { userId } = useParams();
@@ -116,7 +115,6 @@ export default function FriendProfile() {
     );
   }
 
-  const userLevel = getCurrentLevel(user.xp || 0);
   const avatarSrc = getAvatarImage(user.avatar, {
     userId: user.user_id || user.id,
     nickname: user.nickname || user.username,
@@ -217,7 +215,7 @@ export default function FriendProfile() {
             </p>
           )}
 
-          <LevelBadgeCompact level={userLevel} size="large" />
+          <LevelBadgeCompact xp={user.xp || 0} />
         </div>
 
         <div
