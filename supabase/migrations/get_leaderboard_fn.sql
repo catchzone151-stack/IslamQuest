@@ -33,3 +33,22 @@ AS $$
 $$;
 
 GRANT EXECUTE ON FUNCTION public.get_profiles_by_ids(text[]) TO authenticated, anon;
+
+-- 3. User search by handle or username — used by the Search tab
+CREATE OR REPLACE FUNCTION public.search_profiles(search_query text)
+RETURNS json
+SECURITY DEFINER
+SET search_path = public
+LANGUAGE sql
+AS $$
+  SELECT json_agg(t)
+  FROM (
+    SELECT DISTINCT user_id::text, username, handle, avatar, xp, streak
+    FROM profiles
+    WHERE handle ILIKE '%' || search_query || '%'
+       OR username ILIKE '%' || search_query || '%'
+    LIMIT 20
+  ) t;
+$$;
+
+GRANT EXECUTE ON FUNCTION public.search_profiles(text) TO authenticated, anon;

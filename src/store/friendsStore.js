@@ -363,27 +363,14 @@ export const useFriendsStore = create((set, get) => ({
     const searchTerm = query.trim().toLowerCase();
 
     try {
-      const { data: handleResults } = await supabase
-        .from("profiles")
-        .select("user_id, username, handle, avatar, xp, streak")
-        .ilike("handle", `%${searchTerm}%`)
-        .limit(20);
+      const { data, error } = await supabase.rpc("search_profiles", { search_query: searchTerm });
 
-      const { data: usernameResults } = await supabase
-        .from("profiles")
-        .select("user_id, username, handle, avatar, xp, streak")
-        .ilike("username", `%${searchTerm}%`)
-        .limit(20);
-
-      const combined = [...(handleResults || []), ...(usernameResults || [])];
-      const unique = Array.from(
-        new Map(combined.map((u) => [u.user_id, u])).values()
-      );
+      if (error) throw error;
 
       const { data: auth } = await supabase.auth.getUser();
       const currentUserId = auth?.user?.id;
 
-      const filtered = unique
+      return (data || [])
         .filter((u) => u.user_id !== currentUserId)
         .map((p) => ({
           user_id: p.user_id,
@@ -395,8 +382,6 @@ export const useFriendsStore = create((set, get) => ({
           xp: p.xp || 0,
           streak: p.streak || 0,
         }));
-
-      return filtered;
     } catch (err) {
       console.warn("searchUsers error:", err);
       return [];
