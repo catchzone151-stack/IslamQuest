@@ -743,7 +743,7 @@ export default function Home() {
         }}
         style={{
           margin: "10px 16px 0 16px",
-          background: "linear-gradient(135deg, rgba(0,255,209,0.12), rgba(255,215,0,0.12))",
+          background: "linear-gradient(145deg, #2e8b57, #0d2614)",
           borderRadius: 22,
           padding: "14px 16px",
           border: "1.5px solid rgba(255,215,0,0.35)",
@@ -795,7 +795,7 @@ export default function Home() {
               key={i}
               style={{
                 flex: 1,
-                background: "#0a2a43",
+                background: "rgba(46,139,87,0.35)",
                 borderRadius: 18,
                 padding: "14px 0 12px",
                 border: "1px solid rgba(255,215,0,0.25)",
