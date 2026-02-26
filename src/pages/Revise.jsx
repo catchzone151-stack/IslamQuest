@@ -456,28 +456,19 @@ export default function Revise() {
         <div
           onClick={reviewMistakesUnlocked && hasWeakQuestions ? startMistakesReview : null}
           style={{
-            background: reviewMistakesUnlocked
-              ? (hasWeakQuestions 
-                  ? "linear-gradient(145deg, rgba(212,175,55,0.2), rgba(16,185,129,0.1))"
-                  : "linear-gradient(145deg, rgba(16,185,129,0.1), rgba(107,114,128,0.1))")
-              : "linear-gradient(145deg, rgba(107,114,128,0.2), rgba(75,85,99,0.1))",
-            border: `2px solid ${reviewMistakesUnlocked ? (hasWeakQuestions ? "rgba(212,175,55,0.5)" : "rgba(16,185,129,0.3)") : "rgba(107,114,128,0.3)"}`,
+            background: "linear-gradient(145deg, rgba(212,175,55,0.2), rgba(16,185,129,0.1))",
+            border: "2px solid rgba(212,175,55,0.5)",
             borderRadius: 20,
             padding: 24,
             marginBottom: 20,
             cursor: reviewMistakesUnlocked && hasWeakQuestions ? "pointer" : "default",
             transition: "all 0.3s ease",
-            boxShadow: reviewMistakesUnlocked
-              ? (hasWeakQuestions 
-                  ? "0 8px 20px rgba(212,175,55,0.2)"
-                  : "0 4px 15px rgba(16,185,129,0.1)")
-              : "0 4px 10px rgba(0,0,0,0.1)",
-            opacity: reviewMistakesUnlocked ? 1 : 0.6,
+            boxShadow: "0 8px 20px rgba(212,175,55,0.2)",
           }}
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
-              <h3 style={{ fontSize: "1.3rem", fontWeight: 700, color: reviewMistakesUnlocked ? "#D4AF37" : "#9CA3AF", margin: "0 0 8px" }}>
+              <h3 style={{ fontSize: "1.3rem", fontWeight: 700, color: "#D4AF37", margin: "0 0 8px" }}>
                 Review Mistakes
               </h3>
               <p style={{ opacity: 0.85, margin: "0 0 12px", fontSize: "0.9rem", lineHeight: 1.5 }}>
@@ -495,9 +486,7 @@ export default function Revise() {
             </div>
             <div
               style={{
-                background: reviewMistakesUnlocked
-                  ? (hasWeakQuestions ? "rgba(212,175,55,0.2)" : "rgba(16,185,129,0.2)")
-                  : "rgba(107,114,128,0.2)",
+                background: hasWeakQuestions ? "rgba(212,175,55,0.2)" : "rgba(16,185,129,0.2)",
                 borderRadius: "50%",
                 width: 60,
                 height: 60,
@@ -506,9 +495,7 @@ export default function Revise() {
                 justifyContent: "center",
                 fontSize: "1.8rem",
                 flexShrink: 0,
-                color: reviewMistakesUnlocked 
-                  ? (hasWeakQuestions ? "#D4AF37" : "#10B981")
-                  : "#9CA3AF",
+                color: hasWeakQuestions ? "#D4AF37" : "#10B981",
               }}
             >
               {reviewMistakesUnlocked ? (hasWeakQuestions ? enrichedPool.length : "✓") : "?"}
@@ -549,21 +536,18 @@ export default function Revise() {
         <div
           onClick={isSmartActive ? startSmartRevision : null}
           style={{
-            background: isSmartActive
-              ? "linear-gradient(145deg, rgba(59,130,246,0.2), rgba(147,51,234,0.1))"
-              : "linear-gradient(145deg, rgba(107,114,128,0.2), rgba(75,85,99,0.1))",
-            border: `2px solid ${isSmartActive ? "rgba(59,130,246,0.5)" : "rgba(107,114,128,0.3)"}`,
+            background: "linear-gradient(145deg, rgba(59,130,246,0.2), rgba(147,51,234,0.1))",
+            border: "2px solid rgba(59,130,246,0.5)",
             borderRadius: 20,
             padding: 24,
             cursor: isSmartActive ? "pointer" : "not-allowed",
             transition: "all 0.3s ease",
-            boxShadow: isSmartActive ? "0 8px 20px rgba(59,130,246,0.2)" : "0 4px 10px rgba(0,0,0,0.1)",
-            opacity: isSmartActive ? 1 : 0.6,
+            boxShadow: "0 8px 20px rgba(59,130,246,0.2)",
           }}
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
-              <h3 style={{ fontSize: "1.3rem", fontWeight: 700, color: isSmartActive ? "#3B82F6" : "#9CA3AF", margin: "0 0 8px" }}>
+              <h3 style={{ fontSize: "1.3rem", fontWeight: 700, color: "#3B82F6", margin: "0 0 8px" }}>
                 Smart Revision
               </h3>
               <p style={{ opacity: 0.85, margin: "0 0 12px", fontSize: "0.9rem", lineHeight: 1.5 }}>
@@ -579,7 +563,7 @@ export default function Revise() {
             </div>
             <div
               style={{
-                background: isSmartActive ? "rgba(59,130,246,0.2)" : "rgba(107,114,128,0.2)",
+                background: "rgba(59,130,246,0.2)",
                 borderRadius: "50%",
                 width: 60,
                 height: 60,
