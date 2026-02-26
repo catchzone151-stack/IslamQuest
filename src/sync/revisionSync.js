@@ -35,6 +35,7 @@ export async function pullCloudRevision() {
 }
 
 export async function pushLocalRevision() {
+  console.log("[RevisionSync] PUSH TRIGGERED");
   console.log("[RevisionSync] pushLocalRevision() start");
 
   const items = useReviseStore.getState().getAllItems();
@@ -43,6 +44,7 @@ export async function pushLocalRevision() {
 
   const { data: userData } = await supabase.auth.getUser();
   const userId = userData?.user?.id;
+  console.log("[RevisionSync] userId:", userId);
   if (!userId) {
     console.log("[RevisionSync] No user authenticated, skip push");
     return;
@@ -55,6 +57,7 @@ export async function pushLocalRevision() {
 
   const rows = ready.map((i) => convertToCloudRow(userId, i));
   console.log(`[RevisionSync] Prepared ${rows.length} rows for UPSERT`);
+  console.log("[RevisionSync] rows to upsert:", rows);
 
   const { error } = await supabase
     .from("revision_items")
@@ -72,5 +75,6 @@ export async function pushLocalRevision() {
   }
 
   useReviseStore.setState({ needsSync: false });
+  console.log("[RevisionSync] UPSERT DONE");
   console.log("[RevisionSync] UPSERT successful");
 }
