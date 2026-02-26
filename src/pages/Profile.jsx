@@ -216,36 +216,32 @@ export default function Profile() {
             label="XP"
             value={xp}
             color="#FFD700"
-            gradient="linear-gradient(135deg, rgba(255,215,0,0.35), rgba(255,140,0,0.18))"
-            borderColor="rgba(255,215,0,0.5)"
-            boxShadow="0 0 18px rgba(255,215,0,0.65), 0 0 36px rgba(255,140,0,0.35)"
+            gradient="linear-gradient(135deg, rgba(255,215,0,0.75) 0%, rgba(255,140,0,0.5) 100%)"
+            borderColor="rgba(255,215,0,0.9)"
           />
           <ProfileCard
             icon={ui_coin}
             label="Coins"
             value={coins}
             color="#FFA500"
-            gradient="linear-gradient(135deg, rgba(255,140,0,0.35), rgba(255,69,0,0.18))"
-            borderColor="rgba(255,140,0,0.5)"
-            boxShadow="0 0 18px rgba(255,140,0,0.65), 0 0 36px rgba(255,69,0,0.35)"
+            gradient="linear-gradient(135deg, rgba(255,140,0,0.75) 0%, rgba(255,69,0,0.5) 100%)"
+            borderColor="rgba(255,140,0,0.9)"
           />
           <ProfileCard
             icon={ui_streak}
             label="Streak"
             value={`${streak} 🔥`}
             color="#FF6347"
-            gradient="linear-gradient(135deg, rgba(255,99,71,0.4), rgba(220,20,60,0.18))"
-            borderColor="rgba(255,99,71,0.5)"
-            boxShadow="0 0 18px rgba(255,99,71,0.65), 0 0 36px rgba(220,20,60,0.35)"
+            gradient="linear-gradient(135deg, rgba(255,99,71,0.8) 0%, rgba(220,20,60,0.5) 100%)"
+            borderColor="rgba(255,99,71,0.9)"
           />
           <ProfileCard
             icon={ui_shield}
             label="Shields"
             value={`${shieldCount}/2 🛡️`}
             color="#4fd5ff"
-            gradient="linear-gradient(135deg, rgba(79,213,255,0.35), rgba(16,185,129,0.18))"
-            borderColor="rgba(79,213,255,0.5)"
-            boxShadow="0 0 18px rgba(79,213,255,0.65), 0 0 36px rgba(16,185,129,0.35)"
+            gradient="linear-gradient(135deg, rgba(79,213,255,0.75) 0%, rgba(16,185,129,0.5) 100%)"
+            borderColor="rgba(79,213,255,0.9)"
           />
         </div>
 
