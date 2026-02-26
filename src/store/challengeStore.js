@@ -243,8 +243,6 @@ export const useChallengeStore = create((set, get) => ({
   },
 
   createChallenge: (friendId, mode) => {
-    console.log('🎮 Creating local challenge');
-    
     const modeConfig = typeof mode === 'string' 
       ? Object.values(CHALLENGE_MODES).find(m => m.id === mode) 
       : mode;
@@ -303,13 +301,10 @@ export const useChallengeStore = create((set, get) => ({
       }
     })();
     
-    console.log('✅ Challenge created:', challenge.id);
     return { success: true, challenge };
   },
   
   submitChallengeAttempt: (challengeId, score, answers, completionTime = null, chain = null) => {
-    console.log('🎮 Submitting challenge attempt locally');
-    
     const challenge = get().challenges.find(c => c.id === challengeId);
     if (!challenge) {
       return { success: false, error: 'CHALLENGE_NOT_FOUND' };
@@ -401,7 +396,6 @@ export const useChallengeStore = create((set, get) => ({
   },
 
   loadAllMyChallenges: () => {
-    console.log('🎮 Loading local challenges');
     return get().challenges;
   },
 
@@ -542,7 +536,6 @@ export const useChallengeStore = create((set, get) => ({
     
     let allQuestions = get().getQuestionPool();
     if (allQuestions.length === 0) {
-      console.log('🎮 No completed lessons - using fallback questions for challenges');
       allQuestions = get().getFallbackQuestions();
     }
     

@@ -17,7 +17,7 @@ $$;
 
 GRANT EXECUTE ON FUNCTION public.get_leaderboard() TO authenticated, anon;
 
--- 2. Batch profile lookup by IDs — used by the friends list to fetch friend profiles
+-- 2. Batch profile lookup by IDs — used by the friends list and event leaderboard
 CREATE OR REPLACE FUNCTION public.get_profiles_by_ids(ids text[])
 RETURNS json
 SECURITY DEFINER
@@ -26,7 +26,7 @@ LANGUAGE sql
 AS $$
   SELECT json_agg(t)
   FROM (
-    SELECT user_id::text, username, handle, avatar, xp, streak, coins, shield_count
+    SELECT user_id::text, username, handle, avatar, xp, streak, coins, shield_count, premium
     FROM profiles
     WHERE user_id::text = ANY(ids)
   ) t;

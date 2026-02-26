@@ -108,7 +108,7 @@ export default function ChallengeGame() {
     if (isBoss) {
       const bossQuestions = useChallengeStore.getState().getBossLevelQuestions();
       if (bossQuestions.length === 0) {
-        alert("Complete some lessons first to unlock Boss Level questions!");
+        showModal(MODAL_TYPES.ERROR, { message: "Complete some lessons first to unlock Boss Level questions!" });
         navigate("/challenge");
         return;
       }

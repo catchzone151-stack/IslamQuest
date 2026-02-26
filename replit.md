@@ -35,6 +35,10 @@ The application offers 14 learning paths with lessons and quizzes derived from Q
 
 **Friend Data Loading Optimizations**: Uses `Promise.all` for parallel DB queries and Supabase Realtime subscriptions for instant updates to friend requests and challenges. Reduced polling as real-time handles most updates.
 
+**RLS-Safe Friends Architecture (Feb 2026 Hardening)**: `friendsStore` legacy functions `loadFriends`, `loadRequests`, `loadPendingRequests` — which used direct `supabase.from("profiles").in(ids)` queries that bypass RLS — have been removed. All friend data now flows exclusively through `loadAll()`, which uses the `get_profiles_by_ids` SECURITY DEFINER RPC. All post-mutation refreshes (`acceptFriendRequest`, `declineFriendRequest`, `cancelSentRequest`, `removeFriend`) call `loadAll()` only. Event leaderboard profile fetches also use `get_profiles_by_ids` RPC (updated to include `premium` field). SQL migration `get_leaderboard_fn.sql` must be re-run in Supabase after this change.
+
+**Profile Setup Circuit Breaker**: `useUserStore.retryInit()` tracks `retryCount` (max 5). After 5 failed retries, `maxRetriesReached: true` is set and `ProfileSetupWait` shows a "contact support" message instead of the retry button, preventing infinite user-driven retry loops.
+
 **Revision System**: The `reviseStore` tracks weak questions, syncing lightweight data to Supabase. It prioritizes unreviewed questions and provides an empty state for reviewed mistakes.
 
 **Events System**: Global Events load cloud entries on mount, with event quiz submissions using completion time for tie-breaking.

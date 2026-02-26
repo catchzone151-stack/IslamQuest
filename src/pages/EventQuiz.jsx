@@ -83,7 +83,7 @@ export default function EventQuiz() {
   const handleStartQuiz = () => {
     // Pre-countdown validation: Check coins to prevent wasted countdown
     if (coins < 25) {
-      alert("You need 25 coins to enter this event!");
+      showModal(MODAL_TYPES.ERROR, { message: "You need 25 coins to enter this event!" });
       navigate("/events");
       return;
     }
@@ -99,7 +99,7 @@ export default function EventQuiz() {
     // This ensures atomicity: if checks fail, no coins lost
     // Prevent duplicate entries and coin deductions
     if (hasEntered(eventId)) {
-      alert("You've already entered this event!");
+      showModal(MODAL_TYPES.ERROR, { message: "You've already entered this event!" });
       navigate("/events");
       return;
     }
@@ -108,7 +108,7 @@ export default function EventQuiz() {
     const eventQuestions = getEventQuestions(eventId, 10);
     
     if (!eventQuestions || eventQuestions.length === 0) {
-      alert("Error loading quiz questions. Please try again.");
+      showModal(MODAL_TYPES.ERROR, { message: "Error loading quiz questions. Please try again." });
       navigate("/events");
       return;
     }
@@ -116,7 +116,7 @@ export default function EventQuiz() {
     // Deduct coins ONLY after confirming questions loaded
     const success = removeCoins(25);
     if (!success) {
-      alert("You don't have enough coins! You need 25 coins to enter.");
+      showModal(MODAL_TYPES.ERROR, { message: "You don't have enough coins! You need 25 coins to enter." });
       navigate("/events");
       return;
     }

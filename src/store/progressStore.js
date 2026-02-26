@@ -74,7 +74,8 @@ function toISODateStr(dateStr) {
     const d = new Date(dateStr);
     if (isNaN(d.getTime())) return null;
     return d.toISOString().split("T")[0];
-  } catch {
+  } catch (err) {
+    console.error("normalizeDate parse error:", err);
     return null;
   }
 }

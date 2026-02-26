@@ -53,6 +53,8 @@ export const useUserStore = create((set, get) => ({
   hasOnboarded: checkOnboardedFromStorage(),
   profileReady: false,  // True when profile is fully loaded from cloud
   awaitingProfileSetup: false, // True when DB trigger hasn't created the profile yet
+  retryCount: 0,
+  maxRetriesReached: false,
   
   // Auth state
   user: null,
@@ -182,7 +184,12 @@ export const useUserStore = create((set, get) => ({
 
   // Retry after showing the awaitingProfileSetup screen
   retryInit: async () => {
-    set({ awaitingProfileSetup: false, isHydrated: false, loading: true });
+    const { retryCount } = get();
+    if (retryCount >= 5) {
+      set({ maxRetriesReached: true });
+      return;
+    }
+    set({ awaitingProfileSetup: false, isHydrated: false, loading: true, retryCount: retryCount + 1 });
     await get().init();
   },
 

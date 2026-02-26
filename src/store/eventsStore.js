@@ -309,11 +309,10 @@ export const useEventsStore = create(
           let profiles = {};
           
           if (userIds.length > 0) {
-            const { data: profileData } = await supabase
-              .from('profiles')
-              .select('user_id, username, handle, avatar, premium')
-              .in('user_id', userIds);
+            const { data: profileData, error: profileErr } = await supabase
+              .rpc('get_profiles_by_ids', { ids: userIds });
             
+            if (profileErr) console.error('Event leaderboard profile fetch error:', profileErr);
             (profileData || []).forEach(p => {
               profiles[p.user_id] = p;
             });

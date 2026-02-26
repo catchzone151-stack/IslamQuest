@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Mail, RefreshCw, CheckCircle } from "lucide-react";
 import { supabase } from "../lib/supabaseClient";
 import { useUserStore } from "../store/useUserStore";
+import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import { preloadUserData } from "../hooks/useDataPreloader";
 import { avatarIndexToKey } from "../utils/avatarUtils";
 
@@ -13,6 +14,7 @@ let isProcessingLogin = false;
 export default function CheckEmailScreen() {
   const navigate = useNavigate();
   const { setOnboarded, setDisplayName, setHandle, setAvatar } = useUserStore();
+  const { showModal } = useModalStore();
   const [checking, setChecking] = useState(false);
   const [email, setEmail] = useState("");
   const [loadingMessage, setLoadingMessage] = useState("");
@@ -219,13 +221,13 @@ export default function CheckEmailScreen() {
             emailRedirectTo: `${appUrl}/check-email`,
           },
         });
-        alert("New confirmation email sent! Please check your inbox and click the link.");
+        showModal(MODAL_TYPES.SUCCESS, { message: "New confirmation email sent! Please check your inbox and click the link." });
       } else {
-        alert("Could not find your email. Please try signing up again.");
+        showModal(MODAL_TYPES.ERROR, { message: "Could not find your email. Please try signing up again." });
       }
     } catch (err) {
       console.error("Resend error:", err);
-      alert("Failed to resend email. Please try again.");
+      showModal(MODAL_TYPES.ERROR, { message: "Failed to resend email. Please try again." });
     }
     setChecking(false);
   };
@@ -249,7 +251,7 @@ export default function CheckEmailScreen() {
     // Redirect to login page where they can sign in with their confirmed account
     if (!user) {
       console.log("[CheckEmail] No session found - redirecting to login");
-      alert("Great! Now please sign in with your email and password to continue.");
+      showModal(MODAL_TYPES.SUCCESS, { message: "Great! Now please sign in with your email and password to continue." });
       localStorage.setItem("iq_onboarding_step", "login");
       navigate("/login");
       setChecking(false);
@@ -257,7 +259,7 @@ export default function CheckEmailScreen() {
     }
     
     // User exists but not confirmed yet
-    alert("Email not confirmed yet. Please check your inbox and click the confirmation link.");
+    showModal(MODAL_TYPES.ERROR, { message: "Email not confirmed yet. Please check your inbox and click the confirmation link." });
     setChecking(false);
   };
 

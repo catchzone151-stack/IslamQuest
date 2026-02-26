@@ -57,9 +57,6 @@ export default function Friends() {
 
   const {
     loadAll,
-    loadFriends,
-    loadRequests,
-    loadPendingRequests,
     getAllFriends,
     getSentRequests,
     getReceivedRequests,
@@ -199,8 +196,6 @@ export default function Friends() {
     const result = await acceptFriendRequest(requestId);
     if (result.success) {
       showModal(MODAL_TYPES.SUCCESS, { message: result.message });
-      await loadFriends();
-      await loadPendingRequests();
     } else {
       showModal(MODAL_TYPES.ERROR, { message: result.error });
     }
@@ -208,10 +203,7 @@ export default function Friends() {
 
   const handleDeclineRequest = async (requestId) => {
     const result = await declineFriendRequest(requestId);
-    if (result.success) {
-      await loadFriends();
-      await loadPendingRequests();
-    } else {
+    if (!result.success) {
       showModal(MODAL_TYPES.ERROR, { message: result.error });
     }
   };
@@ -1385,7 +1377,6 @@ function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, challengeStat
     nickname: user.username || user.handle,
   });
   const displayName = user.username || user.handle || "Unknown";
-  const userLevel = getCurrentLevel(user.xp);
 
   const getRankClass = () => {
     if (rank === 1) return "gold";
@@ -1594,7 +1585,6 @@ function GlobalLeaderboardCard({
     nickname: user.username || user.handle,
   });
   const displayName = user.username || user.handle || "Unknown";
-  const userLevel = getCurrentLevel(user.xp);
 
   const getRankClass = () => {
     if (rank === 1) return "gold";
@@ -1748,7 +1738,6 @@ function UserCard({ user, onClick, action, badge, badgeColor }) {
     userId: user.user_id || user.id,
     nickname: user.nickname || user.username,
   });
-  const userLevel = getCurrentLevel(user.xp);
   const displayName = user.nickname || user.username || user.handle || "User";
 
   return (
@@ -1868,7 +1857,6 @@ function RequestCard({ user, type, onAccept, onDecline, onCancel }) {
     userId: user.user_id || user.id,
     nickname: user.nickname || user.username,
   });
-  const userLevel = getCurrentLevel(user.xp);
   const displayName = user.nickname || user.username || user.handle || "User";
 
   return (

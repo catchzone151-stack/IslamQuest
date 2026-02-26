@@ -166,176 +166,6 @@ export const useFriendsStore = create((set, get) => ({
     }
   },
 
-  loadFriends: async () => {
-    const { data: auth } = await supabase.auth.getUser();
-    if (!auth?.user) return [];
-
-    const userId = auth.user.id;
-    
-    const { data, error } = await supabase
-      .from("friends")
-      .select("*")
-      .or(`user_id.eq.${userId},friend_id.eq.${userId}`)
-      .eq("status", "accepted");
-
-    if (error) {
-      console.warn("loadFriends error:", error.message);
-      return [];
-    }
-
-    const friendIds = (data || []).map((f) => 
-      f.user_id === userId ? f.friend_id : f.user_id
-    );
-    if (friendIds.length === 0) {
-      set({ friends: [] });
-      return [];
-    }
-
-    const { data: profiles } = await supabase
-      .from("profiles")
-      .select("user_id, username, handle, avatar, xp, streak, coins, shield_count")
-      .in("user_id", friendIds);
-
-    const friends = (profiles || []).map((profile) => ({
-      user_id: profile.user_id,
-      id: profile.user_id,
-      username: profile.username,
-      handle: profile.handle,
-      nickname: profile.username || profile.handle || "User",
-      avatar: (() => { const a = profile.avatar; if (typeof a === "number") return avatarIndexToKey(a); if (typeof a === "string" && a !== "" && !isNaN(+a)) return avatarIndexToKey(+a); return a || "avatar_man_lantern"; })(),
-      xp: profile.xp || 0,
-      streak: profile.streak || 0,
-      coins: profile.coins || 0,
-      shield_count: profile.shield_count || 0,
-    }));
-
-    set({ friends });
-    return friends;
-  },
-
-  loadPendingRequests: async () => {
-    const { data: auth } = await supabase.auth.getUser();
-    if (!auth?.user) return [];
-
-    const userId = auth.user.id;
-
-    const { data, error } = await supabase
-      .from("friends")
-      .select("*")
-      .eq("friend_id", userId)
-      .eq("status", "pending");
-
-    if (error) {
-      console.warn("loadPendingRequests error:", error.message);
-      return [];
-    }
-
-    const senderIds = (data || []).map((r) => r.user_id);
-    let senderProfiles = [];
-    if (senderIds.length > 0) {
-      const { data: profiles } = await supabase
-        .from("profiles")
-        .select("user_id, username, handle, avatar, xp")
-        .in("user_id", senderIds);
-      senderProfiles = profiles || [];
-    }
-
-    const formattedReceived = (data || []).map((row) => {
-      const profile = senderProfiles.find((p) => p.user_id === row.user_id) || {};
-      return {
-        id: row.id,
-        requestId: row.id,
-        senderId: row.user_id,
-        receiverId: row.friend_id,
-        user_id: row.user_id,
-        username: profile.username,
-        handle: profile.handle,
-        nickname: profile.username || profile.handle || "User",
-        avatar: (() => { const a = profile.avatar; if (typeof a === "number") return avatarIndexToKey(a); if (typeof a === "string" && a !== "" && !isNaN(+a)) return avatarIndexToKey(+a); return a || "avatar_man_lantern"; })(),
-        xp: profile.xp || 0,
-      };
-    });
-
-    set({ receivedRequests: formattedReceived });
-    return formattedReceived;
-  },
-
-  loadRequests: async () => {
-    const { data: auth } = await supabase.auth.getUser();
-    if (!auth?.user) return { sent: [], received: [] };
-
-    const userId = auth.user.id;
-
-    const { data: sent } = await supabase
-      .from("friends")
-      .select("*")
-      .eq("user_id", userId)
-      .eq("status", "pending");
-
-    const { data: received } = await supabase
-      .from("friends")
-      .select("*")
-      .eq("friend_id", userId)
-      .eq("status", "pending");
-
-    const sentIds = (sent || []).map((s) => s.friend_id);
-    const receivedIds = (received || []).map((r) => r.user_id);
-
-    let sentProfiles = [];
-    let receivedProfiles = [];
-
-    if (sentIds.length > 0) {
-      const { data: profiles } = await supabase
-        .from("profiles")
-        .select("user_id, username, handle, avatar, xp")
-        .in("user_id", sentIds);
-      sentProfiles = profiles || [];
-    }
-
-    if (receivedIds.length > 0) {
-      const { data: profiles } = await supabase
-        .from("profiles")
-        .select("user_id, username, handle, avatar, xp")
-        .in("user_id", receivedIds);
-      receivedProfiles = profiles || [];
-    }
-
-    const formattedSent = (sent || []).map((row) => {
-      const p = sentProfiles.find((pr) => pr.user_id === row.friend_id) || {};
-      return {
-        id: row.id,
-        requestId: row.id,
-        senderId: row.user_id,
-        receiverId: row.friend_id,
-        user_id: row.friend_id,
-        username: p.username,
-        handle: p.handle,
-        nickname: p.username || p.handle || "User",
-        avatar: (() => { const a = p.avatar; if (typeof a === "number") return avatarIndexToKey(a); if (typeof a === "string" && a !== "" && !isNaN(+a)) return avatarIndexToKey(+a); return a || "avatar_man_lantern"; })(),
-        xp: p.xp || 0,
-      };
-    });
-
-    const formattedReceived = (received || []).map((row) => {
-      const p = receivedProfiles.find((pr) => pr.user_id === row.user_id) || {};
-      return {
-        id: row.id,
-        requestId: row.id,
-        senderId: row.user_id,
-        receiverId: row.friend_id,
-        user_id: row.user_id,
-        username: p.username,
-        handle: p.handle,
-        nickname: p.username || p.handle || "User",
-        avatar: (() => { const a = p.avatar; if (typeof a === "number") return avatarIndexToKey(a); if (typeof a === "string" && a !== "" && !isNaN(+a)) return avatarIndexToKey(+a); return a || "avatar_man_lantern"; })(),
-        xp: p.xp || 0,
-      };
-    });
-
-    set({ sentRequests: formattedSent, receivedRequests: formattedReceived });
-    return { sent: formattedSent, received: formattedReceived };
-  },
-
   loadLeaderboard: async () => {
     set({ leaderboardLoading: true });
     try {
@@ -425,11 +255,7 @@ export const useFriendsStore = create((set, get) => ({
         return { success: false, error: "Failed to accept request" };
       }
 
-      // Refresh friends, sent requests, and pending requests
-      await get().loadFriends();
-      await get().loadRequests();
-      await get().loadPendingRequests();
-      
+      await get().loadAll();
       return { success: true, message: "Friend added!" };
     } catch (err) {
       console.error("acceptFriendRequest error:", err);
@@ -453,10 +279,7 @@ export const useFriendsStore = create((set, get) => ({
         return { success: false, error: "Failed to decline request" };
       }
 
-      // Refresh friends, sent requests, and pending requests
-      await get().loadFriends();
-      await get().loadRequests();
-      await get().loadPendingRequests();
+      await get().loadAll();
       return { success: true };
     } catch (err) {
       console.error("declineFriendRequest error:", err);
@@ -481,10 +304,7 @@ export const useFriendsStore = create((set, get) => ({
         .eq("friend_id", receiverId)
         .eq("status", "pending");
 
-      // Refresh friends, sent requests, and pending requests
-      await get().loadFriends();
-      await get().loadRequests();
-      await get().loadPendingRequests();
+      await get().loadAll();
       return { success: true, message: "Request cancelled" };
     } catch (err) {
       console.error("cancelSentRequest error:", err);
@@ -519,10 +339,7 @@ export const useFriendsStore = create((set, get) => ({
 
       if (challengeErr) console.error("removeFriend challenge delete error:", challengeErr);
 
-      // Refresh friends and requests
-      await get().loadFriends();
-      await get().loadRequests();
-      await get().loadPendingRequests();
+      await get().loadAll();
       
       // Refresh friend challenges store
       await useFriendChallengesStore.getState().loadChallenges();

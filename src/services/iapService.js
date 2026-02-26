@@ -26,7 +26,8 @@ const getLocalPremiumState = () => {
     const stored = localStorage.getItem(LOCAL_PREMIUM_KEY);
     if (!stored) return null;
     return JSON.parse(stored);
-  } catch {
+  } catch (err) {
+    console.error("[IAP] Failed to parse local premium state:", err);
     return null;
   }
 };

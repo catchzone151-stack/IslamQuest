@@ -13,7 +13,8 @@ const getViewedResultIds = () => {
   try {
     const stored = localStorage.getItem(VIEWED_RESULTS_KEY);
     return stored ? JSON.parse(stored) : [];
-  } catch {
+  } catch (err) {
+    console.error("[FriendChallenges] Failed to parse viewed result IDs:", err);
     return [];
   }
 };
@@ -44,14 +45,12 @@ export const useFriendChallengesStore = create((set, get) => ({
     if (get().initialized) return;
     
     if (get().initializingPromise) {
-      console.log("[FriendChallenges] Already initializing, waiting...");
       return get().initializingPromise;
     }
     
     const initPromise = (async () => {
       const { data: userData } = await supabase.auth.getUser();
       if (!userData?.user?.id) {
-        console.log("[FriendChallenges] No user logged in");
         set({ initializingPromise: null });
         return;
       }
@@ -62,8 +61,6 @@ export const useFriendChallengesStore = create((set, get) => ({
       await get().loadChallenges();
       get().setupRealtimeSubscription(userId);
       set({ initialized: true, initializingPromise: null });
-      
-      console.log("[FriendChallenges] Initialized for user:", userId);
     })();
     
     set({ initializingPromise: initPromise });
@@ -176,7 +173,6 @@ export const useFriendChallengesStore = create((set, get) => ({
       try {
         if (pendingIncoming.length > 0) {
           const firstPending = pendingIncoming[0];
-          console.log("[CHALLENGE_PENDING] set (incoming challenges:", pendingIncoming.length, ")");
           setIqState({ challengePending: true, challengeFrom: firstPending.sender_id });
         }
       } catch (err) {
@@ -213,13 +209,6 @@ export const useFriendChallengesStore = create((set, get) => ({
         .single();
       
       if (error) return null;
-      
-      console.log("[FriendChallenges] Refreshed:", {
-        id: challengeId,
-        status: data?.status,
-        senderScore: data?.sender_score,
-        receiverScore: data?.receiver_score
-      });
       
       return data;
     } catch (error) {
@@ -274,13 +263,6 @@ export const useFriendChallengesStore = create((set, get) => ({
     }
     
     try {
-      console.log("[FriendChallenges] Creating challenge:", {
-        sender: currentUserId,
-        receiver: friendId,
-        mode: modeId,
-        questionCount: questions?.length
-      });
-      
       const now = new Date();
       const { data, error } = await supabase
         .from("friend_challenges")
@@ -302,8 +284,6 @@ export const useFriendChallengesStore = create((set, get) => ({
       }
       
       await get().loadChallenges();
-      
-      console.log("[FriendChallenges] Challenge created successfully:", data.id);
       return { success: true, challenge: data };
     } catch (error) {
       console.error("[FriendChallenges] Create error:", error);
@@ -312,7 +292,7 @@ export const useFriendChallengesStore = create((set, get) => ({
       const isDuplicate = error.message?.includes('friend_challenges_active_unique') || 
                           error.message?.includes('duplicate key');
       if (isDuplicate) {
-        try { await get().loadChallenges(); } catch (_) {}
+        try { await get().loadChallenges(); } catch (reloadErr) { console.error("[FriendChallenges] Reload after duplicate error:", reloadErr); }
         return { success: false, error: "DUPLICATE_CHALLENGE" };
       }
       return { success: false, error: error.message };
@@ -321,12 +301,9 @@ export const useFriendChallengesStore = create((set, get) => ({
 
   acceptChallenge: async (challengeId) => {
     const { currentUserId } = get();
-    console.log("[FriendChallenges] Accept challenge called:", { challengeId, currentUserId });
-    
     if (!currentUserId) return { success: false, error: "Not logged in" };
     
     try {
-      console.log("[FriendChallenges] Updating challenge status to accepted...");
       
       const { data, error } = await supabase
         .from("friend_challenges")
@@ -349,15 +326,10 @@ export const useFriendChallengesStore = create((set, get) => ({
       
       await get().loadChallenges();
       
-      console.log("[FriendChallenges] Challenge accepted successfully:", challengeId, "Status:", data.status);
-      
       // Clear challenge pending only if no more pending incoming challenges
       const { pendingIncoming } = get();
       if (pendingIncoming.length === 0) {
-        console.log("[CHALLENGE_PENDING] cleared: accepted");
         setIqState({ challengePending: false, challengeFrom: null });
-      } else {
-        console.log("[CHALLENGE_PENDING] still pending:", pendingIncoming.length, "remaining");
       }
       
       return { success: true, challenge: data };
@@ -383,15 +355,10 @@ export const useFriendChallengesStore = create((set, get) => ({
       
       await get().loadChallenges();
       
-      console.log("[FriendChallenges] Challenge declined:", challengeId);
-      
       // Clear challenge pending only if no more pending incoming challenges
       const { pendingIncoming } = get();
       if (pendingIncoming.length === 0) {
-        console.log("[CHALLENGE_PENDING] cleared: declined");
         setIqState({ challengePending: false, challengeFrom: null });
-      } else {
-        console.log("[CHALLENGE_PENDING] still pending:", pendingIncoming.length, "remaining");
       }
       
       return { success: true };
@@ -417,15 +384,10 @@ export const useFriendChallengesStore = create((set, get) => ({
       
       await get().loadChallenges();
       
-      console.log("[FriendChallenges] Challenge cancelled:", challengeId);
-      
       // Clear challenge pending only if no more pending incoming challenges (for receiver)
       const { pendingIncoming } = get();
       if (pendingIncoming.length === 0) {
-        console.log("[CHALLENGE_PENDING] cleared: cancelled");
         setIqState({ challengePending: false, challengeFrom: null });
-      } else {
-        console.log("[CHALLENGE_PENDING] still pending:", pendingIncoming.length, "remaining");
       }
       
       return { success: true };
@@ -436,8 +398,6 @@ export const useFriendChallengesStore = create((set, get) => ({
   },
 
   submitResult: async (challengeId, score, answers, completionTime = null, chain = null) => {
-    console.log("[FriendChallenges] submitResult called:", { challengeId, score, completionTime });
-    
     const { data: userData } = await supabase.auth.getUser();
     const currentUserId = userData?.user?.id;
     
@@ -445,8 +405,6 @@ export const useFriendChallengesStore = create((set, get) => ({
       console.error("[FriendChallenges] submitResult: No user ID");
       return { success: false, error: "Not logged in" };
     }
-    
-    console.log("[FriendChallenges] submitResult for user:", currentUserId?.slice(0,8));
     
     const { data: challenge, error: fetchError } = await supabase
       .from("friend_challenges")
@@ -459,13 +417,6 @@ export const useFriendChallengesStore = create((set, get) => ({
       return { success: false, error: "Challenge not found" };
     }
     
-    console.log("[FriendChallenges] Current challenge state:", {
-      id: challenge.id?.slice(0,8),
-      status: challenge.status,
-      senderScore: challenge.sender_score,
-      receiverScore: challenge.receiver_score
-    });
-    
     const isSender = challenge.sender_id === currentUserId;
     const updateData = {};
     
@@ -477,10 +428,8 @@ export const useFriendChallengesStore = create((set, get) => ({
       
       if (challenge.receiver_score !== null || challenge.status === "receiver_done") {
         updateData.status = "finished";
-        console.log("[FriendChallenges] Sender finishing - receiver already done, marking FINISHED");
       } else {
         updateData.status = "sender_done";
-        console.log("[FriendChallenges] Sender finishing - waiting for receiver");
       }
     } else {
       updateData.receiver_score = score;
@@ -490,10 +439,8 @@ export const useFriendChallengesStore = create((set, get) => ({
       
       if (challenge.sender_score !== null || challenge.status === "sender_done") {
         updateData.status = "finished";
-        console.log("[FriendChallenges] Receiver finishing - sender already done, marking FINISHED");
       } else {
         updateData.status = "receiver_done";
-        console.log("[FriendChallenges] Receiver finishing - waiting for sender");
       }
     }
     
@@ -512,8 +459,6 @@ export const useFriendChallengesStore = create((set, get) => ({
             status: updateData.status
           };
       
-      console.log("[FriendChallenges] Submitting:", coreUpdate, "chain:", chain);
-      
       const { data, error } = await supabase
         .from("friend_challenges")
         .update(coreUpdate)
@@ -527,8 +472,6 @@ export const useFriendChallengesStore = create((set, get) => ({
       }
       
       await get().loadChallenges();
-      
-      console.log("[FriendChallenges] Result submitted:", challengeId, coreUpdate.status);
       return { success: true, challenge: data };
     } catch (error) {
       console.error("[FriendChallenges] Submit error:", error);
@@ -537,8 +480,6 @@ export const useFriendChallengesStore = create((set, get) => ({
   },
 
   markResultViewed: async (challengeId) => {
-    console.log("[FriendChallenges] markResultViewed called:", challengeId);
-    
     addViewedResultId(challengeId);
     
     const { resultsToView } = get();
@@ -548,8 +489,6 @@ export const useFriendChallengesStore = create((set, get) => ({
       resultsToView: updatedResults,
       unreadCount: updatedResults.length + get().pendingIncoming.length
     });
-    
-    console.log("[FriendChallenges] markResultViewed: removed and persisted, remaining:", updatedResults.length);
   },
 
   getChallengeById: (challengeId) => {
@@ -579,8 +518,6 @@ export const useFriendChallengesStore = create((set, get) => ({
   },
 
   ensureChallengeLoaded: async (challengeId) => {
-    console.log("[FriendChallenges] ensureChallengeLoaded start:", challengeId);
-    
     const timeoutPromise = new Promise((_, reject) => 
       setTimeout(() => reject(new Error("ensureChallengeLoaded timeout")), 8000)
     );
@@ -595,8 +532,6 @@ export const useFriendChallengesStore = create((set, get) => ({
           throw new Error("Not authenticated");
         }
         
-        console.log("[FriendChallenges] ensureChallengeLoaded: user:", userId?.slice(0,8));
-        
         if (!get().initialized || get().currentUserId !== userId) {
           set({ currentUserId: userId });
           await get().loadChallenges();
@@ -605,11 +540,8 @@ export const useFriendChallengesStore = create((set, get) => ({
         
         let challenge = get().getChallengeById(challengeId);
         if (challenge) {
-          console.log("[FriendChallenges] ensureChallengeLoaded: found in local state");
           return challenge;
         }
-        
-        console.log("[FriendChallenges] ensureChallengeLoaded: fetching directly from DB");
         const { data, error } = await supabase
           .from("friend_challenges")
           .select("*")
@@ -625,8 +557,6 @@ export const useFriendChallengesStore = create((set, get) => ({
           console.error("[FriendChallenges] ensureChallengeLoaded: No data returned");
           throw new Error("Challenge not found");
         }
-        
-        console.log("[FriendChallenges] ensureChallengeLoaded: fetched from DB:", data.id?.slice(0,8));
         
         await get().loadChallenges();
         
