@@ -1001,12 +1001,14 @@ export default function Friends() {
                   onClick={() => setLeaderboardTab("friends")}
                   label="Friends"
                   icon={<Users size={16} />}
+                  color="#ff6ec7"
                 />
                 <SubTabButton
                   active={leaderboardTab === "global"}
                   onClick={() => setLeaderboardTab("global")}
                   label="Global"
                   icon={<Globe size={16} />}
+                  color="#39ff14"
                 />
               </div>
 
@@ -1346,7 +1348,7 @@ function TabButton({ active, onClick, icon, label, count, badge, color = "#D4AF3
   );
 }
 
-function SubTabButton({ active, onClick, label, icon }) {
+function SubTabButton({ active, onClick, label, icon, color = "#D4AF37" }) {
   return (
     <motion.button
       whileHover={{ scale: 1.02 }}
@@ -1359,13 +1361,15 @@ function SubTabButton({ active, onClick, label, icon }) {
         justifyContent: "center",
         gap: "6px",
         padding: "10px",
-        background: active ? "rgba(212, 175, 55, 0.2)" : "transparent",
-        border: active ? "1px solid #D4AF37" : "1px solid transparent",
+        background: active ? color : `${color}33`,
+        border: `2px solid ${color}`,
         borderRadius: "8px",
-        color: active ? "#D4AF37" : "#888",
+        color: active ? "#fff" : color,
         cursor: "pointer",
         fontSize: "0.9rem",
         fontWeight: "600",
+        boxShadow: active ? `0 0 16px ${color}88` : "none",
+        transition: "all 0.2s ease",
       }}
     >
       {icon}
