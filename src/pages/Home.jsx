@@ -743,7 +743,7 @@ export default function Home() {
         }}
         style={{
           margin: "10px 16px 0 16px",
-          background: "linear-gradient(135deg, #0f3a5c 0%, #0a2a43 100%)",
+          background: "linear-gradient(135deg, rgba(20,184,166,0.55) 0%, rgba(13,148,136,0.35) 100%)",
           borderRadius: 22,
           padding: "14px 16px",
           border: "1.5px solid rgba(255,215,0,0.35)",
