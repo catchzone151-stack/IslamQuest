@@ -378,14 +378,14 @@ export default function Friends() {
             icon={<Users size={18} />}
             label="Friends"
             count={friends.length}
-            color="#10b981"
+            color="#00c896"
           />
           <TabButton
             active={activeTab === "leaderboard"}
             onClick={() => setActiveTab("leaderboard")}
             icon={<Trophy size={18} />}
             label="Leaderboard"
-            color="#3b82f6"
+            color="#c026d3"
           />
           <TabButton
             active={activeTab === "requests"}
@@ -394,7 +394,7 @@ export default function Friends() {
             label="Requests"
             count={totalRequests}
             badge={receivedRequests.length > 0}
-            color="#8b5cf6"
+            color="#ff3d5a"
           />
           <TabButton
             active={activeTab === "search"}
@@ -1298,7 +1298,8 @@ export default function Friends() {
   );
 }
 
-function TabButton({ active, onClick, icon, label, count, badge, color = "#D4AF37" }) {
+function TabButton({ active, onClick, icon, label, count, badge, color = "#D4AF37", glowColor }) {
+  const glow = glowColor || color;
   return (
     <motion.button
       whileHover={{ scale: 1.05 }}
@@ -1311,16 +1312,18 @@ function TabButton({ active, onClick, icon, label, count, badge, color = "#D4AF3
         gap: "4px",
         padding: "10px 16px",
         background: active
-          ? `linear-gradient(135deg, ${color}44, ${color}22)`
-          : `${color}14`,
+          ? color
+          : "rgba(14,22,37,0.8)",
         border: active
-          ? `1px solid ${color}`
-          : `1px solid ${color}44`,
+          ? `2px solid ${color}`
+          : `2px solid rgba(255,255,255,0.08)`,
         borderRadius: "12px 12px 0 0",
-        color: active ? color : `${color}99`,
+        color: active ? "#fff" : "rgba(255,255,255,0.35)",
         cursor: "pointer",
         position: "relative",
         minWidth: "70px",
+        boxShadow: active ? `0 0 18px ${glow}99, 0 0 6px ${glow}66` : "none",
+        transition: "all 0.2s ease",
       }}
     >
       <div style={{ position: "relative" }}>
