@@ -2,7 +2,6 @@ import { supabase } from "../lib/supabaseClient.js";
 import {
   convertFromCloudRow,
   convertToCloudRow,
-  mergeLocalAndCloud,
   validateRevisionItem,
 } from "./revisionData.js";
 import { useReviseStore } from "../store/reviseStore.js";
@@ -38,9 +37,9 @@ export async function pullCloudRevision() {
 export async function pushLocalRevision() {
   console.log("[RevisionSync] pushLocalRevision() start");
 
-  const items = useReviseStore.getState().getWeakPool() || [];
+  const items = useReviseStore.getState().getAllItems();
   const ready = items.filter((i) => validateRevisionItem(i));
-  console.log(`[RevisionSync] weakPool size: ${items.length}, valid: ${ready.length}`);
+  console.log(`[RevisionSync] allItems size: ${items.length}, valid: ${ready.length}`);
 
   const { data: userData } = await supabase.auth.getUser();
   const userId = userData?.user?.id;
@@ -74,16 +73,4 @@ export async function pushLocalRevision() {
 
   useReviseStore.setState({ needsSync: false });
   console.log("[RevisionSync] UPSERT successful");
-}
-
-export async function mergeRevisionData(cloudItems) {
-  console.log("[RevisionSync] mergeRevisionData() start");
-
-  const localItems = useReviseStore.getState().getWeakPool() || [];
-  const safeCloudItems = Array.isArray(cloudItems) ? cloudItems : [];
-
-  const merged = mergeLocalAndCloud(localItems, safeCloudItems);
-  useReviseStore.getState().setWeakPool(merged);
-
-  console.log(`[RevisionSync] merge complete: local ${localItems.length} → merged ${merged.length}`);
 }

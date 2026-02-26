@@ -3,7 +3,6 @@ import { safeCall } from "../lib/supabaseSafe.js";
 import {
   pullCloudRevision,
   pushLocalRevision,
-  mergeRevisionData,
 } from "./revisionSync.js";
 
 import {
@@ -20,8 +19,7 @@ export async function syncOnAppOpen() {
 
   try {
     // 1. REVISION
-    const cloudRevision = await safeCall(() => pullCloudRevision(), []);
-    await mergeRevisionData(cloudRevision);
+    await safeCall(() => pullCloudRevision(), []);
     await safeCall(() => pushLocalRevision());
 
     // 2. PROFILE
@@ -43,8 +41,7 @@ export async function syncOnForeground() {
 
   try {
     // REVISION
-    const cloudRevision = await safeCall(() => pullCloudRevision(), []);
-    await mergeRevisionData(cloudRevision);
+    await safeCall(() => pullCloudRevision(), []);
     await safeCall(() => pushLocalRevision());
 
     // PROFILE
@@ -65,8 +62,7 @@ export async function syncAll() {
   console.log("[SyncEngine] syncAll()");
 
   try {
-    const cloudRevision = await safeCall(() => pullCloudRevision(), []);
-    await mergeRevisionData(cloudRevision);
+    await safeCall(() => pullCloudRevision(), []);
     await safeCall(() => pushLocalRevision());
 
     const cloudProfile = await safeCall(() => pullProfileFromCloud(), null);
