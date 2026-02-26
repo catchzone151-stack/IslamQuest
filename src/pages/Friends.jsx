@@ -1311,14 +1311,10 @@ function TabButton({ active, onClick, icon, label, count, badge, color = "#D4AF3
         alignItems: "center",
         gap: "4px",
         padding: "10px 16px",
-        background: active
-          ? color
-          : "rgba(14,22,37,0.8)",
-        border: active
-          ? `2px solid ${color}`
-          : `2px solid rgba(255,255,255,0.08)`,
+        background: active ? color : `${color}55`,
+        border: `2px solid ${color}`,
         borderRadius: "12px 12px 0 0",
-        color: active ? "#fff" : "rgba(255,255,255,0.35)",
+        color: "#fff",
         cursor: "pointer",
         position: "relative",
         minWidth: "70px",
