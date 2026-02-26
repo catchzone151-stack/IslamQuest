@@ -1416,7 +1416,7 @@ function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, challengeStat
               ? "linear-gradient(135deg, rgba(210,235,255,0.75) 0%, rgba(148,163,184,0.5) 100%)"
               : rankClass === "bronze"
                 ? "linear-gradient(135deg, rgba(251,146,60,0.8) 0%, rgba(220,90,30,0.55) 100%)"
-                : "linear-gradient(135deg, rgba(59,130,246,0.28) 0%, rgba(37,99,235,0.14) 100%)",
+                : "rgba(14,22,37,0.6)",
         border: `1px solid ${borderColor}`,
         borderRadius: "12px",
         padding: "12px",
@@ -1627,7 +1627,7 @@ function GlobalLeaderboardCard({
               ? "linear-gradient(135deg, rgba(210,235,255,0.75) 0%, rgba(148,163,184,0.5) 100%)"
               : rankClass === "bronze"
                 ? "linear-gradient(135deg, rgba(251,146,60,0.8) 0%, rgba(220,90,30,0.55) 100%)"
-                : "linear-gradient(135deg, rgba(59,130,246,0.28) 0%, rgba(37,99,235,0.14) 100%)",
+                : "rgba(14,22,37,0.6)",
         border: `1px solid ${borderColor}`,
         borderRadius: "10px",
         padding: "10px",
