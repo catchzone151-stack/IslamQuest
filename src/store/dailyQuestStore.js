@@ -430,7 +430,7 @@ export const useDailyQuestStore = create((set, get) => ({
       const payload = {
         user_id: userId,
         quest_date: qDate,
-        questions: JSON.stringify(qs),
+        questions: qs,
         completed: questData.completed || false,
         reward_given: questData.rewardGiven || false,
         updated_at: new Date().toISOString(),
