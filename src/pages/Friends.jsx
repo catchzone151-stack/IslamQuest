@@ -28,9 +28,9 @@ import assets from "../assets/assets";
 
 const highlightStyle = `
 .highlight-user {
-  border: 2px solid #00e5ff !important;
-  background: linear-gradient(135deg, rgba(0,229,255,0.3), rgba(0,180,216,0.15)) !important;
-  box-shadow: 0 0 22px rgba(0,229,255,0.55), 0 0 8px rgba(0,229,255,0.35) !important;
+  border: 2px solid #ff3d5a !important;
+  background: linear-gradient(135deg, rgba(255,61,90,0.35), rgba(180,10,40,0.2)) !important;
+  box-shadow: 0 0 22px rgba(255,61,90,0.55), 0 0 8px rgba(255,61,90,0.35) !important;
 }
 
 @keyframes pulse {
