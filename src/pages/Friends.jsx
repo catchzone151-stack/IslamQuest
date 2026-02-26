@@ -1,11 +1,10 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "../hooks/useNavigate";
 import { useFriendsStore } from "../store/friendsStore";
 import { useUserStore } from "../store/useUserStore";
 import { useProgressStore } from "../store/progressStore";
 import { useFriendChallengesStore } from "../store/friendChallengesStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
-import { supabase } from "../lib/supabaseClient";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
@@ -74,6 +73,8 @@ export default function Friends() {
     getFriendship,
     loadLeaderboard,
     getGlobalLeaderboard,
+    globalLeaderboard,
+    leaderboardLoading,
   } = useFriendsStore();
 
   const {
@@ -97,8 +98,6 @@ export default function Friends() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
-  const [globalLeaderboard, setGlobalLeaderboard] = useState([]);
-  const [loadingGlobal, setLoadingGlobal] = useState(true);
   const [acceptingChallengeId, setAcceptingChallengeId] = useState(null);
 
   useEffect(() => {
@@ -137,58 +136,9 @@ export default function Friends() {
     return () => { isMounted = false; clearInterval(intervalId); };
   }, [loadChallenges]);
 
-  const loadGlobalLeaderboard = useCallback(async () => {
-    setLoadingGlobal(true);
-
-    try {
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("user_id, username, handle, avatar, xp, streak")
-        .order("xp", { ascending: false })
-        .limit(100);
-
-      if (error) {
-        console.log("Global leaderboard fetch error:", error.message);
-      }
-
-      const THE_DEV_ENTRY = {
-        user_id: "the_dev_permanent",
-        username: "The Dev",
-        handle: "thedev",
-        avatar: "avatar_ninja_male",
-        xp: 168542,
-        streak: 82,
-        isPermanent: true,
-      };
-
-      // Mark current user in DB results (no manual injection)
-      const dbUsers = (data || []).map((u) => ({
-        ...u,
-        avatar: u.avatar || "avatar_man_lantern",
-        isCurrentUser: u.user_id === userId,
-      }));
-
-      // Deduplicate by user_id (profile entry wins)
-      const seen = new Map();
-      for (const u of dbUsers) {
-        seen.set(u.user_id, u);
-      }
-      seen.set(THE_DEV_ENTRY.user_id, THE_DEV_ENTRY);
-      const deduped = Array.from(seen.values());
-
-      const combined = deduped.sort((a, b) => b.xp - a.xp);
-
-      setGlobalLeaderboard(combined);
-    } catch (err) {
-      console.log("Global leaderboard error:", err);
-    } finally {
-      setLoadingGlobal(false);
-    }
-  }, [userId]);
-
   useEffect(() => {
-    loadGlobalLeaderboard();
-  }, [loadGlobalLeaderboard]);
+    loadLeaderboard();
+  }, []);
 
   useEffect(() => {
     const performSearch = async () => {
@@ -1105,7 +1055,7 @@ export default function Friends() {
 
               {leaderboardTab === "global" && (
                 <div>
-                  {loadingGlobal ? (
+                  {leaderboardLoading ? (
                     <div
                       style={{
                         textAlign: "center",
