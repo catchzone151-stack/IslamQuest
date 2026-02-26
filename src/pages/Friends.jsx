@@ -52,7 +52,7 @@ const highlightStyle = `
 
 export default function Friends() {
   const navigate = useNavigate();
-  const { id: currentUserId, name, avatar, username } = useUserStore();
+  const { userId, name, avatar, username } = useUserStore();
   const { xp: currentUserXP, streak: currentUserStreak } = useProgressStore();
   const { showModal } = useModalStore();
 
@@ -102,14 +102,14 @@ export default function Friends() {
   const [acceptingChallengeId, setAcceptingChallengeId] = useState(null);
 
   useEffect(() => {
-    if (!currentUserId) return;
+    if (!userId) return;
     // Initial load - parallel for speed
     Promise.all([
       useFriendsStore.getState().loadAll(),
       initFriendChallenges().then(() => loadChallenges()),
     ]);
     clearPendingIncomingCount();
-  }, [currentUserId]);
+  }, [userId]);
   
   useEffect(() => {
     const handleFocus = () => {
@@ -165,7 +165,7 @@ export default function Friends() {
       const dbUsers = (data || []).map((u) => ({
         ...u,
         avatar: u.avatar || "avatar_man_lantern",
-        isCurrentUser: u.user_id === currentUserId,
+        isCurrentUser: u.user_id === userId,
       }));
 
       // Deduplicate by user_id (profile entry wins)
@@ -184,7 +184,7 @@ export default function Friends() {
     } finally {
       setLoadingGlobal(false);
     }
-  }, [currentUserId]);
+  }, [userId]);
 
   useEffect(() => {
     loadGlobalLeaderboard();
@@ -234,7 +234,7 @@ export default function Friends() {
   })();
 
   const currentUserIdForHighlight =
-    currentUserId || useUserStore.getState().user?.id || useUserStore.getState().id;
+    userId || useUserStore.getState().user?.id || useUserStore.getState().id;
 
   const handleSendRequest = async (userId) => {
     const result = await sendFriendRequest(userId);
@@ -317,7 +317,7 @@ export default function Friends() {
     if (challengeState?.type === "results_ready") {
       showModal(MODAL_TYPES.FRIEND_CHALLENGE_RESULTS, {
         challenge: challengeState.challenge,
-        currentUserId,
+        currentUserId: userId,
         onChallengeAgain: (modeId) => {
           const friendLevel = getCurrentLevel(friend.xp);
           navigate("/challenge", {
