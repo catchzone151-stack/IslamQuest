@@ -344,28 +344,19 @@ export const useFriendsStore = create((set, get) => ({
   loadLeaderboard: async () => {
     set({ leaderboardLoading: true });
     try {
-      // Primary: SECURITY DEFINER RPC bypasses RLS on profiles
-      let rows = null;
-      const { data: rpcData, error: rpcError } = await supabase.rpc("get_leaderboard");
-      if (!rpcError && rpcData) {
-        rows = rpcData;
-      } else {
-        // Fallback: Edge Function (requires deployment of get-leaderboard function)
-        const { data: fnData, error: fnError } = await supabase.functions.invoke("get-leaderboard");
-        if (fnError) throw fnError;
-        rows = fnData?.data || [];
-      }
+      const { data, error } = await supabase.rpc("get_leaderboard");
 
-      // Inject permanent Dev entry if not a real DB profile
+      if (error) throw error;
+
       const DEV_ID = "the_dev_permanent";
-      const devExists = (rows || []).some(r => r.user_id === DEV_ID);
+      const rows = data || [];
+      const devExists = rows.some(r => r.user_id === DEV_ID);
       const withDev = devExists ? rows : [
-        ...(rows || []),
+        ...rows,
         { user_id: DEV_ID, username: "The Dev", handle: "thedev", avatar: "avatar_ninja_male", xp: 168542, streak: 82, isPermanent: true },
       ];
 
-      const sorted = withDev.sort((a, b) => b.xp - a.xp);
-      set({ globalLeaderboard: sorted, leaderboardLoading: false });
+      set({ globalLeaderboard: withDev.sort((a, b) => b.xp - a.xp), leaderboardLoading: false });
     } catch (err) {
       set({ leaderboardLoading: false, error: err.message });
     }
