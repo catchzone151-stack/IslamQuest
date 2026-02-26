@@ -743,7 +743,7 @@ export default function Home() {
         }}
         style={{
           margin: "10px 16px 0 16px",
-          background: "#0a2a43",
+          background: "#145C44",
           borderRadius: 22,
           padding: "14px 16px",
           border: "1.5px solid rgba(255,215,0,0.35)",
