@@ -1409,7 +1409,7 @@ function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, challengeStat
               ? "linear-gradient(135deg, rgba(192, 192, 192, 0.2) 0%, rgba(169, 169, 169, 0.1) 100%)"
               : rankClass === "bronze"
                 ? "linear-gradient(135deg, rgba(205, 127, 50, 0.2) 0%, rgba(184, 115, 51, 0.1) 100%)"
-                : "rgba(14, 22, 37, 0.6)",
+                : "linear-gradient(135deg, rgba(59,130,246,0.28) 0%, rgba(37,99,235,0.14) 100%)",
         border: `1px solid ${borderColor}`,
         borderRadius: "12px",
         padding: "12px",
@@ -1618,7 +1618,7 @@ function GlobalLeaderboardCard({
               ? "linear-gradient(135deg, rgba(192, 192, 192, 0.2) 0%, rgba(169, 169, 169, 0.1) 100%)"
               : rankClass === "bronze"
                 ? "linear-gradient(135deg, rgba(205, 127, 50, 0.2) 0%, rgba(184, 115, 51, 0.1) 100%)"
-                : "rgba(14, 22, 37, 0.6)",
+                : "linear-gradient(135deg, rgba(59,130,246,0.28) 0%, rgba(37,99,235,0.14) 100%)",
         border: `1px solid ${borderColor}`,
         borderRadius: "10px",
         padding: "10px",
@@ -1746,8 +1746,8 @@ function UserCard({ user, onClick, action, badge, badgeColor }) {
       whileTap={onClick ? { scale: 0.98 } : {}}
       onClick={onClick}
       style={{
-        background: "rgba(14, 22, 37, 0.6)",
-        border: "1px solid rgba(212, 175, 55, 0.3)",
+        background: "linear-gradient(135deg, rgba(16,185,129,0.28) 0%, rgba(5,150,105,0.14) 100%)",
+        border: "1px solid rgba(16,185,129,0.4)",
         borderRadius: "12px",
         padding: "14px",
         display: "flex",
@@ -1864,8 +1864,12 @@ function RequestCard({ user, type, onAccept, onDecline, onCancel }) {
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       style={{
-        background: "rgba(14, 22, 37, 0.6)",
-        border: "1px solid rgba(212, 175, 55, 0.3)",
+        background: type === "received"
+          ? "linear-gradient(135deg, rgba(139,92,246,0.28) 0%, rgba(109,40,217,0.14) 100%)"
+          : "linear-gradient(135deg, rgba(59,130,246,0.28) 0%, rgba(37,99,235,0.14) 100%)",
+        border: type === "received"
+          ? "1px solid rgba(139,92,246,0.4)"
+          : "1px solid rgba(59,130,246,0.4)",
         borderRadius: "12px",
         padding: "14px",
         display: "flex",
