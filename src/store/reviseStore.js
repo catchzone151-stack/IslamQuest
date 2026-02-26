@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { pushLocalRevision } from "../sync/revisionSync.js";
 
 const STORAGE_KEY = "islamQuestRevise";
 
@@ -72,6 +73,7 @@ const useReviseStore = create((set, get) => ({
     }
 
     set({ weakPool: pool, needsSync: true });
+    pushLocalRevision();
     get().saveReviseData();
     
     if (unlockCallback) {
@@ -95,6 +97,7 @@ const useReviseStore = create((set, get) => ({
       }
     }
     set({ weakPool: pool, needsSync: true });
+    pushLocalRevision();
     get().saveReviseData();
   },
 
@@ -110,6 +113,7 @@ const useReviseStore = create((set, get) => ({
       item.updatedAt = Date.now();
     }
     set({ weakPool: pool, needsSync: true });
+    pushLocalRevision();
     get().saveReviseData();
   },
 }));
