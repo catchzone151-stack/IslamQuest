@@ -130,8 +130,8 @@ export default function Settings() {
       localStorage.removeItem("iq_profile_complete");
       localStorage.removeItem("iq_user_store");
       localStorage.removeItem("iq_progress_store");
-      localStorage.removeItem("iq_revise_store");
-      localStorage.removeItem("iq_daily_quests");
+      localStorage.removeItem("islamQuestRevise");
+      localStorage.removeItem("islamQuestDailyQuest");
       localStorage.removeItem("iq_challenge_store");
       
       console.log("✅ Account deletion complete");

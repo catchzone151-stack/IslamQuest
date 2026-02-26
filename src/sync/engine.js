@@ -12,14 +12,6 @@ import {
   mergeProfileData,
 } from "./profileSync.js";
 
-import {
-  pullDailyQuestFromCloud,
-  pullStreakShieldFromCloud,
-  pushDailyQuestToCloud,
-  mergeDailyQuest,
-  mergeStreakShield
-} from "./dailyQuestSync.js";
-
 // --------------------
 // SYNC ON APP OPEN
 // --------------------
@@ -36,15 +28,6 @@ export async function syncOnAppOpen() {
     const cloudProfile = await safeCall(() => pullProfileFromCloud(), null);
     mergeProfileData(cloudProfile);
     await safeCall(() => pushProfileToCloud());
-
-    // 3. DAILY QUEST
-    const cloudQuest = await safeCall(() => pullDailyQuestFromCloud(), null);
-    mergeDailyQuest(cloudQuest);
-    await safeCall(() => pushDailyQuestToCloud());
-
-    // 4. STREAK SHIELD
-    const cloudShield = await safeCall(() => pullStreakShieldFromCloud(), null);
-    mergeStreakShield(cloudShield);
   } catch (e) {
     console.warn("[SyncEngine] syncOnAppOpen error:", e.message);
   }
@@ -68,15 +51,6 @@ export async function syncOnForeground() {
     const cloudProfile = await safeCall(() => pullProfileFromCloud(), null);
     mergeProfileData(cloudProfile);
     await safeCall(() => pushProfileToCloud());
-
-    // DAILY QUEST
-    const cloudQuest = await safeCall(() => pullDailyQuestFromCloud(), null);
-    mergeDailyQuest(cloudQuest);
-    await safeCall(() => pushDailyQuestToCloud());
-
-    // STREAK SHIELD
-    const cloudShield = await safeCall(() => pullStreakShieldFromCloud(), null);
-    mergeStreakShield(cloudShield);
   } catch (e) {
     console.warn("[SyncEngine] syncOnForeground error:", e.message);
   }
@@ -98,15 +72,6 @@ export async function syncAll() {
     const cloudProfile = await safeCall(() => pullProfileFromCloud(), null);
     mergeProfileData(cloudProfile);
     await safeCall(() => pushProfileToCloud());
-
-    // DAILY QUEST
-    const cloudQuest = await safeCall(() => pullDailyQuestFromCloud(), null);
-    mergeDailyQuest(cloudQuest);
-    await safeCall(() => pushDailyQuestToCloud());
-
-    // STREAK SHIELD
-    const cloudShield = await safeCall(() => pullStreakShieldFromCloud(), null);
-    mergeStreakShield(cloudShield);
   } catch (e) {
     console.warn("[SyncEngine] syncAll error:", e.message);
   }

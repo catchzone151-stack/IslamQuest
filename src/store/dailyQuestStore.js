@@ -381,7 +381,22 @@ export const useDailyQuestStore = create((set, get) => ({
       }
 
       console.log("✅ Restoring daily quest from cloud");
-      const questions = data.questions ? JSON.parse(data.questions) : [];
+      let questions = [];
+      try {
+        if (data.questions) {
+          if (typeof data.questions === "string") {
+            questions = JSON.parse(data.questions);
+          } else if (Array.isArray(data.questions)) {
+            questions = data.questions;
+          } else if (typeof data.questions === "object") {
+            questions = Object.values(data.questions);
+          }
+        }
+      } catch (parseErr) {
+        console.warn("[DailyQuestStore] Failed to parse cloud questions:", parseErr.message);
+        questions = [];
+      }
+      if (!Array.isArray(questions)) questions = [];
       
       set({
         date: data.quest_date,
@@ -405,10 +420,17 @@ export const useDailyQuestStore = create((set, get) => ({
     }
 
     try {
+      const qs = Array.isArray(questData?.questions) ? questData.questions : [];
+      const qDate = questData?.date;
+      if (!qDate || qs.length === 0) {
+        console.log("[DailyQuestStore] saveDailyQuestToCloud skipped — empty date or questions");
+        return;
+      }
+
       const payload = {
         user_id: userId,
-        quest_date: questData.date,
-        questions: JSON.stringify(questData.questions),
+        quest_date: qDate,
+        questions: JSON.stringify(qs),
         completed: questData.completed || false,
         reward_given: questData.rewardGiven || false,
         updated_at: new Date().toISOString(),
