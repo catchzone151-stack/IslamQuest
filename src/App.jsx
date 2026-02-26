@@ -10,6 +10,7 @@ import ScrollToTop from "./components/ScrollToTop.jsx";
 import ModalController from "./components/ModalController.jsx";
 import MilestoneModal from "./components/MilestoneModal.jsx";
 import OfflineConnectionBanner from "./components/OfflineConnectionBanner.jsx";
+import ProfileSetupWait from "./components/ProfileSetupWait.jsx";
 import { ModalProvider, ModalRoot } from "./providers/ModalProvider.jsx";
 import { ShimmerCard, ShimmerImage } from "./components/ShimmerLoader.jsx";
 import { useUserStore } from "./store/useUserStore";
@@ -228,7 +229,7 @@ const PRODUCTION_VERSION = "iq_production_v1";
 
 export default function App() {
   console.log('[IQ_BUILD_TEST]', 'BUILD_VERSION_3');
-  const { hasOnboarded, isHydrated } = useUserStore();
+  const { hasOnboarded, isHydrated, awaitingProfileSetup } = useUserStore();
   const { grantCoins, coins, showMilestoneModal, milestoneDays, milestoneReward } = useProgressStore();
   
   // Force re-render workaround for Zustand subscription issues in React StrictMode
@@ -766,6 +767,12 @@ export default function App() {
         <p>Loading your progress… 🌙</p>
       </div>
     );
+  }
+
+  // ✅ DB trigger hasn't created the profile yet — show wait screen
+  const actualAwaitingSetup = awaitingProfileSetup || useUserStore.getState().awaitingProfileSetup;
+  if (actualAwaitingSetup) {
+    return <ProfileSetupWait />;
   }
 
   return (

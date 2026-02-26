@@ -52,6 +52,7 @@ export const useUserStore = create((set, get) => ({
   isHydrated: false,
   hasOnboarded: checkOnboardedFromStorage(),
   profileReady: false,  // True when profile is fully loaded from cloud
+  awaitingProfileSetup: false, // True when DB trigger hasn't created the profile yet
   
   // Auth state
   user: null,
@@ -114,20 +115,17 @@ export const useUserStore = create((set, get) => ({
 
         set({ user, userId: user.id });
 
-        // Check if profile exists (DO NOT create it here)
-        console.log("[UserStore] Checking profile for user:", user.id);
-        const existingProfile = await checkProfileExists(user.id);
+        // Check if profile exists — retry up to 10x (250ms apart) to allow DB trigger to fire
+        let existingProfile = null;
+        for (let i = 0; i < 10; i++) {
+          existingProfile = await checkProfileExists(user.id);
+          if (existingProfile) break;
+          if (i < 9) await new Promise(r => setTimeout(r, 250));
+        }
 
         if (!existingProfile) {
-          // No profile = user needs onboarding
-          console.log("NO PROFILE → ONBOARDING REQUIRED");
-          localStorage.removeItem("iq_profile_complete");
-          set({ 
-            loading: false, 
-            isHydrated: true, 
-            profileReady: false,
-            hasOnboarded: false,
-          });
+          // Trigger still hasn't fired — show wait screen instead of redirecting
+          set({ awaitingProfileSetup: true, loading: false, isHydrated: true });
           return;
         }
 
@@ -180,6 +178,12 @@ export const useUserStore = create((set, get) => ({
       // Always set isHydrated to prevent stuck loading screen
       set({ loading: false, isHydrated: true, profileReady: false, hasOnboarded: false });
     }
+  },
+
+  // Retry after showing the awaitingProfileSetup screen
+  retryInit: async () => {
+    set({ awaitingProfileSetup: false, isHydrated: false, loading: true });
+    await get().init();
   },
 
   // --------------------------------------------------
