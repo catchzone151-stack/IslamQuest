@@ -179,8 +179,16 @@ export function resolveAvatar(avatarInput, { userId, nickname } = {}) {
     if (isSpecialUser(userId, nickname)) return assets.avatars[NINJA_FEMALE_KEY];
   }
 
-  // 2. Convert numeric DB index to string key (handles 31 → ninja_male, 32 → ninja_female)
-  let key = typeof avatarInput === "number" ? avatarIndexToKey(avatarInput) : avatarInput;
+  // 2. Convert numeric DB index (number or numeric string) to string key
+  //    Handles both integer columns (typeof === "number") and text columns ("32")
+  let key;
+  if (typeof avatarInput === "number") {
+    key = avatarIndexToKey(avatarInput);
+  } else if (typeof avatarInput === "string" && avatarInput !== "" && !isNaN(+avatarInput)) {
+    key = avatarIndexToKey(+avatarInput);
+  } else {
+    key = avatarInput;
+  }
 
   // 3. Map legacy string keys to current keys
   if (key && LEGACY_AVATAR_MAP[key]) key = LEGACY_AVATAR_MAP[key];

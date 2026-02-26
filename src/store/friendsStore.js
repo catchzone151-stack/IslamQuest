@@ -143,7 +143,7 @@ export const useFriendsStore = create((set, get) => ({
         username: profile.username,
         handle: profile.handle,
         nickname: profile.username || profile.handle || "User",
-        avatar: typeof profile.avatar === "number" ? avatarIndexToKey(profile.avatar) : profile.avatar || "avatar_man_lantern",
+        avatar: (() => { const a = profile.avatar; if (typeof a === "number") return avatarIndexToKey(a); if (typeof a === "string" && a !== "" && !isNaN(+a)) return avatarIndexToKey(+a); return a || "avatar_man_lantern"; })(),
         xp: profile.xp || 0,
         ...(includeExtras && { streak: profile.streak || 0, coins: profile.coins || 0, shield_count: profile.shield_count || 0 }),
       });
@@ -202,9 +202,7 @@ export const useFriendsStore = create((set, get) => ({
       username: profile.username,
       handle: profile.handle,
       nickname: profile.username || profile.handle || "User",
-      avatar: typeof profile.avatar === "number"
-        ? avatarIndexToKey(profile.avatar)
-        : profile.avatar || "avatar_man_lantern",
+      avatar: (() => { const a = profile.avatar; if (typeof a === "number") return avatarIndexToKey(a); if (typeof a === "string" && a !== "" && !isNaN(+a)) return avatarIndexToKey(+a); return a || "avatar_man_lantern"; })(),
       xp: profile.xp || 0,
       streak: profile.streak || 0,
       coins: profile.coins || 0,
@@ -253,9 +251,7 @@ export const useFriendsStore = create((set, get) => ({
         username: profile.username,
         handle: profile.handle,
         nickname: profile.username || profile.handle || "User",
-        avatar: typeof profile.avatar === "number"
-          ? avatarIndexToKey(profile.avatar)
-          : profile.avatar || "avatar_man_lantern",
+        avatar: (() => { const a = profile.avatar; if (typeof a === "number") return avatarIndexToKey(a); if (typeof a === "string" && a !== "" && !isNaN(+a)) return avatarIndexToKey(+a); return a || "avatar_man_lantern"; })(),
         xp: profile.xp || 0,
       };
     });
@@ -315,7 +311,7 @@ export const useFriendsStore = create((set, get) => ({
         username: p.username,
         handle: p.handle,
         nickname: p.username || p.handle || "User",
-        avatar: typeof p.avatar === "number" ? avatarIndexToKey(p.avatar) : p.avatar || "avatar_man_lantern",
+        avatar: (() => { const a = p.avatar; if (typeof a === "number") return avatarIndexToKey(a); if (typeof a === "string" && a !== "" && !isNaN(+a)) return avatarIndexToKey(+a); return a || "avatar_man_lantern"; })(),
         xp: p.xp || 0,
       };
     });
@@ -331,7 +327,7 @@ export const useFriendsStore = create((set, get) => ({
         username: p.username,
         handle: p.handle,
         nickname: p.username || p.handle || "User",
-        avatar: typeof p.avatar === "number" ? avatarIndexToKey(p.avatar) : p.avatar || "avatar_man_lantern",
+        avatar: (() => { const a = p.avatar; if (typeof a === "number") return avatarIndexToKey(a); if (typeof a === "string" && a !== "" && !isNaN(+a)) return avatarIndexToKey(+a); return a || "avatar_man_lantern"; })(),
         xp: p.xp || 0,
       };
     });
@@ -395,7 +391,7 @@ export const useFriendsStore = create((set, get) => ({
           username: p.username,
           handle: p.handle,
           nickname: p.username || p.handle || "User",
-          avatar: typeof p.avatar === "number" ? avatarIndexToKey(p.avatar) : p.avatar,
+          avatar: (() => { const a = p.avatar; if (typeof a === "number") return avatarIndexToKey(a); if (typeof a === "string" && a !== "" && !isNaN(+a)) return avatarIndexToKey(+a); return a; })(),
           xp: p.xp || 0,
           streak: p.streak || 0,
         }));
@@ -626,7 +622,7 @@ export const useFriendsStore = create((set, get) => ({
         username: data.username,
         handle: data.handle,
         nickname: data.username || data.handle || "User",
-        avatar: typeof data.avatar === "number" ? avatarIndexToKey(data.avatar) : data.avatar,
+        avatar: (() => { const a = data.avatar; if (typeof a === "number") return avatarIndexToKey(a); if (typeof a === "string" && a !== "" && !isNaN(+a)) return avatarIndexToKey(+a); return a; })(),
         xp: data.xp || 0,
         streak: data.streak || 0,
         coins: data.coins || 0,
