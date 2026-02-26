@@ -759,7 +759,7 @@ export default function Home() {
             style={{
               fontWeight: 800,
               fontSize: "1.05rem",
-              color: "#FFD700",
+              color: "#fff",
               letterSpacing: "0.3px",
               marginBottom: 4,
             }}
@@ -769,7 +769,7 @@ export default function Home() {
           <div
             style={{
               fontSize: "0.78rem",
-              color: "rgba(212,175,55,0.75)",
+              color: "rgba(255,255,255,0.85)",
               fontWeight: 500,
               letterSpacing: "0.2px",
             }}
@@ -811,7 +811,7 @@ export default function Home() {
                 style={{
                   fontSize: "1.5rem",
                   fontWeight: 800,
-                  color: "#FFD700",
+                  color: "#fff",
                   lineHeight: 1,
                 }}
               >
@@ -820,7 +820,7 @@ export default function Home() {
               <div
                 style={{
                   fontSize: "0.72rem",
-                  color: "rgba(212,175,55,0.7)",
+                  color: "rgba(255,255,255,0.8)",
                   fontWeight: 600,
                   textTransform: "uppercase",
                   letterSpacing: "0.5px",
