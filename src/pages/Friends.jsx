@@ -1416,14 +1416,9 @@ function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, challengeStat
         display: "flex",
         alignItems: "center",
         gap: "12px",
-        boxShadow:
-          rankClass === "gold"
-            ? "0 0 28px rgba(255,215,0,0.75), 0 0 10px rgba(255,140,0,0.5)"
-            : rankClass === "silver"
-              ? "0 0 22px rgba(180,220,255,0.7), 0 0 8px rgba(148,163,184,0.5)"
-              : rankClass === "bronze"
-                ? "0 0 20px rgba(251,146,60,0.65), 0 0 8px rgba(220,90,30,0.4)"
-                : "none",
+        boxShadow: rankClass
+          ? "0 0 28px rgba(168,85,247,0.75), 0 0 10px rgba(126,34,206,0.5)"
+          : "none",
       }}
     >
       <div
