@@ -970,8 +970,6 @@ export default function Friends() {
                         key={friend.user_id || friend.id}
                         user={friend}
                         onClick={() => handleUserClick(friend.user_id || friend.id)}
-                        badge="Friends"
-                        badgeColor="#10b981"
                         onChallenge={() => handleChallengeFriend(friend)}
                         challengeState={getFriendChallengeState(friend.user_id)}
                       />
