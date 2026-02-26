@@ -4,9 +4,9 @@
 // Separate from progressStore which manages xp/coins/streak
 // -------------------------------------------------------
 // ARCHITECTURE (Nov 2025):
-// - Profiles are ONLY created after onboarding via createProfileAfterOnboarding()
+// - Profiles are created by the database trigger on auth.users insert
+// - completeOnboarding() updates the trigger-created profile with user's chosen identity
 // - init() only CHECKS for existing profile, never creates one
-// - completeOnboarding() creates the profile if it doesn't exist
 
 import { create } from "zustand";
 import { createDailyLeaderboardSnapshot } from "../backend/leaderboardSnapshots";
@@ -14,7 +14,6 @@ import { supabase, ensureSignedIn } from "../lib/supabaseClient";
 import { safeCall } from "../lib/supabaseSafe";
 import { 
   checkProfileExists, 
-  createProfileAfterOnboarding,
   loadCloudProfile, 
   saveCloudProfile, 
   isProfileComplete 
@@ -298,29 +297,13 @@ export const useUserStore = create((set, get) => ({
       return false;
     }
 
-    // Check if profile already exists
-    const existingProfile = await checkProfileExists(uid);
-
-    let result;
-    if (existingProfile) {
-      // Profile exists - update it
-      console.log("Profile exists, updating identity fields...");
-      result = await saveCloudProfile(uid, {
-        username,
-        avatar: avatar || DEFAULT_AVATAR,
-        handle,
-      });
-    } else {
-      // No profile - create it
-      console.log("Creating new profile...");
-      result = await createProfileAfterOnboarding({
-        userId: uid,
-        deviceId: deviceId,
-        username,
-        avatar: avatar || DEFAULT_AVATAR,
-        handle,
-      });
-    }
+    // DB trigger guarantees profile exists after signup - always update
+    console.log("Updating profile identity fields...");
+    const result = await saveCloudProfile(uid, {
+      username,
+      avatar: avatar || DEFAULT_AVATAR,
+      handle,
+    });
 
     if (result.success) {
       // Load the full profile

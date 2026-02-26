@@ -3,17 +3,14 @@
 // Cloud Profile Management - Identity Pipeline
 // -------------------------------------------------------
 // ARCHITECTURE (Nov 2025):
-// - Profiles are ONLY created after onboarding via createProfileAfterOnboarding()
-// - NO profile creation at app startup
+// - Profiles are created by the database trigger on auth.users insert
+// - NO profile creation in app code - trigger is single source of truth
 // - Avatar stored as INTEGER (index) in DB, string key in app
 // - saveCloudProfile() only updates existing profiles, never inserts
 
 import { supabase } from "./supabaseClient";
 import { avatarKeyToIndex, avatarIndexToKey } from "../utils/avatarUtils";
 
-// Default avatar for new profiles (index 0 = avatar_man_lantern)
-const DEFAULT_AVATAR_KEY = "avatar_man_lantern";
-const DEFAULT_AVATAR_INDEX = 0;
 
 /**
  * 🔹 ensureSignedIn()
@@ -51,7 +48,7 @@ export async function ensureSignedIn() {
 /**
  * 🔹 checkProfileExists(userId)
  * Returns the profile if it exists, null if not.
- * Does NOT create a profile - use createProfileAfterOnboarding() for that.
+ * Does NOT create a profile - profile creation is handled by the DB trigger.
  */
 export async function checkProfileExists(userId) {
   if (!userId) {
@@ -81,68 +78,6 @@ export async function checkProfileExists(userId) {
 
   console.log("NO PROFILE FOUND for user →", userId);
   return null;
-}
-
-/**
- * 🔹 createProfileAfterOnboarding({ userId, deviceId, username, avatar, handle })
- * Creates a new profile with ALL required fields.
- * Called ONLY from completeOnboarding() after user finishes onboarding.
- * NO null fields allowed - all fields must be populated.
- */
-export async function createProfileAfterOnboarding({ userId, deviceId, username, avatar, handle }) {
-  if (!userId) {
-    console.error("createProfileAfterOnboarding: Missing userId");
-    return { success: false, error: "Missing userId" };
-  }
-
-  if (!username || !handle) {
-    console.error("createProfileAfterOnboarding: Missing required fields", { username, handle });
-    return { success: false, error: "Missing required fields (username or handle)" };
-  }
-
-  // Convert avatar string key to integer index for DB
-  let avatarIndex = DEFAULT_AVATAR_INDEX;
-  if (avatar) {
-    if (typeof avatar === "string") {
-      avatarIndex = avatarKeyToIndex(avatar);
-    } else if (typeof avatar === "number") {
-      avatarIndex = avatar;
-    }
-  }
-
-  const newProfileData = {
-    user_id: userId,
-    device_id: deviceId || null,
-    username: username.trim(),
-    handle: handle.trim().toLowerCase(),
-    avatar: avatarIndex,
-    xp: 0,
-    coins: 0,
-    streak: 0,
-    shield_count: 0,
-    created_at: new Date().toISOString(),
-  };
-
-  console.log("CREATING PROFILE →", userId, { username, handle, avatar: avatarIndex });
-
-  const { data: insertedProfile, error: insertError } = await supabase
-    .from("profiles")
-    .upsert(newProfileData, { onConflict: "user_id" })
-    .select("user_id, username, handle, avatar, xp, coins, streak")
-    .maybeSingle();
-
-  if (insertError) {
-    console.error("createProfileAfterOnboarding: upsert error", insertError);
-    return { success: false, error: insertError };
-  }
-
-  // Normalize avatar back to string key for app use
-  if (insertedProfile && typeof insertedProfile.avatar === "number") {
-    insertedProfile.avatar = avatarIndexToKey(insertedProfile.avatar);
-  }
-
-  console.log("PROFILE CREATED SUCCESSFULLY →", userId);
-  return { success: true, data: insertedProfile };
 }
 
 /**
@@ -176,7 +111,7 @@ export async function loadCloudProfile(userId) {
  * 🔹 saveCloudProfile(userId, partialData)
  * Updates ONLY identity fields (username, avatar, handle) on EXISTING profiles.
  * NEVER sends null/undefined values - only truthy fields are sent.
- * NEVER inserts new profiles - use createProfileAfterOnboarding() for that.
+ * NEVER inserts new profiles - profile creation is handled by the DB trigger.
  * Avatar can be string key or integer index (converted to integer for DB).
  */
 export async function saveCloudProfile(userId, partialData) {

@@ -4,11 +4,10 @@ import { motion } from "framer-motion";
 import { Mail, RefreshCw, CheckCircle } from "lucide-react";
 import { supabase } from "../lib/supabaseClient";
 import { useUserStore } from "../store/useUserStore";
-import { useProgressStore } from "../store/progressStore";
 import { preloadUserData } from "../hooks/useDataPreloader";
-import { avatarIndexToKey, avatarKeyToIndex } from "../utils/avatarUtils";
+import { avatarIndexToKey } from "../utils/avatarUtils";
 
-// Module-level flag to prevent duplicate profile creation
+// Module-level flag to prevent concurrent login processing
 let isProcessingLogin = false;
 
 export default function CheckEmailScreen() {
@@ -96,50 +95,6 @@ export default function CheckEmailScreen() {
     handleAuthCallback();
   }, []);
 
-  const createProfileIfMissing = async (user) => {
-    const storedName = localStorage.getItem("iq_name") || "Student";
-    const storedHandle = localStorage.getItem("iq_handle");
-    const storedAvatar = localStorage.getItem("iq_avatar") || "avatar_man_lantern";
-    
-    if (!storedHandle) {
-      console.log("No handle in localStorage - redirecting to signup");
-      localStorage.setItem("iq_onboarding_step", "signup");
-      navigate("/signup");
-      return null;
-    }
-    
-    const avatarIndex = avatarKeyToIndex(storedAvatar);
-    const progressState = useProgressStore.getState();
-    
-    console.log("[CheckEmail] Creating profile for confirmed user:", user.id);
-    
-    const { data: newProfile, error } = await supabase
-      .from("profiles")
-      .upsert({
-        user_id: user.id,
-        username: storedName,
-        handle: storedHandle.trim().toLowerCase(),
-        avatar: avatarIndex,
-        xp: progressState.xp || 0,
-        coins: progressState.coins || 0,
-        streak: progressState.streak || 0,
-        created_at: new Date().toISOString(),
-      }, { onConflict: 'user_id' })
-      .select()
-      .single();
-    
-    if (error) {
-      console.error("Failed to create profile:", error);
-      return null;
-    }
-    
-    console.log("[CheckEmail] Profile created successfully");
-    return {
-      ...newProfile,
-      avatar: storedAvatar,
-    };
-  };
-
   const completeLoginAndPreload = async (user) => {
     // Prevent duplicate processing from concurrent calls
     if (isProcessingLogin) {
@@ -161,12 +116,11 @@ export default function CheckEmailScreen() {
       console.log("[CheckEmail] Using existing profile for user:", user.id);
       profile = existingProfile;
     } else {
-      console.log("[CheckEmail] No profile found - creating one now...");
-      profile = await createProfileIfMissing(user);
-      if (!profile) {
-        isProcessingLogin = false;
-        return false;
-      }
+      console.log("[CheckEmail] No profile found - redirecting to signup");
+      localStorage.setItem("iq_onboarding_step", "signup");
+      isProcessingLogin = false;
+      navigate("/signup");
+      return false;
     }
 
     const displayName = profile.username || "Student";

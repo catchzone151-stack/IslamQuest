@@ -1,8 +1,6 @@
 import { useCallback } from "react";
 import { useUserStore } from "../store/useUserStore";
 import { supabase } from "../lib/supabaseClient";
-import { avatarKeyToIndex } from "../utils/avatarUtils";
-import { useProgressStore } from "../store/progressStore";
 
 const ONBOARDING_STEPS = {
   BISMILLAH: "bismillah",
@@ -98,32 +96,6 @@ export function useOnboarding() {
     }
   }, []);
 
-  const createProfile = useCallback(async (userId, data) => {
-    const { name, handle, avatar } = data;
-    const avatarIndex = avatarKeyToIndex(avatar);
-    const progressState = useProgressStore.getState();
-
-    const { error } = await supabase
-      .from("profiles")
-      .upsert({
-        user_id: userId,
-        username: name,
-        handle: handle.trim().toLowerCase().replace(/^@/, ""),
-        avatar: avatarIndex,
-        xp: progressState.xp || 0,
-        coins: progressState.coins || 0,
-        streak: progressState.streak || 0,
-        created_at: new Date().toISOString(),
-      }, { onConflict: "user_id" });
-
-    if (error) {
-      console.error("Profile creation error:", error);
-      return { success: false, error: error.message };
-    }
-
-    return { success: true };
-  }, []);
-
   const completeOnboarding = useCallback(() => {
     clearStep();
     localStorage.setItem("iq_profile_complete", "true");
@@ -146,7 +118,6 @@ export function useOnboarding() {
     getUserData,
     clearUserData,
     checkHandleAvailable,
-    createProfile,
     completeOnboarding,
   };
 }
