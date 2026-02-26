@@ -355,7 +355,7 @@ export default function Friends() {
       >
         <h1
           style={{
-            color: "#D4AF37",
+            color: "gold",
             fontSize: "1.8rem",
             fontWeight: "bold",
             textAlign: "center",

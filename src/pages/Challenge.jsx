@@ -219,11 +219,7 @@ export default function Challenge() {
           fontSize: "clamp(1.3rem, 5vw, 1.8rem)",
           fontWeight: 800,
           margin: 0,
-          background: "linear-gradient(90deg, #FFD700, #FFA500, #FFD700)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          backgroundSize: "200%",
-          animation: "shimmer 8s linear infinite",
+          color: "gold",
         }}>
           Challenges Hub
         </h1>

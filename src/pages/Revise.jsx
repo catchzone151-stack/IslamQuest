@@ -439,11 +439,7 @@ export default function Revise() {
               fontSize: "clamp(1.5rem, 5vw, 2rem)",
               fontWeight: 800,
               margin: 0,
-              background: "linear-gradient(90deg, #FFD700, #FFA500, #FFD700)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundSize: "200%",
-              animation: "shimmer 8s linear infinite",
+              color: "gold",
             }}
           >
             Revise & Master
