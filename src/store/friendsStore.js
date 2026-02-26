@@ -12,6 +12,7 @@ export const useFriendsStore = create((set, get) => ({
   users: [],
   globalLeaderboard: [],
   loading: false,
+  leaderboardLoading: false,
   error: null,
   currentUserId: null,
   realtimeChannel: null,
@@ -341,32 +342,18 @@ export const useFriendsStore = create((set, get) => ({
   },
 
   loadLeaderboard: async () => {
+    set({ leaderboardLoading: true });
     try {
       const { data, error } = await supabase
         .from("profiles")
         .select("user_id, username, handle, avatar, xp, streak")
-        .order("xp", { ascending: false })
-        .limit(100);
+        .order("xp", { ascending: false });
 
-      if (error) {
-        console.warn("loadLeaderboard error:", error.message);
-        return [];
-      }
+      if (error) throw error;
 
-      const formatted = (data || []).map((p) => ({
-        user_id: p.user_id,
-        username: p.username,
-        handle: p.handle,
-        avatar: typeof p.avatar === "number" ? avatarIndexToKey(p.avatar) : p.avatar,
-        xp: p.xp || 0,
-        streak: p.streak || 0,
-      }));
-
-      set({ globalLeaderboard: formatted });
-      return formatted;
+      set({ globalLeaderboard: data || [], leaderboardLoading: false });
     } catch (err) {
-      console.warn("loadLeaderboard error:", err);
-      return [];
+      set({ leaderboardLoading: false, error: err.message });
     }
   },
 
