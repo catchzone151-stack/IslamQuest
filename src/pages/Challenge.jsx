@@ -94,8 +94,16 @@ export default function Challenge() {
     });
   };
 
+  const bossLocked = level < 8;
+
   const handleBossClick = () => {
-    vibrate(50); // Haptic feedback on boss click
+    vibrate(50);
+
+    // Level 8 required to access Boss Level
+    if (bossLocked) {
+      showModal(MODAL_TYPES.BOSS_LOCKED, { currentLevel: level });
+      return;
+    }
 
     // Check local boss playability
     if (!bossPlayable) {
@@ -357,57 +365,87 @@ export default function Challenge() {
         <div
           onClick={handleBossClick}
           style={{
-            background: BOSS_LEVEL.gradient,
-            border: "2px solid rgba(212,175,55,0.5)",
+            background: bossLocked
+              ? "linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)"
+              : BOSS_LEVEL.gradient,
+            border: bossLocked
+              ? "2px solid rgba(107,114,128,0.4)"
+              : "2px solid rgba(212,175,55,0.5)",
             borderRadius: 18,
             padding: "24px 20px 20px 20px",
-            boxShadow: BOSS_LEVEL.glow,
+            boxShadow: bossLocked
+              ? "0 4px 20px rgba(0,0,0,0.4)"
+              : BOSS_LEVEL.glow,
             cursor: "pointer",
             transition: "all 0.3s ease",
             position: "relative",
-            animation: "bossGlow 2s ease-in-out infinite",
-            zIndex: 10
+            animation: bossLocked ? "none" : "bossGlow 2s ease-in-out infinite",
+            zIndex: 10,
+            opacity: bossLocked ? 0.75 : 1,
           }}
         >
+          {/* Lock badge */}
+          {bossLocked && (
+            <div style={{
+              position: "absolute",
+              top: 14,
+              right: 14,
+              background: "rgba(107,114,128,0.25)",
+              border: "1px solid rgba(107,114,128,0.5)",
+              borderRadius: 8,
+              padding: "4px 10px",
+              fontSize: "0.75rem",
+              fontWeight: 700,
+              color: "#94a3b8",
+              display: "flex",
+              alignItems: "center",
+              gap: 4,
+            }}>
+              🔒 Level 8
+            </div>
+          )}
+
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12, marginTop: 8, position: "relative", zIndex: 1, pointerEvents: "none" }}>
-            <img 
-              src={BossLevelMascot} 
-              alt="Boss Level Mascot" 
-              style={{ 
-                width: "85px", 
+            <img
+              src={bossLocked ? mascot_locked : BossLevelMascot}
+              alt="Boss Level Mascot"
+              style={{
+                width: "85px",
                 height: "85px",
-                filter: "drop-shadow(0 0 20px rgba(59, 130, 246, 0.8)) drop-shadow(0 0 40px rgba(59, 130, 246, 0.5))",
-                animation: "bossAura 2s ease-in-out infinite",
-                pointerEvents: "none"
-              }} 
+                filter: bossLocked
+                  ? "grayscale(1) opacity(0.6)"
+                  : "drop-shadow(0 0 20px rgba(59, 130, 246, 0.8)) drop-shadow(0 0 40px rgba(59, 130, 246, 0.5))",
+                animation: bossLocked ? "none" : "bossAura 2s ease-in-out infinite",
+                pointerEvents: "none",
+              }}
             />
             <div style={{ pointerEvents: "none" }}>
-              <h2 style={{ color: "#d4af37", margin: "0 0 4px", fontSize: "1.4rem", fontWeight: 700 }}>
+              <h2 style={{ color: bossLocked ? "#64748b" : "#d4af37", margin: "0 0 4px", fontSize: "1.4rem", fontWeight: 700 }}>
                 Boss Level: Challenge the Dev
               </h2>
-              <p style={{ color: bossPlayable ? "#10b981" : "#6b7280", margin: 0, fontSize: "0.85rem", fontWeight: 600 }}>
-                {bossPlayable ? "✓ Available Today" : "⏰ Played Today"}
+              <p style={{ color: bossLocked ? "#475569" : bossPlayable ? "#10b981" : "#6b7280", margin: 0, fontSize: "0.85rem", fontWeight: 600 }}>
+                {bossLocked ? `🔒 Reach Level 8 to unlock` : bossPlayable ? "✓ Available Today" : "⏰ Played Today"}
               </p>
             </div>
           </div>
 
-          <p style={{ opacity: 0.95, lineHeight: 1.5, fontSize: "0.9rem", marginBottom: 12, position: "relative", zIndex: 1, pointerEvents: "none" }}>
+          <p style={{ opacity: bossLocked ? 0.4 : 0.95, lineHeight: 1.5, fontSize: "0.9rem", marginBottom: 12, position: "relative", zIndex: 1, pointerEvents: "none" }}>
             {BOSS_LEVEL.description}
           </p>
 
-          <div style={{ 
-            background: "rgba(0,0,0,0.3)", 
-            borderRadius: 10, 
+          <div style={{
+            background: "rgba(0,0,0,0.3)",
+            borderRadius: 10,
             padding: "10px 14px",
             fontSize: "0.85rem",
-            color: "#10b981",
+            color: bossLocked ? "#475569" : "#10b981",
             fontWeight: 600,
             position: "relative",
             zIndex: 1,
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            pointerEvents: "none"
+            pointerEvents: "none",
           }}>
             <span>Rewards: +{BOSS_LEVEL.rewards.win.xp} XP • +{BOSS_LEVEL.rewards.win.coins} coins</span>
           </div>
