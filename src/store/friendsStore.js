@@ -551,28 +551,25 @@ export const useFriendsStore = create((set, get) => ({
 
   getProfileById: async (userId) => {
     try {
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("user_id, username, handle, avatar, xp, streak, coins, shield_count")
-        .eq("user_id", userId)
-        .maybeSingle();
+      const { data, error } = await supabase.rpc("get_profiles_by_ids", { ids: [userId] });
 
-      if (error || !data) return null;
+      if (error || !data || data.length === 0) return null;
 
+      const p = data[0];
       return {
-        user_id: data.user_id,
-        id: data.user_id,
-        username: data.username,
-        handle: data.handle,
-        nickname: data.username || data.handle || "User",
-        avatar: (() => { const a = data.avatar; if (typeof a === "number") return avatarIndexToKey(a); if (typeof a === "string" && a !== "" && !isNaN(+a)) return avatarIndexToKey(+a); return a; })(),
-        xp: data.xp || 0,
-        streak: data.streak || 0,
-        coins: data.coins || 0,
-        shield_count: data.shield_count || 0,
+        user_id: p.user_id,
+        id: p.user_id,
+        username: p.username,
+        handle: p.handle,
+        nickname: p.username || p.handle || "User",
+        avatar: (() => { const a = p.avatar; if (typeof a === "number") return avatarIndexToKey(a); if (typeof a === "string" && a !== "" && !isNaN(+a)) return avatarIndexToKey(+a); return a; })(),
+        xp: p.xp || 0,
+        streak: p.streak || 0,
+        coins: p.coins || 0,
+        shield_count: p.shield_count || 0,
       };
     } catch (err) {
-      console.warn("getProfileById error:", err);
+      console.error("getProfileById error:", err);
       return null;
     }
   },
