@@ -1008,7 +1008,7 @@ export default function Friends() {
                   onClick={() => setLeaderboardTab("global")}
                   label="Global"
                   icon={<Globe size={16} />}
-                  color="#4ade80"
+                  color="#00c853"
                 />
               </div>
 
