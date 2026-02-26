@@ -11,6 +11,8 @@ import {
   mergeProfileData,
 } from "./profileSync.js";
 
+import { useReviseStore } from "../store/reviseStore.js";
+
 // --------------------
 // SYNC ON APP OPEN
 // --------------------
@@ -18,9 +20,9 @@ export async function syncOnAppOpen() {
   console.log("[SyncEngine] syncOnAppOpen()");
 
   try {
-    // 1. REVISION
-    await safeCall(() => pullCloudRevision(), []);
-    await safeCall(() => pushLocalRevision());
+    // 1. REVISION — cloud is source of truth
+    const cloudRevision = await safeCall(() => pullCloudRevision(), []);
+    useReviseStore.getState().setAllItems(cloudRevision);
 
     // 2. PROFILE
     const cloudProfile = await safeCall(() => pullProfileFromCloud(), null);
@@ -40,9 +42,9 @@ export async function syncOnForeground() {
   console.log("[SyncEngine] syncOnForeground()");
 
   try {
-    // REVISION
-    await safeCall(() => pullCloudRevision(), []);
-    await safeCall(() => pushLocalRevision());
+    // REVISION — cloud is source of truth
+    const cloudRevision = await safeCall(() => pullCloudRevision(), []);
+    useReviseStore.getState().setAllItems(cloudRevision);
 
     // PROFILE
     const cloudProfile = await safeCall(() => pullProfileFromCloud(), null);

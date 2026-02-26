@@ -34,6 +34,12 @@ const useReviseStore = create((set, get) => ({
     return Array.isArray(pool) ? pool : [];
   },
 
+  setAllItems: (arr) => {
+    const safeArr = Array.isArray(arr) ? arr : [];
+    set({ weakPool: safeArr, needsSync: false });
+    get().saveReviseData();
+  },
+
   setWeakPool: (arr) => {
     const safeArr = Array.isArray(arr) ? arr : [];
     set({ weakPool: safeArr, needsSync: false });
