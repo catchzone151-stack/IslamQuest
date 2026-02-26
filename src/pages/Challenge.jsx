@@ -365,23 +365,16 @@ export default function Challenge() {
         <div
           onClick={handleBossClick}
           style={{
-            background: bossLocked
-              ? "linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)"
-              : BOSS_LEVEL.gradient,
-            border: bossLocked
-              ? "2px solid rgba(107,114,128,0.4)"
-              : "2px solid rgba(212,175,55,0.5)",
+            background: BOSS_LEVEL.gradient,
+            border: "2px solid rgba(212,175,55,0.5)",
             borderRadius: 18,
             padding: "24px 20px 20px 20px",
-            boxShadow: bossLocked
-              ? "0 4px 20px rgba(0,0,0,0.4)"
-              : BOSS_LEVEL.glow,
+            boxShadow: BOSS_LEVEL.glow,
             cursor: "pointer",
             transition: "all 0.3s ease",
             position: "relative",
-            animation: bossLocked ? "none" : "bossGlow 2s ease-in-out infinite",
+            animation: "bossGlow 2s ease-in-out infinite",
             zIndex: 10,
-            opacity: bossLocked ? 0.75 : 1,
           }}
         >
           {/* Lock badge */}
@@ -412,24 +405,22 @@ export default function Challenge() {
               style={{
                 width: "85px",
                 height: "85px",
-                filter: bossLocked
-                  ? "grayscale(1) opacity(0.6)"
-                  : "drop-shadow(0 0 20px rgba(59, 130, 246, 0.8)) drop-shadow(0 0 40px rgba(59, 130, 246, 0.5))",
-                animation: bossLocked ? "none" : "bossAura 2s ease-in-out infinite",
+                filter: "drop-shadow(0 0 20px rgba(59, 130, 246, 0.8)) drop-shadow(0 0 40px rgba(59, 130, 246, 0.5))",
+                animation: "bossAura 2s ease-in-out infinite",
                 pointerEvents: "none",
               }}
             />
             <div style={{ pointerEvents: "none" }}>
-              <h2 style={{ color: bossLocked ? "#64748b" : "#d4af37", margin: "0 0 4px", fontSize: "1.4rem", fontWeight: 700 }}>
+              <h2 style={{ color: "#d4af37", margin: "0 0 4px", fontSize: "1.4rem", fontWeight: 700 }}>
                 Boss Level: Challenge the Dev
               </h2>
-              <p style={{ color: bossLocked ? "#475569" : bossPlayable ? "#10b981" : "#6b7280", margin: 0, fontSize: "0.85rem", fontWeight: 600 }}>
+              <p style={{ color: bossLocked ? "#f59e0b" : bossPlayable ? "#10b981" : "#6b7280", margin: 0, fontSize: "0.85rem", fontWeight: 600 }}>
                 {bossLocked ? `🔒 Reach Level 8 to unlock` : bossPlayable ? "✓ Available Today" : "⏰ Played Today"}
               </p>
             </div>
           </div>
 
-          <p style={{ opacity: bossLocked ? 0.4 : 0.95, lineHeight: 1.5, fontSize: "0.9rem", marginBottom: 12, position: "relative", zIndex: 1, pointerEvents: "none" }}>
+          <p style={{ opacity: 0.95, lineHeight: 1.5, fontSize: "0.9rem", marginBottom: 12, position: "relative", zIndex: 1, pointerEvents: "none" }}>
             {BOSS_LEVEL.description}
           </p>
 
@@ -438,7 +429,7 @@ export default function Challenge() {
             borderRadius: 10,
             padding: "10px 14px",
             fontSize: "0.85rem",
-            color: bossLocked ? "#475569" : "#10b981",
+            color: "#10b981",
             fontWeight: 600,
             position: "relative",
             zIndex: 1,
