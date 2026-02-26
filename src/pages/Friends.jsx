@@ -1416,7 +1416,7 @@ function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, challengeStat
               ? "linear-gradient(135deg, #3a4a5c, #6e8fa8, #b0c8dc)"
               : rankClass === "bronze"
                 ? "linear-gradient(135deg, #5c2e00, #9e5a1a, #c8823c)"
-                : "rgba(59,130,246,0.45)",
+                : "rgba(59,130,246,0.28)",
         border: `1px solid ${borderColor}`,
         borderRadius: "12px",
         padding: "12px",
@@ -1627,7 +1627,7 @@ function GlobalLeaderboardCard({
               ? "linear-gradient(135deg, #3a4a5c, #6e8fa8, #b0c8dc)"
               : rankClass === "bronze"
                 ? "linear-gradient(135deg, #5c2e00, #9e5a1a, #c8823c)"
-                : "rgba(59,130,246,0.45)",
+                : "rgba(59,130,246,0.28)",
         border: `1px solid ${borderColor}`,
         borderRadius: "10px",
         padding: "10px",
