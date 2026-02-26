@@ -456,7 +456,7 @@ export default function Revise() {
         <div
           onClick={reviewMistakesUnlocked && hasWeakQuestions ? startMistakesReview : null}
           style={{
-            background: "linear-gradient(145deg, rgba(212,175,55,0.2), rgba(16,185,129,0.1))",
+            background: "linear-gradient(145deg, rgba(212,175,55,0.45), rgba(16,185,129,0.3))",
             border: "2px solid rgba(212,175,55,0.5)",
             borderRadius: 20,
             padding: 24,
@@ -536,7 +536,7 @@ export default function Revise() {
         <div
           onClick={isSmartActive ? startSmartRevision : null}
           style={{
-            background: "linear-gradient(145deg, rgba(59,130,246,0.2), rgba(147,51,234,0.1))",
+            background: "linear-gradient(145deg, rgba(59,130,246,0.45), rgba(147,51,234,0.3))",
             border: "2px solid rgba(59,130,246,0.5)",
             borderRadius: 20,
             padding: 24,
