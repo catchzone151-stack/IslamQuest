@@ -126,13 +126,10 @@ export const useFriendsStore = create((set, get) => ({
       const receivedIds = received.map(r => r.user_id);
       const allProfileIds = [...new Set([...friendIds, ...sentIds, ...receivedIds])];
 
-      // Single batch profile fetch
+      // Single batch profile fetch — uses SECURITY DEFINER RPC to bypass RLS
       let allProfiles = [];
       if (allProfileIds.length > 0) {
-        const { data: profiles } = await supabase
-          .from("profiles")
-          .select("user_id, username, handle, avatar, xp, streak, coins, shield_count")
-          .in("user_id", allProfileIds);
+        const { data: profiles } = await supabase.rpc("get_profiles_by_ids", { ids: allProfileIds });
         allProfiles = profiles || [];
       }
 
