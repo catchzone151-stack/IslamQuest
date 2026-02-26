@@ -1436,7 +1436,7 @@ function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, challengeStat
       <div
         style={{
           minWidth: "35px",
-          color: rankClass ? borderColor : "#94a3b8",
+          color: rankClass ? "#fff" : "#94a3b8",
           fontSize: "1rem",
           fontWeight: "700",
           textAlign: "center",
@@ -1478,7 +1478,7 @@ function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, challengeStat
         >
           <p
             style={{
-              color: "#e2e8f0",
+              color: "#fff",
               fontWeight: "600",
               fontSize: "0.95rem",
               overflow: "hidden",
@@ -1494,7 +1494,7 @@ function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, challengeStat
         {user.handle && (
           <p
             style={{
-              color: "#aaa",
+              color: rankClass ? "rgba(255,255,255,0.85)" : "#aaa",
               fontSize: "0.75rem",
               margin: 0,
               marginBottom: "4px",
@@ -1508,15 +1508,15 @@ function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, challengeStat
             display: "flex",
             gap: "12px",
             fontSize: "0.75rem",
-            color: "#888",
+            color: rankClass ? "rgba(255,255,255,0.85)" : "#888",
           }}
         >
           <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-            <Trophy size={12} color="#D4AF37" />
+            <Trophy size={12} color={rankClass ? "#fff" : "#D4AF37"} />
             {user.xp.toLocaleString()}
           </span>
           <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-            <Flame size={12} color="#ef4444" />
+            <Flame size={12} color={rankClass ? "#fff" : "#ef4444"} />
             {user.streak}
           </span>
         </div>
@@ -1648,7 +1648,7 @@ function GlobalLeaderboardCard({
       <div
         style={{
           minWidth: "35px",
-          color: rankClass ? borderColor : "#94a3b8",
+          color: rankClass ? "#fff" : "#94a3b8",
           fontSize: "0.9rem",
           fontWeight: "600",
           textAlign: "center",
@@ -1683,7 +1683,7 @@ function GlobalLeaderboardCard({
         <p
           className="name"
           style={{
-            color: "#e2e8f0",
+            color: "#fff",
             fontWeight: "600",
             fontSize: "0.9rem",
             overflow: "hidden",
@@ -1698,7 +1698,7 @@ function GlobalLeaderboardCard({
         <p
           className="handle"
           style={{
-            color: "#aaa",
+            color: rankClass ? "rgba(255,255,255,0.85)" : "#aaa",
             fontSize: "0.75rem",
             margin: 0,
             marginBottom: "2px",
@@ -1711,15 +1711,15 @@ function GlobalLeaderboardCard({
             display: "flex",
             gap: "8px",
             fontSize: "0.7rem",
-            color: "#888",
+            color: rankClass ? "rgba(255,255,255,0.85)" : "#888",
           }}
         >
           <span style={{ display: "flex", alignItems: "center", gap: "3px" }}>
-            <Trophy size={10} color="#D4AF37" />
+            <Trophy size={10} color={rankClass ? "#fff" : "#D4AF37"} />
             {user.xp.toLocaleString()}
           </span>
           <span style={{ display: "flex", alignItems: "center", gap: "3px" }}>
-            <Flame size={10} color="#ef4444" />
+            <Flame size={10} color={rankClass ? "#fff" : "#ef4444"} />
             {user.streak}
           </span>
         </div>
