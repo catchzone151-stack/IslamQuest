@@ -1416,9 +1416,7 @@ function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, challengeStat
         display: "flex",
         alignItems: "center",
         gap: "12px",
-        boxShadow: rankClass
-          ? "0 0 28px rgba(168,85,247,0.75), 0 0 10px rgba(126,34,206,0.5)"
-          : "none",
+        boxShadow: "none",
       }}
     >
       <div
