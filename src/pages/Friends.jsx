@@ -378,12 +378,14 @@ export default function Friends() {
             icon={<Users size={18} />}
             label="Friends"
             count={friends.length}
+            color="#10b981"
           />
           <TabButton
             active={activeTab === "leaderboard"}
             onClick={() => setActiveTab("leaderboard")}
             icon={<Trophy size={18} />}
             label="Leaderboard"
+            color="#3b82f6"
           />
           <TabButton
             active={activeTab === "requests"}
@@ -392,12 +394,14 @@ export default function Friends() {
             label="Requests"
             count={totalRequests}
             badge={receivedRequests.length > 0}
+            color="#8b5cf6"
           />
           <TabButton
             active={activeTab === "search"}
             onClick={() => setActiveTab("search")}
             icon={<Search size={18} />}
             label="Search"
+            color="#f59e0b"
           />
         </div>
       </div>
@@ -1294,7 +1298,7 @@ export default function Friends() {
   );
 }
 
-function TabButton({ active, onClick, icon, label, count, badge }) {
+function TabButton({ active, onClick, icon, label, count, badge, color = "#D4AF37" }) {
   return (
     <motion.button
       whileHover={{ scale: 1.05 }}
@@ -1307,13 +1311,13 @@ function TabButton({ active, onClick, icon, label, count, badge }) {
         gap: "4px",
         padding: "10px 16px",
         background: active
-          ? "rgba(212, 175, 55, 0.2)"
-          : "rgba(14, 22, 37, 0.6)",
+          ? `linear-gradient(135deg, ${color}44, ${color}22)`
+          : `${color}14`,
         border: active
-          ? "1px solid #D4AF37"
-          : "1px solid rgba(212, 175, 55, 0.2)",
+          ? `1px solid ${color}`
+          : `1px solid ${color}44`,
         borderRadius: "12px 12px 0 0",
-        color: active ? "#D4AF37" : "#888",
+        color: active ? color : `${color}99`,
         cursor: "pointer",
         position: "relative",
         minWidth: "70px",
