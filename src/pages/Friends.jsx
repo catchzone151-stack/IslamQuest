@@ -28,9 +28,9 @@ import assets from "../assets/assets";
 
 const highlightStyle = `
 .highlight-user {
-  border: 2px solid gold !important;
-  background: rgba(255, 215, 0, 0.15) !important;
-  box-shadow: 0 0 12px rgba(255, 215, 0, 0.3) !important;
+  border: 2px solid #00e5ff !important;
+  background: linear-gradient(135deg, rgba(0,229,255,0.3), rgba(0,180,216,0.15)) !important;
+  box-shadow: 0 0 22px rgba(0,229,255,0.55), 0 0 8px rgba(0,229,255,0.35) !important;
 }
 
 @keyframes pulse {
@@ -1407,11 +1407,11 @@ function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, challengeStat
       style={{
         background:
           rankClass === "gold"
-            ? "linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(255, 215, 0, 0.2) 100%)"
+            ? "linear-gradient(135deg, rgba(255,215,0,0.6) 0%, rgba(255,140,0,0.35) 100%)"
             : rankClass === "silver"
-              ? "linear-gradient(135deg, rgba(192, 192, 192, 0.2) 0%, rgba(169, 169, 169, 0.1) 100%)"
+              ? "linear-gradient(135deg, rgba(200,230,255,0.5) 0%, rgba(148,163,184,0.3) 100%)"
               : rankClass === "bronze"
-                ? "linear-gradient(135deg, rgba(205, 127, 50, 0.2) 0%, rgba(184, 115, 51, 0.1) 100%)"
+                ? "linear-gradient(135deg, rgba(251,146,60,0.55) 0%, rgba(220,90,30,0.3) 100%)"
                 : "linear-gradient(135deg, rgba(59,130,246,0.28) 0%, rgba(37,99,235,0.14) 100%)",
         border: `1px solid ${borderColor}`,
         borderRadius: "12px",
@@ -1421,10 +1421,12 @@ function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, challengeStat
         gap: "12px",
         boxShadow:
           rankClass === "gold"
-            ? "0 0 20px rgba(212, 175, 55, 0.4)"
+            ? "0 0 28px rgba(255,215,0,0.75), 0 0 10px rgba(255,140,0,0.5)"
             : rankClass === "silver"
-              ? "0 0 15px rgba(192, 192, 192, 0.3)"
-              : "none",
+              ? "0 0 22px rgba(180,220,255,0.7), 0 0 8px rgba(148,163,184,0.5)"
+              : rankClass === "bronze"
+                ? "0 0 20px rgba(251,146,60,0.65), 0 0 8px rgba(220,90,30,0.4)"
+                : "none",
       }}
     >
       <div
@@ -1616,11 +1618,11 @@ function GlobalLeaderboardCard({
       style={{
         background:
           rankClass === "gold"
-            ? "linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(255, 215, 0, 0.2) 100%)"
+            ? "linear-gradient(135deg, rgba(255,215,0,0.6) 0%, rgba(255,140,0,0.35) 100%)"
             : rankClass === "silver"
-              ? "linear-gradient(135deg, rgba(192, 192, 192, 0.2) 0%, rgba(169, 169, 169, 0.1) 100%)"
+              ? "linear-gradient(135deg, rgba(200,230,255,0.5) 0%, rgba(148,163,184,0.3) 100%)"
               : rankClass === "bronze"
-                ? "linear-gradient(135deg, rgba(205, 127, 50, 0.2) 0%, rgba(184, 115, 51, 0.1) 100%)"
+                ? "linear-gradient(135deg, rgba(251,146,60,0.55) 0%, rgba(220,90,30,0.3) 100%)"
                 : "linear-gradient(135deg, rgba(59,130,246,0.28) 0%, rgba(37,99,235,0.14) 100%)",
         border: `1px solid ${borderColor}`,
         borderRadius: "10px",
@@ -1631,10 +1633,12 @@ function GlobalLeaderboardCard({
         cursor: isFriend ? "pointer" : "default",
         boxShadow:
           rankClass === "gold"
-            ? "0 0 20px rgba(212, 175, 55, 0.4)"
+            ? "0 0 28px rgba(255,215,0,0.75), 0 0 10px rgba(255,140,0,0.5)"
             : rankClass === "silver"
-              ? "0 0 15px rgba(192, 192, 192, 0.3)"
-              : "none",
+              ? "0 0 22px rgba(180,220,255,0.7), 0 0 8px rgba(148,163,184,0.5)"
+              : rankClass === "bronze"
+                ? "0 0 20px rgba(251,146,60,0.65), 0 0 8px rgba(220,90,30,0.4)"
+                : "none",
       }}
     >
       <div
