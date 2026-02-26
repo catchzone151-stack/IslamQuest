@@ -105,7 +105,7 @@ export default function GlobalEvents() {
         
         {/* Launch Date Banner */}
         <div style={{
-          background: "linear-gradient(135deg, rgba(255,215,0,0.12) 0%, rgba(212,175,55,0.06) 100%)",
+          background: "linear-gradient(135deg, #0f3d2e 0%, #145c44 100%)",
           border: "1.5px solid rgba(255,215,0,0.35)",
           borderRadius: 16,
           padding: "16px 20px",
