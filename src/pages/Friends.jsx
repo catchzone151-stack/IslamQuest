@@ -1411,11 +1411,11 @@ function LeaderboardCard({ user, rank, isCurrentUser, onChallenge, challengeStat
       style={{
         background:
           rankClass === "gold"
-            ? "linear-gradient(135deg, rgba(255,215,0,0.85) 0%, rgba(255,255,180,0.95) 100%)"
+            ? "linear-gradient(135deg, #7a5c00, #c8960c, #f0c040)"
             : rankClass === "silver"
-              ? "linear-gradient(135deg, rgba(210,235,255,0.75) 0%, rgba(255,255,255,0.9) 100%)"
+              ? "linear-gradient(135deg, #3a4a5c, #6e8fa8, #b0c8dc)"
               : rankClass === "bronze"
-                ? "linear-gradient(135deg, rgba(251,146,60,0.8) 0%, rgba(255,210,100,0.92) 100%)"
+                ? "linear-gradient(135deg, #5c2e00, #9e5a1a, #c8823c)"
                 : "rgba(59,130,246,0.45)",
         border: `1px solid ${borderColor}`,
         borderRadius: "12px",
@@ -1622,11 +1622,11 @@ function GlobalLeaderboardCard({
       style={{
         background:
           rankClass === "gold"
-            ? "linear-gradient(135deg, rgba(255,215,0,0.85) 0%, rgba(255,255,180,0.95) 100%)"
+            ? "linear-gradient(135deg, #7a5c00, #c8960c, #f0c040)"
             : rankClass === "silver"
-              ? "linear-gradient(135deg, rgba(210,235,255,0.75) 0%, rgba(255,255,255,0.9) 100%)"
+              ? "linear-gradient(135deg, #3a4a5c, #6e8fa8, #b0c8dc)"
               : rankClass === "bronze"
-                ? "linear-gradient(135deg, rgba(251,146,60,0.8) 0%, rgba(255,210,100,0.92) 100%)"
+                ? "linear-gradient(135deg, #5c2e00, #9e5a1a, #c8823c)"
                 : "rgba(59,130,246,0.45)",
         border: `1px solid ${borderColor}`,
         borderRadius: "10px",
