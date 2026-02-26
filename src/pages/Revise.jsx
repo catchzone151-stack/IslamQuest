@@ -456,7 +456,7 @@ export default function Revise() {
         <div
           onClick={reviewMistakesUnlocked && hasWeakQuestions ? startMistakesReview : null}
           style={{
-            background: "linear-gradient(145deg, rgba(212,175,55,0.45), rgba(16,185,129,0.3))",
+            background: "linear-gradient(145deg, rgba(251,146,60,0.45), rgba(239,68,68,0.3))",
             border: "2px solid rgba(212,175,55,0.5)",
             borderRadius: 20,
             padding: 24,
