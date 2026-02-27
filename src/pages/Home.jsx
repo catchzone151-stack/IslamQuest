@@ -251,20 +251,20 @@ export default function Home() {
    * Order aligns with your 14 paths in progressStore.
    */
   const gradients = [
-    "linear-gradient(145deg, #e8c87e, #d4a74f)", // Names of Allah
-    "linear-gradient(145deg, #2a5298, #1e3c72)", // Foundations of Islam
-    "linear-gradient(145deg, #ff758c, #ff7eb3)", // Stories of Prophets
-    "linear-gradient(145deg, #00a859, #004d26)", // Life of Muhammad ﷺ
-    "linear-gradient(145deg, #cc6600, #663300)", // Wives of the Prophet ﷺ
-    "linear-gradient(145deg, #d91e36, #60001a)", // Ten Promised Jannah
-    "linear-gradient(145deg, #9c27b0, #3e0069)", // Four Greatest Women
-    "linear-gradient(145deg, #26c6da, #004d66)", // Stories of the Companions
-    "linear-gradient(145deg, #ff9800, #7a3600)", // Angels and Jinns
-    "linear-gradient(145deg, #607d8b, #1a252f)", // The End Times
-    "linear-gradient(145deg, #6a11cb, #2575fc)", // The Grave
-    "linear-gradient(145deg, #2e8b57, #0d2614)", // Day of Judgement
-    "linear-gradient(145deg, #b31217, #240b36)", // Hellfire
-    "linear-gradient(145deg, #f7971e, #ffd200)", // Paradise
+    "linear-gradient(145deg, #f5d97a, #e8a83e)", // Names of Allah
+    "linear-gradient(145deg, #3d7fd9, #2655b0)", // Foundations of Islam
+    "linear-gradient(145deg, #ff4d75, #ff6ec7)", // Stories of Prophets
+    "linear-gradient(145deg, #00d96e, #007a3d)", // Life of Muhammad ﷺ
+    "linear-gradient(145deg, #ff8c00, #cc5500)", // Wives of the Prophet ﷺ
+    "linear-gradient(145deg, #ff1e36, #9b0020)", // Ten Promised Jannah
+    "linear-gradient(145deg, #d436f5, #7700b3)", // Four Greatest Women
+    "linear-gradient(145deg, #00e5f5, #0088a8)", // Stories of the Companions
+    "linear-gradient(145deg, #ffb300, #cc5c00)", // Angels and Jinns
+    "linear-gradient(145deg, #7badc9, #2e5f80)", // The End Times
+    "linear-gradient(145deg, #8e3ef7, #3575ff)", // The Grave
+    "linear-gradient(145deg, #3dba75, #1a6635)", // Day of Judgement
+    "linear-gradient(145deg, #ff2233, #8b0a3a)", // Hellfire
+    "linear-gradient(145deg, #ffcc00, #ff9900)", // Paradise
   ];
 
   return (
