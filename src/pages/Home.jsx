@@ -250,22 +250,23 @@ export default function Home() {
    * Card gradients — one per learning path (index-based)
    * Order aligns with your 14 paths in progressStore.
    */
-  const gradients = [
-    "linear-gradient(145deg, #f5d97a, #e8a83e)", // Names of Allah
-    "linear-gradient(145deg, #3d7fd9, #2655b0)", // Foundations of Islam
-    "linear-gradient(145deg, #ff4d75, #ff6ec7)", // Stories of Prophets
-    "linear-gradient(145deg, #00d96e, #007a3d)", // Life of Muhammad ﷺ
-    "linear-gradient(145deg, #ff8c00, #cc5500)", // Wives of the Prophet ﷺ
-    "linear-gradient(145deg, #ff1e36, #9b0020)", // Ten Promised Jannah
-    "linear-gradient(145deg, #d436f5, #7700b3)", // Four Greatest Women
-    "linear-gradient(145deg, #00e5f5, #0088a8)", // Stories of the Companions
-    "linear-gradient(145deg, #ffb300, #cc5c00)", // Angels and Jinns
-    "linear-gradient(145deg, #7badc9, #2e5f80)", // The End Times
-    "linear-gradient(145deg, #8e3ef7, #3575ff)", // The Grave
-    "linear-gradient(145deg, #3dba75, #1a6635)", // Day of Judgement
-    "linear-gradient(145deg, #ff2233, #8b0a3a)", // Hellfire
-    "linear-gradient(145deg, #ffcc00, #ff9900)", // Paradise
+  const pathStyles = [
+    { gradient: "linear-gradient(145deg, #ffe066, #ffaa00, #cc6e00)", glow: "0 0 22px rgba(255,200,0,0.85), 0 0 40px rgba(255,160,0,0.5)" },   // Names of Allah
+    { gradient: "linear-gradient(145deg, #60aaff, #2060e0, #0a2fa8)", glow: "0 0 22px rgba(80,160,255,0.85), 0 0 40px rgba(30,80,220,0.5)" },   // Foundations of Islam
+    { gradient: "linear-gradient(145deg, #ff5caa, #ff1493, #c0006a)", glow: "0 0 22px rgba(255,60,160,0.85), 0 0 40px rgba(200,0,100,0.5)" },   // Stories of Prophets
+    { gradient: "linear-gradient(145deg, #00ff88, #00cc55, #007a30)", glow: "0 0 22px rgba(0,255,130,0.85), 0 0 40px rgba(0,180,80,0.5)" },     // Life of Muhammad ﷺ
+    { gradient: "linear-gradient(145deg, #ffaa00, #ff6600, #cc3300)", glow: "0 0 22px rgba(255,140,0,0.85), 0 0 40px rgba(220,80,0,0.5)" },     // Wives of the Prophet ﷺ
+    { gradient: "linear-gradient(145deg, #ff3355, #cc0022, #800010)", glow: "0 0 22px rgba(255,40,70,0.85), 0 0 40px rgba(200,0,30,0.5)" },     // Ten Promised Jannah
+    { gradient: "linear-gradient(145deg, #e040fb, #aa00e8, #6600aa)", glow: "0 0 22px rgba(220,60,255,0.85), 0 0 40px rgba(160,0,220,0.5)" },   // Four Greatest Women
+    { gradient: "linear-gradient(145deg, #00f5ff, #00bcd4, #006880)", glow: "0 0 22px rgba(0,230,255,0.85), 0 0 40px rgba(0,180,210,0.5)" },   // Stories of the Companions
+    { gradient: "linear-gradient(145deg, #ffcc00, #ff8800, #cc4400)", glow: "0 0 22px rgba(255,190,0,0.85), 0 0 40px rgba(220,100,0,0.5)" },   // Angels and Jinns
+    { gradient: "linear-gradient(145deg, #90caf9, #4a90d9, #1a4f8a)", glow: "0 0 22px rgba(130,190,255,0.85), 0 0 40px rgba(60,130,220,0.5)" }, // The End Times
+    { gradient: "linear-gradient(145deg, #b060ff, #6a00f4, #3300cc)", glow: "0 0 22px rgba(170,80,255,0.85), 0 0 40px rgba(100,0,240,0.5)" },  // The Grave
+    { gradient: "linear-gradient(145deg, #00ff99, #00cc66, #008844)", glow: "0 0 22px rgba(0,255,140,0.85), 0 0 40px rgba(0,200,90,0.5)" },    // Day of Judgement
+    { gradient: "linear-gradient(145deg, #ff4444, #cc0000, #660000)", glow: "0 0 22px rgba(255,50,50,0.85), 0 0 40px rgba(200,0,0,0.5)" },     // Hellfire
+    { gradient: "linear-gradient(145deg, #ffe066, #ffc000, #ff8800)", glow: "0 0 22px rgba(255,210,0,0.85), 0 0 40px rgba(255,160,0,0.5)" },   // Paradise
   ];
+  const gradients = pathStyles.map(s => s.gradient);
 
   return (
     <div
@@ -543,8 +544,9 @@ export default function Home() {
           className="hide-scrollbar"
         >
           {paths.map((p, index) => {
-            const gradient =
-              gradients[index] || gradients[index % gradients.length];
+            const style = pathStyles[index] || pathStyles[index % pathStyles.length];
+            const gradient = style.gradient;
+            const glow = style.glow;
             const progress = typeof p.progress === "number" ? p.progress : 0;
             const percent = Math.min(100, Math.max(0, progress * 100));
             const completed = p.completedLessons || 0;
@@ -572,7 +574,8 @@ export default function Home() {
                   justifyContent: "center",
                   alignItems: "center",
                   cursor: "pointer",
-                  transition: "transform 0.2s",
+                  transition: "transform 0.2s, box-shadow 0.2s",
+                  boxShadow: glow,
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = "scale(1.05)";
