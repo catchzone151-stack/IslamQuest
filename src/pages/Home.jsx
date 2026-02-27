@@ -574,8 +574,7 @@ export default function Home() {
                   justifyContent: "center",
                   alignItems: "center",
                   cursor: "pointer",
-                  transition: "transform 0.2s, box-shadow 0.2s",
-                  boxShadow: glow,
+                  transition: "transform 0.2s",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = "scale(1.05)";
@@ -746,7 +745,7 @@ export default function Home() {
         }}
         style={{
           margin: "10px 16px 0 16px",
-          background: "linear-gradient(135deg, rgba(20,184,166,0.55) 0%, rgba(13,148,136,0.35) 100%)",
+          background: "linear-gradient(135deg, rgba(20,184,166,0.85) 0%, rgba(13,148,136,0.65) 100%)",
           borderRadius: 22,
           padding: "14px 16px",
           border: "1.5px solid rgba(255,215,0,0.35)",

@@ -82,7 +82,7 @@ export default function DailyQuestCard() {
       <div
         style={{
           background:
-            "linear-gradient(135deg, rgba(0,255,209,0.3), rgba(255,215,0,0.3))",
+            "linear-gradient(135deg, rgba(0,255,209,0.75), rgba(255,215,0,0.65))",
           borderRadius: 18,
           padding: 16,
           margin: "6px 0 18px",
