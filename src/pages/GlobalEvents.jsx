@@ -116,7 +116,7 @@ export default function GlobalEvents() {
         
         {/* Launch Date Banner */}
         <div style={{
-          background: "linear-gradient(135deg, #1a7a52 0%, #22c87a 60%, #16a866 100%)",
+          background: "linear-gradient(135deg, #1a3a7a 0%, #2563eb 60%, #1d4ed8 100%)",
           border: "1.5px solid rgba(255,215,0,0.55)",
           borderRadius: 16,
           padding: "16px 20px",
@@ -130,7 +130,7 @@ export default function GlobalEvents() {
           <div style={{ color: "rgba(212,175,55,0.8)", fontSize: "0.82rem", fontWeight: 600, marginBottom: 10 }}>
             16 June 2026 · Islamic New Year
           </div>
-          <div style={{ color: "#94a3b8", fontSize: "0.8rem", lineHeight: 1.5 }}>
+          <div style={{ color: "#ffffff", fontSize: "0.8rem", lineHeight: 1.5 }}>
             Get ready to compete with Muslims worldwide, in shā' Allāh
           </div>
         </div>
