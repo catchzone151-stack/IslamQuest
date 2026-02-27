@@ -116,8 +116,8 @@ export default function GlobalEvents() {
         
         {/* Launch Date Banner */}
         <div style={{
-          background: "linear-gradient(135deg, #0f3d2e 0%, #145c44 100%)",
-          border: "1.5px solid rgba(255,215,0,0.35)",
+          background: "linear-gradient(135deg, #1a7a52 0%, #22c87a 60%, #16a866 100%)",
+          border: "1.5px solid rgba(255,215,0,0.55)",
           borderRadius: 16,
           padding: "16px 20px",
           textAlign: "center",
@@ -135,24 +135,6 @@ export default function GlobalEvents() {
           </div>
         </div>
 
-        {/* Info Section */}
-        <div style={{ 
-          background: "rgba(212, 175, 55, 0.1)", 
-          borderRadius: 12, 
-          padding: "12px 16px",
-          border: "1px solid rgba(212, 175, 55, 0.2)",
-          textAlign: "center"
-        }}>
-          <p style={{ color: "#cbd5e1", fontSize: "0.85rem", margin: "0 0 4px" }}>
-            <span style={{ color: "#D4AF37" }}>Entry fee:</span> 25 coins per event
-          </p>
-          <p style={{ color: "#cbd5e1", fontSize: "0.85rem", margin: "0 0 4px" }}>
-            <span style={{ color: "#D4AF37" }}>Weekly reset:</span> Friday 00:00 GMT
-          </p>
-          <p style={{ color: "#cbd5e1", fontSize: "0.85rem", margin: 0 }}>
-            <span style={{ color: "#D4AF37" }}>Rewards:</span> Based on your rank
-          </p>
-        </div>
       </div>
 
       {/* Loading State */}
@@ -210,10 +192,6 @@ export default function GlobalEvents() {
                 </div>
               )}
 
-              {/* New Event Badge (for un-entered events) */}
-              {!entered && (
-                <div className="new-event-badge">Launching 16 June</div>
-              )}
 
               {/* Premium Lock Overlay */}
               {!isUserPremium && (
