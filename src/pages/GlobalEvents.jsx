@@ -8,6 +8,17 @@ import { useUserStore } from "../store/useUserStore";
 import { getAvatarImage } from "../utils/avatarUtils";
 import { openAppStore } from "../utils/appStoreUtils";
 import "./GlobalEvents.css";
+import img_pillar_clash from "../assets/challenge_pillar_clash.png";
+import img_seerah from "../assets/challenge_seerah.png";
+import img_names_allah from "../assets/challenge_names_allah.png";
+import img_faith_test from "../assets/challenge_faith_test.png";
+
+const EVENT_IMAGES = {
+  "Pillar Clash": img_pillar_clash,
+  "Seerah Challenge": img_seerah,
+  "Names of Allah Mastery": img_names_allah,
+  "Faith Test": img_faith_test,
+};
 
 export default function GlobalEvents() {
   const navigate = useNavigate();
@@ -174,20 +185,23 @@ export default function GlobalEvents() {
               }}
               onClick={() => handleEventClick(event)}
             >
-              {/* Event Icon */}
-              <div className="event-icon">{event.icon}</div>
-              
-              {/* Event Name */}
-              <h3 className="event-name">{event.name}</h3>
-              
-              {/* Event Description */}
-              <p className="event-description">{event.description}</p>
-              
-              {/* Entry Info */}
-              <div className="event-footer">
-                <span className="event-entry-fee">💰 25 coins</span>
-                <span className="event-leaderboard-icon">📊</span>
-              </div>
+              {/* Event Image */}
+              {EVENT_IMAGES[event.name] && (
+                <img
+                  src={EVENT_IMAGES[event.name]}
+                  alt={event.name}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    borderRadius: 18,
+                    display: "block",
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                  }}
+                />
+              )}
 
               {/* Entered Badge - Bottom Center */}
               {entered && (
