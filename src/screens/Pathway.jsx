@@ -19,6 +19,7 @@ export default function Pathway() {
   const { pathId } = useParams();
   const navigate = useNavigate();
   const scrollRef = useRef(null);
+  const activeNodeRef = useRef(null);
   const numericPathId = Number(pathId);
 
   const { paths, lessonStates, canAccessLesson, premium } = useProgressStore();
@@ -91,6 +92,22 @@ export default function Pathway() {
     }, 200);
     return () => clearTimeout(handle);
   }, [numericPathId, totalLessons]);
+
+  useEffect(() => {
+    if (activeIndex <= 0) return;
+    const scrollContainer = document.querySelector('.app-root-container');
+    if (!scrollContainer) return;
+    const handle = setTimeout(() => {
+      if (!activeNodeRef.current) return;
+      const nodeRect = activeNodeRef.current.getBoundingClientRect();
+      const containerRect = scrollContainer.getBoundingClientRect();
+      const nodeTopInContainer = nodeRect.top - containerRect.top + scrollContainer.scrollTop;
+      const targetScrollTop = nodeTopInContainer - scrollContainer.clientHeight / 3;
+      console.log("[PATH_AUTO_SCROLL]", activeIndex);
+      scrollContainer.scrollTo({ top: Math.max(0, targetScrollTop), behavior: "smooth" });
+    }, 350);
+    return () => clearTimeout(handle);
+  }, [numericPathId, activeIndex]);
 
   const handleLessonClick = (lesson) => {
     console.log('🎯 Lesson clicked:', lesson.id, 'locked:', lesson.isLocked);
@@ -426,6 +443,7 @@ export default function Pathway() {
               <div>
               {/* Node */}
               <div
+                ref={isActive ? activeNodeRef : null}
                 onClick={() => handleLessonClick(lesson)}
                 style={{
                   position: "absolute",
