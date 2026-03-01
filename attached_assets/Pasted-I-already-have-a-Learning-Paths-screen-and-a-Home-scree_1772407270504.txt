@@ -1,0 +1,94 @@
+I already have a Learning Paths screen and a Home screen with a countdown card and a Global Events modal.
+
+I need the following updates implemented exactly as described.
+
+1️⃣ Add New Learning Paths (Locked Until Launch)
+
+Add the following new learning path cards:
+
+Tawheed: Oneness of Allah
+
+Tazkiyah: Purification
+
+Islamic Manners
+
+Dealing with Doubts & Waswas
+
+Muslim History: Prominent Figures
+
+Women in Islam
+
+40 Hadith of Imam Nawawi
+
+Fiqh of Purification
+
+Fiqh of Salah
+
+Fiqh of Fasting
+
+Ruqyah
+
+Requirements:
+
+• Keep the exact existing card design, layout, typography, spacing, and theme.
+• Continue the same colour theme style as existing paths (do not introduce a new design system).
+• Do not modify or remove any existing paths.
+• These new paths must have zero lessons for now.
+
+Locked State UI:
+
+Each new path card must show:
+
+🔒 Small lock icon
+Text under title (subtle style):
+
+Unlocking 1 Muharram 1448
+
+This should look intentional and clean — not like unfinished content.
+
+2️⃣ On Tap Behaviour (For New Paths Only)
+
+When any of these new paths are tapped:
+
+Instead of opening lessons, show a modal popup.
+
+The popup must use the exact same styling, animation, and layout as the existing Global Events modal.
+
+Popup Content:
+
+Title:
+Coming Soon
+
+Message:
+Launching 1 Muharram 1448 — 16 June 2026 insha'Allah
+
+Button:
+OK
+
+Do not implement lesson logic yet. These are placeholders only.
+
+3️⃣ Update Home Screen Countdown Card
+
+Update the existing countdown card copy to the following:
+
+Title:
+🌙 Islamic New Year
+
+Subtitle:
+Phase 2 Expansion & Global Events Unlock
+1 Muharram 1448 · 16 June 2026
+
+Supporting line (small text under date):
+11 New Learning Paths & Global Competition
+
+Optional subtle line under countdown timer:
+Prepare now. Build your foundations before Phase 2.
+
+Do not change the countdown logic itself. Only update the copy and text layout.
+
+Important
+
+• Do not change existing functionality.
+• Do not modify current working learning paths.
+• Keep everything visually consistent with the current app theme.
+• This is a Phase 2 launch preparation update only.

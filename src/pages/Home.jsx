@@ -180,7 +180,15 @@ export default function Home() {
    * - If locked, show premium paywall modal
    * - Otherwise navigate to /pathway/:id
    */
+  const COMING_SOON_PATH_IDS = [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
+
   const handlePathClick = (p) => {
+    // Phase 2 paths — not yet available
+    if (COMING_SOON_PATH_IDS.includes(p.id)) {
+      showModal(MODAL_TYPES.PATH_COMING_SOON);
+      return;
+    }
+
     // Ensure locks are initialized before checking
     ensureLocksReady();
     
@@ -268,6 +276,18 @@ export default function Home() {
     { gradient: "linear-gradient(145deg, #00ff99, #00cc66, #008844)", glow: "0 0 22px rgba(0,255,140,0.85), 0 0 40px rgba(0,200,90,0.5)" },    // Day of Judgement
     { gradient: "linear-gradient(145deg, #ff4444, #cc0000, #660000)", glow: "0 0 22px rgba(255,50,50,0.85), 0 0 40px rgba(200,0,0,0.5)" },     // Hellfire
     { gradient: "linear-gradient(145deg, #ffe066, #ffc000, #ff8800)", glow: "0 0 22px rgba(255,210,0,0.85), 0 0 40px rgba(255,160,0,0.5)" },   // Paradise
+    // Phase 2 paths (ids 15-25) — coming soon
+    { gradient: "linear-gradient(145deg, #a78bfa, #7c3aed, #4c1d95)", glow: "0 0 22px rgba(167,139,250,0.85), 0 0 40px rgba(124,58,237,0.5)" },  // Tawheed
+    { gradient: "linear-gradient(145deg, #34d399, #059669, #064e3b)", glow: "0 0 22px rgba(52,211,153,0.85), 0 0 40px rgba(5,150,105,0.5)" },    // Tazkiyah
+    { gradient: "linear-gradient(145deg, #fbbf24, #d97706, #92400e)", glow: "0 0 22px rgba(251,191,36,0.85), 0 0 40px rgba(217,119,6,0.5)" },    // Islamic Manners
+    { gradient: "linear-gradient(145deg, #f87171, #dc2626, #7f1d1d)", glow: "0 0 22px rgba(248,113,113,0.85), 0 0 40px rgba(220,38,38,0.5)" },   // Doubts & Waswas
+    { gradient: "linear-gradient(145deg, #38bdf8, #0284c7, #0c4a6e)", glow: "0 0 22px rgba(56,189,248,0.85), 0 0 40px rgba(2,132,199,0.5)" },    // Muslim History
+    { gradient: "linear-gradient(145deg, #f9a8d4, #ec4899, #9d174d)", glow: "0 0 22px rgba(249,168,212,0.85), 0 0 40px rgba(236,72,153,0.5)" },  // Women in Islam
+    { gradient: "linear-gradient(145deg, #6ee7b7, #10b981, #065f46)", glow: "0 0 22px rgba(110,231,183,0.85), 0 0 40px rgba(16,185,129,0.5)" },  // 40 Hadith
+    { gradient: "linear-gradient(145deg, #93c5fd, #3b82f6, #1e3a8a)", glow: "0 0 22px rgba(147,197,253,0.85), 0 0 40px rgba(59,130,246,0.5)" },  // Fiqh of Purification
+    { gradient: "linear-gradient(145deg, #fcd34d, #f59e0b, #78350f)", glow: "0 0 22px rgba(252,211,77,0.85), 0 0 40px rgba(245,158,11,0.5)" },   // Fiqh of Salah
+    { gradient: "linear-gradient(145deg, #a5f3fc, #06b6d4, #164e63)", glow: "0 0 22px rgba(165,243,252,0.85), 0 0 40px rgba(6,182,212,0.5)" },   // Fiqh of Fasting
+    { gradient: "linear-gradient(145deg, #c4b5fd, #8b5cf6, #4c1d95)", glow: "0 0 22px rgba(196,181,253,0.85), 0 0 40px rgba(139,92,246,0.5)" },  // Ruqyah
   ];
   const gradients = pathStyles.map(s => s.gradient);
 
@@ -559,6 +579,7 @@ export default function Home() {
             // Check if path is premium-locked
             const isPremiumPath = isPremiumOnlyPath(p.id);
             const isLocked = isPremiumPath && !isUserPremium;
+            const isComingSoon = COMING_SOON_PATH_IDS.includes(p.id);
 
             return (
               <div
@@ -586,6 +607,47 @@ export default function Home() {
                   e.currentTarget.style.transform = "scale(1)";
                 }}
               >
+                {/* Coming Soon overlay for Phase 2 paths */}
+                {isComingSoon && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      background: "rgba(5, 10, 25, 0.82)",
+                      borderRadius: 18,
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      zIndex: 10,
+                      gap: 6,
+                      backdropFilter: "blur(1px)",
+                    }}
+                  >
+                    <Lock
+                      size={22}
+                      color="rgba(255,215,0,0.7)"
+                      strokeWidth={2}
+                    />
+                    <span
+                      style={{
+                        fontSize: "0.68rem",
+                        color: "rgba(255,215,0,0.65)",
+                        fontWeight: 600,
+                        letterSpacing: "0.2px",
+                        textAlign: "center",
+                        padding: "0 10px",
+                        lineHeight: 1.4,
+                      }}
+                    >
+                      Unlocking 1 Muharram 1448
+                    </span>
+                  </div>
+                )}
+
                 {/* Grey lock overlay for premium-only paths */}
                 {isLocked && (
                   <div
@@ -774,12 +836,34 @@ export default function Home() {
           <div
             style={{
               fontSize: "0.78rem",
-              color: "rgba(255,255,255,0.85)",
-              fontWeight: 500,
+              color: "rgba(255,255,255,0.9)",
+              fontWeight: 600,
               letterSpacing: "0.2px",
+              marginBottom: 2,
             }}
           >
-            Global Events launch · 1 Muharram 1448 · 16 June 2026
+            Phase 2 Expansion &amp; Global Events Unlock
+          </div>
+          <div
+            style={{
+              fontSize: "0.72rem",
+              color: "rgba(255,255,255,0.7)",
+              fontWeight: 500,
+              letterSpacing: "0.2px",
+              marginBottom: 2,
+            }}
+          >
+            1 Muharram 1448 · 16 June 2026
+          </div>
+          <div
+            style={{
+              fontSize: "0.68rem",
+              color: "rgba(255,215,0,0.75)",
+              fontWeight: 500,
+              letterSpacing: "0.1px",
+            }}
+          >
+            11 New Learning Paths &amp; Global Competition
           </div>
         </div>
 
@@ -835,6 +919,20 @@ export default function Home() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Subtle motivational line under countdown */}
+        <div
+          style={{
+            textAlign: "center",
+            marginTop: 10,
+            fontSize: "0.68rem",
+            color: "rgba(255,255,255,0.5)",
+            fontStyle: "italic",
+            letterSpacing: "0.1px",
+          }}
+        >
+          Prepare now. Build your foundations before Phase 2.
         </div>
       </div>
 

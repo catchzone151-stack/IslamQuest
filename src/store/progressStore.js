@@ -40,6 +40,18 @@ const DEFAULT_PATHS = [
   { id: 12, title: "Day of Judgement", progress: 0, totalLessons: 16, completedLessons: 0, status: "available" },
   { id: 13, title: "Hellfire", progress: 0, totalLessons: 19, completedLessons: 0, status: "available" },
   { id: 14, title: "Paradise", progress: 0, totalLessons: 20, completedLessons: 0, status: "available" },
+  // Phase 2 — launching 1 Muharram 1448 (16 June 2026)
+  { id: 15, title: "Tawheed: Oneness of Allah", progress: 0, totalLessons: 0, completedLessons: 0, status: "coming_soon" },
+  { id: 16, title: "Tazkiyah: Purification of the Soul", progress: 0, totalLessons: 0, completedLessons: 0, status: "coming_soon" },
+  { id: 17, title: "Islamic Manners", progress: 0, totalLessons: 0, completedLessons: 0, status: "coming_soon" },
+  { id: 18, title: "Dealing with Doubts & Waswas", progress: 0, totalLessons: 0, completedLessons: 0, status: "coming_soon" },
+  { id: 19, title: "Muslim History: Prominent Figures", progress: 0, totalLessons: 0, completedLessons: 0, status: "coming_soon" },
+  { id: 20, title: "Women in Islam", progress: 0, totalLessons: 0, completedLessons: 0, status: "coming_soon" },
+  { id: 21, title: "40 Hadith of Imam Nawawi", progress: 0, totalLessons: 0, completedLessons: 0, status: "coming_soon" },
+  { id: 22, title: "Fiqh of Purification", progress: 0, totalLessons: 0, completedLessons: 0, status: "coming_soon" },
+  { id: 23, title: "Fiqh of Salah", progress: 0, totalLessons: 0, completedLessons: 0, status: "coming_soon" },
+  { id: 24, title: "Fiqh of Fasting", progress: 0, totalLessons: 0, completedLessons: 0, status: "coming_soon" },
+  { id: 25, title: "Ruqyah", progress: 0, totalLessons: 0, completedLessons: 0, status: "coming_soon" },
 ];
 
 const ENCRYPTION_KEY = "IQ_SYNC_V1";
@@ -177,6 +189,12 @@ export const useProgressStore = create((set, get) => ({
             title: defaultPath ? defaultPath.title : savedPath.title,
           };
         });
+        // Merge in any DEFAULT_PATHS not yet in saved data (e.g. Phase 2 paths added after install)
+        const savedPathIds = new Set(savedData.paths.map(p => p.id));
+        const newPaths = DEFAULT_PATHS.filter(p => !savedPathIds.has(p.id));
+        if (newPaths.length > 0) {
+          savedData.paths = [...savedData.paths, ...newPaths];
+        }
       }
       
       // 🔒 Initialize lockedLessons based on existing progress for migration
@@ -1470,6 +1488,12 @@ export const useProgressStore = create((set, get) => ({
             title: defaultPath ? defaultPath.title : cloudPath.title,
           };
         });
+        // Merge in any DEFAULT_PATHS not yet in cloud data (e.g. Phase 2 paths added after install)
+        const restoredPathIds = new Set(restored.paths.map(p => p.id));
+        const newPaths = DEFAULT_PATHS.filter(p => !restoredPathIds.has(p.id));
+        if (newPaths.length > 0) {
+          restored.paths = [...restored.paths, ...newPaths];
+        }
       }
 
       set(restored);
