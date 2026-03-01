@@ -100,6 +100,8 @@ export const useProgressStore = create((set, get) => ({
   
   // 🔄 Incremented each time cloud profile data is merged — used to re-trigger streak check
   _cloudSyncVersion: 0,
+  // 🔒 Mutex — prevents overlapping async executions of checkStreakOnAppOpen
+  _streakCheckRunning: false,
 
   // 🛡️ Shield saved notification (toast, no modal)
   showShieldSaved: false,
@@ -449,72 +451,79 @@ export const useProgressStore = create((set, get) => ({
 
   // 🌙 Check streak status on app open
   // Detects breaks and auto-consumes one shield if available (passive check, no activity required)
-  // Safe to call multiple times — guards prevent double-execution.
+  // Protected by _streakCheckRunning mutex — safe to call from multiple lifecycle points.
   checkStreakOnAppOpen: async () => {
-    const today = new Date().toISOString().split("T")[0];
-    const { lastStreakDate, streak, shieldCount, needsRepairPrompt } = get();
-
-    console.log(`[${STREAK_TRACE}] CHECK_OPEN_ENTRY`, { today, lastStreakDate, streak, shieldCount, needsRepairPrompt });
-
-    if (needsRepairPrompt) {
-      console.log(`[${STREAK_TRACE}] CHECK_OPEN_SKIP repair_already_active`);
+    // ── Mutex: prevent overlapping async executions ──────────────────────────
+    if (get()._streakCheckRunning) {
+      console.log(`[${STREAK_TRACE}] CHECK_OPEN_SKIP already_running`);
       return;
     }
-    if (!lastStreakDate) {
-      console.log(`[${STREAK_TRACE}] CHECK_OPEN_SKIP no_streak_date`);
-      return;
-    }
-    if (lastStreakDate === today) {
-      console.log(`[${STREAK_TRACE}] CHECK_OPEN_SKIP already_active_today`);
-      return;
-    }
+    set({ _streakCheckRunning: true });
 
-    // Use UTC midnight arithmetic to avoid timezone drift
-    const msPerDay = 1000 * 60 * 60 * 24;
-    const todayUTC = Date.UTC(
-      parseInt(today.slice(0, 4), 10),
-      parseInt(today.slice(5, 7), 10) - 1,
-      parseInt(today.slice(8, 10), 10)
-    );
-    const lastUTC = Date.UTC(
-      parseInt(lastStreakDate.slice(0, 4), 10),
-      parseInt(lastStreakDate.slice(5, 7), 10) - 1,
-      parseInt(lastStreakDate.slice(8, 10), 10)
-    );
-    const diffDays = Math.round((todayUTC - lastUTC) / msPerDay);
+    try {
+      const today = new Date().toISOString().split("T")[0];
+      const { lastStreakDate, streak, shieldCount, needsRepairPrompt } = get();
 
-    console.log(`[${STREAK_TRACE}] CHECK_OPEN_DIFF`, { diffDays, todayUTC, lastUTC });
+      console.log(`[${STREAK_TRACE}] CHECK_OPEN_ENTRY`, { today, lastStreakDate, streak, shieldCount, needsRepairPrompt });
 
-    if (diffDays <= 1) {
-      console.log(`[${STREAK_TRACE}] CHECK_OPEN_SKIP diff_ok diffDays=${diffDays}`);
-      return;
-    }
+      // ── Idempotent guards ─────────────────────────────────────────────────
+      if (needsRepairPrompt) {
+        console.log(`[${STREAK_TRACE}] CHECK_OPEN_SKIP repair_already_active`);
+        return;
+      }
+      if (!lastStreakDate) {
+        console.log(`[${STREAK_TRACE}] CHECK_OPEN_SKIP no_streak_date`);
+        return;
+      }
+      if (lastStreakDate === today) {
+        console.log(`[${STREAK_TRACE}] CHECK_OPEN_SKIP already_active_today`);
+        return;
+      }
 
-    // Resolve Supabase user once for both branches
-    const { data: authData } = await supabase.auth.getUser();
-    const userId = authData?.user?.id;
+      // ── UTC midnight arithmetic — no timezone drift ───────────────────────
+      const msPerDay = 1000 * 60 * 60 * 24;
+      const todayUTC = Date.UTC(
+        parseInt(today.slice(0, 4), 10),
+        parseInt(today.slice(5, 7), 10) - 1,
+        parseInt(today.slice(8, 10), 10)
+      );
+      const lastUTC = Date.UTC(
+        parseInt(lastStreakDate.slice(0, 4), 10),
+        parseInt(lastStreakDate.slice(5, 7), 10) - 1,
+        parseInt(lastStreakDate.slice(8, 10), 10)
+      );
+      const diffDays = Math.round((todayUTC - lastUTC) / msPerDay);
 
-    // Auto-consume one shield for missed day(s)
-    if (shieldCount >= 1) {
-      const yesterday = new Date(today + "T00:00:00Z");
-      yesterday.setUTCDate(yesterday.getUTCDate() - 1);
-      const yesterdayStr = yesterday.toISOString().split("T")[0];
-      const newShieldCount = shieldCount - 1;
+      console.log(`[${STREAK_TRACE}] CHECK_OPEN_DIFF`, { diffDays });
 
-      console.log(`[${STREAK_TRACE}] CHECK_OPEN_SHIELD_CONSUME`, { streak, newShieldCount, yesterdayStr });
+      if (diffDays <= 1) {
+        console.log(`[${STREAK_TRACE}] CHECK_OPEN_SKIP diff_ok diffDays=${diffDays}`);
+        return;
+      }
 
-      set({
-        shieldCount: newShieldCount,
-        lastStreakDate: yesterdayStr,
-        lastStudyDate: yesterdayStr,
-        showShieldSaved: true,
-        _localStreakTs: Date.now(),
-      });
-      get().saveProgress();
+      // ── Resolve Supabase user once for both branches ──────────────────────
+      const { data: authData } = await supabase.auth.getUser();
+      const userId = authData?.user?.id;
 
-      // Sync full streak state to Supabase immediately
-      if (userId) {
-        try {
+      // ── Branch A: shield available — auto-consume ─────────────────────────
+      if (shieldCount >= 1) {
+        const yesterday = new Date(today + "T00:00:00Z");
+        yesterday.setUTCDate(yesterday.getUTCDate() - 1);
+        const yesterdayStr = yesterday.toISOString().split("T")[0];
+        const newShieldCount = shieldCount - 1;
+
+        console.log(`[${STREAK_TRACE}] CHECK_OPEN_SHIELD_CONSUME`, { streak, newShieldCount, yesterdayStr });
+
+        set({
+          shieldCount: newShieldCount,
+          lastStreakDate: yesterdayStr,
+          lastStudyDate: yesterdayStr,
+          showShieldSaved: true,
+          _localStreakTs: Date.now(),
+        });
+        get().saveProgress();
+
+        if (userId) {
           const { error } = await supabase.from("profiles").update({
             shield_count: newShieldCount,
             streak: streak,
@@ -524,33 +533,27 @@ export const useProgressStore = create((set, get) => ({
           }).eq("user_id", userId);
           if (error) console.error(`[${STREAK_TRACE}] Shield Supabase error:`, error.message);
           else console.log(`[${STREAK_TRACE}] CHECK_OPEN_SHIELD_SYNCED`);
-        } catch (err) {
-          console.error(`[${STREAK_TRACE}] Shield sync error:`, err);
+          logStreakEvent(userId, true);
         }
-        logStreakEvent(userId, true);
+
+        useModalStore.getState().showModal(MODAL_TYPES.STREAK_SAVED);
+        return;
       }
 
-      // Show "Streak Saved" modal
-      useModalStore.getState().showModal(MODAL_TYPES.STREAK_SAVED);
-      return;
-    }
+      // ── Branch B: no shield — streak broken ───────────────────────────────
+      console.log(`[${STREAK_TRACE}] CHECK_OPEN_STREAK_BROKEN`, { streak });
 
-    // No shield — streak broke
-    console.log(`[${STREAK_TRACE}] CHECK_OPEN_STREAK_BROKEN`, { streak, shieldCount });
+      set({
+        brokenStreakValue: streak,
+        streak: 0,
+        needsRepairPrompt: true,
+        _localStreakTs: Date.now(),
+      });
+      get().calculateXPMultiplier();
+      get().saveProgress();
+      syncStreakTags("streak_broken");
 
-    set({
-      brokenStreakValue: streak,
-      streak: 0,
-      needsRepairPrompt: true,
-      _localStreakTs: Date.now(),
-    });
-    get().calculateXPMultiplier();
-    get().saveProgress();
-    syncStreakTags("streak_broken");
-
-    // Sync broken streak to Supabase immediately
-    if (userId) {
-      try {
+      if (userId) {
         const { error } = await supabase.from("profiles").update({
           streak: 0,
           streak_active: false,
@@ -558,10 +561,12 @@ export const useProgressStore = create((set, get) => ({
         }).eq("user_id", userId);
         if (error) console.error(`[${STREAK_TRACE}] Broken streak Supabase error:`, error.message);
         else console.log(`[${STREAK_TRACE}] CHECK_OPEN_BROKEN_SYNCED`);
-      } catch (err) {
-        console.error(`[${STREAK_TRACE}] Broken streak sync error:`, err);
+        logStreakEvent(userId, false);
       }
-      logStreakEvent(userId, false);
+    } finally {
+      // ── Always release the mutex, even if an exception occurred ──────────
+      set({ _streakCheckRunning: false });
+      console.log(`[${STREAK_TRACE}] CHECK_OPEN_LOCK_RELEASED`);
     }
   },
 
