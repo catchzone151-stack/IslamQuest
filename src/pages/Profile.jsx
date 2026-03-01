@@ -25,12 +25,27 @@ export default function Profile() {
     streak, 
     shieldCount,
     premiumStatus,
+    premium,
     vibrationEnabled,
     setVibrationEnabled,
     purchaseIndividual,
   } = useProgressStore();
   
   const { showModal } = useModalStore();
+
+  // ── PREMIUM TRACE: log on every render ────────────────────────────────
+  React.useEffect(() => {
+    console.log("[PREMIUM_TRACE] PROFILE_RENDER", {
+      userId,
+      source: "progressStore",
+      premium,
+      premiumStatus,
+      displayLabel: premiumStatus === "free" ? "Free Plan" : "Premium Plan",
+      iapEntitlement: (() => { try { const r = localStorage.getItem("iq_iap_premium_entitlement"); return r ? JSON.parse(r) : null; } catch { return "parse_error"; } })(),
+      premiumCache: (() => { try { const r = localStorage.getItem("iq_premium_cache"); return r ? JSON.parse(r) : null; } catch { return "parse_error"; } })(),
+      lastCloudSync: localStorage.getItem("iq_last_cloud_sync"),
+    });
+  }, [userId, premium, premiumStatus]);
 
   const currentLevel = getCurrentLevel(xp);
   const xpProgress = getXPProgress(xp);

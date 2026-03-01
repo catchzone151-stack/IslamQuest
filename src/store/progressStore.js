@@ -214,6 +214,17 @@ export const useProgressStore = create((set, get) => ({
       } catch (e) {
         // Ignore parse errors
       }
+
+      // ── PREMIUM TRACE: what is being restored from localStorage ──────────
+      console.log("[PREMIUM_TRACE] HYDRATE_FROM_LOCALSTORAGE", {
+        source: "localStorage / iq_progress_store",
+        premium: savedData.premium,
+        premiumStatus: savedData.premiumStatus,
+        hasPremium: savedData.hasPremium,
+        iapEntitlement: (() => { try { const r = localStorage.getItem("iq_iap_premium_entitlement"); return r ? JSON.parse(r) : null; } catch { return "parse_error"; } })(),
+        premiumCache: (() => { try { const r = localStorage.getItem("iq_premium_cache"); return r ? JSON.parse(r) : null; } catch { return "parse_error"; } })(),
+        lastCloudSync: localStorage.getItem("iq_last_cloud_sync"),
+      });
       
       if (!savedData.lastStreakDate && savedData.lastCompletedActivityDate) {
         savedData.lastStreakDate = savedData.lastCompletedActivityDate;
@@ -1253,6 +1264,15 @@ export const useProgressStore = create((set, get) => ({
     if (!data) return;
     
     const newLevel = getCurrentLevel(data.xp || 0);
+
+    // ── PREMIUM TRACE: inputs to setFromCloudSync ─────────────────────────
+    console.log("[PREMIUM_TRACE] SET_FROM_CLOUD_SYNC_ENTRY", {
+      source: "profileSync.mergeProfileData → setFromCloudSync",
+      incomingPremium: data.premium,
+      currentStorePremium: get().premium,
+      currentStorePremiumStatus: get().premiumStatus,
+      cloudUpdatedAt,
+    });
     
     // CRITICAL: Store-owned premium MUST override cloud false
     // Check IAP local storage to prevent regression
@@ -1284,6 +1304,14 @@ export const useProgressStore = create((set, get) => ({
       source: 'setFromCloudSync',
     });
 
+    // ── PREMIUM TRACE: resolved values before set() ───────────────────────
+    const derivedPremiumStatus = finalPremium ? (get().premiumStatus !== "free" ? get().premiumStatus : "individual") : "free";
+    console.log("[PREMIUM_TRACE] SET_FROM_CLOUD_SYNC_RESOLVED", {
+      finalPremium,
+      derivedPremiumStatus,
+      iapProtected: (() => { try { const r = localStorage.getItem("iq_iap_premium_entitlement"); return r ? JSON.parse(r)?.isPremium : false; } catch { return false; } })(),
+    });
+
     set({
       xp: data.xp ?? get().xp,
       coins: data.coins ?? get().coins,
@@ -1292,7 +1320,7 @@ export const useProgressStore = create((set, get) => ({
       shieldCount: data.shield_count ?? get().shieldCount,
       premium: finalPremium,
       hasPremium: finalPremium,
-      premiumStatus: finalPremium ? (get().premiumStatus !== "free" ? get().premiumStatus : "individual") : "free",
+      premiumStatus: derivedPremiumStatus,
       level: newLevel?.level ?? get().level,
     });
     
@@ -1454,7 +1482,26 @@ export const useProgressStore = create((set, get) => ({
       // Choose freshest source
       const shouldOverwriteLocal = cloudTs > localTs;
 
+      // ── PREMIUM TRACE: timestamp gate decision ────────────────────────────
+      console.log("[PREMIUM_TRACE] LOAD_FROM_SUPABASE_TIMESTAMP_GATE", {
+        userId,
+        cloudUpdatedAt: data.updated_at,
+        cloudTs,
+        localTs,
+        cloudTsDate: new Date(cloudTs).toISOString(),
+        localTsDate: localTs ? new Date(localTs).toISOString() : "never",
+        willApplyCloudData: shouldOverwriteLocal,
+        cloudPremium: data.premium,
+        localPremium: get().premium,
+        localPremiumStatus: get().premiumStatus,
+      });
+
       if (!shouldOverwriteLocal) {
+        console.log("[PREMIUM_TRACE] LOAD_FROM_SUPABASE_SKIPPED — local newer, cloud premium NOT applied", {
+          cloudPremium: data.premium,
+          localPremium: get().premium,
+          localPremiumStatus: get().premiumStatus,
+        });
         console.log("Local data newer → keeping device data.");
         return;
       }
@@ -1504,6 +1551,18 @@ export const useProgressStore = create((set, get) => ({
 
       // Mark restore time
       get().setLastUpdatedAt(Date.now());
+
+      // ── PREMIUM TRACE: what loadFromSupabase applied ─────────────────────
+      console.log("[PREMIUM_TRACE] LOAD_FROM_SUPABASE_APPLIED", {
+        source: "profiles table (loadFromSupabase)",
+        cloudPremium: data.premium,
+        restoredPremium: restored.premium,
+        restoredHasPremium: restored.hasPremium,
+        premiumStatusAfter: get().premiumStatus,
+        warning: restored.premium && get().premiumStatus === "free"
+          ? "⚠️ premium=true but premiumStatus='free' — Profile will show 'Free Plan'"
+          : "OK",
+      });
 
       console.log("✅ Restored from Supabase (cloud → device)", { 
         xp: restored.xp, 
