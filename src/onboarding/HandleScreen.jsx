@@ -27,22 +27,42 @@ export default function HandleScreen() {
     const trimmedHandle = handleValue.trim().toLowerCase().replace(/^@/, "");
     const uid = user?.id || userId;
 
+    console.log("[HANDLE_CHECK] HandleScreen checking:", trimmedHandle);
     try {
+      // Use ilike for case-insensitive match — prevents "Lal" and "lal" coexisting.
       const { data, error: err } = await supabase
         .from("profiles")
         .select("handle, user_id")
-        .eq("handle", trimmedHandle);
+        .ilike("handle", trimmedHandle);
 
-      if (!err && data && data.length > 0) {
-        const otherUser = data.find(d => d.user_id !== uid);
+      console.log("[HANDLE_CHECK] HandleScreen DB data:", data);
+      console.log("[HANDLE_CHECK] HandleScreen DB error:", err);
+
+      // ── Fail CLOSED on DB error ───────────────────────────────────────────
+      if (err) {
+        console.warn("[HANDLE_CHECK] DB error — failing closed:", err.message);
+        setError("Could not verify handle. Please try again.");
+        setChecking(false);
+        return;
+      }
+
+      if (data && data.length > 0) {
+        const otherUser = data.find((d) => d.user_id !== uid);
         if (otherUser) {
+          console.log("[HANDLE_CHECK] TAKEN — matched row:", otherUser);
           setError("Handle already taken. Try another.");
           setChecking(false);
           return;
         }
       }
+
+      console.log("[HANDLE_CHECK] AVAILABLE ✅");
     } catch (e) {
-      console.log("Handle check skipped (DB not ready)");
+      // ── Fail CLOSED on exception — never silently continue ───────────────
+      console.warn("[HANDLE_CHECK] Exception — failing closed:", e);
+      setError("Could not verify handle. Please try again.");
+      setChecking(false);
+      return;
     }
 
     setHandle(trimmedHandle);

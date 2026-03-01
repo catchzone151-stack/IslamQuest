@@ -60,46 +60,75 @@ export function useOnboarding() {
     localStorage.removeItem("iq_email");
   }, []);
 
+  /**
+   * checkHandleAvailable — always queries the DB directly, never uses cached state.
+   *
+   * Rules:
+   * - Trims and lowercases before querying.
+   * - Uses ILIKE for case-insensitive match (catches "Lal" vs "lal").
+   * - Fails CLOSED: any DB error returns available=false to prevent false positives.
+   * - currentUserId: pass the signed-in user's ID to allow re-use of their own handle
+   *   (e.g. editing profile). Pass null for new signups.
+   */
   const checkHandleAvailable = useCallback(async (handle, currentUserId = null) => {
     const trimmed = handle.trim().toLowerCase().replace(/^@/, "");
-    
+
+    console.log("[HANDLE_CHECK] ── checkHandleAvailable called ──────────────");
+    console.log("[HANDLE_CHECK] raw input:", handle);
+    console.log("[HANDLE_CHECK] normalised handle:", trimmed);
+    console.log("[HANDLE_CHECK] currentUserId:", currentUserId);
+
     if (!trimmed || trimmed.length < 2) {
+      console.log("[HANDLE_CHECK] REJECT — too short");
       return { available: false, error: "Handle must be at least 2 characters" };
     }
 
     if (!/^[a-z0-9_]+$/.test(trimmed)) {
+      console.log("[HANDLE_CHECK] REJECT — invalid characters");
       return { available: false, error: "Only letters, numbers, and underscores allowed" };
     }
 
     try {
+      // Use ilike for case-insensitive comparison.
+      // .eq() uses exact Postgres equality which is case-sensitive by default.
       const { data, error } = await supabase
         .from("profiles")
         .select("handle, user_id")
-        .eq("handle", trimmed);
+        .ilike("handle", trimmed);
 
+      console.log("[HANDLE_CHECK] DB raw data:", data);
+      console.log("[HANDLE_CHECK] DB error:", error);
+
+      // ── Fail CLOSED on any DB error ──────────────────────────────────────
+      // Never assume available=true when we cannot confirm it.
       if (error) {
-        console.warn("Handle check error:", error);
-        return { available: true, error: null };
+        console.warn("[HANDLE_CHECK] DB error — failing closed:", error.message);
+        return { available: false, error: "Could not verify handle. Please try again." };
       }
 
       if (data && data.length > 0) {
-        const otherUser = data.find(d => d.user_id !== currentUserId);
-        if (otherUser) {
+        // Filter out the current user's own handle (relevant for profile editing).
+        // For new signups currentUserId is null, so all rows qualify as "other users".
+        const takenByOther = data.find((d) => d.user_id !== currentUserId);
+        if (takenByOther) {
+          console.log("[HANDLE_CHECK] TAKEN — matched row:", takenByOther);
           return { available: false, error: "Handle already taken" };
         }
       }
 
+      console.log("[HANDLE_CHECK] AVAILABLE ✅");
       return { available: true, error: null };
     } catch (e) {
-      console.warn("Handle check failed:", e);
-      return { available: true, error: null };
+      // ── Fail CLOSED on exception too ─────────────────────────────────────
+      console.warn("[HANDLE_CHECK] Exception — failing closed:", e);
+      return { available: false, error: "Could not verify handle. Please try again." };
     }
   }, []);
 
   const completeOnboarding = useCallback(() => {
     clearStep();
     localStorage.setItem("iq_profile_complete", "true");
-    
+
     useUserStore.setState({
       hasOnboarded: true,
       profileReady: true,

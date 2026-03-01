@@ -114,6 +114,22 @@ export default function SignUpPage() {
       const trimmedName = displayName.trim();
       const avatarKey = selectedAvatar;
 
+      // ── Final DB re-verification immediately before account creation ─────
+      // The debounced check on keystroke can be stale by seconds. We re-query
+      // the DB one final time so we never proceed with a taken handle.
+      console.log("[SignUp] Final handle re-verification for:", trimmedHandle);
+      const finalHandleCheck = await checkHandleAvailable(trimmedHandle);
+      console.log("[SignUp] Final handle check result:", finalHandleCheck);
+
+      if (!finalHandleCheck.available) {
+        setErrorMsg(finalHandleCheck.error || "Username is not available. Please choose another.");
+        setHandleStatus({ checking: false, available: false, error: finalHandleCheck.error });
+        triggerShake();
+        setLoading(false);
+        return;
+      }
+      // ─────────────────────────────────────────────────────────────────────
+
       localStorage.setItem("iq_name", trimmedName);
       localStorage.setItem("iq_handle", trimmedHandle);
       localStorage.setItem("iq_avatar", avatarKey);
