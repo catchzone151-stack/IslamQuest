@@ -116,7 +116,6 @@ export const useProgressStore = create((set, get) => ({
   premiumStatus: "free", // "free" | "individual" (kept for backwards compatibility)
   
   // 🔊 System Preferences
-  vibrationEnabled: true, // Haptic feedback toggle
   _premiumMigrationV1: false, // Internal: tracks if premium lock migration has run
 
   // 📚 Revise Feature Unlocks
@@ -228,10 +227,6 @@ export const useProgressStore = create((set, get) => ({
         savedData.lastStudyDate = toISODateStr(savedData.lastStudyDate);
       }
 
-      if (savedData.vibrationEnabled === undefined) {
-        savedData.vibrationEnabled = true;
-      }
-      
       // 📚 MIGRATION: Initialize Revise unlock flags if missing
       if (savedData.reviewMistakesUnlocked === undefined) {
         savedData.reviewMistakesUnlocked = false;
@@ -278,11 +273,6 @@ export const useProgressStore = create((set, get) => ({
     }
   },
 
-  // 🔊 Toggle vibration
-  setVibrationEnabled: (enabled) => {
-    set({ vibrationEnabled: enabled });
-    get().saveProgress();
-  },
 
   // Set streak shield from sync (cloud → local)
   setStreakShieldFromSync: (data) => {

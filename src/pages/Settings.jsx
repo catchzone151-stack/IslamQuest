@@ -12,21 +12,10 @@ import { NativeSettings, AndroidSettings, IOSSettings } from "capacitor-native-s
 
 export default function Settings() {
   const navigate = useNavigate();
-  const { 
-    vibrationEnabled, 
-    setVibrationEnabled, 
-    resetAllProgress
-  } = useProgressStore();
+  const { resetAllProgress } = useProgressStore();
   const { resetUserData, setOnboarded } = useUserStore();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-
-  const handleVibrationToggle = () => {
-    setVibrationEnabled(!vibrationEnabled);
-    if (!vibrationEnabled && navigator.vibrate) {
-      navigator.vibrate(50);
-    }
-  };
 
   const handleOpenNotificationSettings = async () => {
     const platform = Capacitor.getPlatform();
@@ -191,39 +180,6 @@ export default function Settings() {
             gap: 12,
           }}
         >
-          <div
-            style={{
-              background: "rgba(255, 255, 255, 0.03)",
-              padding: 14,
-              borderRadius: 12,
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <span style={{ color: "#cbd5e1", fontSize: "0.9rem" }}>
-              🔊 Vibration (Haptics)
-            </span>
-            <button
-              onClick={handleVibrationToggle}
-              style={{
-                background: vibrationEnabled
-                  ? "linear-gradient(135deg, #10b981, #059669)"
-                  : "rgba(255, 255, 255, 0.1)",
-                border: "1px solid rgba(79, 213, 255, 0.3)",
-                borderRadius: 20,
-                padding: "6px 14px",
-                color: vibrationEnabled ? "white" : "#4fd5ff",
-                fontWeight: "600",
-                cursor: "pointer",
-                fontSize: "0.85rem",
-                transition: "all 0.3s",
-              }}
-            >
-              {vibrationEnabled ? "ON" : "OFF"}
-            </button>
-          </div>
-
           <div
             style={{
               background: "rgba(255, 255, 255, 0.03)",
