@@ -6,6 +6,7 @@ import { ZaydLevelUpPopup } from './ZaydLevelUpPopup';
 import PurchaseModal from './PurchaseModal';
 import PurchaseStreakFreezeModal from './PurchaseStreakFreezeModal';
 import RepairStreakModal from './RepairStreakModal';
+import StreakSavedModal from './StreakSavedModal';
 import EditNameInput from './EditNameInput';
 import EditAvatarModal from './EditAvatarModal';
 import { ViewAllLevelsModal } from './ViewAllLevelsModal';
@@ -364,6 +365,16 @@ export default function ModalController() {
             onRepair={() => {
               modalData.onRepair?.();
               hideModal();
+            }}
+          />
+        );
+
+      case MODAL_TYPES.STREAK_SAVED:
+        return (
+          <StreakSavedModal
+            onClose={() => {
+              hideModal();
+              modalData.onClose?.();
             }}
           />
         );

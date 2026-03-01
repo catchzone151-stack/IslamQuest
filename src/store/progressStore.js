@@ -400,6 +400,7 @@ export const useProgressStore = create((set, get) => ({
       if (userId) {
         const syncPayload = {
           streak: newStreak,
+          streak_active: newStreak > 0,
           shield_count: newShieldCount,
           updated_at: new Date().toISOString(),
         };
@@ -445,7 +446,8 @@ export const useProgressStore = create((set, get) => ({
 
   // 🌙 Check streak status on app open
   // Detects breaks and auto-consumes one shield if available (passive check, no activity required)
-  checkStreakOnAppOpen: () => {
+  // Safe to call multiple times — guards prevent double-execution.
+  checkStreakOnAppOpen: async () => {
     const today = new Date().toISOString().split("T")[0];
     const { lastStreakDate, streak, shieldCount, needsRepairPrompt } = get();
 
@@ -453,33 +455,61 @@ export const useProgressStore = create((set, get) => ({
     if (!lastStreakDate) return;
     if (lastStreakDate === today) return; // already active today
 
-    const diffDays = Math.round(
-      (new Date(today) - new Date(lastStreakDate)) / (1000 * 60 * 60 * 24)
+    // Use UTC midnight arithmetic to avoid timezone drift
+    const msPerDay = 1000 * 60 * 60 * 24;
+    const todayUTC = Date.UTC(
+      parseInt(today.slice(0, 4), 10),
+      parseInt(today.slice(5, 7), 10) - 1,
+      parseInt(today.slice(8, 10), 10)
     );
+    const lastUTC = Date.UTC(
+      parseInt(lastStreakDate.slice(0, 4), 10),
+      parseInt(lastStreakDate.slice(5, 7), 10) - 1,
+      parseInt(lastStreakDate.slice(8, 10), 10)
+    );
+    const diffDays = Math.round((todayUTC - lastUTC) / msPerDay);
 
     if (diffDays <= 1) return;
 
-    // Auto-consume one shield for exactly one missed day
+    // Resolve Supabase user once for both branches
+    const { data: authData } = await supabase.auth.getUser();
+    const userId = authData?.user?.id;
+
+    // Auto-consume one shield for missed day(s)
     if (shieldCount >= 1) {
-      const yesterday = new Date(today);
-      yesterday.setDate(yesterday.getDate() - 1);
+      const yesterday = new Date(today + "T00:00:00Z");
+      yesterday.setUTCDate(yesterday.getUTCDate() - 1);
       const yesterdayStr = yesterday.toISOString().split("T")[0];
 
+      const newShieldCount = shieldCount - 1;
+
       set({
-        shieldCount: shieldCount - 1,
+        shieldCount: newShieldCount,
         lastStreakDate: yesterdayStr,
         lastStudyDate: yesterdayStr,
         showShieldSaved: true,
         _localStreakTs: Date.now(),
       });
       get().saveProgress();
-      setTimeout(() => get().syncStreakShieldToCloud(), 50);
 
-      (async () => {
-        const { data } = await supabase.auth.getUser();
-        const userId = data?.user?.id;
-        if (userId) logStreakEvent(userId, true);
-      })();
+      // Sync full streak state to Supabase immediately
+      if (userId) {
+        try {
+          await supabase.from("profiles").update({
+            shield_count: newShieldCount,
+            streak: streak,
+            streak_active: streak > 0,
+            last_completed_activity_date: yesterdayStr,
+            updated_at: new Date().toISOString(),
+          }).eq("user_id", userId);
+        } catch (err) {
+          console.error(`[${STREAK_TRACE}] Shield sync error:`, err);
+        }
+        logStreakEvent(userId, true);
+      }
+
+      // Show "Streak Saved" modal
+      useModalStore.getState().showModal(MODAL_TYPES.STREAK_SAVED);
 
       return;
     }
@@ -495,11 +525,19 @@ export const useProgressStore = create((set, get) => ({
     get().saveProgress();
     syncStreakTags("streak_broken");
 
-    (async () => {
-      const { data } = await supabase.auth.getUser();
-      const userId = data?.user?.id;
-      if (userId) logStreakEvent(userId, false);
-    })();
+    // Sync broken streak to Supabase immediately
+    if (userId) {
+      try {
+        await supabase.from("profiles").update({
+          streak: 0,
+          streak_active: false,
+          updated_at: new Date().toISOString(),
+        }).eq("user_id", userId);
+      } catch (err) {
+        console.error(`[${STREAK_TRACE}] Broken streak sync error:`, err);
+      }
+      logStreakEvent(userId, false);
+    }
   },
 
   // 🛡️ Purchase streak freeze shield

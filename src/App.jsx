@@ -561,15 +561,27 @@ export default function App() {
       console.log("[App] IAP initialization failed (non-fatal):", err.message);
     });
 
-    // Sync when app/tab regains focus
+    // Sync when app/tab regains focus and re-check streak
     const handleFocus = () => {
       syncOnForeground();
+      useProgressStore.getState().checkStreakOnAppOpen();
     };
 
     window.addEventListener("focus", handleFocus);
 
+    // Capacitor: re-check streak when app returns to foreground
+    let capacitorForegroundListener = null;
+    CapacitorApp.addListener("appStateChange", (state) => {
+      if (state.isActive) {
+        useProgressStore.getState().checkStreakOnAppOpen();
+      }
+    }).then((listener) => {
+      capacitorForegroundListener = listener;
+    });
+
     return () => {
       window.removeEventListener("focus", handleFocus);
+      capacitorForegroundListener?.remove();
     };
   }, []);
 
