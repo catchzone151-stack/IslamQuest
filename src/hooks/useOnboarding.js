@@ -89,35 +89,32 @@ export function useOnboarding() {
     }
 
     try {
-      // Use ilike for case-insensitive comparison.
-      // .eq() uses exact Postgres equality which is case-sensitive by default.
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("handle, user_id")
-        .ilike("handle", trimmed);
+      // Use the check_handle_available RPC (SECURITY DEFINER) instead of a
+      // direct table query. Direct queries against profiles fail silently for
+      // unauthenticated users (signup page) because RLS blocks the read and
+      // returns an empty array — falsely showing the handle as available.
+      // The RPC bypasses RLS and returns a plain boolean.
+      const { data, error } = await supabase.rpc("check_handle_available", {
+        p_handle: trimmed,
+        p_current_user_id: currentUserId || null,
+      });
 
-      console.log("[HANDLE_CHECK] DB raw data:", data);
-      console.log("[HANDLE_CHECK] DB error:", error);
+      console.log("[HANDLE_CHECK] RPC raw data (true=available):", data);
+      console.log("[HANDLE_CHECK] RPC error:", error);
 
-      // ── Fail CLOSED on any DB error ──────────────────────────────────────
-      // Never assume available=true when we cannot confirm it.
+      // ── Fail CLOSED on any RPC error ─────────────────────────────────────
       if (error) {
-        console.warn("[HANDLE_CHECK] DB error — failing closed:", error.message);
+        console.warn("[HANDLE_CHECK] RPC error — failing closed:", error.message);
         return { available: false, error: "Could not verify handle. Please try again." };
       }
 
-      if (data && data.length > 0) {
-        // Filter out the current user's own handle (relevant for profile editing).
-        // For new signups currentUserId is null, so all rows qualify as "other users".
-        const takenByOther = data.find((d) => d.user_id !== currentUserId);
-        if (takenByOther) {
-          console.log("[HANDLE_CHECK] TAKEN — matched row:", takenByOther);
-          return { available: false, error: "Handle already taken" };
-        }
+      if (data === true) {
+        console.log("[HANDLE_CHECK] AVAILABLE ✅");
+        return { available: true, error: null };
       }
 
-      console.log("[HANDLE_CHECK] AVAILABLE ✅");
-      return { available: true, error: null };
+      console.log("[HANDLE_CHECK] TAKEN ❌");
+      return { available: false, error: "Handle already taken" };
     } catch (e) {
       // ── Fail CLOSED on exception too ─────────────────────────────────────
       console.warn("[HANDLE_CHECK] Exception — failing closed:", e);

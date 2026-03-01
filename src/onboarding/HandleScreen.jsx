@@ -27,33 +27,32 @@ export default function HandleScreen() {
     const trimmedHandle = handleValue.trim().toLowerCase().replace(/^@/, "");
     const uid = user?.id || userId;
 
-    console.log("[HANDLE_CHECK] HandleScreen checking:", trimmedHandle);
+    console.log("[HANDLE_CHECK] HandleScreen checking:", trimmedHandle, "uid:", uid);
     try {
-      // Use ilike for case-insensitive match — prevents "Lal" and "lal" coexisting.
-      const { data, error: err } = await supabase
-        .from("profiles")
-        .select("handle, user_id")
-        .ilike("handle", trimmedHandle);
+      // Use the check_handle_available RPC (SECURITY DEFINER).
+      // Direct .ilike() on profiles returns [] for unauthenticated users (RLS),
+      // making taken handles appear available. The RPC bypasses RLS correctly.
+      const { data, error: err } = await supabase.rpc("check_handle_available", {
+        p_handle: trimmedHandle,
+        p_current_user_id: uid || null,
+      });
 
-      console.log("[HANDLE_CHECK] HandleScreen DB data:", data);
-      console.log("[HANDLE_CHECK] HandleScreen DB error:", err);
+      console.log("[HANDLE_CHECK] HandleScreen RPC data (true=available):", data);
+      console.log("[HANDLE_CHECK] HandleScreen RPC error:", err);
 
-      // ── Fail CLOSED on DB error ───────────────────────────────────────────
+      // ── Fail CLOSED on RPC error ──────────────────────────────────────────
       if (err) {
-        console.warn("[HANDLE_CHECK] DB error — failing closed:", err.message);
+        console.warn("[HANDLE_CHECK] RPC error — failing closed:", err.message);
         setError("Could not verify handle. Please try again.");
         setChecking(false);
         return;
       }
 
-      if (data && data.length > 0) {
-        const otherUser = data.find((d) => d.user_id !== uid);
-        if (otherUser) {
-          console.log("[HANDLE_CHECK] TAKEN — matched row:", otherUser);
-          setError("Handle already taken. Try another.");
-          setChecking(false);
-          return;
-        }
+      if (data !== true) {
+        console.log("[HANDLE_CHECK] TAKEN ❌");
+        setError("Handle already taken. Try another.");
+        setChecking(false);
+        return;
       }
 
       console.log("[HANDLE_CHECK] AVAILABLE ✅");
