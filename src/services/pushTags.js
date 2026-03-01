@@ -36,7 +36,7 @@ export const setIqState = (updates) => {
     iq_state: value,
     ts: new Date().toISOString()
   });
-  
+
   if (updates.challengePending !== undefined && updates.challengePending !== prevChallengePending) {
     console.log(`[PUSH_TAG_SYNC] challenge pending=${challengePending ? 1 : 0}`);
   }
@@ -45,34 +45,30 @@ export const setIqState = (updates) => {
 export const syncStreakTags = (reason = "unknown") => {
   console.log("[PUSH_TAG_SYNC] syncStreakTags called", { reason, isNative: isNative() });
   if (!isNative()) return;
-  
+
   try {
     const state = _getProgressState ? _getProgressState() : null;
     if (!state) {
       console.warn(`PUSH_TAG_SYNC [${reason}] failed: progressStore not registered`);
       return;
     }
-    
+
     const streakCount = state?.streak ?? 0;
-    const lastStudyDate = state?.lastStudyDate;
-    
-    const today = new Date().toDateString();
-    const yesterday = new Date(Date.now() - 86400000).toDateString();
-    const streakActive = lastStudyDate === today || lastStudyDate === yesterday;
-    
+    const streakActive = streakCount > 0;
+
     const prevStreakActive = currentIqState.streakActive;
     currentIqState = { ...currentIqState, streakCount, streakActive };
     const { challengePending } = currentIqState;
     const value = getStateCode(streakActive, challengePending);
-    
+
     OneSignal.User.addTag("iq_state", value);
     console.log('[IQ_PUSH_TRACE]', 'IQ_STATE_SENT', {
       iq_state: value,
       ts: new Date().toISOString()
     });
-    
+
     console.log(`PUSH_TAG_SYNC [${reason}] iq_state=${value}`);
-    
+
     if (streakActive !== prevStreakActive) {
       console.log(`[PUSH_TAG_SYNC] streak sa=${streakActive ? 1 : 0}`);
     }
