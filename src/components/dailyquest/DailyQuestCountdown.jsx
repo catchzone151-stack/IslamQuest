@@ -1,89 +1,83 @@
 import { useState, useEffect } from "react";
 import mascotCountdown from "../../assets/mascots/mascot_countdown.webp";
-import "../challenges/ChallengeModals.css";
 
 export default function DailyQuestCountdown({ onComplete }) {
   const [count, setCount] = useState(3);
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    document.body.style.overflow = "hidden";
+    const el = document.querySelector(".app-root-container");
+    if (el) el.style.overflowY = "hidden";
     return () => {
-      document.body.style.overflow = "";
+      if (el) el.style.overflowY = "";
     };
   }, []);
 
   useEffect(() => {
     if (count > 0) {
-      const timer = setTimeout(() => setCount(count - 1), 1000);
-      return () => clearTimeout(timer);
+      const t = setTimeout(() => setCount(count - 1), 1000);
+      return () => clearTimeout(t);
     } else {
-      const fadeTimer = setTimeout(() => setFadeOut(true), 300);
-      const completeTimer = setTimeout(onComplete, 500);
+      const fadeT = setTimeout(() => setFadeOut(true), 300);
+      const doneT = setTimeout(onComplete, 500);
       return () => {
-        clearTimeout(fadeTimer);
-        clearTimeout(completeTimer);
+        clearTimeout(fadeT);
+        clearTimeout(doneT);
       };
     }
   }, [count, onComplete]);
 
   return (
-    <div 
+    <div
       style={{
         position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background: "rgba(0, 0, 0, 0.95)",
+        inset: 0,
+        background: "rgba(0,0,0,0.95)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "flex-start",
-        paddingTop: "15vh",
+        justifyContent: "center",
         zIndex: 10000,
         opacity: fadeOut ? 0 : 1,
         transition: "opacity 0.2s ease-out",
         touchAction: "none",
-        overscrollBehavior: "none",
       }}
     >
-      <div 
+      <div
         style={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
-          gap: "20px",
+          gap: 20,
         }}
       >
-        <div 
+        <div
           style={{
-            width: "160px",
-            height: "160px",
+            width: 160,
+            height: 160,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            background: "radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(212,175,55,0.15) 0%, transparent 70%)",
             borderRadius: "50%",
           }}
         >
-          <img 
+          <img
             src={mascotCountdown}
-            alt="Countdown" 
+            alt="Countdown"
             style={{
-              width: "120px",
+              width: 120,
               height: "auto",
-              filter: "drop-shadow(0 10px 25px rgba(212, 175, 55, 0.5))",
+              filter: "drop-shadow(0 10px 25px rgba(212,175,55,0.5))",
             }}
           />
         </div>
-        <div 
+        <div
           style={{
             fontSize: "8rem",
             fontWeight: 900,
             color: "#d4af37",
-            textShadow: "0 0 50px rgba(212, 175, 55, 0.9)",
+            textShadow: "0 0 50px rgba(212,175,55,0.9)",
             lineHeight: 1,
           }}
         >
