@@ -24,17 +24,18 @@ export default function Profile() {
     coins, 
     streak, 
     shieldCount,
-    premium,
     vibrationEnabled,
     setVibrationEnabled,
     purchaseIndividual,
   } = useProgressStore();
-  
+
+  // Isolated selector — re-renders only when premium changes; bypasses any stale closure
+  const premium = useProgressStore(state => state.premium);
+
   const { showModal } = useModalStore();
 
-  React.useEffect(() => {
-    console.log("[PREMIUM_FINAL]", { premium, source: "Profile render" });
-  }, [premium]);
+  // Fires on EVERY render so we can see if re-renders happen and what value is present
+  console.log("[WIDGET_RENDER]", premium);
 
   const currentLevel = getCurrentLevel(xp);
   const xpProgress = getXPProgress(xp);

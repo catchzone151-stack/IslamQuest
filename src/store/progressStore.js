@@ -211,7 +211,7 @@ export const useProgressStore = create((set, get) => ({
         // Ignore parse errors
       }
 
-      console.log("[PREMIUM_FINAL]", { premium: savedData.premium, source: "hydrate" });
+      console.log("[PREMIUM_SOURCE]", { value: savedData.premium, source: "hydrate / loadProgress" });
       
       if (!savedData.lastStreakDate && savedData.lastCompletedActivityDate) {
         savedData.lastStreakDate = savedData.lastCompletedActivityDate;
@@ -1240,7 +1240,7 @@ export const useProgressStore = create((set, get) => ({
       source: 'setFromCloudSync',
     });
 
-    console.log("[PREMIUM_FINAL]", { premium: finalPremium, source: "setFromCloudSync" });
+    console.log("[PREMIUM_SOURCE]", { value: finalPremium, source: "setFromCloudSync / mergeProfileData" });
 
     set({
       xp: data.xp ?? get().xp,
@@ -1482,7 +1482,7 @@ export const useProgressStore = create((set, get) => ({
       // Mark restore time
       get().setLastUpdatedAt(Date.now());
 
-      console.log("[PREMIUM_FINAL]", { premium: restored.premium, source: "loadFromSupabase" });
+      console.log("[PREMIUM_SOURCE]", { value: restored.premium, source: "loadFromSupabase / cloud→device" });
 
       console.log("✅ Restored from Supabase (cloud → device)", { 
         xp: restored.xp, 
