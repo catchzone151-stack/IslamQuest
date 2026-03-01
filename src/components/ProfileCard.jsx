@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProfileCard = React.memo(function ProfileCard({ icon, label, value, color = "#FFD700", gradient, borderColor }) {
+const ProfileCard = React.memo(function ProfileCard({ icon, label, value, color = "#FFD700", gradient, borderColor, iconStyle }) {
   return (
     <div
       style={{
@@ -22,7 +22,7 @@ const ProfileCard = React.memo(function ProfileCard({ icon, label, value, color 
         <img
           src={icon}
           alt={label}
-          style={{ width: "32px", height: "32px", marginBottom: "8px" }}
+          style={{ width: "32px", height: "32px", marginBottom: "8px", ...iconStyle }}
         />
       )}
       <p style={{ fontSize: "0.8rem", opacity: 0.7, margin: "4px 0" }}>{label}</p>
