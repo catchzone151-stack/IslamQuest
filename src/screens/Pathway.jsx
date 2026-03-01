@@ -13,7 +13,6 @@ import { openAppStore } from "../utils/appStoreUtils";
 import { getLessonsForPath } from "../data/lessonLoader.js";
 
 // Mascots
-import CompletionMascot from "../assets/mascots/mascot_welldone.webp";
 import mascot_sitting from "../assets/mascots/mascot_sitting.webp";
 
 export default function Pathway() {
@@ -21,7 +20,6 @@ export default function Pathway() {
   const navigate = useNavigate();
   const scrollRef = useRef(null);
   const numericPathId = Number(pathId);
-  const [showCompletion, setShowCompletion] = React.useState(false);
 
   const { paths, lessonStates, canAccessLesson, premium, premiumStatus } = useProgressStore();
   const { id: userId, avatar } = useUserStore();
@@ -29,18 +27,6 @@ export default function Pathway() {
   
   const isUserPremium = premium || premiumStatus !== "free";
   const isPathPremiumOnly = isPremiumOnlyPath(numericPathId);
-
-  // Check if all lessons are completed
-  React.useEffect(() => {
-    const baseLessons = getLessonsForPath(numericPathId);
-    const pathLessonState = lessonStates?.[numericPathId] || {};
-    const allCompleted = baseLessons.length > 0 && 
-      baseLessons.every(lesson => !!pathLessonState[lesson.id]?.passed);
-    
-    if (allCompleted && baseLessons.length > 0) {
-      setShowCompletion(true);
-    }
-  }, [numericPathId, lessonStates]);
 
   const pathMeta = useMemo(
     () => paths.find((p) => p.id === numericPathId),
@@ -137,96 +123,6 @@ export default function Pathway() {
 
   // Get the correct avatar image from the stored key - always use the user's selected avatar
   const avatarSrc = getAvatarImage(avatar, { userId });
-
-  // If all lessons completed, show completion screen
-  if (showCompletion && completedCount === totalLessons && totalLessons > 0) {
-    return (
-      <div
-        className="screen no-extra-space"
-        style={{
-          background: "radial-gradient(circle at top, #0f2344 0%, #020815 70%)",
-          color: "white",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "40px 20px",
-          textAlign: "center",
-          minHeight: "100%",
-          gap: "20px",
-        }}
-      >
-        <img
-          src={CompletionMascot}
-          alt="Completed"
-          style={{
-            width: 120,
-            height: "auto",
-            filter: "drop-shadow(0 0 12px rgba(255,215,0,0.8))",
-            animation: "bounce 1s ease-in-out infinite",
-          }}
-        />
-
-        <h1
-          style={{
-            fontSize: "2.2rem",
-            fontWeight: 800,
-            background: "linear-gradient(90deg, #10b981, #D4AF37)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            margin: "20px 0 0",
-          }}
-        >
-          Path Completed! 🎉
-        </h1>
-
-        <p
-          style={{
-            fontSize: "1.1rem",
-            color: "rgba(255,255,255,0.9)",
-            maxWidth: 320,
-            lineHeight: 1.5,
-          }}
-        >
-          masha'Allah! You have mastered all lessons in this path.
-        </p>
-
-        <button
-          onClick={() => navigate("/")}
-          style={{
-            marginTop: 20,
-            background: "linear-gradient(135deg, #D4AF37, #FFA500)",
-            color: "#0a2a43",
-            border: "none",
-            padding: "14px 32px",
-            borderRadius: "12px",
-            fontSize: "1rem",
-            fontWeight: "700",
-            cursor: "pointer",
-            boxShadow: "0 6px 20px rgba(212, 175, 55, 0.4)",
-            transition: "all 0.3s",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "translateY(-2px)";
-            e.currentTarget.style.boxShadow = "0 8px 25px rgba(212, 175, 55, 0.6)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "0 6px 20px rgba(212, 175, 55, 0.4)";
-          }}
-        >
-          Back to Home 🏡
-        </button>
-
-        <style>{`
-          @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-          }
-        `}</style>
-      </div>
-    );
-  }
 
   // --- Layout constants for perfect alignment ---
   const NODE_SIZE = 70;
