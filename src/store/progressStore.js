@@ -1407,23 +1407,23 @@ export const useProgressStore = create((set, get) => ({
       const cloudTs = new Date(data.updated_at).getTime();
       const localTs = get().getLastUpdatedAt();
 
-      // Choose freshest source
-      const shouldOverwriteLocal = cloudTs > localTs;
+      // ── TESTING: timestamp guard temporarily bypassed ─────────────────────
+      // Normal logic: const shouldOverwriteLocal = cloudTs > localTs;
+      // Restored by removing the line below and uncommenting the line above.
+      const shouldOverwriteLocal = true; // TEMP: always pull from Supabase
 
-      // ── PREMIUM TRACE: timestamp gate decision ────────────────────────────
-      console.log("[PREMIUM_TRACE] LOAD_FROM_SUPABASE_TIMESTAMP_GATE", {
-        userId,
+      console.log("[SYNC_DEBUG]", {
         cloudUpdatedAt: data.updated_at,
+        localLastSync: localTs ? new Date(localTs).toISOString() : "never",
         cloudTs,
         localTs,
-        cloudTsDate: new Date(cloudTs).toISOString(),
-        localTsDate: localTs ? new Date(localTs).toISOString() : "never",
-        willApplyCloudData: shouldOverwriteLocal,
         cloudPremium: data.premium,
         localPremium: get().premium,
+        timestampGuardBypassed: true,
       });
 
       if (!shouldOverwriteLocal) {
+        // This branch is unreachable while bypass is active — kept for easy restore
         console.log("Local data newer → keeping device data.");
         return;
       }
