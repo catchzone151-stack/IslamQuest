@@ -98,6 +98,9 @@ export const useProgressStore = create((set, get) => ({
   lockedLessons: {},
   hasPremium: false, // Deprecated: derived from premiumStatus, kept for backwards compatibility
   
+  // 🔄 Incremented each time cloud profile data is merged — used to re-trigger streak check
+  _cloudSyncVersion: 0,
+
   // 🛡️ Shield saved notification (toast, no modal)
   showShieldSaved: false,
   showMilestoneModal: false,
@@ -451,9 +454,20 @@ export const useProgressStore = create((set, get) => ({
     const today = new Date().toISOString().split("T")[0];
     const { lastStreakDate, streak, shieldCount, needsRepairPrompt } = get();
 
-    if (needsRepairPrompt) return; // repair prompt already active
-    if (!lastStreakDate) return;
-    if (lastStreakDate === today) return; // already active today
+    console.log(`[${STREAK_TRACE}] CHECK_OPEN_ENTRY`, { today, lastStreakDate, streak, shieldCount, needsRepairPrompt });
+
+    if (needsRepairPrompt) {
+      console.log(`[${STREAK_TRACE}] CHECK_OPEN_SKIP repair_already_active`);
+      return;
+    }
+    if (!lastStreakDate) {
+      console.log(`[${STREAK_TRACE}] CHECK_OPEN_SKIP no_streak_date`);
+      return;
+    }
+    if (lastStreakDate === today) {
+      console.log(`[${STREAK_TRACE}] CHECK_OPEN_SKIP already_active_today`);
+      return;
+    }
 
     // Use UTC midnight arithmetic to avoid timezone drift
     const msPerDay = 1000 * 60 * 60 * 24;
@@ -469,7 +483,12 @@ export const useProgressStore = create((set, get) => ({
     );
     const diffDays = Math.round((todayUTC - lastUTC) / msPerDay);
 
-    if (diffDays <= 1) return;
+    console.log(`[${STREAK_TRACE}] CHECK_OPEN_DIFF`, { diffDays, todayUTC, lastUTC });
+
+    if (diffDays <= 1) {
+      console.log(`[${STREAK_TRACE}] CHECK_OPEN_SKIP diff_ok diffDays=${diffDays}`);
+      return;
+    }
 
     // Resolve Supabase user once for both branches
     const { data: authData } = await supabase.auth.getUser();
@@ -480,8 +499,9 @@ export const useProgressStore = create((set, get) => ({
       const yesterday = new Date(today + "T00:00:00Z");
       yesterday.setUTCDate(yesterday.getUTCDate() - 1);
       const yesterdayStr = yesterday.toISOString().split("T")[0];
-
       const newShieldCount = shieldCount - 1;
+
+      console.log(`[${STREAK_TRACE}] CHECK_OPEN_SHIELD_CONSUME`, { streak, newShieldCount, yesterdayStr });
 
       set({
         shieldCount: newShieldCount,
@@ -495,13 +515,15 @@ export const useProgressStore = create((set, get) => ({
       // Sync full streak state to Supabase immediately
       if (userId) {
         try {
-          await supabase.from("profiles").update({
+          const { error } = await supabase.from("profiles").update({
             shield_count: newShieldCount,
             streak: streak,
             streak_active: streak > 0,
             last_completed_activity_date: yesterdayStr,
             updated_at: new Date().toISOString(),
           }).eq("user_id", userId);
+          if (error) console.error(`[${STREAK_TRACE}] Shield Supabase error:`, error.message);
+          else console.log(`[${STREAK_TRACE}] CHECK_OPEN_SHIELD_SYNCED`);
         } catch (err) {
           console.error(`[${STREAK_TRACE}] Shield sync error:`, err);
         }
@@ -510,11 +532,12 @@ export const useProgressStore = create((set, get) => ({
 
       // Show "Streak Saved" modal
       useModalStore.getState().showModal(MODAL_TYPES.STREAK_SAVED);
-
       return;
     }
 
     // No shield — streak broke
+    console.log(`[${STREAK_TRACE}] CHECK_OPEN_STREAK_BROKEN`, { streak, shieldCount });
+
     set({
       brokenStreakValue: streak,
       streak: 0,
@@ -528,11 +551,13 @@ export const useProgressStore = create((set, get) => ({
     // Sync broken streak to Supabase immediately
     if (userId) {
       try {
-        await supabase.from("profiles").update({
+        const { error } = await supabase.from("profiles").update({
           streak: 0,
           streak_active: false,
           updated_at: new Date().toISOString(),
         }).eq("user_id", userId);
+        if (error) console.error(`[${STREAK_TRACE}] Broken streak Supabase error:`, error.message);
+        else console.log(`[${STREAK_TRACE}] CHECK_OPEN_BROKEN_SYNCED`);
       } catch (err) {
         console.error(`[${STREAK_TRACE}] Broken streak sync error:`, err);
       }
@@ -1280,6 +1305,13 @@ export const useProgressStore = create((set, get) => ({
       get().setLastUpdatedAt(new Date(cloudUpdatedAt).getTime());
     }
     get().saveProgress();
+
+    // Signal that cloud data has landed — increments version so UI effects re-fire
+    set({ _cloudSyncVersion: get()._cloudSyncVersion + 1 });
+
+    // Run streak check now that we have fresh cloud data
+    console.log(`[${STREAK_TRACE}] POST_CLOUD_MERGE streak check triggered`);
+    get().checkStreakOnAppOpen();
   },
 
   syncToSupabase: async () => {
@@ -1484,6 +1516,11 @@ export const useProgressStore = create((set, get) => ({
         lessonStatesCount: Object.keys(restored.lessonStates || {}).length,
         pathsCount: restored.paths?.length || 0
       });
+
+      // Signal cloud data landed and run streak check with fresh data
+      set({ _cloudSyncVersion: get()._cloudSyncVersion + 1 });
+      console.log(`[${STREAK_TRACE}] POST_CLOUD_RESTORE streak check triggered`);
+      get().checkStreakOnAppOpen();
     } catch (err) {
       console.log("❌ loadFromSupabase failed:", err);
     }

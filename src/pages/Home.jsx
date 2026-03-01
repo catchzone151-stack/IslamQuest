@@ -81,6 +81,7 @@ export default function Home() {
     checkStreakOnAppOpen,
     ensureLocksReady,
     addXP,
+    _cloudSyncVersion,
   } = useProgressStore();
 
   // Load Daily Quest state from localStorage on mount
@@ -89,10 +90,12 @@ export default function Home() {
     loadDailyQuest();
   }, [loadDailyQuest]);
 
-  // Check streak status on mount and show repair modal if needed
+  // Check streak on mount (uses localStorage data — quick pass)
+  // Re-runs when _cloudSyncVersion increments (cloud data arrived — authoritative pass)
   useEffect(() => {
+    console.log(`[IQ_STREAK_TRACE] HOME_STREAK_CHECK version=${_cloudSyncVersion}`);
     checkStreakOnAppOpen();
-  }, [checkStreakOnAppOpen]);
+  }, [checkStreakOnAppOpen, _cloudSyncVersion]);
 
   // Show repair modal if needed
   useEffect(() => {
