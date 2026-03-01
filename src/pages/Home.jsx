@@ -44,8 +44,8 @@ export default function Home() {
   // Navigation
   const navigate = useNavigate();
   const { name } = useUserStore();
-  const { premium, premiumStatus } = useProgressStore();
-  const isUserPremium = premium || premiumStatus !== "free";
+  const { premium } = useProgressStore();
+  const isUserPremium = premium;
 
   // Horizontal scroll ref for the learning path cards
   const carouselRef = useRef(null);

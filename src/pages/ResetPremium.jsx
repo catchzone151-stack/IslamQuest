@@ -7,26 +7,18 @@ export default function ResetPremium() {
   useEffect(() => {
     try {
       // Reset premium in Zustand store
-      useProgressStore.setState({
-        premium: false,
-        premiumStatus: "free",
-        premiumType: null,
-        hasPremium: false,
-        premiumActivatedAt: null
-      });
+      useProgressStore.setState({ premium: false });
       
       // Also update the localStorage directly with correct key
       const stored = localStorage.getItem("islamQuestProgress_v4");
       if (stored) {
         const parsed = JSON.parse(stored);
-        parsed.state = {
-          ...parsed.state,
-          premium: false,
-          premiumStatus: "free", 
-          premiumType: null,
-          hasPremium: false,
-          premiumActivatedAt: null
-        };
+        parsed.state = { ...parsed.state, premium: false };
+        // Scrub legacy fields
+        delete parsed.state.premiumStatus;
+        delete parsed.state.premiumType;
+        delete parsed.state.hasPremium;
+        delete parsed.state.premiumActivatedAt;
         localStorage.setItem("islamQuestProgress_v4", JSON.stringify(parsed));
       }
       

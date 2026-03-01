@@ -21,8 +21,8 @@ export default function Challenge() {
   const location = useLocation();
   const { vibrate } = useVibration();
   
-  const { xp, premium, premiumStatus } = useProgressStore();
-  const isUserPremium = premium || premiumStatus !== "free";
+  const { xp, premium } = useProgressStore();
+  const isUserPremium = premium;
   const level = getCurrentLevel(xp).level;
   const getAllFriends = useFriendsStore(state => state.getAllFriends);
   const { loadFromStorage, loadAllMyChallenges } = useChallengeStore();

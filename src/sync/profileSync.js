@@ -79,18 +79,11 @@ export function mergeProfileData(cloud) {
   const localTs = store.getLastUpdatedAt();
   const cloudTs = cloud.updated_at ? new Date(cloud.updated_at).getTime() : 0;
 
-  // ── PREMIUM TRACE: mergeProfileData timestamp gate ────────────────────
-  console.log("[PREMIUM_TRACE] MERGE_PROFILE_DATA_GATE", {
-    source: "profileSync.mergeProfileData",
-    cloudUpdatedAt: cloud.updated_at,
-    cloudTs,
-    localTs,
-    cloudTsDate: new Date(cloudTs).toISOString(),
-    localTsDate: localTs ? new Date(localTs).toISOString() : "never",
-    willMerge: cloudTs > localTs,
+  console.log("[PREMIUM_FINAL]", {
+    source: "mergeProfileData",
     cloudPremium: cloud.premium,
     localPremium: store.premium,
-    localPremiumStatus: store.premiumStatus,
+    willMerge: cloudTs > localTs,
   });
 
   if (cloudTs > localTs) {

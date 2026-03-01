@@ -2,7 +2,7 @@ import React from "react";
 import { useProgressStore } from "../store/progressStore";
 
 export default function LockDiagnostics() {
-  const { hasPremium, lockedLessons, lessonStates } = useProgressStore();
+  const { premium, lockedLessons, lessonStates } = useProgressStore();
   
   return (
     <div className="screen no-extra-space" style={{ paddingLeft: "20px", paddingRight: "20px", paddingTop: "20px", color: "white" }}>
@@ -10,7 +10,7 @@ export default function LockDiagnostics() {
       
       <div style={{ background: "#1a2337", padding: "20px", borderRadius: "8px", marginBottom: "20px" }}>
         <h2>Premium Status</h2>
-        <p><strong>hasPremium:</strong> {hasPremium ? "✅ TRUE (ALL LESSONS UNLOCKED)" : "❌ FALSE"}</p>
+        <p><strong>premium:</strong> {premium ? "✅ TRUE (ALL LESSONS UNLOCKED)" : "❌ FALSE"}</p>
       </div>
       
       <div style={{ background: "#1a2337", padding: "20px", borderRadius: "8px", marginBottom: "20px" }}>

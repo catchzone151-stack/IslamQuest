@@ -21,11 +21,11 @@ export default function Pathway() {
   const scrollRef = useRef(null);
   const numericPathId = Number(pathId);
 
-  const { paths, lessonStates, canAccessLesson, premium, premiumStatus } = useProgressStore();
+  const { paths, lessonStates, canAccessLesson, premium } = useProgressStore();
   const { id: userId, avatar } = useUserStore();
   const { showModal } = useModalStore();
   
-  const isUserPremium = premium || premiumStatus !== "free";
+  const isUserPremium = premium;
   const isPathPremiumOnly = isPremiumOnlyPath(numericPathId);
 
   const pathMeta = useMemo(

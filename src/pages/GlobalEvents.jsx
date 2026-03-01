@@ -36,12 +36,12 @@ export default function GlobalEvents() {
     claimEventRewards
   } = useEventsStore();
   
-  const { coins, premium, premiumStatus } = useProgressStore();
+  const { coins, premium } = useProgressStore();
   const { showModal } = useModalStore();
   const events = getEvents();
   const resultsUnlocked = areResultsUnlocked();
   
-  const isUserPremium = premium || premiumStatus !== "free";
+  const isUserPremium = premium;
   
   const [timeLeft, setTimeLeft] = useState("");
   const [selectedEvent, setSelectedEvent] = useState(null);

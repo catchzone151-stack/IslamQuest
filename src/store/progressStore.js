@@ -96,8 +96,6 @@ export const useProgressStore = create((set, get) => ({
   lastLogin: null,
   lessonStates: {},
   lockedLessons: {},
-  hasPremium: false, // Deprecated: derived from premiumStatus, kept for backwards compatibility
-  
   // 🔄 Incremented each time cloud profile data is merged — used to re-trigger streak check
   _cloudSyncVersion: 0,
   // 🔒 Mutex — prevents overlapping async executions of checkStreakOnAppOpen
@@ -109,14 +107,8 @@ export const useProgressStore = create((set, get) => ({
   milestoneDays: null,
   milestoneReward: 0,
 
-  // 💳 Premium System (Supabase-ready)
-  premium: false, // New: Simple boolean for premium status
-  premiumType: null, // null | "individual" | "family"
-  premiumActivatedAt: null, // Timestamp when premium was activated
-  premiumStatus: "free", // "free" | "individual" (kept for backwards compatibility)
-  
-  // 🔊 System Preferences
-  _premiumMigrationV1: false, // Internal: tracks if premium lock migration has run
+  // 💳 Premium System — single source of truth
+  premium: false,
 
   // 📚 Revise Feature Unlocks
   reviewMistakesUnlocked: false, // Unlocks after first mistake
@@ -192,39 +184,34 @@ export const useProgressStore = create((set, get) => ({
         savedData.lockedLessons = get().normalizeLocks(savedData.lessonStates || {});
       }
       
-      // 💳 Migrate legacy hasPremium to premiumStatus
-      if (!savedData.premiumStatus) {
-        savedData.premiumStatus = savedData.hasPremium ? "individual" : "free";
+      // 💳 PREMIUM: Migrate any legacy hasPremium/premiumStatus → premium boolean.
+      // Old localStorage may have hasPremium=true or premiumStatus!="free" but premium=false.
+      if (!savedData.premium) {
+        if (savedData.hasPremium === true || (savedData.premiumStatus && savedData.premiumStatus !== "free")) {
+          savedData.premium = true;
+        }
       }
-      // Derive hasPremium from premiumStatus for backwards compatibility
-      savedData.hasPremium = savedData.premiumStatus !== "free";
-      
-      // 💳 INSTANT PREMIUM UX: Check IAP entitlement BEFORE set() for instant UI
+      // Scrub legacy fields so they never persist again
+      delete savedData.hasPremium;
+      delete savedData.premiumStatus;
+      delete savedData.premiumType;
+      delete savedData.premiumActivatedAt;
+      delete savedData._premiumMigrationV1;
+
+      // 💳 IAP entitlement can also grant premium (native purchases)
       try {
         const iapState = localStorage.getItem("iq_iap_premium_entitlement");
         if (iapState) {
           const parsed = JSON.parse(iapState);
           if (parsed?.isPremium === true) {
-            console.log("[ProgressStore] IAP entitlement found - instant premium UI");
             savedData.premium = true;
-            savedData.premiumStatus = parsed.planType || "single";
-            savedData.hasPremium = true;
           }
         }
       } catch (e) {
         // Ignore parse errors
       }
 
-      // ── PREMIUM TRACE: what is being restored from localStorage ──────────
-      console.log("[PREMIUM_TRACE] HYDRATE_FROM_LOCALSTORAGE", {
-        source: "localStorage / iq_progress_store",
-        premium: savedData.premium,
-        premiumStatus: savedData.premiumStatus,
-        hasPremium: savedData.hasPremium,
-        iapEntitlement: (() => { try { const r = localStorage.getItem("iq_iap_premium_entitlement"); return r ? JSON.parse(r) : null; } catch { return "parse_error"; } })(),
-        premiumCache: (() => { try { const r = localStorage.getItem("iq_premium_cache"); return r ? JSON.parse(r) : null; } catch { return "parse_error"; } })(),
-        lastCloudSync: localStorage.getItem("iq_last_cloud_sync"),
-      });
+      console.log("[PREMIUM_FINAL]", { premium: savedData.premium, source: "hydrate" });
       
       if (!savedData.lastStreakDate && savedData.lastCompletedActivityDate) {
         savedData.lastStreakDate = savedData.lastCompletedActivityDate;
@@ -252,18 +239,9 @@ export const useProgressStore = create((set, get) => ({
       // This ensures legacy users get unlocks based on their existing progress
       get().migrateReviseUnlocks();
       
-      // 🔒 MIGRATION: Recalculate all locks for premium system (Nov 2025 premium rebuild)
-      // This ensures legacy users who unlocked premium lessons before the premium
-      // system rebuild have their locks re-evaluated based on new premium rules
-      const needsMigration = !savedData._premiumMigrationV1;
-      if (needsMigration) {
-        console.log("🔒 Running premium system migration...");
-        get().applyLockingRules(); // Recalculate all locks
-        set({ _premiumMigrationV1: true }); // Mark migration as complete
-      }
-      
-      set({ locksReady: true }); // Mark locks as ready
-      get().saveProgress(); // Persist the normalized locks, premium status, and migration flag
+      get().applyLockingRules(); // Recalculate all locks from saved progress
+      set({ locksReady: true });
+      get().saveProgress();
     } else {
       // 🔒 CRITICAL: For fresh installs (including post-storage-reset), ensure defaults exist and apply locking
       console.log("🔒 Initializing premium locking for fresh install...");
@@ -867,7 +845,7 @@ export const useProgressStore = create((set, get) => ({
       return false; // Safe default: locked during hydration
     }
     
-    const { lockedLessons, premiumStatus } = get();
+    const { lockedLessons, premium } = get();
     
     // Lesson 1 is always unlocked
     if (lessonId === 1) return true;
@@ -883,7 +861,7 @@ export const useProgressStore = create((set, get) => ({
     if (!isSequentiallyUnlocked) return false;
     
     // For free users: check premium paywall limits
-    if (premiumStatus === "free") {
+    if (!premium) {
       const freeLimit = FREE_LESSON_LIMITS[pathId] || 0;
       if (lessonId > freeLimit) {
         return false; // Locked by premium paywall
@@ -903,14 +881,14 @@ export const useProgressStore = create((set, get) => ({
   // 🔒 NEW UNIFIED LOCKING SYSTEM (Spec-compliant)
   // Returns the lock state of a lesson: "unlocked" | "progressLocked" | "premiumLocked"
   getLessonLockState: (pathId, lessonId) => {
-    const { lockedLessons, premium, premiumStatus, locksReady, lessonStates } = get();
+    const { lockedLessons, premium, locksReady, lessonStates } = get();
     
     // CRITICAL: During initialization, assume all lessons are locked until locks are computed
     if (!locksReady) {
       return "progressLocked"; // Safe default during hydration
     }
     
-    const isUserPremium = premium || premiumStatus !== "free";
+    const isUserPremium = premium;
     
     // Lesson 1 is always unlocked (except for premium-only paths)
     if (lessonId === 1) {
@@ -1032,44 +1010,26 @@ export const useProgressStore = create((set, get) => ({
     get().saveProgress();
   },
 
-  // 💳 Premium unlock (updates all premium fields)
-  unlockPremium: (planType = "individual") => {
-    const now = Date.now();
-    set({ 
-      premium: true,
-      premiumType: planType,
-      premiumActivatedAt: now,
-      premiumStatus: planType, // backwards compatibility
-      hasPremium: true, // backwards compatibility
-    });
+  // 💳 Premium unlock — single source of truth
+  unlockPremium: () => {
+    set({ premium: true });
     get().saveProgress();
     setTimeout(() => get().syncToSupabase(), 50);
   },
 
   // 💳 Set premium from IAP entitlement (called by iapService)
-  setPremium: (planType = "single") => {
-    set({
-      premium: true,
-      premiumStatus: planType,
-      hasPremium: true,
-    });
+  setPremium: () => {
+    set({ premium: true });
     get().saveProgress();
   },
 
   // 💳 ASYNC PLACEHOLDER: Purchase Individual Plan (£4.99)
   // Later: integrate with payment provider (Stripe/RevenueCat/Supabase)
   purchaseIndividual: async () => {
-    const now = Date.now();
     // Simulate async payment (will be real API call later)
     await new Promise(resolve => setTimeout(resolve, 100));
     
-    set({ 
-      premium: true,
-      premiumType: "individual",
-      premiumActivatedAt: now,
-      premiumStatus: "individual", // backwards compatibility
-      hasPremium: true, // backwards compatibility
-    });
+    set({ premium: true });
     get().saveProgress();
     setTimeout(() => get().syncToSupabase(), 50);
     
@@ -1098,27 +1058,17 @@ export const useProgressStore = create((set, get) => ({
     }
     
     const savedData = JSON.parse(saved);
-    const savedPremiumStatus = savedData.premiumStatus || "free";
+    const savedPremium = savedData.premium === true
+      || savedData.hasPremium === true
+      || (savedData.premiumStatus && savedData.premiumStatus !== "free");
     
-    if (savedPremiumStatus !== "free") {
-      // Rehydrate premium state from localStorage
-      set({ 
-        premiumStatus: savedPremiumStatus,
-        hasPremium: true,
-      });
-      get().saveProgress(); // Ensure consistency
-      
-      return { 
-        success: true, 
-        message: "Premium plan restored successfully!",
-        plan: savedPremiumStatus 
-      };
+    if (savedPremium) {
+      set({ premium: true });
+      get().saveProgress();
+      return { success: true, message: "Premium plan restored successfully!" };
     }
     
-    return { 
-      success: false, 
-      message: "No previous purchases found" 
-    };
+    return { success: false, message: "No previous purchases found" };
   },
 
   resetAllLocks: () => {
@@ -1211,8 +1161,7 @@ export const useProgressStore = create((set, get) => ({
       lessonStates: {},
       lockedLessons: {},
       paths: DEFAULT_PATHS,
-      premiumStatus: "free",
-      hasPremium: false,
+      premium: false,
       reviewMistakesUnlocked: false,
       smartRevisionUnlocked: false,
     });
@@ -1265,26 +1214,13 @@ export const useProgressStore = create((set, get) => ({
     
     const newLevel = getCurrentLevel(data.xp || 0);
 
-    // ── PREMIUM TRACE: inputs to setFromCloudSync ─────────────────────────
-    console.log("[PREMIUM_TRACE] SET_FROM_CLOUD_SYNC_ENTRY", {
-      source: "profileSync.mergeProfileData → setFromCloudSync",
-      incomingPremium: data.premium,
-      currentStorePremium: get().premium,
-      currentStorePremiumStatus: get().premiumStatus,
-      cloudUpdatedAt,
-    });
-    
-    // CRITICAL: Store-owned premium MUST override cloud false
-    // Check IAP local storage to prevent regression
+    // PREMIUM: cloud false must never revoke a locally-granted premium.
+    // IAP entitlement or existing store value wins over cloud false.
     let finalPremium = data.premium ?? get().premium;
     try {
       const iapState = localStorage.getItem("iq_iap_premium_entitlement");
-      if (iapState) {
-        const parsed = JSON.parse(iapState);
-        if (parsed?.isPremium === true) {
-          console.log("[CloudSync] IAP entitlement found - preserving premium despite cloud state");
-          finalPremium = true;
-        }
+      if (iapState && JSON.parse(iapState)?.isPremium === true) {
+        finalPremium = true;
       }
     } catch (e) {
       // Ignore parse errors
@@ -1304,13 +1240,7 @@ export const useProgressStore = create((set, get) => ({
       source: 'setFromCloudSync',
     });
 
-    // ── PREMIUM TRACE: resolved values before set() ───────────────────────
-    const derivedPremiumStatus = finalPremium ? (get().premiumStatus !== "free" ? get().premiumStatus : "individual") : "free";
-    console.log("[PREMIUM_TRACE] SET_FROM_CLOUD_SYNC_RESOLVED", {
-      finalPremium,
-      derivedPremiumStatus,
-      iapProtected: (() => { try { const r = localStorage.getItem("iq_iap_premium_entitlement"); return r ? JSON.parse(r)?.isPremium : false; } catch { return false; } })(),
-    });
+    console.log("[PREMIUM_FINAL]", { premium: finalPremium, source: "setFromCloudSync" });
 
     set({
       xp: data.xp ?? get().xp,
@@ -1319,8 +1249,6 @@ export const useProgressStore = create((set, get) => ({
       lastStreakDate: keepLocalStreak ? get().lastStreakDate : (cloudStreakDate ?? get().lastStreakDate),
       shieldCount: data.shield_count ?? get().shieldCount,
       premium: finalPremium,
-      hasPremium: finalPremium,
-      premiumStatus: derivedPremiumStatus,
       level: newLevel?.level ?? get().level,
     });
     
@@ -1493,15 +1421,9 @@ export const useProgressStore = create((set, get) => ({
         willApplyCloudData: shouldOverwriteLocal,
         cloudPremium: data.premium,
         localPremium: get().premium,
-        localPremiumStatus: get().premiumStatus,
       });
 
       if (!shouldOverwriteLocal) {
-        console.log("[PREMIUM_TRACE] LOAD_FROM_SUPABASE_SKIPPED — local newer, cloud premium NOT applied", {
-          cloudPremium: data.premium,
-          localPremium: get().premium,
-          localPremiumStatus: get().premiumStatus,
-        });
         console.log("Local data newer → keeping device data.");
         return;
       }
@@ -1519,13 +1441,21 @@ export const useProgressStore = create((set, get) => ({
         source: 'loadFromSupabase',
       });
 
+      // Cloud premium=true is always applied; cloud premium=false only applies when no IAP entitlement
+      let cloudPremium = data.premium ?? false;
+      try {
+        const iapState = localStorage.getItem("iq_iap_premium_entitlement");
+        if (iapState && JSON.parse(iapState)?.isPremium === true) {
+          cloudPremium = true;
+        }
+      } catch (e) { /* ignore */ }
+
       const restored = {
         xp: data.xp ?? get().xp,
         coins: data.coins ?? get().coins,
         streak: keepLocalStreak ? localStreak : (cloudStreak ?? localStreak),
         lastStreakDate: keepLocalStreak ? get().lastStreakDate : (cloudStreakDate ?? get().lastStreakDate),
-        premium: data.premium ?? false,
-        hasPremium: data.premium ?? false,
+        premium: cloudPremium,
         shieldCount: data.shield_count ?? get().shieldCount,
       };
       
@@ -1552,17 +1482,7 @@ export const useProgressStore = create((set, get) => ({
       // Mark restore time
       get().setLastUpdatedAt(Date.now());
 
-      // ── PREMIUM TRACE: what loadFromSupabase applied ─────────────────────
-      console.log("[PREMIUM_TRACE] LOAD_FROM_SUPABASE_APPLIED", {
-        source: "profiles table (loadFromSupabase)",
-        cloudPremium: data.premium,
-        restoredPremium: restored.premium,
-        restoredHasPremium: restored.hasPremium,
-        premiumStatusAfter: get().premiumStatus,
-        warning: restored.premium && get().premiumStatus === "free"
-          ? "⚠️ premium=true but premiumStatus='free' — Profile will show 'Free Plan'"
-          : "OK",
-      });
+      console.log("[PREMIUM_FINAL]", { premium: restored.premium, source: "loadFromSupabase" });
 
       console.log("✅ Restored from Supabase (cloud → device)", { 
         xp: restored.xp, 

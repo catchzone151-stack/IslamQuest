@@ -24,7 +24,6 @@ export default function Profile() {
     coins, 
     streak, 
     shieldCount,
-    premiumStatus,
     premium,
     vibrationEnabled,
     setVibrationEnabled,
@@ -33,19 +32,9 @@ export default function Profile() {
   
   const { showModal } = useModalStore();
 
-  // ── PREMIUM TRACE: log on every render ────────────────────────────────
   React.useEffect(() => {
-    console.log("[PREMIUM_TRACE] PROFILE_RENDER", {
-      userId,
-      source: "progressStore",
-      premium,
-      premiumStatus,
-      displayLabel: premiumStatus === "free" ? "Free Plan" : "Premium Plan",
-      iapEntitlement: (() => { try { const r = localStorage.getItem("iq_iap_premium_entitlement"); return r ? JSON.parse(r) : null; } catch { return "parse_error"; } })(),
-      premiumCache: (() => { try { const r = localStorage.getItem("iq_premium_cache"); return r ? JSON.parse(r) : null; } catch { return "parse_error"; } })(),
-      lastCloudSync: localStorage.getItem("iq_last_cloud_sync"),
-    });
-  }, [userId, premium, premiumStatus]);
+    console.log("[PREMIUM_FINAL]", { premium, source: "Profile render" });
+  }, [premium]);
 
   const currentLevel = getCurrentLevel(xp);
   const xpProgress = getXPProgress(xp);
@@ -332,15 +321,15 @@ export default function Profile() {
           />
           <div style={{ flex: 1, textAlign: "left" }}>
             <div style={{ color: "#FFD700", fontSize: "1rem", fontWeight: 600, marginBottom: 2 }}>
-              {premiumStatus === "free" ? "Free Plan" : "Premium Plan"}
+              {premium ? "Premium Plan" : "Free Plan"}
             </div>
             <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.75rem", lineHeight: 1.4 }}>
-              {premiumStatus === "free" 
-                ? "Unlock all lessons and features" 
-                : "You have full access to everything"}
+              {premium
+                ? "You have full access to everything"
+                : "Unlock all lessons and features"}
             </div>
           </div>
-          {premiumStatus === "free" && (
+          {!premium && (
             <button
               onClick={() => showModal(MODAL_TYPES.PURCHASE)}
               style={{
