@@ -245,7 +245,12 @@ export default function Profile() {
           <ProfileCard
             icon={ui_shield}
             label="Shields"
-            value={`${shieldCount}/2 🛡️`}
+            value={
+              <span>
+                {shieldCount}/2{" "}
+                <span style={{ filter: "drop-shadow(-1px -1px 0 #b0b8c8) drop-shadow(1px -1px 0 #b0b8c8) drop-shadow(-1px 1px 0 #b0b8c8) drop-shadow(1px 1px 0 #b0b8c8)" }}>🛡️</span>
+              </span>
+            }
             color="#4fd5ff"
             gradient="linear-gradient(135deg, rgba(79,213,255,0.75) 0%, rgba(16,185,129,0.5) 100%)"
             borderColor="rgba(79,213,255,0.9)"
