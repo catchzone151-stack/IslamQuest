@@ -1407,23 +1407,28 @@ export const useProgressStore = create((set, get) => ({
       const cloudTs = new Date(data.updated_at).getTime();
       const localTs = get().getLastUpdatedAt();
 
-      // ── TESTING: timestamp guard temporarily bypassed ─────────────────────
-      // Normal logic: const shouldOverwriteLocal = cloudTs > localTs;
-      // Restored by removing the line below and uncommenting the line above.
-      const shouldOverwriteLocal = true; // TEMP: always pull from Supabase
+      // Timestamp guard — cloud must be newer for a full restore
+      const shouldOverwriteLocal = cloudTs > localTs;
 
-      console.log("[SYNC_DEBUG]", {
-        cloudUpdatedAt: data.updated_at,
-        localLastSync: localTs ? new Date(localTs).toISOString() : "never",
-        cloudTs,
-        localTs,
-        cloudPremium: data.premium,
-        localPremium: get().premium,
-        timestampGuardBypassed: true,
-      });
+      // PREMIUM: resolve the authoritative cloud value before the timestamp gate.
+      // IAP entitlement can only upgrade, never revoke.
+      let cloudPremium = data.premium ?? false;
+      try {
+        const iapState = localStorage.getItem("iq_iap_premium_entitlement");
+        if (iapState && JSON.parse(iapState)?.isPremium === true) {
+          cloudPremium = true;
+        }
+      } catch (e) { /* ignore */ }
 
+      // PREMIUM is timestamp-immune: if the cloud value differs from local, apply it now.
+      if (cloudPremium !== get().premium) {
+        console.log("[PREMIUM_FORCE_SYNC]", { cloud: cloudPremium, local: get().premium });
+        set({ premium: cloudPremium });
+        get().saveProgress();
+      }
+
+      // Timestamp gate: skip full restore when local data is newer
       if (!shouldOverwriteLocal) {
-        // This branch is unreachable while bypass is active — kept for easy restore
         console.log("Local data newer → keeping device data.");
         return;
       }
@@ -1440,15 +1445,6 @@ export const useProgressStore = create((set, get) => ({
         localStreakTs, keepLocalStreak,
         source: 'loadFromSupabase',
       });
-
-      // Cloud premium=true is always applied; cloud premium=false only applies when no IAP entitlement
-      let cloudPremium = data.premium ?? false;
-      try {
-        const iapState = localStorage.getItem("iq_iap_premium_entitlement");
-        if (iapState && JSON.parse(iapState)?.isPremium === true) {
-          cloudPremium = true;
-        }
-      } catch (e) { /* ignore */ }
 
       const restored = {
         xp: data.xp ?? get().xp,
