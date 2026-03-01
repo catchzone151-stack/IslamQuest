@@ -3,6 +3,7 @@ import assets from "../../assets/assets";
 const avatarManLantern = assets.avatars.avatar_man_lantern;
 
 export default function DailyQuestExplainerModal({ onStart, onCancel }) {
+  // Lock underlying scroll while visible
   useEffect(() => {
     const el = document.querySelector(".app-root-container");
     if (el) el.style.overflowY = "hidden";
@@ -16,13 +17,15 @@ export default function DailyQuestExplainerModal({ onStart, onCancel }) {
       style={{
         position: "fixed",
         inset: 0,
+        height: "100dvh",
         background: "rgba(0,0,0,0.88)",
         zIndex: 9998,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        overflow: "hidden",
+        overscrollBehavior: "none",
         touchAction: "none",
-        WebkitOverflowScrolling: "none",
       }}
       onClick={onCancel}
     >

@@ -8,15 +8,22 @@ import PointingMascot from "../assets/mascots/mascot_pointing_v2.webp";
 import SittingMascot from "../assets/mascots/mascot_sitting_v2.webp";
 import CongratsMascot from "../assets/mascots/mascot_congratulation.webp";
 
+// Root overlay — covers full viewport, never scrolls, never bounces
 const overlayBase = {
   position: "fixed",
   inset: 0,
+  height: "100dvh",
   zIndex: 999,
   background: "#0e2340",
   display: "flex",
   flexDirection: "column",
   overflow: "hidden",
+  overscrollBehavior: "none",
+  touchAction: "none",
 };
+
+// Height reserved for the fixed CTA button at bottom
+const CTA_HEIGHT = 80;
 
 export default function DailyQuestGame() {
   const navigate = useNavigate();
@@ -31,7 +38,7 @@ export default function DailyQuestGame() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
 
-  // Lock background scroll while active
+  // Prevent underlying page from scrolling while active
   useEffect(() => {
     const el = document.querySelector(".app-root-container");
     if (el) el.style.overflowY = "hidden";
@@ -100,7 +107,7 @@ export default function DailyQuestGame() {
   // ── Loading ─────────────────────────────────────────────────────────────────
   if (isLoading || (!loadError && questions.length === 0)) {
     return (
-      <div style={{ ...overlayBase, alignItems: "center", justifyContent: "center" }}>
+      <div style={{ ...overlayBase, alignItems: "center", justifyContent: "center", touchAction: "auto" }}>
         <div
           style={{
             width: 50,
@@ -123,7 +130,7 @@ export default function DailyQuestGame() {
   // ── Error ────────────────────────────────────────────────────────────────────
   if (loadError) {
     return (
-      <div style={{ ...overlayBase, alignItems: "center", justifyContent: "center", padding: "20px" }}>
+      <div style={{ ...overlayBase, alignItems: "center", justifyContent: "center", padding: "20px", touchAction: "auto" }}>
         <img src={SittingMascot} alt="Mascot" style={{ width: 100, height: "auto", marginBottom: 20 }} />
         <h2 style={{ color: "#D4AF37", marginBottom: 16, textAlign: "center" }}>
           Complete a Lesson First!
@@ -160,7 +167,17 @@ export default function DailyQuestGame() {
     const passed = correctCount >= Math.ceil(totalQuestions * 0.6);
 
     return (
-      <div style={{ ...overlayBase, overflowY: "auto", alignItems: "center", justifyContent: "center", padding: "20px" }}>
+      <div
+        style={{
+          ...overlayBase,
+          overflowY: "auto",
+          overscrollBehavior: "contain",
+          touchAction: "auto",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "20px",
+        }}
+      >
         <div
           style={{
             background: "rgba(255,255,255,0.05)",
@@ -263,25 +280,29 @@ export default function DailyQuestGame() {
         </div>
       </div>
 
-      {/* ── Scrollable Content ── */}
+      {/* ── Scrollable Content Area ──
+          Overflows only vertically when content is taller than available space.
+          Bottom padding reserves space so content never hides behind the fixed CTA. */}
       <div
         style={{
           flex: 1,
+          minHeight: 0,
           overflowY: "auto",
+          overscrollBehavior: "contain",
           WebkitOverflowScrolling: "touch",
-          padding: "20px 20px 8px",
+          touchAction: "pan-y",
+          padding: "20px 20px 0",
+          paddingBottom: `${CTA_HEIGHT + 24}px`,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
         <div style={{ maxWidth: 600, width: "100%" }}>
-          {/* Mascot */}
           <div style={{ textAlign: "center", marginBottom: 16 }}>
             <img src={PointingMascot} alt="Mascot" style={{ width: 72, height: "auto" }} />
           </div>
 
-          {/* Question + Options */}
           <QuestionCard
             question={currentQuestion}
             currentQ={currentIndex}
@@ -292,14 +313,19 @@ export default function DailyQuestGame() {
         </div>
       </div>
 
-      {/* ── Sticky Bottom CTA ── */}
+      {/* ── Fixed CTA Button ──
+          position: fixed so it stays at the bottom on every device regardless of
+          content height. z-index keeps it above the scroll area. */}
       <div
         style={{
-          flexShrink: 0,
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1000,
           padding: "12px 20px",
           paddingBottom: "max(12px, env(safe-area-inset-bottom, 12px))",
-          background: "rgba(0,0,0,0.3)",
-          borderTop: "1px solid rgba(255,255,255,0.07)",
+          background: "linear-gradient(to top, #0e2340 70%, transparent)",
         }}
       >
         <div style={{ maxWidth: 600, margin: "0 auto" }}>
@@ -327,6 +353,8 @@ export default function DailyQuestGame() {
           </button>
         </div>
       </div>
+
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 }

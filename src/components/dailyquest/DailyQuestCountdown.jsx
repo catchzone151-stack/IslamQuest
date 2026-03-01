@@ -5,6 +5,7 @@ export default function DailyQuestCountdown({ onComplete }) {
   const [count, setCount] = useState(3);
   const [fadeOut, setFadeOut] = useState(false);
 
+  // Lock underlying scroll for the duration of the countdown
   useEffect(() => {
     const el = document.querySelector(".app-root-container");
     if (el) el.style.overflowY = "hidden";
@@ -32,15 +33,18 @@ export default function DailyQuestCountdown({ onComplete }) {
       style={{
         position: "fixed",
         inset: 0,
+        height: "100dvh",
         background: "rgba(0,0,0,0.95)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         zIndex: 10000,
+        overflow: "hidden",
+        overscrollBehavior: "none",
+        touchAction: "none",
         opacity: fadeOut ? 0 : 1,
         transition: "opacity 0.2s ease-out",
-        touchAction: "none",
       }}
     >
       <div
