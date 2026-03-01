@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { applyHonorifics } from "../../utils/honorifics";
 
 export default function QuestionStep({ question, onAnswer }) {
   const [selected, setSelected] = useState(null);
@@ -19,7 +20,7 @@ export default function QuestionStep({ question, onAnswer }) {
 
   return (
     <div style={{ paddingBottom: 20 }}>
-      <h2 className="quiz-question-title">{question.text}</h2>
+      <h2 className="quiz-question-title">{applyHonorifics(question.text)}</h2>
 
       <div className="quiz-options">
         {question.options.map((opt, index) => (
@@ -39,7 +40,7 @@ export default function QuestionStep({ question, onAnswer }) {
               transition: "all 0.25s ease",
             }}
           >
-            {opt}
+            {applyHonorifics(opt)}
           </button>
         ))}
       </div>

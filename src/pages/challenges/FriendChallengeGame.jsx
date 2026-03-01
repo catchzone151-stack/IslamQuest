@@ -7,6 +7,7 @@ import { useModalStore, MODAL_TYPES } from "../../store/modalStore";
 import { useRewards } from "../../hooks/useRewards";
 import { useAnalytics } from "../../hooks/useAnalytics";
 import { useVibration } from "../../hooks/useVibration";
+import { applyHonorifics } from "../../utils/honorifics";
 import { useFriendsStore } from "../../store/friendsStore";
 import { useUserStore } from "../../store/useUserStore";
 import assets from "../../assets/assets";
@@ -567,7 +568,7 @@ export default function FriendChallengeGame() {
       </div>
 
       <div className="challenge-question-card">
-        <h2 className="challenge-question-text">{currentQuestion.question}</h2>
+        <h2 className="challenge-question-text">{applyHonorifics(currentQuestion.question)}</h2>
         
         <div className="challenge-options">
           {currentQuestion.options.map((option, index) => {
@@ -588,7 +589,7 @@ export default function FriendChallengeGame() {
                   borderColor: isSelected ? (showResult && isCorrect ? '#10b981' : showResult && !isCorrect ? '#ef4444' : '#d4af37') : 'rgba(255,255,255,0.2)'
                 }}
               >
-                {option}
+                {applyHonorifics(option)}
                 {showResult && isSelected && isCorrect && <span className="option-icon">✓</span>}
                 {showResult && isSelected && !isCorrect && <span className="option-icon">✗</span>}
               </button>

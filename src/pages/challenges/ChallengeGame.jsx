@@ -6,6 +6,7 @@ import { useModalStore, MODAL_TYPES } from "../../store/modalStore";
 import { useRewards } from "../../hooks/useRewards";
 import { useAnalytics } from "../../hooks/useAnalytics";
 import { useVibration } from "../../hooks/useVibration";
+import { applyHonorifics } from "../../utils/honorifics";
 import assets from "../../assets/assets";
 import mascot_running from "../../assets/mascots/mascot_running.webp";
 import { avatarIndexToKey } from "../../utils/avatarUtils";
@@ -585,7 +586,7 @@ export default function ChallengeGame() {
 
       {/* Question Card */}
       <div className="challenge-question-card">
-        <h2 className="challenge-question-text">{currentQuestion.question}</h2>
+        <h2 className="challenge-question-text">{applyHonorifics(currentQuestion.question)}</h2>
         
         {/* MCQ Options */}
         <div className="challenge-options">
@@ -607,7 +608,7 @@ export default function ChallengeGame() {
                   borderColor: isSelected ? (showResult && isCorrect ? '#10b981' : showResult && !isCorrect ? '#ef4444' : '#d4af37') : 'rgba(255,255,255,0.2)'
                 }}
               >
-                {option}
+                {applyHonorifics(option)}
                 {showResult && isSelected && isCorrect && <span className="option-icon">✓</span>}
                 {showResult && isSelected && !isCorrect && <span className="option-icon">✗</span>}
               </button>

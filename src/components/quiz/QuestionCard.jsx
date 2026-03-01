@@ -1,5 +1,6 @@
 import React from "react";
 import { useVibration } from "../../hooks/useVibration";
+import { applyHonorifics } from "../../utils/honorifics";
 
 const QuestionCard = React.memo(({
   question,
@@ -60,7 +61,7 @@ const QuestionCard = React.memo(({
         Question {currentQ + 1} of {totalQ}
       </h2>
 
-      <h3 style={questionStyle}>{question.text}</h3>
+      <h3 style={questionStyle}>{applyHonorifics(question.text)}</h3>
 
       <div style={optionList}>
         {question.options.map((option, index) => {
@@ -95,7 +96,7 @@ const QuestionCard = React.memo(({
               disabled={selected !== null}
               style={style}
             >
-              {option}
+              {applyHonorifics(option)}
             </button>
           );
         })}

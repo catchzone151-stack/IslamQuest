@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { applyHonorifics } from "../utils/honorifics";
 import { useNavigate } from "../hooks/useNavigate";
 import { getLessonsForPath } from "../data/lessonLoader";
 import { useProgressStore } from "../store/progressStore";
@@ -222,13 +223,13 @@ export default function Lesson() {
             hyphens: "auto",
             overflow: "hidden",
           }}>
-            {para}
+            {applyHonorifics(para)}
           </p>
         ))}
         
         {/* Content fallback for any lessons using old format */}
         {!lesson.description && lesson.content && (
-          <div style={{ whiteSpace: "pre-line" }}>{lesson.content}</div>
+          <div style={{ whiteSpace: "pre-line" }}>{applyHonorifics(lesson.content)}</div>
         )}
       </div>
 
@@ -264,7 +265,7 @@ export default function Lesson() {
               marginBottom: "6px",
             }}
           >
-            {lesson.evidence.translation}
+            {applyHonorifics(lesson.evidence.translation)}
           </div>
           <div
             style={{
@@ -288,7 +289,7 @@ export default function Lesson() {
           marginBottom: "20px",
         }}
       >
-        {lesson.reflection}
+        {applyHonorifics(lesson.reflection)}
       </div>
 
       {/* Back + Quiz buttons */}
