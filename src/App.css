@@ -6,6 +6,7 @@
   --text: #f3f4f6;
   --nav-height: 76px;
   --nav-total: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px));
+  --sat: env(safe-area-inset-top, 0px);
 }
 
 * {
@@ -38,9 +39,11 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+  padding-top: var(--sat);
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  background: #0e2340;
 }
 
 /* Arabic honorific font - forces ﷻ (U+FDFC) and ﷺ (U+FDFA) to use Arabic calligraphic style */

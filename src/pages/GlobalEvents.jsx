@@ -174,13 +174,10 @@ export default function GlobalEvents() {
                   alt={event.name}
                   style={{
                     width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
+                    height: "auto",
+                    objectFit: "contain",
                     borderRadius: 18,
                     display: "block",
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
                   }}
                 />
               )}
