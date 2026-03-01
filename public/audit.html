@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>IslamQuest — Streak & OneSignal Audit</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #1a1a2e;
+    background: #f7f8fc;
+    padding: 40px 24px;
+  }
+
+  .page {
+    max-width: 960px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    padding: 48px 56px;
+  }
+
+  /* HEADER */
+  .doc-header {
+    border-bottom: 3px solid #1a1a5e;
+    padding-bottom: 20px;
+    margin-bottom: 36px;
+  }
+  .doc-header h1 {
+    font-size: 24px;
+    font-weight: 800;
+    color: #1a1a5e;
+    letter-spacing: -0.5px;
+  }
+  .doc-header .meta {
+    margin-top: 6px;
+    font-size: 12px;
+    color: #666;
+  }
+
+  /* SECTION HEADERS */
+  h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a5e;
+    background: #eef0fa;
+    border-left: 4px solid #4f46e5;
+    padding: 8px 14px;
+    border-radius: 0 6px 6px 0;
+    margin: 36px 0 16px;
+  }
+
+  h3 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #333;
+    margin: 20px 0 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  /* TABLES */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0 18px;
+    font-size: 12px;
+  }
+  thead tr {
+    background: #1a1a5e;
+    color: #fff;
+  }
+  thead th {
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  tbody tr:nth-child(even) { background: #f3f4f8; }
+  tbody tr:hover { background: #e8eaf8; }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: top;
+  }
+
+  /* CODE */
+  code {
+    font-family: "Fira Code", "Cascadia Code", "Consolas", monospace;
+    font-size: 11.5px;
+    background: #f0f0f7;
+    border: 1px solid #dde0f0;
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: #3730a3;
+  }
+
+  pre {
+    background: #1e1e3a;
+    color: #c8d3f5;
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-family: "Fira Code", "Consolas", monospace;
+    font-size: 11.5px;
+    line-height: 1.7;
+    margin: 10px 0 16px;
+    overflow-x: auto;
+  }
+
+  /* CALLOUT BOXES */
+  .callout {
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  .callout.warn {
+    background: #fffbeb;
+    border-left: 4px solid #f59e0b;
+    color: #78350f;
+  }
+  .callout.info {
+    background: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    color: #1e3a5f;
+  }
+  .callout.ok {
+    background: #f0fdf4;
+    border-left: 4px solid #22c55e;
+    color: #14532d;
+  }
+  .callout strong { font-weight: 700; }
+
+  /* CONFIRMATION ANSWERS */
+  .qa { margin: 12px 0; }
+  .qa .q {
+    font-weight: 700;
+    color: #1a1a5e;
+    margin-bottom: 4px;
+  }
+  .qa .a {
+    margin-left: 16px;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  /* YES / NO badges */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+  .badge.yes { background: #dcfce7; color: #15803d; }
+  .badge.no  { background: #fee2e2; color: #b91c1c; }
+  .badge.partial { background: #fef9c3; color: #92400e; }
+
+  /* PRINT */
+  @media print {
+    body { background: #fff; padding: 0; }
+    .page { box-shadow: none; border-radius: 0; padding: 32px 40px; }
+    .print-hide { display: none; }
+    h2 { break-before: avoid; }
+    table { break-inside: avoid; }
+    .callout { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="doc-header">
+    <h1>IslamQuest — Streak Logic &amp; OneSignal Tag Audit</h1>
+    <div class="meta">Generated: March 2026 &nbsp;|&nbsp; Scope: full client codebase + Supabase migrations &nbsp;|&nbsp; Confidential</div>
+  </div>
+
+  <div class="callout info print-hide">
+    <strong>Tip:</strong> To save as PDF, press <strong>Ctrl + P</strong> (or Cmd + P on Mac) and choose "Save as PDF" as the destination.
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <h2>1. Field: <code>streak</code></h2>
+
+  <h3>Read Locations</h3>
+  <table>
+    <thead><tr><th>File</th><th>Line</th><th>Function</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>progressStore.js</code></td><td>87</td><td>State initializer</td><td>Default value <code>0</code></td></tr>
+      <tr><td><code>progressStore.js</code></td><td>303</td><td><code>recordDailyActivity</code></td><td>Reads current value to compute new streak</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>444</td><td><code>checkStreakOnAppOpen</code></td><td>Reads to detect break / shield decision</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>653</td><td><code>calculateXPMultiplier</code></td><td>Reads to calculate XP bonus tiers</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>1183</td><td><code>serializeForSupabase</code></td><td>Maps <code>state.streak → streak</code> for Supabase payload</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>1231</td><td><code>setFromCloudSync</code></td><td>Reads local streak to compare with cloud</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>1437</td><td><code>loadFromSupabase</code></td><td>Reads <code>data.streak</code> from Supabase row</td></tr>
+      <tr><td><code>sync/profileSync.js</code></td><td>93</td><td><code>mergeProfileData</code></td><td>Passes <code>cloud.streak</code> into <code>setFromCloudSync</code></td></tr>
+      <tr><td><code>pages/Home.jsx</code></td><td>76</td><td>Component render</td><td>Displayed in streak stat card</td></tr>
+      <tr><td><code>pages/Profile.jsx</code></td><td>26</td><td>Component render</td><td>Displayed in profile stat card</td></tr>
+      <tr><td><code>services/pushTags.js</code></td><td>56</td><td><code>syncStreakTags</code></td><td>Read to compute OneSignal <code>iq_state</code> tag</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Write Locations (Local State)</h3>
+  <table>
+    <thead><tr><th>File</th><th>Line</th><th>Function</th><th>Trigger</th></tr></thead>
+    <tbody>
+      <tr><td><code>progressStore.js</code></td><td>350–357</td><td><code>recordDailyActivity</code></td><td>Lesson complete, quiz pass, daily quest — any meaningful activity</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>496–502</td><td><code>checkStreakOnAppOpen</code> Branch A</td><td>App open / tab focus / Capacitor foreground — shield auto-consumed</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>525–529</td><td><code>checkStreakOnAppOpen</code> Branch B</td><td>App open / tab focus / Capacitor foreground — streak broken, no shield</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>601–608</td><td><code>repairStreak</code></td><td>User taps "Repair" in RepairStreakModal (costs coins)</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>636–641</td><td><code>skipRepair</code></td><td>User taps "Skip" in RepairStreakModal — resets to 0</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>1148–1168</td><td><code>resetAllProgress</code></td><td>Developer / test reset only</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>1245–1253</td><td><code>setFromCloudSync</code></td><td>Cloud sync merge on app open (if cloud is newer)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Supabase Writes of <code>streak</code></h3>
+  <table>
+    <thead><tr><th>File</th><th>Line</th><th>Function</th><th>Payload</th></tr></thead>
+    <tbody>
+      <tr><td><code>progressStore.js</code></td><td>385–395</td><td><code>recordDailyActivity</code></td><td><code>{ streak: newStreak }</code></td></tr>
+      <tr><td><code>progressStore.js</code></td><td>506–512</td><td><code>checkStreakOnAppOpen</code> Branch A</td><td><code>{ streak: streak }</code> (unchanged — shield saved it)</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>536–539</td><td><code>checkStreakOnAppOpen</code> Branch B</td><td><code>{ streak: 0 }</code></td></tr>
+      <tr><td><code>progressStore.js</code></td><td>617–622</td><td><code>repairStreak</code></td><td><code>{ streak: restoredStreak }</code></td></tr>
+      <tr><td><code>sync/profileSync.js</code></td><td>46–53</td><td><code>pushProfileToCloud → serializeForSupabase</code></td><td><code>{ streak: state.streak }</code> — full periodic push</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <h2>2. Field: <code>streak_active</code></h2>
+
+  <div class="callout info">
+    <strong>Key finding:</strong> <code>streak_active</code> is <strong>never stored in local Zustand state</strong> and is <strong>never read back by the client</strong>. It exists exclusively as a Supabase column written by the client and consumed server-side by the <code>send-daily-notifications</code> Edge Function to filter which users receive daily push notifications.
+  </div>
+
+  <h3>Read Locations</h3>
+  <table>
+    <thead><tr><th>File</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Client codebase</td><td><span class="badge no">NOT READ</span> — No client code reads this field back from Supabase</td></tr>
+      <tr><td><code>supabase/migrations/add_streak_active.sql</code></td><td>Column definition only: <code>BOOLEAN NOT NULL DEFAULT true</code></td></tr>
+      <tr><td><code>services/pushTags.js</code> line 61</td><td><code>syncStreakTags</code> locally <em>recalculates</em> streak active from <code>lastStudyDate</code> — does NOT read the DB column</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Supabase Writes of <code>streak_active</code> (client → DB only)</h3>
+  <table>
+    <thead><tr><th>File</th><th>Line</th><th>Function</th><th>Value Written</th><th>Trigger</th></tr></thead>
+    <tbody>
+      <tr><td><code>progressStore.js</code></td><td>387</td><td><code>recordDailyActivity</code></td><td><code>streak_active: newStreak &gt; 0</code></td><td>Any meaningful learning activity</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>509</td><td><code>checkStreakOnAppOpen</code> Branch A</td><td><code>streak_active: streak &gt; 0</code></td><td>Shield auto-consumed on app open</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>538</td><td><code>checkStreakOnAppOpen</code> Branch B</td><td><code>streak_active: false</code></td><td>Streak broken on app open (no shield)</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <h2>3. Field: <code>lastStreakDate</code> (local) / <code>last_completed_activity_date</code> (Supabase)</h2>
+
+  <div class="callout warn">
+    <strong>Bug note:</strong> <code>syncStreakTags</code> reads <code>state.lastStudyDate</code> (line 57 of pushTags.js), <em>not</em> <code>state.lastStreakDate</code>. Both are normally written together in <code>recordDailyActivity</code> (lines 357–358). In <code>checkStreakOnAppOpen</code> Branch A (shield consumed), <code>lastStudyDate</code> is also updated (line 499). In Branch B (broken), neither is updated — correctly leaving them stale. No functional bug currently, but the field names are inconsistent.
+  </div>
+
+  <h3>Read Locations</h3>
+  <table>
+    <thead><tr><th>File</th><th>Line</th><th>Function</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>progressStore.js</code></td><td>89</td><td>State initializer</td><td>Default <code>null</code></td></tr>
+      <tr><td><code>progressStore.js</code></td><td>216–222</td><td><code>loadProgress</code></td><td>Migration: renames <code>lastCompletedActivityDate</code> → <code>lastStreakDate</code>, normalises to ISO date</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>303</td><td><code>recordDailyActivity</code></td><td>Reads to compute <code>diffDays</code> since last activity</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>444</td><td><code>checkStreakOnAppOpen</code></td><td>Reads to detect if streak check is needed today</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>1184</td><td><code>serializeForSupabase</code></td><td>Maps <code>lastStreakDate → last_completed_activity_date</code></td></tr>
+      <tr><td><code>progressStore.js</code></td><td>1230</td><td><code>loadFromSupabase</code></td><td>Reads <code>data.last_completed_activity_date</code> from cloud</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>1238</td><td><code>setFromCloudSync</code></td><td>Compares cloud date vs local for merge decision</td></tr>
+      <tr><td><code>sync/profileSync.js</code></td><td>20</td><td><code>pullProfileFromCloud</code></td><td>SELECTs <code>last_completed_activity_date</code> from profiles</td></tr>
+      <tr><td><code>sync/profileSync.js</code></td><td>96</td><td><code>mergeProfileData</code></td><td>Passes to <code>setFromCloudSync</code></td></tr>
+      <tr><td><code>services/pushTags.js</code></td><td>57</td><td><code>syncStreakTags</code></td><td>Reads <code>state.lastStudyDate</code> (parallel field) to recalculate streak active</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Write Locations (Local State)</h3>
+  <table>
+    <thead><tr><th>File</th><th>Line</th><th>Function</th><th>Value</th><th>Trigger</th></tr></thead>
+    <tbody>
+      <tr><td><code>progressStore.js</code></td><td>357</td><td><code>recordDailyActivity</code></td><td><code>lastStreakDate = today</code></td><td>Any meaningful activity</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>498–499</td><td><code>checkStreakOnAppOpen</code> Branch A</td><td><code>lastStreakDate = yesterdayStr</code></td><td>Shield auto-consumed on app open</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>606</td><td><code>repairStreak</code></td><td><code>lastStreakDate = today</code></td><td>User repairs streak</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>1249</td><td><code>setFromCloudSync</code></td><td><code>lastStreakDate = cloudStreakDate</code> (if cloud newer)</td><td>Cloud sync merge</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>1253</td><td><code>loadFromSupabase</code></td><td>Same merge logic as above</td><td>App launch / direct call</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Supabase Writes of <code>last_completed_activity_date</code></h3>
+  <table>
+    <thead><tr><th>File</th><th>Line</th><th>Function</th><th>Trigger</th></tr></thead>
+    <tbody>
+      <tr><td><code>progressStore.js</code></td><td>391–393</td><td><code>recordDailyActivity</code></td><td>Only when <code>updateLastDate === true</code> (not when streak broken)</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>510</td><td><code>checkStreakOnAppOpen</code> Branch A</td><td>Sets to <code>yesterdayStr</code> when shield consumed</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>620</td><td><code>repairStreak</code></td><td>User repairs streak — sets to today</td></tr>
+      <tr><td><code>sync/profileSync.js</code></td><td>46–53</td><td><code>pushProfileToCloud → serializeForSupabase</code></td><td>Full periodic profile push</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <h2>4. Field: <code>shieldCount</code> (local) / <code>shield_count</code> (Supabase)</h2>
+
+  <h3>Read Locations</h3>
+  <table>
+    <thead><tr><th>File</th><th>Line</th><th>Function</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>progressStore.js</code></td><td>91</td><td>State initializer</td><td>Default <code>0</code></td></tr>
+      <tr><td><code>progressStore.js</code></td><td>303</td><td><code>recordDailyActivity</code></td><td>Checks if shield saves a broken streak during activity</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>444</td><td><code>checkStreakOnAppOpen</code></td><td>Checks <code>shieldCount &gt;= 1</code> before breaking streak</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>555</td><td><code>purchaseShield</code></td><td>Checks <code>shieldCount &gt;= MAX_SHIELDS</code> before allowing purchase</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>1186</td><td><code>serializeForSupabase</code></td><td>Maps <code>shieldCount → shield_count</code></td></tr>
+      <tr><td><code>progressStore.js</code></td><td>1250</td><td><code>setFromCloudSync</code></td><td>Reads cloud value to overwrite local</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>1358</td><td><code>syncStreakShieldToCloud</code></td><td>Reads to push current local count to Supabase</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>1338–1341</td><td><code>loadStreakShieldFromCloud</code></td><td>Reads cloud value and sets local</td></tr>
+      <tr><td><code>sync/profileSync.js</code></td><td>94</td><td><code>mergeProfileData</code></td><td>Passes <code>cloud.shield_count</code> into <code>setFromCloudSync</code></td></tr>
+      <tr><td><code>pages/Home.jsx</code></td><td>77, 477</td><td>Render</td><td>Displays shield count in Home UI</td></tr>
+      <tr><td><code>pages/Profile.jsx</code></td><td>26</td><td>Render</td><td>Displays shield count in profile stat card</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Write Locations (Local State)</h3>
+  <table>
+    <thead><tr><th>File</th><th>Line</th><th>Function</th><th>Trigger</th></tr></thead>
+    <tbody>
+      <tr><td><code>progressStore.js</code></td><td>335</td><td><code>recordDailyActivity</code></td><td>Shield auto-saves a broken streak mid-activity</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>492–497</td><td><code>checkStreakOnAppOpen</code> Branch A</td><td>Shield auto-consumed on app open</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>568–571</td><td><code>purchaseShield</code></td><td>User buys shield in PurchaseStreakFreezeModal (costs coins)</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>1157</td><td><code>resetAllProgress</code></td><td>Developer reset</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>1250</td><td><code>setFromCloudSync</code></td><td>Cloud sync merge</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>1339</td><td><code>loadStreakShieldFromCloud</code></td><td>Direct cloud load</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Supabase Writes of <code>shield_count</code></h3>
+  <table>
+    <thead><tr><th>File</th><th>Line</th><th>Function</th><th>Trigger</th></tr></thead>
+    <tbody>
+      <tr><td><code>progressStore.js</code></td><td>388</td><td><code>recordDailyActivity</code></td><td><code>shield_count: newShieldCount</code></td></tr>
+      <tr><td><code>progressStore.js</code></td><td>507</td><td><code>checkStreakOnAppOpen</code> Branch A</td><td><code>shield_count: newShieldCount</code> after shield consumed</td></tr>
+      <tr><td><code>progressStore.js</code></td><td>1362–1364</td><td><code>syncStreakShieldToCloud</code></td><td>Called 50ms after <code>purchaseShield</code> completes</td></tr>
+      <tr><td><code>sync/profileSync.js</code></td><td>46–53</td><td><code>pushProfileToCloud → serializeForSupabase</code></td><td>Full periodic profile push</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <h2>5. OneSignal Tag Audit</h2>
+
+  <h3>Tags Actually Sent</h3>
+
+  <h3>Tag: <code>iq_state</code></h3>
+  <table>
+    <thead><tr><th>Set In</th><th>Line</th><th>Function</th><th>Possible Values</th></tr></thead>
+    <tbody>
+      <tr><td><code>services/pushTags.js</code></td><td>34</td><td><code>setIqState()</code></td><td><code>AS</code>, <code>NS</code>, <code>AS_CP</code>, <code>NS_CP</code></td></tr>
+      <tr><td><code>services/pushTags.js</code></td><td>68</td><td><code>syncStreakTags()</code></td><td><code>AS</code>, <code>NS</code>, <code>AS_CP</code>, <code>NS_CP</code></td></tr>
+    </tbody>
+  </table>
+
+  <p style="margin: 8px 0 6px; font-weight: 600;">Value formula:</p>
+  <pre>streakActive &amp;&amp; challengePending  →  "AS_CP"   (active streak + challenge pending)
+streakActive only                 →  "AS"      (active streak)
+challengePending only             →  "NS_CP"   (no streak + challenge pending)
+neither                           →  "NS"      (no streak)</pre>
+
+  <p style="margin: 8px 0 6px; font-weight: 600;">How <code>streakActive</code> is locally calculated (pushTags.js line 61):</p>
+  <pre>const today     = new Date().toDateString();
+const yesterday = new Date(Date.now() - 86400000).toDateString();
+const streakActive = lastStudyDate === today || lastStudyDate === yesterday;</pre>
+
+  <div class="callout info">
+    <strong>Source of truth:</strong> <code>streakActive</code> for the OneSignal tag is computed entirely <strong>in memory from <code>lastStudyDate</code></strong> — it does NOT read the <code>streak_active</code> Supabase column. The two values should agree but are calculated independently.
+  </div>
+
+  <h3>What Triggers <code>syncStreakTags</code> (sets <code>iq_state</code>)</h3>
+  <table>
+    <thead><tr><th>Caller</th><th>File</th><th>Line</th><th>Reason</th></tr></thead>
+    <tbody>
+      <tr><td><code>recordDailyActivity</code></td><td><code>progressStore.js</code></td><td>373</td><td>After any lesson / quiz / daily quest activity</td></tr>
+      <tr><td><code>checkStreakOnAppOpen</code> Branch B</td><td><code>progressStore.js</code></td><td>533</td><td>Streak broken on app open</td></tr>
+      <tr><td>App open effect</td><td><code>App.jsx</code></td><td>620</td><td>Once on app open after auth check succeeds</td></tr>
+    </tbody>
+  </table>
+
+  <h3>What Triggers <code>setIqState</code> (sets <code>challengePending</code> component)</h3>
+  <table>
+    <thead><tr><th>Caller</th><th>File</th><th>Line</th><th>Reason</th></tr></thead>
+    <tbody>
+      <tr><td><code>initialize</code></td><td><code>friendChallengesStore.js</code></td><td>176</td><td>Challenge received — sets <code>challengePending: true</code></td></tr>
+      <tr><td><code>acceptChallenge</code></td><td><code>friendChallengesStore.js</code></td><td>332</td><td>Accepted — clears pending if no more incoming challenges</td></tr>
+      <tr><td><code>declineChallenge</code></td><td><code>friendChallengesStore.js</code></td><td>361</td><td>Declined — clears pending if no more incoming challenges</td></tr>
+      <tr><td><code>cancelChallenge</code></td><td><code>friendChallengesStore.js</code></td><td>390</td><td>Cancelled — clears pending if no more incoming challenges</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Tag: <code>path_state</code></h3>
+  <table>
+    <thead><tr><th>Set In</th><th>Line</th><th>Function</th><th>Values</th></tr></thead>
+    <tbody>
+      <tr><td><code>services/pushTags.js</code></td><td>86</td><td><code>setPathStarted(pathId)</code></td><td><code>"&lt;pathId&gt;:started"</code></td></tr>
+      <tr><td><code>services/pushTags.js</code></td><td>91</td><td><code>setPathCompleted(pathId)</code></td><td><code>"&lt;pathId&gt;:completed"</code></td></tr>
+    </tbody>
+  </table>
+  <div class="callout warn">
+    <strong>Dead code:</strong> <code>setPathStarted</code> and <code>setPathCompleted</code> are exported but never called anywhere in the codebase. The <code>path_state</code> tag is never actually sent to OneSignal.
+  </div>
+
+  <h3>Tags Searched but NOT Found</h3>
+  <table>
+    <thead><tr><th>Tag / Symbol</th><th>Found?</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><code>streak_count</code></td><td><span class="badge no">Not found</span></td><td>Not used as a tag</td></tr>
+      <tr><td><code>last_active_at</code></td><td><span class="badge no">Not found</span></td><td>Not used as a tag</td></tr>
+      <tr><td><code>active_path</code></td><td><span class="badge no">Not found</span></td><td>Not used as a tag</td></tr>
+      <tr><td><code>challenge_pending</code> (standalone)</td><td><span class="badge no">Not found</span></td><td>Folded into <code>iq_state</code> compound value</td></tr>
+      <tr><td><code>sendTag</code> / <code>sendTags</code> (old API)</td><td><span class="badge no">Not found</span></td><td>Only <code>addTag</code> (OneSignal v5 API) is used</td></tr>
+      <tr><td><code>setExternalUserId</code></td><td><span class="badge no">Not found</span></td><td>Not called anywhere</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <h2>6. Column Summary Table</h2>
+
+  <table>
+    <thead><tr><th>Column / Field</th><th>Read In File(s)</th><th>Written In File(s)</th><th>Used For OneSignal?</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>streak</code></td>
+        <td><code>progressStore.js</code>, <code>profileSync.js</code>, <code>pushTags.js</code>, <code>Home.jsx</code>, <code>Profile.jsx</code></td>
+        <td><code>progressStore.js</code> (5 functions), <code>profileSync.js</code></td>
+        <td><span class="badge partial">Indirectly</span> — feeds <code>lastStudyDate</code> which drives <code>iq_state</code></td>
+      </tr>
+      <tr>
+        <td><code>streak_active</code></td>
+        <td>Nowhere client-side</td>
+        <td><code>progressStore.js</code> (3 places — Supabase only)</td>
+        <td><span class="badge no">No</span> — written for Edge Function filtering; never read into client</td>
+      </tr>
+      <tr>
+        <td><code>lastStreakDate</code> / <code>last_completed_activity_date</code></td>
+        <td><code>progressStore.js</code>, <code>profileSync.js</code></td>
+        <td><code>progressStore.js</code> (4 functions), <code>profileSync.js</code></td>
+        <td><span class="badge partial">Indirectly</span> — parallel field <code>lastStudyDate</code> drives <code>iq_state</code></td>
+      </tr>
+      <tr>
+        <td><code>shieldCount</code> / <code>shield_count</code></td>
+        <td><code>progressStore.js</code>, <code>profileSync.js</code>, <code>Home.jsx</code>, <code>Profile.jsx</code></td>
+        <td><code>progressStore.js</code> (6 places), <code>profileSync.js</code></td>
+        <td><span class="badge no">No</span></td>
+      </tr>
+      <tr>
+        <td><code>iq_state</code> (OneSignal tag)</td>
+        <td>N/A</td>
+        <td><code>pushTags.js</code> — <code>setIqState</code>, <code>syncStreakTags</code></td>
+        <td><span class="badge yes">Yes</span> — the only active tag currently sent</td>
+      </tr>
+      <tr>
+        <td><code>path_state</code> (OneSignal tag)</td>
+        <td>N/A</td>
+        <td><code>pushTags.js</code> — <code>setPathStarted</code>, <code>setPathCompleted</code></td>
+        <td><span class="badge no">Dead code</span> — functions exist but are never called</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <h2>7. Confirmation Answers</h2>
+
+  <div class="qa">
+    <div class="q">Is streak calculated client-side only?</div>
+    <div class="a">
+      <span class="badge yes">Yes</span> Every streak mutation (<code>recordDailyActivity</code>, <code>checkStreakOnAppOpen</code>, <code>repairStreak</code>, <code>skipRepair</code>) runs entirely in Zustand client state first. Supabase writes follow as fire-and-forget updates. There is no server-side function that calculates or increments streak.
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="q">Is Supabase used as source of truth?</div>
+    <div class="a">
+      <span class="badge partial">Partially</span> Supabase stores the last known values and is the sync source when the app opens. <code>mergeProfileData → setFromCloudSync</code> pulls cloud values and applies them when cloud <code>updated_at</code> is newer than the local <code>iq_last_cloud_sync</code> timestamp. A <code>_localStreakTs</code> guard prevents cloud from overwriting a streak that was mutated more recently on-device.
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="q">Is OneSignal reading from Supabase at all?</div>
+    <div class="a">
+      <span class="badge no">No</span> OneSignal tags are set purely from in-memory Zustand state via <code>_getProgressState()</code>. The <code>streak_active</code> Supabase column is consumed <em>server-side</em> by the <code>send-daily-notifications</code> Edge Function to decide who to notify — OneSignal itself never queries Supabase.
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="q">Are tags purely client-set?</div>
+    <div class="a">
+      <span class="badge yes">Yes</span> Every <code>OneSignal.User.addTag(...)</code> call originates in <code>src/services/pushTags.js</code> from local Zustand state. The server-side Edge Function reads <code>streak_active</code> from Supabase to decide <em>who</em> to notify, but the tag values on each device are written by that device's client only.
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="margin-top: 48px; padding-top: 16px; border-top: 1px solid #e5e7eb; font-size: 11px; color: #999; text-align: center;">
+    IslamQuest — Internal Codebase Audit &nbsp;|&nbsp; March 2026 &nbsp;|&nbsp; Confidential
+  </div>
+
+</div>
+</body>
+</html>
