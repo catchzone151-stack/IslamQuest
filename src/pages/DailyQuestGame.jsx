@@ -12,6 +12,8 @@ import CongratsMascot from "../assets/mascots/mascot_congratulation.webp";
 const overlayBase = {
   position: "fixed",
   inset: 0,
+  top: 0,
+  paddingTop: "var(--sat, 0px)",
   height: "100dvh",
   zIndex: 999,
   background: "#0e2340",
@@ -23,7 +25,7 @@ const overlayBase = {
 };
 
 // Height reserved for the fixed CTA button at bottom
-const CTA_HEIGHT = 80;
+const CTA_HEIGHT = 100;
 
 export default function DailyQuestGame() {
   const navigate = useNavigate();
@@ -33,6 +35,7 @@ export default function DailyQuestGame() {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selected, setSelected] = useState(null);
+  const [isAnswered, setIsAnswered] = useState(false);
   const [answers, setAnswers] = useState([]);
   const [showResults, setShowResults] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -85,19 +88,30 @@ export default function DailyQuestGame() {
     return () => { isMounted = false; };
   }, [navigate, getQuestStatus, questions.length]);
 
-  const handleSelect = (i) => setSelected(i);
+  const currentQuestion = questions[currentIndex];
+  const totalQuestions = questions.length;
+  const isLastQuestion = currentIndex === totalQuestions - 1;
 
-  const handleNext = () => {
-    const isCorrect = selected === currentQuestion.correctIndex;
+  const handleSelect = (i) => {
+    if (isAnswered) return;
+    
+    setSelected(i);
+    setIsAnswered(true);
+    
+    const isCorrect = i === currentQuestion.correctIndex;
+    vibrate(isCorrect ? [100, 50, 100] : [200, 100, 200]);
+    
     const newAnswers = [...answers, { questionIndex: currentIndex, correct: isCorrect }];
     setAnswers(newAnswers);
-    vibrate(isCorrect ? [100, 50, 100, 50, 100] : [200, 100, 200]);
+  };
 
+  const handleNext = () => {
     if (currentIndex < totalQuestions - 1) {
       setCurrentIndex(currentIndex + 1);
       setSelected(null);
+      setIsAnswered(false);
     } else {
-      const correctCount = newAnswers.filter((a) => a.correct).length;
+      const correctCount = answers.filter((a) => a.correct).length;
       completeDailyQuest(correctCount);
       analytics("daily_quiz_completed", { score: correctCount, total: totalQuestions, xpEarned: 60, coinsEarned: 20 });
       setShowResults(true);
@@ -156,10 +170,6 @@ export default function DailyQuestGame() {
       </div>
     );
   }
-
-  const currentQuestion = questions[currentIndex];
-  const totalQuestions = questions.length;
-  const isLastQuestion = currentIndex === totalQuestions - 1;
 
   // ── Results ──────────────────────────────────────────────────────────────────
   if (showResults) {
@@ -280,9 +290,7 @@ export default function DailyQuestGame() {
         </div>
       </div>
 
-      {/* ── Scrollable Content Area ──
-          Overflows only vertically when content is taller than available space.
-          Bottom padding reserves space so content never hides behind the fixed CTA. */}
+      {/* ── Scrollable Content Area ── */}
       <div
         style={{
           flex: 1,
@@ -292,7 +300,7 @@ export default function DailyQuestGame() {
           WebkitOverflowScrolling: "touch",
           touchAction: "pan-y",
           padding: "20px 20px 0",
-          paddingBottom: `${CTA_HEIGHT + 24}px`,
+          paddingBottom: `${CTA_HEIGHT}px`,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -313,9 +321,7 @@ export default function DailyQuestGame() {
         </div>
       </div>
 
-      {/* ── Fixed CTA Button ──
-          position: fixed so it stays at the bottom on every device regardless of
-          content height. z-index keeps it above the scroll area. */}
+      {/* ── Fixed CTA Button ── */}
       <div
         style={{
           position: "fixed",
@@ -331,7 +337,7 @@ export default function DailyQuestGame() {
         <div style={{ maxWidth: 600, margin: "0 auto" }}>
           <button
             onClick={handleNext}
-            disabled={selected === null}
+            disabled={!isAnswered}
             style={{
               width: "100%",
               padding: "15px",
@@ -340,13 +346,13 @@ export default function DailyQuestGame() {
               borderRadius: 12,
               border: "none",
               background:
-                selected !== null
+                isAnswered
                   ? "linear-gradient(145deg, #D4AF37, #b8941f)"
                   : "rgba(255,255,255,0.08)",
-              color: selected !== null ? "#0B1E2D" : "rgba(255,255,255,0.3)",
-              cursor: selected !== null ? "pointer" : "default",
-              transition: "background 0.2s, color 0.2s, box-shadow 0.2s",
-              boxShadow: selected !== null ? "0 4px 14px rgba(212,175,55,0.4)" : "none",
+              color: isAnswered ? "#0B1E2D" : "rgba(255,255,255,0.3)",
+              cursor: isAnswered ? "pointer" : "default",
+              transition: "all 0.2s ease",
+              boxShadow: isAnswered ? "0 4px 14px rgba(212,175,55,0.4)" : "none",
             }}
           >
             {isLastQuestion ? "See Results 🎉" : "Next Question →"}

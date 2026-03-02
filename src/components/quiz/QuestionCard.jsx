@@ -53,6 +53,8 @@ const QuestionCard = React.memo(({
     textAlign: "left",
     cursor: "pointer",
     transition: "all 0.25s ease",
+    position: "relative",
+    overflow: "hidden",
   };
 
   return (
@@ -66,18 +68,23 @@ const QuestionCard = React.memo(({
       <div style={optionList}>
         {question.options.map((option, index) => {
           const isSelected = selected === index;
+          const isCorrectIndex = question.correctIndex;
+          const isAnswered = selected !== null;
+          
           let style = { ...baseOption };
 
-          if (selected !== null) {
-            const isCorrectIndex = question.correctIndex;
-
+          if (isAnswered) {
+            style.cursor = "default";
             if (index === isCorrectIndex) {
+              // Correct answer - always green
               style.background = "#16a34a";
               style.border = "2px solid #16a34a";
-            } else if (isSelected && index !== isCorrectIndex) {
+            } else if (isSelected) {
+              // Selected wrong answer - red
               style.background = "#dc2626";
               style.border = "2px solid #dc2626";
             } else {
+              // Not selected and not correct - dimmed
               style.opacity = 0.5;
               style.border = "2px solid #4b5563";
               style.color = "#9ca3af";
@@ -88,12 +95,11 @@ const QuestionCard = React.memo(({
             <button
               key={index}
               onClick={() => {
-                if (selected === null) {
-                  vibrate(50); // Quick haptic feedback on answer selection
+                if (!isAnswered) {
                   onSelect(index);
                 }
               }}
-              disabled={selected !== null}
+              disabled={isAnswered}
               style={style}
             >
               {applyHonorifics(option)}
