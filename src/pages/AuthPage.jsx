@@ -313,23 +313,19 @@ export default function AuthPage() {
           
           setLoading(false);
           
-          if (data.user.email_confirmed_at) {
-            setOnboarded(true);
-            localStorage.removeItem("iq_onboarding_step");
-            localStorage.setItem("iq_profile_complete", "true");
-            useUserStore.setState({ 
-              profileReady: true,
-              hasOnboarded: true,
-            });
-            navigate("/");
-          } else {
-            localStorage.setItem("iq_onboarding_step", "checkemail");
-            navigate("/check-email");
-          }
+          setOnboarded(true);
+          localStorage.removeItem("iq_onboarding_step");
+          localStorage.setItem("iq_profile_complete", "true");
+          localStorage.setItem("iq_signup_toast", "1");
+          useUserStore.setState({ 
+            profileReady: true,
+            hasOnboarded: true,
+          });
+          navigate("/");
         } else {
           setLoading(false);
-          localStorage.setItem("iq_onboarding_step", "checkemail");
-          navigate("/check-email");
+          localStorage.setItem("iq_signup_toast", "1");
+          navigate("/");
         }
       }
     } catch (err) {

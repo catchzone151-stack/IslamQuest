@@ -168,7 +168,7 @@ function OnboardingRedirector() {
     namehandle: "/onboarding/namehandle",
     avatar: "/onboarding/avatar",
     auth: "/login",
-    checkemail: "/check-email",
+    checkemail: "/",
   };
   
   const targetRoute = (savedStep && stepRoutes[savedStep]) 
