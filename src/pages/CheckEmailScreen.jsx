@@ -153,29 +153,37 @@ export default function CheckEmailScreen() {
       }
     }
 
-    const displayName = profile.username || "Student";
+    let displayName = profile.username || null;
     let handle = profile.handle || null;
     const avatarKey = typeof profile.avatar === "number"
       ? avatarIndexToKey(profile.avatar)
       : profile.avatar || "avatar_man_lantern";
 
-    if (!handle) {
-      // Profile exists but has no handle — try to recover from sign-up metadata
-      const metaHandle = user.user_metadata?.desired_handle || localStorage.getItem("iq_handle");
-      if (metaHandle) {
-        console.log("[CheckEmail] Recovering handle from metadata:", metaHandle);
-        const { error: updateError } = await supabase
-          .from("profiles")
-          .update({ handle: metaHandle })
-          .eq("user_id", user.id);
-        if (!updateError) {
-          console.log("[CheckEmail] Handle recovered and saved:", metaHandle);
-          handle = metaHandle;
-        } else {
-          console.error("[CheckEmail] Handle recovery update failed:", updateError);
-        }
+    // Recover missing username and/or handle from sign-up metadata / localStorage
+    const metaName = user.user_metadata?.desired_username || localStorage.getItem("iq_name");
+    const metaHandle = user.user_metadata?.desired_handle || localStorage.getItem("iq_handle");
+
+    const needsNameUpdate = !displayName && metaName;
+    const needsHandleUpdate = !handle && metaHandle;
+
+    if (needsNameUpdate || needsHandleUpdate) {
+      const updatePayload = {};
+      if (needsNameUpdate) updatePayload.username = metaName;
+      if (needsHandleUpdate) updatePayload.handle = metaHandle;
+      console.log("[CheckEmail] Recovering profile fields from metadata:", updatePayload);
+      const { error: updateError } = await supabase
+        .from("profiles")
+        .update(updatePayload)
+        .eq("user_id", user.id);
+      if (!updateError) {
+        if (needsNameUpdate) { displayName = metaName; console.log("[CheckEmail] Username recovered:", metaName); }
+        if (needsHandleUpdate) { handle = metaHandle; console.log("[CheckEmail] Handle recovered:", metaHandle); }
+      } else {
+        console.error("[CheckEmail] Profile field recovery failed:", updateError);
       }
     }
+
+    if (!displayName) displayName = "Student";
 
     if (!handle) {
       console.log("[CheckEmail] Profile still missing handle — sending to handle screen");

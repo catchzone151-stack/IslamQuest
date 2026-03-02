@@ -132,29 +132,36 @@ export default function LoginPage() {
 
       // Use preloaded profile if available, otherwise use the polled profile
       const finalProfile = preloadResult?.profile || profile;
-      const displayName = finalProfile.username || "Student";
+      let displayName = finalProfile.username || null;
       let handle = finalProfile.handle || null;
       const avatarKey = typeof finalProfile.avatar === "number"
         ? avatarIndexToKey(finalProfile.avatar)
         : finalProfile.avatar || "avatar_man_lantern";
 
-      if (!handle) {
-        // Try to recover handle from user metadata or localStorage before sending to handle screen
-        const metaHandle = data.user.user_metadata?.desired_handle || localStorage.getItem("iq_handle");
-        if (metaHandle) {
-          console.log("[LoginPage] Recovering handle from metadata:", metaHandle);
-          const { error: updateError } = await supabase
-            .from("profiles")
-            .update({ handle: metaHandle })
-            .eq("user_id", data.user.id);
-          if (!updateError) {
-            console.log("[LoginPage] Handle recovered and saved:", metaHandle);
-            handle = metaHandle;
-          } else {
-            console.error("[LoginPage] Handle recovery update failed:", updateError);
-          }
+      // Recover missing username and/or handle from sign-up metadata / localStorage
+      const metaName = data.user.user_metadata?.desired_username || localStorage.getItem("iq_name");
+      const metaHandle = data.user.user_metadata?.desired_handle || localStorage.getItem("iq_handle");
+      const needsNameUpdate = !displayName && metaName;
+      const needsHandleUpdate = !handle && metaHandle;
+
+      if (needsNameUpdate || needsHandleUpdate) {
+        const updatePayload = {};
+        if (needsNameUpdate) updatePayload.username = metaName;
+        if (needsHandleUpdate) updatePayload.handle = metaHandle;
+        console.log("[LoginPage] Recovering profile fields from metadata:", updatePayload);
+        const { error: updateError } = await supabase
+          .from("profiles")
+          .update(updatePayload)
+          .eq("user_id", data.user.id);
+        if (!updateError) {
+          if (needsNameUpdate) { displayName = metaName; console.log("[LoginPage] Username recovered:", metaName); }
+          if (needsHandleUpdate) { handle = metaHandle; console.log("[LoginPage] Handle recovered:", metaHandle); }
+        } else {
+          console.error("[LoginPage] Profile field recovery failed:", updateError);
         }
       }
+
+      if (!displayName) displayName = "Student";
 
       if (!handle) {
         console.log("[LoginPage] Profile missing handle — sending to handle screen");
