@@ -37,6 +37,7 @@ import SalaamScreen from "./onboarding/SalaamScreen.jsx";
 import AuthChoiceScreen from "./onboarding/AuthChoiceScreen.jsx";
 import NameHandleScreen from "./onboarding/NameHandleScreen.jsx";
 import AvatarScreen from "./onboarding/AvatarScreen.jsx";
+import ConfirmEmailPage from "./pages/ConfirmEmailPage.jsx";
 
 // 🚀 LAZY LOADED ROUTES - Split bundle for proper hydration
 const Home = lazy(() => import("./pages/Home"));
@@ -450,14 +451,15 @@ export default function App() {
         const { data: { session } } = await supabase.auth.getSession();
         
         if (session?.user) {
-          if (!session.user.email_confirmed_at) {
-            console.log("User logged in but email not confirmed → check-email");
-            localStorage.setItem("iq_onboarding_step", "checkemail");
-            useUserStore.setState({ 
-              user: session.user, 
-              userId: session.user.id,
-              loading: false, 
-              isHydrated: true, 
+          const isOAuth = session.user.app_metadata?.provider &&
+                          session.user.app_metadata.provider !== "email";
+          if (!isOAuth && !session.user.email_confirmed_at) {
+            console.warn("[App] Email not confirmed — signing out and redirecting");
+            localStorage.setItem("iq_pending_confirm_email", session.user.email || "");
+            await supabase.auth.signOut();
+            useUserStore.setState({
+              loading: false,
+              isHydrated: true,
               profileReady: false,
               hasOnboarded: false,
             });
@@ -798,6 +800,8 @@ export default function App() {
                   />
                   <Route path="/onboarding/salaam" element={<SalaamScreen />} />
                   <Route path="/onboarding/auth-choice" element={<AuthChoiceScreen />} />
+                  {/* Email confirmation (accessible when signed out) */}
+                  <Route path="/confirm-email" element={<ConfirmEmailPage />} />
                   {/* Legacy routes (for resume support) */}
                   <Route path="/onboarding/namehandle" element={<NameHandleScreen />} />
                   <Route path="/onboarding/avatar" element={<AvatarScreen />} />
@@ -1003,6 +1007,9 @@ export default function App() {
                       </Suspense>
                     }
                   />
+
+                  {/* Email confirm page — accessible even when authenticated */}
+                  <Route path="/confirm-email" element={<ConfirmEmailPage />} />
 
                   {/* fallback */}
                   <Route

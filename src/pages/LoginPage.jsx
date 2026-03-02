@@ -87,9 +87,12 @@ export default function LoginPage() {
       }
 
       if (!data.user.email_confirmed_at) {
-        localStorage.setItem("iq_email", email.trim().toLowerCase());
+        const lcEmail = email.trim().toLowerCase();
+        localStorage.setItem("iq_email", lcEmail);
+        localStorage.setItem("iq_pending_confirm_email", lcEmail);
+        await supabase.auth.signOut();
         setLoading(false);
-        navigate("/check-email");
+        navigate("/confirm-email");
         return;
       }
 
