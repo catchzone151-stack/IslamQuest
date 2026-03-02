@@ -1,5 +1,6 @@
 import React from 'react';
 import { useModalStore, MODAL_TYPES } from '../store/modalStore';
+import VerifyEmailModal from './VerifyEmailModal';
 
 import RewardModal from './quiz/RewardModal';
 import { ZaydLevelUpPopup } from './ZaydLevelUpPopup';
@@ -832,6 +833,9 @@ export default function ModalController() {
             </div>
           </div>
         );
+
+      case MODAL_TYPES.VERIFY_EMAIL:
+        return <VerifyEmailModal reason={modalData?.reason} />;
 
       default:
         return null;

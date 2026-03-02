@@ -4,6 +4,17 @@ import { create } from "zustand";
 import { supabase } from "../lib/supabaseClient";
 import { avatarIndexToKey } from "../utils/avatarUtils";
 import { useFriendChallengesStore } from "./friendChallengesStore";
+import { useUserStore } from "./useUserStore";
+import { useModalStore, MODAL_TYPES } from "./modalStore";
+
+const requireVerified = () => {
+  const { emailVerified } = useUserStore.getState();
+  if (!emailVerified) {
+    useModalStore.getState().showModal(MODAL_TYPES.VERIFY_EMAIL);
+    return false;
+  }
+  return true;
+};
 
 export const useFriendsStore = create((set, get) => ({
   friends: [],
@@ -240,6 +251,7 @@ export const useFriendsStore = create((set, get) => ({
   },
 
   sendFriendRequest: async (targetUserId) => {
+    if (!requireVerified()) return { success: false, error: "EMAIL_NOT_VERIFIED" };
     try {
       const { data: auth } = await supabase.auth.getUser();
       if (!auth?.user) return { success: false, error: "Not logged in" };
@@ -271,6 +283,7 @@ export const useFriendsStore = create((set, get) => ({
   },
 
   acceptFriendRequest: async (requestId) => {
+    if (!requireVerified()) return { success: false, error: "EMAIL_NOT_VERIFIED" };
     if (get().busyRequestIds.includes(requestId)) return { success: false, error: "Already processing" };
     set(state => ({ busyRequestIds: [...state.busyRequestIds, requestId] }));
     try {

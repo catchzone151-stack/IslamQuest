@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { getCurrentLevel, checkLevelUp } from "../utils/diamondLevels";
 import { FREE_LESSON_LIMITS, PREMIUM_ONLY_PATHS, isPremiumOnlyPath } from "./premiumConfig";
 import { useModalStore, MODAL_TYPES } from "./modalStore";
+import { useUserStore } from "./useUserStore";
 import { supabase } from "../lib/supabaseClient";
 import CryptoJS from "crypto-js";
 import { getQuizForLesson } from "../data/quizEngine";
@@ -680,9 +681,29 @@ export const useProgressStore = create((set, get) => ({
   // 🪙 XP & Coins
   addXP: (amount) => {
     const { xp, xpMultiplier } = get();
+
+    // ── Unverified XP cap: hard limit of 1000 XP until email is confirmed ──────
+    const { emailVerified } = useUserStore.getState();
+    if (!emailVerified) {
+      if (xp >= 1000) {
+        useModalStore.getState().showModal(MODAL_TYPES.VERIFY_EMAIL, {
+          reason: 'xp_cap',
+        });
+        return;
+      }
+    }
+
     const bonus = Math.round((amount * xpMultiplier) / 100);
     const total = amount + bonus;
-    const newXP = xp + total;
+    let newXP = xp + total;
+
+    // Cap unverified users at 1000 and show the verify modal once they hit it
+    if (!emailVerified && newXP >= 1000) {
+      newXP = 1000;
+      useModalStore.getState().showModal(MODAL_TYPES.VERIFY_EMAIL, {
+        reason: 'xp_cap',
+      });
+    }
     
     // 💎 Check for level up using Diamond Level System
     const levelUpResult = checkLevelUp(xp, newXP);

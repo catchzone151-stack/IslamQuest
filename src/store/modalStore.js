@@ -38,6 +38,7 @@ const MODAL_TYPES = {
   PATH_COMPLETED: 'PATH_COMPLETED',
   STREAK_SAVED: 'STREAK_SAVED',
   PATH_COMING_SOON: 'PATH_COMING_SOON',
+  VERIFY_EMAIL: 'VERIFY_EMAIL',
 };
 
 export const useModalStore = create((set, get) => ({

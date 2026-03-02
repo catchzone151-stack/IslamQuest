@@ -234,6 +234,7 @@ export default function App() {
   // Force re-render workaround for Zustand subscription issues in React StrictMode
   const [renderKey, setRenderKey] = React.useState(0);
   const [forceReady, setForceReady] = React.useState(false);
+  const [signupToast, setSignupToast] = React.useState(false);
   
   React.useEffect(() => {
     // Subscribe to store changes and force re-render when hydration completes
@@ -274,6 +275,16 @@ export default function App() {
     };
   }, [isHydrated]);
   
+  // Show one-shot signup toast — set by SignUpPage after successful registration
+  React.useEffect(() => {
+    if (localStorage.getItem("iq_signup_toast") === "1") {
+      localStorage.removeItem("iq_signup_toast");
+      setSignupToast(true);
+      const t = setTimeout(() => setSignupToast(false), 7000);
+      return () => clearTimeout(t);
+    }
+  }, []);
+
   // Get the most current state directly from store to avoid stale closure issues
   const storeState = useUserStore.getState();
   const actualIsHydrated = isHydrated || storeState.isHydrated || forceReady;
@@ -455,23 +466,10 @@ export default function App() {
           const isOAuth = sessionUser.app_metadata?.provider &&
                           sessionUser.app_metadata.provider !== "email";
           if (!isOAuth && !sessionUser.email_confirmed_at) {
-            console.warn("[App] Email not confirmed — signing out and redirecting");
-            localStorage.setItem("iq_pending_confirm_email", sessionUser.email || "");
-            await supabase.auth.signOut();
-            useUserStore.setState({
-              loading: false,
-              isHydrated: true,
-              profileReady: false,
-              hasOnboarded: false,
-              emailVerified: false,
-            });
-            window.__iq_auth_init_complete = true;
-            window.__iq_auth_init_running = false;
-            // Hard redirect — we're outside React Router context here
-            if (window.location.pathname !== "/confirm-email") {
-              window.location.replace("/confirm-email");
-            }
-            return;
+            // Email not yet confirmed — let the user in. Features are gated by emailVerified: false.
+            // Do NOT sign out or redirect. The integrity layer handles social / leaderboard gating.
+            console.log("[App] Email not yet confirmed — allowing access with emailVerified: false");
+            useUserStore.setState({ emailVerified: false });
           }
         }
 
@@ -554,10 +552,19 @@ export default function App() {
       console.log("[App] IAP initialization failed (non-fatal):", err.message);
     });
 
-    // Sync when app/tab regains focus and re-check streak
-    const handleFocus = () => {
+    // Sync when app/tab regains focus, re-check streak, and re-evaluate email confirmation
+    const handleFocus = async () => {
       syncOnForeground();
       useProgressStore.getState().checkStreakOnAppOpen();
+      // Re-evaluate email_confirmed_at on every foreground — unlocks features instantly on verification
+      try {
+        const { data } = await supabase.auth.getUser();
+        if (data?.user?.email_confirmed_at) {
+          useUserStore.setState({ emailVerified: true });
+        }
+      } catch {
+        // Non-fatal — ignore
+      }
     };
 
     window.addEventListener("focus", handleFocus);
@@ -567,6 +574,12 @@ export default function App() {
     CapacitorApp.addListener("appStateChange", (state) => {
       if (state.isActive) {
         useProgressStore.getState().checkStreakOnAppOpen();
+        // Also re-check email verification on native foreground resume
+        supabase.auth.getUser().then(({ data }) => {
+          if (data?.user?.email_confirmed_at) {
+            useUserStore.setState({ emailVerified: true });
+          }
+        }).catch(() => {});
       }
     }).then((listener) => {
       capacitorForegroundListener = listener;
@@ -869,12 +882,6 @@ export default function App() {
                   {/* Fallback — resume from saved step or start from bismillah */}
                   <Route path="*" element={<OnboardingRedirector />} />
                 </>
-              ) : !emailVerified ? (
-                <>
-                  {/* ── Email not server-verified: block all private routes ── */}
-                  {/* /confirm-email is already declared above — catch everything else */}
-                  <Route path="*" element={<Navigate to="/confirm-email" replace />} />
-                </>
               ) : (
                 <>
                   {/* ✅ MAIN APP ROUTES - Lazy loaded for proper hydration */}
@@ -1040,6 +1047,51 @@ export default function App() {
 
           {/* 💎 Centralized Modal System */}
           <ModalController />
+
+          {/* 📧 Signup verification toast — auto-dismisses after 7 s */}
+          {signupToast && (
+            <div
+              style={{
+                position: "fixed",
+                bottom: "calc(var(--nav-total, 76px) + 12px)",
+                left: "50%",
+                transform: "translateX(-50%)",
+                background: "linear-gradient(135deg, #0a2a43, #000d1a)",
+                border: "1.5px solid rgba(255,215,0,0.45)",
+                borderRadius: "14px",
+                padding: "12px 18px",
+                maxWidth: "340px",
+                width: "calc(100% - 32px)",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
+                zIndex: 9998,
+                display: "flex",
+                alignItems: "flex-start",
+                gap: "10px",
+              }}
+            >
+              <span style={{ fontSize: "1.2rem", flexShrink: 0 }}>✉️</span>
+              <p style={{ margin: 0, fontSize: "0.88rem", color: "#cbd5e1", lineHeight: 1.5 }}>
+                Verification email sent.{" "}
+                <strong style={{ color: "#FFD700" }}>Unlock leaderboards &amp; challenges</strong>{" "}
+                once confirmed.
+              </p>
+              <button
+                onClick={() => setSignupToast(false)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "#64748b",
+                  cursor: "pointer",
+                  fontSize: "1rem",
+                  flexShrink: 0,
+                  padding: 0,
+                  lineHeight: 1,
+                }}
+              >
+                ✕
+              </button>
+            </div>
+          )}
 
           {/* 🏆 Streak milestone reward modal */}
           {showMilestoneModal && (

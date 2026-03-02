@@ -216,7 +216,8 @@ export default function SignUpPage() {
         setLoading(false);
         localStorage.setItem("iq_onboarding_step", "checkemail");
         localStorage.setItem("iq_new_signup", "true");
-        navigate("/check-email");
+        localStorage.setItem("iq_signup_toast", "1");
+        navigate("/");
       }
     } catch (err) {
       console.error("Signup error:", err);

@@ -4,6 +4,17 @@ import { useProgressStore } from "./progressStore";
 import { useFriendsStore } from "./friendsStore";
 import { CHALLENGE_MODES } from "./challengeStore";
 import { setChallengePending } from "../services/pushTags";
+import { useUserStore } from "./useUserStore";
+import { useModalStore, MODAL_TYPES } from "./modalStore";
+
+const requireVerified = () => {
+  const { emailVerified } = useUserStore.getState();
+  if (!emailVerified) {
+    useModalStore.getState().showModal(MODAL_TYPES.VERIFY_EMAIL);
+    return false;
+  }
+  return true;
+};
 
 const CHALLENGE_EXPIRY_HOURS = 48; // fallback only — DB expires_at takes precedence
 const CHALLENGE_EXPIRY_DAYS = 7;   // set on insert
@@ -223,6 +234,7 @@ export const useFriendChallengesStore = create((set, get) => ({
   },
 
   createChallenge: async (friendId, modeId, questions) => {
+    if (!requireVerified()) return { success: false, error: "EMAIL_NOT_VERIFIED" };
     const { currentUserId, pendingOutgoing, activeChallenges } = get();
     if (!currentUserId) {
       return { success: false, error: "Not logged in" };
@@ -300,6 +312,7 @@ export const useFriendChallengesStore = create((set, get) => ({
   },
 
   acceptChallenge: async (challengeId) => {
+    if (!requireVerified()) return { success: false, error: "EMAIL_NOT_VERIFIED" };
     const { currentUserId } = get();
     if (!currentUserId) return { success: false, error: "Not logged in" };
     

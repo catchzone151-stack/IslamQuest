@@ -51,7 +51,7 @@ const highlightStyle = `
 
 export default function Friends() {
   const navigate = useNavigate();
-  const { userId, name, avatar, username } = useUserStore();
+  const { userId, name, avatar, username, emailVerified } = useUserStore();
   const { xp: currentUserXP, streak: currentUserStreak } = useProgressStore();
   const { showModal } = useModalStore();
 
@@ -382,7 +382,10 @@ export default function Friends() {
           />
           <TabButton
             active={activeTab === "leaderboard"}
-            onClick={() => setActiveTab("leaderboard")}
+            onClick={() => {
+              if (!emailVerified) { showModal(MODAL_TYPES.VERIFY_EMAIL); return; }
+              setActiveTab("leaderboard");
+            }}
             icon={<Trophy size={18} />}
             label="Leaderboard"
             color="#c026d3"
@@ -398,7 +401,10 @@ export default function Friends() {
           />
           <TabButton
             active={activeTab === "search"}
-            onClick={() => setActiveTab("search")}
+            onClick={() => {
+              if (!emailVerified) { showModal(MODAL_TYPES.VERIFY_EMAIL); return; }
+              setActiveTab("search");
+            }}
             icon={<Search size={18} />}
             label="Search"
             color="#f59e0b"
