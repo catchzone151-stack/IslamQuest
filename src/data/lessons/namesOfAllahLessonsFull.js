@@ -1391,10 +1391,10 @@ const namesOfAllahLessonsFull = [
     arabic: "الديّان",
     meaning: "The Recompenser / The Supreme Judge",
     description: [
-      "Ad-Dayyan is an Islamic name for Allah, meaning 'The Recompenser' or 'The Supreme Judge'. It refers to His role as the ultimate judge who will reward or punish people for their deeds, based on perfect justice.",
-      "The name has not appeared in the Qur'an but is mentioned in the Sunnah (sayings and actions of the Prophet Muhammad ﷺ).",
-      "Allah is the one who will perfectly recompense His servants on the Day of Judgement—rewarding good deeds and punishing bad ones, or pardoning them according to His will.",
-      "This name embodies His perfect justice, meaning He will reward good deeds and punish bad ones according to His will with fairness and wisdom."
+      "Ad-Dayyan is a name of Allah, meaning 'The Recompenser' or 'The Supreme Judge'. It refers to His role as the ultimate judge who will reward or punish people for their deeds, based on perfect justice.",
+      "While the name does not appear in the Qur'an, it is mentioned in the Sunnah (the authentic sayings and actions of the Prophet Muhammad ﷺ).",
+      "Allah is the One who will perfectly recompense His servants on the Day of Judgement—rewarding good deeds and punishing bad ones, or pardoning them according to His will.",
+      "This name embodies His perfect justice, meaning He will recompense every action with fairness and wisdom."
     ],
     reflection: "How does knowing Allah is Ad-Dayyan inspire you to be more just and accountable in your actions?",
     quizId: "ad_dayyan_quiz"
