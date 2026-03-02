@@ -586,16 +586,16 @@ export default function ChallengeGame() {
               <button
                 key={index}
                 className={`challenge-option ${isSelected ? 'selected' : ''} ${
-                  showResult && isSelected && isCorrect ? 'correct' : ''
+                  showResult && isCorrect ? 'correct' : ''
                 } ${showResult && isSelected && !isCorrect ? 'wrong' : ''}`}
                 onClick={() => handleAnswerSelect(index)}
                 disabled={selectedAnswer !== null}
                 style={{
-                  borderColor: isSelected ? (showResult && isCorrect ? '#10b981' : showResult && !isCorrect ? '#ef4444' : '#d4af37') : 'rgba(255,255,255,0.2)'
+                  borderColor: showResult && isCorrect ? '#10b981' : (showResult && isSelected && !isCorrect ? '#ef4444' : (isSelected ? '#d4af37' : 'rgba(255,255,255,0.2)'))
                 }}
               >
                 {applyHonorifics(option)}
-                {showResult && isSelected && isCorrect && <span className="option-icon">✓</span>}
+                {showResult && isCorrect && <span className="option-icon">✓</span>}
                 {showResult && isSelected && !isCorrect && <span className="option-icon">✗</span>}
               </button>
             );
