@@ -6,7 +6,7 @@ import { useUserStore } from "../store/useUserStore";
 import { useProgressStore } from "../store/progressStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import ProfileCard from "../components/ProfileCard";
-import { getCurrentLevel, getXPProgress } from "../utils/diamondLevels";
+import { getCurrentLevel, getXPProgress, getLevelTitle } from "../utils/diamondLevels";
 import { shouldShowUpdateBanner } from "../config/versionConfig";
 import { getAvatarImage } from "../utils/avatarUtils";
 import ui_xp from "../assets/ui/ui_xp.webp";
@@ -154,7 +154,7 @@ export default function Profile() {
                 fontWeight: 600,
                 color: currentLevel.color || "#FFD700",
               }}>
-                Level {currentLevel.level}
+                {getLevelTitle(currentLevel.level)}
               </span>
               <button
                 onClick={() => showModal(MODAL_TYPES.VIEW_ALL_LEVELS, { currentXP: xp })}

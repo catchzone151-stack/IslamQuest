@@ -2,7 +2,7 @@
 // Reusable component for displaying diamond level across the app
 import React from "react";
 import { DiamondIcon } from "./DiamondIcon";
-import { getCurrentLevel, getXPProgress } from "../utils/diamondLevels";
+import { getCurrentLevel, getXPProgress, getLevelTitle } from "../utils/diamondLevels";
 
 export const LevelBadge = React.memo(function LevelBadge({ 
   xp, 
@@ -40,7 +40,7 @@ export const LevelBadge = React.memo(function LevelBadge({
           fontWeight: "bold",
           lineHeight: 1.2,
         }}>
-          Level {levelData.level}
+          {getLevelTitle(levelData.level)}
         </div>
         
         {showXP && (
@@ -86,7 +86,7 @@ export const LevelBadgeCompact = React.memo(function LevelBadgeCompact({ xp, siz
         fontSize: "0.85rem",
         fontWeight: "600",
       }}>
-        Level {levelData.level}
+        {getLevelTitle(levelData.level)}
       </span>
     </div>
   );

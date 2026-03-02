@@ -126,6 +126,24 @@ DIAMOND_LEVELS.forEach((level, index) => {
   }
 });
 
+// 🏷️ Map level number → Islamic title
+const LEVEL_TITLES = {
+  1: "Seeker of Knowledge",
+  2: "Sincere Student",
+  3: "Devoted Learner",
+  4: "Knowledge Builder",
+  5: "Lesson Preserver",
+  6: "Seeker of Wisdom",
+  7: "Person of Knowledge",
+  8: "Keeper of Wisdom",
+  9: "Guardian of Knowledge",
+  10: "Bearer of Light",
+};
+
+export function getLevelTitle(levelNumber) {
+  return LEVEL_TITLES[levelNumber] || `Level ${levelNumber}`;
+}
+
 // 🎯 Get Current Level from XP
 export function getCurrentLevel(xp) {
   for (let i = DIAMOND_LEVELS.length - 1; i >= 0; i--) {

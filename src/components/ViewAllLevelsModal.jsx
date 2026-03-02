@@ -1,7 +1,7 @@
 // src/components/ViewAllLevelsModal.jsx
 import React from "react";
 import { X } from "lucide-react";
-import { getAllLevelsWithProgress } from "../utils/diamondLevels";
+import { getAllLevelsWithProgress, getLevelTitle } from "../utils/diamondLevels";
 
 export function ViewAllLevelsModal({ currentXP, onClose }) {
   const levelsWithProgress = getAllLevelsWithProgress(currentXP);
@@ -141,7 +141,7 @@ export function ViewAllLevelsModal({ currentXP, onClose }) {
                       fontSize: "1rem",
                     }}
                   >
-                    Level {levelData.level}
+                    {getLevelTitle(levelData.level)} • Level {levelData.level}
                   </div>
                   {levelData.isCurrent && (
                     <div
