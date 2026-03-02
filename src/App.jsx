@@ -257,7 +257,19 @@ export default function App() {
       unsubscribe();
     };
   }, [isHydrated]);
-  
+
+  // Trigger cloud progress sync ONLY after auth is confirmed and profile is ready.
+  // Replaces the module-level setTimeout in progressStore.js that fired before auth.
+  // Fires exactly once when init() resolves for an authenticated user.
+  // Never fires for unauthenticated users because hasOnboarded remains false.
+  React.useEffect(() => {
+    if (isHydrated && hasOnboarded) {
+      useProgressStore.getState().loadFromSupabase().catch((err) => {
+        console.error("[App] loadFromSupabase failed:", err);
+      });
+    }
+  }, [isHydrated, hasOnboarded]);
+
   // Show one-shot signup toast — set by SignUpPage after successful registration
   React.useEffect(() => {
     if (localStorage.getItem("iq_signup_toast") === "1") {

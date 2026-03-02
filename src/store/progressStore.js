@@ -1539,7 +1539,3 @@ export const useProgressStore = create((set, get) => ({
 registerProgressStore(() => useProgressStore.getState());
 
 useProgressStore.getState().loadProgress();
-
-setTimeout(() => {
-  useProgressStore.getState().loadFromSupabase();
-}, 300);
