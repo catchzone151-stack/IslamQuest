@@ -172,6 +172,17 @@ export default function Friends() {
       xp: f.xp || 0,
       streak: f.streak || 0,
     }));
+    
+    // Add current user to the list
+    mapped.push({
+      user_id: userId,
+      username: name || username || "You",
+      handle: username || "you",
+      avatar: avatar || "avatar_man_lantern",
+      xp: currentUserXP || 0,
+      streak: currentUserStreak || 0,
+    });
+
     // Deduplicate by user_id
     const seen = new Map();
     for (const f of mapped) {
