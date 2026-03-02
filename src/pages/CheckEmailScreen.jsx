@@ -20,6 +20,22 @@ export default function CheckEmailScreen() {
   const [loadingMessage, setLoadingMessage] = useState("");
   const [urlError, setUrlError] = useState("");
 
+  // If the user already has a live session, skip this wall and go straight to home.
+  // We no longer force email verification before app access.
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const hasAuthCode = searchParams.has('code') || window.location.hash.includes('access_token');
+    if (hasAuthCode) return; // Let the auth-callback handler below deal with it
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        console.log("[CheckEmail] Active session found — redirecting to home");
+        localStorage.removeItem("iq_onboarding_step");
+        navigate("/");
+      }
+    });
+  }, []);
+
   useEffect(() => {
     const getEmail = async () => {
       const storedEmail = localStorage.getItem("iq_email");
@@ -568,6 +584,22 @@ export default function CheckEmailScreen() {
         }}>
           Didn't receive the email? Check your spam folder or try resending.
         </p>
+
+        <button
+          onClick={() => navigate("/login")}
+          style={{
+            marginTop: "20px",
+            background: "none",
+            border: "none",
+            color: "#4a7fa5",
+            fontSize: "0.85rem",
+            cursor: "pointer",
+            textDecoration: "underline",
+            padding: "4px 0",
+          }}
+        >
+          Already confirmed? Go to Login
+        </button>
       </motion.div>
 
       <style>{`
