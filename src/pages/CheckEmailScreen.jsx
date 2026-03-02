@@ -227,7 +227,19 @@ export default function CheckEmailScreen() {
       profileReady: true,
       hasOnboarded: true,
     });
-    
+
+    // Send welcome email for new sign-ups (fire-and-forget, non-blocking)
+    if (localStorage.getItem("iq_new_signup") === "true") {
+      localStorage.removeItem("iq_new_signup");
+      supabase.functions.invoke("send-welcome-email", {
+        body: { email: user.email, username: displayName },
+      }).then(() => {
+        console.log("[CheckEmail] Welcome email sent to:", user.email);
+      }).catch((err) => {
+        console.warn("[CheckEmail] Welcome email failed (non-critical):", err);
+      });
+    }
+
     // Reset flag before navigation
     isProcessingLogin = false;
     navigate("/");

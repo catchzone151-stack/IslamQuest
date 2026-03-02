@@ -194,6 +194,7 @@ export default function SignUpPage() {
 
         setLoading(false);
         localStorage.setItem("iq_onboarding_step", "checkemail");
+        localStorage.setItem("iq_new_signup", "true");
         navigate("/check-email");
       }
     } catch (err) {
