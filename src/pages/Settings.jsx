@@ -118,7 +118,7 @@ export default function Settings() {
         await del("family_members");
 
         // Profile (auth.users stays but without profile the account is unusable)
-        const { error: profileErr } = await supabase.from("profiles").delete().eq("id", uid);
+        const { error: profileErr } = await supabase.from("profiles").delete().eq("user_id", uid);
         if (profileErr) {
           console.warn("[DeleteAccount] Profile delete error:", profileErr.message);
           setDeleteError("Could not delete account data. Please contact support.");
