@@ -133,19 +133,11 @@ export const useUserStore = create((set, get) => ({
           return;
         }
 
-        // ── Email confirmation guard (server-verified via getUser()) ─────────
-        // Skip for OAuth providers that auto-confirm (Google, Apple)
-        const isOAuth = user.app_metadata?.provider && user.app_metadata.provider !== "email";
-        if (!isOAuth && !user.email_confirmed_at) {
-          console.warn("[UserStore] Email not confirmed — signing out");
-          localStorage.setItem("iq_pending_confirm_email", user.email || "");
-          await supabase.auth.signOut();
-          set({ loading: false, isHydrated: true, profileReady: false, hasOnboarded: false, emailVerified: false });
-          return;
-        }
-
-        // Email is server-confirmed — mark as verified
-        set({ emailVerified: true, user, userId: user.id });
+        // Set emailVerified from server-verified email_confirmed_at.
+        // Do NOT sign out — unverified users are allowed in; gating is feature-level.
+        const isVerified = !!user.email_confirmed_at;
+        console.log("[UserStore] emailVerified:", isVerified);
+        set({ emailVerified: isVerified, user, userId: user.id });
 
         // Check if profile exists — retry up to 10x (250ms apart) to allow DB trigger to fire
         let existingProfile = null;

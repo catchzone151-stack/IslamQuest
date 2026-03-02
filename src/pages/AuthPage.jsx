@@ -70,18 +70,13 @@ export default function AuthPage() {
         if (error) {
           if (error.message.includes("Email not confirmed")) {
             setLoading(false);
-            navigate("/check-email");
+            setErrorMsg("Please verify your email before logging in. Check your inbox.");
+            triggerShake();
             return;
           }
           setErrorMsg("Invalid email or password");
           triggerShake();
           setLoading(false);
-          return;
-        }
-
-        if (!data.user.email_confirmed_at) {
-          setLoading(false);
-          navigate("/check-email");
           return;
         }
 

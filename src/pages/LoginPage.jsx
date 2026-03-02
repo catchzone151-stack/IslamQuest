@@ -75,24 +75,14 @@ export default function LoginPage() {
 
       if (error) {
         if (error.message?.includes("Email not confirmed")) {
-          localStorage.setItem("iq_email", email.trim().toLowerCase());
           setLoading(false);
-          navigate("/check-email");
+          setErrorMsg("Please verify your email before logging in. Check your inbox.");
+          triggerShake();
           return;
         }
         setErrorMsg("Incorrect email or password. Please try again.");
         triggerShake();
         setLoading(false);
-        return;
-      }
-
-      if (!data.user.email_confirmed_at) {
-        const lcEmail = email.trim().toLowerCase();
-        localStorage.setItem("iq_email", lcEmail);
-        localStorage.setItem("iq_pending_confirm_email", lcEmail);
-        await supabase.auth.signOut();
-        setLoading(false);
-        navigate("/confirm-email");
         return;
       }
 
