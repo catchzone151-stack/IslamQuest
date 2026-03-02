@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import { LevelBadgeCompact } from "../components/LevelBadge";
 import { resolveAvatar } from "../utils/avatarUtils";
-import { getCurrentLevel } from "../utils/diamondLevels";
+import { getCurrentLevel, getLevelTitle } from "../utils/diamondLevels";
 import { getModeIcon, getModeName } from "../utils/challengeQuestions";
 import assets from "../assets/assets";
 
@@ -1750,10 +1750,21 @@ function GlobalLeaderboardCard({
             textOverflow: "ellipsis",
             whiteSpace: "nowrap",
             margin: 0,
-            marginBottom: "2px",
+            marginBottom: "1px",
           }}
         >
           {displayName}
+        </p>
+        <p
+          style={{
+            color: rankClass ? "rgba(255,255,255,0.7)" : "#a78bfa",
+            fontSize: "0.7rem",
+            fontWeight: "500",
+            margin: 0,
+            marginBottom: "2px",
+          }}
+        >
+          {getLevelTitle(getCurrentLevel(user.xp).level)}
         </p>
         <p
           className="handle"
