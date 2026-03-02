@@ -109,30 +109,16 @@ export default function ChallengeGame() {
     if (isBoss) {
       const bossQuestions = useChallengeStore.getState().getBossLevelQuestions();
       if (bossQuestions.length === 0) {
-        showModal(MODAL_TYPES.ERROR, { message: "Complete some lessons first to unlock Boss Level questions!" });
+        showModal(MODAL_TYPES.ERROR, { message: "Could not load Boss Level questions. Please try again!" });
         navigate("/challenge");
         return;
       }
       setQuestions(bossQuestions);
       setTimeLeft(BOSS_LEVEL.totalTime);
     } else if (challenge && mode) {
-      let gameQuestions = [...challenge.questions];
-      
-      // For Sudden Death with 25 questions or Speed Run with 40, recycle if needed
-      if ((mode.id === 'sudden_death' && mode.questionCount) || 
-          (mode.id === 'speed_run' && mode.questionCount)) {
-        const targetCount = mode.questionCount;
-        while (gameQuestions.length < targetCount) {
-          // Recycle questions with unique IDs
-          const recycledQuestions = challenge.questions.map((q, idx) => ({
-            ...q,
-            id: `${q.id || idx}_recycled_${Math.floor(gameQuestions.length / challenge.questions.length)}`
-          }));
-          gameQuestions = [...gameQuestions, ...recycledQuestions];
-        }
-        gameQuestions = gameQuestions.slice(0, targetCount); // Ensure exact count
-      }
-      
+      // Questions are pre-deduplicated via Set in challengeStore.getQuestionsForMode.
+      // Never recycle — the global pool (1600+ questions) always supplies the full count.
+      const gameQuestions = [...challenge.questions];
       setQuestions(gameQuestions);
       // Only set timer for modes with totalTime (Lightning Round, Boss)
       if (mode.totalTime) {

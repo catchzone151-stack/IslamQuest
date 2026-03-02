@@ -189,39 +189,55 @@ export const useChallengeStore = create((set, get) => ({
     };
   },
 
-  buildQuestionPool: () => {
-    const { lessonStates } = useProgressStore.getState();
-    const allQuestions = [];
-    Object.keys(lessonStates).forEach(lessonKey => {
-      const lessonState = lessonStates[lessonKey];
-      if (lessonState?.completed === true || lessonState?.passed === true) {
-        if (lessonState.questions && Array.isArray(lessonState.questions)) {
-          allQuestions.push(...lessonState.questions.map(q => ({
-            ...q,
-            sourceLesson: lessonKey
-          })));
-        }
-      }
+  // Build a global pool from ALL 14 quiz JSON files — no study-lock, no filtering by lesson progress.
+  // Returns every question in the app (1600+), deduplicated by question text.
+  buildGlobalQuestionPool: () => {
+    const allPathsData = [
+      namesOfAllahQuizzesData, foundationsQuizzesData, prophetsQuizzesData,
+      prophetLifeQuizzesData, wivesQuizzesData, tenPromisedQuizzesData,
+      greatestWomenQuizzesData, companionsQuizzesData, angelsQuizzesData,
+      endTimesQuizzesData, graveQuizzesData, judgementQuizzesData,
+      hellfireQuizzesData, paradiseQuizzesData
+    ];
+
+    const seen = new Set();
+    const pool = [];
+
+    allPathsData.forEach((pathData, pathIndex) => {
+      if (!Array.isArray(pathData)) return;
+      pathData.forEach(lessonData => {
+        if (!Array.isArray(lessonData.questions)) return;
+        lessonData.questions.forEach(q => {
+          if (!q.question || seen.has(q.question)) return;
+          seen.add(q.question);
+          pool.push({
+            question: q.question,
+            options: q.options,
+            answer: q.answer,
+            difficulty: q.difficulty || 'medium',
+            sourcePath: pathIndex + 1,
+            sourceLesson: lessonData.lessonId,
+          });
+        });
+      });
     });
-    return allQuestions;
+
+    return pool;
   },
+
+  // Legacy alias kept for any residual callers — delegates to the global pool.
+  buildQuestionPool: () => get().buildGlobalQuestionPool(),
 
   getQuestionPool: () => {
     const { questionPoolCache, cacheTimestamp } = get();
-    const { lessonStates } = useProgressStore.getState();
-    const currentLessonCount = Object.keys(lessonStates).filter(
-      key => lessonStates[key]?.completed || lessonStates[key]?.passed
-    ).length;
-    if (!questionPoolCache || !cacheTimestamp || 
-        questionPoolCache.lessonCount !== currentLessonCount) {
-      const pool = get().buildQuestionPool();
-      set({
-        questionPoolCache: { questions: pool, lessonCount: currentLessonCount },
-        cacheTimestamp: Date.now()
-      });
-      return pool;
+    // Cache is valid for 5 minutes — avoids rebuilding on every question generation
+    const CACHE_TTL = 5 * 60 * 1000;
+    if (questionPoolCache && cacheTimestamp && Date.now() - cacheTimestamp < CACHE_TTL) {
+      return questionPoolCache.questions;
     }
-    return questionPoolCache.questions;
+    const pool = get().buildGlobalQuestionPool();
+    set({ questionPoolCache: { questions: pool }, cacheTimestamp: Date.now() });
+    return pool;
   },
 
   filterRecentQuestions: (questions) => {
@@ -530,52 +546,57 @@ export const useChallengeStore = create((set, get) => ({
       config = mode;
     }
     if (!config) {
-      console.error('Invalid mode:', mode);
+      console.error('[ChallengeStore] Invalid mode:', mode);
       return [];
     }
-    
-    let allQuestions = get().getQuestionPool();
-    if (allQuestions.length === 0) {
-      allQuestions = get().getFallbackQuestions();
-    }
-    
-    if (allQuestions.length === 0) {
-      allQuestions = get().getFallbackQuestions();
-    }
-    
-    const freshQuestions = get().filterRecentQuestions(allQuestions);
-    let filteredQuestions = freshQuestions.length > 0 ? freshQuestions : allQuestions;
-    
-    if (config.id === 'mind_battle') {
-      const difficultyFiltered = filteredQuestions.filter(q => 
-        q.difficulty === 'hard' || q.difficulty === 'medium'
-      );
-      if (difficultyFiltered.length > 0) {
-        filteredQuestions = difficultyFiltered;
-      }
-    } else if (config.id === 'speed_run') {
-      const speedFiltered = filteredQuestions.filter(q => 
-        q.difficulty !== 'hard' || Math.random() > 0.5
-      );
-      if (speedFiltered.length > 0) {
-        filteredQuestions = speedFiltered;
-      }
-    }
-    
+
     const count = config.questionCount || 8;
-    if (filteredQuestions.length < count) {
-      filteredQuestions = get().expandQuestionPool(filteredQuestions, count);
+
+    // Pull from the full global pool (1600+ questions, no study-lock)
+    let pool = get().getQuestionPool();
+
+    // Prefer questions not shown recently (cross-session freshness)
+    const freshPool = get().filterRecentQuestions(pool);
+    if (freshPool.length >= count) {
+      pool = freshPool;
     }
-    
-    const shuffled = filteredQuestions.sort(() => Math.random() - 0.5);
-    const selected = shuffled.slice(0, count);
-    
-    // Track shown questions and shuffle options to remove obvious clues
+    // If fresh pool is too small, fall back to full pool — still no duplicates within session
+
+    // Shuffle pool with Fisher-Yates for unbiased randomness
+    const shuffled = [...pool];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+
+    // Deduplicate within session using a Set on question text (absolute guarantee)
+    const sessionSeen = new Set();
+    const selected = [];
+    for (const q of shuffled) {
+      if (selected.length >= count) break;
+      if (sessionSeen.has(q.question)) continue;
+      sessionSeen.add(q.question);
+      selected.push(q);
+    }
+
+    // If somehow still short (shouldn't happen with 1600+ questions), pad from fallback
+    if (selected.length < count) {
+      const fallback = get().getFallbackQuestions();
+      for (const q of fallback) {
+        if (selected.length >= count) break;
+        if (sessionSeen.has(q.question)) continue;
+        sessionSeen.add(q.question);
+        selected.push(q);
+      }
+    }
+
+    // Normalise answer option order and track for cross-session freshness
     const normalizedQuestions = selected.map(q => {
       get().trackShownQuestion(q.question);
       return get().normalizeAndShuffleOptions(q);
     });
-    
+
+    console.log(`[ChallengeStore] getQuestionsForMode(${config.id}): ${normalizedQuestions.length} unique questions selected from pool of ${pool.length}`);
     return normalizedQuestions;
   },
 
@@ -680,33 +701,49 @@ export const useChallengeStore = create((set, get) => ({
   },
 
   getBossLevelQuestions: () => {
-    let allQuestions = get().getBossLevelQuestionPool();
-    
-    if (allQuestions.length === 0) {
-      allQuestions = get().getBossLevelFallbackQuestions();
-    }
-    
-    // Filter out recently shown questions to avoid repetition
-    allQuestions = get().filterRecentQuestions(allQuestions);
-    
     const targetCount = BOSS_LEVEL.questionCount || 12;
-    if (allQuestions.length < targetCount) {
-      if (allQuestions.length === 0) {
-        allQuestions = get().getBossLevelFallbackQuestions();
-      } else {
-        allQuestions = get().expandQuestionPool(allQuestions, targetCount);
+
+    // Boss pulls from the full global pool — same 1600+ questions, no study-lock
+    let pool = get().getQuestionPool();
+
+    // Prefer fresh (cross-session)
+    const freshPool = get().filterRecentQuestions(pool);
+    if (freshPool.length >= targetCount) pool = freshPool;
+
+    // Fisher-Yates shuffle
+    const shuffled = [...pool];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+
+    // Set-based dedup within session — absolute guarantee of uniqueness
+    const sessionSeen = new Set();
+    const selected = [];
+    for (const q of shuffled) {
+      if (selected.length >= targetCount) break;
+      if (sessionSeen.has(q.question)) continue;
+      sessionSeen.add(q.question);
+      selected.push(q);
+    }
+
+    // Fallback pad if somehow short
+    if (selected.length < targetCount) {
+      const fallback = get().getBossLevelFallbackQuestions();
+      for (const q of fallback) {
+        if (selected.length >= targetCount) break;
+        if (sessionSeen.has(q.question)) continue;
+        sessionSeen.add(q.question);
+        selected.push(q);
       }
     }
-    
-    const shuffled = allQuestions.sort(() => Math.random() - 0.5);
-    const selected = shuffled.slice(0, targetCount);
-    
-    // Track shown questions and shuffle options to remove obvious clues
+
     const normalizedQuestions = selected.map(q => {
       get().trackShownQuestion(q.question);
       return get().normalizeAndShuffleOptions(q);
     });
-    
+
+    console.log(`[ChallengeStore] getBossLevelQuestions: ${normalizedQuestions.length} unique questions`);
     return normalizedQuestions;
   },
 
