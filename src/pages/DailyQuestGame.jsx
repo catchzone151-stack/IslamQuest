@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "../hooks/useNavigate";
 import { useDailyQuestStore } from "../store/dailyQuestStore";
 import { useAnalytics } from "../hooks/useAnalytics";
@@ -24,9 +24,6 @@ const overlayBase = {
   touchAction: "none",
 };
 
-// Height reserved for the fixed CTA button at bottom
-const CTA_HEIGHT = 100;
-
 export default function DailyQuestGame() {
   const navigate = useNavigate();
   const { questions, completeDailyQuest, getQuestStatus } = useDailyQuestStore();
@@ -40,6 +37,7 @@ export default function DailyQuestGame() {
   const [showResults, setShowResults] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
+  const autoAdvanceTimer = useRef(null);
 
   // Prevent underlying page from scrolling while active
   useEffect(() => {
@@ -88,34 +86,37 @@ export default function DailyQuestGame() {
     return () => { isMounted = false; };
   }, [navigate, getQuestStatus, questions.length]);
 
+  // Clear timer on unmount
+  useEffect(() => () => clearTimeout(autoAdvanceTimer.current), []);
+
   const currentQuestion = questions[currentIndex];
   const totalQuestions = questions.length;
-  const isLastQuestion = currentIndex === totalQuestions - 1;
 
   const handleSelect = (i) => {
     if (isAnswered) return;
-    
+
     setSelected(i);
     setIsAnswered(true);
-    
+
     const isCorrect = i === currentQuestion.correctIndex;
     vibrate(isCorrect ? [100, 50, 100] : [200, 100, 200]);
-    
+
     const newAnswers = [...answers, { questionIndex: currentIndex, correct: isCorrect }];
     setAnswers(newAnswers);
-  };
 
-  const handleNext = () => {
-    if (currentIndex < totalQuestions - 1) {
-      setCurrentIndex(currentIndex + 1);
-      setSelected(null);
-      setIsAnswered(false);
-    } else {
-      const correctCount = answers.filter((a) => a.correct).length;
-      completeDailyQuest(correctCount);
-      analytics("daily_quiz_completed", { score: correctCount, total: totalQuestions, xpEarned: 60, coinsEarned: 20 });
-      setShowResults(true);
-    }
+    // Auto-advance after 2 seconds
+    autoAdvanceTimer.current = setTimeout(() => {
+      if (currentIndex < totalQuestions - 1) {
+        setCurrentIndex((prev) => prev + 1);
+        setSelected(null);
+        setIsAnswered(false);
+      } else {
+        const correctCount = newAnswers.filter((a) => a.correct).length;
+        completeDailyQuest(correctCount);
+        analytics("daily_quiz_completed", { score: correctCount, total: totalQuestions, xpEarned: 60, coinsEarned: 20 });
+        setShowResults(true);
+      }
+    }, 2000);
   };
 
   // ── Loading ─────────────────────────────────────────────────────────────────
@@ -300,7 +301,7 @@ export default function DailyQuestGame() {
           WebkitOverflowScrolling: "touch",
           touchAction: "pan-y",
           padding: "20px 20px 0",
-          paddingBottom: `${CTA_HEIGHT}px`,
+          paddingBottom: "40px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -318,45 +319,6 @@ export default function DailyQuestGame() {
             selected={selected}
             onSelect={handleSelect}
           />
-        </div>
-      </div>
-
-      {/* ── Fixed CTA Button ── */}
-      <div
-        style={{
-          position: "fixed",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          zIndex: 1000,
-          padding: "12px 20px",
-          paddingBottom: "max(12px, env(safe-area-inset-bottom, 12px))",
-          background: "linear-gradient(to top, #0e2340 70%, transparent)",
-        }}
-      >
-        <div style={{ maxWidth: 600, margin: "0 auto" }}>
-          <button
-            onClick={handleNext}
-            disabled={!isAnswered}
-            style={{
-              width: "100%",
-              padding: "15px",
-              fontSize: "1.05rem",
-              fontWeight: 700,
-              borderRadius: 12,
-              border: "none",
-              background:
-                isAnswered
-                  ? "linear-gradient(145deg, #D4AF37, #b8941f)"
-                  : "rgba(255,255,255,0.08)",
-              color: isAnswered ? "#0B1E2D" : "rgba(255,255,255,0.3)",
-              cursor: isAnswered ? "pointer" : "default",
-              transition: "all 0.2s ease",
-              boxShadow: isAnswered ? "0 4px 14px rgba(212,175,55,0.4)" : "none",
-            }}
-          >
-            {isLastQuestion ? "See Results 🎉" : "Next Question →"}
-          </button>
         </div>
       </div>
 
