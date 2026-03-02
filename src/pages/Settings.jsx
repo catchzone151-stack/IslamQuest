@@ -61,22 +61,12 @@ export default function Settings() {
     setIsDeleting(true);
 
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      console.log("🗑️ Deleting account via RPC...");
 
-      if (!session?.access_token) {
-        console.error("[DeleteAccount] No active session");
-        setIsDeleting(false);
-        return;
-      }
-
-      console.log("🗑️ Calling delete-user-account edge function...");
-
-      const { data, error } = await supabase.functions.invoke("delete-user-account", {
-        headers: { Authorization: `Bearer ${session.access_token}` },
-      });
+      const { data, error } = await supabase.rpc("delete_my_account");
 
       if (error) {
-        console.error("[DeleteAccount] Edge function error:", error);
+        console.error("[DeleteAccount] RPC error:", error);
         setIsDeleting(false);
         return;
       }
@@ -87,7 +77,7 @@ export default function Settings() {
         return;
       }
 
-      console.log("✅ Account deleted via edge function");
+      console.log("✅ Account deleted");
 
       logEvent(ANALYTICS_EVENTS.ACCOUNT_DELETED, {});
 
