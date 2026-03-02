@@ -8,14 +8,14 @@ import PointingMascot from "../assets/mascots/mascot_pointing_v2.webp";
 import SittingMascot from "../assets/mascots/mascot_sitting_v2.webp";
 import CongratsMascot from "../assets/mascots/mascot_congratulation.webp";
 
-// Root overlay — covers full viewport including bottom nav, never scrolls, never bounces
+// Root overlay — covers full viewport, never scrolls, never bounces
 const overlayBase = {
   position: "fixed",
   inset: 0,
   top: 0,
   paddingTop: "var(--sat, 0px)",
   height: "100dvh",
-  zIndex: 1001,
+  zIndex: 999,
   background: "#0e2340",
   display: "flex",
   flexDirection: "column",
@@ -328,7 +328,7 @@ export default function DailyQuestGame() {
           bottom: 0,
           left: 0,
           right: 0,
-          zIndex: 1002,
+          zIndex: 1000,
           padding: "12px 20px",
           paddingBottom: "max(12px, env(safe-area-inset-bottom, 12px))",
           background: "linear-gradient(to top, #0e2340 70%, transparent)",
