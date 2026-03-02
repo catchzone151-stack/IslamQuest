@@ -48,6 +48,7 @@ export default function VerifyEmailModal({ reason }) {
     if (checkState === "loading") return;
     setCheckState("loading");
     try {
+      await supabase.auth.refreshSession();
       const { data } = await supabase.auth.getUser();
       const confirmed = !!data?.user?.email_confirmed_at;
       if (confirmed) {
