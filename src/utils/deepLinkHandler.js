@@ -54,7 +54,7 @@ export function determineAuthRoute(type) {
 }
 
 export async function handleDeepLinkAuth(url, navigate) {
-  console.log("[DeepLink] Processing auth URL:", url);
+  console.log("[DeepLink] Auth callback received");
   
   const tokens = extractAuthTokensFromUrl(url);
   
@@ -124,7 +124,7 @@ export function initDeepLinkListener(navigate) {
   
   const setupListener = async () => {
     urlOpenListener = await CapApp.addListener("appUrlOpen", async ({ url }) => {
-      console.log("[DeepLink] App opened with URL:", url);
+      console.log("[DeepLink] App opened via deep link");
       
       if (url.startsWith(DEEP_LINK_SCHEME)) {
         const handled = await handleDeepLinkAuth(url, navigate);
@@ -143,7 +143,7 @@ export function initDeepLinkListener(navigate) {
   
   CapApp.getLaunchUrl().then(async (result) => {
     if (result?.url) {
-      console.log("[DeepLink] App launched with URL:", result.url);
+      console.log("[DeepLink] App launched via deep link");
       if (result.url.startsWith(DEEP_LINK_SCHEME)) {
         await handleDeepLinkAuth(result.url, navigate);
       }

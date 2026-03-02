@@ -222,33 +222,13 @@ export const useFriendsStore = create((set, get) => ({
 
     const searchTerm = query.trim().toLowerCase();
 
-    console.log("[SEARCH_DEBUG] ── searchUsers called ──────────────────────");
-    console.log("[SEARCH_DEBUG] raw query:", query);
-    console.log("[SEARCH_DEBUG] searchTerm sent to RPC:", searchTerm);
-    console.log("[SEARCH_DEBUG] searchTerm length:", searchTerm.length);
-    console.log("[SEARCH_DEBUG] Supabase URL:", import.meta.env.VITE_SUPABASE_URL);
-
     try {
-      console.log("[SEARCH_DEBUG] Calling supabase.rpc('search_profiles', { search_query:", searchTerm, "})");
       const { data, error } = await supabase.rpc("search_profiles", { search_query: searchTerm });
-
-      console.log("[SEARCH_DEBUG] RPC raw response → data:", data);
-      console.log("[SEARCH_DEBUG] RPC raw response → error:", error);
-      console.log("[SEARCH_DEBUG] RPC returned row count:", Array.isArray(data) ? data.length : "not an array");
-
       if (error) throw error;
 
       const { data: auth } = await supabase.auth.getUser();
       const currentUserId = auth?.user?.id;
-      console.log("[SEARCH_DEBUG] currentUserId (will be filtered out):", currentUserId);
-
-      const beforeFilter = data || [];
-      const afterFilter = beforeFilter.filter((u) => u.user_id !== currentUserId);
-      console.log("[SEARCH_DEBUG] rows before self-filter:", beforeFilter.length);
-      console.log("[SEARCH_DEBUG] rows after self-filter:", afterFilter.length);
-      if (beforeFilter.length > 0 && afterFilter.length === 0) {
-        console.warn("[SEARCH_DEBUG] ⚠️ All rows were removed by the self-filter — the only result was the current user.");
-      }
+      const afterFilter = (data || []).filter((u) => u.user_id !== currentUserId);
 
       return afterFilter.map((p) => ({
           user_id: p.user_id,
@@ -261,11 +241,7 @@ export const useFriendsStore = create((set, get) => ({
           streak: p.streak || 0,
         }));
     } catch (err) {
-      console.warn("[SEARCH_DEBUG] searchUsers caught error:", err);
-      console.warn("[SEARCH_DEBUG] error.message:", err?.message);
-      console.warn("[SEARCH_DEBUG] error.code:", err?.code);
-      console.warn("[SEARCH_DEBUG] error.details:", err?.details);
-      console.warn("[SEARCH_DEBUG] error.hint:", err?.hint);
+      console.error("[FriendsStore] searchUsers error:", err?.message || err);
       return [];
     }
   },

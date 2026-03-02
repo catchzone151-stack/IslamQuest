@@ -227,7 +227,6 @@ function PlaceholderQuizPage() {
 const PRODUCTION_VERSION = "iq_production_v1";
 
 export default function App() {
-  console.log('[IQ_BUILD_TEST]', 'BUILD_VERSION_3');
   const { hasOnboarded, isHydrated, awaitingProfileSetup, emailVerified } = useUserStore();
   const { grantCoins, coins, showMilestoneModal, milestoneDays, milestoneReward } = useProgressStore();
   
