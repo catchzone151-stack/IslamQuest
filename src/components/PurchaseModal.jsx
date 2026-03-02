@@ -15,15 +15,28 @@ const CONTEXT = {
     subtitle: "Compete, rank, and unlock exclusive rewards.",
   },
   settings: {
-    title: "Islam Quest Premium",
+    title: "IslamQuest Premium",
     subtitle: null,
   },
 };
 
 const DEFAULT_CONTEXT = {
-  title: "Islam Quest Premium",
+  title: "IslamQuest Premium",
   subtitle: null,
 };
+
+function formatCurrency(amount, currencyCode) {
+  try {
+    return new Intl.NumberFormat(undefined, {
+      style: "currency",
+      currency: currencyCode,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(amount);
+  } catch {
+    return `${currencyCode} ${amount.toFixed(2)}`;
+  }
+}
 
 export default function PurchaseModal({ onClose, source }) {
   const [product, setProduct] = useState(null);
@@ -173,6 +186,12 @@ export default function PurchaseModal({ onClose, source }) {
   };
 
   const displayPrice = product?.price || "£9.99";
+  const originalPrice = (() => {
+    if (product?.priceAmount && product?.currency) {
+      return formatCurrency(product.priceAmount * 2, product.currency);
+    }
+    return "£19.99";
+  })();
 
   return (
     <div
@@ -272,26 +291,17 @@ export default function PurchaseModal({ onClose, source }) {
           marginBottom: "14px",
           boxShadow: "0 0 18px rgba(255,215,0,0.25)",
         }}>
-          <h2 style={{
-            color: "#FFD700",
-            fontSize: "1.15rem",
-            fontWeight: 700,
-            marginBottom: "6px",
-          }}>
-            Islam Quest Premium
-          </h2>
-
           <p style={{
-            color: "#9CA3AF",
-            fontSize: "0.78rem",
+            color: "#EF4444",
+            fontSize: "0.82rem",
             textDecoration: "line-through",
             marginBottom: "2px",
           }}>
-            £19.99
+            {loading ? "..." : originalPrice}
           </p>
           <p style={{
             color: "#FFD700",
-            fontSize: "1.05rem",
+            fontSize: "1.1rem",
             fontWeight: 700,
             marginBottom: "4px",
           }}>
