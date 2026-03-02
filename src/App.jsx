@@ -228,7 +228,7 @@ const PRODUCTION_VERSION = "iq_production_v1";
 
 export default function App() {
   console.log('[IQ_BUILD_TEST]', 'BUILD_VERSION_3');
-  const { hasOnboarded, isHydrated, awaitingProfileSetup } = useUserStore();
+  const { hasOnboarded, isHydrated, awaitingProfileSetup, emailVerified } = useUserStore();
   const { grantCoins, coins, showMilestoneModal, milestoneDays, milestoneReward } = useProgressStore();
   
   // Force re-render workaround for Zustand subscription issues in React StrictMode
@@ -448,23 +448,29 @@ export default function App() {
           return;
         }
 
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        if (session?.user) {
-          const isOAuth = session.user.app_metadata?.provider &&
-                          session.user.app_metadata.provider !== "email";
-          if (!isOAuth && !session.user.email_confirmed_at) {
+        // Use getUser() (server-verified) — never trust the locally cached JWT alone
+        const { data: { user: sessionUser } } = await supabase.auth.getUser();
+
+        if (sessionUser) {
+          const isOAuth = sessionUser.app_metadata?.provider &&
+                          sessionUser.app_metadata.provider !== "email";
+          if (!isOAuth && !sessionUser.email_confirmed_at) {
             console.warn("[App] Email not confirmed — signing out and redirecting");
-            localStorage.setItem("iq_pending_confirm_email", session.user.email || "");
+            localStorage.setItem("iq_pending_confirm_email", sessionUser.email || "");
             await supabase.auth.signOut();
             useUserStore.setState({
               loading: false,
               isHydrated: true,
               profileReady: false,
               hasOnboarded: false,
+              emailVerified: false,
             });
             window.__iq_auth_init_complete = true;
             window.__iq_auth_init_running = false;
+            // Hard redirect — we're outside React Router context here
+            if (window.location.pathname !== "/confirm-email") {
+              window.location.replace("/confirm-email");
+            }
             return;
           }
         }
@@ -791,6 +797,9 @@ export default function App() {
             }}
           >
             <Routes>
+              {/* ── /confirm-email is always accessible regardless of auth state ── */}
+              <Route path="/confirm-email" element={<ConfirmEmailPage />} />
+
               {!actualHasOnboarded ? (
                 <>
                   {/* ✅ ONBOARDING FLOW: Bismillah → Salaam → AuthChoice → (Login OR SignUp) → CheckEmail → Home */}
@@ -800,8 +809,6 @@ export default function App() {
                   />
                   <Route path="/onboarding/salaam" element={<SalaamScreen />} />
                   <Route path="/onboarding/auth-choice" element={<AuthChoiceScreen />} />
-                  {/* Email confirmation (accessible when signed out) */}
-                  <Route path="/confirm-email" element={<ConfirmEmailPage />} />
                   {/* Legacy routes (for resume support) */}
                   <Route path="/onboarding/namehandle" element={<NameHandleScreen />} />
                   <Route path="/onboarding/avatar" element={<AvatarScreen />} />
@@ -861,6 +868,12 @@ export default function App() {
                   />
                   {/* Fallback — resume from saved step or start from bismillah */}
                   <Route path="*" element={<OnboardingRedirector />} />
+                </>
+              ) : !emailVerified ? (
+                <>
+                  {/* ── Email not server-verified: block all private routes ── */}
+                  {/* /confirm-email is already declared above — catch everything else */}
+                  <Route path="*" element={<Navigate to="/confirm-email" replace />} />
                 </>
               ) : (
                 <>
@@ -1007,9 +1020,6 @@ export default function App() {
                       </Suspense>
                     }
                   />
-
-                  {/* Email confirm page — accessible even when authenticated */}
-                  <Route path="/confirm-email" element={<ConfirmEmailPage />} />
 
                   {/* fallback */}
                   <Route

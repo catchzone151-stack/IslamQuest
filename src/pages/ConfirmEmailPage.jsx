@@ -3,6 +3,7 @@ import { useNavigate } from "../hooks/useNavigate";
 import { motion } from "framer-motion";
 import { Mail, RefreshCw, CheckCircle, ArrowLeft } from "lucide-react";
 import { supabase } from "../lib/supabaseClient";
+import { useUserStore } from "../store/useUserStore";
 
 export default function ConfirmEmailPage() {
   const navigate = useNavigate();
@@ -25,8 +26,15 @@ export default function ConfirmEmailPage() {
           (event === "SIGNED_IN" || event === "USER_UPDATED") &&
           session?.user?.email_confirmed_at
         ) {
-          console.log("[ConfirmEmail] Email confirmed — proceeding to app");
+          console.log("[ConfirmEmail] Email confirmed — re-initialising store");
           localStorage.removeItem("iq_pending_confirm_email");
+
+          // Reset store so init() re-runs from scratch with the new confirmed session
+          useUserStore.setState({ isHydrated: false, emailVerified: false });
+          window.__iq_auth_init_complete = false;
+          window.__iq_auth_init_running = false;
+
+          await useUserStore.getState().init();
           navigate("/", { replace: true });
         }
       }
@@ -46,9 +54,13 @@ export default function ConfirmEmailPage() {
     setResending(true);
     setError("");
 
+    const appUrl = window.location.origin;
     const { error: resendError } = await supabase.auth.resend({
       type: "signup",
       email,
+      options: {
+        emailRedirectTo: `${appUrl}/check-email`,
+      },
     });
 
     setResending(false);

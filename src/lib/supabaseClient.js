@@ -14,21 +14,23 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
 });
 
 /**
- * Returns the current session user, or null if no session exists.
- * Does NOT create any anonymous or hidden accounts.
+ * Returns the current authenticated user after server-side JWT verification,
+ * or null if no valid session exists.
+ * Uses getUser() (not getSession()) so the token is always verified with the
+ * Supabase Auth server — never trusts a locally cached JWT blindly.
  */
 export async function ensureSignedIn() {
-  const { data: { session } } = await supabase.auth.getSession();
-  if (session?.user) {
-    console.log("🔐 Supabase: Existing session found");
-    return session.user;
+  const { data: { user }, error } = await supabase.auth.getUser();
+  if (user && !error) {
+    console.log("🔐 Supabase: Session verified with server");
+    return user;
   }
   return null;
 }
 
 export async function getUID() {
-  const { data: { session } } = await supabase.auth.getSession();
-  return session?.user?.id || null;
+  const { data: { user } } = await supabase.auth.getUser();
+  return user?.id || null;
 }
 
 export async function logoutUser() {
