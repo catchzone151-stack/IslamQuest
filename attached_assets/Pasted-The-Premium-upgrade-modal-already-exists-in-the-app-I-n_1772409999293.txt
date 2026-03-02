@@ -1,0 +1,86 @@
+The Premium upgrade modal already exists in the app.
+
+I need you to update the informational content inside the Premium modal everywhere it appears.
+
+Do NOT change layout, styling, structure, animation, navigation, purchase logic, Play Store redirect, Supabase integration, premium flag checks, or any backend logic.
+
+All purchase flow must continue working exactly as it currently does.
+
+This is a content update and contextual title adjustment only.
+
+1️⃣ Base Pricing Section (Used Everywhere)
+
+Update the pricing section to:
+
+Title:
+Islam Quest Premium
+
+Price Display:
+£19.99
+£9.99 One-Time Access
+
+Supporting Line:
+Equivalent to less than 33p per day in your first year.
+
+Unlock Section:
+• All lessons in every learning path
+• Global Challenges
+• All future updates included
+
+Primary Button Text:
+Unlock Full Access – £9.99
+
+Secondary Text (smaller, under button):
+Continue with Free Version
+
+Small reassurance text (subtle near bottom):
+One-time payment. Lifetime access.
+
+2️⃣ Contextual Title Adjustment (Important)
+
+Keep the same modal design, but adjust the top section depending on trigger source.
+
+A) When triggered because user hit lesson limit:
+
+Replace the main title with:
+
+Keep Going 🚀
+
+Add small supporting line under title:
+
+You’ve completed your free lessons in this path.
+
+Then show the pricing block exactly as defined above.
+
+B) When triggered from Global Challenges:
+
+Replace the main title with:
+
+Global Challenges Are Premium
+
+Add small supporting line:
+
+Compete, rank, and unlock exclusive rewards.
+
+Then show the same pricing block below.
+
+C) When triggered from Settings / General Upgrade:
+
+Keep standard title:
+
+Islam Quest Premium
+
+Then show pricing block.
+
+3️⃣ Critical Instructions
+
+• Do NOT alter any logic.
+• Do NOT modify Supabase checks.
+• Do NOT change premium state handling.
+• Do NOT touch Play Store integration.
+• Ensure no layout overflow or text wrapping issues occur.
+• Verify modal renders correctly across all entry points.
+• Carefully regression test before finalising.
+• Do not rush implementation.
+
+This is a UI content and contextual title update only.

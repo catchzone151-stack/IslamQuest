@@ -116,14 +116,14 @@ export default function Pathway() {
     const freeLimit = FREE_LESSON_LIMITS[numericPathId] || 0;
     if (!isUserPremium && lesson.id > freeLimit) {
       console.log('🔒 Premium paywall triggered - showing modal');
-      showModal(MODAL_TYPES.PURCHASE);
+      showModal(MODAL_TYPES.PURCHASE, { source: "lesson_limit" });
       return;
     }
     
     // Block access to premium-only paths for free users (lesson 1 of premium paths)
     if (isPathPremiumOnly && !isUserPremium) {
       console.log('🔒 Premium-only path - showing modal');
-      showModal(MODAL_TYPES.PURCHASE);
+      showModal(MODAL_TYPES.PURCHASE, { source: "lesson_limit" });
       return;
     }
     

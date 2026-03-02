@@ -334,6 +334,7 @@ export default function ModalController() {
       case MODAL_TYPES.PURCHASE:
         return (
           <PurchaseModal
+            source={modalData.source}
             onClose={() => {
               hideModal();
               modalData.onClose?.();

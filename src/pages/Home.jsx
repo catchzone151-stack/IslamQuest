@@ -196,7 +196,7 @@ export default function Home() {
     const isPremiumPath = isPremiumOnlyPath(p.id);
     if (isPremiumPath && !isUserPremium) {
       // Show premium paywall modal instead of navigating
-      showModal(MODAL_TYPES.PURCHASE);
+      showModal(MODAL_TYPES.PURCHASE, { source: "lesson_limit" });
       return;
     }
     
@@ -803,7 +803,7 @@ export default function Home() {
         onClick={() => {
           // Check if user has premium access before navigating to Global Events
           if (!isUserPremium) {
-            showModal(MODAL_TYPES.PURCHASE);
+            showModal(MODAL_TYPES.PURCHASE, { source: "global_events" });
             return;
           }
           showModal(MODAL_TYPES.EID_COMING_SOON);

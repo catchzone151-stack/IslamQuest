@@ -90,7 +90,7 @@ export default function GlobalEvents() {
 
   const handleEventClick = (event) => {
     if (!isUserPremium) {
-      showModal(MODAL_TYPES.PURCHASE);
+      showModal(MODAL_TYPES.PURCHASE, { source: "global_events" });
       return;
     }
     // Show Eid coming soon modal

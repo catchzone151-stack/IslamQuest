@@ -5,12 +5,34 @@ import { openAppStore, forceOpenStore } from "../utils/appStoreUtils";
 import { loadProducts, restorePurchases, buyProduct } from "../services/iapService";
 import { Capacitor } from "@capacitor/core";
 
-export default function PurchaseModal({ onClose }) {
+const CONTEXT = {
+  lesson_limit: {
+    title: "Keep Going 🚀",
+    subtitle: "You've completed your free lessons in this path.",
+  },
+  global_events: {
+    title: "Global Challenges Are Premium",
+    subtitle: "Compete, rank, and unlock exclusive rewards.",
+  },
+  settings: {
+    title: "Islam Quest Premium",
+    subtitle: null,
+  },
+};
+
+const DEFAULT_CONTEXT = {
+  title: "Islam Quest Premium",
+  subtitle: null,
+};
+
+export default function PurchaseModal({ onClose, source }) {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [purchasing, setPurchasing] = useState(false);
   const [restoring, setRestoring] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
+
+  const ctx = CONTEXT[source] || DEFAULT_CONTEXT;
 
   useEffect(() => {
     let isMounted = true;
@@ -18,10 +40,10 @@ export default function PurchaseModal({ onClose }) {
       try {
         console.log("[PurchaseModal] Loading products...");
         console.log("[PurchaseModal] Platform:", Capacitor.isNativePlatform() ? Capacitor.getPlatform() : "web");
-        
+
         const products = await loadProducts();
         console.log("[PurchaseModal] Products loaded:", JSON.stringify(products));
-        
+
         if (isMounted) {
           const premiumProduct = products.find(p => p.id === "premium_lifetime");
           console.log("[PurchaseModal] Premium product:", JSON.stringify(premiumProduct));
@@ -44,14 +66,14 @@ export default function PurchaseModal({ onClose }) {
     console.log("[PurchaseModal] Platform:", Capacitor.isNativePlatform() ? Capacitor.getPlatform() : "web");
     console.log("[PurchaseModal] Product state:", JSON.stringify(product));
     console.log("[PurchaseModal] Purchasing state:", purchasing);
-    
+
     setErrorMsg(null);
-    
+
     if (purchasing) {
       console.log("[PurchaseModal] Already purchasing - ignoring click");
       return;
     }
-    
+
     if (!product) {
       console.log("[PurchaseModal] No product loaded - attempting store open");
       const storeResult = await forceOpenStore();
@@ -64,7 +86,7 @@ export default function PurchaseModal({ onClose }) {
       }
       return;
     }
-    
+
     if (product.requiresNativeApp) {
       console.log("[PurchaseModal] Product requires native app - attempting store open");
       const storeResult = await forceOpenStore();
@@ -77,21 +99,21 @@ export default function PurchaseModal({ onClose }) {
       }
       return;
     }
-    
+
     setPurchasing(true);
     console.log("[PurchaseModal] Set purchasing=true, calling buyProduct...");
-    
+
     try {
       console.log("[PurchaseModal] >>> Calling buyProduct with:", product.id);
       const result = await buyProduct(product.id);
       console.log("[PurchaseModal] <<< buyProduct returned:", JSON.stringify(result));
-      
+
       if (result.success) {
         console.log("[PurchaseModal] SUCCESS! Purchase completed, closing modal");
         onClose();
         return;
       }
-      
+
       if (result.requiresNativeApp) {
         console.log("[PurchaseModal] Result says requiresNativeApp - attempting store open");
         const storeResult = await forceOpenStore();
@@ -105,24 +127,24 @@ export default function PurchaseModal({ onClose }) {
         }
         return;
       }
-      
+
       if (result.cancelled) {
         console.log("[PurchaseModal] User cancelled purchase - resetting state");
         setPurchasing(false);
         return;
       }
-      
+
       console.log("[PurchaseModal] Purchase failed with error:", result.error);
       setPurchasing(false);
       setErrorMsg(result.error || "Purchase failed. Please try again.");
-      
+
     } catch (err) {
       console.error("[PurchaseModal] EXCEPTION during purchase:", err);
       console.error("[PurchaseModal] Exception stack:", err.stack);
       setPurchasing(false);
       setErrorMsg("Something went wrong. Please try again.");
     }
-    
+
     console.log("[PurchaseModal] === UNLOCK PREMIUM HANDLER END ===");
     console.log("=".repeat(60));
   };
@@ -131,12 +153,12 @@ export default function PurchaseModal({ onClose }) {
     if (restoring) return;
     setRestoring(true);
     setErrorMsg(null);
-    
+
     try {
       console.log("[PurchaseModal] Restoring purchases...");
       const result = await restorePurchases();
       console.log("[PurchaseModal] Restore result:", JSON.stringify(result));
-      
+
       if (result?.success) {
         onClose();
       } else if (result?.error) {
@@ -150,7 +172,7 @@ export default function PurchaseModal({ onClose }) {
     }
   };
 
-  const displayPrice = product?.price || "...";
+  const displayPrice = product?.price || "£9.99";
 
   return (
     <div
@@ -215,65 +237,84 @@ export default function PurchaseModal({ onClose }) {
           style={{
             width: 90,
             height: 90,
-            marginBottom: 16,
+            marginBottom: 12,
           }}
         />
 
         <h1
           style={{
             color: "#FFD700",
-            fontSize: "1.6rem",
-            marginBottom: "8px",
+            fontSize: "1.5rem",
+            marginBottom: ctx.subtitle ? "6px" : "16px",
             fontWeight: 700,
+            lineHeight: 1.2,
           }}
         >
-          Unlock Your Full Potential
+          {ctx.title}
         </h1>
 
-        <p style={{ 
-          marginBottom: "20px", 
-          color: "#9CA3AF", 
-          fontSize: "0.85rem",
-          lineHeight: 1.4,
-        }}>
-          Lifetime access • No ads • All learning paths
-        </p>
+        {ctx.subtitle && (
+          <p style={{
+            color: "#9CA3AF",
+            fontSize: "0.83rem",
+            marginBottom: "16px",
+            lineHeight: 1.4,
+          }}>
+            {ctx.subtitle}
+          </p>
+        )}
 
-        <div style={{ 
+        <div style={{
           background: "#0b1e36",
           border: "3px solid #FFD700",
           borderRadius: "20px",
           padding: "20px",
-          marginBottom: "16px",
+          marginBottom: "14px",
           boxShadow: "0 0 18px rgba(255,215,0,0.25)",
         }}>
-          <h2 style={{ 
-            color: "#FFD700", 
-            fontSize: "1.3rem", 
+          <h2 style={{
+            color: "#FFD700",
+            fontSize: "1.15rem",
+            fontWeight: 700,
+            marginBottom: "6px",
+          }}>
+            Islam Quest Premium
+          </h2>
+
+          <p style={{
+            color: "#9CA3AF",
+            fontSize: "0.78rem",
+            textDecoration: "line-through",
+            marginBottom: "2px",
+          }}>
+            £19.99
+          </p>
+          <p style={{
+            color: "#FFD700",
+            fontSize: "1.05rem",
             fontWeight: 700,
             marginBottom: "4px",
           }}>
-            Lifetime Premium
-          </h2>
-          <p style={{ 
-            color: "#FFD700", 
-            fontSize: "1rem", 
-            fontWeight: 600,
+            {loading ? "Loading..." : `${displayPrice} One-Time Access`}
+          </p>
+          <p style={{
+            color: "#6B7280",
+            fontSize: "0.72rem",
             marginBottom: "16px",
+            lineHeight: 1.3,
           }}>
-            {loading ? "Loading..." : `${displayPrice} — One-time`}
+            Equivalent to less than 33p per day in your first year.
           </p>
 
-          <div style={{ 
-            textAlign: "left", 
-            color: "white", 
-            fontSize: "0.9rem", 
+          <div style={{
+            textAlign: "left",
+            color: "white",
+            fontSize: "0.88rem",
             lineHeight: 2,
           }}>
-            <div>✔️ All 14 Learning Paths</div>
-            <div>✔️ Unlimited Lessons</div>
-            <div>✔️ Global Events Access</div>
-            <div>✔️ No Ads Ever</div>
+            <div>✔️ All lessons in every learning path</div>
+            <div>✔️ Global Challenges</div>
+            <div>✔️ All future updates included</div>
           </div>
 
           <button
@@ -288,14 +329,14 @@ export default function PurchaseModal({ onClose }) {
               padding: "14px 24px",
               width: "100%",
               cursor: (loading || purchasing) ? "not-allowed" : "pointer",
-              fontSize: "1rem",
+              fontSize: "0.95rem",
               marginTop: "16px",
               opacity: (loading || purchasing) ? 0.7 : 1,
             }}
           >
-            {loading ? "Loading..." : purchasing ? "Processing..." : `Unlock Premium — ${displayPrice}`}
+            {loading ? "Loading..." : purchasing ? "Processing..." : `Unlock Full Access – ${displayPrice}`}
           </button>
-          
+
           {errorMsg && (
             <p style={{
               color: "#EF4444",
@@ -308,14 +349,30 @@ export default function PurchaseModal({ onClose }) {
               {errorMsg}
             </p>
           )}
+
+          <button
+            onClick={onClose}
+            style={{
+              background: "transparent",
+              border: "none",
+              color: "#6B7280",
+              fontSize: "0.78rem",
+              marginTop: "10px",
+              cursor: "pointer",
+              padding: "4px",
+              width: "100%",
+            }}
+          >
+            Continue with Free Version
+          </button>
         </div>
 
-        <p style={{ 
-          color: "#6B7280", 
-          fontSize: "0.75rem",
+        <p style={{
+          color: "#4B5563",
+          fontSize: "0.72rem",
           marginBottom: "12px",
         }}>
-          Secure payment • Instant access • Lifetime unlock
+          One-time payment. Lifetime access.
         </p>
 
         <button

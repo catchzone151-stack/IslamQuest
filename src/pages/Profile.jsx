@@ -333,7 +333,7 @@ export default function Profile() {
           </div>
           {!premium && (
             <button
-              onClick={() => showModal(MODAL_TYPES.PURCHASE)}
+              onClick={() => showModal(MODAL_TYPES.PURCHASE, { source: "settings" })}
               style={{
                 background: "linear-gradient(135deg, #FFD700 0%, #FFA500 100%)",
                 color: "#111827",
