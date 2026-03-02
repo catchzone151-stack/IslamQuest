@@ -141,6 +141,33 @@ export const useUserStore = create((set, get) => ({
           return;
         }
         
+        // If profile is missing username or handle, try to recover from sign-up metadata
+        const missingUsername = !fullProfile.username || fullProfile.username.match(/^User\d{4}$/);
+        const missingHandle = !fullProfile.handle || fullProfile.handle.trim().length === 0;
+
+        if (missingUsername || missingHandle) {
+          const metaName = user.user_metadata?.desired_username || localStorage.getItem("iq_name");
+          const metaHandle = user.user_metadata?.desired_handle || localStorage.getItem("iq_handle");
+          const updatePayload = {};
+          if (missingUsername && metaName) updatePayload.username = metaName;
+          if (missingHandle && metaHandle) updatePayload.handle = metaHandle;
+
+          if (Object.keys(updatePayload).length > 0) {
+            console.log("[UserStore] Recovering missing profile fields:", updatePayload);
+            const { error: recoverError } = await supabase
+              .from("profiles")
+              .update(updatePayload)
+              .eq("user_id", user.id);
+            if (!recoverError) {
+              if (updatePayload.username) fullProfile.username = updatePayload.username;
+              if (updatePayload.handle) fullProfile.handle = updatePayload.handle;
+              console.log("[UserStore] Profile fields recovered successfully");
+            } else {
+              console.error("[UserStore] Profile recovery failed:", recoverError);
+            }
+          }
+        }
+
         // Determine if onboarding is complete
         const needsOnboarding = !isProfileComplete(fullProfile);
         
@@ -151,6 +178,7 @@ export const useUserStore = create((set, get) => ({
         } else {
           // Profile is complete - restore local state from cloud
           localStorage.setItem("iq_profile_complete", "true");
+          localStorage.removeItem("iq_onboarding_step");
           if (fullProfile) {
             localStorage.setItem("iq_username", fullProfile.username || "");
             localStorage.setItem("iq_handle", fullProfile.handle || "");
