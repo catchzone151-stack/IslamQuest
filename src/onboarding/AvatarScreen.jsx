@@ -24,9 +24,9 @@ export default function AvatarScreen() {
     
     setAvatar(selected);
     localStorage.setItem("iq_avatar", selected);
-    localStorage.setItem("iq_onboarding_step", "handle");
+    localStorage.setItem("iq_onboarding_step", "checkemail");
     
-    navigate("/onboarding/handle");
+    navigate("/check-email");
   };
 
   return (

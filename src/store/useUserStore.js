@@ -143,7 +143,8 @@ export const useUserStore = create((set, get) => ({
         }
         
         // If profile is missing username, handle, or has wrong avatar, recover from sign-up metadata
-        const missingUsername = !fullProfile.username || fullProfile.username.match(/^User\d{4}$/);
+        // Catches DB-trigger auto-generated patterns: "User_XXXXXXXX", "User1234", "User", etc.
+        const missingUsername = !fullProfile.username || /^User($|[_\s\d])/i.test(fullProfile.username);
         const missingHandle = !fullProfile.handle || fullProfile.handle.trim().length === 0;
         const storedAvatarKey = localStorage.getItem("iq_avatar");
         const profileAvatarKey = fullProfile.avatar || "avatar_1";
@@ -198,14 +199,11 @@ export const useUserStore = create((set, get) => ({
           console.log("PROFILE COMPLETE → Loading app");
         }
 
-        // If the profile is complete but username is still auto-generated, force handle setup
-        const hasGeneratedUsername = !needsOnboarding && fullProfile?.username?.startsWith("User_");
-
         set({
           profile: fullProfile,
           profileReady: !needsOnboarding,
           hasOnboarded: !needsOnboarding,
-          requiresHandle: hasGeneratedUsername,
+          requiresHandle: false,
           loading: false,
           isHydrated: true,
           // Restore identity from cloud profile

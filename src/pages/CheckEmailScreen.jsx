@@ -195,11 +195,8 @@ export default function CheckEmailScreen() {
     if (!displayName) displayName = "Student";
 
     if (!handle) {
-      console.log("[CheckEmail] Profile still missing handle — sending to handle screen");
-      localStorage.setItem("iq_onboarding_step", "handle");
-      isProcessingLogin = false;
-      navigate("/onboarding/handle");
-      return false;
+      handle = `user_${user.id.substring(0, 8)}`;
+      console.warn("[CheckEmail] Handle still missing after recovery — using fallback:", handle);
     }
     
     setDisplayName(displayName);

@@ -116,11 +116,10 @@ export default function LoginPage() {
       }
 
       if (!profile) {
-        console.log("[LoginPage] Profile still missing — sending to handle screen");
-        localStorage.setItem("iq_onboarding_step", "handle");
+        console.log("[LoginPage] Profile still missing after 10 polls — redirecting to sign-up");
         useUserStore.setState({ user: data.user, userId: data.user.id, loading: false, isHydrated: true });
         setLoading(false);
-        navigate("/onboarding/handle");
+        navigate("/signup");
         return;
       }
 
@@ -173,12 +172,8 @@ export default function LoginPage() {
       if (!displayName) displayName = "Student";
 
       if (!handle) {
-        console.log("[LoginPage] Profile missing handle — sending to handle screen");
-        localStorage.setItem("iq_onboarding_step", "handle");
-        useUserStore.setState({ user: data.user, userId: data.user.id, loading: false, isHydrated: true });
-        setLoading(false);
-        navigate("/onboarding/handle");
-        return;
+        handle = `user_${data.user.id.substring(0, 8)}`;
+        console.warn("[LoginPage] Handle still missing after recovery — using fallback:", handle);
       }
 
       setDisplayName(displayName);

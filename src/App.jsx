@@ -37,7 +37,6 @@ import SalaamScreen from "./onboarding/SalaamScreen.jsx";
 import AuthChoiceScreen from "./onboarding/AuthChoiceScreen.jsx";
 import NameHandleScreen from "./onboarding/NameHandleScreen.jsx";
 import AvatarScreen from "./onboarding/AvatarScreen.jsx";
-import HandleScreen from "./onboarding/HandleScreen.jsx";
 
 // 🚀 LAZY LOADED ROUTES - Split bundle for proper hydration
 const Home = lazy(() => import("./pages/Home"));
@@ -167,7 +166,6 @@ function OnboardingRedirector() {
     signup: "/signup",
     namehandle: "/onboarding/namehandle",
     avatar: "/onboarding/avatar",
-    handle: "/onboarding/handle",
     auth: "/login",
     checkemail: "/check-email",
   };
@@ -229,7 +227,7 @@ const PRODUCTION_VERSION = "iq_production_v1";
 
 export default function App() {
   console.log('[IQ_BUILD_TEST]', 'BUILD_VERSION_3');
-  const { hasOnboarded, isHydrated, awaitingProfileSetup, requiresHandle } = useUserStore();
+  const { hasOnboarded, isHydrated, awaitingProfileSetup } = useUserStore();
   const { grantCoins, coins, showMilestoneModal, milestoneDays, milestoneReward } = useProgressStore();
   
   // Force re-render workaround for Zustand subscription issues in React StrictMode
@@ -279,7 +277,6 @@ export default function App() {
   const storeState = useUserStore.getState();
   const actualIsHydrated = isHydrated || storeState.isHydrated || forceReady;
   const actualHasOnboarded = storeState.hasOnboarded;
-  const actualRequiresHandle = storeState.requiresHandle || requiresHandle;
 
   // 🔄 VERSIONED STORAGE RESET: Clear all legacy data on first production load
   // IMPORTANT: Uses module-level flag to prevent reload loops from React StrictMode
@@ -482,18 +479,6 @@ export default function App() {
         }
 
         console.log("🔐 Signed in as", user.id);
-
-        if (profileReady && hasOnboarded && !handle) {
-          console.error("🚨 CRITICAL: User marked as onboarded but missing handle - forcing handle screen");
-          localStorage.setItem("iq_onboarding_step", "handle");
-          useUserStore.setState({ 
-            profileReady: false,
-            hasOnboarded: false,
-          });
-          window.__iq_auth_init_complete = true;
-          window.__iq_auth_init_running = false;
-          return;
-        }
 
         if (profileReady) {
           await useUserStore.getState().syncUserProfile();
@@ -816,7 +801,6 @@ export default function App() {
                   {/* Legacy routes (for resume support) */}
                   <Route path="/onboarding/namehandle" element={<NameHandleScreen />} />
                   <Route path="/onboarding/avatar" element={<AvatarScreen />} />
-                  <Route path="/onboarding/handle" element={<HandleScreen />} />
                   {/* Login page */}
                   <Route
                     path="/login"
@@ -873,12 +857,6 @@ export default function App() {
                   />
                   {/* Fallback — resume from saved step or start from bismillah */}
                   <Route path="*" element={<OnboardingRedirector />} />
-                </>
-              ) : actualRequiresHandle ? (
-                <>
-                  {/* ✅ HANDLE GATE — user has auto-generated username, must set a real one */}
-                  <Route path="/onboarding/handle" element={<HandleScreen />} />
-                  <Route path="*" element={<Navigate to="/onboarding/handle" replace />} />
                 </>
               ) : (
                 <>
@@ -1041,7 +1019,7 @@ export default function App() {
           </div>
 
           {/* ✅ Persistent bottom navigation */}
-          {actualHasOnboarded && !actualRequiresHandle && <BottomNav />}
+          {actualHasOnboarded && <BottomNav />}
 
           {/* 💎 Centralized Modal System */}
           <ModalController />

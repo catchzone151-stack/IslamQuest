@@ -93,30 +93,14 @@ export default function AuthPage() {
 
         if (profile) {
           const displayName = profile.username || "Student";
-          const handle = profile.handle || null;
+          let handle = profile.handle || null;
           const avatarKey = typeof profile.avatar === "number"
             ? avatarIndexToKey(profile.avatar)
             : profile.avatar || "avatar_man_lantern";
           
           if (!handle) {
-            console.log("Profile missing handle - redirecting to handle screen to complete setup");
-            localStorage.setItem("iq_onboarding_step", "handle");
-            localStorage.setItem("iq_name", displayName);
-            localStorage.setItem("iq_avatar", avatarKey);
-            useUserStore.setState({ 
-              user: data.user, 
-              userId: data.user.id,
-              username: displayName,
-              avatar: avatarKey,
-              profile: profile,
-              profileReady: false,
-              hasOnboarded: false,
-              loading: false,
-              isHydrated: true,
-            });
-            setLoading(false);
-            navigate("/onboarding/handle");
-            return;
+            handle = `user_${data.user.id.substring(0, 8)}`;
+            console.warn("Profile missing handle — using fallback:", handle);
           }
           
           setDisplayName(displayName);
@@ -171,7 +155,7 @@ export default function AuthPage() {
             
             console.log("Preserving local progress:", { xp: localXp, coins: localCoins, streak: localStreak });
             
-            const { data: upsertData, error: profileError } = await supabase
+            const { data: rawUpsertData, error: profileError } = await supabase
               .from("profiles")
               .upsert({
                 user_id: data.user.id,
@@ -185,6 +169,7 @@ export default function AuthPage() {
               }, { onConflict: 'user_id' })
               .select()
               .single();
+            let upsertData = rawUpsertData;
             
             if (profileError) {
               console.error("Profile creation error:", profileError);
@@ -194,21 +179,8 @@ export default function AuthPage() {
             }
             
             if (!upsertData?.handle) {
-              console.log("Profile upserted but missing handle - redirecting to handle screen");
-              localStorage.setItem("iq_onboarding_step", "handle");
-              useUserStore.setState({ 
-                user: data.user, 
-                userId: data.user.id,
-                username: storedName,
-                avatar: storedAvatar,
-                profileReady: false,
-                hasOnboarded: false,
-                loading: false,
-                isHydrated: true,
-              });
-              setLoading(false);
-              navigate("/onboarding/handle");
-              return;
+              console.warn("Profile upserted but missing handle — using fallback");
+              upsertData = { ...upsertData, handle: `user_${data.user.id.substring(0, 8)}` };
             }
             
             console.log("PROFILE CREATED for existing user:", data.user.id);
@@ -265,11 +237,10 @@ export default function AuthPage() {
         const storedAvatar = localStorage.getItem("iq_avatar") || useUserStore.getState().avatar || "avatar_man_lantern";
         
         if (!storedHandle) {
-          console.error("Missing handle - cannot proceed with signup");
+          console.error("Missing handle - redirecting to sign-up to start fresh");
           setErrorMsg("Please complete your profile setup first.");
           setLoading(false);
-          localStorage.setItem("iq_onboarding_step", "handle");
-          navigate("/onboarding/handle");
+          navigate("/signup");
           return;
         }
         
