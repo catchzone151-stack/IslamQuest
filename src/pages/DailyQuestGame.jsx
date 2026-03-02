@@ -227,7 +227,7 @@ export default function DailyQuestGame() {
           <img
             src={passed ? CongratsMascot : SittingMascot}
             alt="Mascot"
-            style={{ width: 100, height: "auto", margin: "0 auto 20px", animation: "bounce 1.5s infinite" }}
+            style={{ width: 100, height: "auto", margin: "0 auto 20px" }}
           />
           <p style={{ fontSize: "1.1rem", color: "#f3f4f6", marginBottom: 30 }}>
             Come back tomorrow for a new Daily Quest! 🌙
@@ -249,9 +249,6 @@ export default function DailyQuestGame() {
             Continue
           </button>
         </div>
-        <style>{`
-          @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        `}</style>
       </div>
     );
   }
