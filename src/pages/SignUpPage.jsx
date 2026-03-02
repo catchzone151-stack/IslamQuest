@@ -192,6 +192,27 @@ export default function SignUpPage() {
           isHydrated: true,
         });
 
+        // If we have a session (auto-confirm on), write the correct values to the
+        // profile immediately — the DB trigger may have set wrong/default values.
+        if (data.session) {
+          setTimeout(async () => {
+            try {
+              await supabase
+                .from("profiles")
+                .update({
+                  username: trimmedName,
+                  handle: trimmedHandle.toLowerCase(),
+                  avatar: avatarKeyToIndex(avatarKey),
+                  updated_at: new Date().toISOString(),
+                })
+                .eq("user_id", data.user.id);
+              console.log("[SignUp] Profile fields written immediately after sign-up");
+            } catch (e) {
+              console.warn("[SignUp] Immediate profile write failed (will be recovered later):", e);
+            }
+          }, 400);
+        }
+
         setLoading(false);
         localStorage.setItem("iq_onboarding_step", "checkemail");
         localStorage.setItem("iq_new_signup", "true");

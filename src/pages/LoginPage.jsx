@@ -6,7 +6,7 @@ import { supabase } from "../lib/supabaseClient";
 import { useUserStore } from "../store/useUserStore";
 import { preloadUserData } from "../hooks/useDataPreloader";
 import { checkProfileExists } from "../lib/userProfile";
-import { avatarIndexToKey } from "../utils/avatarUtils";
+import { avatarIndexToKey, avatarKeyToIndex } from "../utils/avatarUtils";
 import { getPasswordResetRedirectUrl } from "../utils/deepLinkHandler";
 import SittingMascot from "../assets/mascots/mascot_sitting.webp";
 
@@ -134,20 +134,28 @@ export default function LoginPage() {
       const finalProfile = preloadResult?.profile || profile;
       let displayName = finalProfile.username || null;
       let handle = finalProfile.handle || null;
-      const avatarKey = typeof finalProfile.avatar === "number"
+      let avatarKey = typeof finalProfile.avatar === "number"
         ? avatarIndexToKey(finalProfile.avatar)
         : finalProfile.avatar || "avatar_man_lantern";
 
-      // Recover missing username and/or handle from sign-up metadata / localStorage
+      // Recover missing username, handle, and/or avatar from sign-up metadata / localStorage
       const metaName = data.user.user_metadata?.desired_username || localStorage.getItem("iq_name");
       const metaHandle = data.user.user_metadata?.desired_handle || localStorage.getItem("iq_handle");
+      const metaAvatarIndex = data.user.user_metadata?.desired_avatar_index;
+      const storedAvatarKey = localStorage.getItem("iq_avatar");
       const needsNameUpdate = !displayName && metaName;
       const needsHandleUpdate = !handle && metaHandle;
+      const needsAvatarUpdate = !!(storedAvatarKey && storedAvatarKey !== avatarKey);
 
-      if (needsNameUpdate || needsHandleUpdate) {
+      if (needsNameUpdate || needsHandleUpdate || needsAvatarUpdate) {
         const updatePayload = {};
         if (needsNameUpdate) updatePayload.username = metaName;
         if (needsHandleUpdate) updatePayload.handle = metaHandle;
+        if (needsAvatarUpdate) {
+          updatePayload.avatar = typeof metaAvatarIndex === "number" && metaAvatarIndex > 0
+            ? metaAvatarIndex
+            : avatarKeyToIndex(storedAvatarKey);
+        }
         console.log("[LoginPage] Recovering profile fields from metadata:", updatePayload);
         const { error: updateError } = await supabase
           .from("profiles")
@@ -156,6 +164,7 @@ export default function LoginPage() {
         if (!updateError) {
           if (needsNameUpdate) { displayName = metaName; console.log("[LoginPage] Username recovered:", metaName); }
           if (needsHandleUpdate) { handle = metaHandle; console.log("[LoginPage] Handle recovered:", metaHandle); }
+          if (needsAvatarUpdate) { avatarKey = storedAvatarKey; console.log("[LoginPage] Avatar recovered:", storedAvatarKey); }
         } else {
           console.error("[LoginPage] Profile field recovery failed:", updateError);
         }

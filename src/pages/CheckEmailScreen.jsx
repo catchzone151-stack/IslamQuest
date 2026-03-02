@@ -6,7 +6,7 @@ import { supabase } from "../lib/supabaseClient";
 import { useUserStore } from "../store/useUserStore";
 import { useModalStore, MODAL_TYPES } from "../store/modalStore";
 import { preloadUserData } from "../hooks/useDataPreloader";
-import { avatarIndexToKey } from "../utils/avatarUtils";
+import { avatarIndexToKey, avatarKeyToIndex } from "../utils/avatarUtils";
 
 // Module-level flag to prevent concurrent login processing
 let isProcessingLogin = false;
@@ -155,21 +155,29 @@ export default function CheckEmailScreen() {
 
     let displayName = profile.username || null;
     let handle = profile.handle || null;
-    const avatarKey = typeof profile.avatar === "number"
+    let avatarKey = typeof profile.avatar === "number"
       ? avatarIndexToKey(profile.avatar)
       : profile.avatar || "avatar_man_lantern";
 
-    // Recover missing username and/or handle from sign-up metadata / localStorage
+    // Recover missing username, handle, and/or avatar from sign-up metadata / localStorage
     const metaName = user.user_metadata?.desired_username || localStorage.getItem("iq_name");
     const metaHandle = user.user_metadata?.desired_handle || localStorage.getItem("iq_handle");
+    const metaAvatarIndex = user.user_metadata?.desired_avatar_index;
+    const storedAvatarKey = localStorage.getItem("iq_avatar");
 
     const needsNameUpdate = !displayName && metaName;
     const needsHandleUpdate = !handle && metaHandle;
+    const needsAvatarUpdate = !!(storedAvatarKey && storedAvatarKey !== avatarKey);
 
-    if (needsNameUpdate || needsHandleUpdate) {
+    if (needsNameUpdate || needsHandleUpdate || needsAvatarUpdate) {
       const updatePayload = {};
       if (needsNameUpdate) updatePayload.username = metaName;
       if (needsHandleUpdate) updatePayload.handle = metaHandle;
+      if (needsAvatarUpdate) {
+        updatePayload.avatar = typeof metaAvatarIndex === "number" && metaAvatarIndex > 0
+          ? metaAvatarIndex
+          : avatarKeyToIndex(storedAvatarKey);
+      }
       console.log("[CheckEmail] Recovering profile fields from metadata:", updatePayload);
       const { error: updateError } = await supabase
         .from("profiles")
@@ -178,6 +186,7 @@ export default function CheckEmailScreen() {
       if (!updateError) {
         if (needsNameUpdate) { displayName = metaName; console.log("[CheckEmail] Username recovered:", metaName); }
         if (needsHandleUpdate) { handle = metaHandle; console.log("[CheckEmail] Handle recovered:", metaHandle); }
+        if (needsAvatarUpdate) { avatarKey = storedAvatarKey; console.log("[CheckEmail] Avatar recovered:", storedAvatarKey); }
       } else {
         console.error("[CheckEmail] Profile field recovery failed:", updateError);
       }

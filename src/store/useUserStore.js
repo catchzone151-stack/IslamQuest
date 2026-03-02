@@ -18,6 +18,7 @@ import {
   saveCloudProfile, 
   isProfileComplete 
 } from "../lib/userProfile";
+import { avatarKeyToIndex } from "../utils/avatarUtils";
 
 // Default avatar for new users
 const DEFAULT_AVATAR = "avatar_man_lantern";
@@ -141,16 +142,25 @@ export const useUserStore = create((set, get) => ({
           return;
         }
         
-        // If profile is missing username or handle, try to recover from sign-up metadata
+        // If profile is missing username, handle, or has wrong avatar, recover from sign-up metadata
         const missingUsername = !fullProfile.username || fullProfile.username.match(/^User\d{4}$/);
         const missingHandle = !fullProfile.handle || fullProfile.handle.trim().length === 0;
+        const storedAvatarKey = localStorage.getItem("iq_avatar");
+        const profileAvatarKey = fullProfile.avatar || "avatar_1";
+        const needsAvatarUpdate = !!(storedAvatarKey && storedAvatarKey !== profileAvatarKey);
 
-        if (missingUsername || missingHandle) {
+        if (missingUsername || missingHandle || needsAvatarUpdate) {
           const metaName = user.user_metadata?.desired_username || localStorage.getItem("iq_name");
           const metaHandle = user.user_metadata?.desired_handle || localStorage.getItem("iq_handle");
+          const metaAvatarIndex = user.user_metadata?.desired_avatar_index;
           const updatePayload = {};
           if (missingUsername && metaName) updatePayload.username = metaName;
           if (missingHandle && metaHandle) updatePayload.handle = metaHandle;
+          if (needsAvatarUpdate) {
+            updatePayload.avatar = typeof metaAvatarIndex === "number" && metaAvatarIndex > 0
+              ? metaAvatarIndex
+              : avatarKeyToIndex(storedAvatarKey);
+          }
 
           if (Object.keys(updatePayload).length > 0) {
             console.log("[UserStore] Recovering missing profile fields:", updatePayload);
@@ -161,6 +171,7 @@ export const useUserStore = create((set, get) => ({
             if (!recoverError) {
               if (updatePayload.username) fullProfile.username = updatePayload.username;
               if (updatePayload.handle) fullProfile.handle = updatePayload.handle;
+              if (updatePayload.avatar) fullProfile.avatar = storedAvatarKey;
               console.log("[UserStore] Profile fields recovered successfully");
             } else {
               console.error("[UserStore] Profile recovery failed:", recoverError);
