@@ -74,12 +74,6 @@ export default function LoginPage() {
       });
 
       if (error) {
-        if (error.message?.includes("Email not confirmed")) {
-          setLoading(false);
-          setErrorMsg("Please verify your email before logging in. Check your inbox.");
-          triggerShake();
-          return;
-        }
         setErrorMsg("Incorrect email or password. Please try again.");
         triggerShake();
         setLoading(false);
