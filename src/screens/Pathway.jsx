@@ -110,7 +110,13 @@ export default function Pathway() {
   }, [numericPathId, activeIndex]);
 
   const handleLessonClick = (lesson) => {
-    console.log('🎯 Lesson clicked:', lesson.id, 'locked:', lesson.isLocked);
+    console.log('🎯 Lesson clicked:', lesson.id, 'locked:', lesson.isLocked, 'completed:', lesson.isCompleted);
+    
+    // ✅ Completed lessons are always replayable — no paywall or lock checks
+    if (lesson.isCompleted) {
+      navigate(`/path/${numericPathId}/lesson/${lesson.id}`);
+      return;
+    }
     
     // FIRST: Check premium paywall (even for sequentially unlocked lessons)
     const freeLimit = FREE_LESSON_LIMITS[numericPathId] || 0;

@@ -894,6 +894,12 @@ export const useProgressStore = create((set, get) => ({
       return "progressLocked"; // Safe default during hydration
     }
     
+    // ✅ Completed lessons are ALWAYS unlocked — never re-lock a lesson the user has passed
+    const pathState = lessonStates[pathId] || {};
+    if (pathState[lessonId]?.passed) {
+      return "unlocked";
+    }
+    
     const isUserPremium = premium;
     
     // Lesson 1 is always unlocked (except for premium-only paths)
@@ -911,7 +917,6 @@ export const useProgressStore = create((set, get) => ({
       9: 10, 10: 17, 11: 6, 12: 7, 13: 6, 14: 6
     };
     const totalLessons = pathLessonCounts[pathId] || 0;
-    const pathState = lessonStates[pathId] || {};
     const completedCount = Object.keys(pathState)
       .filter(id => pathState[id]?.passed)
       .length;
