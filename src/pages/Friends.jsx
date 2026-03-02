@@ -72,6 +72,9 @@ export default function Friends() {
     getGlobalLeaderboard,
     globalLeaderboard,
     leaderboardLoading,
+    userGlobalRank,
+    userAboveXP,
+    userAboveRank,
   } = useFriendsStore();
 
   const {
@@ -1089,27 +1092,75 @@ export default function Friends() {
                       message="Global leaderboard is empty"
                     />
                   ) : (
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "10px",
-                      }}
-                    >
-                      {globalLeaderboard.map((user, index) => (
-                        <GlobalLeaderboardCard
-                          key={user.user_id}
-                          user={user}
-                          rank={index + 1}
-                          isCurrentUser={
-                            user.isCurrentUser ||
-                            user.user_id === currentUserIdForHighlight
-                          }
-                          isFriend={isFriend(user.user_id)}
-                          onUserClick={() => handleUserClick(user.user_id)}
-                        />
-                      ))}
-                    </div>
+                    <>
+                      {/* Proximity motivation — hide if rank 1 or no data */}
+                      {userAboveXP !== null && userGlobalRank > 1 && (
+                        <div
+                          style={{
+                            background: "linear-gradient(135deg, rgba(245,158,11,0.12), rgba(217,119,6,0.08))",
+                            border: "1px solid rgba(245,158,11,0.35)",
+                            borderRadius: "10px",
+                            padding: "10px 14px",
+                            marginBottom: "14px",
+                            textAlign: "center",
+                            fontSize: "0.88rem",
+                            color: "#f59e0b",
+                            fontWeight: "600",
+                          }}
+                        >
+                          <Zap size={14} style={{ marginRight: "5px", verticalAlign: "middle" }} />
+                          You are {(userAboveXP - currentUserXP).toLocaleString()} XP behind #{userAboveRank}
+                        </div>
+                      )}
+
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "10px",
+                        }}
+                      >
+                        {globalLeaderboard.map((user, index) => (
+                          <GlobalLeaderboardCard
+                            key={user.user_id}
+                            user={user}
+                            rank={index + 1}
+                            isCurrentUser={
+                              user.isCurrentUser ||
+                              user.user_id === currentUserIdForHighlight
+                            }
+                            isFriend={isFriend(user.user_id)}
+                            onUserClick={() => handleUserClick(user.user_id)}
+                          />
+                        ))}
+                      </div>
+
+                      {/* Rank footer — only shown when user is not in top 30 */}
+                      {userGlobalRank !== null && userGlobalRank > 30 && (
+                        <div
+                          style={{
+                            marginTop: "20px",
+                            background: "linear-gradient(135deg, rgba(99,102,241,0.15), rgba(79,70,229,0.08))",
+                            border: "1px solid rgba(99,102,241,0.4)",
+                            borderRadius: "12px",
+                            padding: "16px",
+                            textAlign: "center",
+                          }}
+                        >
+                          <p style={{ color: "#a5b4fc", fontSize: "0.85rem", margin: "0 0 6px", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                            Your Rank
+                          </p>
+                          <p style={{ color: "#fff", fontSize: "1.5rem", fontWeight: "800", margin: "0 0 4px" }}>
+                            #{userGlobalRank}
+                          </p>
+                          {globalLeaderboard.length === 30 && (
+                            <p style={{ color: "#94a3b8", fontSize: "0.85rem", margin: 0 }}>
+                              {(globalLeaderboard[29].xp - currentUserXP).toLocaleString()} XP away from Top 30
+                            </p>
+                          )}
+                        </div>
+                      )}
+                    </>
                   )}
                 </div>
               )}

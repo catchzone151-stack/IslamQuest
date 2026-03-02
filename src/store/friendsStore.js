@@ -23,6 +23,9 @@ export const useFriendsStore = create((set, get) => ({
   receivedRequests: [],
   users: [],
   globalLeaderboard: [],
+  userGlobalRank: null,
+  userAboveXP: null,
+  userAboveRank: null,
   loading: false,
   leaderboardLoading: false,
   error: null,
@@ -192,7 +195,23 @@ export const useFriendsStore = create((set, get) => ({
         { user_id: DEV_ID, username: "The Dev", handle: "thedev", avatar: "avatar_ninja_male", xp: 168542, streak: 82, isPermanent: true },
         ...rows,
       ];
-      set({ globalLeaderboard: withDev.sort((a, b) => b.xp - a.xp), leaderboardLoading: false });
+      const sorted = withDev.sort((a, b) => b.xp - a.xp);
+
+      // Compute user rank from the full sorted list
+      const { userId } = useUserStore.getState();
+      const userRankIndex = userId ? sorted.findIndex(u => u.user_id === userId) : -1;
+      const userRank = userRankIndex !== -1 ? userRankIndex + 1 : null;
+      const aboveUserXP = userRank && userRank > 1 ? sorted[userRankIndex - 1].xp : null;
+      const aboveUserRank = userRank && userRank > 1 ? userRank - 1 : null;
+
+      // Store only top 30 for display
+      set({
+        globalLeaderboard: sorted.slice(0, 30),
+        userGlobalRank: userRank,
+        userAboveXP: aboveUserXP,
+        userAboveRank: aboveUserRank,
+        leaderboardLoading: false,
+      });
     } catch (err) {
       set({ leaderboardLoading: false, error: err.message });
     }
