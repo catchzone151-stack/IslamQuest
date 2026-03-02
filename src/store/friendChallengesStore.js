@@ -3,7 +3,7 @@ import { supabase } from "../lib/supabaseClient";
 import { useProgressStore } from "./progressStore";
 import { useFriendsStore } from "./friendsStore";
 import { CHALLENGE_MODES } from "./challengeStore";
-import { setIqState } from "../services/pushTags";
+import { setChallengePending } from "../services/pushTags";
 
 const CHALLENGE_EXPIRY_HOURS = 48; // fallback only — DB expires_at takes precedence
 const CHALLENGE_EXPIRY_DAYS = 7;   // set on insert
@@ -173,7 +173,7 @@ export const useFriendChallengesStore = create((set, get) => ({
       try {
         if (pendingIncoming.length > 0) {
           const firstPending = pendingIncoming[0];
-          setIqState({ challengePending: true, challengeFrom: firstPending.sender_id });
+          setChallengePending(true);
         }
       } catch (err) {
         // Silent fail for OneSignal tag updates
@@ -329,7 +329,7 @@ export const useFriendChallengesStore = create((set, get) => ({
       // Clear challenge pending only if no more pending incoming challenges
       const { pendingIncoming } = get();
       if (pendingIncoming.length === 0) {
-        setIqState({ challengePending: false, challengeFrom: null });
+        setChallengePending(false);
       }
       
       return { success: true, challenge: data };
@@ -358,7 +358,7 @@ export const useFriendChallengesStore = create((set, get) => ({
       // Clear challenge pending only if no more pending incoming challenges
       const { pendingIncoming } = get();
       if (pendingIncoming.length === 0) {
-        setIqState({ challengePending: false, challengeFrom: null });
+        setChallengePending(false);
       }
       
       return { success: true };
@@ -387,7 +387,7 @@ export const useFriendChallengesStore = create((set, get) => ({
       // Clear challenge pending only if no more pending incoming challenges (for receiver)
       const { pendingIncoming } = get();
       if (pendingIncoming.length === 0) {
-        setIqState({ challengePending: false, challengeFrom: null });
+        setChallengePending(false);
       }
       
       return { success: true };

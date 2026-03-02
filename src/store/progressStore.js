@@ -9,7 +9,7 @@ import { getQuizForLesson } from "../data/quizEngine";
 import { logStreakEvent } from "../backend/streakLogs";
 import { logXpEvent } from "../backend/xpLogs";
 import { logPurchase } from "../backend/purchaseLogs";
-import { setPathStarted, setPathCompleted, setIqState, syncStreakTags, registerProgressStore } from "../services/pushTags";
+import { syncStreakTags, registerProgressStore } from "../services/pushTags";
 
 const STORAGE_KEY = "islamQuestProgress_v4";
 const STREAK_TRACE = 'IQ_STREAK_TRACE';
@@ -803,18 +803,6 @@ export const useProgressStore = create((set, get) => ({
       const totalLessons = path?.totalLessons || 0;
 
       get().setPathProgress(pathId, passedCountAfter, path ? path.totalLessons : 0);
-
-      // Push tags: fire based on count transitions (deterministic, no duplicates)
-      try {
-        if (passedCountBefore === 0 && passedCountAfter === 1) {
-          setPathStarted(pathId);
-        }
-        if (totalLessons > 0 && passedCountBefore < totalLessons && passedCountAfter === totalLessons) {
-          setPathCompleted(pathId);
-        }
-      } catch (err) {
-        // Silent fail for push tags
-      }
 
       // Check if path is now completed
       if (path && passedCountAfter === path.totalLessons && path.totalLessons > 0) {
