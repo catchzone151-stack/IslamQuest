@@ -63,13 +63,13 @@ export default function Settings() {
     setDeleteError("");
 
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        setDeleteError("Not signed in. Please log in and try again.");
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user?.id) {
+        setDeleteError("Session expired. Please log out and log back in, then try again.");
         setIsDeleting(false);
         return;
       }
-      const uid = user.id;
+      const uid = session.user.id;
 
       // ── Path A: server-side RPC (preferred, handles auth.users deletion too) ──
       console.log("🗑️ Trying RPC delete_my_account...");
