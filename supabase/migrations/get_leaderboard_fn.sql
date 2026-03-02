@@ -1,7 +1,17 @@
 -- Run this once in the Supabase SQL Editor.
 -- Creates SECURITY DEFINER functions that bypass RLS on the profiles table.
 
--- 1. Global leaderboard — returns all profiles sorted by XP
+-- 0. Verified-users-only view — leaderboard and search only show confirmed accounts
+CREATE OR REPLACE VIEW public.profiles_verified AS
+  SELECT *
+  FROM public.profiles p
+  WHERE EXISTS (
+    SELECT 1 FROM auth.users u
+    WHERE u.id = p.user_id
+      AND u.email_confirmed_at IS NOT NULL
+  );
+
+-- 1. Global leaderboard — returns only email-verified profiles sorted by XP
 CREATE OR REPLACE FUNCTION public.get_leaderboard()
 RETURNS json
 SECURITY DEFINER
@@ -11,7 +21,7 @@ AS $$
   SELECT json_agg(t ORDER BY t.xp DESC)
   FROM (
     SELECT user_id::text, username, handle, avatar, xp, streak
-    FROM profiles
+    FROM profiles_verified
   ) t;
 $$;
 
@@ -34,7 +44,7 @@ $$;
 
 GRANT EXECUTE ON FUNCTION public.get_profiles_by_ids(text[]) TO authenticated, anon;
 
--- 3. User search by handle or username — used by the Search tab
+-- 3. User search by handle or username — only searches verified accounts
 CREATE OR REPLACE FUNCTION public.search_profiles(search_query text)
 RETURNS json
 SECURITY DEFINER
@@ -44,7 +54,7 @@ AS $$
   SELECT json_agg(t)
   FROM (
     SELECT DISTINCT user_id::text, username, handle, avatar, xp, streak
-    FROM profiles
+    FROM profiles_verified
     WHERE handle ILIKE '%' || search_query || '%'
        OR username ILIKE '%' || search_query || '%'
     LIMIT 20

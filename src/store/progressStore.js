@@ -683,8 +683,9 @@ export const useProgressStore = create((set, get) => ({
     const { xp, xpMultiplier } = get();
 
     // ── Unverified XP cap: hard limit of 1000 XP until email is confirmed ──────
-    const { emailVerified } = useUserStore.getState();
-    if (!emailVerified) {
+    const { user } = useUserStore.getState();
+    const isVerified = !!user?.email_confirmed_at;
+    if (!isVerified) {
       if (xp >= 1000) {
         useModalStore.getState().showModal(MODAL_TYPES.VERIFY_EMAIL, {
           reason: 'xp_cap',
@@ -698,7 +699,7 @@ export const useProgressStore = create((set, get) => ({
     let newXP = xp + total;
 
     // Cap unverified users at 1000 and show the verify modal once they hit it
-    if (!emailVerified && newXP >= 1000) {
+    if (!isVerified && newXP >= 1000) {
       newXP = 1000;
       useModalStore.getState().showModal(MODAL_TYPES.VERIFY_EMAIL, {
         reason: 'xp_cap',

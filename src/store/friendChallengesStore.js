@@ -8,8 +8,9 @@ import { useUserStore } from "./useUserStore";
 import { useModalStore, MODAL_TYPES } from "./modalStore";
 
 const requireVerified = () => {
-  const { emailVerified } = useUserStore.getState();
-  if (!emailVerified) {
+  const { user } = useUserStore.getState();
+  const isVerified = !!user?.email_confirmed_at;
+  if (!isVerified) {
     useModalStore.getState().showModal(MODAL_TYPES.VERIFY_EMAIL);
     return false;
   }
