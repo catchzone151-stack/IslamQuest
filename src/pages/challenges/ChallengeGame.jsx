@@ -377,7 +377,7 @@ export default function ChallengeGame() {
           if (userId) {
             logChallengeResult(userId, "boss_level", result, xpEarned);
           }
-        })();
+        })().catch(err => console.error("[Async Error]", err));
         
         if (result === "win") {
           analytics('boss_win', { score: finalScore, total: BOSS_LEVEL.questionCount });
@@ -428,7 +428,7 @@ export default function ChallengeGame() {
             if (userId) {
               logChallengeResult(userId, updatedChallenge.mode, result, xpEarned, updatedChallenge.opponentId);
             }
-          })();
+          })().catch(err => console.error("[Async Error]", err));
           
           if (result === "win") {
             analytics('challenge_won', { mode: updatedChallenge.mode, opponent: updatedChallenge.opponentId });

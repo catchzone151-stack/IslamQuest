@@ -46,12 +46,17 @@ export default function SignUpPage() {
 
     const timer = setTimeout(async () => {
       setHandleStatus({ checking: true, available: null, error: null });
-      const result = await checkHandleAvailable(handle);
-      setHandleStatus({
-        checking: false,
-        available: result.available,
-        error: result.error,
-      });
+      try {
+        const result = await checkHandleAvailable(handle);
+        setHandleStatus({
+          checking: false,
+          available: result.available,
+          error: result.error,
+        });
+      } catch (err) {
+        console.error("[Async Error]", err);
+        setHandleStatus({ checking: false, available: null, error: null });
+      }
     }, 500);
 
     return () => clearTimeout(timer);

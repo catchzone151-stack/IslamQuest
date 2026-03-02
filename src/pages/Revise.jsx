@@ -209,7 +209,7 @@ export default function Revise() {
           if (userId) {
             logXpEvent(userId, totalXP, "revision");
           }
-        })();
+        })().catch(err => console.error("[Async Error]", err));
       }
     } else if (mode === "smart") {
       const xp = 25;
@@ -230,7 +230,7 @@ export default function Revise() {
         if (userId) {
           logXpEvent(userId, xp, "revision");
         }
-      })();
+      })().catch(err => console.error("[Async Error]", err));
     }
 
     // 🌙 Record streak activity when full revise session completes

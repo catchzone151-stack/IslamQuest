@@ -246,7 +246,7 @@ export const useDailyQuestStore = create((set, get) => ({
       if (userId) {
         logXpEvent(userId, xp, "daily_quest");
       }
-    })();
+    })().catch(err => console.error("[Async Error]", err));
     
     console.log("[IQ_STREAK_TRACE] MEANINGFUL_ACTIVITY_DETECTED", { source: "daily_quest_complete" });
     useProgressStore.getState().markDayComplete();

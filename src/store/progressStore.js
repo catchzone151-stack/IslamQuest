@@ -581,7 +581,7 @@ export const useProgressStore = create((set, get) => ({
       if (userId) {
         logStreakEvent(userId, true);
       }
-    })();
+    })().catch(err => console.error("[Async Error]", err));
     
     return { success: true };
   },
@@ -712,7 +712,7 @@ export const useProgressStore = create((set, get) => ({
       if (userId) {
         logStreakEvent(userId, true);
       }
-    })();
+    })().catch(err => console.error("[Async Error]", err));
   },
 
   addCoins: (amount) => {
@@ -795,7 +795,7 @@ export const useProgressStore = create((set, get) => ({
           if (userId) {
             logXpEvent(userId, xp, "quiz");
           }
-        })();
+        })().catch(err => console.error("[Async Error]", err));
       }
 
       const path = get().paths.find((x) => x.id === pathId);

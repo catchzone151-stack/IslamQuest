@@ -315,7 +315,7 @@ export const useChallengeStore = create((set, get) => ({
       if (userId) {
         logChallengeRequest(userId, modeConfig.id, friendId);
       }
-    })();
+    })().catch(err => console.error("[Async Error]", err));
     
     return { success: true, challenge };
   },
@@ -406,7 +406,7 @@ export const useChallengeStore = create((set, get) => ({
         const modeId = typeof challenge.mode === 'string' ? challenge.mode : modeConf?.id;
         logChallengeResult(userId, modeId, result, xpGained, challenge.opponentId);
       }
-    })();
+    })().catch(err => console.error("[Async Error]", err));
     
     return { success: true, challenge: updatedChallenge };
   },
@@ -788,7 +788,7 @@ export const useChallengeStore = create((set, get) => ({
         if (userId) {
           logXpEvent(userId, rewards.xp, "challenge");
         }
-      })();
+      })().catch(err => console.error("[Async Error]", err));
     }
     
     return rewards;
