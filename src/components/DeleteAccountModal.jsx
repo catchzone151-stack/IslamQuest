@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Trash2, AlertTriangle } from "lucide-react";
 
-export default function DeleteAccountModal({ isOpen, onClose, onConfirm, isDeleting = false }) {
+export default function DeleteAccountModal({ isOpen, onClose, onConfirm, isDeleting = false, errorMessage = "" }) {
   if (!isOpen) return null;
 
   return (
@@ -107,6 +107,24 @@ export default function DeleteAccountModal({ isOpen, onClose, onConfirm, isDelet
               This cannot be undone.
             </p>
           </div>
+
+          {errorMessage ? (
+            <div
+              style={{
+                background: "rgba(239, 68, 68, 0.1)",
+                border: "1px solid rgba(239, 68, 68, 0.35)",
+                borderRadius: "10px",
+                padding: "10px 14px",
+                marginBottom: "16px",
+                color: "#fca5a5",
+                fontSize: "0.82rem",
+                lineHeight: "1.4",
+                textAlign: "left",
+              }}
+            >
+              {errorMessage}
+            </div>
+          ) : null}
 
           <div
             style={{

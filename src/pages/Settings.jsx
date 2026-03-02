@@ -16,6 +16,7 @@ export default function Settings() {
   const { resetUserData, setOnboarded } = useUserStore();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
 
   const handleOpenNotificationSettings = async () => {
     const platform = Capacitor.getPlatform();
@@ -59,34 +60,84 @@ export default function Settings() {
 
   const handleDeleteAccount = async () => {
     setIsDeleting(true);
+    setDeleteError("");
 
     try {
-      console.log("🗑️ Deleting account via RPC...");
-
-      const { data, error } = await supabase.rpc("delete_my_account");
-
-      if (error) {
-        console.error("[DeleteAccount] RPC error:", error);
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        setDeleteError("Not signed in. Please log in and try again.");
         setIsDeleting(false);
         return;
       }
+      const uid = user.id;
 
-      if (!data?.success) {
-        console.error("[DeleteAccount] Deletion failed:", data?.error);
-        setIsDeleting(false);
-        return;
+      // ── Path A: server-side RPC (preferred, handles auth.users deletion too) ──
+      console.log("🗑️ Trying RPC delete_my_account...");
+      const { data: rpcData, error: rpcError } = await supabase.rpc("delete_my_account");
+      console.log("[DeleteAccount] RPC response:", { data: rpcData, error: rpcError });
+
+      const rpcOk = !rpcError && rpcData?.success === true;
+
+      if (!rpcOk) {
+        // ── Path B: client-side fallback (no SQL migration required) ─────────
+        console.warn("[DeleteAccount] RPC unavailable, using client-side fallback:", rpcError?.message || rpcData?.error || "null response");
+
+        const del = (table, col = "user_id") =>
+          supabase.from(table).delete().eq(col, uid);
+
+        const delOr = (table, colA, colB) =>
+          supabase.from(table).delete().or(`${colA}.eq.${uid},${colB}.eq.${uid}`);
+
+        // Leaf tables
+        await del("revision_items");
+        await del("event_entries");
+        await del("push_tokens");
+        await del("daily_quests");
+        await del("lesson_progress");
+        await del("challenge_logs");
+        await del("xp_logs");
+        await del("streak_logs");
+        await del("leaderboard_snapshots");
+        await del("purchases");
+        await del("analytics_events");
+
+        // Social
+        await delOr("friend_challenges", "challenger_id", "challenged_id");
+        await delOr("friend_requests", "from_user", "to_user");
+        await delOr("friendships", "user1_id", "user2_id");
+
+        // Family
+        const { data: ownedGroups } = await supabase
+          .from("family_groups").select("id").eq("owner_id", uid);
+        if (ownedGroups?.length) {
+          for (const g of ownedGroups) {
+            await supabase.from("family_members").delete().eq("family_group_id", g.id);
+          }
+          await supabase.from("family_groups").delete().eq("owner_id", uid);
+        }
+        await del("family_members");
+
+        // Profile (auth.users stays but without profile the account is unusable)
+        const { error: profileErr } = await supabase.from("profiles").delete().eq("id", uid);
+        if (profileErr) {
+          console.warn("[DeleteAccount] Profile delete error:", profileErr.message);
+          setDeleteError("Could not delete account data. Please contact support.");
+          setIsDeleting(false);
+          return;
+        }
+
+        console.log("✅ Client-side delete complete (auth.users record remains but account is gutted)");
+      } else {
+        console.log("✅ RPC delete complete");
       }
 
-      console.log("✅ Account deleted");
-
-      logEvent(ANALYTICS_EVENTS.ACCOUNT_DELETED, {});
+      // ── Cleanup & redirect ────────────────────────────────────────────────
+      try { logEvent(ANALYTICS_EVENTS.ACCOUNT_DELETED, {}); } catch (_) {}
 
       resetUserData();
       resetAllProgress();
       setOnboarded(false);
-
       localStorage.clear();
-
       await supabase.auth.signOut();
 
       setShowDeleteModal(false);
@@ -94,6 +145,7 @@ export default function Settings() {
 
     } catch (err) {
       console.error("[DeleteAccount] Unexpected error:", err);
+      setDeleteError("Something went wrong. Please try again.");
       setIsDeleting(false);
     }
   };
@@ -335,9 +387,10 @@ export default function Settings() {
 
       <DeleteAccountModal
         isOpen={showDeleteModal}
-        onClose={() => setShowDeleteModal(false)}
+        onClose={() => { setShowDeleteModal(false); setDeleteError(""); }}
         onConfirm={handleDeleteAccount}
         isDeleting={isDeleting}
+        errorMessage={deleteError}
       />
     </ScreenContainer>
   );
