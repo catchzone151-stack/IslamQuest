@@ -165,10 +165,20 @@ export default function CheckEmailScreen() {
     const metaAvatarIndex = user.user_metadata?.desired_avatar_index;
     const storedAvatarKey = localStorage.getItem("iq_avatar");
 
+    // Metadata is the authoritative source (stored on Supabase server, survives browser changes).
+    // localStorage is the fallback (only available if user confirmed in the same browser).
+    const metaAvatarKey = typeof metaAvatarIndex === "number" && metaAvatarIndex > 0
+      ? avatarIndexToKey(metaAvatarIndex)
+      : null;
+    const desiredAvatarKey = metaAvatarKey
+      || (storedAvatarKey && storedAvatarKey.startsWith("avatar_") ? storedAvatarKey : null);
+
     const isGenericUsername = !displayName || /^User($|[_\s\d])/i.test(displayName);
     const needsNameUpdate = isGenericUsername && !!metaName;
     const needsHandleUpdate = !handle && !!metaHandle;
-    const needsAvatarUpdate = !!(storedAvatarKey && storedAvatarKey.startsWith("avatar_") && storedAvatarKey !== avatarKey);
+    // Only recover avatar if the DB has the default placeholder (trigger didn't set it from metadata)
+    const profileIsDefault = avatarKey === "avatar_1" || avatarKey === "avatar_man_lantern";
+    const needsAvatarUpdate = !!(profileIsDefault && desiredAvatarKey && desiredAvatarKey !== avatarKey);
 
     if (needsNameUpdate || needsHandleUpdate || needsAvatarUpdate) {
       const updatePayload = {};
@@ -177,7 +187,7 @@ export default function CheckEmailScreen() {
       if (needsAvatarUpdate) {
         updatePayload.avatar = typeof metaAvatarIndex === "number" && metaAvatarIndex > 0
           ? metaAvatarIndex
-          : avatarKeyToIndex(storedAvatarKey);
+          : avatarKeyToIndex(desiredAvatarKey);
       }
       console.log("[CheckEmail] Recovering profile fields from metadata:", updatePayload);
       const { error: updateError } = await supabase
@@ -187,7 +197,7 @@ export default function CheckEmailScreen() {
       if (!updateError) {
         if (needsNameUpdate) { displayName = metaName; console.log("[CheckEmail] Username recovered:", metaName); }
         if (needsHandleUpdate) { handle = metaHandle; console.log("[CheckEmail] Handle recovered:", metaHandle); }
-        if (needsAvatarUpdate) { avatarKey = storedAvatarKey; console.log("[CheckEmail] Avatar recovered:", storedAvatarKey); }
+        if (needsAvatarUpdate) { avatarKey = desiredAvatarKey; console.log("[CheckEmail] Avatar recovered:", desiredAvatarKey); }
       } else {
         console.error("[CheckEmail] Profile field recovery failed:", updateError);
       }

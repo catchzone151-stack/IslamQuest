@@ -174,22 +174,30 @@ export const useUserStore = create((set, get) => ({
         // Catches DB-trigger auto-generated patterns: "User_XXXXXXXX", "User1234", "User", etc.
         const missingUsername = !fullProfile.username || /^User($|[_\s\d])/i.test(fullProfile.username);
         const missingHandle = !fullProfile.handle || fullProfile.handle.trim().length === 0;
+        const metaName = user.user_metadata?.desired_username || localStorage.getItem("iq_name");
+        const metaHandle = user.user_metadata?.desired_handle || localStorage.getItem("iq_handle");
+        const metaAvatarIndex = user.user_metadata?.desired_avatar_index;
         const storedAvatarKey = localStorage.getItem("iq_avatar");
+        // Metadata is authoritative (server-stored, survives device/browser changes)
+        const metaAvatarKey = typeof metaAvatarIndex === "number" && metaAvatarIndex > 0
+          ? avatarIndexToKey(metaAvatarIndex) : null;
+        const desiredAvatarKey = metaAvatarKey
+          || (storedAvatarKey && storedAvatarKey.startsWith("avatar_") ? storedAvatarKey : null);
         // Convert DB integer to string key for comparison
         const profileAvatarKey = toAvatarKey(fullProfile.avatar) || DEFAULT_AVATAR;
-        const needsAvatarUpdate = !!(storedAvatarKey && storedAvatarKey.startsWith("avatar_") && storedAvatarKey !== profileAvatarKey);
+        // Only recover if the DB still has a default/placeholder avatar (i.e. trigger failed to set it).
+        // Never override if the user has explicitly changed their avatar to something non-default.
+        const profileIsDefault = profileAvatarKey === "avatar_1" || profileAvatarKey === "avatar_man_lantern";
+        const needsAvatarUpdate = !!(profileIsDefault && desiredAvatarKey && desiredAvatarKey !== profileAvatarKey);
 
         if (missingUsername || missingHandle || needsAvatarUpdate) {
-          const metaName = user.user_metadata?.desired_username || localStorage.getItem("iq_name");
-          const metaHandle = user.user_metadata?.desired_handle || localStorage.getItem("iq_handle");
-          const metaAvatarIndex = user.user_metadata?.desired_avatar_index;
           const updatePayload = {};
           if (missingUsername && metaName) updatePayload.username = metaName;
           if (missingHandle && metaHandle) updatePayload.handle = metaHandle;
           if (needsAvatarUpdate) {
             updatePayload.avatar = typeof metaAvatarIndex === "number" && metaAvatarIndex > 0
               ? metaAvatarIndex
-              : avatarKeyToIndex(storedAvatarKey);
+              : avatarKeyToIndex(desiredAvatarKey);
           }
 
           if (Object.keys(updatePayload).length > 0) {
@@ -201,7 +209,7 @@ export const useUserStore = create((set, get) => ({
             if (!recoverError) {
               if (updatePayload.username) fullProfile.username = updatePayload.username;
               if (updatePayload.handle) fullProfile.handle = updatePayload.handle;
-              if (updatePayload.avatar) fullProfile.avatar = storedAvatarKey;
+              if (updatePayload.avatar) fullProfile.avatar = desiredAvatarKey;
               console.log("[UserStore] Profile fields recovered successfully");
             } else {
               console.error("[UserStore] Profile recovery failed:", recoverError);

@@ -145,10 +145,17 @@ export default function LoginPage() {
       const metaHandle = data.user.user_metadata?.desired_handle || localStorage.getItem("iq_handle");
       const metaAvatarIndex = data.user.user_metadata?.desired_avatar_index;
       const storedAvatarKey = localStorage.getItem("iq_avatar");
+      // Metadata is authoritative (server-stored, survives device/browser changes)
+      const metaAvatarKey = typeof metaAvatarIndex === "number" && metaAvatarIndex > 0
+        ? avatarIndexToKey(metaAvatarIndex) : null;
+      const desiredAvatarKey = metaAvatarKey
+        || (storedAvatarKey && storedAvatarKey.startsWith("avatar_") ? storedAvatarKey : null);
       const isGenericUsername = !displayName || /^User($|[_\s\d])/i.test(displayName);
       const needsNameUpdate = isGenericUsername && !!metaName;
       const needsHandleUpdate = !handle && !!metaHandle;
-      const needsAvatarUpdate = !!(storedAvatarKey && storedAvatarKey.startsWith("avatar_") && storedAvatarKey !== avatarKey);
+      // Only recover avatar if the DB has the default placeholder (trigger didn't set it from metadata)
+      const profileIsDefault = avatarKey === "avatar_1" || avatarKey === "avatar_man_lantern";
+      const needsAvatarUpdate = !!(profileIsDefault && desiredAvatarKey && desiredAvatarKey !== avatarKey);
 
       if (needsNameUpdate || needsHandleUpdate || needsAvatarUpdate) {
         const updatePayload = {};
@@ -157,7 +164,7 @@ export default function LoginPage() {
         if (needsAvatarUpdate) {
           updatePayload.avatar = typeof metaAvatarIndex === "number" && metaAvatarIndex > 0
             ? metaAvatarIndex
-            : avatarKeyToIndex(storedAvatarKey);
+            : avatarKeyToIndex(desiredAvatarKey);
         }
         console.log("[LoginPage] Recovering profile fields from metadata:", updatePayload);
         const { error: updateError } = await supabase
@@ -167,7 +174,7 @@ export default function LoginPage() {
         if (!updateError) {
           if (needsNameUpdate) { displayName = metaName; console.log("[LoginPage] Username recovered:", metaName); }
           if (needsHandleUpdate) { handle = metaHandle; console.log("[LoginPage] Handle recovered:", metaHandle); }
-          if (needsAvatarUpdate) { avatarKey = storedAvatarKey; console.log("[LoginPage] Avatar recovered:", storedAvatarKey); }
+          if (needsAvatarUpdate) { avatarKey = desiredAvatarKey; console.log("[LoginPage] Avatar recovered:", desiredAvatarKey); }
         } else {
           console.error("[LoginPage] Profile field recovery failed:", updateError);
         }
