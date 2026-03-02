@@ -182,6 +182,11 @@ export default function SignUpPage() {
         setStoreHandle(trimmedHandle);
         setStoreAvatar(avatarKey);
 
+        // Mark as onboarded immediately so the home route shows on navigate("/")
+        // even though Supabase hasn't issued a session yet (email confirmation pending).
+        localStorage.setItem("iq_profile_complete", "true");
+        localStorage.removeItem("iq_onboarding_step");
+
         useUserStore.setState({
           user: data.user,
           userId: data.user.id,
@@ -190,6 +195,9 @@ export default function SignUpPage() {
           avatar: avatarKey,
           loading: false,
           isHydrated: true,
+          hasOnboarded: true,
+          profileReady: true,
+          emailVerified: !!data.user?.email_confirmed_at,
         });
 
         // If we have a session (auto-confirm on), write the correct values to the
