@@ -9,16 +9,17 @@ export function ZaydLevelUpPopup({ levelUpData, onClose }) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    // Trigger animation
-    setTimeout(() => setIsVisible(true), 100);
+    const visTimer = setTimeout(() => setIsVisible(true), 100);
 
-    // Auto-close after 4 seconds
     const timer = setTimeout(() => {
       setIsVisible(false);
-      setTimeout(onClose, 300); // Wait for fade-out animation
+      setTimeout(onClose, 300);
     }, 4000);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(visTimer);
+      clearTimeout(timer);
+    };
   }, [onClose]);
 
   if (!levelUpData) return null;

@@ -7,6 +7,14 @@ import { useFriendChallengesStore } from "./friendChallengesStore";
 import { useUserStore } from "./useUserStore";
 import { useModalStore, MODAL_TYPES } from "./modalStore";
 
+// Debounce timer for realtime-triggered loadAll calls — prevents fetch storms
+// when multiple postgres_changes events fire in rapid succession
+let _realtimeLoadAllTimer = null;
+const debouncedLoadAll = (get) => {
+  clearTimeout(_realtimeLoadAllTimer);
+  _realtimeLoadAllTimer = setTimeout(() => get().loadAll(), 300);
+};
+
 const requireVerified = () => {
   const { user } = useUserStore.getState();
   const isVerified = !!user?.email_confirmed_at;
@@ -66,7 +74,7 @@ export const useFriendsStore = create((set, get) => ({
           table: "friends",
           filter: `user_id=eq.${userId}`,
         },
-        () => get().loadAll()
+        () => debouncedLoadAll(get)
       )
       .on(
         "postgres_changes",
@@ -76,7 +84,7 @@ export const useFriendsStore = create((set, get) => ({
           table: "friends",
           filter: `friend_id=eq.${userId}`,
         },
-        () => get().loadAll()
+        () => debouncedLoadAll(get)
       )
       .subscribe();
 

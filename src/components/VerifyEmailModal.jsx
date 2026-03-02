@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { useModalStore } from "../store/modalStore";
 import { useUserStore } from "../store/useUserStore";
@@ -31,6 +31,16 @@ export default function VerifyEmailModal({ reason }) {
   const [resendState, setResendState] = useState("idle");
   const [checkState, setCheckState] = useState("idle");
 
+  // Refs to track pending timers so they can be cancelled if modal unmounts early
+  const hideTimer = useRef(null);
+  const resetTimer = useRef(null);
+  useEffect(() => {
+    return () => {
+      clearTimeout(hideTimer.current);
+      clearTimeout(resetTimer.current);
+    };
+  }, []);
+
   const email = user?.email || localStorage.getItem("iq_email") || "";
 
   const handleResend = async () => {
@@ -54,10 +64,10 @@ export default function VerifyEmailModal({ reason }) {
       if (confirmed) {
         useUserStore.setState({ emailVerified: true });
         setCheckState("verified");
-        setTimeout(hideModal, 800);
+        hideTimer.current = setTimeout(hideModal, 800);
       } else {
         setCheckState("not_yet");
-        setTimeout(() => setCheckState("idle"), 2500);
+        resetTimer.current = setTimeout(() => setCheckState("idle"), 2500);
       }
     } catch {
       setCheckState("idle");

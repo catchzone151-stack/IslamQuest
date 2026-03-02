@@ -7,8 +7,8 @@ export default function CountdownModal({ onComplete }) {
 
   useEffect(() => {
     if (count === 0) {
-      setTimeout(onComplete, 500);
-      return;
+      const t = setTimeout(onComplete, 500);
+      return () => clearTimeout(t);
     }
 
     const timer = setTimeout(() => {
