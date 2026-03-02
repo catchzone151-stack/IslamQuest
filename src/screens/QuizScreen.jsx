@@ -116,7 +116,7 @@ const QuizScreen = () => {
       } else {
         setCurrentQ((prev) => prev + 1);
         setSelected(null);
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        document.querySelector(".app-root-container")?.scrollTo({ top: 0, behavior: "smooth" });
       }
     }, 900);
   };
@@ -177,7 +177,7 @@ const QuizScreen = () => {
     setIsQuizDone(false);
     setResults(null);
     setMascotMood("start");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    document.querySelector(".app-root-container")?.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleContinue = () => {
