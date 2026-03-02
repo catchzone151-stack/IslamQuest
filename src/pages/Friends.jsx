@@ -374,7 +374,10 @@ export default function Friends() {
         >
           <TabButton
             active={activeTab === "friends"}
-            onClick={() => setActiveTab("friends")}
+            onClick={() => {
+              if (!emailVerified) { showModal(MODAL_TYPES.VERIFY_EMAIL); return; }
+              setActiveTab("friends");
+            }}
             icon={<Users size={18} />}
             label="Friends"
             count={friends.length}
@@ -392,7 +395,10 @@ export default function Friends() {
           />
           <TabButton
             active={activeTab === "requests"}
-            onClick={() => setActiveTab("requests")}
+            onClick={() => {
+              if (!emailVerified) { showModal(MODAL_TYPES.VERIFY_EMAIL); return; }
+              setActiveTab("requests");
+            }}
             icon={<Send size={18} />}
             label="Requests"
             count={totalRequests}
