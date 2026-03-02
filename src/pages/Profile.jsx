@@ -26,7 +26,6 @@ export default function Profile() {
     shieldCount,
     vibrationEnabled,
     setVibrationEnabled,
-    purchaseIndividual,
   } = useProgressStore();
 
   // Isolated selector — re-renders only when premium changes; bypasses any stale closure
