@@ -551,7 +551,7 @@ export default function Pathway() {
                   </div>
                 )}
 
-                {isActive && !lesson.isLocked && (
+                {isActive && !lesson.isLocked && !lesson.isCompleted && (
                   <div style={{ fontSize: "0.7rem", color: "#ffd85a" }}>
                     This is your next step ⭐
                   </div>
