@@ -3,10 +3,9 @@ import { getDeviceId, hashDeviceId } from "./deviceService";
 import { validatePremiumStatus, registerDevice } from "./purchaseVerificationService";
 
 // ================================================================
-// TESTING MODE: Premium status is determined ONLY by profiles.premium
-// This bypasses all IAP verification, device binding, and Edge Functions
-// When real Play Store / App Store verification is ready, restore the
-// original getPremiumStatus and syncPremiumOnAppOpen functions below
+// Premium status derives from profiles.premium (Supabase) only.
+// Local cache is used as offline fallback only — it cannot grant
+// premium that the server has not already confirmed.
 // ================================================================
 
 const PREMIUM_CACHE_KEY = "iq_premium_cache";
@@ -49,13 +48,14 @@ export const clearPremiumCache = () => {
   localStorage.removeItem(PREMIUM_CACHE_KEY);
 };
 
-// TESTING MODE: Simplified premium check using only profiles.premium boolean
-export const getPremiumStatus = async (forceRefresh = false) => {
+// Always fetches from Supabase when online. Cache is only used when
+// Supabase is unreachable (offline or network error). Cache can never
+// upgrade false → true: if the server says false, false is written to cache.
+export const getPremiumStatus = async () => {
   const cache = getPremiumCache();
-  
-  // Offline fallback - use cache if available
+
+  // Offline: use cache as fallback (cannot verify without connectivity)
   if (!navigator.onLine) {
-    console.log("[PremiumState] Offline - using cached status");
     if (cache) {
       return {
         premium: cache.premium,
@@ -65,36 +65,25 @@ export const getPremiumStatus = async (forceRefresh = false) => {
     }
     return { premium: false, planType: null, source: "offline_no_cache" };
   }
-  
-  // Use cache if valid and not forcing refresh
-  if (!forceRefresh && cache && !cache.expired) {
-    console.log("[PremiumState] Using valid cache");
-    return {
-      premium: cache.premium,
-      planType: cache.planType,
-      source: "cache"
-    };
-  }
-  
+
+  // Online: always fetch from Supabase — cache is never used as primary source
   try {
     const { data: userData } = await supabase.auth.getUser();
     const userId = userData?.user?.id;
-    
+
     if (!userId) {
-      console.log("[PremiumState] No user logged in");
       return { premium: false, planType: null, source: "no_user" };
     }
-    
-    // TESTING MODE: Simply fetch profiles.premium boolean
-    console.log("[PremiumState] TESTING MODE - fetching profiles.premium for user:", userId);
+
     const { data, error } = await supabase
       .from("profiles")
       .select("premium")
       .eq("user_id", userId)
       .single();
-    
+
     if (error) {
-      console.error("[PremiumState] Error fetching premium status:", error);
+      console.error("[PremiumState] Supabase fetch error:", error);
+      // Network/server error — fall back to cache but cannot upgrade false→true
       if (cache) {
         return {
           premium: cache.premium,
@@ -104,30 +93,25 @@ export const getPremiumStatus = async (forceRefresh = false) => {
       }
       return { premium: false, planType: null, source: "error" };
     }
-    
-    const isPremium = data?.premium || false;
-    console.log("[PremiumState] TESTING MODE - profiles.premium =", isPremium);
-    
-    // Cache the result
+
+    const isPremium = data?.premium === true;
+    // Write server truth to cache (overwrites any fake client-side value)
     setPremiumCache(isPremium, null, null);
-    
+
     return {
       premium: isPremium,
       planType: null,
       source: "profiles_table"
     };
   } catch (error) {
-    console.error("[PremiumState] Error in getPremiumStatus:", error);
-    
+    console.error("[PremiumState] getPremiumStatus error:", error);
     if (cache) {
-      console.log("[PremiumState] Using stale cache as fallback");
       return {
         premium: cache.premium,
         planType: cache.planType,
         source: "stale_cache"
       };
     }
-    
     return { premium: false, planType: null, source: "error" };
   }
 };
@@ -161,17 +145,9 @@ export const initializeDeviceBinding = async () => {
   }
 };
 
-// TESTING MODE: Simplified sync - just fetch profiles.premium, skip device binding
 export const syncPremiumOnAppOpen = async () => {
   try {
-    // TESTING MODE: Skip device binding, just get premium status from profiles table
-    const status = await getPremiumStatus(true);
-    
-    console.log("[PremiumState] TESTING MODE - App open sync complete:", {
-      premium: status.premium,
-      source: status.source
-    });
-    
+    const status = await getPremiumStatus();
     return status;
   } catch (error) {
     console.error("[PremiumState] App open sync error:", error);

@@ -217,19 +217,6 @@ export const useProgressStore = create((set, get) => ({
       delete savedData.premiumActivatedAt;
       delete savedData._premiumMigrationV1;
 
-      // 💳 IAP entitlement can also grant premium (native purchases)
-      try {
-        const iapState = localStorage.getItem("iq_iap_premium_entitlement");
-        if (iapState) {
-          const parsed = JSON.parse(iapState);
-          if (parsed?.isPremium === true) {
-            savedData.premium = true;
-          }
-        }
-      } catch (e) {
-        // Ignore parse errors
-      }
-
       console.log("[PREMIUM_SOURCE]", { value: savedData.premium, source: "hydrate / loadProgress" });
       
       if (!savedData.lastStreakDate && savedData.lastCompletedActivityDate) {
@@ -1247,17 +1234,8 @@ export const useProgressStore = create((set, get) => ({
     
     const newLevel = getCurrentLevel(data.xp || 0);
 
-    // PREMIUM: cloud false must never revoke a locally-granted premium.
-    // IAP entitlement or existing store value wins over cloud false.
-    let finalPremium = data.premium ?? get().premium;
-    try {
-      const iapState = localStorage.getItem("iq_iap_premium_entitlement");
-      if (iapState && JSON.parse(iapState)?.isPremium === true) {
-        finalPremium = true;
-      }
-    } catch (e) {
-      // Ignore parse errors
-    }
+    // PREMIUM: profiles.premium is the single source of truth. Cloud value wins.
+    const finalPremium = data.premium ?? get().premium;
     
     const localStreakTs = get()._localStreakTs || 0;
     const cloudStreakDate = toISODateStr(data.last_completed_activity_date);
@@ -1443,15 +1421,8 @@ export const useProgressStore = create((set, get) => ({
       // Timestamp guard — cloud must be newer for a full restore
       const shouldOverwriteLocal = cloudTs > localTs;
 
-      // PREMIUM: resolve the authoritative cloud value before the timestamp gate.
-      // IAP entitlement can only upgrade, never revoke.
-      let cloudPremium = data.premium ?? false;
-      try {
-        const iapState = localStorage.getItem("iq_iap_premium_entitlement");
-        if (iapState && JSON.parse(iapState)?.isPremium === true) {
-          cloudPremium = true;
-        }
-      } catch (e) { /* ignore */ }
+      // PREMIUM: profiles.premium is the single source of truth.
+      const cloudPremium = data.premium ?? false;
 
       // PREMIUM is timestamp-immune: if the cloud value differs from local, apply it now.
       if (cloudPremium !== get().premium) {
