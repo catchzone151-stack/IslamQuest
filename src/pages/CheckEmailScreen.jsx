@@ -154,13 +154,31 @@ export default function CheckEmailScreen() {
     }
 
     const displayName = profile.username || "Student";
-    const handle = profile.handle || null;
+    let handle = profile.handle || null;
     const avatarKey = typeof profile.avatar === "number"
       ? avatarIndexToKey(profile.avatar)
       : profile.avatar || "avatar_man_lantern";
 
     if (!handle) {
-      console.log("[CheckEmail] Profile missing handle — sending to handle screen");
+      // Profile exists but has no handle — try to recover from sign-up metadata
+      const metaHandle = user.user_metadata?.desired_handle || localStorage.getItem("iq_handle");
+      if (metaHandle) {
+        console.log("[CheckEmail] Recovering handle from metadata:", metaHandle);
+        const { error: updateError } = await supabase
+          .from("profiles")
+          .update({ handle: metaHandle })
+          .eq("user_id", user.id);
+        if (!updateError) {
+          console.log("[CheckEmail] Handle recovered and saved:", metaHandle);
+          handle = metaHandle;
+        } else {
+          console.error("[CheckEmail] Handle recovery update failed:", updateError);
+        }
+      }
+    }
+
+    if (!handle) {
+      console.log("[CheckEmail] Profile still missing handle — sending to handle screen");
       localStorage.setItem("iq_onboarding_step", "handle");
       isProcessingLogin = false;
       navigate("/onboarding/handle");

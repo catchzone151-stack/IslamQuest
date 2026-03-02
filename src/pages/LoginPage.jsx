@@ -133,10 +133,28 @@ export default function LoginPage() {
       // Use preloaded profile if available, otherwise use the polled profile
       const finalProfile = preloadResult?.profile || profile;
       const displayName = finalProfile.username || "Student";
-      const handle = finalProfile.handle || null;
+      let handle = finalProfile.handle || null;
       const avatarKey = typeof finalProfile.avatar === "number"
         ? avatarIndexToKey(finalProfile.avatar)
         : finalProfile.avatar || "avatar_man_lantern";
+
+      if (!handle) {
+        // Try to recover handle from user metadata or localStorage before sending to handle screen
+        const metaHandle = data.user.user_metadata?.desired_handle || localStorage.getItem("iq_handle");
+        if (metaHandle) {
+          console.log("[LoginPage] Recovering handle from metadata:", metaHandle);
+          const { error: updateError } = await supabase
+            .from("profiles")
+            .update({ handle: metaHandle })
+            .eq("user_id", data.user.id);
+          if (!updateError) {
+            console.log("[LoginPage] Handle recovered and saved:", metaHandle);
+            handle = metaHandle;
+          } else {
+            console.error("[LoginPage] Handle recovery update failed:", updateError);
+          }
+        }
+      }
 
       if (!handle) {
         console.log("[LoginPage] Profile missing handle — sending to handle screen");
