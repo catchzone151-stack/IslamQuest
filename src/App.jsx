@@ -233,45 +233,28 @@ export default function App() {
   
   // Force re-render workaround for Zustand subscription issues in React StrictMode
   const [renderKey, setRenderKey] = React.useState(0);
-  const [forceReady, setForceReady] = React.useState(false);
   const [signupToast, setSignupToast] = React.useState(false);
-  
+
   React.useEffect(() => {
-    // Subscribe to store changes and force re-render when hydration completes
+    // Subscribe to store changes and force re-render when hydration completes.
+    // init() guarantees isHydrated: true in all code paths (including its own
+    // internal 10s timeout), so no external timeout is needed here.
     const unsubscribe = useUserStore.subscribe(
       (state) => {
         if (state.isHydrated && !isHydrated) {
-          console.log("[App] Store hydrated, triggering re-render");
           setRenderKey(prev => prev + 1);
         }
       }
     );
-    
-    // Also check immediately in case we missed the update
+
+    // Also check immediately in case the update was already processed
     const currentState = useUserStore.getState();
     if (currentState.isHydrated && !isHydrated) {
-      console.log("[App] Store already hydrated, triggering re-render");
       setRenderKey(prev => prev + 1);
     }
-    
-    // Fallback: Force ready after 5 seconds to prevent infinite loading
-    const timeout = setTimeout(() => {
-      const state = useUserStore.getState();
-      if (!state.isHydrated) {
-        console.warn("[App] Timeout: Forcing app ready after 5 seconds");
-        useUserStore.setState({ 
-          isHydrated: true, 
-          loading: false,
-          hasOnboarded: false,
-          profileReady: false,
-        });
-        setForceReady(true);
-      }
-    }, 5000);
-    
+
     return () => {
       unsubscribe();
-      clearTimeout(timeout);
     };
   }, [isHydrated]);
   
@@ -287,7 +270,7 @@ export default function App() {
 
   // Get the most current state directly from store to avoid stale closure issues
   const storeState = useUserStore.getState();
-  const actualIsHydrated = isHydrated || storeState.isHydrated || forceReady;
+  const actualIsHydrated = isHydrated || storeState.isHydrated;
   const actualHasOnboarded = storeState.hasOnboarded;
 
   // 🔄 VERSIONED STORAGE RESET: Clear all legacy data on first production load
