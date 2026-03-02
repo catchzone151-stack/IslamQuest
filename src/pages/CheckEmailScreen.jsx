@@ -165,9 +165,10 @@ export default function CheckEmailScreen() {
     const metaAvatarIndex = user.user_metadata?.desired_avatar_index;
     const storedAvatarKey = localStorage.getItem("iq_avatar");
 
-    const needsNameUpdate = !displayName && metaName;
-    const needsHandleUpdate = !handle && metaHandle;
-    const needsAvatarUpdate = !!(storedAvatarKey && storedAvatarKey !== avatarKey);
+    const isGenericUsername = !displayName || /^User($|[_\s\d])/i.test(displayName);
+    const needsNameUpdate = isGenericUsername && !!metaName;
+    const needsHandleUpdate = !handle && !!metaHandle;
+    const needsAvatarUpdate = !!(storedAvatarKey && storedAvatarKey.startsWith("avatar_") && storedAvatarKey !== avatarKey);
 
     if (needsNameUpdate || needsHandleUpdate || needsAvatarUpdate) {
       const updatePayload = {};

@@ -18,7 +18,20 @@ import {
   saveCloudProfile, 
   isProfileComplete 
 } from "../lib/userProfile";
-import { avatarKeyToIndex } from "../utils/avatarUtils";
+import { avatarKeyToIndex, avatarIndexToKey } from "../utils/avatarUtils";
+
+// Safely convert any avatar value (DB integer, numeric string, or string key) to a string key
+function toAvatarKey(val) {
+  if (!val && val !== 0) return null;
+  if (typeof val === "number") return avatarIndexToKey(val) || null;
+  if (typeof val === "string") {
+    if (val.startsWith("avatar_")) return val;
+    const n = parseInt(val, 10);
+    if (!isNaN(n)) return avatarIndexToKey(n) || null;
+    return val;
+  }
+  return null;
+}
 
 // Default avatar for new users
 const DEFAULT_AVATAR = "avatar_man_lantern";
@@ -69,7 +82,7 @@ export const useUserStore = create((set, get) => ({
 
   // Identity fields (synced to cloud via saveProfile)
   name: localStorage.getItem("iq_name") || "",
-  avatar: localStorage.getItem("iq_avatar") || DEFAULT_AVATAR,
+  avatar: toAvatarKey(localStorage.getItem("iq_avatar")) || DEFAULT_AVATAR,
   username: localStorage.getItem("iq_username") || "",
   handle: localStorage.getItem("iq_handle") || "",
 
@@ -162,8 +175,9 @@ export const useUserStore = create((set, get) => ({
         const missingUsername = !fullProfile.username || /^User($|[_\s\d])/i.test(fullProfile.username);
         const missingHandle = !fullProfile.handle || fullProfile.handle.trim().length === 0;
         const storedAvatarKey = localStorage.getItem("iq_avatar");
-        const profileAvatarKey = fullProfile.avatar || "avatar_1";
-        const needsAvatarUpdate = !!(storedAvatarKey && storedAvatarKey !== profileAvatarKey);
+        // Convert DB integer to string key for comparison
+        const profileAvatarKey = toAvatarKey(fullProfile.avatar) || DEFAULT_AVATAR;
+        const needsAvatarUpdate = !!(storedAvatarKey && storedAvatarKey.startsWith("avatar_") && storedAvatarKey !== profileAvatarKey);
 
         if (missingUsername || missingHandle || needsAvatarUpdate) {
           const metaName = user.user_metadata?.desired_username || localStorage.getItem("iq_name");
@@ -209,7 +223,7 @@ export const useUserStore = create((set, get) => ({
           if (fullProfile) {
             localStorage.setItem("iq_username", fullProfile.username || "");
             localStorage.setItem("iq_handle", fullProfile.handle || "");
-            localStorage.setItem("iq_avatar", fullProfile.avatar || DEFAULT_AVATAR);
+            localStorage.setItem("iq_avatar", toAvatarKey(fullProfile.avatar) || DEFAULT_AVATAR);
           }
           console.log("PROFILE COMPLETE → Loading app");
         }
@@ -224,7 +238,7 @@ export const useUserStore = create((set, get) => ({
           // Restore identity from cloud profile
           username: fullProfile?.username || "",
           handle: fullProfile?.handle || "",
-          avatar: fullProfile?.avatar || DEFAULT_AVATAR,
+          avatar: toAvatarKey(fullProfile?.avatar) || DEFAULT_AVATAR,
           name: fullProfile?.username || "",
         });
       };
@@ -416,7 +430,7 @@ export const useUserStore = create((set, get) => ({
         profile,
         username: profile.username || "",
         handle: profile.handle || "",
-        avatar: profile.avatar || DEFAULT_AVATAR,
+        avatar: toAvatarKey(profile.avatar) || DEFAULT_AVATAR,
       });
     }
   },
