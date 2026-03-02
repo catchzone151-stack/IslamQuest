@@ -391,6 +391,7 @@ export const useUserStore = create((set, get) => ({
       set({ 
         hasOnboarded: true, 
         profileReady: true,
+        emailVerified: true,
         profile: fullProfile,
       });
       

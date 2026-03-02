@@ -200,6 +200,7 @@ export default function LoginPage() {
         profile: finalProfile,
         profileReady: true,
         hasOnboarded: true,
+        emailVerified: true,
         loading: false,
         isHydrated: true,
       });

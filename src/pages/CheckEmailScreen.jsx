@@ -232,6 +232,7 @@ export default function CheckEmailScreen() {
     useUserStore.setState({ 
       profileReady: true,
       hasOnboarded: true,
+      emailVerified: true,
     });
 
     // Send welcome email for new sign-ups (fire-and-forget, non-blocking)
