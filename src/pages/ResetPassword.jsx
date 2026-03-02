@@ -34,8 +34,8 @@ export default function ResetPassword() {
       return;
     }
 
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters.");
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters.");
       return;
     }
 
@@ -62,7 +62,7 @@ export default function ResetPassword() {
       setLoading(false);
 
       setTimeout(() => {
-        navigate("/auth");
+        navigate("/login");
       }, 2000);
     } catch (err) {
       setError("Something went wrong. Please try again.");
@@ -122,7 +122,7 @@ export default function ResetPassword() {
           </p>
 
           <button
-            onClick={() => navigate("/auth")}
+            onClick={() => navigate("/login")}
             style={{
               background: "linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%)",
               border: "none",
@@ -363,7 +363,7 @@ export default function ResetPassword() {
         </button>
 
         <button
-          onClick={() => navigate("/auth")}
+          onClick={() => navigate("/login")}
           style={{
             width: "100%",
             background: "transparent",

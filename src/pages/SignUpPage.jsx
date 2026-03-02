@@ -20,8 +20,10 @@ export default function SignUpPage() {
   const [handle, setHandle] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [shake, setShake] = useState(false);
@@ -56,12 +58,13 @@ export default function SignUpPage() {
   }, [handle, checkHandleAvailable]);
 
   const isValidEmail = email.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
-  const isValidPassword = password.length >= 6;
+  const isValidPassword = password.length >= 8;
+  const isPasswordsMatch = confirmPassword.length > 0 && password === confirmPassword;
   const isValidName = displayName.trim().length >= 1;
-  const isValidHandle = handle.trim().length >= 2 && handleStatus.available === true;
+  const isValidHandle = handle.trim().length >= 3 && handleStatus.available === true;
   const hasAvatar = selectedAvatar !== null;
 
-  const isFormValid = isValidName && isValidHandle && isValidEmail && isValidPassword && hasAvatar;
+  const isFormValid = isValidName && isValidHandle && isValidEmail && isValidPassword && isPasswordsMatch && hasAvatar;
 
   const triggerShake = () => {
     setShake(true);
@@ -96,7 +99,13 @@ export default function SignUpPage() {
     }
 
     if (!isValidPassword) {
-      setErrorMsg("Password must be at least 6 characters.");
+      setErrorMsg("Password must be at least 8 characters.");
+      triggerShake();
+      return;
+    }
+
+    if (!isPasswordsMatch) {
+      setErrorMsg(confirmPassword.length === 0 ? "Please confirm your password." : "Passwords do not match.");
       triggerShake();
       return;
     }
@@ -404,7 +413,7 @@ export default function SignUpPage() {
           </div>
         </div>
 
-        <div style={{ marginBottom: "18px" }}>
+        <div style={{ marginBottom: "14px" }}>
           <label style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.8rem", marginBottom: 6, display: "block" }}>
             Password
           </label>
@@ -416,7 +425,7 @@ export default function SignUpPage() {
             />
             <input
               type={showPassword ? "text" : "password"}
-              placeholder="6+ characters"
+              placeholder="8+ characters"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               style={{
@@ -445,6 +454,57 @@ export default function SignUpPage() {
               }}
             >
               {showPassword ? <EyeOff size={18} color="rgba(255,255,255,0.4)" /> : <Eye size={18} color="rgba(255,255,255,0.4)" />}
+            </button>
+          </div>
+        </div>
+
+        <div style={{ marginBottom: "18px" }}>
+          <label style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.8rem", marginBottom: 6, display: "block" }}>
+            Confirm Password
+          </label>
+          <div style={{ position: "relative" }}>
+            <Lock
+              size={18}
+              color="rgba(255,255,255,0.4)"
+              style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)" }}
+            />
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="Re-enter password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              style={{
+                width: "100%",
+                background: "rgba(11, 30, 54, 0.8)",
+                border: `1px solid ${
+                  confirmPassword.length > 0
+                    ? password === confirmPassword
+                      ? "#22c55e"
+                      : "#ef4444"
+                    : "rgba(255,255,255,0.1)"
+                }`,
+                borderRadius: "12px",
+                padding: "12px 42px 12px 42px",
+                color: "#fff",
+                fontSize: "0.95rem",
+                outline: "none",
+              }}
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              style={{
+                position: "absolute",
+                right: "12px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                background: "transparent",
+                border: "none",
+                cursor: "pointer",
+                padding: "4px",
+              }}
+            >
+              {showConfirmPassword ? <EyeOff size={18} color="rgba(255,255,255,0.4)" /> : <Eye size={18} color="rgba(255,255,255,0.4)" />}
             </button>
           </div>
         </div>
