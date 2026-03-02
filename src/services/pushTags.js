@@ -27,13 +27,25 @@ export const syncStreakTags = (reason = "unknown") => {
     }
 
     const streak = state?.streak ?? 0;
-    const streakState = streak > 0 ? "active" : "inactive";
+    const lastStreakDate = state?.lastStreakDate ?? null;
+
+    const todayStr = new Date().toLocaleDateString("en-CA"); // "YYYY-MM-DD" in local time
+
+    let streakStatus;
+    if (streak === 0) {
+      streakStatus = "no_streak";
+    } else if (lastStreakDate === todayStr) {
+      streakStatus = "on_track";
+    } else {
+      streakStatus = "at_risk";
+    }
+
     const challengeTag = _challengePending ? "true" : "false";
 
-    OneSignal.User.addTag("streak_state", streakState);
+    OneSignal.User.addTag("streak_status", streakStatus);
     OneSignal.User.addTag("challenge_pending", challengeTag);
 
-    console.log(`[PUSH_TAG_SYNC] [${reason}] streak_state=${streakState} challenge_pending=${challengeTag}`);
+    console.log(`[PUSH_TAG_SYNC] [${reason}] streak_status=${streakStatus} challenge_pending=${challengeTag}`);
   } catch (err) {
     console.warn(`PUSH_TAG_SYNC [${reason}] failed:`, err.message);
   }
