@@ -1018,14 +1018,12 @@ export const restorePurchases = async () => {
 // ================================================================
 export const checkEntitlementOnMount = async () => {
   console.log("[IAP] checkEntitlementOnMount called");
-  
-  // First check local state (instant)
-  if (isLocalPremium()) {
-    console.log("[IAP] Local premium state found");
-    return { isPremium: true, source: "local" };
-  }
-  
-  // Then check store if on native platform
+
+  // Local premium state (iq_iap_premium_entitlement) is NOT checked here.
+  // It cannot prove ownership — only the native platform store can.
+  // On non-native platforms this will return isPremium: false immediately.
+
+  // Check native platform store for owned products
   const initResult = await initializeIAP();
   if (initResult.success) {
     console.log("[IAP] Checking store for owned products on paywall mount...");

@@ -203,13 +203,6 @@ export const useProgressStore = create((set, get) => ({
         savedData.lockedLessons = get().normalizeLocks(savedData.lessonStates || {});
       }
       
-      // 💳 PREMIUM: Migrate any legacy hasPremium/premiumStatus → premium boolean.
-      // Old localStorage may have hasPremium=true or premiumStatus!="free" but premium=false.
-      if (!savedData.premium) {
-        if (savedData.hasPremium === true || (savedData.premiumStatus && savedData.premiumStatus !== "free")) {
-          savedData.premium = true;
-        }
-      }
       // Scrub legacy fields so they never persist again
       delete savedData.hasPremium;
       delete savedData.premiumStatus;
@@ -1030,11 +1023,10 @@ export const useProgressStore = create((set, get) => ({
     get().saveProgress();
   },
 
-  // 💳 Premium unlock — single source of truth
+  // 💳 unlockPremium — disabled. Premium derives from profiles.premium (Supabase).
+  // Real premium is granted only after server-side IAP verification via Edge Function.
   unlockPremium: () => {
-    set({ premium: true });
-    get().saveProgress();
-    setTimeout(() => get().syncToSupabase(), 50);
+    console.warn("[progressStore] unlockPremium() is disabled. Premium requires server verification.");
   },
 
   // 💳 Set premium from IAP entitlement (called by iapService)
@@ -1043,51 +1035,20 @@ export const useProgressStore = create((set, get) => ({
     get().saveProgress();
   },
 
-  // 💳 ASYNC PLACEHOLDER: Purchase Individual Plan (£4.99)
-  // Later: integrate with payment provider (Stripe/RevenueCat/Supabase)
+  // 💳 purchaseIndividual — disabled placeholder.
+  // Real purchases go through iapService (cordova-plugin-purchase / CdvPurchase).
+  // Server-side Edge Function verification sets profiles.premium = true.
   purchaseIndividual: async () => {
-    // Simulate async payment (will be real API call later)
-    await new Promise(resolve => setTimeout(resolve, 100));
-    
-    set({ premium: true });
-    get().saveProgress();
-    setTimeout(() => get().syncToSupabase(), 50);
-    
-    // Log purchase to Supabase
-    (async () => {
-      const { data } = await supabase.auth.getUser();
-      const userId = data?.user?.id;
-      if (userId) {
-        logPurchase(userId, "individual_plan", 4.99, "GBP");
-      }
-    })();
-    
-    return { success: true, plan: "individual" };
+    console.warn("[progressStore] purchaseIndividual() is disabled. Use iapService.purchase() instead.");
+    return { success: false, plan: null };
   },
 
-  // 💳 PLACEHOLDER: Restore previous purchases
-  // Later: check with payment provider for existing purchases
+  // 💳 restorePurchases — disabled placeholder.
+  // Real restore goes through iapService.restorePurchases() which queries the
+  // native platform store (CdvPurchase) and verifies with the backend Edge Function.
+  // Premium state must never be restored from localStorage alone.
   restorePurchases: () => {
-    // Read from localStorage to check for saved premium status
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (!saved) {
-      return { 
-        success: false, 
-        message: "No previous purchases found" 
-      };
-    }
-    
-    const savedData = JSON.parse(saved);
-    const savedPremium = savedData.premium === true
-      || savedData.hasPremium === true
-      || (savedData.premiumStatus && savedData.premiumStatus !== "free");
-    
-    if (savedPremium) {
-      set({ premium: true });
-      get().saveProgress();
-      return { success: true, message: "Premium plan restored successfully!" };
-    }
-    
+    console.warn("[progressStore] restorePurchases() is disabled. Use iapService.restorePurchases() instead.");
     return { success: false, message: "No previous purchases found" };
   },
 
