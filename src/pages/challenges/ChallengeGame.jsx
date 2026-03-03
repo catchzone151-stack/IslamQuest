@@ -75,6 +75,11 @@ export default function ChallengeGame() {
   const startTimeRef = useRef(null);
   const completionTimeRef = useRef(null);
   const effectRunCountRef = useRef(0);
+  // ── Selection-lock refs (prevent re-generation mid-session) ─────────────────
+  const questionsLockedRef   = useRef(false);
+  const lockedSessionIdRef   = useRef(null);
+  // ── Runtime-guard: tracks question texts already rendered this session ───────
+  const shownTextsRef = useRef(new Set());
 
   // Determine if it's a boss level or friend challenge
   const isBoss = challengeId === "boss";
@@ -94,20 +99,34 @@ export default function ChallengeGame() {
   }, [isBoss, challenge]);
 
   useEffect(() => {
-    // ── DIAGNOSTIC: log every invocation of this effect ─────────────────
+    // ── Log every invocation (run-count proves whether effect re-fires) ──────────
     effectRunCountRef.current += 1;
     const _runNum = effectRunCountRef.current;
-    const _effId = `CG_${challengeId}_run${_runNum}_${Date.now()}`;
+    const _effId  = `CG_${challengeId}_run${_runNum}_${Date.now()}`;
     console.log('[IQ_QSEL] ChallengeGame useEffect FIRED', {
-      effectId: _effId,
-      runNumber: _runNum,
-      isBoss,
-      challengeId,
-      modeId: mode?.id ?? null,
+      effectId: _effId, runNumber: _runNum,
+      isBoss, challengeId, modeId: mode?.id ?? null,
       challengePresent: !!challenge,
       challengeQCount: challenge?.questions?.length ?? null,
     });
-    // ── END DIAGNOSTIC ──────────────────────────────────────────────────
+
+    // ── Reset lock when a genuinely new challenge starts ─────────────────────────
+    if (lockedSessionIdRef.current !== null && lockedSessionIdRef.current !== challengeId) {
+      console.log('[IQ_LOCK] New challengeId detected — resetting selection lock', {
+        prev: lockedSessionIdRef.current, next: challengeId,
+      });
+      questionsLockedRef.current = false;
+      lockedSessionIdRef.current = null;
+      shownTextsRef.current = new Set();
+    }
+
+    // ── FREEZE SELECTION: block re-generation for same session ────────────────────
+    if (questionsLockedRef.current) {
+      console.log('[IQ_LOCK] ChallengeGame: selection LOCKED — blocking regeneration', {
+        effectId: _effId, runNumber: _runNum, lockedFor: lockedSessionIdRef.current,
+      });
+      return;
+    }
 
     // Track challenge started for analytics
     if (isBoss) {
@@ -115,11 +134,9 @@ export default function ChallengeGame() {
     } else if (challenge && mode) {
       analytics('challenge_started', { mode: mode.id, opponent: challenge.opponentId });
     }
-    
-    // Start tracking time when game begins
+
     startTimeRef.current = Date.now();
-    
-    // Load questions based on challenge type
+
     if (isBoss) {
       const bossQuestions = useChallengeStore.getState().getBossLevelQuestions();
       if (bossQuestions.length === 0) {
@@ -128,68 +145,68 @@ export default function ChallengeGame() {
         return;
       }
 
-      // ── DIAGNOSTIC: assert uniqueness at render boundary ────────────
-      const _bTexts = bossQuestions.map(q => q.question);
-      const _bUniq = new Set(_bTexts).size;
-      const _bDup = _bTexts.length - _bUniq;
+      // Assert uniqueness at render boundary
+      const _bTexts  = bossQuestions.map(q => q.question);
+      const _bUniq   = new Set(_bTexts).size;
+      const _bDup    = _bTexts.length - _bUniq;
       console.log('[IQ_QSEL] ChallengeGame setQuestions (boss)', {
-        effectId: _effId,
-        count: _bTexts.length,
-        uniqueCount: _bUniq,
-        duplicateCount: _bDup,
+        effectId: _effId, count: _bTexts.length, uniqueCount: _bUniq, duplicateCount: _bDup,
+        questionTexts: _bTexts.map((t, i) => `[${i}] ${t.slice(0, 50)}`),
       });
       if (_bDup > 0) {
-        console.error('[IQ_QSEL] WITHIN-SESSION DUPLICATE DETECTED — ChallengeGame boss setQuestions', {
-          effectId: _effId,
-          allTexts: _bTexts,
-          duplicates: _bTexts.filter((t, i) => _bTexts.indexOf(t) !== i),
+        console.error('[IQ_QSEL] WITHIN-SESSION DUPLICATE AT RENDER BOUNDARY — boss', {
+          effectId: _effId, duplicates: _bTexts.filter((t, i) => _bTexts.indexOf(t) !== i),
         });
       }
-      // ── END DIAGNOSTIC ──────────────────────────────────────────────
 
       setQuestions(bossQuestions);
       setTimeLeft(BOSS_LEVEL.totalTime);
+
+      // ── Lock this session ──────────────────────────────────────────────────────
+      questionsLockedRef.current = true;
+      lockedSessionIdRef.current = challengeId;
+      shownTextsRef.current = new Set();
+      console.log('[IQ_LOCK] Selection LOCKED for boss session');
+
     } else if (challenge && mode) {
-      // Questions are pre-deduplicated via Set in challengeStore.getQuestionsForMode.
-      // Never recycle — the global pool (1600+ questions) always supplies the full count.
       const gameQuestions = [...challenge.questions];
 
-      // ── DIAGNOSTIC: assert uniqueness at render boundary ────────────
-      const _gTexts = gameQuestions.map(q => q.question);
-      const _gIds   = gameQuestions.map(q => q.id);
-      const _gUniqT = new Set(_gTexts).size;
-      const _gUniqI = new Set(_gIds).size;
-      const _gDupT  = _gTexts.length - _gUniqT;
-      const _gDupI  = _gIds.length - _gUniqI;
+      // Assert uniqueness at render boundary
+      const _gTexts  = gameQuestions.map(q => q.question);
+      const _gIds    = gameQuestions.map(q => q.id);
+      const _gUniqT  = new Set(_gTexts).size;
+      const _gUniqI  = new Set(_gIds).size;
+      const _gDupT   = _gTexts.length - _gUniqT;
+      const _gDupI   = _gIds.length - _gUniqI;
       console.log('[IQ_QSEL] ChallengeGame setQuestions (challenge)', {
-        effectId: _effId,
-        count: _gTexts.length,
-        uniqueTextCount: _gUniqT,
-        uniqueIdCount: _gUniqI,
-        duplicateTextCount: _gDupT,
-        duplicateIdCount: _gDupI,
+        effectId: _effId, count: _gTexts.length,
+        uniqueTextCount: _gUniqT, uniqueIdCount: _gUniqI,
+        duplicateTextCount: _gDupT, duplicateIdCount: _gDupI,
         ids: _gIds,
         questionTexts: _gTexts.map((t, i) => `[${i}] ${t.slice(0, 50)}`),
       });
       if (_gDupT > 0 || _gDupI > 0) {
-        console.error('[IQ_QSEL] WITHIN-SESSION DUPLICATE DETECTED — ChallengeGame challenge setQuestions', {
+        console.error('[IQ_QSEL] WITHIN-SESSION DUPLICATE AT RENDER BOUNDARY — challenge', {
           effectId: _effId,
-          allTexts: _gTexts,
-          allIds: _gIds,
           duplicateTexts: _gTexts.filter((t, i) => _gTexts.indexOf(t) !== i),
-          duplicateIds: _gIds.filter((id, i) => _gIds.indexOf(id) !== i),
+          duplicateIds:   _gIds.filter((id, i) => _gIds.indexOf(id) !== i),
         });
       }
-      // ── END DIAGNOSTIC ──────────────────────────────────────────────
 
       setQuestions(gameQuestions);
-      // Only set timer for modes with totalTime (Lightning Round, Boss)
       if (mode.totalTime) {
         setTimeLeft(mode.totalTime);
       } else if (mode.timePerQuestion) {
         setTimeLeft(mode.timePerQuestion);
       }
+
+      // ── Lock this session ──────────────────────────────────────────────────────
+      questionsLockedRef.current = true;
+      lockedSessionIdRef.current = challengeId;
+      shownTextsRef.current = new Set();
+      console.log('[IQ_LOCK] Selection LOCKED for challenge session', challengeId);
     }
+    // If neither branch ran (challenge not yet loaded), lock stays false → effect retries
   }, [challengeId, isBoss, navigate, challenge, mode]);
 
   useEffect(() => {
@@ -223,6 +240,24 @@ export default function ChallengeGame() {
       if (elapsedTimerRef.current) clearInterval(elapsedTimerRef.current);
     };
   }, [questions, gameEnded, mode]);
+
+  // ── RUNTIME GUARD: assert no question text is shown twice in this session ──────
+  useEffect(() => {
+    if (questions.length === 0) return;
+    const currentQ = questions[currentIndex];
+    if (!currentQ) return;
+    const text = currentQ.question;
+    if (shownTextsRef.current.has(text)) {
+      console.error('[IQ_RUNTIME] DUPLICATE QUESTION RENDERED', {
+        index: currentIndex,
+        question: text.slice(0, 80),
+        alreadyShownAt: [...shownTextsRef.current].indexOf(text),
+      });
+    } else {
+      shownTextsRef.current.add(text);
+    }
+  }, [currentIndex, questions]);
+  // ── END RUNTIME GUARD ────────────────────────────────────────────────────────
 
   const handleTimeUp = () => {
     setIsTimeUp(true);

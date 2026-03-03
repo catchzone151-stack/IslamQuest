@@ -591,37 +591,57 @@ export const useChallengeStore = create((set, get) => ({
     }
 
     // Normalise answer option order and track for cross-session freshness
-    const normalizedQuestions = selected.map(q => {
+    let normalizedQuestions = selected.map(q => {
       get().trackShownQuestion(q.question);
       return get().normalizeAndShuffleOptions(q);
     });
 
-    // ── DIAGNOSTIC LOGGING ──────────────────────────────────────────────
+    // ── LAYER 2: Hard text-level dedup via Map — catches any upstream failure ──────
     const _selId = `SEL_${config.id}_${Date.now()}`;
-    const _qTexts = normalizedQuestions.map(q => q.question);
-    const _uniqueSize = new Set(_qTexts).size;
-    const _dupCount = _qTexts.length - _uniqueSize;
-    console.log('[IQ_QSEL] getQuestionsForMode', {
+    const _textMap = new Map();
+    for (const q of normalizedQuestions) {
+      const _key = q.question.trim().toLowerCase();
+      if (!_textMap.has(_key)) _textMap.set(_key, q);
+    }
+    const _removedCount = normalizedQuestions.length - _textMap.size;
+    if (_removedCount > 0) {
+      console.warn('[IQ_DEDUP] getQuestionsForMode: upstream duplicates stripped', {
+        selId: _selId, mode: config.id, removedCount: _removedCount,
+      });
+      // Refill exclusively from pool questions not already selected
+      const _usedKeys = new Set(_textMap.keys());
+      const _unused = pool.filter(q => !_usedKeys.has(q.question.trim().toLowerCase()));
+      for (let i = _unused.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [_unused[i], _unused[j]] = [_unused[j], _unused[i]];
+      }
+      for (const q of _unused) {
+        if (_textMap.size >= count) break;
+        const _key = q.question.trim().toLowerCase();
+        if (!_usedKeys.has(_key)) {
+          _usedKeys.add(_key);
+          get().trackShownQuestion(q.question);
+          _textMap.set(_key, get().normalizeAndShuffleOptions(q));
+        }
+      }
+    }
+    normalizedQuestions = [..._textMap.values()];
+    // ── END LAYER 2 ─────────────────────────────────────────────────────────────────
+
+    console.log('[IQ_QSEL] getQuestionsForMode COMPLETE', {
       selId: _selId,
       mode: config.id,
+      totalSelected: normalizedQuestions.length,
+      uniqueCount: _textMap.size,
+      duplicateRemovedCount: _removedCount,
       poolSize: pool.length,
-      selectedCount: _qTexts.length,
-      uniqueCount: _uniqueSize,
-      duplicateCount: _dupCount,
-      questionTexts: _qTexts.map((t, i) => `[${i}] ${t.slice(0, 50)}`),
+      questionTexts: normalizedQuestions.map((q, i) => `[${i}] ${q.question.slice(0, 50)}`),
     });
-    if (_dupCount > 0) {
-      console.error('[IQ_QSEL] WITHIN-SESSION DUPLICATE DETECTED — getQuestionsForMode', {
-        selId: _selId,
-        mode: config.id,
-        totalIds: _qTexts.length,
-        uniqueIds: _uniqueSize,
-        duplicateCount: _dupCount,
-        allTexts: _qTexts,
-        duplicates: _qTexts.filter((t, i) => _qTexts.indexOf(t) !== i),
+    if (_removedCount > 0) {
+      console.error('[IQ_QSEL] WITHIN-SESSION DUPLICATE DETECTED — getQuestionsForMode (now fixed)', {
+        selId: _selId, mode: config.id, removedCount: _removedCount,
       });
     }
-    // ── END DIAGNOSTIC ──────────────────────────────────────────────────
 
     return normalizedQuestions;
   },
@@ -764,36 +784,57 @@ export const useChallengeStore = create((set, get) => ({
       }
     }
 
-    const normalizedQuestions = selected.map(q => {
+    let normalizedQuestions = selected.map(q => {
       get().trackShownQuestion(q.question);
       return get().normalizeAndShuffleOptions(q);
     });
 
-    // ── DIAGNOSTIC LOGGING ──────────────────────────────────────────────
+    // ── LAYER 2: Hard text-level dedup via Map — catches any upstream failure ──────
     const _selId = `SEL_boss_${Date.now()}`;
-    const _qTexts = normalizedQuestions.map(q => q.question);
-    const _uniqueSize = new Set(_qTexts).size;
-    const _dupCount = _qTexts.length - _uniqueSize;
-    console.log('[IQ_QSEL] getBossLevelQuestions', {
+    const _textMap = new Map();
+    for (const q of normalizedQuestions) {
+      const _key = q.question.trim().toLowerCase();
+      if (!_textMap.has(_key)) _textMap.set(_key, q);
+    }
+    const _removedCount = normalizedQuestions.length - _textMap.size;
+    if (_removedCount > 0) {
+      console.warn('[IQ_DEDUP] getBossLevelQuestions: upstream duplicates stripped', {
+        selId: _selId, removedCount: _removedCount,
+      });
+      // Refill exclusively from pool questions not already selected
+      const _usedKeys = new Set(_textMap.keys());
+      const _unused = pool.filter(q => !_usedKeys.has(q.question.trim().toLowerCase()));
+      for (let i = _unused.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [_unused[i], _unused[j]] = [_unused[j], _unused[i]];
+      }
+      for (const q of _unused) {
+        if (_textMap.size >= targetCount) break;
+        const _key = q.question.trim().toLowerCase();
+        if (!_usedKeys.has(_key)) {
+          _usedKeys.add(_key);
+          get().trackShownQuestion(q.question);
+          _textMap.set(_key, get().normalizeAndShuffleOptions(q));
+        }
+      }
+    }
+    normalizedQuestions = [..._textMap.values()];
+    // ── END LAYER 2 ─────────────────────────────────────────────────────────────────
+
+    console.log('[IQ_QSEL] getBossLevelQuestions COMPLETE', {
       selId: _selId,
       mode: 'boss_level',
+      totalSelected: normalizedQuestions.length,
+      uniqueCount: _textMap.size,
+      duplicateRemovedCount: _removedCount,
       poolSize: pool.length,
-      selectedCount: _qTexts.length,
-      uniqueCount: _uniqueSize,
-      duplicateCount: _dupCount,
-      questionTexts: _qTexts.map((t, i) => `[${i}] ${t.slice(0, 50)}`),
+      questionTexts: normalizedQuestions.map((q, i) => `[${i}] ${q.question.slice(0, 50)}`),
     });
-    if (_dupCount > 0) {
-      console.error('[IQ_QSEL] WITHIN-SESSION DUPLICATE DETECTED — getBossLevelQuestions', {
-        selId: _selId,
-        totalIds: _qTexts.length,
-        uniqueIds: _uniqueSize,
-        duplicateCount: _dupCount,
-        allTexts: _qTexts,
-        duplicates: _qTexts.filter((t, i) => _qTexts.indexOf(t) !== i),
+    if (_removedCount > 0) {
+      console.error('[IQ_QSEL] WITHIN-SESSION DUPLICATE DETECTED — getBossLevelQuestions (now fixed)', {
+        selId: _selId, removedCount: _removedCount,
       });
     }
-    // ── END DIAGNOSTIC ──────────────────────────────────────────────────
 
     return normalizedQuestions;
   },

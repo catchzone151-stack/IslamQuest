@@ -198,33 +198,39 @@ export default function FriendChallengeGame() {
       throw new Error(`[FriendChallengeGame] Duplicate question IDs: ${[...new Set(duplicates)].join(', ')}`);
     }
     
-    // ── DIAGNOSTIC: text-level dedup (IDs may be unique but text could repeat) ──
-    const _qTexts = gameQuestions.map(q => q.question);
-    const _uniqueTexts = new Set(_qTexts).size;
-    const _dupTexts = _qTexts.length - _uniqueTexts;
-    console.log('[IQ_QSEL] FriendChallengeGame setQuestions', {
-      effectId: _effId,
-      count: questionIds.length,
-      uniqueIdCount: uniqueIds.size,
-      uniqueTextCount: _uniqueTexts,
-      duplicateTextCount: _dupTexts,
-      mode: modeConfig?.id,
-      ids: questionIds,
-      questionTexts: _qTexts.map((t, i) => `[${i}] ${t.slice(0, 50)}`),
-    });
-    if (_dupTexts > 0) {
-      console.error('[IQ_QSEL] WITHIN-SESSION DUPLICATE DETECTED — FriendChallengeGame text-level', {
-        effectId: _effId,
-        totalTexts: _qTexts.length,
-        uniqueTexts: _uniqueTexts,
-        duplicateCount: _dupTexts,
-        allTexts: _qTexts,
-        duplicates: _qTexts.filter((t, i) => _qTexts.indexOf(t) !== i),
+    // ── LAYER 4: Hard text-level Map dedup before render ─────────────────────────
+    const _fTextMap = new Map();
+    for (const q of gameQuestions) {
+      const _key = q.question.trim().toLowerCase();
+      if (!_fTextMap.has(_key)) _fTextMap.set(_key, q);
+    }
+    const _fRemovedCount = gameQuestions.length - _fTextMap.size;
+    let finalQuestions = [..._fTextMap.values()].map((q, i) => ({ ...q, id: `q_${i}` }));
+    if (_fRemovedCount > 0) {
+      console.warn('[IQ_DEDUP] FriendChallengeGame: duplicates stripped before render', {
+        effectId: _effId, removedCount: _fRemovedCount, mode: modeConfig?.id,
       });
     }
-    // ── END DIAGNOSTIC ──────────────────────────────────────────────────
+    const _fTexts = finalQuestions.map(q => q.question);
+    const _fIds   = finalQuestions.map(q => q.id);
+    console.log('[IQ_QSEL] FriendChallengeGame setQuestions', {
+      effectId: _effId,
+      count: finalQuestions.length,
+      uniqueTextCount: new Set(_fTexts).size,
+      uniqueIdCount: new Set(_fIds).size,
+      duplicateRemovedCount: _fRemovedCount,
+      mode: modeConfig?.id,
+      ids: _fIds,
+      questionTexts: _fTexts.map((t, i) => `[${i}] ${t.slice(0, 50)}`),
+    });
+    if (_fRemovedCount > 0) {
+      console.error('[IQ_QSEL] WITHIN-SESSION DUPLICATE AT RENDER BOUNDARY — FriendChallengeGame (now fixed)', {
+        effectId: _effId, removedCount: _fRemovedCount,
+      });
+    }
+    // ── END LAYER 4 ─────────────────────────────────────────────────────────────
 
-    setQuestions(gameQuestions);
+    setQuestions(finalQuestions);
     
     if (modeConfig?.totalTime) {
       setTimeLeft(modeConfig.totalTime);
