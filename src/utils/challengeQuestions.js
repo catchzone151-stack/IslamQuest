@@ -16,8 +16,41 @@ export const generateQuestionsForChallenge = (modeId) => {
     answer: q.answer,
     difficulty: q.difficulty || "medium",
   }));
-  
-  console.log(`[ChallengeQuestions] Generated ${sanitizedQuestions.length} questions for ${modeId}`);
+
+  // ── DIAGNOSTIC LOGGING ──────────────────────────────────────────────
+  const _genId = `GEN_${modeId}_${Date.now()}`;
+  const _ids = sanitizedQuestions.map(q => q.id);
+  const _texts = sanitizedQuestions.map(q => q.question);
+  const _uniqueIds = new Set(_ids).size;
+  const _uniqueTexts = new Set(_texts).size;
+  const _dupIds = _ids.length - _uniqueIds;
+  const _dupTexts = _texts.length - _uniqueTexts;
+  console.log('[IQ_QSEL] generateQuestionsForChallenge', {
+    genId: _genId,
+    modeId,
+    count: _ids.length,
+    uniqueIdCount: _uniqueIds,
+    uniqueTextCount: _uniqueTexts,
+    duplicateIdCount: _dupIds,
+    duplicateTextCount: _dupTexts,
+    ids: _ids,
+    questionTexts: _texts.map((t, i) => `[${i}] ${t.slice(0, 50)}`),
+  });
+  if (_dupIds > 0 || _dupTexts > 0) {
+    console.error('[IQ_QSEL] WITHIN-SESSION DUPLICATE DETECTED — generateQuestionsForChallenge', {
+      genId: _genId,
+      modeId,
+      totalIds: _ids.length,
+      uniqueIds: _uniqueIds,
+      duplicateIdCount: _dupIds,
+      duplicateTextCount: _dupTexts,
+      allIds: _ids,
+      duplicateIds: _ids.filter((id, i) => _ids.indexOf(id) !== i),
+      duplicateTexts: _texts.filter((t, i) => _texts.indexOf(t) !== i),
+    });
+  }
+  // ── END DIAGNOSTIC ──────────────────────────────────────────────────
+
   return sanitizedQuestions;
 };
 

@@ -596,7 +596,33 @@ export const useChallengeStore = create((set, get) => ({
       return get().normalizeAndShuffleOptions(q);
     });
 
-    console.log(`[ChallengeStore] getQuestionsForMode(${config.id}): ${normalizedQuestions.length} unique questions selected from pool of ${pool.length}`);
+    // ── DIAGNOSTIC LOGGING ──────────────────────────────────────────────
+    const _selId = `SEL_${config.id}_${Date.now()}`;
+    const _qTexts = normalizedQuestions.map(q => q.question);
+    const _uniqueSize = new Set(_qTexts).size;
+    const _dupCount = _qTexts.length - _uniqueSize;
+    console.log('[IQ_QSEL] getQuestionsForMode', {
+      selId: _selId,
+      mode: config.id,
+      poolSize: pool.length,
+      selectedCount: _qTexts.length,
+      uniqueCount: _uniqueSize,
+      duplicateCount: _dupCount,
+      questionTexts: _qTexts.map((t, i) => `[${i}] ${t.slice(0, 50)}`),
+    });
+    if (_dupCount > 0) {
+      console.error('[IQ_QSEL] WITHIN-SESSION DUPLICATE DETECTED — getQuestionsForMode', {
+        selId: _selId,
+        mode: config.id,
+        totalIds: _qTexts.length,
+        uniqueIds: _uniqueSize,
+        duplicateCount: _dupCount,
+        allTexts: _qTexts,
+        duplicates: _qTexts.filter((t, i) => _qTexts.indexOf(t) !== i),
+      });
+    }
+    // ── END DIAGNOSTIC ──────────────────────────────────────────────────
+
     return normalizedQuestions;
   },
 
@@ -743,7 +769,32 @@ export const useChallengeStore = create((set, get) => ({
       return get().normalizeAndShuffleOptions(q);
     });
 
-    console.log(`[ChallengeStore] getBossLevelQuestions: ${normalizedQuestions.length} unique questions`);
+    // ── DIAGNOSTIC LOGGING ──────────────────────────────────────────────
+    const _selId = `SEL_boss_${Date.now()}`;
+    const _qTexts = normalizedQuestions.map(q => q.question);
+    const _uniqueSize = new Set(_qTexts).size;
+    const _dupCount = _qTexts.length - _uniqueSize;
+    console.log('[IQ_QSEL] getBossLevelQuestions', {
+      selId: _selId,
+      mode: 'boss_level',
+      poolSize: pool.length,
+      selectedCount: _qTexts.length,
+      uniqueCount: _uniqueSize,
+      duplicateCount: _dupCount,
+      questionTexts: _qTexts.map((t, i) => `[${i}] ${t.slice(0, 50)}`),
+    });
+    if (_dupCount > 0) {
+      console.error('[IQ_QSEL] WITHIN-SESSION DUPLICATE DETECTED — getBossLevelQuestions', {
+        selId: _selId,
+        totalIds: _qTexts.length,
+        uniqueIds: _uniqueSize,
+        duplicateCount: _dupCount,
+        allTexts: _qTexts,
+        duplicates: _qTexts.filter((t, i) => _qTexts.indexOf(t) !== i),
+      });
+    }
+    // ── END DIAGNOSTIC ──────────────────────────────────────────────────
+
     return normalizedQuestions;
   },
 

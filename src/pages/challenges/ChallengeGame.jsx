@@ -74,6 +74,7 @@ export default function ChallengeGame() {
   const isCompletingRef = useRef(false);
   const startTimeRef = useRef(null);
   const completionTimeRef = useRef(null);
+  const effectRunCountRef = useRef(0);
 
   // Determine if it's a boss level or friend challenge
   const isBoss = challengeId === "boss";
@@ -93,8 +94,21 @@ export default function ChallengeGame() {
   }, [isBoss, challenge]);
 
   useEffect(() => {
-    console.log('🎮 Loading challenge questions', { isBoss, challengeId, mode });
-    
+    // ── DIAGNOSTIC: log every invocation of this effect ─────────────────
+    effectRunCountRef.current += 1;
+    const _runNum = effectRunCountRef.current;
+    const _effId = `CG_${challengeId}_run${_runNum}_${Date.now()}`;
+    console.log('[IQ_QSEL] ChallengeGame useEffect FIRED', {
+      effectId: _effId,
+      runNumber: _runNum,
+      isBoss,
+      challengeId,
+      modeId: mode?.id ?? null,
+      challengePresent: !!challenge,
+      challengeQCount: challenge?.questions?.length ?? null,
+    });
+    // ── END DIAGNOSTIC ──────────────────────────────────────────────────
+
     // Track challenge started for analytics
     if (isBoss) {
       analytics('challenge_started', { mode: 'boss_level' });
@@ -113,12 +127,61 @@ export default function ChallengeGame() {
         navigate("/challenge");
         return;
       }
+
+      // ── DIAGNOSTIC: assert uniqueness at render boundary ────────────
+      const _bTexts = bossQuestions.map(q => q.question);
+      const _bUniq = new Set(_bTexts).size;
+      const _bDup = _bTexts.length - _bUniq;
+      console.log('[IQ_QSEL] ChallengeGame setQuestions (boss)', {
+        effectId: _effId,
+        count: _bTexts.length,
+        uniqueCount: _bUniq,
+        duplicateCount: _bDup,
+      });
+      if (_bDup > 0) {
+        console.error('[IQ_QSEL] WITHIN-SESSION DUPLICATE DETECTED — ChallengeGame boss setQuestions', {
+          effectId: _effId,
+          allTexts: _bTexts,
+          duplicates: _bTexts.filter((t, i) => _bTexts.indexOf(t) !== i),
+        });
+      }
+      // ── END DIAGNOSTIC ──────────────────────────────────────────────
+
       setQuestions(bossQuestions);
       setTimeLeft(BOSS_LEVEL.totalTime);
     } else if (challenge && mode) {
       // Questions are pre-deduplicated via Set in challengeStore.getQuestionsForMode.
       // Never recycle — the global pool (1600+ questions) always supplies the full count.
       const gameQuestions = [...challenge.questions];
+
+      // ── DIAGNOSTIC: assert uniqueness at render boundary ────────────
+      const _gTexts = gameQuestions.map(q => q.question);
+      const _gIds   = gameQuestions.map(q => q.id);
+      const _gUniqT = new Set(_gTexts).size;
+      const _gUniqI = new Set(_gIds).size;
+      const _gDupT  = _gTexts.length - _gUniqT;
+      const _gDupI  = _gIds.length - _gUniqI;
+      console.log('[IQ_QSEL] ChallengeGame setQuestions (challenge)', {
+        effectId: _effId,
+        count: _gTexts.length,
+        uniqueTextCount: _gUniqT,
+        uniqueIdCount: _gUniqI,
+        duplicateTextCount: _gDupT,
+        duplicateIdCount: _gDupI,
+        ids: _gIds,
+        questionTexts: _gTexts.map((t, i) => `[${i}] ${t.slice(0, 50)}`),
+      });
+      if (_gDupT > 0 || _gDupI > 0) {
+        console.error('[IQ_QSEL] WITHIN-SESSION DUPLICATE DETECTED — ChallengeGame challenge setQuestions', {
+          effectId: _effId,
+          allTexts: _gTexts,
+          allIds: _gIds,
+          duplicateTexts: _gTexts.filter((t, i) => _gTexts.indexOf(t) !== i),
+          duplicateIds: _gIds.filter((id, i) => _gIds.indexOf(id) !== i),
+        });
+      }
+      // ── END DIAGNOSTIC ──────────────────────────────────────────────
+
       setQuestions(gameQuestions);
       // Only set timer for modes with totalTime (Lightning Round, Boss)
       if (mode.totalTime) {

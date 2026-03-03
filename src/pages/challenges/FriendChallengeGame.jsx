@@ -68,6 +68,7 @@ export default function FriendChallengeGame() {
   const isCompletingRef = useRef(false);
   const startTimeRef = useRef(null);
   const completionTimeRef = useRef(null);
+  const qSetupRunCountRef = useRef(0);
 
   const mode = challenge ? getModeConfig(challenge.challenge_type) : null;
 
@@ -126,6 +127,20 @@ export default function FriendChallengeGame() {
   }, [challengeId, ensureChallengeLoaded, showModal, navigate]);
 
   useEffect(() => {
+    // ── DIAGNOSTIC: log every invocation ────────────────────────────────
+    qSetupRunCountRef.current += 1;
+    const _runNum = qSetupRunCountRef.current;
+    const _effId = `FCG_${challengeId}_run${_runNum}_${Date.now()}`;
+    console.log('[IQ_QSEL] FriendChallengeGame qSetup useEffect FIRED', {
+      effectId: _effId,
+      runNumber: _runNum,
+      loading,
+      gameInitialized,
+      challengePresent: !!challenge,
+      challengeQCount: challenge?.questions?.length ?? null,
+    });
+    // ── END DIAGNOSTIC ──────────────────────────────────────────────────
+
     if (loading || gameInitialized || !challenge) return;
     
     const alreadyPlayed = isSender 
@@ -183,12 +198,32 @@ export default function FriendChallengeGame() {
       throw new Error(`[FriendChallengeGame] Duplicate question IDs: ${[...new Set(duplicates)].join(', ')}`);
     }
     
-    console.log('[FriendChallengeGame] Using questions:', {
-      count: gameQuestions.length,
+    // ── DIAGNOSTIC: text-level dedup (IDs may be unique but text could repeat) ──
+    const _qTexts = gameQuestions.map(q => q.question);
+    const _uniqueTexts = new Set(_qTexts).size;
+    const _dupTexts = _qTexts.length - _uniqueTexts;
+    console.log('[IQ_QSEL] FriendChallengeGame setQuestions', {
+      effectId: _effId,
+      count: questionIds.length,
+      uniqueIdCount: uniqueIds.size,
+      uniqueTextCount: _uniqueTexts,
+      duplicateTextCount: _dupTexts,
       mode: modeConfig?.id,
-      ids: questionIds
+      ids: questionIds,
+      questionTexts: _qTexts.map((t, i) => `[${i}] ${t.slice(0, 50)}`),
     });
-    
+    if (_dupTexts > 0) {
+      console.error('[IQ_QSEL] WITHIN-SESSION DUPLICATE DETECTED — FriendChallengeGame text-level', {
+        effectId: _effId,
+        totalTexts: _qTexts.length,
+        uniqueTexts: _uniqueTexts,
+        duplicateCount: _dupTexts,
+        allTexts: _qTexts,
+        duplicates: _qTexts.filter((t, i) => _qTexts.indexOf(t) !== i),
+      });
+    }
+    // ── END DIAGNOSTIC ──────────────────────────────────────────────────
+
     setQuestions(gameQuestions);
     
     if (modeConfig?.totalTime) {
