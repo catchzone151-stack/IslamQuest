@@ -144,7 +144,7 @@ export const useChallengeStore = create((set, get) => ({
 
   trackShownQuestion: (questionText) => {
     set(state => {
-      const updated = [questionText, ...state.recentlyShownQuestions].slice(0, 100);
+      const updated = [questionText, ...state.recentlyShownQuestions].slice(0, 400);
       return { recentlyShownQuestions: updated };
     });
     get().saveToStorage();
@@ -827,31 +827,6 @@ export const useChallengeStore = create((set, get) => ({
     return get().challenges.filter(c => 
       c.status === "completed" || c.status === "expired"
     );
-  },
-
-  selectRandomQuestions: (count) => {
-    let allQuestions = get().getQuestionPool();
-    if (allQuestions.length === 0) {
-      allQuestions = get().getFallbackQuestions();
-    }
-    
-    const freshQuestions = get().filterRecentQuestions(allQuestions);
-    let pool = freshQuestions.length > 0 ? freshQuestions : allQuestions;
-    
-    if (pool.length < count) {
-      pool = get().expandQuestionPool(pool, count);
-    }
-    
-    const shuffled = pool.sort(() => Math.random() - 0.5);
-    const selected = shuffled.slice(0, count);
-    
-    // Track shown questions and shuffle options to remove obvious clues
-    const normalizedQuestions = selected.map(q => {
-      get().trackShownQuestion(q.question);
-      return get().normalizeAndShuffleOptions(q);
-    });
-    
-    return normalizedQuestions;
   },
 
   getSharedLessons: (userId, friendId) => {
