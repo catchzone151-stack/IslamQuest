@@ -1190,11 +1190,14 @@ export const useProgressStore = create((set, get) => ({
     return ts ? Number(ts) : 0;
   },
 
-  setLastUpdatedAt: (ts) => {
+  setLastUpdatedAt: (ts, userId = null) => {
     localStorage.setItem("iq_last_cloud_sync", String(ts));
+    if (userId) {
+      localStorage.setItem("iq_last_sync_user_id", userId);
+    }
   },
 
-  setFromCloudSync: (data, cloudUpdatedAt = null) => {
+  setFromCloudSync: (data, cloudUpdatedAt = null, userId = null) => {
     if (!data) return;
     
     const newLevel = getCurrentLevel(data.xp || 0);
@@ -1229,7 +1232,7 @@ export const useProgressStore = create((set, get) => ({
     });
     
     if (cloudUpdatedAt) {
-      get().setLastUpdatedAt(new Date(cloudUpdatedAt).getTime());
+      get().setLastUpdatedAt(new Date(cloudUpdatedAt).getTime(), userId);
     }
     get().saveProgress();
 
@@ -1273,7 +1276,7 @@ export const useProgressStore = create((set, get) => ({
         .eq("user_id", userId);
 
       if (!error) {
-        get().setLastUpdatedAt(now);
+        get().setLastUpdatedAt(now, userId);
         console.log("[IQ_CLOUD_TRACE] UPDATE SUCCESS");
       } else {
         console.log("[IQ_CLOUD_TRACE] UPDATE ERROR FULL:", JSON.stringify(error, null, 2));
@@ -1381,7 +1384,18 @@ export const useProgressStore = create((set, get) => ({
       const paths = data.paths ? decryptJSON(data.paths) : null;
 
       const cloudTs = new Date(data.updated_at).getTime();
-      const localTs = get().getLastUpdatedAt();
+
+      // If the localStorage data belongs to a DIFFERENT user (e.g. reinstall on
+      // a device that still had another account's data), treat localTs as 0 so
+      // the cloud profile always wins and cross-account XP leakage cannot occur.
+      const lastSyncUserId = localStorage.getItem("iq_last_sync_user_id");
+      const localTs = lastSyncUserId && lastSyncUserId !== userId
+        ? 0
+        : get().getLastUpdatedAt();
+
+      if (lastSyncUserId && lastSyncUserId !== userId) {
+        console.log("[ProgressStore] Different userId detected — ignoring stale local data and taking cloud profile.");
+      }
 
       // Timestamp guard — cloud must be newer for a full restore
       const shouldOverwriteLocal = cloudTs > localTs;
@@ -1450,8 +1464,8 @@ export const useProgressStore = create((set, get) => ({
       set(restored);
       get().saveProgress();
 
-      // Mark restore time
-      get().setLastUpdatedAt(Date.now());
+      // Mark restore time — also record which userId owns this data
+      get().setLastUpdatedAt(Date.now(), userId);
 
       console.log("[PREMIUM_SOURCE]", { value: restored.premium, source: "loadFromSupabase / cloud→device" });
 

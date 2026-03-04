@@ -1,5 +1,6 @@
 import { supabase } from "../lib/supabaseClient.js";
 import { useProgressStore } from "../store/progressStore.js";
+import { useUserStore } from "../store/useUserStore.js";
 
 const DEFAULT_PROFILE = {
   xp: 0,
@@ -76,7 +77,19 @@ export function mergeProfileData(cloud) {
   if (!cloud) return;
 
   const store = useProgressStore.getState();
-  const localTs = store.getLastUpdatedAt();
+
+  // If local data was written by a different account (e.g. device reinstall),
+  // treat localTs as 0 so the incoming cloud profile always wins.
+  const currentUserId = useUserStore.getState().userId;
+  const lastSyncUserId = localStorage.getItem("iq_last_sync_user_id");
+  const localTs = lastSyncUserId && lastSyncUserId !== currentUserId
+    ? 0
+    : store.getLastUpdatedAt();
+
+  if (lastSyncUserId && lastSyncUserId !== currentUserId) {
+    console.log("[ProfileSync] Different userId detected — ignoring stale local data.");
+  }
+
   const cloudTs = cloud.updated_at ? new Date(cloud.updated_at).getTime() : 0;
 
   console.log("[PREMIUM_FINAL]", {
@@ -94,6 +107,6 @@ export function mergeProfileData(cloud) {
       shieldCount: cloud.shield_count ?? DEFAULT_PROFILE.shield_count,
       premium: cloud.premium ?? false,
       last_completed_activity_date: cloud.last_completed_activity_date ?? null,
-    }, cloud.updated_at);
+    }, cloud.updated_at, currentUserId);
   }
 }
