@@ -266,7 +266,7 @@ export const useFriendsStore = create((set, get) => ({
         return { success: false, error: "You cannot add yourself" };
       }
 
-      const { data, error: rpcErr } = await supabase.rpc("send_friend_request", { p_target: targetUserId });
+      const { data, error: rpcErr } = await supabase.rpc("send_friend_request", { target_user_id: targetUserId });
 
       if (rpcErr) {
         console.error("sendFriendRequest error:", rpcErr);
