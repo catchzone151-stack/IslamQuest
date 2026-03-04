@@ -72,6 +72,7 @@ export default function Friends() {
     getGlobalLeaderboard,
     globalLeaderboard,
     leaderboardLoading,
+    leaderboardError,
     userGlobalRank,
     userAboveXP,
     userAboveRank,
@@ -1084,6 +1085,31 @@ export default function Friends() {
                       }}
                     >
                       Loading leaderboard...
+                    </div>
+                  ) : leaderboardError ? (
+                    <div style={{ textAlign: "center", padding: "40px 20px" }}>
+                      <Globe size={40} style={{ color: "#ef4444", marginBottom: "12px", opacity: 0.7 }} />
+                      <div style={{ color: "#ef4444", fontWeight: "600", fontSize: "0.95rem", marginBottom: "8px" }}>
+                        Could not load leaderboard
+                      </div>
+                      <div style={{ color: "#888", fontSize: "0.82rem", marginBottom: "20px" }}>
+                        {leaderboardError}
+                      </div>
+                      <button
+                        onClick={loadLeaderboard}
+                        style={{
+                          background: "rgba(99,102,241,0.15)",
+                          border: "1px solid rgba(99,102,241,0.4)",
+                          color: "#818cf8",
+                          borderRadius: "8px",
+                          padding: "8px 20px",
+                          fontSize: "0.85rem",
+                          fontWeight: "600",
+                          cursor: "pointer",
+                        }}
+                      >
+                        Retry
+                      </button>
                     </div>
                   ) : globalLeaderboard.length === 0 ? (
                     <EmptyState

@@ -36,6 +36,7 @@ export const useFriendsStore = create((set, get) => ({
   userAboveRank: null,
   loading: false,
   leaderboardLoading: false,
+  leaderboardError: null,
   error: null,
   currentUserId: null,
   realtimeChannel: null,
@@ -190,7 +191,7 @@ export const useFriendsStore = create((set, get) => ({
   },
 
   loadLeaderboard: async () => {
-    set({ leaderboardLoading: true });
+    set({ leaderboardLoading: true, leaderboardError: null });
     try {
       const { data, error } = await supabase.rpc("get_leaderboard");
 
@@ -221,7 +222,8 @@ export const useFriendsStore = create((set, get) => ({
         leaderboardLoading: false,
       });
     } catch (err) {
-      set({ leaderboardLoading: false, error: err.message });
+      console.error("[FriendsStore] loadLeaderboard error:", err?.message || err);
+      set({ leaderboardLoading: false, leaderboardError: err?.message || "Failed to load leaderboard" });
     }
   },
 
