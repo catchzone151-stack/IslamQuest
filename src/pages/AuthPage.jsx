@@ -305,7 +305,6 @@ export default function AuthPage() {
           setOnboarded(true);
           localStorage.removeItem("iq_onboarding_step");
           localStorage.setItem("iq_profile_complete", "true");
-          localStorage.setItem("iq_signup_toast", "1");
           useUserStore.setState({ 
             profileReady: true,
             hasOnboarded: true,
@@ -313,7 +312,6 @@ export default function AuthPage() {
           navigate("/");
         } else {
           setLoading(false);
-          localStorage.setItem("iq_signup_toast", "1");
           navigate("/");
         }
       }

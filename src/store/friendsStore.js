@@ -6,6 +6,7 @@ import { avatarIndexToKey } from "../utils/avatarUtils";
 import { useFriendChallengesStore } from "./friendChallengesStore";
 import { useUserStore } from "./useUserStore";
 import { useModalStore, MODAL_TYPES } from "./modalStore";
+import { useProgressStore } from "./progressStore";
 
 // Debounce timer for realtime-triggered loadAll calls — prevents fetch storms
 // when multiple postgres_changes events fire in rapid succession
@@ -221,6 +222,19 @@ export const useFriendsStore = create((set, get) => ({
         userAboveRank: aboveUserRank,
         leaderboardLoading: false,
       });
+
+      // Patch the current user's row with live store data so the leaderboard
+      // always reflects the latest username/avatar/xp/streak without a restart.
+      if (userId) {
+        const { username, avatar, name } = useUserStore.getState();
+        const { xp, streak } = useProgressStore.getState();
+        await get().updateCurrentUserData({
+          username: username || name,
+          avatar,
+          xp,
+          streak,
+        });
+      }
     } catch (err) {
       console.error("[FriendsStore] loadLeaderboard error:", err?.message || err);
       set({ leaderboardLoading: false, leaderboardError: err?.message || "Failed to load leaderboard" });
