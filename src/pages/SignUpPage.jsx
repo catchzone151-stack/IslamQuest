@@ -591,6 +591,24 @@ export default function SignUpPage() {
           </motion.p>
         )}
 
+        {console.log({
+          displayName,
+          username: handle,
+          usernameAvailable: handleStatus.available,
+          handleChecking: handleStatus.checking,
+          email,
+          password,
+          confirmPassword,
+          avatar: selectedAvatar,
+          formValid: isFormValid,
+          isValidName,
+          isValidHandle,
+          isValidEmail,
+          isValidPassword,
+          isPasswordsMatch,
+          hasAvatar,
+        })}
+
         <motion.button
           whileTap={{ scale: 0.98 }}
           onClick={handleSignUp}
