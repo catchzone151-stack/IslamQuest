@@ -230,34 +230,17 @@ const setupGlobalHandlers = () => {
       console.log("🔔🔔🔔 [IAP] productUpdated CALLBACK FIRED 🔔🔔🔔");
       console.log("[IAP] Product updated:", product.id, "owned:", product.owned, "canPurchase:", product.canPurchase);
       
-      // KEY FIX: If product is owned, immediately unlock premium via central function
-      // This handles the "already owned" case automatically
+      // If product is owned, immediately unlock premium via central function
+      // This handles the "already owned" / auto-restore case automatically.
+      // NOTE: Do NOT call transaction.finish() here — APPROVED transactions must go
+      // through verifyAndFinish() in the purchase flow so the backend is notified.
+      // Only the approved/finished handlers should close transactions.
       if (product.owned) {
         const config = Object.values(PRODUCTS).find(p => 
           p.googleId === product.id || p.appleId === product.id
         );
         if (config) {
-          // USE CENTRAL ENTITLEMENT FUNCTION
           activatePremiumEntitlement("productUpdated", config.planType);
-          
-          // DEFENSIVE ACKNOWLEDGEMENT: If owned but not acknowledged, finish the transaction
-          // This fixes purchases that failed to acknowledge due to earlier timing bugs
-          const unfinishedTransactions = (product.transactions || []).filter(t => 
-            t.state === CdvPurchase.TransactionState.APPROVED || 
-            t.state === CdvPurchase.TransactionState.INITIATED
-          );
-          
-          if (unfinishedTransactions.length > 0) {
-            console.log("[IAP] ⚠️ Found", unfinishedTransactions.length, "unacknowledged transaction(s) - finishing now");
-            unfinishedTransactions.forEach(transaction => {
-              console.log("[IAP] Finishing transaction:", transaction.transactionId);
-              transaction.finish().then(() => {
-                console.log("[IAP] ✅ Transaction acknowledged:", transaction.transactionId);
-              }).catch(err => {
-                console.log("[IAP] Transaction finish error (non-fatal):", err.message);
-              });
-            });
-          }
         }
       }
     })
@@ -629,13 +612,8 @@ export const purchase = async (productId) => {
   // ================================================================
   if (storeProduct?.owned) {
     console.log("[IAP] Product already owned - returning success immediately");
-    setLocalPremiumState(true, product.planType);
-    
-    const { markPremiumActivated } = await import("./premiumStateService");
-    markPremiumActivated(product.planType);
-    
+    await activatePremiumEntitlement("purchase-already-owned", product.planType);
     logEvent(ANALYTICS_EVENTS.PURCHASE_VERIFIED_SERVER, { productId: product.id, platform: platformType, alreadyOwned: true });
-    
     return { 
       success: true, 
       platform: platformType, 
@@ -669,10 +647,14 @@ export const purchase = async (productId) => {
     // This prevents UI from being stuck on "Processing..." indefinitely
     // ================================================================
     let resolved = false;
+    // cleanupHandler is set after the approvedWhen handler is created below.
+    let cleanupHandler = null;
     const safeResolve = (result) => {
       if (!resolved) {
         resolved = true;
         clearTimeout(timeout);
+        // Remove the per-purchase approved handler to prevent accumulation
+        try { if (cleanupHandler) cleanupHandler(); } catch (_) {}
         resolve(result);
       }
     };
@@ -684,13 +666,14 @@ export const purchase = async (productId) => {
       const currentProduct = store.get(storeId);
       if (currentProduct?.owned) {
         console.log("[IAP] Timeout but product is owned - treating as success");
-        setLocalPremiumState(true, product.planType);
-        safeResolve({ 
-          success: true, 
-          platform: platformType, 
-          productId: product.id,
-          planType: product.planType,
-          message: "Purchase successful!"
+        activatePremiumEntitlement("purchase-timeout", product.planType).then(() => {
+          safeResolve({ 
+            success: true, 
+            platform: platformType, 
+            productId: product.id,
+            planType: product.planType,
+            message: "Purchase successful!"
+          });
         });
       } else {
         safeResolve({ success: false, error: "Purchase timed out. Please try again." });
@@ -713,12 +696,8 @@ export const purchase = async (productId) => {
           const currentProduct = store.get(storeId);
           if (currentProduct?.owned) {
             console.log("[IAP] No receipt but product is owned - success");
-            setLocalPremiumState(true, product.planType);
-            
-            const { markPremiumActivated } = await import("./premiumStateService");
-            markPremiumActivated(product.planType);
-            
             transaction.finish();
+            await activatePremiumEntitlement("purchase-no-receipt", product.planType);
             safeResolve({ 
               success: true, 
               platform: platformType, 
@@ -754,16 +733,13 @@ export const purchase = async (productId) => {
         
         if (verificationResult.success || currentProduct?.owned) {
           // ================================================================
-          // FIX #3: Persist local premium state immediately on success
-          // ================================================================
-          setLocalPremiumState(true, product.planType);
-          
-          const { markPremiumActivated } = await import("./premiumStateService");
-          markPremiumActivated(product.planType);
-          
           logEvent(ANALYTICS_EVENTS.PURCHASE_VERIFIED_SERVER, { productId: product.id, platform: platformType });
           
           transaction.finish();
+          
+          // Use central entitlement function so progressStore.setPremium() fires
+          // and the React UI updates immediately after purchase.
+          await activatePremiumEntitlement("purchase", product.planType);
           
           console.log("[IAP] Purchase verified and completed successfully");
           safeResolve({ 
@@ -783,7 +759,7 @@ export const purchase = async (productId) => {
         // Last resort: check ownership
         const currentProduct = store.get(storeId);
         if (currentProduct?.owned) {
-          setLocalPremiumState(true, product.planType);
+          await activatePremiumEntitlement("purchase-fallback", product.planType);
           safeResolve({ success: true, platform: platformType, productId: product.id, planType: product.planType });
         } else {
           safeResolve({ success: false, error: error.message || "Purchase processing failed" });
@@ -791,13 +767,17 @@ export const purchase = async (productId) => {
       }
     };
     
-    // Set up transaction listener for this purchase
-    const approvedHandler = store.when().approved((transaction) => {
+    // Set up transaction listener for this purchase.
+    // Store the handler reference so we can remove it after the promise settles,
+    // preventing accumulation of handlers across multiple purchase attempts.
+    const approvedWhen = store.when().approved((transaction) => {
       if (transaction.products.some(tp => tp.id === storeId)) {
         console.log("[IAP] Transaction approved for:", storeId);
         verifyAndFinish(transaction);
       }
     });
+    // Wire up cleanup: remove this per-purchase handler when the promise settles
+    cleanupHandler = () => { try { approvedWhen.remove?.(); } catch (_) {} };
     
     // Initiate the purchase
     try {
@@ -835,21 +815,16 @@ export const purchase = async (productId) => {
             
             if (isAlreadyOwned) {
               console.log("[IAP] 'Already owned' error - treating as SUCCESS");
-              setLocalPremiumState(true, product.planType);
-              
-              import("./premiumStateService").then(({ markPremiumActivated }) => {
-                markPremiumActivated(product.planType);
-              });
-              
               logEvent(ANALYTICS_EVENTS.PURCHASE_VERIFIED_SERVER, { productId: product.id, platform: platformType, alreadyOwned: true });
-              
-              safeResolve({ 
-                success: true, 
-                platform: platformType, 
-                productId: product.id,
-                planType: product.planType,
-                alreadyOwned: true,
-                message: "You already own this product!"
+              activatePremiumEntitlement("purchase-order-already-owned", product.planType).then(() => {
+                safeResolve({ 
+                  success: true, 
+                  platform: platformType, 
+                  productId: product.id,
+                  planType: product.planType,
+                  alreadyOwned: true,
+                  message: "You already own this product!"
+                });
               });
               return;
             }
