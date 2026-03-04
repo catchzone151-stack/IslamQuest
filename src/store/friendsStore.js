@@ -223,8 +223,15 @@ export const useFriendsStore = create((set, get) => ({
         leaderboardLoading: false,
       });
 
-      // Patch the current user's row with live store data so the leaderboard
-      // always reflects the latest username/avatar/xp/streak without a restart.
+    } catch (err) {
+      console.error("[FriendsStore] loadLeaderboard error:", err?.message || err);
+      set({ leaderboardLoading: false, leaderboardError: err?.message || "Failed to load leaderboard" });
+    }
+
+    // Patch the current user's row with live store data AFTER the main fetch/catch,
+    // so any error here never touches leaderboardError or hides the leaderboard.
+    try {
+      const { userId } = useUserStore.getState();
       if (userId) {
         const { username, avatar, name } = useUserStore.getState();
         const { xp, streak } = useProgressStore.getState();
@@ -235,9 +242,8 @@ export const useFriendsStore = create((set, get) => ({
           streak,
         });
       }
-    } catch (err) {
-      console.error("[FriendsStore] loadLeaderboard error:", err?.message || err);
-      set({ leaderboardLoading: false, leaderboardError: err?.message || "Failed to load leaderboard" });
+    } catch (patchErr) {
+      console.warn("[FriendsStore] updateCurrentUserData patch failed (non-fatal):", patchErr?.message);
     }
   },
 

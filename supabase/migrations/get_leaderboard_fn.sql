@@ -44,7 +44,8 @@ $$;
 
 GRANT EXECUTE ON FUNCTION public.get_profiles_by_ids(text[]) TO authenticated, anon;
 
--- 3. User search by handle or username — only searches verified accounts
+-- 3. User search by handle or username — searches all registered accounts
+--    (not restricted to email-confirmed) so friends can be found before they verify
 CREATE OR REPLACE FUNCTION public.search_profiles(search_query text)
 RETURNS json
 SECURITY DEFINER
@@ -54,7 +55,7 @@ AS $$
   SELECT json_agg(t)
   FROM (
     SELECT DISTINCT user_id::text, username, handle, avatar, xp, streak
-    FROM profiles_verified
+    FROM profiles
     WHERE handle ILIKE '%' || search_query || '%'
        OR username ILIKE '%' || search_query || '%'
     LIMIT 20
