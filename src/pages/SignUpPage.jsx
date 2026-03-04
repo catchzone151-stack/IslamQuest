@@ -55,7 +55,7 @@ export default function SignUpPage() {
         });
       } catch (err) {
         console.error("[Async Error]", err);
-        setHandleStatus({ checking: false, available: null, error: null });
+        setHandleStatus({ checking: false, available: null, error: "Could not verify username. Please try again." });
       }
     }, 500);
 
@@ -466,7 +466,13 @@ export default function SignUpPage() {
               style={{
                 width: "100%",
                 background: "rgba(11, 30, 54, 0.8)",
-                border: "1px solid rgba(255,255,255,0.1)",
+                border: `1px solid ${
+                  password.length === 0
+                    ? "rgba(255,255,255,0.1)"
+                    : isValidPassword
+                    ? "#22c55e"
+                    : "#ef4444"
+                }`,
                 borderRadius: "12px",
                 padding: "12px 42px 12px 42px",
                 color: "#fff",
@@ -491,6 +497,11 @@ export default function SignUpPage() {
               {showPassword ? <EyeOff size={18} color="rgba(255,255,255,0.4)" /> : <Eye size={18} color="rgba(255,255,255,0.4)" />}
             </button>
           </div>
+          {password.length > 0 && !isValidPassword && (
+            <p style={{ color: "#ef4444", fontSize: "0.75rem", marginTop: 4 }}>
+              Password must be at least 8 characters
+            </p>
+          )}
         </div>
 
         <div style={{ marginBottom: "18px" }}>
@@ -590,24 +601,6 @@ export default function SignUpPage() {
             {errorMsg}
           </motion.p>
         )}
-
-        {console.log({
-          displayName,
-          username: handle,
-          usernameAvailable: handleStatus.available,
-          handleChecking: handleStatus.checking,
-          email,
-          password,
-          confirmPassword,
-          avatar: selectedAvatar,
-          formValid: isFormValid,
-          isValidName,
-          isValidHandle,
-          isValidEmail,
-          isValidPassword,
-          isPasswordsMatch,
-          hasAvatar,
-        })}
 
         <motion.button
           whileTap={{ scale: 0.98 }}

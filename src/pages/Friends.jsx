@@ -1367,11 +1367,7 @@ export default function Friends() {
                         action={
                           buttonState === "add" ? (
                             <ActionButton
-                              onClick={() => {
-                                console.log("Friend search result:", user);
-                                console.log("Target user id:", user.user_id, user.id);
-                                handleSendRequest(user.user_id || user.id);
-                              }}
+                              onClick={() => handleSendRequest(user.user_id || user.id)}
                               icon={<UserPlus size={16} />}
                               label="Add"
                               color="#10b981"
