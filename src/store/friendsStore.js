@@ -268,6 +268,12 @@ export const useFriendsStore = create((set, get) => ({
         return { success: false, error: "You cannot add yourself" };
       }
 
+      const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+      if (!targetUserId || typeof targetUserId !== "string" || !UUID_RE.test(targetUserId)) {
+        console.error("[sendFriendRequest] Invalid target_user_id — aborting RPC:", targetUserId);
+        return { success: false, error: "Invalid user ID" };
+      }
+
       const { data, error: rpcErr } = await supabase.rpc("send_friend_request", { target_user_id: targetUserId });
 
       if (rpcErr) {
