@@ -453,6 +453,10 @@ export const useProgressStore = create((set, get) => ({
         console.log(`[${STREAK_TRACE}] CHECK_OPEN_SKIP no_streak_date`);
         return;
       }
+      if (streak === 0) {
+        console.log(`[${STREAK_TRACE}] CHECK_OPEN_SKIP no_active_streak`);
+        return;
+      }
       if (lastStreakDate === today) {
         console.log(`[${STREAK_TRACE}] CHECK_OPEN_SKIP already_active_today`);
         return;
