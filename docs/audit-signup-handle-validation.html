@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IslamQuest – Signup & Handle Validation Audit</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #0a1628;
+      --navy2:  #111d35;
+      --gold:   #c9a227;
+      --gold2:  #e8c547;
+      --text:   #1a2540;
+      --muted:  #5a6a8a;
+      --border: #d6dde8;
+      --bg:     #f4f6fb;
+      --white:  #ffffff;
+      --green:  #16a34a;
+      --red:    #dc2626;
+      --amber:  #d97706;
+    }
+
+    html { font-size: 15px; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      padding: 40px 20px 80px;
+    }
+
+    /* ── PAGE WRAPPER ── */
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: 0 4px 40px rgba(10,22,40,.10);
+      overflow: hidden;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: linear-gradient(135deg, var(--navy) 0%, #1b3060 100%);
+      padding: 48px 52px 40px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      right: -60px; top: -60px;
+      width: 260px; height: 260px;
+      border-radius: 50%;
+      background: rgba(201,162,39,.12);
+    }
+    .logo-line {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .logo-dot {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .logo-name {
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      opacity: .85;
+    }
+    header h1 {
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+    header h1 span { color: var(--gold2); }
+    header p {
+      font-size: .9rem;
+      opacity: .65;
+      max-width: 460px;
+    }
+    .meta-row {
+      display: flex;
+      gap: 28px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .meta-label {
+      font-size: .7rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      opacity: .5;
+    }
+    .meta-value {
+      font-size: .85rem;
+      font-weight: 600;
+      opacity: .9;
+    }
+
+    /* ── CONTENT ── */
+    .content { padding: 44px 52px 52px; }
+
+    /* ── SECTION ── */
+    section { margin-bottom: 44px; }
+    section:last-child { margin-bottom: 0; }
+
+    .section-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px; height: 26px;
+      background: var(--navy);
+      color: #fff;
+      border-radius: 6px;
+      font-size: .72rem;
+      font-weight: 700;
+      margin-right: 10px;
+      flex-shrink: 0;
+      vertical-align: middle;
+    }
+
+    h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 18px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+    }
+
+    h3 {
+      font-size: .88rem;
+      font-weight: 600;
+      color: var(--navy2);
+      margin: 18px 0 8px;
+    }
+
+    p { font-size: .9rem; color: #2d3a56; margin-bottom: 10px; }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── CALLOUT BOXES ── */
+    .callout {
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: .88rem;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .callout-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+    .callout-body { flex: 1; }
+    .callout-body strong { display: block; margin-bottom: 3px; font-size: .87rem; }
+    .callout-body p { font-size: .85rem; margin: 0; }
+
+    .callout.warn  { background: #fef9ec; border-left: 4px solid var(--amber); }
+    .callout.ok    { background: #f0fdf4; border-left: 4px solid var(--green); }
+    .callout.risk  { background: #fef2f2; border-left: 4px solid var(--red); }
+    .callout.info  { background: #eff6ff; border-left: 4px solid #3b82f6; }
+
+    /* ── TABLE ── */
+    .table-wrap { overflow-x: auto; margin: 18px 0; border-radius: 10px; border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+    thead { background: var(--navy); color: #fff; }
+    thead th { padding: 11px 16px; text-align: left; font-weight: 600; font-size: .8rem; letter-spacing: .04em; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:nth-child(even) { background: #f8fafd; }
+    td { padding: 10px 16px; vertical-align: top; color: #2d3a56; }
+    td:first-child { font-weight: 500; color: var(--navy2); }
+
+    /* ── BADGE ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-size: .75rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .badge.green  { background: #dcfce7; color: #15803d; }
+    .badge.red    { background: #fee2e2; color: #b91c1c; }
+    .badge.amber  { background: #fef3c7; color: #92400e; }
+    .badge.blue   { background: #dbeafe; color: #1d4ed8; }
+    .badge.grey   { background: #f1f5f9; color: #475569; }
+
+    /* ── CODE ── */
+    pre {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 10px;
+      padding: 18px 20px;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: .78rem;
+      line-height: 1.7;
+      overflow-x: auto;
+      margin: 14px 0;
+    }
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background: #eef2fa;
+      color: #1a2d72;
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: .82em;
+    }
+    .kw   { color: #93c5fd; }
+    .str  { color: #86efac; }
+    .cmt  { color: #64748b; font-style: italic; }
+    .fn   { color: #fde68a; }
+    .num  { color: #f9a8d4; }
+
+    /* ── FLOW DIAGRAM ── */
+    .flow {
+      background: #f8fafd;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin: 14px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .8rem;
+      line-height: 2;
+      color: #1e3a5f;
+    }
+    .flow .step   { color: var(--navy); font-weight: 600; }
+    .flow .arrow  { color: var(--gold); margin: 0 6px; }
+    .flow .note   { color: var(--muted); font-size: .74rem; margin-left: 22px; display: block; }
+    .flow .indent { margin-left: 20px; display: block; }
+    .flow .indent2{ margin-left: 40px; display: block; }
+
+    /* ── SUMMARY GRID ── */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .summary-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .summary-card .icon { font-size: 1.1rem; flex-shrink: 0; }
+    .summary-card .label { font-size: .78rem; font-weight: 700; color: var(--navy2); margin-bottom: 2px; }
+    .summary-card .desc  { font-size: .78rem; color: var(--muted); }
+    .summary-card.ok    { border-color: #86efac; background: #f0fdf4; }
+    .summary-card.warn  { border-color: #fcd34d; background: #fffbeb; }
+    .summary-card.bad   { border-color: #fca5a5; background: #fff5f5; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      margin-top: 44px;
+      padding-top: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: .75rem;
+      color: var(--muted);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: #fff; padding: 0; }
+      .page { box-shadow: none; border-radius: 0; }
+      .content { padding: 32px 44px; }
+      header { padding: 36px 44px 30px; }
+      pre { white-space: pre-wrap; }
+      .no-print { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      header, .content { padding-left: 24px; padding-right: 24px; }
+      .summary-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo-line">
+      <div class="logo-dot">☪</div>
+      <span class="logo-name">IslamQuest</span>
+    </div>
+    <h1>Signup &amp; Handle Validation<br/><span>Audit Report</span></h1>
+    <p>A read-only diagnostic of frontend handle checking, server-side constraints, and race-condition risk across the signup flow.</p>
+    <div class="meta-row">
+      <div class="meta-item">
+        <span class="meta-label">Date</span>
+        <span class="meta-value">5 March 2026</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Scope</span>
+        <span class="meta-value">SignUpPage · AuthPage · DB Trigger · SQL Migrations</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Status</span>
+        <span class="meta-value">Diagnosis Only — No Files Modified</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- SECTION 1 -->
+    <section>
+      <h2><span class="section-num">1</span>Handle Availability Check — Frontend</h2>
+
+      <p>Handle checking is implemented entirely in <code>SignUpPage.jsx</code>, using <code>checkHandleAvailable()</code> from <code>useOnboarding.js</code>. <code>AuthPage.jsx</code> is a login-only screen and has no involvement in handle validation.</p>
+
+      <h3>When it fires</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Trigger</th>
+              <th>Active?</th>
+              <th>Detail</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>While typing</td>
+              <td><span class="badge green">✓ Yes</span></td>
+              <td><code>useEffect</code> on <code>handle</code> state — debounced 500 ms. Fires on every keystroke after the debounce window.</td>
+            </tr>
+            <tr>
+              <td>On blur (field focus-out)</td>
+              <td><span class="badge red">✗ No</span></td>
+              <td>No <code>onBlur</code> handler exists on the handle input.</td>
+            </tr>
+            <tr>
+              <td>Before submit</td>
+              <td><span class="badge green">✓ Yes</span></td>
+              <td>An explicit second call to <code>checkHandleAvailable()</code> runs inside <code>handleSignUp()</code> before <code>supabase.auth.signUp()</code> is invoked. This guards against stale debounce state.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>How the check works</h3>
+      <p><code>checkHandleAvailable()</code> in <code>useOnboarding.js</code> calls the <code>check_handle_available</code> Supabase RPC. The RPC is <code>SECURITY DEFINER</code>, so it bypasses Row Level Security and works for unauthenticated users on the signup page (a direct table query would return empty results due to RLS, creating a false "available" result).</p>
+
+      <pre><span class="cmt">-- check_handle_available_fn.sql</span>
+<span class="kw">CREATE OR REPLACE FUNCTION</span> <span class="fn">check_handle_available</span>(
+  p_handle       TEXT,
+  p_current_user_id UUID <span class="kw">DEFAULT</span> <span class="kw">NULL</span>
+)
+<span class="kw">RETURNS</span> BOOLEAN
+<span class="kw">SECURITY DEFINER</span>
+<span class="kw">AS</span> $$
+<span class="kw">BEGIN</span>
+  <span class="kw">RETURN NOT EXISTS</span> (
+    <span class="kw">SELECT</span> <span class="num">1</span> <span class="kw">FROM</span> profiles
+    <span class="kw">WHERE</span> LOWER(handle) = LOWER(TRIM(p_handle))
+    <span class="kw">AND</span> (p_current_user_id <span class="kw">IS NULL OR</span> user_id != p_current_user_id)
+  );
+<span class="kw">END</span>;
+$$;</pre>
+
+      <div class="callout ok">
+        <span class="callout-icon">✅</span>
+        <div class="callout-body">
+          <strong>Case-insensitive matching</strong>
+          <p>The <code>LOWER()</code> wrapping means "Lal" and "lal" are treated as the same handle.</p>
+        </div>
+      </div>
+
+      <div class="callout ok">
+        <span class="callout-icon">✅</span>
+        <div class="callout-body">
+          <strong>Fails closed on error</strong>
+          <p>Any RPC error or exception returns <code>{ available: false }</code>, preventing a false positive from blocking a user into a taken handle.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2 -->
+    <section>
+      <h2><span class="section-num">2</span>Server-Side Duplicate Protection</h2>
+
+      <p>No <code>UNIQUE</code> constraint on <code>profiles.handle</code> is defined in any local SQL migration file. However, <code>create_profile_if_missing</code> (the post-confirmation recovery RPC) explicitly catches <code>WHEN unique_violation</code> and comments <em>"Handle was taken — fall back to generated handle"</em>.</p>
+
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body">
+          <strong>Constraint exists but is not version-controlled</strong>
+          <p>The UNIQUE constraint on <code>handle</code> almost certainly exists in the live Supabase schema (set up via the dashboard), but it does not appear in any <code>supabase/migrations/</code> file. If the database is ever recreated from the local migrations alone, the constraint would be missing.</p>
+        </div>
+      </div>
+
+      <h3>Race condition window</h3>
+      <p>The final handle re-check and the actual account creation are <strong>not atomic</strong>. The sequence is:</p>
+
+      <div class="flow">
+        <span class="step">User A</span> <span class="arrow">→</span> <code>checkHandleAvailable("zayd")</code> <span class="arrow">→</span> returns true
+        <span class="indent step">User B</span> <span class="indent arrow" style="margin-left:0">→</span> <code>checkHandleAvailable("zayd")</code> <span class="arrow">→</span> returns true
+        <span class="indent2 step">User A</span> <span class="arrow">→</span> <code>supabase.auth.signUp()</code> <span class="arrow">→</span> trigger inserts <code>handle = "zayd"</code>
+        <span class="indent2 step">User B</span> <span class="arrow">→</span> <code>supabase.auth.signUp()</code> <span class="arrow">→</span> trigger hits unique_violation
+        <span class="note">↳ If UNIQUE constraint exists: User B silently receives <code>handle = "user_ab3f9c12"</code> with no error shown.</span>
+        <span class="note">↳ If no UNIQUE constraint: both users end up with <code>handle = "zayd"</code> — a true duplicate.</span>
+      </div>
+
+      <div class="callout risk">
+        <span class="callout-icon">🔴</span>
+        <div class="callout-body">
+          <strong>Silent handle swap is a UX problem</strong>
+          <p>When a collision occurs, the user is never informed that their chosen handle was replaced. They complete signup and later discover they have a generated handle (<code>user_ab3f9c12</code>) instead of the one they picked. The signup screen shows no error.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3 -->
+    <section>
+      <h2><span class="section-num">3</span>Full Signup Flow</h2>
+
+      <p><code>AuthPage.jsx</code> is a <strong>login-only</strong> screen. Signup is entirely self-contained in <code>SignUpPage.jsx</code>. The flow is:</p>
+
+      <div class="flow">
+        <span class="step">SignUpPage.jsx</span>
+        <span class="indent arrow">↓</span> <code>checkHandleAvailable()</code> — debounced while typing
+        <span class="indent arrow">↓</span> Submit button clicked
+        <span class="indent2 arrow">↓</span> <code>checkHandleAvailable()</code> — final synchronous re-check
+        <span class="indent2 arrow">↓</span> <code>supabase.auth.signUp({ email, password, options.data: { ... } })</code>
+        <span class="indent2 note">↳ Supabase creates auth.users row with raw_user_meta_data</span>
+        <span class="indent2 arrow">↓</span> <strong>DB trigger fires</strong> (<code>handle_new_user</code>) — inserts into profiles <em>(see §5)</em>
+        <span class="indent2 arrow">↓</span> Email confirmation sent to user
+        <span class="indent2 arrow">↓</span> User clicks link → <strong>CheckEmailScreen.jsx</strong> or <strong>LoginPage.jsx</strong>
+        <span class="indent2 arrow">↓</span> <code>create_profile_if_missing()</code> RPC called with metadata as fallback
+        <span class="indent2 note">↳ Reads desired_username, desired_handle, desired_avatar_index from user_metadata</span>
+      </div>
+    </section>
+
+    <!-- SECTION 4 -->
+    <section>
+      <h2><span class="section-num">4</span>Metadata Storage During Signup</h2>
+
+      <p><strong>Confirmed.</strong> <code>SignUpPage.jsx</code> passes all three fields in <code>options.data</code>, which Supabase stores as <code>raw_user_meta_data</code> on the <code>auth.users</code> row and exposes as <code>user.user_metadata</code> on the client.</p>
+
+      <pre><span class="cmt">// SignUpPage.jsx — lines 155–166</span>
+<span class="kw">const</span> { data, error } = <span class="kw">await</span> supabase.auth.<span class="fn">signUp</span>({
+  email: email.trim().<span class="fn">toLowerCase</span>(),
+  password,
+  options: {
+    emailRedirectTo: redirectUrl,
+    <span class="str">data</span>: {
+      desired_username:     trimmedName,
+      desired_handle:       trimmedHandle,
+      desired_avatar_index: <span class="fn">avatarKeyToIndex</span>(avatarKey),  <span class="cmt">// integer</span>
+    },
+  },
+});</pre>
+
+      <div class="callout ok">
+        <span class="callout-icon">✅</span>
+        <div class="callout-body">
+          <strong>Metadata is durable</strong>
+          <p>Because the values are stored in <code>auth.users.raw_user_meta_data</code> on the server, they survive a fresh device install. The profile recovery code in <code>CheckEmailScreen.jsx</code> and <code>LoginPage.jsx</code> can read them without relying on <code>localStorage</code>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5 & 6 -->
+    <section>
+      <h2><span class="section-num">5</span>Database Trigger Behaviour</h2>
+
+      <p>The trigger function <code>handle_new_user</code> is <strong>not present in any local SQL migration file</strong>. It exists only in the live Supabase dashboard and cannot be directly inspected from this codebase. The following conclusions are drawn from production evidence.</p>
+
+      <h3>Does the trigger read <code>desired_*</code> metadata?</h3>
+
+      <div class="callout risk">
+        <span class="callout-icon">🔴</span>
+        <div class="callout-body">
+          <strong>Almost certainly not</strong>
+          <p>Multiple accounts in the production leaderboard display <code>username = "User_27bd80"</code> and <code>username = "User_ad1005"</code> — placeholder values consistent with a trigger that ignores <code>raw_user_meta_data</code> and falls back to defaults. If the trigger correctly read <code>desired_username</code>, these accounts would show real names.</p>
+        </div>
+      </div>
+
+      <h3>What the trigger appears to produce</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Column</th><th>Value Written</th><th>Source</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>username</code></td>
+              <td><code>'User_' + first 6 chars of user_id</code></td>
+              <td>Trigger default — metadata ignored</td>
+            </tr>
+            <tr>
+              <td><code>handle</code></td>
+              <td><code>'user_' + first 8 chars of user_id</code> or <code>NULL</code></td>
+              <td>Trigger default — metadata ignored</td>
+            </tr>
+            <tr>
+              <td><code>avatar</code></td>
+              <td><code>0</code> (first avatar)</td>
+              <td>Trigger default — metadata ignored</td>
+            </tr>
+            <tr>
+              <td><code>xp</code>, <code>coins</code>, <code>streak</code></td>
+              <td><code>0</code></td>
+              <td>Correct defaults</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Recovery path</h3>
+      <p>The app recovers the correct username/handle/avatar through two mechanisms:</p>
+      <ol style="margin: 8px 0 0 20px; font-size:.88rem; color:#2d3a56; line-height:2;">
+        <li><strong><code>create_profile_if_missing</code> RPC</strong> — called post-email-confirmation. Reads <code>desired_username</code>, <code>desired_handle</code>, <code>desired_avatar_index</code> from <code>user_metadata</code> and patches the profile row.</li>
+        <li><strong><code>useUserStore.init()</code> recovery</strong> — detects <code>/^User($|[_\s\d])/i</code> pattern and overwrites with metadata values on every login.</li>
+      </ol>
+
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body">
+          <strong>Recovery is not guaranteed to be instant</strong>
+          <p>Between trigger creation and the first login + email confirmation, the user's profile row exists in the DB with placeholder values. Any query that runs in that window (leaderboard, friend search, friend list) will display the placeholder name and default avatar for that user.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 7 -->
+    <section>
+      <h2><span class="section-num">7</span>UI-Only Validation Risk</h2>
+
+      <p>From what is visible in the local codebase, handle uniqueness is protected by:</p>
+      <ul style="margin: 8px 0 0 20px; font-size:.88rem; color:#2d3a56; line-height:2.1;">
+        <li>The <code>check_handle_available</code> RPC (a plain <code>SELECT</code>, not enforced by a constraint)</li>
+        <li>A probable — but unconfirmed from local files — <code>UNIQUE</code> constraint in the live DB</li>
+      </ul>
+
+      <p>If the UNIQUE constraint does not exist, two simultaneous submissions with the same handle would <strong>both succeed</strong>, creating a true duplicate. There would be no error and no notification to either user.</p>
+
+      <p>If the UNIQUE constraint exists, a collision triggers the <code>unique_violation</code> fallback in <code>create_profile_if_missing</code>, silently replacing the chosen handle with a generated one. The user is never told.</p>
+    </section>
+
+    <!-- SECTION 8 — SUMMARY -->
+    <section>
+      <h2><span class="section-num">8</span>Summary Findings</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Finding</th><th>Status</th><th>Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Handle checked while typing</td>
+              <td><span class="badge green">✓ Pass</span></td>
+              <td>500 ms debounce via <code>useEffect</code></td>
+            </tr>
+            <tr>
+              <td>Handle checked on blur</td>
+              <td><span class="badge grey">– Missing</span></td>
+              <td>No <code>onBlur</code> handler — gap between typing stop and 500 ms fire</td>
+            </tr>
+            <tr>
+              <td>Handle re-checked before submit</td>
+              <td><span class="badge green">✓ Pass</span></td>
+              <td>Explicit final call inside <code>handleSignUp()</code></td>
+            </tr>
+            <tr>
+              <td>Check is atomic with account creation</td>
+              <td><span class="badge red">✗ No</span></td>
+              <td>Race window exists between re-check and <code>signUp()</code></td>
+            </tr>
+            <tr>
+              <td>UNIQUE constraint on <code>handle</code> in DB</td>
+              <td><span class="badge amber">⚠ Unconfirmed</span></td>
+              <td>Implied by fallback code; absent from all local migration files</td>
+            </tr>
+            <tr>
+              <td>Duplicate handles possible</td>
+              <td><span class="badge amber">⚠ Conditional</span></td>
+              <td>If UNIQUE missing: yes. If present: prevented but user gets silent fallback handle</td>
+            </tr>
+            <tr>
+              <td>Trigger reads <code>desired_handle</code> / <code>desired_username</code> / <code>desired_avatar_index</code></td>
+              <td><span class="badge red">✗ No</span></td>
+              <td>Trigger ignores metadata; uses defaults. Production data confirms this.</td>
+            </tr>
+            <tr>
+              <td>Trigger creates profiles with placeholder names</td>
+              <td><span class="badge red">✓ Confirmed</span></td>
+              <td><code>User_27bd80</code>, <code>User_ad1005</code> etc. visible in production</td>
+            </tr>
+            <tr>
+              <td>Metadata stored in <code>auth.users.raw_user_meta_data</code></td>
+              <td><span class="badge green">✓ Pass</span></td>
+              <td>All three <code>desired_*</code> fields passed via <code>options.data</code></td>
+            </tr>
+            <tr>
+              <td>Recovery path exists post-confirmation</td>
+              <td><span class="badge green">✓ Pass</span></td>
+              <td><code>create_profile_if_missing</code> RPC + <code>useUserStore.init()</code> both patch the row</td>
+            </tr>
+            <tr>
+              <td>UNIQUE constraint version-controlled</td>
+              <td><span class="badge red">✗ No</span></td>
+              <td>Not in any <code>supabase/migrations/</code> file — dashboard-only</td>
+            </tr>
+            <tr>
+              <td>Silent handle swap notified to user on collision</td>
+              <td><span class="badge red">✗ No</span></td>
+              <td>User completes signup and later discovers a generated handle</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer>
+      <span>IslamQuest Internal Audit — Signup &amp; Handle Validation</span>
+      <span>Generated 5 March 2026 · Read-only diagnostic · No code was modified</span>
+    </footer>
+
+  </div>
+</div>
+
+</body>
+</html>
