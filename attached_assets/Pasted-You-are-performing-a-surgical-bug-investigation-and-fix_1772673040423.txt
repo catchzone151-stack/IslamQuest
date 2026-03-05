@@ -1,0 +1,109 @@
+You are performing a **surgical bug investigation and fix** in my app. Do not refactor unrelated code. Only diagnose and fix the exact issue described.
+
+Problem:
+A brand-new user account correctly shows `xp = 0`, `coins = 0`, `streak = 0` in Supabase, but the **client app UI still shows old progress values** from a previous account even after uninstalling the app and reinstalling. This means **local persisted progress state is overriding cloud data**.
+
+Goal:
+
+1. Diagnose exactly where local progress state is being hydrated.
+2. Ensure that **Supabase profile values always overwrite any local cached values** on login or signup.
+3. Ensure that **progress state is reset when a different user logs in**.
+
+Steps to perform:
+
+1. Locate the progress persistence layer (likely Zustand persist or similar). Search the project for:
+
+   * `persist(`
+   * `useProgressStore`
+   * `localStorage`
+   * `hydrate`
+   * `loadFromSupabase`
+   * `mergeProfileData`
+
+2. Identify where the progress store loads cached values from localStorage or IndexedDB.
+
+3. Modify the login/signup flow so that **cloud data always wins**. After a user successfully authenticates, fetch their profile and overwrite local progress state.
+
+Required logic:
+
+```javascript
+const { data } = await supabase
+  .from("profiles")
+  .select("xp, coins, streak, shield_count")
+  .eq("user_id", user.id)
+  .single();
+
+useProgressStore.setState({
+  xp: data?.xp ?? 0,
+  coins: data?.coins ?? 0,
+  streak: data?.streak ?? 0,
+  shieldCount: data?.shield_count ?? 0
+});
+```
+
+4. Add a **user isolation safeguard** so cached progress cannot leak across accounts.
+
+Store the last synced user id:
+
+```javascript
+localStorage.setItem("iq_last_sync_user_id", user.id);
+```
+
+When the app loads:
+
+```
+const lastUser = localStorage.getItem("iq_last_sync_user_id");
+if (lastUser !== currentUser.id) {
+  useProgressStore.setState({
+    xp: 0,
+    coins: 0,
+    streak: 0,
+    shieldCount: 0
+  });
+}
+```
+
+5. Ensure **no code copies local progress into Supabase during signup**.
+
+Remove any logic like:
+
+```
+const progressState = useProgressStore.getState()
+xp: progressState.xp
+coins: progressState.coins
+```
+
+New accounts must always start with:
+
+```
+xp = 0
+coins = 0
+streak = 0
+```
+
+6. Add temporary console logs for verification:
+
+```
+console.log("Local progress hydrated:", useProgressStore.getState());
+console.log("Cloud profile loaded:", data);
+```
+
+7. After implementing the fix, verify this scenario works:
+
+Test sequence:
+
+* Delete account
+* Clear app storage
+* Reinstall app
+* Create new user
+* Confirm UI shows `0 xp / 0 coins / 0 streak`
+* Confirm Supabase and UI match
+
+Important rules:
+
+* Do not change database schema.
+* Do not modify leaderboard logic.
+* Only modify the client progress hydration and sync logic.
+
+Output:
+Show exactly which files were changed and the code patches applied.

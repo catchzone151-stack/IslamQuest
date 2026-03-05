@@ -78,16 +78,18 @@ export function mergeProfileData(cloud) {
 
   const store = useProgressStore.getState();
 
-  // If local data was written by a different account (e.g. device reinstall),
-  // treat localTs as 0 so the incoming cloud profile always wins.
+  // Cloud always wins unless we can positively confirm local data belongs to THIS
+  // user.  A null marker (never-synced or older app version) is treated the same
+  // as a mismatch so cross-account XP leakage cannot occur.
   const currentUserId = useUserStore.getState().userId;
   const lastSyncUserId = localStorage.getItem("iq_last_sync_user_id");
-  const localTs = lastSyncUserId && lastSyncUserId !== currentUserId
-    ? 0
-    : store.getLastUpdatedAt();
+  const localTs = lastSyncUserId === currentUserId
+    ? store.getLastUpdatedAt()
+    : 0;
 
-  if (lastSyncUserId && lastSyncUserId !== currentUserId) {
-    console.log("[ProfileSync] Different userId detected — ignoring stale local data.");
+  if (lastSyncUserId !== currentUserId) {
+    console.log("[ProfileSync] Unknown or different userId — cloud wins.",
+      { lastSyncUserId, currentUserId });
   }
 
   const cloudTs = cloud.updated_at ? new Date(cloud.updated_at).getTime() : 0;

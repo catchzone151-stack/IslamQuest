@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Eye, EyeOff, Mail, Lock, User, AtSign, ArrowLeft, Check, X } from "lucide-react";
 import { supabase } from "../lib/supabaseClient";
 import { useUserStore } from "../store/useUserStore";
+import { useProgressStore } from "../store/progressStore";
 import { avatarKeyToIndex } from "../utils/avatarUtils";
 import { AVAILABLE_AVATARS } from "../utils/avatarUtils";
 import { useOnboarding } from "../hooks/useOnboarding";
@@ -183,6 +184,17 @@ export default function SignUpPage() {
       if (data?.user) {
         console.log("[SignUp] Auth user created:", data.user.id);
 
+        // ── New account: always start with zero progress ────────────────────
+        // Reset before anything else so the UI never shows a previous account's
+        // cached values.  Also claim this device for the new userId so the
+        // cross-account guard in loadFromSupabase/mergeProfileData works
+        // immediately on the next sync without waiting for a full sync round.
+        useProgressStore.setState({ xp: 0, coins: 0, streak: 0, shieldCount: 0 });
+        localStorage.setItem("iq_last_sync_user_id", data.user.id);
+        console.log("[SignUp] Progress reset to zero for new account:", data.user.id);
+        console.log("[SignUp] Local progress hydrated:", useProgressStore.getState());
+        // ────────────────────────────────────────────────────────────────────
+
         setDisplayName(trimmedName);
         setStoreHandle(trimmedHandle);
         setStoreAvatar(avatarKey);
@@ -205,8 +217,9 @@ export default function SignUpPage() {
           emailVerified: !!data.user?.email_confirmed_at,
         });
 
-        // If we have a session (auto-confirm on), write the correct values to the
-        // profile immediately — the DB trigger may have set wrong/default values.
+        // If we have a session (auto-confirm on), write the correct identity values
+        // to the profile immediately, then pull the cloud profile to confirm
+        // progress is 0 on both cloud and device.
         if (data.session) {
           setTimeout(async () => {
             try {
@@ -220,6 +233,10 @@ export default function SignUpPage() {
                 })
                 .eq("user_id", data.user.id);
               console.log("[SignUp] Profile fields written immediately after sign-up");
+
+              // Pull cloud profile so progress state reflects what Supabase actually holds.
+              await useProgressStore.getState().loadFromSupabase();
+              console.log("[SignUp] Cloud profile loaded:", useProgressStore.getState());
             } catch (e) {
               console.warn("[SignUp] Immediate profile write failed (will be recovered later):", e);
             }

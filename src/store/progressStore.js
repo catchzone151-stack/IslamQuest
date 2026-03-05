@@ -1385,16 +1385,18 @@ export const useProgressStore = create((set, get) => ({
 
       const cloudTs = new Date(data.updated_at).getTime();
 
-      // If the localStorage data belongs to a DIFFERENT user (e.g. reinstall on
-      // a device that still had another account's data), treat localTs as 0 so
-      // the cloud profile always wins and cross-account XP leakage cannot occur.
+      // Cloud always wins unless we can positively confirm that local data belongs
+      // to THIS user (iq_last_sync_user_id matches).  A null marker (never-synced
+      // device or older app version that didn't write the marker) is treated the
+      // same as a mismatch so cross-account XP leakage cannot occur.
       const lastSyncUserId = localStorage.getItem("iq_last_sync_user_id");
-      const localTs = lastSyncUserId && lastSyncUserId !== userId
-        ? 0
-        : get().getLastUpdatedAt();
+      const localTs = lastSyncUserId === userId
+        ? get().getLastUpdatedAt()
+        : 0;
 
-      if (lastSyncUserId && lastSyncUserId !== userId) {
-        console.log("[ProgressStore] Different userId detected — ignoring stale local data and taking cloud profile.");
+      if (lastSyncUserId !== userId) {
+        console.log("[ProgressStore] Unknown or different userId — cloud profile wins.",
+          { lastSyncUserId, userId });
       }
 
       // Timestamp guard — cloud must be newer for a full restore
