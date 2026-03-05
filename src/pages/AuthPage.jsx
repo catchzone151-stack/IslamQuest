@@ -130,19 +130,11 @@ export default function AuthPage() {
           
           if (storedName && storedHandle) {
             // User completed onboarding but profile was created with old anonymous ID
-            // Create profile for the authenticated user
+            // Create profile for the authenticated user — always starts at 0 XP/coins/streak
             console.log("Creating profile for existing user with stored data...");
             
             // Convert avatar key to index for database (expects integer)
             const avatarIndex = avatarKeyToIndex(storedAvatar);
-            
-            // Get existing progress from localStorage/progressStore to preserve it
-            const progressState = useProgressStore.getState();
-            const localXp = progressState.xp || 0;
-            const localCoins = progressState.coins || 0;
-            const localStreak = progressState.streak || 0;
-            
-            console.log("Preserving local progress:", { xp: localXp, coins: localCoins, streak: localStreak });
             
             const { data: rawUpsertData, error: profileError } = await supabase
               .from("profiles")
@@ -151,9 +143,9 @@ export default function AuthPage() {
                 username: storedName,
                 handle: storedHandle,
                 avatar: avatarIndex,
-                xp: localXp,
-                coins: localCoins,
-                streak: localStreak,
+                xp: 0,
+                coins: 0,
+                streak: 0,
                 created_at: new Date().toISOString(),
               }, { onConflict: 'user_id' })
               .select()
@@ -193,12 +185,6 @@ export default function AuthPage() {
               isHydrated: true,
             });
             
-            // Sync full progress to cloud (includes lessonStates, paths)
-            setTimeout(() => {
-              useProgressStore.getState().syncToSupabase();
-              console.log("Progress synced to cloud after login");
-            }, 500);
-            
             setLoading(false);
             navigate("/");
           } else {
@@ -220,100 +206,6 @@ export default function AuthPage() {
           }
         }
         return;
-      } else {
-        const storedName = localStorage.getItem("iq_name") || useUserStore.getState().username || "Student";
-        const storedHandle = localStorage.getItem("iq_handle") || useUserStore.getState().handle;
-        const storedAvatar = localStorage.getItem("iq_avatar") || useUserStore.getState().avatar || "avatar_man_lantern";
-        
-        if (!storedHandle) {
-          console.error("Missing handle - redirecting to sign-up to start fresh");
-          setErrorMsg("Please complete your profile setup first.");
-          setLoading(false);
-          navigate("/signup");
-          return;
-        }
-        
-        const { data, error } = await supabase.auth.signUp({
-          email: email.trim().toLowerCase(),
-          password,
-        });
-
-        if (error) {
-          if (error.message.includes("already registered")) {
-            setErrorMsg("This email is already registered. Try logging in.");
-          } else {
-            setErrorMsg(error.message || "Could not create account.");
-          }
-          triggerShake();
-          setLoading(false);
-          return;
-        }
-
-        if (data?.user) {
-          const avatarIndex = avatarKeyToIndex(storedAvatar);
-          
-          const progressState = useProgressStore.getState();
-          const localXp = progressState.xp || 0;
-          const localCoins = progressState.coins || 0;
-          const localStreak = progressState.streak || 0;
-          
-          console.log("Preserving local progress on signup:", { xp: localXp, coins: localCoins, streak: localStreak });
-          
-          const { error: profileError } = await supabase
-            .from("profiles")
-            .upsert({
-              user_id: data.user.id,
-              username: storedName,
-              handle: storedHandle,
-              avatar: avatarIndex,
-              xp: localXp,
-              coins: localCoins,
-              streak: localStreak,
-              created_at: new Date().toISOString(),
-            }, { onConflict: 'user_id' });
-          
-          if (profileError) {
-            console.error("Profile creation error:", profileError);
-            setErrorMsg("Account created but profile setup failed. Please try logging in.");
-            setLoading(false);
-            return;
-          }
-          
-          console.log("PROFILE CREATED for user:", data.user.id);
-          
-          setDisplayName(storedName);
-          setHandle(storedHandle);
-          setAvatar(storedAvatar);
-          
-          useUserStore.setState({ 
-            user: data.user, 
-            userId: data.user.id,
-            username: storedName,
-            handle: storedHandle,
-            avatar: storedAvatar,
-            loading: false,
-            isHydrated: true,
-          });
-          
-          setTimeout(() => {
-            useProgressStore.getState().syncToSupabase();
-            console.log("Progress synced to cloud after signup");
-          }, 500);
-          
-          setLoading(false);
-          
-          setOnboarded(true);
-          localStorage.removeItem("iq_onboarding_step");
-          localStorage.setItem("iq_profile_complete", "true");
-          useUserStore.setState({ 
-            profileReady: true,
-            hasOnboarded: true,
-          });
-          navigate("/");
-        } else {
-          setLoading(false);
-          navigate("/");
-        }
       }
     } catch (err) {
       console.error("Auth error:", err);
@@ -424,14 +316,14 @@ export default function AuthPage() {
             Log In
           </button>
           <button
-            onClick={() => { setMode("signup"); setErrorMsg(""); }}
+            onClick={() => navigate("/signup")}
             style={{
               flex: 1,
               padding: "10px",
               borderRadius: "10px",
               border: "none",
-              background: !isLogin ? "linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%)" : "transparent",
-              color: !isLogin ? "#fff" : "rgba(255,255,255,0.5)",
+              background: "transparent",
+              color: "rgba(255,255,255,0.5)",
               fontWeight: 600,
               fontSize: "0.9rem",
               cursor: "pointer",

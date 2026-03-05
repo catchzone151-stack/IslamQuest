@@ -104,6 +104,16 @@ export default function Home() {
     }
   }, [needsRepairPrompt, showModal]);
 
+  // One-time handle collision notice (written by CheckEmailScreen / LoginPage when
+  // create_profile_if_missing assigned a fallback handle due to a race-condition clash)
+  useEffect(() => {
+    const notice = localStorage.getItem("iq_handle_collision_notice");
+    if (notice) {
+      localStorage.removeItem("iq_handle_collision_notice");
+      showModal(MODAL_TYPES.ERROR, { message: notice });
+    }
+  }, [showModal]);
+
   // New Year countdown timer (updates every minute to GMT)
   useEffect(() => {
     function calculateDiff() {

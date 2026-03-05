@@ -94,11 +94,20 @@ export default function LoginPage() {
       if (!profile) {
         console.log("[LoginPage] Profile not found after polling — calling create_profile_if_missing RPC");
         const meta = data.user.user_metadata || {};
-        await supabase.rpc("create_profile_if_missing", {
+        const { data: rpcResult } = await supabase.rpc("create_profile_if_missing", {
           p_username: meta.desired_username || "User",
           p_handle: meta.desired_handle || null,
           p_avatar_index: typeof meta.desired_avatar_index === "number" ? meta.desired_avatar_index : 0,
         });
+        if (rpcResult?.handle_collision) {
+          console.warn(
+            "[LoginPage] Handle collision — desired:", meta.desired_handle,
+            "assigned:", rpcResult.handle_used
+          );
+          localStorage.setItem("iq_handle_collision_notice",
+            `Your username @${meta.desired_handle} was already taken. You've been given @${rpcResult.handle_used}. You can change it in Profile settings.`
+          );
+        }
         profile = await checkProfileExists(data.user.id);
       }
 

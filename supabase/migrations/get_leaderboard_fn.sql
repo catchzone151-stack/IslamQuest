@@ -107,58 +107,69 @@ $$;
 
 GRANT EXECUTE ON FUNCTION public.send_friend_request(uuid) TO authenticated;
 
--- 5. Create profile if missing — called after email confirmation as a safe fallback
---    Inserts ONLY if no row exists for auth.uid(). Idempotent: safe to call multiple times.
---    If the desired handle is already taken, falls back to a generated handle.
-CREATE OR REPLACE FUNCTION public.create_profile_if_missing(
-  p_username text DEFAULT 'User',
-  p_handle text DEFAULT NULL,
-  p_avatar_index int DEFAULT 0
+-- 5. Create profile if missing — called after email confirmation as a safe fallback.
+--    Returns jsonb { handle_used, handle_collision } so callers can alert the user
+--    when their chosen handle was already taken and a fallback was substituted.
+--    NOTE: fix_handle_new_user_trigger.sql must be run first to add the
+--    UNIQUE index on lower(handle) and to update the trigger.
+DROP FUNCTION IF EXISTS public.create_profile_if_missing(text, text, int);
+
+CREATE FUNCTION public.create_profile_if_missing(
+  p_username     text DEFAULT 'User',
+  p_handle       text DEFAULT NULL,
+  p_avatar_index int  DEFAULT 0
 )
-RETURNS void
+RETURNS jsonb
 LANGUAGE plpgsql
 SECURITY DEFINER
 SET search_path = public
 AS $$
 DECLARE
-  v_user_id uuid := auth.uid();
-  v_handle text;
+  v_user_id          uuid    := auth.uid();
+  v_handle           text;
+  v_final_handle     text;
+  v_handle_collision boolean := false;
 BEGIN
   IF v_user_id IS NULL THEN
     RAISE EXCEPTION 'Not authenticated';
   END IF;
 
-  -- Nothing to do if profile already exists
+  -- Idempotent: if profile already exists, return its current handle.
   IF EXISTS (SELECT 1 FROM profiles WHERE user_id = v_user_id) THEN
-    RETURN;
+    SELECT handle INTO v_final_handle FROM profiles WHERE user_id = v_user_id;
+    RETURN jsonb_build_object('handle_used', v_final_handle, 'handle_collision', false);
   END IF;
 
-  v_handle := NULLIF(TRIM(COALESCE(p_handle, '')), '');
+  v_handle       := NULLIF(LOWER(TRIM(COALESCE(p_handle, ''))), '');
+  v_final_handle := COALESCE(v_handle, 'user_' || SUBSTR(v_user_id::text, 1, 8));
 
   BEGIN
     INSERT INTO profiles (user_id, username, handle, avatar, xp, coins, streak, created_at, updated_at)
     VALUES (
       v_user_id,
       COALESCE(NULLIF(TRIM(p_username), ''), 'User'),
-      COALESCE(v_handle, 'user_' || SUBSTR(v_user_id::text, 1, 8)),
+      v_final_handle,
       p_avatar_index,
       0, 0, 0,
       now(), now()
     );
   EXCEPTION
     WHEN unique_violation THEN
-      -- Handle was taken — fall back to generated handle based on user_id
+      v_handle_collision := true;
+      v_final_handle     := 'user_' || SUBSTR(v_user_id::text, 1, 8);
       INSERT INTO profiles (user_id, username, handle, avatar, xp, coins, streak, created_at, updated_at)
       VALUES (
         v_user_id,
         COALESCE(NULLIF(TRIM(p_username), ''), 'User'),
-        'user_' || SUBSTR(v_user_id::text, 1, 8),
+        v_final_handle,
         p_avatar_index,
         0, 0, 0,
         now(), now()
       )
       ON CONFLICT (user_id) DO NOTHING;
   END;
+
+  RETURN jsonb_build_object('handle_used', v_final_handle, 'handle_collision', v_handle_collision);
 END;
 $$;
 
