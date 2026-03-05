@@ -119,7 +119,8 @@ export default function AuthPage() {
             useProgressStore.getState().loadFromSupabase();
             console.log("Progress loaded from cloud after login");
           }, 100);
-          
+
+          await useProgressStore.getState().hydrateProgressFromCloud(data.user.id);
           setLoading(false);
           navigate("/");
         } else {
@@ -185,6 +186,7 @@ export default function AuthPage() {
               isHydrated: true,
             });
             
+            await useProgressStore.getState().hydrateProgressFromCloud(data.user.id);
             setLoading(false);
             navigate("/");
           } else {

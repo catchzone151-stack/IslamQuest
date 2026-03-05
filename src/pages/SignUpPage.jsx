@@ -245,6 +245,12 @@ export default function SignUpPage() {
 
         setLoading(false);
         localStorage.setItem("iq_new_signup", "true");
+        // Hydrate from cloud when a session is already active (auto-confirm flows).
+        // For email-confirm flows data.session is null and no auth token exists,
+        // so we skip the call — progress is already reset to 0 above.
+        if (data.session) {
+          await useProgressStore.getState().hydrateProgressFromCloud(data.user.id);
+        }
         navigate("/");
       }
     } catch (err) {

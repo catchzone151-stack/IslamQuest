@@ -1486,6 +1486,33 @@ export const useProgressStore = create((set, get) => ({
       console.log("❌ loadFromSupabase failed:", err);
     }
   },
+
+  // ── Single-purpose hydration used at login / signup ──────────────────────
+  // Unconditionally overwrites xp/coins/streak/shieldCount with whatever
+  // Supabase holds for this userId.  No timestamp guard, no merge logic.
+  // Call BEFORE navigate("/") so the UI always opens with cloud values.
+  hydrateProgressFromCloud: async (userId) => {
+    try {
+      const { data } = await supabase
+        .from("profiles")
+        .select("xp, coins, streak, shield_count")
+        .eq("user_id", userId)
+        .single();
+
+      set({
+        xp: data?.xp ?? 0,
+        coins: data?.coins ?? 0,
+        streak: data?.streak ?? 0,
+        shieldCount: data?.shield_count ?? 0,
+      });
+
+      console.log("[ProgressStore] hydrateProgressFromCloud complete:",
+        { xp: data?.xp ?? 0, coins: data?.coins ?? 0, streak: data?.streak ?? 0 });
+    } catch (err) {
+      console.warn("[ProgressStore] hydrateProgressFromCloud failed — defaulting to zero:", err);
+      set({ xp: 0, coins: 0, streak: 0, shieldCount: 0 });
+    }
+  },
 }));
 
 registerProgressStore(() => useProgressStore.getState());
