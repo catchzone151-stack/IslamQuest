@@ -477,6 +477,8 @@ export const useFriendsStore = create((set, get) => ({
       const { data: auth } = await supabase.auth.getUser();
       if (!auth?.user) return { success: false, error: "Not logged in" };
 
+      console.log("ACCEPTING REQUEST ID:", requestId);
+      
       const { error: rpcErr } = await supabase.rpc("accept_friend_request", {
         request_id: requestId,
       });
